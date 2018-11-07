@@ -24,25 +24,19 @@ public class ApplicationParent extends Application {
     }
 
 
-    //<添加> <功能详细描述>
+    //添加 <功能详细描述>
     public void addActivity(Activity activity) {
         activitys.add(activity);
     }
 
-    /**
-     * <删除>
-     * <功能详细描述>
-     * @param activity
-     * @see [类、类#方法、类#成员]
-     */
+    //删除
     public void deleteActivity(Activity activity) {
         if (activity != null) {
             activitys.remove(activity);
             activity.finish();
-            activity = null;
         }
     }
-
+    //退出
     public void deleteAllActivity() {
         if (activitys != null) {
             for (Activity activity : activitys) {
