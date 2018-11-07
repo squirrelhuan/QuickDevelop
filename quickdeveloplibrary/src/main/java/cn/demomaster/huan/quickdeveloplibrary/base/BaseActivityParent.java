@@ -25,6 +25,9 @@ public class BaseActivityParent extends AppCompatActivity {
         mBundle = getIntent().getExtras();
         ((ApplicationParent) getApplicationContext()).addActivity(this);
     }
+    public void onCreateView(@Nullable Bundle savedInstanceState){
+
+    }
 
     public View getContentView() {
         return this.findViewById(android.R.id.content);
