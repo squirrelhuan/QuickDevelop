@@ -8,7 +8,6 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
-
 public class ApplicationParent extends Application {
 
     public static String TAG ="CGQ";
@@ -22,7 +21,6 @@ public class ApplicationParent extends Application {
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
     }
-
 
     //添加 <功能详细描述>
     public void addActivity(Activity activity) {
