@@ -26,7 +26,6 @@ public class ApplicationParent extends Application {
     public void addActivity(Activity activity) {
         activitys.add(activity);
     }
-
     //删除
     public void deleteActivity(Activity activity) {
         if (activity != null) {
