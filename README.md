@@ -15,7 +15,7 @@ dependencies {
 ```
 
 ## 快速使用
-  application文件继承ApplicationParent
+  application类需要继承ApplicationParent.java
 ### SharedPreferencesHelper
 ```
 获取 SharedPreferencesHelper.getInstance().getBoolean("test",false);
