@@ -3,7 +3,9 @@ package cn.demomaster.huan.quickdevelop;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+
+public class MainActivity extends BaseActivityParent {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
