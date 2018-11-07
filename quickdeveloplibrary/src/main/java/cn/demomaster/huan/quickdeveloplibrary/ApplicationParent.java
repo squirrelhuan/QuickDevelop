@@ -24,11 +24,7 @@ public class ApplicationParent extends Application {
     }
 
 
-    /**
-     * <添加> <功能详细描述>
-     * @param activity
-     * @see [类、类#方法、类#成员]
-     */
+    //<添加> <功能详细描述>
     public void addActivity(Activity activity) {
         activitys.add(activity);
     }
