@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.SmsCodeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.StringVerifyUtil;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -22,7 +23,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void initView() {
         final EditText et_phone = findViewById(R.id.et_phone);
         final Button btn_get_smscode = findViewById(R.id.btn_get_smscode);
-
 
          SmsCodeHelper.Builder builder = new SmsCodeHelper.Builder(et_phone.getText().toString(), btn_get_smscode, new SmsCodeHelper.OnSmsCodeListener() {
             @Override
