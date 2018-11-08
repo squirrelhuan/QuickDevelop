@@ -5,20 +5,24 @@
     <color name="colorAccent">#D81B60</color>
 
 
-    <drawable name="dkgray">#80808FF0</drawable>
-    <drawable name="yello">#F8F8FF00</drawable>
-    <drawable name="white">#FFFFFF</drawable>
-    <drawable name="darkgray">#938192</drawable>
-    <drawable name="lightgreen">#7cd12e</drawable>
-    <drawable name="black">#ff000000</drawable>
-    <drawable name="blue">#ff0000ff</drawable>
-    <drawable name="cyan">#ff00ffff</drawable>
-    <drawable name="gray">#ff888888</drawable>
-    <drawable name="green">#ff00ff00</drawable>
-    <drawable name="ltgray">#ffcccccc</drawable>
-    <drawable name="magenta">#ffff00ff</drawable>
-    <drawable name="red">#ffff0000</drawable>
-    <drawable name="transparent">#00000000</drawable>
-    <drawable name="yellow">#ffffff00</drawable>
+    <color name="dkgray">#80808FF0</color>
+    <color name="yello">#F8F8FF00</color>
+    <color name="white">#FFFFFF</color>
+    <color name="darkgray">#938192</color>
+    <color name="lightgreen">#7cd12e</color>
+    <color name="black">#ff000000</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="cyan">#ff00ffff</color>
+    <color name="gray">#ff888888</color>
+    <color name="green">#ff00ff00</color>
+    <color name="ltgray">#ffcccccc</color>
+    <color name="magenta">#ffff00ff</color>
+    <color name="red">#ffff0000</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_dark_33">#33000000</color>
+    <color name="transparent_dark_55">#55000000</color>
+    <color name="transparent_dark_77">#77000000</color>
+    <color name="transparent_dark_cc">#cc000000</color>
+    <color name="yellow">#ffffff00</color>
 
 </resources>
