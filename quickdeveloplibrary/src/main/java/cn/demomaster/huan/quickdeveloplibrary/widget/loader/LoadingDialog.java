@@ -65,7 +65,7 @@ public class LoadingDialog extends Dialog {
                         break;
                 }
             }
-            if (canTouch) {
+            if (!canTouch) {
                 dialog.setCancelable(true);     //用户可以点击手机Back键取消对话框显示
                 dialog.setCanceledOnTouchOutside(false);        //用户不能通过点击对话框之外的地方取消对话框显示
             }

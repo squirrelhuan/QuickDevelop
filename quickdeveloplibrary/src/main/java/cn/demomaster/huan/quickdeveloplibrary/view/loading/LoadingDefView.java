@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+
+import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * @author squirrel桓
@@ -59,25 +62,37 @@ public class LoadingDefView extends View {
         int margin_left = width > height ? (width - height) / 2 : 0;
         int margin_top = width < height ? (height - width) / 2 : 0;
         RectF mRecF = new RectF(margin_left, margin_top, margin_left + r, margin_top + r);
-        canvas.drawArc(mRecF, 0, progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
+        if (isForward) {
+            canvas.drawArc(mRecF, 0, progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
+        } else {
+            canvas.drawArc(mRecF, progress, 360 - progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
+        }
     }
 
     private float progress;
+    private boolean isForward = true;
 
     public void startAnimation() {
         isPlaying = true;
-        final ValueAnimator animator = ValueAnimator.ofFloat(0, 360);
-        animator.setDuration(3000);
+        final int end = 360;
+        final ValueAnimator animator = ValueAnimator.ofInt(0, end);
+        animator.setDuration(1200);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
+                int value = (int) animation.getAnimatedValue();
                 progress = value;
-                //postInvalidate();
-                invalidate();
+                //Log.d(TAG, "progress=" + progress);
+                if (progress >= end) {
+                    isForward = !isForward;
+                    //Log.d(TAG, "isForward=" + isForward);
+                }else {
+                    //postInvalidate();
+                    invalidate();
+                }
             }
         });
-        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();

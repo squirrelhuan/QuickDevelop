@@ -18,6 +18,7 @@ public class MainActivity extends BaseActivityParent {
 
     private void init() {
        LoadingDialog.Builder builder = new LoadingDialog.Builder(this);
-       builder.setMessage("加载中...").setCanTouch(false).create().show();
+        final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
+        loadingDialog.show();
     }
 }
