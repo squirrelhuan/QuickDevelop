@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,7 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onReceiveFailure(String error) {
-                Toast.makeText(RegisterActivity.this,"fail："+error,Toast.LENGTH_LONG).show();
+                //Log.i(TAG,"fail："+error);
+                //Toast.makeText(RegisterActivity.this,"fail："+error,Toast.LENGTH_LONG).show();
             }
         });
         smsCodeHelper = builder.create();
