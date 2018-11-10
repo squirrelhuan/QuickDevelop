@@ -7,7 +7,7 @@
 
     <color name="dkgray">#80808FF0</color>
     <color name="yello">#F8F8FF00</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="darkgray">#938192</color>
     <color name="lightgreen">#7cd12e</color>
     <color name="black">#ff000000</color>
@@ -15,6 +15,7 @@
     <color name="cyan">#ff00ffff</color>
     <color name="gray">#ff888888</color>
     <color name="green">#ff00ff00</color>
+    <color name="green_light">#00ff7f</color>
     <color name="ltgray">#ffcccccc</color>
     <color name="magenta">#ffff00ff</color>
     <color name="red">#ffff0000</color>

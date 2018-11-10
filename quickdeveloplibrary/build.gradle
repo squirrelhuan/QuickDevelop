@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -35,4 +35,6 @@ dependencies {
 
     //沉浸式状态栏
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    //implementation 'com.google.zxing:core:3.3.0'     //谷歌的zxing库
+
 }
