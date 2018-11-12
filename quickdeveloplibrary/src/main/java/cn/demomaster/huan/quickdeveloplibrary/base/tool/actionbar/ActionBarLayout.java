@@ -410,7 +410,10 @@ public class ActionBarLayout {
             ViewGroup viewGroup = (ViewGroup) view;
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof ImageView) {
-                    (((ImageView) viewGroup.getChildAt(i)).getDrawable()).setTint(color);
+                    Drawable drawable = (((ImageView) viewGroup.getChildAt(i)).getDrawable());
+                    if(drawable!=null){
+                        drawable.setTint(color);
+                    }
                 } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
                     setTintAll(viewGroup.getChildAt(i), color);
                 } else if (viewGroup.getChildAt(i) instanceof TextView) {
