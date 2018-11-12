@@ -13,6 +13,7 @@
     <style name="StartAppTheme" parent="AppThemeNoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/white</item>
+
         <!--<item name="android:windowBackground">@drawable/layout_list_start_pic</item>-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
