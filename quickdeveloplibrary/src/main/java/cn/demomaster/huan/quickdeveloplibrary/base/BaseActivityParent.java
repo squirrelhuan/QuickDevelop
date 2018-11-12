@@ -1,16 +1,15 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 public class BaseActivityParent extends AppCompatActivity {
@@ -20,11 +19,23 @@ public class BaseActivityParent extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mContext = this;
         mBundle = getIntent().getExtras();
         ((ApplicationParent) getApplicationContext()).addActivity(this);
+        super.onCreate(savedInstanceState);
+        StatusBarUtil.transparencyBar(mContext);
     }
+
+    //private LayoutInflater inflater;
+    public ActionBarLayout activityLayout;
+    @Override
+    public void setContentView(int layoutResID) {
+        mContext = this;
+        activityLayout = ActionBarHelper.init(this,layoutResID);
+        View view = activityLayout.getFinalView();
+        super.setContentView(view);
+    }
+
     public void onCreateView(@Nullable Bundle savedInstanceState){
 
     }
