@@ -27,12 +27,12 @@ public class BaseActivityParent extends AppCompatActivity {
     }
 
     //private LayoutInflater inflater;
-    public ActionBarLayout activityLayout;
+    public ActionBarLayout actionBarLayout;
     @Override
     public void setContentView(int layoutResID) {
         mContext = this;
-        activityLayout = ActionBarHelper.init(this,layoutResID);
-        View view = activityLayout.getFinalView();
+        actionBarLayout = ActionBarHelper.init(this,layoutResID);
+        View view = actionBarLayout.getFinalView();
         super.setContentView(view);
     }
 

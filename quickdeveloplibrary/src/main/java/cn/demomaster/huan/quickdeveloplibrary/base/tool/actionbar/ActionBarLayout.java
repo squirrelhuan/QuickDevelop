@@ -36,6 +36,37 @@ public class ActionBarLayout {
     private View.OnClickListener rightOnClickListener;
 
     /**
+     * 获取中间视图
+     * @return
+     */
+    public TextView getCenterView() {
+        return tv_actionbar_title;
+    }
+
+    /**
+     * 获取左侧控件
+     * @return
+     */
+    public ImageView getLeftView() {
+        return iv_actionbar_common_left;
+    }
+    /**
+     * 获取右侧侧视图控件
+     * @return
+     */
+    public ImageView getRightView() {
+        return iv_actionbar_common_right;
+    }
+
+    /**
+     * 获取导航栏视图用来更改背景或其他操作
+     * @return
+     */
+    public ViewGroup getHeadView() {
+        return headView;
+    }
+
+    /**
      * 构造方法
      *
      * @param context
