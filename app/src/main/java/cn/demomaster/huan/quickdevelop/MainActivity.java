@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +10,7 @@ import android.widget.LinearLayout;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.ActivityLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
@@ -51,12 +50,19 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     }
 
     private void init() {
-        activityLayout.setActionBarModel(ActivityLayout.ACTIONBAR_TYPE.NORMAL);
+        activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         activityLayout.setTitle("aaa");
         activityLayout.setStateBarColorAuto(true);//状态栏文字颜色自动
-        LoadingDialog.Builder builder = new LoadingDialog.Builder(this);
-        final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
-        loadingDialog.show();
+        activityLayout.setActionBarThemeColors(Color.CYAN,Color.BLUE);
+        activityLayout.setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
+                final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
+                loadingDialog.show();
+            }
+        });
+
     }
 
     private int position;
@@ -70,15 +76,15 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
 
             case R.id.btn_ac_01:
-                activityLayout.setActionBarModel(ActivityLayout.ACTIONBAR_TYPE.NORMAL);
+                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                activityLayout.setActionBarModel(ActivityLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                activityLayout.setActionBarModel(ActivityLayout.ACTIONBAR_TYPE.ACTION_STACK);
+                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
 
             case R.id.btn_color_black:

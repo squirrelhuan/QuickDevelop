@@ -1,16 +1,12 @@
-package cn.demomaster.huan.quickdeveloplibrary.base.tool;
+package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +26,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 /**
  * Created by Squirrel桓 on 2018/11/9.
  */
-public class ActivityLayout {
+public class ActionBarLayout {
 
     private Activity context;
     private TextView tv_actionbar_title;
@@ -41,12 +37,13 @@ public class ActivityLayout {
 
     /**
      * 构造方法
+     *
      * @param context
      * @param actionBarModel
      * @param headView
      * @param contentView
      */
-    public ActivityLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, ViewGroup headView, ViewGroup contentView) {
+    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, ViewGroup headView, ViewGroup contentView) {
         this.context = context;
         this.headView = headView;
         this.contentView = contentView;
@@ -83,6 +80,7 @@ public class ActivityLayout {
 
     /**
      * 设置title
+     *
      * @param text
      */
     public void setTitle(String text) {
@@ -96,6 +94,7 @@ public class ActivityLayout {
 
     /**
      * 设置导航栏颜色（对外）
+     *
      * @param color
      */
     public void setBackGroundColor(int color) {
@@ -103,8 +102,10 @@ public class ActivityLayout {
         headView.setBackgroundColor(color);
         setStateBarColor();
     }
+
     /**
      * 设置导航栏颜色（对内）
+     *
      * @param color
      */
     private void setActionBarBackGroundColor(int color) {
@@ -120,29 +121,34 @@ public class ActivityLayout {
 
     /**
      * 设置左边按钮点击事件
+     *
      * @param leftOnClickListener
      */
     public void setLeftOnClickListener(View.OnClickListener leftOnClickListener) {
         this.leftOnClickListener = leftOnClickListener;
-        iv_actionbar_common_right.setOnClickListener(leftOnClickListener);
+        iv_actionbar_common_left.setOnClickListener(leftOnClickListener);
     }
+
     /**
      * 设置右边按钮点击事件
+     *
      * @param rightOnClickListener
      */
     public void setRightOnClickListener(View.OnClickListener rightOnClickListener) {
         this.rightOnClickListener = rightOnClickListener;
-        iv_actionbar_common_left.setOnClickListener(rightOnClickListener);
+        iv_actionbar_common_right.setOnClickListener(rightOnClickListener);
     }
 
     /**
      * 状态栏颜色刷新需要在view加载完成后操作
+     *
      * @param ll_layout
      */
-    public void changeChildView(LinearLayout ll_layout) {
+    public void changeChildView(final LinearLayout ll_layout) {
         ll_layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                ll_layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 setStateBarColor();
             }
         });
@@ -170,7 +176,7 @@ public class ActivityLayout {
      * 导航栏构建者
      */
     public static class Builder {
-        private ActivityLayout activityLayout;
+        private ActionBarLayout activityLayout;
         private ACTIONBAR_TYPE actionBarModel = ACTIONBAR_TYPE.NORMAL;//1,上下顺序排列（普通样式），2层叠排列（actionbar背景透明），3只显示内容
         private Activity context;
         private ViewGroup contentView;
@@ -180,8 +186,8 @@ public class ActivityLayout {
             this.context = context;
         }
 
-        public ActivityLayout create() {
-            activityLayout = new ActivityLayout(context, actionBarModel, headView, contentView);
+        public ActionBarLayout create() {
+            activityLayout = new ActionBarLayout(context, actionBarModel, headView, contentView);
             return activityLayout;
         }
 
@@ -207,8 +213,14 @@ public class ActivityLayout {
         this.contentView = contentView;
     }
 
+    long startTime;
+
     private void refresh() {
+        startTime = System.currentTimeMillis();
+
         getFinalView();
+        long consumingTime = System.currentTimeMillis() - startTime;
+        Log.d(TAG, "time=" + consumingTime);
     }
 
     ViewGroup rootLayout;
@@ -220,6 +232,7 @@ public class ActivityLayout {
 
     /**
      * 生成布局用来setContenView
+     *
      * @return
      */
     public ViewGroup getFinalView() {
@@ -284,6 +297,7 @@ public class ActivityLayout {
             rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     setStateBarColor();
                 }
             });
@@ -299,8 +313,10 @@ public class ActivityLayout {
     }
 
     private boolean stateBarColorAuto;
+
     /**
      * 设置状态栏颜色自动取色
+     *
      * @param stateBarColorAuto
      */
     public void setStateBarColorAuto(boolean stateBarColorAuto) {
@@ -308,25 +324,44 @@ public class ActivityLayout {
         refresh();
     }
 
-    boolean isDart = false;//状态栏文字是否是暗色
+    int themeColorType = -1;//状态栏文字颜色
+
     /**
      * 设置状态栏字体颜色
      */
-    public void setStateBarColor() {
+    private void setStateBarColor() {
+
+        long consumingTime = System.currentTimeMillis() - startTime;
+        Log.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
         Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(rootLayout, statusBar_Height);
+        boolean isDart;
         isDart = getBitmapMainColor(bitmap);
-        StatusBarUtil.setStatusBarMode((Activity) context, !isDart);
-        //TODO 这里并不严谨isDart是对状态栏颜色的判定， 导航栏应该获取状态栏以下部分的颜色
-        setThemeColor(isDart);
+        if (themeColorType != (isDart ? 1 : 0)) {
+            themeColorType = (isDart ? 1 : 0);
+            StatusBarUtil.setStatusBarMode((Activity) context, !isDart);
+            //TODO 这里并不严谨isDart是对状态栏颜色的判定， 导航栏应该获取状态栏以下部分的颜色
+            setActionBarColorType(isDart);
+        }
+        long consumingTime2 = System.currentTimeMillis() - startTime;
+        Log.d(TAG, "setStateBarColor2=" + consumingTime2);
     }
 
+    private int[] themeColors = {Color.WHITE,Color.BLACK};
+    public void setActionBarThemeColors(int lightColor,int dartColor){
+        themeColors[0]=lightColor;
+        themeColors[1]=dartColor;
+        setActionBarColorType(themeColorType==1);
+    }
+    private void setActionBarColorType(boolean isDart) {
+        int color = isDart ? themeColors[0] : themeColors[1];
+        setActionBarColor(color);
+    }
     /**
      * 设置导航栏主题颜色
-     * @param isDart
+     *
      */
-    private void setThemeColor(boolean isDart) {
-        int color = isDart ? Color.WHITE : Color.BLACK;
+    private void setActionBarColor(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTintAll(headView, color);
         }
@@ -334,6 +369,7 @@ public class ActivityLayout {
 
     /**
      * 遍历view集合，对vector视图tint,对textView视图设置颜色
+     *
      * @param view
      * @param color
      */
@@ -346,10 +382,10 @@ public class ActivityLayout {
                     (((ImageView) viewGroup.getChildAt(i)).getDrawable()).setTint(color);
                 } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
                     setTintAll(viewGroup.getChildAt(i), color);
-                }else if (viewGroup.getChildAt(i) instanceof TextView) {
+                } else if (viewGroup.getChildAt(i) instanceof TextView) {
                     ((TextView) viewGroup.getChildAt(i)).setTextColor(color);
                 }
-                }
+            }
         }
     }
 
@@ -362,7 +398,7 @@ public class ActivityLayout {
         int mBitmapWidth = mBitmap.getWidth();
         int mBitmapHeight = mBitmap.getHeight();
         int mArrayColorLengh = mBitmapWidth * mBitmapHeight;
-        int[] mArrayColor = new int[mArrayColorLengh];
+        //int[] mArrayColor = new int[mArrayColorLengh];
         int count_h = 3;//垂直方向三个点
         int count_w = 10;//水平方向10个点
         int distance_h = mBitmapHeight / count_h;//垂直间距
@@ -376,15 +412,20 @@ public class ActivityLayout {
                 //getPixel()不带透明通道 getPixel32()才带透明部分 所以全透明是0x00000000
                 //而不透明黑色是0xFF000000 如果不计算透明部分就都是0了
                 int color = mBitmap.getPixel(j * distance_w, i * distance_h);
-
                 int red = (color & 0xff0000) >> 16;
                 int green = (color & 0x00ff00) >> 8;
                 int blue = (color & 0x0000ff);
                 if ((red + green + blue) / 3 > 128) {
                     dart_point_count++;
                 }
-
                 Log.i(TAG, "color=" + color + ",red=" + red + ",green=" + green + ",blue=" + blue);
+                if (i * count_w + j > (count_h * count_w) / 2) {
+                    if (dart_point_count > (count_h * count_w) / 2) {
+                        return false;
+                    } else if (i * count_w + j - dart_point_count > (count_h * count_w) / 2) {
+                        return true;
+                    }
+                }
                 //将颜色值存在一个数组中 方便后面修改
                 //if (color == oldColor) {
                 //   mBitmap.setPixel(j, i, newColor);  //将白色替换成透明色
@@ -397,6 +438,7 @@ public class ActivityLayout {
 
     /**
      * 获取状态栏高度
+     *
      * @return
      */
     private int getStateBarHeight() {
