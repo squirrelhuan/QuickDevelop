@@ -12,18 +12,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelpe
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
-public class BaseActivityParent extends BaseActivityRoot {
-
-
-    //private LayoutInflater inflater;
-    public ActionBarLayout actionBarLayout;
-    @Override
-    public void setContentView(int layoutResID) {
-        mContext = this;
-        actionBarLayout = ActionBarHelper.init(this,layoutResID);
-        View view = actionBarLayout.getFinalView();
-        super.setContentView(view);
-    }
+public class BaseActivityParent_NoActionBar extends BaseActivityParent {
 
 
 }
