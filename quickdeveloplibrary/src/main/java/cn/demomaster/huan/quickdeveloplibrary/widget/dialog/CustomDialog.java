@@ -36,15 +36,10 @@ public class CustomDialog extends Dialog {
 
 
     public static class Builder {
-        private String message;
         private View contentView;
         private boolean canTouch;
         private LayoutInflater inflater;
         private CustomDialog dialog;
-        private int showType;//显示模式
-
-        public final static int Loading_Builer_Only_Image = 0;
-        public final static int Loading_Builer_Image_And_Text = 1;
 
         public Builder(Context context,int layoutID) {
             //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
@@ -62,11 +57,6 @@ public class CustomDialog extends Dialog {
         }
 
 
-        public Builder setMessage(String message) {
-            this.message = message;
-            return this;
-        }
-
         public Builder setContentView(View v) {
             this.contentView = v;
             return this;
@@ -79,16 +69,6 @@ public class CustomDialog extends Dialog {
         public CustomDialog create() {
             if (contentView == null) {//默认loading视图
                 contentView = inflater.inflate(R.layout.layout_dialog_loading_default, null);
-                if (message != null) {
-                    ((TextView)contentView.findViewById(R.id.tv_message)).setText(message);
-                    showType = 1;
-                }
-                switch (showType) {
-                    case Loading_Builer_Only_Image://加载动画
-                        break;
-                    case Loading_Builer_Image_And_Text://图文并茂
-                        break;
-                }
             }
             if (!canTouch) {
                 dialog.setCancelable(true);     //用户可以点击手机Back键取消对话框显示
