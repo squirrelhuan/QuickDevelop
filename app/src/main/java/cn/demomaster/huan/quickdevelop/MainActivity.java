@@ -50,11 +50,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     }
 
     private void init() {
-        activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
-        activityLayout.setTitle("aaa");
-        activityLayout.setStateBarColorAuto(true);//状态栏文字颜色自动
-        activityLayout.setActionBarThemeColors(Color.CYAN,Color.BLUE);
-        activityLayout.setLeftOnClickListener(new View.OnClickListener() {
+        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.setTitle("aaa");
+        actionBarLayout.setStateBarColorAuto(true);//状态栏文字颜色自动
+        actionBarLayout.setActionBarThemeColors(Color.CYAN,Color.BLUE);
+        actionBarLayout.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
@@ -76,34 +76,34 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
 
             case R.id.btn_ac_01:
-                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                activityLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
 
             case R.id.btn_color_black:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.black));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.black));
                 break;
             case R.id.btn_color_white:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.white));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.white));
                 break;
             case R.id.btn_color_red:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.red));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.red));
                 break;
             case R.id.btn_color_gray:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.gray));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.gray));
                 break;
             case R.id.btn_color_green:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.green));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.green));
                 break;
             case R.id.btn_color_yellow:
-                activityLayout.setBackGroundColor(getResources().getColor(R.color.yello));
+                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.yello));
                 break;
             case R.id.btn_change_bg:
                 if (position == 0) {
@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                     ll_layout.setBackgroundResource(R.mipmap.gudaimeizi);
                     position = 0;
                 }
-                activityLayout.changeChildView(ll_layout);
+                actionBarLayout.changeChildView(ll_layout);
                 break;
         }
     }
