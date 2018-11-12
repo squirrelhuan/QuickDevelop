@@ -26,14 +26,13 @@ public class CustomDialog extends Dialog {
 
     @Override
     public void setContentView(View contentView) {
+        super.setContentView(contentView);
         this.contentView = contentView;
     }
 
     public View getContentView(){
         return contentView;
     };
-
-
 
     public static class Builder {
         private View contentView;
@@ -44,7 +43,8 @@ public class CustomDialog extends Dialog {
         public Builder(Context context,int layoutID) {
             //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
             dialog = new CustomDialog(context);
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = LayoutInflater.from(context);
+            //inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(layoutID, null);
             this.contentView = layout;
             //dialog.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

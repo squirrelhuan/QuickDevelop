@@ -11,6 +11,7 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
@@ -57,9 +58,13 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         actionBarLayout.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
+                /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
                 final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
-                loadingDialog.show();
+                loadingDialog.show();*/
+
+                CustomDialog.Builder builder = new CustomDialog.Builder(mContext, R.layout.layout_dialog_loading_default);
+                final CustomDialog customDialog = builder.setCanTouch(false).create();
+                customDialog.show();
             }
         });
 
