@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdeveloplibrary.widget.loader;
+package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,59 +8,34 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
-public class CustomDialog extends Dialog {
+public class LoadingDialog extends Dialog {
 
-    private View contentView;
-    public CustomDialog(Context context) {
+    public LoadingDialog(Context context) {
         super(context);
     }
 
-    public CustomDialog(Context context, int theme) {
+    public LoadingDialog(Context context, int theme) {
         super(context, theme);
     }
-
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-    }
-
-    @Override
-    public void setContentView(View contentView) {
-        this.contentView = contentView;
-    }
-
-    public View getContentView(){
-        return contentView;
-    };
-
-
 
     public static class Builder {
         private String message;
         private View contentView;
         private boolean canTouch;
         private LayoutInflater inflater;
-        private CustomDialog dialog;
+        private LoadingDialog dialog;
         private int showType;//显示模式
 
         public final static int Loading_Builer_Only_Image = 0;
         public final static int Loading_Builer_Image_And_Text = 1;
 
-        public Builder(Context context,int layoutID) {
+        public Builder(Context context) {
             //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
-            dialog = new CustomDialog(context);
+            dialog = new LoadingDialog(context);
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(layoutID, null);
-            this.contentView = layout;
+            //layout = inflater.inflate(R.layout.dialog_layout, null);
             //dialog.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        public Builder(Context context,View view) {
-            //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
-            dialog = new CustomDialog(context);
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.contentView = view;
-        }
-
 
         public Builder setMessage(String message) {
             this.message = message;
@@ -76,7 +51,7 @@ public class CustomDialog extends Dialog {
             return this;
         }
 
-        public CustomDialog create() {
+        public LoadingDialog create() {
             if (contentView == null) {//默认loading视图
                 contentView = inflater.inflate(R.layout.layout_dialog_loading_default, null);
                 if (message != null) {
