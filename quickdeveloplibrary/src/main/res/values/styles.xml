@@ -23,4 +23,12 @@
         <item name="android:windowEnterAnimation">@anim/pop_share_show</item>
         <item name="android:windowExitAnimation">@anim/pop_share_hide</item>
     </style>
+
+
+    <style name="FadeInPopWin">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="@android:windowEnterAnimation">@anim/pop_win_content_fade_in</item>
+        <item name="@android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
+    </style>
+
 </resources>

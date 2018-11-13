@@ -21,4 +21,8 @@
     <dimen name="activity_actionbar_button_height">45dp</dimen>
 
 
+
+    <dimen name="btn_text_size">16sp</dimen>
+    <dimen name="view_text_size">10sp</dimen>
+
 </resources>
