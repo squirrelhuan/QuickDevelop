@@ -4,12 +4,16 @@ package cn.demomaster.huan.quickdeveloplibrary.view.pickview;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -56,6 +60,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     List<String> dayList = new ArrayList();
     private DatePickerPopWin.OnDatePickedListener mListener;
 
+    private WindowManager mWindowManager;
     public DatePickerPopWin(DatePickerPopWin.Builder builder) {
         this.minYear = builder.minYear;
         this.maxYear = builder.maxYear;
@@ -69,11 +74,43 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         this.viewTextSize = builder.viewTextSize;
         this.showDayMonthYear = builder.showDayMonthYear;
         this.setSelectedDate(builder.dateChose);
+        init();
         this.initView();
+        mWindowManager = (WindowManager) mContext
+                .getSystemService(Context.WINDOW_SERVICE);
+    }
+
+
+    private WindowManager.LayoutParams mWindowParams;
+    private void init() {
+        mWindowParams = new WindowManager.LayoutParams();
+        mWindowParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        mWindowParams.alpha = 1.0f;
+        mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        mWindowParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        mWindowParams.format = PixelFormat.TRANSLUCENT;
+        //mWindowParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        //窗口类型
+        if (Build.VERSION.SDK_INT > 25) {
+            mWindowParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            mWindowParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+
+        mWindowParams.setTitle("ToastHelper");
+        mWindowParams.packageName = mContext.getPackageName();
+        setClippingEnabled(false);
+        //mWindowParams.windowAnimations = animStyleId;// TODO
+        //mWindowParams.y = mContext.getResources().getDisplayMetrics().widthPixels / 5;
+        //mWindowParams.windowAnimations = R.style.CustomToast;//动画
     }
 
     private void initView() {
         this.contentView = LayoutInflater.from(this.mContext).inflate(this.showDayMonthYear ? R.layout.layout_date_picker_inverted : R.layout.layout_date_picker, (ViewGroup)null);
+       this.contentView.setLayoutParams(mWindowParams);
         this.cancelBtn = (Button)this.contentView.findViewById(R.id.btn_cancel);
         this.cancelBtn.setTextColor(this.colorCancel);
         this.cancelBtn.setTextSize((float)this.btnTextsize);
@@ -173,7 +210,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     public void showPopWin(Activity activity) {
         if (null != activity) {
             TranslateAnimation trans = new TranslateAnimation(1, 0.0F, 1, 0.0F, 1, 1.0F, 1, 0.0F);
-            this.showAtLocation(activity.getWindow().getDecorView(), 80, 0, 0);
+            this.showAtLocation(activity.getWindow().getDecorView(), 0, 0, 0);
             trans.setDuration(400L);
             trans.setInterpolator(new AccelerateDecelerateInterpolator());
             this.pickerContainerV.startAnimation(trans);

@@ -15,6 +15,7 @@ import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -340,7 +341,17 @@ public class LoopView extends View {
             }
 
         }
+        if(Math.abs(LoopView.this.mTotalScrollY % LoopView.this.mItemHeight)>4){
+            int offset = (int)((float)LoopView.this.mTotalScrollY / LoopView.this.mItemHeight);
+            if(offset_current!=offset){
+                offset_current = offset;
+                Vibrator vibrator = (Vibrator)mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+                vibrator.vibrate(8);
+                //long[] patter = {10, 10, 20, 5};
+                //vibrator.vibrate(patter, 0);
+            }}
     }
+    int offset_current = 0;
 
     public boolean onTouchEvent(MotionEvent motionevent) {
         switch(motionevent.getAction()) {

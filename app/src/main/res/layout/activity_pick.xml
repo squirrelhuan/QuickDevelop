@@ -51,7 +51,7 @@
     <!--<attr name="canLoop" format="boolean"/>-->
     <!--<attr name="initPosition" format="integer"/>-->
     <!--<attr name="drawItemCount" format="integer"/>-->
-    <cn.demomaster.huan.quickdevelop.view.LoopView
+    <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
         android:id="@+id/loop_view"
         android:layout_width="200dp"
         android:layout_height="180dp"
