@@ -34,6 +34,17 @@ public class StringVerifyUtil {
         }
         return true;
     }
+    /**
+     * 身份证格式校验
+     * @param idNumber
+     * @return
+     */
+    public static boolean validateIdCard(String idNumber){
+        if (TextUtils.isEmpty(idNumber) || !isIdCardValid(idNumber)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * 密码格式校验
@@ -56,6 +67,12 @@ public class StringVerifyUtil {
     //密码长度判断大于4
     public static boolean isPasswordValid(String password) {
         return password.length() >= 4;
+    }
+
+
+    //身份证长度判断等于18
+    public static boolean isIdCardValid(String password) {
+        return password.length() ==18;
     }
 
 
