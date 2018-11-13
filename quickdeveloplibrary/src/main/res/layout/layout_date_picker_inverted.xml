@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#f2f7fa"
         android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/container_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#ffffffff"
             android:padding="5dp" >
 
             <Button
@@ -42,7 +42,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="#f2f7fa"
+            android:background="#d9ffffff"
             android:padding="3dp" >
 
             <LinearLayout
