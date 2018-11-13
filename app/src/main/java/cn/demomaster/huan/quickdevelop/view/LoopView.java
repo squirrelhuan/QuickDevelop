@@ -125,9 +125,9 @@ public class LoopView extends View {
     private void initView(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, styleable.LoopView);
         if (array != null) {
-            this.mTopBottomTextColor = array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
-            this.mCenterTextColor = array.getColor(styleable.LoopView_centerTextColor, -13553359);
-            this.mCenterLineColor = array.getColor(styleable.LoopView_lineColor, -3815995);
+            this.mTopBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+            this.mCenterTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+            this.mCenterLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
             this.mCanLoop = array.getBoolean(styleable.LoopView_canLoop, true);
             this.mInitPosition = array.getInt(styleable.LoopView_initPosition, -1);
             this.mTextSize = array.getDimensionPixelSize(styleable.LoopView_textSize, this.sp2px(context, 16.0F));
@@ -156,7 +156,7 @@ public class LoopView extends View {
             this.mTopBottomTextPaint.setColor(this.mTopBottomTextColor);
             this.mTopBottomTextPaint.setAntiAlias(true);
             this.mTopBottomTextPaint.setTypeface(Typeface.MONOSPACE);
-            this.mTopBottomTextPaint.setTextSize((float)this.mTextSize);
+            this.mTopBottomTextPaint.setTextSize((float)this.mTextSize*.8f);
             this.mCenterTextPaint.setColor(this.mCenterTextColor);
             this.mCenterTextPaint.setAntiAlias(true);
             this.mCenterTextPaint.setTextScaleX(1.05F);
@@ -264,9 +264,9 @@ public class LoopView extends View {
                     itemCount[count] = (String)this.mDataList.get(templateItem);
                 }
             }
-
-            canvas.drawLine(0.0F, (float)this.mTopLineY, (float)this.mWidgetWidth, (float)this.mTopLineY, this.mCenterLinePaint);
-            canvas.drawLine(0.0F, (float)this.mBottomLineY, (float)this.mWidgetWidth, (float)this.mBottomLineY, this.mCenterLinePaint);
+//去掉标记线
+            /*canvas.drawLine(0.0F, (float)this.mTopLineY, (float)this.mWidgetWidth, (float)this.mTopLineY, this.mCenterLinePaint);
+            canvas.drawLine(0.0F, (float)this.mBottomLineY, (float)this.mWidgetWidth, (float)this.mBottomLineY, this.mCenterLinePaint);*/
             count = 0;
 
             for(templateItem = (int)((float)this.mTotalScrollY % this.mItemHeight); count < this.mDrawItemsCount; ++count) {
@@ -277,28 +277,59 @@ public class LoopView extends View {
                 if (angle < 180.0F && angle > 0.0F) {
                     int translateY = (int)((double)this.mCircularRadius - Math.cos(radian) * (double)this.mCircularRadius - Math.sin(radian) * (double)this.mMaxTextHeight / 2.0D) + this.mPaddingTopBottom;
                     canvas.translate(0.0F, (float)translateY);
-                    canvas.scale(1.0F, (float)Math.sin(radian));
+                    double f = Math.sin(radian);
+                    canvas.scale(1.0F, (float)f);
+                    mTopBottomTextPaint.setAlpha((int)(f*250));
                     if (translateY <= this.mTopLineY) {
                         canvas.save();
                         canvas.clipRect(0, 0, this.mWidgetWidth, this.mTopLineY - translateY);
-                        canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+
+                        // 文字宽
+                        float textWidth1 = mTopBottomTextPaint.measureText(itemCount[count]);
+                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth1/2, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+                        //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
                         canvas.restore();
                         canvas.save();
                         canvas.clipRect(0, this.mTopLineY - translateY, this.mWidgetWidth, (int)itemHeight);
-                        canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+
+                        // 文字宽
+                        float textWidth = mCenterTextPaint.measureText(itemCount[count]);
+                        // 文字baseline在y轴方向的位置
+                        float baseLineY = Math.abs(mCenterTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
+                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+                        //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         canvas.restore();
                     } else if (this.mMaxTextHeight + translateY >= this.mBottomLineY) {
                         canvas.save();
                         canvas.clipRect(0, 0, this.mWidgetWidth, this.mBottomLineY - translateY);
-                        canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+
+
+
+                        // 文字宽
+                        float textWidth1 = mCenterTextPaint.measureText(itemCount[count]);
+
+                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth1/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         canvas.restore();
                         canvas.save();
                         canvas.clipRect(0, this.mBottomLineY - translateY, this.mWidgetWidth, (int)itemHeight);
-                        canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+
+
+                        // 文字宽
+                        float textWidth = mTopBottomTextPaint.measureText(itemCount[count]);
+                        // 文字baseline在y轴方向的位置
+                        float baseLineY = Math.abs(mTopBottomTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
+                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+                        //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
                         canvas.restore();
                     } else if (translateY >= this.mTopLineY && this.mMaxTextHeight + translateY <= this.mBottomLineY) {
                         canvas.clipRect(0, 0, this.mWidgetWidth, (int)itemHeight);
-                        canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+
+                        // 文字宽
+                        float textWidth = mCenterTextPaint.measureText(itemCount[count]);
+                        // 文字baseline在y轴方向的位置
+                        float baseLineY = Math.abs(mCenterTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
+                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+                        //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         this.mSelectedItem = this.mDataList.indexOf(itemCount[count]);
                     }
 

@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.bruce.pickerview.LoopView
+                <cn.demomaster.huan.quickdevelop.view.LoopView
                     android:id="@+id/picker_year"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -57,7 +57,15 @@
                     app:textSize="25sp"
                     app:canLoop="false"/>
 
-                <com.bruce.pickerview.LoopView
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#11DDAF"
+                    android:text="@string/year"/>
+
+                <cn.demomaster.huan.quickdevelop.view.LoopView
                     android:id="@+id/picker_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -65,8 +73,14 @@
                     android:layout_weight="1"
                     app:textSize="25sp"
                     app:canLoop="false"/>
-
-                <com.bruce.pickerview.LoopView
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#11DDAF"
+                    android:text="@string/month"/>
+                <cn.demomaster.huan.quickdevelop.view.LoopView
                     android:id="@+id/picker_day"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -74,6 +88,14 @@
                     android:layout_weight="1"
                     app:textSize="25sp"
                     app:canLoop="false"/>
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#11DDAF"
+                    android:text="@string/day"/>
+
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

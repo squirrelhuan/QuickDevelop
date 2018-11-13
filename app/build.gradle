@@ -28,6 +28,5 @@ dependencies {
     implementation project(path: ':quickdeveloplibrary')
     implementation 'com.github.yuzhiqiang1993:zxing:2.2.1'
 
-    implementation 'com.github.brucetoo:PickView:43d4b191dd'
-
+    implementation 'com.github.brucetoo:PickView:master'
 }

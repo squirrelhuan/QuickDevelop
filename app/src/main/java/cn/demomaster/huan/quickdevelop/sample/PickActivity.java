@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bruce.pickerview.LoopScrollListener;
-import com.bruce.pickerview.popwindow.DatePickerPopWin;
 import com.bruce.pickerview.popwindow.TimePickerPopWin;
 
 import java.util.ArrayList;
 
 import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.view.DatePickerPopWin;
 import cn.demomaster.huan.quickdevelop.view.LoopView;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 
@@ -42,11 +42,11 @@ public class PickActivity extends BaseActivityParent {
                         .textCancel("取消") //text of cancel button
                         .btnTextSize(16) // button text size
                         .viewTextSize(35) // pick view text size
-                        .colorCancel(Color.parseColor("#76EEC6")) //color of cancel button
-                        .colorConfirm(Color.parseColor("#76EEC6"))//color of confirm button
-                        .minYear(1990) //min year in loop
-                        .maxYear(2550) // max year in loop
-                        .dateChose("2013-11-11") // date chose when init popwindow
+                        .colorCancel(Color.parseColor("#11DDAF")) //color of cancel button
+                        .colorConfirm(Color.parseColor("#11DDAF"))//color of confirm button
+                        .minYear(1900) //min year in loop
+                        .maxYear(2030) // max year in loop
+                        .dateChose("1980-01-01") // date chose when init popwindow
                         .build();
                 pickerPopWin.showPopWin(mContext);
             }

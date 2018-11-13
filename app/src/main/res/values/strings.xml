@@ -4,4 +4,12 @@
     <string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
     <string name="title_activity_my_qr_code">MyQrCodeActivity</string>
 
+
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="second">秒</string>
+
 </resources>
