@@ -335,6 +335,7 @@ public class ActionBarLayout {
 
         }
         rootLayout.addView(relativeLayout, layoutParams2);
+        setActionBarThemeColors(Color.WHITE,Color.BLACK);
         return rootLayout;
     }
 

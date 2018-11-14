@@ -35,6 +35,7 @@ dependencies {
 
     //沉浸式状态栏
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    //implementation 'com.google.zxing:core:3.3.0'     //谷歌的zxing库
+    implementation 'com.google.zxing:core:3.3.0'     //谷歌的zxing库
+
 
 }

@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.yzq.zxinglibrary.android.CaptureActivity;
 
+import cn.demomaster.huan.quickdevelop.sample.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setTitle("aaa");
         actionBarLayout.setStateBarColorAuto(true);//状态栏文字颜色自动
-        actionBarLayout.setActionBarThemeColors(Color.CYAN,Color.BLUE);
+        actionBarLayout.setActionBarThemeColors(Color.WHITE,Color.BLACK);
         actionBarLayout.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,9 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_scan:
-                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                //Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                Intent intent = new Intent(MainActivity.this, IDCardActivity.class);
+
                 startActivityForResult(intent, 1);
                 break;
 

@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.demomaster.huan.quickdevelop">
 
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera2" />
+    <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -10,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".sample.PickActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,9 +27,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".sample.RegisterActivity" />
-        <activity android:name=".sample.CaptureActivity" />
+        <!--<activity android:name=".sample.CaptureActivity" />-->
         <activity android:name=".sample.RecycleActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".sample.PickActivity" />
+        <activity android:name=".sample.IDCardActivity" />
+        <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" />
+        <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
+        <!--android:screenOrientation="landscape"-->
     </application>
 
 </manifest>

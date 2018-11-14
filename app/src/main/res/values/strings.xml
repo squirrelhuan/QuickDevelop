@@ -3,6 +3,7 @@
 
     <string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
     <string name="title_activity_my_qr_code">MyQrCodeActivity</string>
+    <string name="touch_to_focus">触摸屏幕对焦</string>
 
 
     <string name="year">年</string>

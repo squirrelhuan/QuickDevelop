@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview
+        android:id="@+id/camera_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView
+        android:id="@+id/camera_crop_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/camera_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_dark_cc"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/camera_take"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="17dp"
+                android:layout_margin="30dp"
+                android:background="@drawable/btn_camera"
+                android:src="@drawable/ic_photo_camera_black_24dp" />
+
+        </LinearLayout>
+
+</RelativeLayout>

@@ -16,4 +16,6 @@
     <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
     <color name="result_text">#ff000000</color>
 
+
+    <color name="preview_mock">#aa000000</color>
 </resources>
