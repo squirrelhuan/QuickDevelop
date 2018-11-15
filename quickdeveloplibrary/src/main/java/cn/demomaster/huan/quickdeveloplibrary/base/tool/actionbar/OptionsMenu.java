@@ -135,6 +135,10 @@ public class OptionsMenu {
         this.anchor = anchor;
     }
 
+    public void dismiss() {
+        popupWindow.dismiss();
+    }
+
     public interface OnMenuItemClicked {
         void onItemClick(int position, View view);
     }

@@ -7,7 +7,11 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -21,8 +25,8 @@ import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPre
 
 
 /**
- * Created by gxj on 2018/2/18 11:46.
- * 拍照界面
+ * Created by Squirrel桓
+ * 读取身份证界面
  */
 public class CameraIDCardActivity extends BaseActivityParent implements View.OnClickListener {
     /*
@@ -135,7 +139,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
-
+                getPictureByGallery();
             }
         });
     }
@@ -170,12 +174,6 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                         }
                         if (bitmap != null) {
                             //计算裁剪位置
-                            // float left = ((float) containerView.getLeft() - (float) customCameraPreview.getLeft()) / (float) customCameraPreview.getWidth();
-
-                            // float top = 0;//(float) cropView.getTop() / (float) customCameraPreview.getHeight();
-                            //float right = (float) containerView.getRight() / (float) customCameraPreview.getWidth();
-                            // float bottom = 200;//(float) cropView.getBottom() / (float) customCameraPreview.getHeight();
-
                             float left = camera_crop_view.getPercentage_Left();
                             float top = camera_crop_view.getPercentage_top();
                             float width = camera_crop_view.getPercentage_width();
@@ -209,5 +207,117 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                 }).start();
             }
         });
+    }
+
+
+    private static final int GALLERY_Photo_REQUEST_CODE = 300;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CROP_SMALL_PICTURE = 5;
+    private Uri fileUri;
+
+    /**
+     * 调用图库获取图片
+     */
+    public void getPictureByGallery() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        mContext.startActivityForResult(intent, GALLERY_Photo_REQUEST_CODE);
+    }
+
+    //获取返回结果
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        optionsMenu.dismiss();
+        Log.d(TAG, "onActivityResult: requestCode: " + requestCode + ", resultCode: " + requestCode + ", data: " + data + ",resultCode:" + resultCode);
+        switch (requestCode) {
+            //如果是拍照
+            case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+                Log.d(TAG, "CAPTURE_IMAGE");
+                if (RESULT_OK == resultCode) {
+                    Log.d(TAG, "RESULT_OK");
+                    // Check if the result includes a thumbnail Bitmap
+                    if (data != null) {
+                        // 没有指定特定存储路径的时候
+                        Log.d(TAG, "data is NOT null, file on default position.");
+                        // 指定了存储路径的时候（intent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);）
+                        // Image captured and saved to fileUri specified in the Intent
+                        if (data.hasExtra("data")) {
+//                            startPhotoZoom(data.getData());
+                            setImageToView(data);
+                            //Bitmap thumbnail = data.getParcelableExtra("data");
+                        }
+                    } else {
+                        startPhotoZoom(fileUri);
+                    }
+                }
+                break;
+            //从相册选取
+            case GALLERY_Photo_REQUEST_CODE:
+                Log.d(TAG, "GALLERY");
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        startPhotoZoom(data.getData());
+                    }
+                }
+                break;
+            case CROP_SMALL_PICTURE:
+                if (data != null) {
+                    setImageToView(data);
+                }
+            default:
+                break;
+        }
+    }
+
+    protected void setImageToView(final Intent data) {
+        //showProgress("正在处理图片...", false);
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            final Bitmap bitmap = extras.getParcelable("data");
+            //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
+            //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (bitmap != null) {
+                        FileUtil.saveBitmap(bitmap);
+                        if (!bitmap.isRecycled()) {
+                            bitmap.recycle();
+                        }
+                        //拍照完成，返回对应图片路径
+                        Intent intent = new Intent();
+                        intent.putExtra("result", FileUtil.getImgPath());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                    return;
+                }
+            }).start();
+        }
+    }
+
+    protected void startPhotoZoom(Uri uri) {
+        if (uri == null) {
+            return;
+        }
+        fileUri = uri;
+        Intent intent = new Intent("com.android.camera.action.CROP");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        intent.setDataAndType(uri, "image/*");
+        // ���òü�
+        intent.putExtra("crop", "true");
+        // aspectX aspectY �ǿ�ߵı���
+        intent.putExtra("aspectX", 16);
+        intent.putExtra("aspectY", 10);
+        // outputX outputY �ǲü�ͼƬ���
+        intent.putExtra("outputX", 320);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 }

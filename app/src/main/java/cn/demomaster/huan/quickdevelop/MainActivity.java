@@ -8,9 +8,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
-import cn.demomaster.huan.quickdevelop.sample.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
