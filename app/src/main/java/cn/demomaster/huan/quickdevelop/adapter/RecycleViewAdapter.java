@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdevelop.adapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +28,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     //创建View,被LayoutManager所用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recyclerviewitem_layout,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_option_menu,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

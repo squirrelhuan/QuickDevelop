@@ -14,6 +14,7 @@ public class BaseActivityRoot extends AppCompatActivity {
 
         public Activity mContext;
         public Bundle mBundle = null;
+        public static String TAG = "CGQ";
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,5 +49,6 @@ public class BaseActivityRoot extends AppCompatActivity {
             if (bundle != null) intent.putExtras(bundle);
             startActivity(intent);
         }
+
 
 }

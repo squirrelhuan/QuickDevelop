@@ -10,7 +10,7 @@
     <!--topRightRadius 右上角-->
     <!--radius 是四个角, 设置了这个就不需要设置上面的四个了, PS:它的优先级比较低, 会被其他参数覆盖-->
     <corners
-        android:radius="30dip"/>
+        android:radius="10dip"/>
 
     <!--stroke标签: 边框-->
     <!--width 边框的宽度-->
@@ -19,7 +19,7 @@
     <!--dashGap 虚线中空格的长度-->
     <!--dashWidth 虚线中实线的长度-->
     <stroke
-        android:width="4dip"
+        android:width="1dip"
         android:color="@color/transparent_light_55"
         android:dashGap="0dip"
         android:dashWidth="0dip"/>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/quickdev_option_menu_width"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:gravity="center_horizontal">
+
+    <ListView
+        android:id="@+id/lv_options"
+        android:layout_width="@dimen/quickdev_option_menu_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listview_option_menu">
+
+    </ListView>
+
+
+</LinearLayout>
