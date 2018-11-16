@@ -60,6 +60,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
+        actionBarLayout.setStateBarColorAuto(true);
         actionBarLayout.setTitle("身份证拍照");
         initOptionsMenu();
         actionBarLayout.setRightOnClickListener(new View.OnClickListener() {
@@ -68,6 +69,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                 optionsMenu.show();
             }
         });
+        actionBarLayout.getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
@@ -177,7 +179,6 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                             setResult(result, intent);
                             finish();
                         }
-
                         return;
                     }
                 }).start();
@@ -264,7 +265,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                         }
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
-                        intent.putExtra("result", FileUtil.getImgPath());
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, FileUtil.getImgPath());
                         setResult(result, intent);
                         finish();
                     }
