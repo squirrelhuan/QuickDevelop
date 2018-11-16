@@ -23,6 +23,9 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
 
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
+
 
 /**
  * Created by Squirrel桓
@@ -40,33 +43,24 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
      */
     public final static int TYPE_ID_CARD_BACK = 2;
 
-    public final static int REQUEST_CODE = 0X13;
-
     private CustomCameraPreview customCameraPreview;
     private CameraCropView camera_crop_view;
-    //private View containerView;
-    //private ImageView cropView;
     private View optionView;
 
     private int type;
-
-    /**
-     * 跳转到拍照页面
-     */
-    public static void navToCamera(Context context, int type) {
-        Intent intent = new Intent(context, CameraIDCardActivity.class);
-        intent.putExtra("type", type);
-        ((Activity) context).startActivityForResult(intent, REQUEST_CODE);
-    }
+    private int result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getIntent().getIntExtra("type", 0);
+        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
+
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
+        actionBarLayout.setStateBarColorAuto(true);
         actionBarLayout.setTitle("身份证拍照");
         initOptionsMenu();
         actionBarLayout.setRightOnClickListener(new View.OnClickListener() {
@@ -75,11 +69,10 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                 optionsMenu.show();
             }
         });
+        actionBarLayout.getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
-        //containerView = findViewById(R.id.camera_crop_container);
-        //cropView = (ImageView) findViewById(R.id.camera_crop);
         optionView = findViewById(R.id.camera_option);
 
         //获取屏幕最小边，设置为cameraPreview较窄的一边
@@ -102,11 +95,9 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         switch (type) {
             case TYPE_ID_CARD_FRONT:
                 camera_crop_view.setTip("请将身份证（正面）放在方框内");
-                //cropView.setImageResource(R.mipmap.camera_front);
                 break;
             case TYPE_ID_CARD_BACK:
                 camera_crop_view.setTip("请将身份证（反面）放在方框内");
-                //cropView.setImageResource(R.mipmap.camera_back);
                 break;
         }
 
@@ -116,14 +107,12 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                 customCameraPreview.focus();
             }
         });
-        //findViewById(R.id.camera_close).setOnClickListener(this);
         findViewById(R.id.camera_take).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePhoto();
             }
         });
-
     }
 
     private void initOptionsMenu() {
@@ -146,16 +135,6 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
 
     @Override
     public void onClick(View v) {
-       /* switch (v.getId()) {
-            case R.id.camera_surface:
-                customCameraPreview.focus();
-                break;
-           *//* case R.id.camera_close:
-                finish();
-                break;*//*
-            case R.id.camera_take:
-
-        }*/
     }
 
     private void takePhoto() {
@@ -194,14 +173,12 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                             if (!resBitmap.isRecycled()) {
                                 resBitmap.recycle();
                             }
-
                             //拍照完成，返回对应图片路径
                             Intent intent = new Intent();
-                            intent.putExtra("result", FileUtil.getImgPath());
-                            setResult(RESULT_OK, intent);
+                            intent.putExtra(PHOTOHELPER_RESULT_PATH, FileUtil.getImgPath());
+                            setResult(result, intent);
                             finish();
                         }
-
                         return;
                     }
                 }).start();
@@ -288,8 +265,8 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                         }
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
-                        intent.putExtra("result", FileUtil.getImgPath());
-                        setResult(RESULT_OK, intent);
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, FileUtil.getImgPath());
+                        setResult(result, intent);
                         finish();
                     }
                     return;
