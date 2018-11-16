@@ -76,29 +76,6 @@ public class IDCardActivity extends BaseActivityParent {
             return imgBase64;
         }
     }
-/*
-    *//**
-     * 拍摄证件照片
-     *
-     * @param type 拍摄证件类型
-     *//*
-    private void takePhoto(final int type) {
-        String[] permissions={Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
-        PermissionManager.chekPermission(mContext, permissions, new PermissionManager.OnCheckPermissionListener() {
-            @Override
-            public void onPassed() {
-                CameraIDCardActivity.navToCamera(mContext, type);
-                Intent intent = new Intent(context, CameraIDCardActivity.class);
-                intent.putExtra("type", type);
-                ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE);
-            }
-
-            @Override
-            public void onNoPassed() {
-
-            }
-        });
-    }*/
 
     /**
      * 身份证正面
@@ -110,7 +87,6 @@ public class IDCardActivity extends BaseActivityParent {
                 if (!TextUtils.isEmpty(path)) {
                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
-
                 String imgBase64 = imageToBase64(path);
                 Log.i("CGQ",imgBase64);
             }
@@ -125,13 +101,8 @@ public class IDCardActivity extends BaseActivityParent {
      * 身份证反面
      */
     public void backIdCard(View view) {
-
-                SelectPhotoPopupWindow();
-
+        SelectPhotoPopupWindow();
     }
-
-
-
 
     //选择图片dialog
     private PopupWindow pop = null;
