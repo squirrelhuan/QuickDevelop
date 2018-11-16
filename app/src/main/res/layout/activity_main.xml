@@ -20,6 +20,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btn_pick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="时间日期选择器"/>
+
+    <Button
     android:id="@+id/btn_scan"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

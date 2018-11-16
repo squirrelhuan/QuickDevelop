@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
+import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_ac_03 = findViewById(R.id.btn_ac_03);
         btn_ac_03.setOnClickListener(this);
 
+        findViewById(R.id.btn_pick).setOnClickListener(this);
         findViewById(R.id.btn_color_black).setOnClickListener(this);
         findViewById(R.id.btn_color_red).setOnClickListener(this);
         findViewById(R.id.btn_color_gray).setOnClickListener(this);
@@ -74,10 +76,15 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
+            case R.id.btn_pick:
+                intent = new Intent(MainActivity.this, PickActivity.class);
+                startActivityForResult(intent, 1);
+                break;
             case R.id.btn_scan:
                 //Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                Intent intent = new Intent(MainActivity.this, IDCardActivity.class);
+                intent = new Intent(MainActivity.this, IDCardActivity.class);
 
                 startActivityForResult(intent, 1);
                 break;

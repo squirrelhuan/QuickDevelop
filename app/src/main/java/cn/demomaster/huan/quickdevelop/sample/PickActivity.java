@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.bruce.pickerview.popwindow.TimePickerPopWin;
-
 import java.util.ArrayList;
 
 import cn.demomaster.huan.quickdevelop.MainActivity;
@@ -16,6 +14,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
 
 public class PickActivity extends BaseActivityParent {
 
@@ -64,8 +63,8 @@ public class PickActivity extends BaseActivityParent {
                         .textCancel("CANCEL")
                         .btnTextSize(16)
                         .viewTextSize(25)
-                        .colorCancel(Color.parseColor("#999999"))
-                        .colorConfirm(Color.parseColor("#009900"))
+                        .colorCancel(Color.parseColor("#11DDAF"))
+                        .colorConfirm(Color.parseColor("#11DDAF"))
                         .build();
                 timePickerPopWin.showPopWin(mContext);
             }
