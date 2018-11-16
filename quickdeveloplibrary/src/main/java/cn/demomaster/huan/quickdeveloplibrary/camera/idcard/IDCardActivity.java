@@ -40,10 +40,12 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
 
 
 public class IDCardActivity extends BaseActivityParent {
@@ -55,25 +57,6 @@ public class IDCardActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
         imageView = (ImageView) findViewById(R.id.main_image);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (requestCode == CameraIDCardActivity.REQUEST_CODE) {
-            //获取文件路径，显示图片
-            if (data != null) {
-                String path = data.getStringExtra("result");
-                if (!TextUtils.isEmpty(path)) {
-                    imageView.setImageBitmap(BitmapFactory.decodeFile(path));
-                }
-
-                String imgBase64 = imageToBase64(path);
-                Log.i("CGQ",imgBase64);
-            }
-        }
     }
 
     private String imageToBase64(String path) {
@@ -93,41 +76,21 @@ public class IDCardActivity extends BaseActivityParent {
             return imgBase64;
         }
     }
-
-    /**
+/*
+    *//**
      * 拍摄证件照片
      *
      * @param type 拍摄证件类型
-     */
-    private void takePhoto(int type) {
-        if (ActivityCompat.checkSelfPermission(IDCardActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(IDCardActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0x12);
-            return;
-        }
-        CameraIDCardActivity.navToCamera(this, type);
-    }
-
-    /**
-     * 身份证正面
-     */
-    public void frontIdCard(View view) {
-        takePhoto(CameraIDCardActivity.TYPE_ID_CARD_FRONT);
-    }
-
-    // 要申请的权限
-    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-
-    /**
-     * 身份证反面
-     */
-    public void backIdCard(View view) {
+     *//*
+    private void takePhoto(final int type) {
+        String[] permissions={Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
         PermissionManager.chekPermission(mContext, permissions, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
-                SelectPhotoPopupWindow();
+                CameraIDCardActivity.navToCamera(mContext, type);
+                Intent intent = new Intent(context, CameraIDCardActivity.class);
+                intent.putExtra("type", type);
+                ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE);
             }
 
             @Override
@@ -135,12 +98,37 @@ public class IDCardActivity extends BaseActivityParent {
 
             }
         });
+    }*/
+
+    /**
+     * 身份证正面
+     */
+    public void frontIdCard(View view) {
+        photoHelper.takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
+            @Override
+            public void onSuccess(String path) {
+                if (!TextUtils.isEmpty(path)) {
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+                }
+
+                String imgBase64 = imageToBase64(path);
+                Log.i("CGQ",imgBase64);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
+    /**
+     * 身份证反面
+     */
+    public void backIdCard(View view) {
 
+                SelectPhotoPopupWindow();
 
-
-
-
+    }
 
 
 
@@ -198,7 +186,6 @@ public class IDCardActivity extends BaseActivityParent {
     public void camera() {
         Intent intent = null;
         // 判断存储卡是否可以用，可用进行存储
-
 //        if (StorageUtils.hasSdcard()) {
         //设定拍照存放到自己指定的目录,可以先建好
 //            File file = new File(savePath);
@@ -257,9 +244,7 @@ public class IDCardActivity extends BaseActivityParent {
 
         try {
             mediaStorageDir = new File(FilePath.APP_PATH_PICTURE);
-
             Log.d(TAG, "Successfully created mediaStorageDir: " + mediaStorageDir);
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG, "Error in Creating mediaStorageDir: " + mediaStorageDir);

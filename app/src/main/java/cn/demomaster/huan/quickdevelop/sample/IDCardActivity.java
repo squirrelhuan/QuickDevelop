@@ -1,12 +1,6 @@
 package cn.demomaster.huan.quickdevelop.sample;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -22,6 +16,7 @@ import java.io.IOException;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 
 public class IDCardActivity extends BaseActivityParent {
 
@@ -32,25 +27,6 @@ public class IDCardActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
         imageView = (ImageView) findViewById(R.id.main_image);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (requestCode == CameraIDCardActivity.REQUEST_CODE) {
-            //获取文件路径，显示图片
-            if (data != null) {
-                String path = data.getStringExtra("result");
-                if (!TextUtils.isEmpty(path)) {
-                    imageView.setImageBitmap(BitmapFactory.decodeFile(path));
-                }
-
-                String imgBase64 = imageToBase64(path);
-                Log.i("CGQ",imgBase64);
-            }
-        }
     }
 
     private String imageToBase64(String path) {
@@ -73,18 +49,25 @@ public class IDCardActivity extends BaseActivityParent {
 
     /**
      * 拍摄证件照片
-     *
      * @param type 拍摄证件类型
      */
-    private void takePhoto(int type) {
-        if (ActivityCompat.checkSelfPermission(IDCardActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(IDCardActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0x12);
-            return;
-        }
-        CameraIDCardActivity.navToCamera(this, type);
+    private void takePhoto(final int type) {
+        photoHelper.takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
+            @Override
+            public void onSuccess(String path) {
+                if (!TextUtils.isEmpty(path)) {
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+                }
+
+                String imgBase64 = imageToBase64(path);
+                Log.i("CGQ",imgBase64);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
 
     /**
