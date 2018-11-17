@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
@@ -128,7 +129,18 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
-                getPictureByGallery();
+                photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                    @Override
+                    public void onSuccess(Intent data, String path) {
+                        setImageToView(data);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+                });
+
             }
         });
     }
@@ -192,15 +204,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
     private static final int CROP_SMALL_PICTURE = 5;
     private Uri fileUri;
 
-    /**
-     * 调用图库获取图片
-     */
-    public void getPictureByGallery() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        mContext.startActivityForResult(intent, GALLERY_Photo_REQUEST_CODE);
-    }
+
 
     //获取返回结果
     @Override
@@ -226,7 +230,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                             //Bitmap thumbnail = data.getParcelableExtra("data");
                         }
                     } else {
-                        startPhotoZoom(fileUri);
+                        //startPhotoZoom(fileUri);
                     }
                 }
                 break;
@@ -235,13 +239,13 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                 Log.d(TAG, "GALLERY");
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
-                        startPhotoZoom(data.getData());
+                        //startPhotoZoom(data.getData());
                     }
                 }
                 break;
             case CROP_SMALL_PICTURE:
                 if (data != null) {
-                    setImageToView(data);
+                   // setImageToView(data);
                 }
             default:
                 break;
@@ -274,7 +278,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
             }).start();
         }
     }
-
+/*
     protected void startPhotoZoom(Uri uri) {
         if (uri == null) {
             return;
@@ -296,5 +300,5 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         intent.putExtra("outputY", 200);
         intent.putExtra("return-data", true);
         startActivityForResult(intent, CROP_SMALL_PICTURE);
-    }
+    }*/
 }

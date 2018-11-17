@@ -60,9 +60,27 @@ public class BaseActivityRoot extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case PhotoHelper.PHOTOHELPER_REQUEST_CODE://图片采集类
+
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE://扫描
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SCAN_QRCODE, data);
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_CAMERA://自定义拍照
                 photoHelper.onActivityResult(requestCode, resultCode, data);
                 break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO://拍照
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_TAKE_PHOTO, data);
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_GALLERY://相册选取
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SELECT_PHOTO_FROM_GALLERY, data);//偷梁换柱
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_PHOTO_CROP://图片截取
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_PHOTO_CROP, data);//偷梁换柱
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP://相册并截取
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SELECT_PHOTO_FROM_GALLERY_AND_CROP, data);//偷梁换柱
+                break;
+
+
         }
 
 

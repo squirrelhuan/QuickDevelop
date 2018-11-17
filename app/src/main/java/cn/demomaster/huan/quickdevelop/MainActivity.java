@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
@@ -19,6 +21,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     Button btn_scan;
     Button btn_ac_01, btn_ac_02, btn_ac_03;
+    TextView tv_test;
     LinearLayout ll_layout;
 
     @Override
@@ -37,7 +40,9 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
         btn_ac_03 = findViewById(R.id.btn_ac_03);
         btn_ac_03.setOnClickListener(this);
+        tv_test = findViewById(R.id.tv_test);
 
+        findViewById(R.id.btn_photo).setOnClickListener(this);
         findViewById(R.id.btn_pick).setOnClickListener(this);
         findViewById(R.id.btn_color_black).setOnClickListener(this);
         findViewById(R.id.btn_color_red).setOnClickListener(this);
@@ -78,6 +83,21 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.btn_photo:
+                photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
+                    @Override
+                    public void onSuccess(Intent data, String path) {
+                        if (data != null) {
+                            tv_test.setText("扫描结果为：" + path);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+                });
+                break;
             case R.id.btn_pick:
                 intent = new Intent(MainActivity.this, PickActivity.class);
                 startActivityForResult(intent, 1);
@@ -85,7 +105,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             case R.id.btn_scan:
                 //Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                 intent = new Intent(MainActivity.this, IDCardActivity.class);
-
                 startActivityForResult(intent, 1);
                 break;
 

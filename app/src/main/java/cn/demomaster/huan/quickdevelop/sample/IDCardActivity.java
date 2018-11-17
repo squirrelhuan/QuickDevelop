@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.sample;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -54,7 +55,7 @@ public class IDCardActivity extends BaseActivityParent {
     private void takePhoto(final int type) {
         photoHelper.takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
             @Override
-            public void onSuccess(String path) {
+            public void onSuccess(Intent data, String path) {
                 if (!TextUtils.isEmpty(path)) {
                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
