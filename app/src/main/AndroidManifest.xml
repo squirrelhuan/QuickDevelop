@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera2" />
     <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
@@ -27,13 +28,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".sample.RegisterActivity" />
-        <!--<activity android:name=".sample.CaptureActivity" />-->
+        <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".sample.RecycleActivity" />
         <activity android:name=".sample.PickActivity" />
         <activity android:name=".sample.IDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
-        <!--android:screenOrientation="landscape"-->
+        <!-- android:screenOrientation="landscape" -->
+        <activity android:name=".sample.CsqliteActivity"></activity>
     </application>
 
 </manifest>

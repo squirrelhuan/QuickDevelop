@@ -2,10 +2,12 @@ package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.app.Activity;
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
 public class ApplicationParent extends Application {
@@ -20,6 +22,16 @@ public class ApplicationParent extends Application {
         instance = this;
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
+        initDB();
+
+    }
+
+    public CBHelper dbHelper;
+    public SQLiteDatabase db;
+    private void initDB() {
+        dbHelper = new CBHelper(this,"yidao.db",null,1);
+        //得到一个可读的SQLiteDatabase对象
+        db =dbHelper.getReadableDatabase();
     }
 
     //添加 <功能详细描述>

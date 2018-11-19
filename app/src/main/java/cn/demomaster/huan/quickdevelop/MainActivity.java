@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
@@ -19,7 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
 
-    Button btn_scan;
+    Button btn_scan,btn_db;
     Button btn_ac_01, btn_ac_02, btn_ac_03;
     TextView tv_test;
     LinearLayout ll_layout;
@@ -28,6 +29,9 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
+
+        btn_db = findViewById(R.id.btn_db);
+        btn_db.setOnClickListener(this);
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
 
@@ -83,7 +87,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.btn_photo:
+            case R.id.btn_db:
+                intent = new Intent(MainActivity.this, CsqliteActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_pick:
                 photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
@@ -98,7 +106,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                     }
                 });
                 break;
-            case R.id.btn_pick:
+            case R.id.btn_photo:
                 intent = new Intent(MainActivity.this, PickActivity.class);
                 startActivityForResult(intent, 1);
                 break;
