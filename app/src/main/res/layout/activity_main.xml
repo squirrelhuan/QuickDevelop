@@ -10,6 +10,10 @@
     android:id="@+id/ll_layout"
     tools:context=".MainActivity">
 
+    <cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
     <TextView
         android:id="@+id/tv_test"
         android:layout_width="wrap_content"

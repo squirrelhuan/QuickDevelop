@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 
@@ -24,12 +25,16 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     Button btn_ac_01, btn_ac_02, btn_ac_03;
     TextView tv_test;
     LinearLayout ll_layout;
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
 
+        ratingBar = findViewById(R.id.ratingBar);
+        ratingBar.setColor(Color.RED,Color.LTGRAY);
+        ratingBar.setActivateCount(3);
         btn_db = findViewById(R.id.btn_db);
         btn_db.setOnClickListener(this);
         btn_scan = findViewById(R.id.btn_scan);
