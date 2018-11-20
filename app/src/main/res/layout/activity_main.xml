@@ -12,8 +12,8 @@
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar
         android:id="@+id/ratingBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_width="150dp"
+        android:layout_height="30dp" />
     <TextView
         android:id="@+id/tv_test"
         android:layout_width="wrap_content"
