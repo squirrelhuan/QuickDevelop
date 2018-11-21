@@ -86,12 +86,12 @@ public class OptionsMenu {
     }
 
     public void show() {
-        if(anchor!=null){
+        if (anchor != null) {
            /* WindowManager.LayoutParams lp = ((Activity)context).getWindow().getAttributes();
             lp.alpha = 0.4f;
             ((Activity)context).getWindow().setAttributes(lp);*/
-           //右侧的算法
-            popupWindow.showAsDropDown(anchor,-context.getResources().getDimensionPixelOffset(R.dimen.quickdev_option_menu_width)+anchor.getWidth(),0);
+            //右侧的算法
+            popupWindow.showAsDropDown(anchor, -context.getResources().getDimensionPixelOffset(R.dimen.quickdev_option_menu_width) + anchor.getWidth(), 0);
 
         }
 
@@ -172,7 +172,7 @@ public class OptionsMenu {
     }
 
 
-    public class MyPopupWindow extends PopupWindow{
+    public class MyPopupWindow extends PopupWindow {
         public MyPopupWindow(Context context, WindowManager.LayoutParams lp) {
             super(context);
             this.setOnDismissListener(new OnDismissListener() {

@@ -85,6 +85,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     }
 
     private WindowManager.LayoutParams mWindowParams;
+
     private void init() {
         mWindowParams = new WindowManager.LayoutParams();
         mWindowParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
@@ -112,13 +113,13 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     }
 
     private void initView() {
-        this.contentView = LayoutInflater.from(this.mContext).inflate(R.layout.layout_time_picker, (ViewGroup)null);
-        this.cancelBtn = (Button)this.contentView.findViewById(R.id.btn_cancel);
+        this.contentView = LayoutInflater.from(this.mContext).inflate(R.layout.layout_time_picker, (ViewGroup) null);
+        this.cancelBtn = (Button) this.contentView.findViewById(R.id.btn_cancel);
         this.cancelBtn.setTextColor(this.colorCancel);
-        this.cancelBtn.setTextSize((float)this.btnTextsize);
-        this.confirmBtn = (Button)this.contentView.findViewById(R.id.btn_confirm);
+        this.cancelBtn.setTextSize((float) this.btnTextsize);
+        this.confirmBtn = (Button) this.contentView.findViewById(R.id.btn_confirm);
         this.confirmBtn.setTextColor(this.colorConfirm);
-        this.confirmBtn.setTextSize((float)this.btnTextsize);
+        this.confirmBtn.setTextSize((float) this.btnTextsize);
         /*this.tv_sign_year = this.contentView.findViewById(R.id.tv_sign_year);
         this.tv_sign_year.setTextColor(this.colorSignText);
 
@@ -127,23 +128,23 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
 
         this.tv_sign_day = this.contentView.findViewById(R.id.tv_sign_day);
         this.tv_sign_day.setTextColor(this.colorSignText);*/
-        this.hourLoopView = (LoopView)this.contentView.findViewById(R.id.picker_hour);
-        this.minuteLoopView = (LoopView)this.contentView.findViewById(R.id.picker_minute);
-        this.meridianLoopView = (LoopView)this.contentView.findViewById(R.id.picker_meridian);
+        this.hourLoopView = (LoopView) this.contentView.findViewById(R.id.picker_hour);
+        this.minuteLoopView = (LoopView) this.contentView.findViewById(R.id.picker_minute);
+        this.meridianLoopView = (LoopView) this.contentView.findViewById(R.id.picker_meridian);
         this.pickerContainerV = this.contentView.findViewById(R.id.container_picker);
-        this.hourLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
+        this.hourLoopView.setTextColor(topBottomTextColor, centerTextColor, centerLineColor);
         this.hourLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.hourPos = item;
             }
         });
-        this.minuteLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
+        this.minuteLoopView.setTextColor(topBottomTextColor, centerTextColor, centerLineColor);
         this.minuteLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.minutePos = item;
             }
         });
-        this.meridianLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
+        this.meridianLoopView.setTextColor(topBottomTextColor, centerTextColor, centerLineColor);
         this.meridianLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.meridianPos = item;
@@ -176,11 +177,11 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         this.meridianPos = Calendar.getInstance().get(9);
 
         int j;
-        for(j = 1; j <= 12; ++j) {
+        for (j = 1; j <= 12; ++j) {
             this.hourList.add(format2LenStr(j));
         }
 
-        for(j = 0; j < 60; ++j) {
+        for (j = 0; j < 60; ++j) {
             this.minList.add(format2LenStr(j));
         }
 
@@ -198,7 +199,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         if (v != this.contentView && v != this.cancelBtn) {
             if (v == this.confirmBtn) {
                 if (null != this.mListener) {
-                    String amPm = (String)this.meridianList.get(this.meridianPos);
+                    String amPm = (String) this.meridianList.get(this.meridianPos);
                     StringBuffer sb = new StringBuffer();
                     sb.append(String.valueOf(this.hourList.get(this.hourPos)));
                     sb.append(":");
@@ -255,8 +256,8 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     public static class Builder {
         private Context context;
         private TimePickerPopWin.OnTimePickListener listener;
-        private String textCancel ;
-        private String textConfirm ;
+        private String textCancel;
+        private String textConfirm;
         private String text_sign_year = "时";
         private String text_sign_month = "分";
         private String text_sign_day = "秒";
@@ -265,8 +266,8 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
         private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
         private int colorCancel;
-        private int colorConfirm ;
-        private int colorText ;
+        private int colorConfirm;
+        private int colorText;
         private int btnTextSize = 16;
         private int viewTextSize = 25;
 
@@ -274,7 +275,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
             this.context = context;
             this.listener = listener;
             textCancel = context.getResources().getString(R.string.Cancel);
-            textConfirm =  context.getResources().getString(R.string.Confirm);
+            textConfirm = context.getResources().getString(R.string.Confirm);
             colorCancel = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#999999");
             colorConfirm = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#303F9F");
             colorText = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#f60");
@@ -299,10 +300,12 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
             this.colorConfirm = colorConfirm;
             return this;
         }
+
         public TimePickerPopWin.Builder colorSignText(int colorSignText) {
             this.colorSignText = colorSignText;
             return this;
         }
+
         public TimePickerPopWin.Builder colorContentText(int topBottomTextColor, int centerTextColor, int centerLineColor) {
             this.topBottomTextColor = topBottomTextColor;
             this.centerTextColor = centerTextColor;
@@ -310,7 +313,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
             return this;
         }
 
-        public  TimePickerPopWin.Builder setSignText(String year,String month,String day) {
+        public TimePickerPopWin.Builder setSignText(String year, String month, String day) {
             this.text_sign_year = year;
             this.text_sign_month = month;
             this.text_sign_day = day;

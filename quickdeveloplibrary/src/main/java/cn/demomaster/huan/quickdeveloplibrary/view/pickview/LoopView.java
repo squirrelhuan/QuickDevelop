@@ -23,7 +23,6 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -73,7 +72,7 @@ public class LoopView extends View {
     public Handler mHandler;
 
     public LoopView(Context context) {
-        this(context, (AttributeSet)null);
+        this(context, (AttributeSet) null);
     }
 
     public LoopView(Context context, AttributeSet attrs) {
@@ -143,7 +142,7 @@ public class LoopView extends View {
         this.mCenterTextPaint = new Paint();
         this.mCenterLinePaint = new Paint();
         if (VERSION.SDK_INT >= 11) {
-            this.setLayerType(1, (Paint)null);
+            this.setLayerType(1, (Paint) null);
         }
 
         this.mGestureDetector = new GestureDetector(context, this.mOnGestureListener);
@@ -157,20 +156,20 @@ public class LoopView extends View {
             this.mTopBottomTextPaint.setColor(this.mTopBottomTextColor);
             this.mTopBottomTextPaint.setAntiAlias(true);
             this.mTopBottomTextPaint.setTypeface(Typeface.MONOSPACE);
-            this.mTopBottomTextPaint.setTextSize((float)this.mTextSize*.8f);
+            this.mTopBottomTextPaint.setTextSize((float) this.mTextSize * .8f);
             this.mCenterTextPaint.setColor(this.mCenterTextColor);
             this.mCenterTextPaint.setAntiAlias(true);
             this.mCenterTextPaint.setTextScaleX(1.05F);
             this.mCenterTextPaint.setTypeface(Typeface.MONOSPACE);
-            this.mCenterTextPaint.setTextSize((float)this.mTextSize);
+            this.mCenterTextPaint.setTextSize((float) this.mTextSize);
             this.mCenterLinePaint.setColor(this.mCenterLineColor);
             this.mCenterLinePaint.setAntiAlias(true);
             this.mCenterLinePaint.setTypeface(Typeface.MONOSPACE);
-            this.mCenterLinePaint.setTextSize((float)this.mTextSize);
+            this.mCenterLinePaint.setTextSize((float) this.mTextSize);
             this.measureTextWidthHeight();
-            int mHalfCircumference = (int)((float)this.mMaxTextHeight * this.lineSpacingMultiplier * (float)(this.mDrawItemsCount - 1));
-            this.mCircularDiameter = (int)((double)(mHalfCircumference * 2) / 3.141592653589793D);
-            this.mCircularRadius = (int)((double)mHalfCircumference / 3.141592653589793D);
+            int mHalfCircumference = (int) ((float) this.mMaxTextHeight * this.lineSpacingMultiplier * (float) (this.mDrawItemsCount - 1));
+            this.mCircularDiameter = (int) ((double) (mHalfCircumference * 2) / 3.141592653589793D);
+            this.mCircularRadius = (int) ((double) mHalfCircumference / 3.141592653589793D);
             if (this.mInitPosition == -1) {
                 if (this.mCanLoop) {
                     this.mInitPosition = (this.mDataList.size() + 1) / 2;
@@ -187,8 +186,8 @@ public class LoopView extends View {
     private void measureTextWidthHeight() {
         Rect rect = new Rect();
 
-        for(int i = 0; i < this.mDataList.size(); ++i) {
-            String s1 = (String)this.mDataList.get(i);
+        for (int i = 0; i < this.mDataList.size(); ++i) {
+            String s1 = (String) this.mDataList.get(i);
             this.mCenterTextPaint.getTextBounds(s1, 0, s1.length(), rect);
             int textWidth = rect.width();
             if (textWidth > this.mMaxTextWidth) {
@@ -209,11 +208,11 @@ public class LoopView extends View {
         this.mWidgetHeight = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         Log.i(TAG, "onMeasure -> heightMode:" + heightMode);
-        this.mItemHeight = this.lineSpacingMultiplier * (float)this.mMaxTextHeight;
+        this.mItemHeight = this.lineSpacingMultiplier * (float) this.mMaxTextHeight;
         this.mPaddingLeftRight = (this.mWidgetWidth - this.mMaxTextWidth) / 2;
         this.mPaddingTopBottom = (this.mWidgetHeight - this.mCircularDiameter) / 2;
-        this.mTopLineY = (int)(((float)this.mCircularDiameter - this.mItemHeight) / 2.0F) + this.mPaddingTopBottom;
-        this.mBottomLineY = (int)(((float)this.mCircularDiameter + this.mItemHeight) / 2.0F) + this.mPaddingTopBottom;
+        this.mTopLineY = (int) (((float) this.mCircularDiameter - this.mItemHeight) / 2.0F) + this.mPaddingTopBottom;
+        this.mBottomLineY = (int) (((float) this.mCircularDiameter + this.mItemHeight) / 2.0F) + this.mPaddingTopBottom;
     }
 
     protected void onDraw(Canvas canvas) {
@@ -221,7 +220,7 @@ public class LoopView extends View {
             super.onDraw(canvas);
         } else {
             super.onDraw(canvas);
-            int mChangingItem = (int)((float)this.mTotalScrollY / this.mItemHeight);
+            int mChangingItem = (int) ((float) this.mTotalScrollY / this.mItemHeight);
             this.mCurrentIndex = this.mInitPosition + mChangingItem % this.mDataList.size();
             if (!this.mCanLoop) {
                 if (this.mCurrentIndex < 0) {
@@ -245,7 +244,7 @@ public class LoopView extends View {
 
             String[] itemCount;
             int templateItem;
-            for(itemCount = new String[this.mDrawItemsCount]; count < this.mDrawItemsCount; ++count) {
+            for (itemCount = new String[this.mDrawItemsCount]; count < this.mDrawItemsCount; ++count) {
                 templateItem = this.mCurrentIndex - (this.mDrawItemsCount / 2 - count);
                 if (this.mCanLoop) {
                     if (templateItem < 0) {
@@ -256,13 +255,13 @@ public class LoopView extends View {
                         templateItem -= this.mDataList.size();
                     }
 
-                    itemCount[count] = (String)this.mDataList.get(templateItem);
+                    itemCount[count] = (String) this.mDataList.get(templateItem);
                 } else if (templateItem < 0) {
                     itemCount[count] = "";
                 } else if (templateItem > this.mDataList.size() - 1) {
                     itemCount[count] = "";
                 } else {
-                    itemCount[count] = (String)this.mDataList.get(templateItem);
+                    itemCount[count] = (String) this.mDataList.get(templateItem);
                 }
             }
 //去掉标记线
@@ -270,34 +269,34 @@ public class LoopView extends View {
             canvas.drawLine(0.0F, (float)this.mBottomLineY, (float)this.mWidgetWidth, (float)this.mBottomLineY, this.mCenterLinePaint);*/
             count = 0;
 
-            for(templateItem = (int)((float)this.mTotalScrollY % this.mItemHeight); count < this.mDrawItemsCount; ++count) {
+            for (templateItem = (int) ((float) this.mTotalScrollY % this.mItemHeight); count < this.mDrawItemsCount; ++count) {
                 canvas.save();
-                float itemHeight = (float)this.mMaxTextHeight * this.lineSpacingMultiplier;
-                double radian = (double)((itemHeight * (float)count - (float)templateItem) / (float)this.mCircularRadius);
-                float angle = (float)(radian * 180.0D / 3.141592653589793D);
+                float itemHeight = (float) this.mMaxTextHeight * this.lineSpacingMultiplier;
+                double radian = (double) ((itemHeight * (float) count - (float) templateItem) / (float) this.mCircularRadius);
+                float angle = (float) (radian * 180.0D / 3.141592653589793D);
                 if (angle < 180.0F && angle > 0.0F) {
-                    int translateY = (int)((double)this.mCircularRadius - Math.cos(radian) * (double)this.mCircularRadius - Math.sin(radian) * (double)this.mMaxTextHeight / 2.0D) + this.mPaddingTopBottom;
-                    canvas.translate(0.0F, (float)translateY);
+                    int translateY = (int) ((double) this.mCircularRadius - Math.cos(radian) * (double) this.mCircularRadius - Math.sin(radian) * (double) this.mMaxTextHeight / 2.0D) + this.mPaddingTopBottom;
+                    canvas.translate(0.0F, (float) translateY);
                     double f = Math.sin(radian);
-                    canvas.scale(1.0F, (float)f);
-                    mTopBottomTextPaint.setAlpha((int)(f*250));
+                    canvas.scale(1.0F, (float) f);
+                    mTopBottomTextPaint.setAlpha((int) (f * 250));
                     if (translateY <= this.mTopLineY) {
                         canvas.save();
                         canvas.clipRect(0, 0, this.mWidgetWidth, this.mTopLineY - translateY);
 
                         // 文字宽
                         float textWidth1 = mTopBottomTextPaint.measureText(itemCount[count]);
-                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth1/2, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+                        canvas.drawText(itemCount[count], (float) this.getWidth() / 2 - textWidth1 / 2, (float) this.mMaxTextHeight, this.mTopBottomTextPaint);
                         //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
                         canvas.restore();
                         canvas.save();
-                        canvas.clipRect(0, this.mTopLineY - translateY, this.mWidgetWidth, (int)itemHeight);
+                        canvas.clipRect(0, this.mTopLineY - translateY, this.mWidgetWidth, (int) itemHeight);
 
                         // 文字宽
                         float textWidth = mCenterTextPaint.measureText(itemCount[count]);
                         // 文字baseline在y轴方向的位置
                         float baseLineY = Math.abs(mCenterTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
-                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+                        canvas.drawText(itemCount[count], (float) this.getWidth() / 2 - textWidth / 2, (float) this.mMaxTextHeight, this.mCenterTextPaint);
                         //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         canvas.restore();
                     } else if (this.mMaxTextHeight + translateY >= this.mBottomLineY) {
@@ -305,31 +304,30 @@ public class LoopView extends View {
                         canvas.clipRect(0, 0, this.mWidgetWidth, this.mBottomLineY - translateY);
 
 
-
                         // 文字宽
                         float textWidth1 = mCenterTextPaint.measureText(itemCount[count]);
 
-                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth1/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+                        canvas.drawText(itemCount[count], (float) this.getWidth() / 2 - textWidth1 / 2, (float) this.mMaxTextHeight, this.mCenterTextPaint);
                         canvas.restore();
                         canvas.save();
-                        canvas.clipRect(0, this.mBottomLineY - translateY, this.mWidgetWidth, (int)itemHeight);
+                        canvas.clipRect(0, this.mBottomLineY - translateY, this.mWidgetWidth, (int) itemHeight);
 
 
                         // 文字宽
                         float textWidth = mTopBottomTextPaint.measureText(itemCount[count]);
                         // 文字baseline在y轴方向的位置
                         float baseLineY = Math.abs(mTopBottomTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
-                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
+                        canvas.drawText(itemCount[count], (float) this.getWidth() / 2 - textWidth / 2, (float) this.mMaxTextHeight, this.mTopBottomTextPaint);
                         //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mTopBottomTextPaint);
                         canvas.restore();
                     } else if (translateY >= this.mTopLineY && this.mMaxTextHeight + translateY <= this.mBottomLineY) {
-                        canvas.clipRect(0, 0, this.mWidgetWidth, (int)itemHeight);
+                        canvas.clipRect(0, 0, this.mWidgetWidth, (int) itemHeight);
 
                         // 文字宽
                         float textWidth = mCenterTextPaint.measureText(itemCount[count]);
                         // 文字baseline在y轴方向的位置
                         float baseLineY = Math.abs(mCenterTextPaint.ascent() + mTopBottomTextPaint.descent()) / 2;
-                        canvas.drawText(itemCount[count], (float)this.getWidth()/2-textWidth/2, (float)this.mMaxTextHeight, this.mCenterTextPaint);
+                        canvas.drawText(itemCount[count], (float) this.getWidth() / 2 - textWidth / 2, (float) this.mMaxTextHeight, this.mCenterTextPaint);
                         //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         this.mSelectedItem = this.mDataList.indexOf(itemCount[count]);
                     }
@@ -341,20 +339,22 @@ public class LoopView extends View {
             }
 
         }
-        if(Math.abs(LoopView.this.mTotalScrollY % LoopView.this.mItemHeight)>4){
-            int offset = (int)((float)LoopView.this.mTotalScrollY / LoopView.this.mItemHeight);
-            if(offset_current!=offset){
+        if (Math.abs(LoopView.this.mTotalScrollY % LoopView.this.mItemHeight) > 4) {
+            int offset = (int) ((float) LoopView.this.mTotalScrollY / LoopView.this.mItemHeight);
+            if (offset_current != offset) {
                 offset_current = offset;
-                Vibrator vibrator = (Vibrator)mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+                Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
                 vibrator.vibrate(8);
                 //long[] patter = {10, 10, 20, 5};
                 //vibrator.vibrate(patter, 0);
-            }}
+            }
+        }
     }
+
     int offset_current = 0;
 
     public boolean onTouchEvent(MotionEvent motionevent) {
-        switch(motionevent.getAction()) {
+        switch (motionevent.getAction()) {
             case 1:
             default:
                 if (!this.mGestureDetector.onTouchEvent(motionevent)) {
@@ -369,11 +369,13 @@ public class LoopView extends View {
         this.mCanLoop = canLoop;
         this.invalidate();
     }
-    public void setTextColor(int mTopBottomTextColor,int mCenterTextColor,int mCenterLineColor){
+
+    public void setTextColor(int mTopBottomTextColor, int mCenterTextColor, int mCenterLineColor) {
         this.mTopBottomTextColor = mTopBottomTextColor;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
         this.mCenterTextColor = mCenterTextColor;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
-        this.mCenterLineColor =mCenterLineColor;
+        this.mCenterLineColor = mCenterLineColor;
     }
+
     public final void setTextSize(float size) {
         if (size > 0.0F) {
             this.mTextSize = this.sp2px(this.mContext, size);
@@ -391,7 +393,7 @@ public class LoopView extends View {
     }
 
     public final void setDataList(List<String> list) {
-        this.mDataList = (ArrayList)list;
+        this.mDataList = (ArrayList) list;
         this.initData();
     }
 
@@ -415,7 +417,7 @@ public class LoopView extends View {
     }
 
     private void startSmoothScrollTo() {
-        int offset = (int)((float)this.mTotalScrollY % this.mItemHeight);
+        int offset = (int) ((float) this.mTotalScrollY % this.mItemHeight);
         this.cancelSchedule();
         this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.HalfHeightRunnable(offset), 0L, 10L, TimeUnit.MILLISECONDS);
     }
@@ -423,12 +425,12 @@ public class LoopView extends View {
     private void startSmoothScrollTo(float velocityY) {
         this.cancelSchedule();
         int velocityFling = 20;
-        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.FlingRunnable(velocityY), 0L, (long)velocityFling, TimeUnit.MILLISECONDS);
+        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.FlingRunnable(velocityY), 0L, (long) velocityFling, TimeUnit.MILLISECONDS);
     }
 
     public int sp2px(Context context, float spValue) {
         float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int)(spValue * fontScale + 0.5F);
+        return (int) (spValue * fontScale + 0.5F);
     }
 
     class FlingRunnable implements Runnable {
@@ -458,15 +460,15 @@ public class LoopView extends View {
                 LoopView.this.cancelSchedule();
                 LoopView.this.mHandler.sendEmptyMessage(2000);
             } else {
-                int i = (int)(this.velocity * 10.0F / 1000.0F);
+                int i = (int) (this.velocity * 10.0F / 1000.0F);
                 LoopView.this.mTotalScrollY = LoopView.this.mTotalScrollY - i;
                 if (!LoopView.this.mCanLoop) {
                     float itemHeight = LoopView.this.lineSpacingMultiplier * (float) LoopView.this.mMaxTextHeight;
-                    if (LoopView.this.mTotalScrollY <= (int)((float)(-LoopView.this.mInitPosition) * itemHeight)) {
+                    if (LoopView.this.mTotalScrollY <= (int) ((float) (-LoopView.this.mInitPosition) * itemHeight)) {
                         this.velocity = 40.0F;
-                        LoopView.this.mTotalScrollY = (int)((float)(-LoopView.this.mInitPosition) * itemHeight);
-                    } else if (LoopView.this.mTotalScrollY >= (int)((float)(LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * itemHeight)) {
-                        LoopView.this.mTotalScrollY = (int)((float)(LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * itemHeight);
+                        LoopView.this.mTotalScrollY = (int) ((float) (-LoopView.this.mInitPosition) * itemHeight);
+                    } else if (LoopView.this.mTotalScrollY >= (int) ((float) (LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * itemHeight)) {
+                        LoopView.this.mTotalScrollY = (int) ((float) (LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * itemHeight);
                         this.velocity = -40.0F;
                     }
                 }
@@ -495,14 +497,14 @@ public class LoopView extends View {
 
         public void run() {
             if (this.realTotalOffset == 2147483647) {
-                if ((float)this.offset > LoopView.this.mItemHeight / 2.0F) {
-                    this.realTotalOffset = (int)(LoopView.this.mItemHeight - (float)this.offset);
+                if ((float) this.offset > LoopView.this.mItemHeight / 2.0F) {
+                    this.realTotalOffset = (int) (LoopView.this.mItemHeight - (float) this.offset);
                 } else {
                     this.realTotalOffset = -this.offset;
                 }
             }
 
-            this.realOffset = (int)((float)this.realTotalOffset * 0.1F);
+            this.realOffset = (int) ((float) this.realTotalOffset * 0.1F);
             if (this.realOffset == 0) {
                 if (this.realTotalOffset < 0) {
                     this.realOffset = -1;
@@ -552,15 +554,15 @@ public class LoopView extends View {
 
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             Log.i(LoopView.TAG, "LoopViewGestureListener->onScroll");
-            LoopView.this.mTotalScrollY = (int)((float) LoopView.this.mTotalScrollY + distanceY);
+            LoopView.this.mTotalScrollY = (int) ((float) LoopView.this.mTotalScrollY + distanceY);
             if (!LoopView.this.mCanLoop) {
-                int initPositionCircleLength = (int)((float) LoopView.this.mInitPosition * LoopView.this.mItemHeight);
+                int initPositionCircleLength = (int) ((float) LoopView.this.mInitPosition * LoopView.this.mItemHeight);
                 int initPositionStartY = -1 * initPositionCircleLength;
                 if (LoopView.this.mTotalScrollY < initPositionStartY) {
                     LoopView.this.mTotalScrollY = initPositionStartY;
                 }
 
-                int circleLength = (int)((float)(LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * LoopView.this.mItemHeight);
+                int circleLength = (int) ((float) (LoopView.this.mDataList.size() - 1 - LoopView.this.mInitPosition) * LoopView.this.mItemHeight);
                 if (LoopView.this.mTotalScrollY >= circleLength) {
                     LoopView.this.mTotalScrollY = circleLength;
                 }
