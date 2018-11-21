@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.CPopupWindow;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
 /**
