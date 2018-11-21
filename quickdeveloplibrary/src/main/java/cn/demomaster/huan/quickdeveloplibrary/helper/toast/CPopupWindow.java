@@ -31,6 +31,7 @@ public class CPopupWindow extends PopupWindow {
         private Activity context;
         private int width, height;
         private boolean focusable;
+
         public PopBuilder(Activity context) {
             this.context = context;
         }
