@@ -68,6 +68,9 @@ public class PickActivity extends BaseActivityParent {
                         .viewTextSize(25)
                         .colorCancel(Color.parseColor("#11DDAF"))
                         .colorConfirm(Color.parseColor("#11DDAF"))
+                        .colorSignText(Color.RED)
+                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
+                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
                         .build();
                 timePickerPopWin.showPopWin(mContext);
             }

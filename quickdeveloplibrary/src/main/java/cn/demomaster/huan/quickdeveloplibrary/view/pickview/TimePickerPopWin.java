@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +34,9 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 public class TimePickerPopWin extends PopupWindow implements View.OnClickListener {
     private Button cancelBtn;
     private Button confirmBtn;
+    public TextView tv_sign_year;
+    public TextView tv_sign_month;
+    public TextView tv_sign_day;
     private LoopView hourLoopView;
     private LoopView minuteLoopView;
     private LoopView meridianLoopView;
@@ -44,9 +48,17 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     private Context mContext;
     private String textCancel;
     private String textConfirm;
+    private String text_sign_year;
+    private String text_sign_month;
+    private String text_sign_day;
     private int colorCancel;
     private int colorConfirm;
     private int btnTextsize;
+    private int colorSignText;
+
+    private int topBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+    private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+    private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
     private int viewTextSize;
     List<String> hourList = new ArrayList();
     List<String> minList = new ArrayList();
@@ -60,6 +72,12 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         this.mListener = builder.listener;
         this.colorCancel = builder.colorCancel;
         this.colorConfirm = builder.colorConfirm;
+        this.topBottomTextColor = builder.topBottomTextColor;
+        this.centerTextColor = builder.centerTextColor;
+        this.centerLineColor = builder.centerLineColor;
+        this.text_sign_year = builder.text_sign_year;
+        this.text_sign_month = builder.text_sign_month;
+        this.text_sign_day = builder.text_sign_day;
         this.btnTextsize = builder.btnTextSize;
         this.viewTextSize = builder.viewTextSize;
         init();
@@ -101,20 +119,31 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         this.confirmBtn = (Button)this.contentView.findViewById(R.id.btn_confirm);
         this.confirmBtn.setTextColor(this.colorConfirm);
         this.confirmBtn.setTextSize((float)this.btnTextsize);
+        /*this.tv_sign_year = this.contentView.findViewById(R.id.tv_sign_year);
+        this.tv_sign_year.setTextColor(this.colorSignText);
+
+        this.tv_sign_month = this.contentView.findViewById(R.id.tv_sign_month);
+        this.tv_sign_month.setTextColor(this.colorSignText);
+
+        this.tv_sign_day = this.contentView.findViewById(R.id.tv_sign_day);
+        this.tv_sign_day.setTextColor(this.colorSignText);*/
         this.hourLoopView = (LoopView)this.contentView.findViewById(R.id.picker_hour);
         this.minuteLoopView = (LoopView)this.contentView.findViewById(R.id.picker_minute);
         this.meridianLoopView = (LoopView)this.contentView.findViewById(R.id.picker_meridian);
         this.pickerContainerV = this.contentView.findViewById(R.id.container_picker);
+        this.hourLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.hourLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.hourPos = item;
             }
         });
+        this.minuteLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.minuteLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.minutePos = item;
             }
         });
+        this.meridianLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.meridianLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 TimePickerPopWin.this.meridianPos = item;
@@ -228,6 +257,13 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         private TimePickerPopWin.OnTimePickListener listener;
         private String textCancel ;
         private String textConfirm ;
+        private String text_sign_year = "时";
+        private String text_sign_month = "分";
+        private String text_sign_day = "秒";
+        private int colorSignText = Color.BLACK;
+        private int topBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+        private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+        private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
         private int colorCancel;
         private int colorConfirm ;
         private int colorText ;
@@ -261,6 +297,23 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
 
         public TimePickerPopWin.Builder colorConfirm(int colorConfirm) {
             this.colorConfirm = colorConfirm;
+            return this;
+        }
+        public TimePickerPopWin.Builder colorSignText(int colorSignText) {
+            this.colorSignText = colorSignText;
+            return this;
+        }
+        public TimePickerPopWin.Builder colorContentText(int topBottomTextColor, int centerTextColor, int centerLineColor) {
+            this.topBottomTextColor = topBottomTextColor;
+            this.centerTextColor = centerTextColor;
+            this.centerLineColor = centerLineColor;
+            return this;
+        }
+
+        public  TimePickerPopWin.Builder setSignText(String year,String month,String day) {
+            this.text_sign_year = year;
+            this.text_sign_month = month;
+            this.text_sign_day = day;
             return this;
         }
 

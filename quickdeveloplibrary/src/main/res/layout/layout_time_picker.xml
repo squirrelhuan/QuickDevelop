@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#f2f7fa"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -43,7 +43,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="#f2f7fa"
+            android:background="@color/white"
             android:padding="3dp">
 
             <LinearLayout
