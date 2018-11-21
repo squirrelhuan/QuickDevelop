@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
 
 /**
  * Created by Squirrel桓 on 2018/10/29.
@@ -67,7 +68,6 @@ public class ScreenShotUitl {
         ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivityNoBar(context));
         final PopupWindow popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true).build();
         popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
-        ;
         ImageView iv_code = contentView.findViewById(R.id.iv_code);
         Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         String codeStr = "http://weixin.qq.com/r/E0M1LcDE6Z2WrYRO9xYB";
