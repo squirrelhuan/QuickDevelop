@@ -24,7 +24,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -62,7 +61,6 @@ public class ScreenShotUitl {
         // 第一个参数是PopupWindow的锚点，第二和第三个参数分别是PopupWindow相对锚点的x、y偏移
         // window.showAsDropDown(anchor, xoff, yoff);
         //window.showAsDropDown(anchor);
-
 
         CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder(context);
         ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivityNoBar(context));
