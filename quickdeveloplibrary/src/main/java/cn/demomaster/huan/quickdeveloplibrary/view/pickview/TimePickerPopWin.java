@@ -226,16 +226,22 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     public static class Builder {
         private Context context;
         private TimePickerPopWin.OnTimePickListener listener;
-        private String textCancel = "Cancel";
-        private String textConfirm = "Confirm";
-        private int colorCancel = Color.parseColor("#999999");
-        private int colorConfirm = Color.parseColor("#303F9F");
+        private String textCancel ;
+        private String textConfirm ;
+        private int colorCancel;
+        private int colorConfirm ;
+        private int colorText ;
         private int btnTextSize = 16;
         private int viewTextSize = 25;
 
         public Builder(Context context, TimePickerPopWin.OnTimePickListener listener) {
             this.context = context;
             this.listener = listener;
+            textCancel = context.getResources().getString(R.string.Cancel);
+            textConfirm =  context.getResources().getString(R.string.Confirm);
+            colorCancel = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#999999");
+            colorConfirm = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#303F9F");
+            colorText = context.getResources().getColor(R.color.colorAccent);//Color.parseColor("#f60");
         }
 
         public TimePickerPopWin.Builder textCancel(String textCancel) {

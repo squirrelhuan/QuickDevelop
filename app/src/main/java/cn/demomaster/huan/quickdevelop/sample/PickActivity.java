@@ -43,6 +43,9 @@ public class PickActivity extends BaseActivityParent {
                         .viewTextSize(35) // pick view text size
                         .colorCancel(Color.parseColor("#11DDAF")) //color of cancel button
                         .colorConfirm(Color.parseColor("#11DDAF"))//color of confirm button
+                        .colorSignText(Color.RED)
+                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
+                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
                         .minYear(1900) //min year in loop
                         .maxYear(2030) // max year in loop
                         .dateChose("1980-01-01") // date chose when init popwindow

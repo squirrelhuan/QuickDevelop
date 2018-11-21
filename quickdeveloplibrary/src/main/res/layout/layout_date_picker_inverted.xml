@@ -16,7 +16,7 @@
             android:id="@+id/container_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
+            android:background="@color/white"
             android:padding="5dp" >
 
             <Button
@@ -42,7 +42,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="#d9ffffff"
+            android:background="@color/white"
             android:padding="3dp" >
 
             <LinearLayout

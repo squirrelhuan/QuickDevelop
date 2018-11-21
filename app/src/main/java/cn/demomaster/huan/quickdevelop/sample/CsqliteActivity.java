@@ -14,6 +14,7 @@ import cn.demomaster.huan.quickdevelop.App;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
 public class CsqliteActivity extends BaseActivityParent {
 
@@ -78,6 +79,9 @@ public class CsqliteActivity extends BaseActivityParent {
             // 数据库版本的更新,由原来的1变为2
             //CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,2);
             //SQLiteDatabase db =dbHelper.getReadableDatabase();
+
+
+            PopToastUtil.ShowToast(mContext,"更新未实现");
         }
     }
 
@@ -98,9 +102,11 @@ public class CsqliteActivity extends BaseActivityParent {
             cv.put("name", "xiaoming");
             cv.put("code", 21);
             //调用insert方法，将数据插入数据库
-            App.instance.db.insert("inner_department_category", null, cv);
+           // App.instance.db.insert("inner_department_category", null, cv);
             //关闭数据库
             //db.close();
+
+            PopToastUtil.ShowToastBottom(mContext,"插入数据的方法");
         }
     }
 
@@ -124,10 +130,11 @@ public class CsqliteActivity extends BaseActivityParent {
             while(cursor.moveToNext()){
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String code = cursor.getString(cursor.getColumnIndex("code"));
-                Log.i(TAG, "query------->" + "name："+name+" "+",code："+code);
+               // Log.i(TAG, "query------->" + "name："+name+" "+",code："+code);
             }
             //关闭数据库
             //db.close();
+            PopToastUtil.ShowToastCenter(mContext,"插入数据的方法");
         }
     }
 
@@ -148,7 +155,7 @@ public class CsqliteActivity extends BaseActivityParent {
             //参数1 是要更新的表名
             //参数2 是一个ContentValeus对象
             //参数3 是where子句
-            App.instance.db.update("inner_department_category", cv, whereClause, whereArgs);
+            //App.instance.db.update("inner_department_category", cv, whereClause, whereArgs);
         }
     }
 

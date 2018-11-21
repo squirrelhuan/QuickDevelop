@@ -31,4 +31,11 @@
         <item name="@android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
     </style>
 
+    <!--自定义toast样式-->
+    <style name="cgq_pop_toast">
+        <item name="android:windowEnterAnimation">@anim/anim_pop_toast_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_pop_toast_out</item>
+    </style>
+
+
 </resources>

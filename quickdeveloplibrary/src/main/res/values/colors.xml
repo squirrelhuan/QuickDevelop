@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--—导航栏颜色-->
     <color name="colorPrimary">#008577</color>
+    <!--—通知栏颜色-->
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--—控件选中后颜色-->
+    <color name="colorAccent">#ffff0000</color>
 
 
     <color name="dkgray">#80808FF0</color>

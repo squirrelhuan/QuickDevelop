@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
@@ -286,7 +287,7 @@ public class ActionBarLayout {
                 headerBackgroundColor = colordDrawable.getColor();
             }
         }
-        statusBar_Height = getStateBarHeight();
+        statusBar_Height = DisplayUtil.getStatusBarHeight(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (actionBarModel) {
@@ -471,25 +472,7 @@ public class ActionBarLayout {
         return dart_point_count < (count_h * count_w) / 2;
     }
 
-    /**
-     * 获取状态栏高度
-     *
-     * @return
-     */
-    private int getStateBarHeight() {
-        if (statusBar_Height != 0) {
-            return statusBar_Height;
-        }
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        if (result == 0) {
-            return (int) this.context.getResources().getDimension(R.dimen.activity_statebar_height);
-        }
-        return result;
-    }
+
 
 
 }

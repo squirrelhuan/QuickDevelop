@@ -208,7 +208,7 @@ public class PermissionManager {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(context, "请开启权限后再操作", Toast.LENGTH_LONG).show();
-                        instance.initPermission();
+                        getInstance((Activity) context).initPermission();
                     }
                 }).setCancelable(false).show();
     }

@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
@@ -97,6 +98,15 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_pick:
+                intent = new Intent(MainActivity.this, PickActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_photo:
+                intent = new Intent(MainActivity.this, IDCardActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_scan:
+                //Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                 photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
@@ -110,15 +120,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
                     }
                 });
-                break;
-            case R.id.btn_photo:
-                intent = new Intent(MainActivity.this, PickActivity.class);
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.btn_scan:
-                //Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                intent = new Intent(MainActivity.this, IDCardActivity.class);
-                startActivityForResult(intent, 1);
                 break;
 
             case R.id.btn_ac_01:
@@ -135,21 +136,33 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
             case R.id.btn_color_black:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.black));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.black),getResources().getColor(R.color.white));
+                PopToastUtil.ShowToast(this,"黑色主题");
                 break;
             case R.id.btn_color_white:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.white));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.white),getResources().getColor(R.color.black));
+                PopToastUtil.ShowToast(this,"白色主题");
                 break;
             case R.id.btn_color_red:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.red));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.red),getResources().getColor(R.color.white));
+                PopToastUtil.ShowToast(this,"红色主题");
                 break;
             case R.id.btn_color_gray:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.gray));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.gray),getResources().getColor(R.color.white));
+                PopToastUtil.ShowToast(this,"灰色主题");
                 break;
             case R.id.btn_color_green:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.green));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.green),getResources().getColor(R.color.white));
+                PopToastUtil.ShowToast(this,"绿色主题");
                 break;
             case R.id.btn_color_yellow:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.yello));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.yello),getResources().getColor(R.color.black));
+                PopToastUtil.ShowToast(this,"黄色主题");
                 break;
             case R.id.btn_change_bg:
                 if (position == 0) {

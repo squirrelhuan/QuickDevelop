@@ -21,6 +21,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 
 import java.text.ParseException;
@@ -37,6 +38,9 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     private static final int DEFAULT_MIN_YEAR = 1900;
     public Button cancelBtn;
     public Button confirmBtn;
+    public TextView tv_sign_year;
+    public TextView tv_sign_month;
+    public TextView tv_sign_day;
     public LoopView yearLoopView;
     public LoopView monthLoopView;
     public LoopView dayLoopView;
@@ -50,9 +54,17 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     private Context mContext;
     private String textCancel;
     private String textConfirm;
+    private String text_sign_year;
+    private String text_sign_month;
+    private String text_sign_day;
     private int colorCancel;
     private int colorConfirm;
+    private int colorSignText;
     private int btnTextsize;
+
+    private int topBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+    private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+    private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
     private int viewTextSize;
     private boolean showDayMonthYear;
     List<String> yearList = new ArrayList();
@@ -65,11 +77,18 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         this.minYear = builder.minYear;
         this.maxYear = builder.maxYear;
         this.textCancel = builder.textCancel;
+        this.topBottomTextColor = builder.topBottomTextColor;
+        this.centerTextColor = builder.centerTextColor;
+        this.centerLineColor = builder.centerLineColor;
         this.textConfirm = builder.textConfirm;
+        this.text_sign_year = builder.text_sign_year;
+        this.text_sign_month = builder.text_sign_month;
+        this.text_sign_day = builder.text_sign_day;
         this.mContext = builder.context;
         this.mListener = builder.listener;
         this.colorCancel = builder.colorCancel;
         this.colorConfirm = builder.colorConfirm;
+        this.colorSignText = builder.colorSignText;
         this.btnTextsize = builder.btnTextSize;
         this.viewTextSize = builder.viewTextSize;
         this.showDayMonthYear = builder.showDayMonthYear;
@@ -117,22 +136,34 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         this.confirmBtn = (Button)this.contentView.findViewById(R.id.btn_confirm);
         this.confirmBtn.setTextColor(this.colorConfirm);
         this.confirmBtn.setTextSize((float)this.btnTextsize);
+        this.tv_sign_year = this.contentView.findViewById(R.id.tv_sign_year);
+        this.tv_sign_year.setTextColor(this.colorSignText);
+
+        this.tv_sign_month = this.contentView.findViewById(R.id.tv_sign_month);
+        this.tv_sign_month.setTextColor(this.colorSignText);
+
+        this.tv_sign_day = this.contentView.findViewById(R.id.tv_sign_day);
+        this.tv_sign_day.setTextColor(this.colorSignText);
+
         this.yearLoopView = (LoopView)this.contentView.findViewById(R.id.picker_year);
         this.monthLoopView = (LoopView)this.contentView.findViewById(R.id.picker_month);
         this.dayLoopView = (LoopView)this.contentView.findViewById(R.id.picker_day);
         this.pickerContainerV = this.contentView.findViewById(R.id.container_picker);
+        this.yearLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.yearLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 DatePickerPopWin.this.yearPos = item;
                 DatePickerPopWin.this.initDayPickerView();
             }
         });
+        this.monthLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.monthLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 DatePickerPopWin.this.monthPos = item;
                 DatePickerPopWin.this.initDayPickerView();
             }
         });
+        this.dayLoopView.setTextColor(topBottomTextColor,centerTextColor,centerLineColor);
         this.dayLoopView.setLoopListener(new LoopScrollListener() {
             public void onItemSelect(int item) {
                 DatePickerPopWin.this.dayPos = item;
@@ -150,6 +181,17 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         if (!TextUtils.isEmpty(this.textCancel)) {
             this.cancelBtn.setText(this.textCancel);
         }
+        if (!TextUtils.isEmpty(this.text_sign_year)) {
+            this.tv_sign_year.setText(this.text_sign_year);
+        }
+        if (!TextUtils.isEmpty(this.text_sign_month)) {
+            this.tv_sign_month.setText(this.text_sign_month);
+        }
+        if (!TextUtils.isEmpty(this.text_sign_day)) {
+            this.tv_sign_day.setText(this.text_sign_day);
+        }
+
+
 
         this.setTouchable(true);
         this.setFocusable(true);
@@ -299,9 +341,17 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         private int maxYear = Calendar.getInstance().get(1) + 1;
         private String textCancel = "Cancel";
         private String textConfirm = "Confirm";
+        private String text_sign_year = "年";
+        private String text_sign_month = "月";
+        private String text_sign_day = "日";
+
         private String dateChose = DatePickerPopWin.getStrDate();
         private int colorCancel = Color.parseColor("#999999");
         private int colorConfirm = Color.parseColor("#303F9F");
+        private int topBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+        private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+        private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
+        private int colorSignText = Color.BLACK;
         private int btnTextSize = 16;
         private int viewTextSize = 25;
 
@@ -345,6 +395,24 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
             return this;
         }
 
+        public Builder colorContentText(int topBottomTextColor,int centerTextColor,int centerLineColor) {
+            this.topBottomTextColor = topBottomTextColor;
+            this.centerTextColor = centerTextColor;
+            this.centerLineColor = centerLineColor;
+            return this;
+        }
+        public  DatePickerPopWin.Builder setSignText(String year,String month,String day) {
+            this.text_sign_year = year;
+            this.text_sign_month = month;
+            this.text_sign_day = day;
+            return this;
+        }
+
+        public DatePickerPopWin.Builder colorSignText(int colorSignText) {
+            this.colorSignText = colorSignText;
+            return this;
+        }
+
         public DatePickerPopWin.Builder btnTextSize(int textSize) {
             this.btnTextSize = textSize;
             return this;
@@ -367,5 +435,6 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
             this.showDayMonthYear = useDayMonthYear;
             return this;
         }
+
     }
 }

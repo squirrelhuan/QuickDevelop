@@ -53,9 +53,9 @@ public class LoopView extends View {
     private int mTextSize;
     private int mMaxTextWidth;
     private int mMaxTextHeight;
-    private int mTopBottomTextColor;
-    private int mCenterTextColor;
-    private int mCenterLineColor;
+    private int mTopBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+    private int mCenterTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+    private int mCenterLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
     private float lineSpacingMultiplier;
     private boolean mCanLoop;
     private int mTopLineY;
@@ -126,9 +126,9 @@ public class LoopView extends View {
     private void initView(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoopView);
         if (array != null) {
-            this.mTopBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+            /*this.mTopBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
             this.mCenterTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
-            this.mCenterLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
+            this.mCenterLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);*/
             this.mCanLoop = array.getBoolean(R.styleable.LoopView_canLoop, true);
             this.mInitPosition = array.getInt(R.styleable.LoopView_initPosition, -1);
             this.mTextSize = array.getDimensionPixelSize(R.styleable.LoopView_textSize, this.sp2px(context, 16.0F));
@@ -369,7 +369,11 @@ public class LoopView extends View {
         this.mCanLoop = canLoop;
         this.invalidate();
     }
-
+    public void setTextColor(int mTopBottomTextColor,int mCenterTextColor,int mCenterLineColor){
+        this.mTopBottomTextColor = mTopBottomTextColor;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
+        this.mCenterTextColor = mCenterTextColor;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
+        this.mCenterLineColor =mCenterLineColor;
+    }
     public final void setTextSize(float size) {
         if (size > 0.0F) {
             this.mTextSize = this.sp2px(this.mContext, size);

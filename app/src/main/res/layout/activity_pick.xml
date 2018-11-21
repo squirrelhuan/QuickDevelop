@@ -8,9 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <Button
         android:id="@+id/date"
@@ -59,7 +57,7 @@
         app:centerTextColor="#ff000000"
         app:drawItemCount="7"
         app:initPosition="3"
-        app:lineColor="@color/colorPrimary"
+        app:lineColor="@color/white"
         app:textSize="25sp"
-        app:topBottomTextColor="#ffafafaf"/>
+        app:topBottomTextColor="@color/white"/>
 </RelativeLayout>

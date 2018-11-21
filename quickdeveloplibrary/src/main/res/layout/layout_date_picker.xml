@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#f2f7fa"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -42,7 +42,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="#f2f7fa"
+            android:background="@color/white"
             android:padding="3dp">
 
             <LinearLayout
@@ -58,6 +58,7 @@
                     app:canLoop="false"/>
 
                 <TextView
+                    android:id="@+id/tv_sign_year"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -74,6 +75,7 @@
                     app:textSize="25sp"
                     app:canLoop="false"/>
                 <TextView
+                    android:id="@+id/tv_sign_month"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -89,6 +91,7 @@
                     app:textSize="25sp"
                     app:canLoop="false"/>
                 <TextView
+                    android:id="@+id/tv_sign_day"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
