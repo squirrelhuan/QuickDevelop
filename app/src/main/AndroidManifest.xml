@@ -36,7 +36,8 @@
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
         <!-- android:screenOrientation="landscape" -->
         <activity android:name=".sample.CsqliteActivity" />
-        <activity android:name=".sample.QDialogActivity"></activity>
+        <activity android:name=".sample.QDialogActivity" />
+        <activity android:name=".sample.TabMenuActivity"></activity>
     </application>
 
 </manifest>

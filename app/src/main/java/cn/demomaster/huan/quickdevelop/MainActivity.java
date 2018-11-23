@@ -12,6 +12,7 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
+import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
@@ -53,6 +54,8 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_ac_03.setOnClickListener(this);
         tv_test = findViewById(R.id.tv_test);
 
+
+        findViewById(R.id.btn_tab_menu).setOnClickListener(this);
         findViewById(R.id.btn_dialog).setOnClickListener(this);
         findViewById(R.id.btn_photo).setOnClickListener(this);
         findViewById(R.id.btn_pick).setOnClickListener(this);
@@ -95,6 +98,10 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.btn_tab_menu:
+                intent = new Intent(MainActivity.this, TabMenuActivity.class);
+                startActivityForResult(intent, 1);
+                break;
             case R.id.btn_dialog:
                 intent = new Intent(MainActivity.this, QDialogActivity.class);
                 startActivityForResult(intent, 1);
