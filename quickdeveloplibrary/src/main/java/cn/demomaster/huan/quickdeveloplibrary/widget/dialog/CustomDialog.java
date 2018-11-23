@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -49,12 +50,21 @@ public class CustomDialog extends Dialog {
             this.contentView = layout;
             //dialog.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+
+        public Builder(Context context){
+            dialog = new CustomDialog(context);
+            inflater = LayoutInflater.from(context);
+            View layout = inflater.inflate(R.layout.layout_dialog_default, null);
+            this.contentView = layout;
+        }
+
         public Builder(Context context,View view) {
             //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
             dialog = new CustomDialog(context);
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.contentView = view;
         }
+
 
 
         public Builder setContentView(View v) {
