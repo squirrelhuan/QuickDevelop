@@ -39,4 +39,6 @@ public class DisplayUtil {
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
+
+
 }

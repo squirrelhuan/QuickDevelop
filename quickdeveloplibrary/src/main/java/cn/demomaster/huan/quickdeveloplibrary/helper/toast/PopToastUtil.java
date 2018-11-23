@@ -57,7 +57,7 @@ public class PopToastUtil {
             //popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             messageView = new CircleTextView(context.getApplicationContext());
             messageView.setPadding(DisplayUtil.dp2px(context,25),DisplayUtil.dp2px(context,5),DisplayUtil.dp2px(context,25),DisplayUtil.dp2px(context,5));
-            messageView.setTextSize(16);
+            messageView.setTextSize(14);
             popupWindow = builder.setContentView(messageView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             popupWindow.setTouchable(false);
             popupWindow.setFocusable(false);
