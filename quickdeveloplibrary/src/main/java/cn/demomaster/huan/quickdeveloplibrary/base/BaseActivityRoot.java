@@ -1,13 +1,20 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
@@ -85,4 +92,15 @@ public class BaseActivityRoot extends AppCompatActivity {
 
 
     }
+
+   /* @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PermissionManager.REQUEST_PERMISS_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //用户同意，执行操作
+                PermissionManager.getInstance(mContext).onPass();
+            }
+
+    }*/
 }

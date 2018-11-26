@@ -47,7 +47,7 @@ public class TabMenuActivity extends BaseActivityParent {
             @Override
             public String onSelected(int tabIndex, int position) {
 
-                PopToastUtil.ShowToast((Activity) mContext,""+tabIndex+":"+tabIndex);
+                PopToastUtil.ShowToast((Activity) mContext,""+tabIndex+":"+position);
                 return null;
             }
 
@@ -59,6 +59,23 @@ public class TabMenuActivity extends BaseActivityParent {
             @Override
             public int getTabCount() {
                 return tabNames.length;
+            }
+
+            @Override
+            public List<Object> getDefaultState() {
+                List<Object> arr = new ArrayList<>();
+                int a =1;
+                arr.add(a);
+                List<Integer> b=new ArrayList<>();
+                b.add(2);
+                arr.add(b);
+                List<Integer> c=new ArrayList<>();
+                c.add(1);
+                c.add(4);
+                arr.add(c);
+                List<Integer> d=new ArrayList<>();
+                arr.add(d);
+                return arr;
             }
         });
         tabMenuLayout.init(mContext);

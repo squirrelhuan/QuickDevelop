@@ -23,7 +23,7 @@ import android.widget.Toast;
  * Created by huan on 2017/11/14.
  */
 public class PermissionManager {
-    private static int REQUEST_PERMISS_CODE = 3248;
+    public static int REQUEST_PERMISS_CODE = 3248;
     //请求悬浮
     public static int SYSTEM_ALERT_WINDOW_CODE = 11004;
     private Activity context;
@@ -40,6 +40,9 @@ public class PermissionManager {
 
     public PermissionManager(Activity context) {
         this.context = context;
+    }
+
+    public void onPass() {
     }
 
     //普通权限
