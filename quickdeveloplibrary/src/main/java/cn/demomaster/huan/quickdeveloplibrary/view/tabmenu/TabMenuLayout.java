@@ -62,6 +62,10 @@ public class TabMenuLayout extends LinearLayout {
     private View tabButtonView;//点击的按钮
     private View tabDividerView;//分割符
 
+    public void setTabDividerView(View tabDividerView) {
+        this.tabDividerView = tabDividerView;
+    }
+
     public void setData(List<TabMenuModel> tabSelectModels, TabMenuInterface tabMenuInterface) {
         this.tabSelectModels = tabSelectModels;
         this.tabMenuInterface = tabMenuInterface;
@@ -107,6 +111,7 @@ public class TabMenuLayout extends LinearLayout {
             textView.setTabName(tabSelectModels.get(i).getTabName());
             textView.setState(false);
             tabRadioGroup.addTabButton(textView);
+            tabRadioGroup.addTabDividerView(tabDividerView);
         }
 
         tabRadioGroup.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -131,8 +136,8 @@ public class TabMenuLayout extends LinearLayout {
         }
         tabListViewItems.clear();
         tabListViewItems.addAll(menus);*/
-        initSingTabContent(tabButton, tabIndex);
-        popupWindow.showAsDropDown(tabButton);
+        initSingTabContent(tabGroup, tabIndex);
+        popupWindow.showAsDropDown(tabGroup);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
 
     }
@@ -143,6 +148,7 @@ public class TabMenuLayout extends LinearLayout {
     private RelativeLayout rel_root;
     private View contentView;
     private int tabToBottom = 100;
+
 
     public void setTabToBottom(int tabToBottom) {
         this.tabToBottom = tabToBottom;
@@ -161,7 +167,7 @@ public class TabMenuLayout extends LinearLayout {
 
             LinearLayout ll_tab_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_panel.getLayoutParams();
-           layoutParams.setMargins(layoutParams.leftMargin,layoutParams.topMargin,layoutParams.rightMargin,DisplayUtil.dp2px(context,tabToBottom));
+            layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, DisplayUtil.dp2px(context, tabToBottom));
             rel_root = contentView.findViewById(R.id.rel_root);
             rel_root.setOnClickListener(new OnClickListener() {
                 @Override

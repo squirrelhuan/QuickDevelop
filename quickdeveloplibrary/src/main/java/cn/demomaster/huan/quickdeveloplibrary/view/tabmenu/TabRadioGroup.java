@@ -29,13 +29,26 @@ public class TabRadioGroup extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-private List<TabRadioButton> tabRadioButtons=new ArrayList<>();
+    private List<TabRadioButton> tabRadioButtons = new ArrayList<>();
+
     public void addTabButton(TabRadioButton child) {
-        addView(child);
         tabRadioButtons.add(child);
+        addView(child);
+        if(tabDividerView!=null){
+            if(getChildCount()>1){
+               // addView(tabDividerView);
+            }
+        }
     }
+
+    private View tabDividerView;//分割符
+
+    public void addTabDividerView(View child) {
+        this.tabDividerView = child;
+    }
+
     public void selectTabButton() {
-        for(int i=0;i<getChildCount();i++){
+        for (int i = 0; i < getChildCount(); i++) {
 
         }
     }
@@ -47,7 +60,7 @@ private List<TabRadioButton> tabRadioButtons=new ArrayList<>();
                 @Override
                 public void onClick(View view) {
                     onCheckedChangeListener.onCheckedChanged(view, (int) (view.getTag()));
-                    for (TabRadioButton button:tabRadioButtons){
+                    for (TabRadioButton button : tabRadioButtons) {
                         button.setState(false);
                     }
                     ((TabRadioButton) view).setState(true);
@@ -57,7 +70,7 @@ private List<TabRadioButton> tabRadioButtons=new ArrayList<>();
     }
 
     public void resume() {
-        for (TabRadioButton button:tabRadioButtons){
+        for (TabRadioButton button : tabRadioButtons) {
             button.setState(false);
         }
     }
@@ -67,27 +80,28 @@ private List<TabRadioButton> tabRadioButtons=new ArrayList<>();
         void onCheckedChanged(View var1, int var2);
     }
 
-    public interface TabRadioButtonInterface  {
-       void setState(Boolean state);
-       void setTabName(String tabName);
-       void initView(Context context);
+    public interface TabRadioButtonInterface {
+        void setState(Boolean state);
+
+        void setTabName(String tabName);
+
+        void initView(Context context);
     }
 
-    public static abstract class TabRadioButton extends LinearLayout implements TabRadioButtonInterface{
+    public static abstract class TabRadioButton extends LinearLayout implements TabRadioButtonInterface {
 
         public TabRadioButton(Context context) {
             super(context);
             initView(context);
         }
 
-        public TabRadioButton(Context context,  @Nullable AttributeSet attrs) {
+        public TabRadioButton(Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
         }
 
-        public TabRadioButton(Context context,  @Nullable AttributeSet attrs, int defStyleAttr) {
+        public TabRadioButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
         }
-
 
 
     }
