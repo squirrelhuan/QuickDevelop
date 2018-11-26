@@ -70,12 +70,14 @@ private List<TabRadioButton> tabRadioButtons=new ArrayList<>();
     public interface TabRadioButtonInterface  {
        void setState(Boolean state);
        void setTabName(String tabName);
+       void initView(Context context);
     }
 
     public static abstract class TabRadioButton extends LinearLayout implements TabRadioButtonInterface{
 
         public TabRadioButton(Context context) {
             super(context);
+            initView(context);
         }
 
         public TabRadioButton(Context context,  @Nullable AttributeSet attrs) {

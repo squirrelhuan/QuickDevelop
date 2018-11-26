@@ -5,7 +5,11 @@
     android:background="@color/transparent_dark_33"
     android:layout_height="match_parent">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:background="@color/white">
 
         <ListView
                 android:id="@+id/lv_menus"

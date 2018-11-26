@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,14 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
+
+import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * @author squirrel桓
@@ -24,52 +28,56 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
  */
 // ① 创建Adapter
 public class TabMenuAdapter extends BaseAdapter {
-    private List<TabListViewItem> lists = new ArrayList();
+    private List<TabListViewItem> tabListViewItems = new ArrayList();
+    private List<TabMenuModel> tabMenuModels;
+    private int tabIndex;
+    private int selectCount = 1;
     private Context context;
     private LayoutInflater inflater;
-    private List<Integer> selected_arr;
-    private int selected_index;
-    private boolean isSingle;
+    private boolean isSingle;//单个tab中的状态集合（多选则为list,单选则为int）
 
-    public TabMenuAdapter(Context context, List<TabListViewItem> lists, Object selected_arr) {
+    public TabMenuAdapter(Context context, List<TabMenuModel> tabMenuModels, int tabIndex) {
         this.context = context;
-        if (!(selected_arr instanceof List)) {
+        this.tabIndex = tabIndex;
+        this.tabMenuModels = tabMenuModels;
+        TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
+        //判断单选还是多选
+        selectCount = tabMenuModel.getSelectCount();
+        if (selectCount == 1) {
             isSingle = true;
+        } else {
+            isSingle = false;
         }
-        if (!isSingle) {
-            for (int i = 0; i < lists.size(); i++) {
-                TabListViewItem item = lists.get(i);
-                item.setPosition(i);
-                for (int j : (List<Integer>) selected_arr) {
-                    if (item.getPosition() == j) {
+
+        //遍历循环初始化viewData
+        tabListViewItems.clear();
+        for (int i = 0; i < tabMenuModel.getTabItems().length; i++) {
+            TabListViewItem item = new TabListViewItem();
+            item.setPosition(i);
+            item.setItemName(tabMenuModel.getTabItems()[i]);
+            if (selectCount < tabMenuModel.getSelectDeftData().size()) {
+                Log.e(TAG, "默认选中个数不能超过最大个数");
+                return;
+            }
+            if (tabMenuModel.getSelectDeftData() != null ) {
+                for (int j=0 ;j< tabMenuModel.getSelectDeftData().size();j++) {
+                    if (tabMenuModel.getSelectDeftData().get(j)!=null&&item.getPosition() == tabMenuModel.getSelectDeftData().get(j)) {
                         item.setSelected(true);
                     }
                 }
             }
-            this.selected_arr = (List<Integer>) selected_arr;
-        } else {
-            selected_index = (int) selected_arr;
-            for (int i = 0; i < lists.size(); i++) {
-                TabListViewItem item = lists.get(i);
-                item.setPosition(i);
-                if (item.getPosition() == selected_index) {
-                    item.setSelected(true);
-                }
-            }
+            tabListViewItems.add(item);
         }
 
-        this.lists = lists;
-        this.inflater = ((Activity) context).
-
-                getLayoutInflater();
+        this.inflater = ((Activity) context).getLayoutInflater();
     }
 
     public int getCount() {
-        return this.lists.size();
+        return this.tabListViewItems.size();
     }
 
     public Object getItem(int position) {
-        return this.lists.get(position);
+        return this.tabListViewItems.get(position);
     }
 
     public long getItemId(int position) {
@@ -87,61 +95,59 @@ public class TabMenuAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (lists.get(position).isSelected()) {
+        if (tabListViewItems.get(position).isSelected()) {
             holder.tv_title.setTextColor(Color.RED);
         } else {
             holder.tv_title.setTextColor(Color.BLACK);
         }
-        holder.tv_title.setText(((TabListViewItem) this.lists.get(position)).getItemName());
+        holder.tv_title.setText(((TabListViewItem) this.tabListViewItems.get(position)).getItemName());
         return convertView;
     }
 
     public void setOnItemClicked(int position) {
-        if (!isSingle) {
-            lists.get(position).setSelected(!lists.get(position).isSelected());
-            if (lists.get(position).isSelected()) {
-                if (!selected_arr.contains(position)) {
-                    selected_arr.add(position);
-                }
+        boolean b = !tabListViewItems.get(position).isSelected();
+        TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
+        List<Integer> current = tabMenuModel.getSelectDeftData();
+        if (Arrays.asList(current).contains(position)) {//如果存在则remove
+            current.remove((Object)position);
+        } else {//如果不存在
+            if (current.size() + 1 > tabMenuModel.getSelectCount()) {//判断个数是否超出，没超出则追加，超出则remove第一个
+                tabListViewItems.get(current.get(0)).setSelected(false);
+                int c = current.size();
+                current.remove(0);
+                current.add(position);
             } else {
-                if (selected_arr.contains(position)) {
-                    selected_arr.remove((Object) position);
-                }
+                current.add(position);
             }
-            for (int i = 0; i < lists.size(); i++) {
-                TabListViewItem item = lists.get(i);
-                item.setPosition(i);
-                for (int j : selected_arr) {
-                    if (item.getPosition() == j) {
-                        item.setSelected(true);
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < lists.size(); i++) {
-                TabListViewItem item = lists.get(i);
-                item.setPosition(i);
-                item.setSelected(false);
-            }
-            selected_index = position;
-            lists.get(position).setSelected(true);
         }
+        tabMenuModel.setSelectDeftData(current);
+        tabMenuModels.set(tabIndex, tabMenuModel);
+        tabListViewItems.get(position).setSelected(b);
         notifyDataSetChanged();
     }
 
-    public Object getSelectedList() {
-        if (!isSingle) {
-            List<Integer> a = new ArrayList<>();
-            for (TabListViewItem item : lists) {
-                if (item.isSelected()) {
-                    a.add(item.getPosition());
-                }
-            }
-            return a;
-        } else {
-            return selected_index;
+    Integer[] reSort(Integer[] arr) {
+        Integer[] tmp = new Integer[arr.length];
+        for (int i = 0; i < arr.length - 1; i++) {
+            tmp[i] = arr[i + 1];
         }
+        return tmp;
+    }
 
+    Integer[] removeSort(Integer[] arr, int index) {
+        if (arr.length == 1) {
+            return new Integer[selectCount];
+        }
+        Integer[] tmp = arr.clone();
+        for (int i = index; i < arr.length - 1; i++) {
+            tmp[i] = arr[i + 1];
+        }
+        return tmp;
+    }
+
+
+    public List<TabMenuModel> getTabMenuModels() {
+        return tabMenuModels;
     }
 
     private class ViewHolder {

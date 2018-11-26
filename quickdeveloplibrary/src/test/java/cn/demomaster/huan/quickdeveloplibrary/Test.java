@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
@@ -80,4 +81,19 @@ public class Test {
         //addMenus(menuTabs);
     }*/
 
+
+
+    @org.junit.Test
+    public void test1(){
+        Integer[] a ={1,2,3};
+        List<Integer> al = Arrays.asList(a);
+        /*al = new ArrayList<>();
+        al.add(1);
+        al.add(2);
+        al.add(3);*/
+        al.remove((Integer) 1);
+        for(Integer i:al){
+            System.out.println("==============="+i);
+        }
+    }
 }

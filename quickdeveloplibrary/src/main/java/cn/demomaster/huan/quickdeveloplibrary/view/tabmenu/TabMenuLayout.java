@@ -34,86 +34,115 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 public class TabMenuLayout extends LinearLayout {
     public TabMenuLayout(Context context) {
         super(context);
+        this.context = context;
     }
 
     public TabMenuLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
     }
 
     public TabMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
+    }
+
+    private int center_x, center_y, mwidth, width, height;
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        width = w;
+        height = h;
+        center_x = width / 2;
     }
 
     private View tabButtonView;//点击的按钮
     private View tabDividerView;//分割符
+
+    public void setData(List<TabMenuModel> tabSelectModels, TabMenuInterface tabMenuInterface) {
+        this.tabSelectModels = tabSelectModels;
+        this.tabMenuInterface = tabMenuInterface;
+        init();
+    }
 
     //private ShowType ;
     public enum TabMenuShowType {
 
     }
 
-    TabRadioGroup linearLayout;
-    //初始化
-    public void init(Context context) {
-        this.context = context;
-         linearLayout = new TabRadioGroup(context);
-        linearLayout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout.setOrientation(HORIZONTAL);
-        tabCount = tabMenuInterface.getTabCount();
+    private Context context;
+    private TabMenuInterface tabMenuInterface;//构建组建不可缺少
+    private List<TabMenuModel> tabSelectModels;
+    private int tabCount;//可选项个数
+    private TabRadioGroup tabRadioGroup;//放置tab按钮的group
+    /*private List<TabListViewItem> tabListViewItems;//tab下的list数据源*/
 
-        for (int i = 0; i < tabMenuInterface.getTabCount(); i++) {
-            TabButton textView = new TabButton(context);
+    //初始化
+    public void init() {
+        if (tabMenuInterface == null && tabSelectModels == null) {
+            return;
+        }
+        if (tabRadioGroup == null) {
+            tabRadioGroup = new TabRadioGroup(context);
+            tabRadioGroup.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            tabRadioGroup.setOrientation(HORIZONTAL);
+            //tabListViewItems = new ArrayList<>();
+        } else {
+            tabRadioGroup.removeAllViews();
+            //tabListViewItems.clear();
+            this.removeAllViews();
+        }
+        tabCount = tabSelectModels.size();
+        //遍历生成tab按钮
+        for (int i = 0; i < tabCount; i++) {
+            TabRadioGroup.TabRadioButton textView = tabSelectModels.get(i).getTabButtonView();
+            if (textView == null) {
+                textView = new TabButton(context);
+            }
             textView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
             textView.setGravity(Gravity.CENTER);
-            textView.setTabName(tabMenuInterface.getTabName(i));/*
-            textView.setTag(i);
-            textView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showTabMenuView(v, (int) v.getTag());
-                }
-            });*/
-            linearLayout.addTabButton(textView);
+            textView.setTabName(tabSelectModels.get(i).getTabName());
+            textView.setState(false);
+            tabRadioGroup.addTabButton(textView);
         }
-        linearLayout.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
+        tabRadioGroup.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(View view, int i) {
-                showTabMenuView(view, i);
+                showTabMenuView(tabRadioGroup, view, i);
             }
         });
-        addView(linearLayout);
+        addView(tabRadioGroup);
     }
 
-    private void showTabMenuView(View v, int tabIndex) {
-        List<String> arr = tabMenuInterface.getItemText(tabIndex);
-        List<TabListViewItem> menus = new ArrayList<>();
-        for (int i = 0; i < arr.size(); i++) {
+    private void showTabMenuView(View tabGroup, View tabButton, int tabIndex) {
+        //获取第tabIndex个标签下的字符数组来生成list
+        String[] items = tabSelectModels.get(tabIndex).getTabItems();
+       /* List<TabListViewItem> menus = new ArrayList<>();
+        for (int i = 0; i < items.length; i++) {
             TabListViewItem menu = new TabListViewItem();
-            menu.setItemName(arr.get(i));
+            menu.setItemName(items[i]);
             menu.setPosition(i);
             menus.add(menu);
         }
-        mulMenus.clear();
-        mulMenus.addAll(menus);
-        initMulMenu(v, tabIndex);
-        popupWindow.showAsDropDown(v);
+        tabListViewItems.clear();
+        tabListViewItems.addAll(menus);*/
+        initSingTabContent(tabButton, tabIndex);
+        popupWindow.showAsDropDown(tabButton);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
 
     }
 
-    PopupWindow popupWindow;
+    private PopupWindow popupWindow;
     private ListView lv_options;
     private TabMenuAdapter adapter;
-    private List<TabListViewItem> mulMenus = new ArrayList<>();
     private RelativeLayout rel_root;
     private View contentView;
-    private List<Object> selected_list=new ArrayList();
-    private Object selected_arr;
-    private int tabCount;
 
-    private void initMulMenu(View view, final int tabIndex) {
+    //初始化单个tab内容页
+    private void initSingTabContent(View view, final int tabIndex) {
         if (popupWindow == null) {
-            selected_list.addAll(tabMenuInterface.getDefaultState());
             CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
             contentView = LayoutInflater.from(context).inflate(R.layout.layout_mul_menu, null, false);
             int[] location = new int[2];
@@ -136,16 +165,17 @@ public class TabMenuLayout extends LinearLayout {
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    linearLayout.resume();
+                    //弹窗消失tab按钮需要恢复之前的状态
+                    tabRadioGroup.resume();
                 }
             });
         }
-        selected_arr =  selected_list.get(tabIndex);
-        adapter = new TabMenuAdapter(context, mulMenus,selected_arr);
+        adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
         lv_options.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)lv_options.getLayoutParams());
-        layoutParams.width=QMUIDisplayHelper.getScreenWidth(context)/tabCount;
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) lv_options.getLayoutParams());
+        //默认位置在当前tab下平分viewgroup宽度
+        layoutParams.width = width / tabCount;
         lv_options.setLayoutParams(layoutParams);
         lv_options.setX(view.getX());//QMUIDisplayHelper.getScreenWidth(context)
         lv_options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -154,7 +184,7 @@ public class TabMenuLayout extends LinearLayout {
                 tabMenuInterface.onSelected(tabIndex, position);
                 //adapter.setOnClickItem(position);
                 adapter.setOnItemClicked(position);
-                selected_list.set(tabIndex,adapter.getSelectedList());
+                tabSelectModels = adapter.getTabMenuModels();
                 //popupWindow.dismiss();
             }
         });
@@ -162,66 +192,61 @@ public class TabMenuLayout extends LinearLayout {
 
     }
 
-    @Override
-    public void addView(View child) {
-        super.addView(child);
-    }
-
-    private Context context;
-    private TabMenuInterface tabMenuInterface;
-
     public void setTabMenu(TabMenuInterface menuTab) {
         this.tabMenuInterface = menuTab;
     }
 
-    public interface TabMenuInterface {
-        List<String> getItemText(int tabIndex);
+    public interface TabMenuInterface {/*
+        //根据tabIndex获取tab显示内容的list列表
+        List<String> getItemText(int tabIndex);*/
 
-        String onSelected(int tabIndex, int position);
-
-        String getTabName(int tabIndex);
-
-        int getTabCount();
-
-        List<Object> getDefaultState();
+        //点击选项时候触发
+        String onSelected(int tabIndex, int position);/*
+        //获取tab的名字
+        String[] getTabNames();
+        //获取默认状态集合（多选则为list,单选则为int）
+        List<TabSelectModel> getDefaultState();*/
     }
 
-    public class TabButton extends TabRadioGroup.TabRadioButton{
+    public static class TabButton extends TabRadioGroup.TabRadioButton {
         private Context context;
         private TextView nameTextView;
+
         public TabButton(Context context) {
             super(context);
-            init(context);
+            initView(context);
         }
 
         public TabButton(Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
-            init(context);
+            initView(context);
         }
 
         public TabButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
-            init(context);
+            initView(context);
         }
 
-        void init(Context context){
-            this.context = context;
-            nameTextView = new TextView(context);
-            nameTextView.setTextSize(18);
-            addView(nameTextView);
-        }
         @Override
         public void setState(Boolean state) {
-            if(nameTextView!=null){
-                nameTextView.setTextColor(state?Color.RED:Color.BLACK);
+            if (nameTextView != null) {
+                nameTextView.setTextColor(state ? Color.RED : Color.BLACK);
             }
         }
 
         @Override
         public void setTabName(String tabName) {
-            if(nameTextView!=null){
+            if (nameTextView != null) {
                 nameTextView.setText(tabName);
             }
+        }
+
+        @Override
+        public void initView(Context context) {
+            this.context = context;
+            nameTextView = new TextView(context);
+            nameTextView.setTextSize(18);
+            addView(nameTextView);
         }
     }
 
