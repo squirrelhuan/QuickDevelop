@@ -159,7 +159,7 @@ public class TabMenuLayout extends LinearLayout {
             System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
             popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1] - view.getHeight()), true).build();
 
-            LinearLayout ll_tab_panel = contentView.findViewById(R.id.ll_tab_panel);
+            LinearLayout ll_tab_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_panel.getLayoutParams();
            layoutParams.setMargins(layoutParams.leftMargin,layoutParams.topMargin,layoutParams.rightMargin,DisplayUtil.dp2px(context,tabToBottom));
             rel_root = contentView.findViewById(R.id.rel_root);
