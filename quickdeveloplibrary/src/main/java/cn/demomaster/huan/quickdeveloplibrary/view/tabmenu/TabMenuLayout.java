@@ -24,6 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
 /**
@@ -141,6 +142,11 @@ public class TabMenuLayout extends LinearLayout {
     private TabMenuAdapter adapter;
     private RelativeLayout rel_root;
     private View contentView;
+    private int tabToBottom = 100;
+
+    public void setTabToBottom(int tabToBottom) {
+        this.tabToBottom = tabToBottom;
+    }
 
     //初始化单个tab内容页
     private void initSingTabContent(View view, final int tabIndex) {
@@ -153,6 +159,9 @@ public class TabMenuLayout extends LinearLayout {
             System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
             popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1] - view.getHeight()), true).build();
 
+            LinearLayout ll_tab_panel = contentView.findViewById(R.id.ll_tab_panel);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_panel.getLayoutParams();
+           layoutParams.setMargins(layoutParams.leftMargin,layoutParams.topMargin,layoutParams.rightMargin,DisplayUtil.dp2px(context,tabToBottom));
             rel_root = contentView.findViewById(R.id.rel_root);
             rel_root.setOnClickListener(new OnClickListener() {
                 @Override
