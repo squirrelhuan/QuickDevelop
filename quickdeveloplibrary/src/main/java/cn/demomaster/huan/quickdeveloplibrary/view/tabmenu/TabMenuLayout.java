@@ -107,6 +107,8 @@ public class TabMenuLayout extends LinearLayout {
             textView.setState(false);
             tabRadioGroup.addTabButton(textView);
         }
+
+        tabRadioGroup.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabRadioGroup.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(View view, int i) {
