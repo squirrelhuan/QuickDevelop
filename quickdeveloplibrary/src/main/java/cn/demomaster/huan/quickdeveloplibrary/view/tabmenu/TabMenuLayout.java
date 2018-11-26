@@ -101,7 +101,7 @@ public class TabMenuLayout extends LinearLayout {
             if (textView == null) {
                 textView = new TabButton(context);
             }
-            textView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            textView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
             textView.setGravity(Gravity.CENTER);
             textView.setTabName(tabSelectModels.get(i).getTabName());
             textView.setState(false);
