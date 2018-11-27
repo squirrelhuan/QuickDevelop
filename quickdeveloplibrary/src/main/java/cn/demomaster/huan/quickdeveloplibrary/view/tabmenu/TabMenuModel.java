@@ -14,6 +14,7 @@ public class TabMenuModel {
     private List<Integer> selectDeftData;//默认选项
     private String tabName;//Tab名称
     private String[] tabItems;//子内容列表
+    private int columnCount =1;//默认内容列表显示几列
     private TabRadioGroup.TabRadioButton tabButtonView;
 
     public TabMenuModel( String tabName, String[] tabItems,int selectCount, List<Integer> selectDeftData) {
@@ -66,5 +67,13 @@ public class TabMenuModel {
 
     public void setTabButtonView(TabRadioGroup.TabRadioButton tabButtonView) {
         this.tabButtonView = tabButtonView;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 }

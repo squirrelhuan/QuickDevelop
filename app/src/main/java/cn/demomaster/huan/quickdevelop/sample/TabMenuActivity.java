@@ -43,7 +43,7 @@ public class TabMenuActivity extends BaseActivityParent {
         for (int i = 0; i < bbb.length; i++) {
             bbb[i]="bbb"+i;
         }
-        String[] ccc=new String[20];
+        String[] ccc=new String[120];
         for (int i = 0; i < ccc.length; i++) {
            ccc[i]="ccc" + i;
         }
@@ -59,6 +59,7 @@ public class TabMenuActivity extends BaseActivityParent {
         tabSelectModels.add(tabMenuModel1);
         TabMenuModel tabMenuModel2 =new TabMenuModel("c",ccc,3, selectData_c);
         tabMenuModel2.setTabButtonView(new TButton(this));
+        tabMenuModel2.setColumnCount(3);
         tabSelectModels.add(tabMenuModel2);
 
         /*********************      组建初始化                   ************************/

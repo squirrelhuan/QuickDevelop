@@ -3,18 +3,21 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
+import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
@@ -24,8 +27,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
  * description：
  */
 // ① 创建Adapter
-public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHolder> {
-
+public class TabMenuAdapter_List extends BaseAdapter {
     private List<TabListViewItem> tabListViewItems = new ArrayList();
     private List<TabMenuModel> tabMenuModels;
     private int tabIndex;
@@ -34,7 +36,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     private LayoutInflater inflater;
     private boolean isSingle;//单个tab中的状态集合（多选则为list,单选则为int）
 
-    public TabMenuAdapter(Context context, List<TabMenuModel> tabMenuModels, int tabIndex){
+    public TabMenuAdapter_List(Context context, List<TabMenuModel> tabMenuModels, int tabIndex) {
         this.context = context;
         this.tabIndex = tabIndex;
         this.tabMenuModels = tabMenuModels;
@@ -66,74 +68,52 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             }
             tabListViewItems.add(item);
         }
+
         this.inflater = ((Activity) context).getLayoutInflater();
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu,parent,false);
-        return new ViewHolder(view);
+    public int getCount() {
+        return this.tabListViewItems.size();
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public Object getItem(int position) {
+        return this.tabListViewItems.get(position);
+    }
+
+    public long getItemId(int position) {
+        return (long) position;
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = this.inflater.inflate(R.layout.item_tab_menu, parent, false);
+            holder = new ViewHolder();
+            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         if (tabListViewItems.get(position).isSelected()) {
             holder.tv_title.setTextColor(Color.RED);
         } else {
             holder.tv_title.setTextColor(Color.BLACK);
         }
         holder.tv_title.setText(((TabListViewItem) this.tabListViewItems.get(position)).getItemName());
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener!=null){
-                    int p = (int)v.getTag();
-                    onItemClickListener.onItemClick(v,p);
-                }
-                Log.e("这里是点击每一行item的响应事件",""+position);
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return this.tabListViewItems.size();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        private TextView tv_title;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            tv_title = itemView.findViewById(R.id.tv_title);
-
-        }
-    }
-
-    private OnItemClickListener onItemClickListener;
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public static interface OnItemClickListener{
-        void onItemClick(View view,int position);
-    }
-
-    public List<TabMenuModel> getTabMenuModels() {
-        return tabMenuModels;
+        return convertView;
     }
 
     public void setOnItemClicked(int position) {
         boolean b = !tabListViewItems.get(position).isSelected();
         TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
         List<Integer> current = tabMenuModel.getSelectDeftData();
-        if (current.contains(position)) {//如果存在则remove
+        if (Arrays.asList(current).contains(position)) {//如果存在则remove
             current.remove((Object)position);
         } else {//如果不存在
             if (current.size() + 1 > tabMenuModel.getSelectCount()) {//判断个数是否超出，没超出则追加，超出则remove第一个
                 tabListViewItems.get(current.get(0)).setSelected(false);
+                int c = current.size();
                 current.remove(0);
                 current.add(position);
             } else {
@@ -145,4 +125,36 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         tabListViewItems.get(position).setSelected(b);
         notifyDataSetChanged();
     }
+
+    Integer[] reSort(Integer[] arr) {
+        Integer[] tmp = new Integer[arr.length];
+        for (int i = 0; i < arr.length - 1; i++) {
+            tmp[i] = arr[i + 1];
+        }
+        return tmp;
+    }
+
+    Integer[] removeSort(Integer[] arr, int index) {
+        if (arr.length == 1) {
+            return new Integer[selectCount];
+        }
+        Integer[] tmp = arr.clone();
+        for (int i = index; i < arr.length - 1; i++) {
+            tmp[i] = arr[i + 1];
+        }
+        return tmp;
+    }
+
+
+    public List<TabMenuModel> getTabMenuModels() {
+        return tabMenuModels;
+    }
+
+    private class ViewHolder {
+        TextView tv_title;
+
+        private ViewHolder() {
+        }
+    }
+
 }

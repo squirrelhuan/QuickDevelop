@@ -4,27 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
@@ -137,6 +134,7 @@ public class TabMenuLayout extends LinearLayout {
         }
         tabListViewItems.clear();
         tabListViewItems.addAll(menus);*/
+        columnCount = tabSelectModels.get(tabIndex).getColumnCount();//默认内容列表显示几列
         initSingTabContent(tabGroup,tabButton, tabIndex);
         popupWindow.showAsDropDown(tabGroup);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
@@ -144,7 +142,7 @@ public class TabMenuLayout extends LinearLayout {
     }
 
     private PopupWindow popupWindow;
-    private ListView lv_options;
+    private RecyclerView recy_tab_content;
     private TabMenuAdapter adapter;
     private RelativeLayout rel_root;
     private View contentView;
@@ -156,6 +154,9 @@ public class TabMenuLayout extends LinearLayout {
     }
 
     private int[] location;
+    private int columnCount = 1;//默认内容列表显示几列
+
+
     //初始化单个tab内容页
     private void initSingTabContent(final View tabGroup, View tabButton, final int tabIndex) {
         if (popupWindow == null) {
@@ -192,7 +193,7 @@ public class TabMenuLayout extends LinearLayout {
                     popupWindow.dismiss();
                 }
             });*/
-            lv_options = contentView.findViewById(R.id.lv_menus);
+            recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
 
             popupWindow.setTouchable(true);
             popupWindow.setFocusable(true);
@@ -204,17 +205,25 @@ public class TabMenuLayout extends LinearLayout {
                 }
             });
         }
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
+        if (columnCount==1){
+            recy_tab_content.setLayoutManager(new LinearLayoutManager(context));
+            //默认位置在当前tab下平分viewgroup宽度
+            layoutParams.width = width / tabCount;
+            recy_tab_content.setLayoutParams(layoutParams);
+            recy_tab_content.setX(location[0]+(tabIndex*2)*tabButton.getWidth()/2+tabButton.getWidth()/2-layoutParams.width/2);//QMUIDisplayHelper.getScreenWidth(context)
+        }else if(columnCount>1){
+            layoutParams.width = QMUIDisplayHelper.getScreenWidth(context);
+            recy_tab_content.setLayoutParams(layoutParams);
+            recy_tab_content.setX(0);//QMUIDisplayHelper.getScreenWidth(context)
+            recy_tab_content.setLayoutManager(new GridLayoutManager(context,columnCount));
+        }
         adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
-        lv_options.setAdapter(adapter);
-        //adapter.notifyDataSetChanged();
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) lv_options.getLayoutParams());
-        //默认位置在当前tab下平分viewgroup宽度
-        layoutParams.width = width / tabCount;
-        lv_options.setLayoutParams(layoutParams);
-        lv_options.setX(location[0]+(tabIndex*2)*tabButton.getWidth()/2+tabButton.getWidth()/2-layoutParams.width/2);//QMUIDisplayHelper.getScreenWidth(context)
-        lv_options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        recy_tab_content.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick( View view, int position) {
                 tabMenuInterface.onSelected(tabIndex, position);
                 //adapter.setOnClickItem(position);
                 adapter.setOnItemClicked(position);

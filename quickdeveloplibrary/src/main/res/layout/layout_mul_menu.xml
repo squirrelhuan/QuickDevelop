@@ -17,15 +17,21 @@
         android:layout_marginBottom="100dp"
         android:background="@color/white">
 
-        <ListView
+
+        <!--<ListView
                 android:id="@+id/lv_menus"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:divider="@null"
                 android:layout_height="wrap_content">
-            <!--android:background="@drawable/listview_option_menu"-->
+            &lt;!&ndash;android:background="@drawable/listview_option_menu"&ndash;&gt;
+        </ListView>-->
 
-        </ListView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_tab_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"/>
     </LinearLayout>
 
     </RelativeLayout>
