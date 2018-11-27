@@ -3,9 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 
@@ -96,4 +100,128 @@ public class Test {
             System.out.println("==============="+i);
         }
     }
+
+
+    /**
+     * 获取今天往后一周的集合
+     */
+    @org.junit.Test
+    public  void get7week(){
+        String week = "";
+        List<String> weeksList = new ArrayList<String>();
+        List<String> dateList = get7date(21);
+        for (String s : dateList) {
+            System.out.println(s);
+            if (s.equals(StringData())) {
+                week = "今天";
+            } else {
+                week = getWeek(s);
+            }
+            weeksList.add(week);
+        }
+        for(String str :weeksList){
+            System.out.println(str);
+        }
+        //return weeksList;
+    }
+
+
+
+    public static List<String> get7date(int count) {
+        List<String> dates = new ArrayList<String>();
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        java.text.SimpleDateFormat sim = new java.text.SimpleDateFormat(
+                "yyyy-MM-dd");
+        String date = sim.format(c.getTime());
+        dates.add(date);
+        for (int i = 0; i < count-1; i++) {
+            c.add(java.util.Calendar.DAY_OF_MONTH, 1);
+            date = sim.format(c.getTime());
+            dates.add(date);
+        }
+        return dates;
+    }
+
+
+    private static String mYear; // 当前年
+    private static String mMonth; // 月
+    private static String mDay;
+    private static String mWay;
+
+    /**
+     * 获取当前年月日
+     * 
+     * @return
+     */
+    public static String StringData() {
+
+
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
+        mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
+        mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
+        if(Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth)))){
+            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth))));
+        }
+        return mYear + "-" + (mMonth.length()==1?"0"+mMonth:mMonth) + "-" + (mDay.length()==1?"0"+mDay:mDay);
+    }
+
+    /**得到当年当月的最大日期**/
+    public static int MaxDayFromDay_OF_MONTH(int year,int month){
+        Calendar time=Calendar.getInstance();
+        time.clear();
+        time.set(Calendar.YEAR,year);
+        time.set(Calendar.MONTH,month-1);//注意,Calendar对象默认一月为0                 
+        int day=time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
+        return day;
+    }
+
+
+    /**
+     * 根据当前日期获得是星期几
+     * 
+     * @return
+     */
+    public static String getWeek(String time) {
+        String Week = "";
+
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+
+
+            c.setTime(format.parse(time));
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 1) {
+            Week += "周天";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 2) {
+            Week += "周一";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 3) {
+            Week += "周二";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 4) {
+            Week += "周三";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 5) {
+            Week += "周四";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 6) {
+            Week += "周五";
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 7) {
+            Week += "周六";
+        }
+        return Week;
+    }
+
+
 }
