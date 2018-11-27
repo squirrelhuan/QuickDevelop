@@ -69,6 +69,10 @@ public class TabRadioGroup extends LinearLayout {
         }
     }
 
+    public void setCurrentTab(int tabIndex){
+        getChildAt(tabIndex).performClick();
+    }
+
     public void resume() {
         for (TabRadioButton button : tabRadioButtons) {
             button.setState(false);

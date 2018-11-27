@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -136,7 +137,7 @@ public class TabMenuLayout extends LinearLayout {
         }
         tabListViewItems.clear();
         tabListViewItems.addAll(menus);*/
-        initSingTabContent(tabGroup, tabIndex);
+        initSingTabContent(tabGroup,tabButton, tabIndex);
         popupWindow.showAsDropDown(tabGroup);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
 
@@ -154,31 +155,47 @@ public class TabMenuLayout extends LinearLayout {
         this.tabToBottom = tabToBottom;
     }
 
+    private int[] location;
     //初始化单个tab内容页
-    private void initSingTabContent(View view, final int tabIndex) {
+    private void initSingTabContent(final View tabGroup, View tabButton, final int tabIndex) {
         if (popupWindow == null) {
             CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
             contentView = LayoutInflater.from(context).inflate(R.layout.layout_mul_menu, null, false);
-            int[] location = new int[2];
-            view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-            view.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+            location = new int[2];
+            tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+            tabGroup.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
             System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
-            popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1] - view.getHeight()), true).build();
+            popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1] ), true).build();
 
+            contentView.setPadding(0,tabGroup.getHeight(),0,0);
             LinearLayout ll_tab_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_panel.getLayoutParams();
             layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, DisplayUtil.dp2px(context, tabToBottom));
             rel_root = contentView.findViewById(R.id.rel_root);
-            rel_root.setOnClickListener(new OnClickListener() {
+            rel_root.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(motionEvent.getX()>location[0]&&motionEvent.getX()<(location[0]+tabGroup.getWidth())&&motionEvent.getY()<tabGroup.getHeight()){
+                        int wc = tabGroup.getWidth()/tabCount;
+                        int x = (int)motionEvent.getX() - location[0];
+                        int index = (int)(x / wc);
+                        tabRadioGroup.setCurrentTab(index);
+                    }else {
+                        popupWindow.dismiss();
+                    }
+                    return false;
+                }
+            });
+            /*rel_root.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     popupWindow.dismiss();
                 }
-            });
+            });*/
             lv_options = contentView.findViewById(R.id.lv_menus);
 
             popupWindow.setTouchable(true);
-            popupWindow.setFocusable(false);
+            popupWindow.setFocusable(true);
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
@@ -194,7 +211,7 @@ public class TabMenuLayout extends LinearLayout {
         //默认位置在当前tab下平分viewgroup宽度
         layoutParams.width = width / tabCount;
         lv_options.setLayoutParams(layoutParams);
-        lv_options.setX(view.getX());//QMUIDisplayHelper.getScreenWidth(context)
+        lv_options.setX(location[0]+(tabIndex*2)*tabButton.getWidth()/2+tabButton.getWidth()/2-layoutParams.width/2);//QMUIDisplayHelper.getScreenWidth(context)
         lv_options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
