@@ -16,9 +16,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name=".camera.scan.ScanActivity"></activity>
-        <activity android:name=".camera.idcard.IDCardActivity"></activity>
-        <activity android:name=".camera.idcard.CameraIDCardActivity"></activity>
+        <activity android:name=".camera.scan.ScanActivity" />
+        <activity android:name=".camera.idcard.IDCardActivity" />
+        <activity android:name=".camera.idcard.CameraIDCardActivity" />
+        <activity android:name=".helper.simplepicture.SimplePictureActivity"></activity>
     </application>
 
 </manifest>
