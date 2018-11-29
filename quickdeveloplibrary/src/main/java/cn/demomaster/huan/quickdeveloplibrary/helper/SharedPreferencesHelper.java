@@ -15,6 +15,15 @@ import java.util.Set;
 public class SharedPreferencesHelper {
 
     private static SharedPreferencesHelper instance;
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
+    public boolean contains(String key){
+        return sharedPreferences.contains(key);
+    }
+
     private SharedPreferences sharedPreferences;
 
     private static Context context;

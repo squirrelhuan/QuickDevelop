@@ -17,6 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
@@ -58,6 +59,8 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         findViewById(R.id.btn_tab_menu).setOnClickListener(this);
         findViewById(R.id.btn_dialog).setOnClickListener(this);
         findViewById(R.id.btn_photo).setOnClickListener(this);
+        findViewById(R.id.btn_simple_picture).setOnClickListener(this);
+
         findViewById(R.id.btn_pick).setOnClickListener(this);
         findViewById(R.id.btn_color_black).setOnClickListener(this);
         findViewById(R.id.btn_color_red).setOnClickListener(this);
@@ -116,6 +119,10 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
             case R.id.btn_photo:
                 intent = new Intent(MainActivity.this, IDCardActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_simple_picture:
+                intent = new Intent(MainActivity.this, SimplePictureActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_scan:
