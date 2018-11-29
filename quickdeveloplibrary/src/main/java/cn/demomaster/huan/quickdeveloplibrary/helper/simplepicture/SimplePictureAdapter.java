@@ -11,10 +11,13 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.PictureModel;
 import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
 
 /**
@@ -30,22 +33,17 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     private LayoutInflater mInflater;
 
     private int mMaxCount;
-    private boolean isSingle;
     //保存选中的图片
-    private ArrayList<Image> mSelectImages = new ArrayList<>();
+    //private ArrayList<PictureModel> pictureModels = new ArrayList<>();
+    private LinkedHashMap<Integer,ViewHolder> map = new LinkedHashMap<>();
     private boolean useCamera;
     private boolean isViewImage;
 
-    /**
-     * @param maxCount 图片的最大选择数量，小于等于0时，不限数量，isSingle为false时才有用。
-     * @param isSingle 是否单选
-     */
-    public SimplePictureAdapter(Context context, ArrayList<Image> mImages, int maxCount, boolean isSingle, boolean isViewImage) {
+    public SimplePictureAdapter(Context context, ArrayList<Image> mImages, int maxCount, boolean isViewImage) {
         this.mImages = mImages;
         mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
         mMaxCount = maxCount;
-        this.isSingle = isSingle;
         this.isViewImage = isViewImage;
     }
 
@@ -76,7 +74,6 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
                 checkedImage(holder, (int) v.getTag());
             }
         });
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +88,6 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
             }
         });
 
-
     }
 
 
@@ -100,7 +96,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         return mImages == null ? 0 : mImages.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         SquareImageView iv_picture;
         ImageView iv_select;
@@ -125,63 +121,75 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         void onItemClick(View view, int position);
     }
 
-    private List<ViewHolder> holders = new ArrayList<>();
 
     private void checkedImage(ViewHolder holder, int position) {
-        Image image = getImage(position);
-        image.setPosition(position);
-        if (isSingle) {
-            if (!mSelectImages.contains(image)) {
-                //如果是单选，就先清空已经选中的图片，再选中当前图片
-                clearImageSelect();
+        /*Image image = getImage(position);
+        PictureModel pictureModel = new PictureModel();
+        pictureModel.setPosition(position);
+        pictureModel.setImage(image);
+        pictureModel.setViewHolder(holder);*/
+        if(map.containsKey(position)){
+            removeItem(position);
+        } else {
+            if (mMaxCount <= 0 || map.size() < mMaxCount) {
+                addItem(position,holder);
+            }else {
+                removeFirst();
+                addItem(position,holder);
             }
-            selectImage(image, holders.get(position));
-            setItemSelect(holder, true);
-        } else if (mMaxCount <= 0 || mSelectImages.size() < mMaxCount) {
-            //如果不限制图片的选中数量，或者图片的选中数量
-            // 还没有达到最大限制，就直接选中当前图片。
-            selectImage(image,holders.get(position));
-            setItemSelect(holder, true);
         }
     }
+
 
     private Image getImage(int position) {
         return mImages.get(useCamera ? position - 1 : position);
     }
 
-    private void clearImageSelect() {
-        mSelectImages.clear();
-        for(ViewHolder viewHolder:holders){
-            setItemSelect(viewHolder,false);
-        }
+    private void removeFirst() {
+        Object[] objects = map.entrySet().toArray();
+        Map.Entry entry = (Map.Entry) objects[objects.length-1];
+        int i =(Integer) entry.getKey();
+        removeItem(i);
+        map.remove(map.get(0));
     }
 
     /**
      * 选中图片
      */
-    private void selectImage(Image image, ViewHolder viewHolder) {
-        mSelectImages.add(image);
-        holders.add(viewHolder);
+    private void addItem(int position,ViewHolder viewHolder) {
+        refreshItemView(viewHolder, true);
+        map.put(position,viewHolder);
+
     }
 
     /**
      * 取消选中图片
      */
-    private void unSelectImage(Image image) {
-        mSelectImages.remove(image);
+    private void removeItem(int position) {
+        refreshItemView(map.get(position), false);
+        map.remove(position);
+        //pictureModels.remove(pictureModel);
     }
 
     /**
      * 设置图片选中和未选中的效果
      */
-    private void setItemSelect(ViewHolder holder, boolean isSelect) {
-        if (isSelect) {
-            holder.iv_select.setImageResource(R.drawable.ic_check_box_black_24dp);
-            holder.iv_masking.setAlpha(0.5f);
-        } else {
-            holder.iv_select.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
-            holder.iv_masking.setAlpha(0.2f);
-        }
+    private void refreshItemView(ViewHolder holder, boolean isSelect) {
+        if (holder != null)
+            if (isSelect) {
+                holder.iv_select.setImageResource(R.drawable.ic_check_box_black_24dp);
+                holder.iv_masking.setAlpha(0.5f);
+            } else {
+                holder.iv_select.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
+                holder.iv_masking.setAlpha(0.2f);
+            }
+    }
+
+    public void refresh(ArrayList<Image> data, boolean useCamera) {
+        mImages = data;
+        this.useCamera = useCamera;
+        map.clear();
+        notifyDataSetChanged();
     }
 
 }

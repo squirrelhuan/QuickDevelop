@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".helper.simplepicture.SimplePictureActivity">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_picture_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:overScrollMode="never" />
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_mark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/transparent_dark_33">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_folder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:background="@android:color/white"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:overScrollMode="never"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:scrollbars="vertical"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black">
+
+        <TextView
+            android:id="@+id/tv_folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="40dp"
+            android:text="@string/image"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="20dp"
+            android:text="@string/preview"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
