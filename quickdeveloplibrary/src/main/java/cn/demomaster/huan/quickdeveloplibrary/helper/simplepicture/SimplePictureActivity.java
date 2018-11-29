@@ -69,7 +69,7 @@ public class SimplePictureActivity extends BaseActivityParent {
        recy_picture_grid = findViewById(R.id.recy_picture_grid);
        mLayoutManager = new GridLayoutManager(this, 3);
        recy_picture_grid.setLayoutManager(mLayoutManager);
-       adapter = new SimplePictureAdapter(mContext, folders.get(0).getImages(), 1, true);
+       adapter = new SimplePictureAdapter(mContext, folders.get(0).getImages(), 1, true,true);
        recy_picture_grid.setAdapter(adapter);
 
        adapter.setOnItemClickListener(new SimplePictureAdapter.OnItemClickListener() {

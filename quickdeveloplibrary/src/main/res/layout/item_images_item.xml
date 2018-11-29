@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:orientation="vertical"
-    >
-    <ImageView
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:orientation="vertical">
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView
         android:id="@+id/iv_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
-    <ImageView
+    <cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView
         android:id="@+id/iv_masking"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#111212" />
 
     <ImageView
         android:id="@+id/iv_select"
-        android:layout_alignParentRight="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_gravity="right"
         android:padding="5dp"
-        android:src="@drawable/ic_check_box_outline_blank_black_24dp"/>
-</RelativeLayout>
+        android:src="@drawable/ic_check_box_outline_blank_black_24dp" />
+</FrameLayout>
