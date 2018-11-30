@@ -3,10 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model;
 /**
  * Created by Squirrel桓 on 2018/11/28.
  */
+
+import java.io.Serializable;
+
 /**
  *图片实体类
  */
-public class Image {
+public class Image implements Serializable {
 
     private String path;
     private long time;

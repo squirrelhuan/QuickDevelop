@@ -55,6 +55,7 @@
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/tv_preview"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

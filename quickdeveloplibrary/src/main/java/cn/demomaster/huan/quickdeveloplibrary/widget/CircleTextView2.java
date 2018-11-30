@@ -10,22 +10,24 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+
 /**
  * @author squirrel桓
  * @date 2018/11/21.
  * description：
  */
 @SuppressLint("AppCompatCustomView")
-public class CircleTextView extends TextView {
-    public CircleTextView(Context context) {
+public class CircleTextView2 extends TextView {
+    public CircleTextView2(Context context) {
         super(context);
     }
 
-    public CircleTextView(Context context, AttributeSet attrs) {
+    public CircleTextView2(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CircleTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CircleTextView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -51,7 +53,25 @@ public class CircleTextView extends TextView {
 
     private int backgroundColor = Color.GREEN;
     //private int textColor = Color.WHITE;
+    private int line_width = 3;
 
+    public int getLine_width() {
+        return line_width;
+    }
+
+    public void setLine_width(int line_width) {
+        this.line_width = line_width;
+    }
+
+    private boolean usePadding;
+
+    public boolean isUsePadding() {
+        return usePadding;
+    }
+
+    public void setUsePadding(boolean usePadding) {
+        this.usePadding = usePadding;
+    }
 
     @Override
     public void setBackgroundColor(int backgroundColor) {
@@ -62,6 +82,15 @@ public class CircleTextView extends TextView {
     protected void onDraw(Canvas canvas) {
         //this.setTextColor(textColor);
         if (isRound) {
+            int padding_l = usePadding?getPaddingLeft():0;
+            int padding_t = usePadding?getPaddingTop():0;
+            int padding_r = usePadding?getPaddingRight():0;
+            int padding_b = usePadding?getPaddingBottom():0;
+
+            int rel_height = height - padding_t - padding_b;
+            int rel_width = height - padding_l - padding_r;
+            int line_w = DisplayUtil.dp2px(getContext(),line_width);
+
             Path path = new Path();
             double raduis = Math.min(getHeight(),getWidth())/2;
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
@@ -69,10 +98,21 @@ public class CircleTextView extends TextView {
             //path.addCircle(getWidth()/2, getHeight()/2, (float) (raduis ), Path.Direction.CCW);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
+            paint.setColor(getTextColors().getDefaultColor());
+
+            paint.setStrokeWidth(line_width);
+            paint.setStyle(Paint.Style.STROKE);
+            RectF rectF = new RectF(padding_l,padding_t,rel_width+padding_l,rel_height+padding_t);
+            rectF = new RectF(padding_l+line_w,padding_t+line_w,width-line_w-padding_r,height-line_w-padding_b);
+            canvas.drawRoundRect(rectF, rel_height/2, rel_height/2, paint);
+
+            paint.setStyle(Paint.Style.FILL);
             paint.setColor(backgroundColor);
-            RectF rectF = new RectF(0,0,width,height);
-            canvas.drawRoundRect(rectF, height/2, height/2, paint);
-            path.addRoundRect(rectF,height/2, height/2, Path.Direction.CCW);
+            RectF rectF2 = new RectF(padding_l+line_w,padding_t+line_w,width-line_w-padding_r,height-line_w-padding_b);
+            canvas.drawRoundRect(rectF2, rel_height/2-line_w, rel_height/2-line_w, paint);
+
+
+            path.addRoundRect(rectF,rel_height/2, rel_height/2, Path.Direction.CCW);
             //先将canvas保存
             canvas.save();
             //设置为在圆形区域内绘制

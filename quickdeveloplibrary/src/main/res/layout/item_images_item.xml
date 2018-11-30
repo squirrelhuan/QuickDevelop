@@ -20,11 +20,16 @@
         android:layout_gravity="center"
         android:background="#111212" />
 
-    <ImageView
-        android:id="@+id/iv_select"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+    <cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2
+        android:id="@+id/ct_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:padding="5dp"
-        android:src="@drawable/ic_check_box_outline_blank_black_24dp" />
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:textSize="14sp"
+        android:text=""
+        android:padding="5dp"/>
 </FrameLayout>

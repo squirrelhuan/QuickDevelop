@@ -16,11 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 public class SimplePictureActivity extends BaseActivityParent {
 
@@ -53,7 +56,7 @@ public class SimplePictureActivity extends BaseActivityParent {
         init();
     }
 
-    private TextView tvFolderName;
+    private TextView tvFolderName,tv_preview;
     private RecyclerView rvImage;
     private SimplePictureAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
@@ -76,8 +79,9 @@ public class SimplePictureActivity extends BaseActivityParent {
     }
 
     private void initView() {
-
+        tv_preview= (TextView) findViewById(R.id.tv_preview);
         tvFolderName = (TextView) findViewById(R.id.tv_folder_name);
+        tv_preview.setVisibility(View.GONE);
         rl_mark =  findViewById(R.id.rl_mark);
         rvImage = findViewById(R.id.recy_picture_grid);
         rvImage.setLayoutManager(mLayoutManager);
@@ -114,6 +118,7 @@ public class SimplePictureActivity extends BaseActivityParent {
         });
     }
 
+    private int maxCount = 3;
    public void initAdapter(){
        // 判断屏幕方向
        Configuration configuration = getResources().getConfiguration();
@@ -123,12 +128,25 @@ public class SimplePictureActivity extends BaseActivityParent {
            mLayoutManager = new GridLayoutManager(this, 6);
        }
        rvImage.setLayoutManager(mLayoutManager);
-       mAdapter = new SimplePictureAdapter(mContext, mFolders.get(0).getImages(), 3,true);
+       mAdapter = new SimplePictureAdapter(mContext, mFolders.get(0).getImages(), maxCount,true,rvImage);
        rvImage.setAdapter(mAdapter);
 
        mAdapter.setOnItemClickListener(new SimplePictureAdapter.OnItemClickListener() {
            @Override
-           public void onItemClick(View view, int position) {
+           public void onItemPreview(View view, int position, Image image) {
+               Bundle bundle = new Bundle();
+               bundle.putSerializable("image",image);
+               startActivity(PreviewActivity.class,bundle);
+           }
+
+           @Override
+           public void onItemClick(View view, int position,Map<Integer, Image> map) {
+               if(map==null||map.size()==0){
+                   tv_preview.setVisibility(View.GONE);
+               }else {
+                   tv_preview.setVisibility(View.VISIBLE);
+                    tv_preview.setText(mContext.getResources().getString(R.string.preview)+"("+map.size()+"/"+maxCount+")");
+               }
 
            }
        });
