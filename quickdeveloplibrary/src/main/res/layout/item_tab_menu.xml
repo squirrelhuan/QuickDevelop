@@ -21,6 +21,6 @@
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/red"
-        android:textSize="@dimen/quickdev_common_text_size"/>
+        android:textSize="@dimen/quickdev_middle_text_size"/>
 
 </LinearLayout>
