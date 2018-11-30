@@ -12,4 +12,9 @@
     <string name="minute">分</string>
     <string name="second">秒</string>
 
+    <string name="image">图片</string>
+    <string name="confirm">确定</string>
+    <string name="preview">预览</string>
+    <string name="select">选择</string>
+
 </resources>

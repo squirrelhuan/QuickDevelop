@@ -11,7 +11,6 @@ public class Image {
     private String path;
     private long time;
     private String name;
-    private int position;
 
     public Image(String path, long time, String name) {
         this.path = path;
@@ -43,11 +42,4 @@ public class Image {
         this.name = name;
     }
 
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 }

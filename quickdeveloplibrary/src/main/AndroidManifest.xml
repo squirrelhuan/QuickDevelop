@@ -19,7 +19,8 @@
         <activity android:name=".camera.scan.ScanActivity" />
         <activity android:name=".camera.idcard.IDCardActivity" />
         <activity android:name=".camera.idcard.CameraIDCardActivity" />
-        <activity android:name=".helper.simplepicture.SimplePictureActivity"></activity>
+        <activity android:name=".helper.simplepicture.SimplePictureActivity" />
+        <activity android:name=".helper.simplepicture.PreviewActivity"></activity>
     </application>
 
 </manifest>

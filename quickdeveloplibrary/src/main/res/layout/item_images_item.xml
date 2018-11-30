@@ -22,8 +22,8 @@
 
     <ImageView
         android:id="@+id/iv_select"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="right"
         android:padding="5dp"
         android:src="@drawable/ic_check_box_outline_blank_black_24dp" />
