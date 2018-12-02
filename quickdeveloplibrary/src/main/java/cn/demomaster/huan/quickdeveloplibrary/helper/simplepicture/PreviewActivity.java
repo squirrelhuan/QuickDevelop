@@ -30,6 +30,7 @@ public class PreviewActivity extends BaseActivityParent {
         init();
     }
 
+
     private void init() {
         if (mBundle != null && mBundle.containsKey("image")) {
             Image image = (Image) mBundle.getSerializable("image");
