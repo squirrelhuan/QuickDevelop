@@ -37,7 +37,8 @@
         <!-- android:screenOrientation="landscape" -->
         <activity android:name=".sample.CsqliteActivity" />
         <activity android:name=".sample.QDialogActivity" />
-        <activity android:name=".sample.TabMenuActivity"></activity>
+        <activity android:name=".sample.TabMenuActivity" />
+        <activity android:name=".sample.PictureSelectActivity"></activity>
     </application>
 
 </manifest>

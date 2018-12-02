@@ -100,6 +100,10 @@ public class BaseActivityRoot extends AppCompatActivity {
                 break;
 
 
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE://自定义的图片选择器
+                photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SIMPLE_PICTURE, data);//偷梁换柱
+                break;
+
         }
 
 

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 
 
 /**
@@ -55,6 +56,11 @@ public class PhotoHelper {
     // 调用图库获取图片
     public void selectPhotoFromGallery(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_SELECT_PHOTO_FROM_GALLERY);
+    }
+
+    // 调用自定义图库获取图片
+    public void selectPhotoFromMyGallery(OnTakePhotoResult onTakePhotoResult) {
+        takePhoto2(onTakePhotoResult, RESULT_CODE_SIMPLE_PICTURE);
     }
 
     //调用相册并截取
@@ -102,6 +108,10 @@ public class PhotoHelper {
                     case RESULT_CODE_SCAN_QRCODE:
                         scanQrcode(resultCodeTakePhoto);
                         break;
+                    case RESULT_CODE_SIMPLE_PICTURE:
+                        startSimplePictureActivity(resultCodeTakePhoto);
+                        break;
+
 
                 }
             }
@@ -193,6 +203,12 @@ public class PhotoHelper {
         ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE);
     }
 
+   private void startSimplePictureActivity(int resultCodeTakePhoto){
+       Intent intent = new Intent(context,SimplePictureActivity.class);
+       intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+       ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
+   }
+
 
     private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int resultCodeTakePhoto) {
         Intent intent = new Intent(context, cameraIDCardActivityClass);
@@ -206,6 +222,7 @@ public class PhotoHelper {
     public final static int RESULT_CODE_TAKE_PHOTO_FOR_IDCARD = 2003;
     public final static int RESULT_CODE_SELECT_PHOTO_FROM_GALLERY = 2004;
     public final static int RESULT_CODE_SELECT_PHOTO_FROM_GALLERY_AND_CROP = 2005;
+    public final static int RESULT_CODE_SIMPLE_PICTURE = 2020;
     public final static int RESULT_CODE_SCAN_QRCODE = 2006;
 
 
@@ -215,6 +232,9 @@ public class PhotoHelper {
     public final static int PHOTOHELPER_REQUEST_CODE_GALLERY = 1003;
     public final static int PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP = 1004;
     public final static int PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE= 1005;
+
+    public final static int PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE =1020;
+
     public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
     public final static String PHOTOHELPER_RESULT_PATH = "PHOTOHELPER_RESULT_PATH";
 
