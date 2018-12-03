@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
+import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_simple_picture:
-                intent = new Intent(MainActivity.this, SimplePictureActivity.class);
+                intent = new Intent(MainActivity.this, PictureSelectActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_scan:

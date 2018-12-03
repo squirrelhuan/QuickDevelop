@@ -8,7 +8,7 @@
     android:paddingRight="6dp"
     android:background="@color/white">
 
-    <ImageView
+    <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/iv_actionbar_common_left"
         android:layout_width="@dimen/activity_actionbar_button_width"
         android:layout_height="@dimen/activity_actionbar_button_height"
@@ -28,7 +28,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <ImageView
+    <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/iv_actionbar_common_right"
         android:layout_width="@dimen/activity_actionbar_button_width"
         android:layout_height="@dimen/activity_actionbar_button_height"

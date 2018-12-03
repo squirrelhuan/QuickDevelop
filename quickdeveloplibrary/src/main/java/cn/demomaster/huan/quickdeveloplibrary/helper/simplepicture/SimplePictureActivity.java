@@ -25,6 +25,8 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
+
 public class SimplePictureActivity extends BaseActivityParent {
 
     /**
@@ -53,6 +55,7 @@ public class SimplePictureActivity extends BaseActivityParent {
         setContentView(R.layout.activity_simple_picture);
 
         actionBarLayout.setTitle("图片选择器");
+        actionBarLayout.getRightView().setText("发送");
         init();
     }
 
@@ -61,7 +64,11 @@ public class SimplePictureActivity extends BaseActivityParent {
     private SimplePictureAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
+    private int result;
     private void init() {
+
+        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
+
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
         PermissionManager.chekPermission(mContext, permission, new PermissionManager.OnCheckPermissionListener() {
             @Override

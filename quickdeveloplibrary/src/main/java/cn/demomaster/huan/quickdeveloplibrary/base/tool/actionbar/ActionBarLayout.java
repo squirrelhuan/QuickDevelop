@@ -21,8 +21,10 @@ import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -31,8 +33,8 @@ public class ActionBarLayout {
 
     private Activity context;
     private TextView tv_actionbar_title;
-    private ImageView iv_actionbar_common_left;
-    private ImageView iv_actionbar_common_right;
+    private ImageTextView iv_actionbar_common_left;
+    private ImageTextView iv_actionbar_common_right;
     private View.OnClickListener leftOnClickListener;
     private View.OnClickListener rightOnClickListener;
 
@@ -48,14 +50,14 @@ public class ActionBarLayout {
      * 获取左侧控件
      * @return
      */
-    public ImageView getLeftView() {
+    public ImageTextView getLeftView() {
         return iv_actionbar_common_left;
     }
     /**
      * 获取右侧侧视图控件
      * @return
      */
-    public ImageView getRightView() {
+    public ImageTextView getRightView() {
         return iv_actionbar_common_right;
     }
 
@@ -195,7 +197,9 @@ public class ActionBarLayout {
         //有导航栏
         NORMAL,
         //层叠
-        ACTION_STACK
+        ACTION_STACK,
+        //层叠并且内容可填充到状态栏
+        ACTION_STACK_NO_STATUS
     }
 
     private ViewGroup headView;
@@ -314,7 +318,11 @@ public class ActionBarLayout {
             case ACTION_STACK:
                 relativeLayout = new RelativeLayout(context);
                 headView.setPadding(0, statusBar_Height + headerPaddingTop, 0, 0);
-                contentView.setPadding(0, statusBar_Height + contentPaddingTop, 0, 0);
+                if(actionBarModel==ACTION_STACK_NO_STATUS){
+                    contentView.setPadding(0, contentPaddingTop, 0, 0);
+                }else {
+                    contentView.setPadding(0, statusBar_Height + contentPaddingTop, 0, 0);
+                }
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
                 relativeLayout.addView(contentView, layoutParams2);
