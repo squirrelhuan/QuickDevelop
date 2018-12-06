@@ -29,7 +29,7 @@ public class PreviewActivity extends BaseActivityParent {
         actionBarLayout.getRightView().setVisibility(View.GONE);
         actionBarLayout.setActionBarModel(ACTION_STACK_NO_STATUS);
         pv_image = (PhotoView) findViewById(R.id.pv_image);
-        //initV();
+        initV();
     }
 
 
