@@ -29,6 +29,7 @@
                 android:id="@+id/tv_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="60sp"
                 android:text="Hello World!" />
 
             <Button
@@ -72,18 +73,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="图片选择器" />
-
-            <Button
-                android:id="@+id/btn_ac_01"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="显示导航" />
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_ac_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="显示导航" />
 
-            <Button
-                android:id="@+id/btn_ac_02"
+                <Button
+                    android:id="@+id/btn_ac_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="隐藏导航" />
+                <Button
+                    android:id="@+id/btn_ac_05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="隐藏导航(不占状态栏)" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="隐藏导航" />
+                android:orientation="horizontal">
+
 
             <Button
                 android:id="@+id/btn_ac_03"
@@ -91,6 +107,18 @@
                 android:layout_height="wrap_content"
                 android:text="叠加导航" />
 
+            <Button
+                android:id="@+id/btn_ac_04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="叠加导航(不占状态栏)" />
+
+                <Button
+                    android:id="@+id/btn_ac_06"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="透明导航" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -18,8 +18,8 @@ public class BaseActivityParent extends BaseActivityRoot {
         mContext = this;
         actionBarLayout = ActionBarHelper.init(this,layoutResID);
         View view = actionBarLayout.getFinalView();
-        super.setContentView(view);
         optionsMenu = new OptionsMenu(this);
+        super.setContentView(view);
 
     }
 

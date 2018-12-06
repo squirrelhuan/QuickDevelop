@@ -51,9 +51,6 @@ public class BaseActivityRoot extends AppCompatActivity {
         photoHelper = new PhotoHelper(mContext);
     }
 
-    public void onCreateView(@Nullable Bundle savedInstanceState) {
-
-    }
 
     public View getContentView() {
         return this.findViewById(android.R.id.content);

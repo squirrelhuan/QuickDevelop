@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.loader.LoadingDialog;
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
 
     Button btn_scan,btn_db;
-    Button btn_ac_01, btn_ac_02, btn_ac_03;
+    Button btn_ac_01, btn_ac_02, btn_ac_03,btn_ac_04,btn_ac_05,btn_ac_06;
     TextView tv_test;
     LinearLayout ll_layout;
     RatingBar ratingBar;
@@ -54,6 +54,12 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
         btn_ac_03 = findViewById(R.id.btn_ac_03);
         btn_ac_03.setOnClickListener(this);
+        btn_ac_04 = findViewById(R.id.btn_ac_04);
+        btn_ac_04.setOnClickListener(this);
+        btn_ac_05 = findViewById(R.id.btn_ac_05);
+        btn_ac_05.setOnClickListener(this);
+        btn_ac_06 = findViewById(R.id.btn_ac_06);
+        btn_ac_06.setOnClickListener(this);
         tv_test = findViewById(R.id.tv_test);
 
 
@@ -154,7 +160,15 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             case R.id.btn_ac_03:
                 actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
-
+            case R.id.btn_ac_04:
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                break;
+            case R.id.btn_ac_05:
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                break;
+            case R.id.btn_ac_06:
+                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                break;
             case R.id.btn_color_black:
                 actionBarLayout.setBackGroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black),getResources().getColor(R.color.white));

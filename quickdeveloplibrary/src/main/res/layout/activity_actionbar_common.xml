@@ -11,7 +11,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/iv_actionbar_common_left"
         android:layout_width="@dimen/activity_actionbar_button_width"
-        android:layout_height="@dimen/activity_actionbar_button_height"
+        android:layout_height="match_parent"
         android:padding="10dp"
         android:gravity="center_vertical"
         android:src="@drawable/ic_arrow_back_black_24dp" />
@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/tv_actionbar_common_title"
         android:layout_width="0dp"
-        android:layout_height="@dimen/activity_actionbar_button_height"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:singleLine="true"
@@ -31,7 +31,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/iv_actionbar_common_right"
         android:layout_width="@dimen/activity_actionbar_button_width"
-        android:layout_height="@dimen/activity_actionbar_button_height"
+        android:layout_height="match_parent"
         android:padding="10dp"
         android:gravity="center_vertical"
         android:src="@drawable/ic_more_vert_black_24dp" />

@@ -10,6 +10,7 @@ import android.widget.PopupWindow;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView;
 
 
@@ -70,7 +71,7 @@ public class PopToastUtil {
             case Gravity.TOP:
                 popupWindow.setAnimationStyle(R.style.cgq_pop_toast);
                 if(destinc_Y==0){
-                    destinc_Y = context.getResources().getDimensionPixelOffset(R.dimen.activity_actionbar_button_height)+ DisplayUtil.getStatusBarHeight(context);
+                    destinc_Y =  QMUIDisplayHelper.getActionBarHeight(context)+DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
                 }
                 break;
             case Gravity.BOTTOM:

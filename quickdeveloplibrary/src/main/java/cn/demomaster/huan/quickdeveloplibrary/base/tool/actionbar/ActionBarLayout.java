@@ -8,9 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
@@ -40,6 +44,7 @@ public class ActionBarLayout {
 
     /**
      * 获取中间视图
+     *
      * @return
      */
     public TextView getCenterView() {
@@ -48,13 +53,16 @@ public class ActionBarLayout {
 
     /**
      * 获取左侧控件
+     *
      * @return
      */
     public ImageTextView getLeftView() {
         return iv_actionbar_common_left;
     }
+
     /**
      * 获取右侧侧视图控件
+     *
      * @return
      */
     public ImageTextView getRightView() {
@@ -63,6 +71,7 @@ public class ActionBarLayout {
 
     /**
      * 获取导航栏视图用来更改背景或其他操作
+     *
      * @return
      */
     public ViewGroup getHeadView() {
@@ -194,17 +203,22 @@ public class ActionBarLayout {
     public enum ACTIONBAR_TYPE {
         //无导航栏
         NO_ACTION_BAR,
+        //无导航栏并且内容可填充到状态栏
+        NO_ACTION_BAR_NO_STATUS,
         //有导航栏
         NORMAL,
         //层叠
         ACTION_STACK,
         //层叠并且内容可填充到状态栏
-        ACTION_STACK_NO_STATUS
+        ACTION_STACK_NO_STATUS,
+        //透明导航栏
+        ACTION_TRANSPARENT
     }
 
     private ViewGroup headView;
     private ViewGroup contentView;
     private int statusBar_Height = 0;
+    private int actionBar_Height = 0;
 
     private ACTIONBAR_TYPE actionBarModel = ACTIONBAR_TYPE.NO_ACTION_BAR;//1,上下顺序排列（普通样式），2层叠排列（actionbar背景透明），3只显示内容
 
@@ -260,11 +274,10 @@ public class ActionBarLayout {
     }
 
     ViewGroup rootLayout;
-    ViewGroup relativeLayout;
-    private int contentPaddingTop = -1;
-    private int headerPaddingTop = -1;
     private int headerBackgroundColor = -1;
     private Drawable headerBackgroundDrawable;
+    private static int headerPaddingTop = -1;
+    private static int contentPaddingTop = -1;
 
     /**
      * 生成布局用来setContenView
@@ -273,16 +286,9 @@ public class ActionBarLayout {
      */
     public ViewGroup getFinalView() {
         if (rootLayout == null) {
-            rootLayout = new RelativeLayout(context);
+            rootLayout = new FrameLayout(context);
         } else {
             rootLayout.removeAllViews();
-            relativeLayout.removeAllViews();
-        }
-        if (contentPaddingTop == -1) {
-            contentPaddingTop = contentView.getPaddingTop();
-        }
-        if (headerPaddingTop == -1) {
-            headerPaddingTop = headView.getPaddingTop();
         }
         if (headerBackgroundDrawable == null) {
             headerBackgroundDrawable = headView.getBackground();
@@ -291,46 +297,76 @@ public class ActionBarLayout {
                 headerBackgroundColor = colordDrawable.getColor();
             }
         }
-        statusBar_Height = DisplayUtil.getStatusBarHeight(context);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if (headerPaddingTop == -1) {
+            headerPaddingTop = headView.getPaddingTop();
+        }
+        if (contentPaddingTop == -1) {
+            contentPaddingTop = contentView.getPaddingTop();
+        }
+        if (statusBar_Height == 0) {
+            statusBar_Height = DisplayUtil.getStatusBarHeight(context);
+        }
+        if (actionBar_Height == 0) {
+            actionBar_Height = QMUIDisplayHelper.getActionBarHeight(context);
+        }
+        FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
+        FrameLayout.LayoutParams layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (actionBarModel) {
             case NO_ACTION_BAR:
-                relativeLayout = new LinearLayout(context);
-                ((LinearLayout) relativeLayout).setOrientation(LinearLayout.VERTICAL);
-                contentView.setPadding(0, statusBar_Height + contentPaddingTop, 0, 0);
-                relativeLayout.addView(headView, layoutParams);
+                //contentView.layout(0,statusBar_Height ,0,0);
+                layoutParams_content.topMargin = 0;
+                layoutParams_header.topMargin = 0;
+                //headView.setPadding(0,headerPaddingTop+statusBar_Height,0,0);
+                contentView.setPadding(0, contentPaddingTop + statusBar_Height, 0, 0);
                 setActionBarBackGroundDrawable(headerBackgroundDrawable);
                 setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.GONE);
-                relativeLayout.addView(contentView, layoutParams2);
+                break;
+            case NO_ACTION_BAR_NO_STATUS:
+                layoutParams_content.topMargin = 0;
+                layoutParams_header.topMargin = 0;
+                contentView.setPadding(0, contentPaddingTop, 0, 0);
+                setActionBarBackGroundDrawable(headerBackgroundDrawable);
+                setActionBarBackGroundColor(headerBackgroundColor);
+                headView.setVisibility(View.GONE);
                 break;
             case NORMAL:
-                relativeLayout = new LinearLayout(context);
-                ((LinearLayout) relativeLayout).setOrientation(LinearLayout.VERTICAL);
-                headView.setPadding(0, statusBar_Height + headerPaddingTop, 0, 0);
+                layoutParams_content.topMargin = statusBar_Height + actionBar_Height;
+                layoutParams_header.topMargin = 0;
+                headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
+                contentView.setPadding(0, contentPaddingTop, 0, 0);
                 setActionBarBackGroundDrawable(headerBackgroundDrawable);
                 setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.VISIBLE);
-                relativeLayout.addView(headView, layoutParams);
-                relativeLayout.addView(contentView, layoutParams2);
                 break;
             case ACTION_STACK:
-                relativeLayout = new RelativeLayout(context);
-                headView.setPadding(0, statusBar_Height + headerPaddingTop, 0, 0);
-                if(actionBarModel==ACTION_STACK_NO_STATUS){
-                    contentView.setPadding(0, contentPaddingTop, 0, 0);
-                }else {
-                    contentView.setPadding(0, statusBar_Height + contentPaddingTop, 0, 0);
-                }
+                layoutParams_content.topMargin = 0;
+                layoutParams_header.topMargin = 0;
+                headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
+                contentView.setPadding(0, contentPaddingTop + statusBar_Height, 0, 0);
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
-                relativeLayout.addView(contentView, layoutParams2);
-                relativeLayout.addView(headView, layoutParams);
+                break;
+            case ACTION_STACK_NO_STATUS:
+                layoutParams_content.topMargin = 0;
+                layoutParams_header.topMargin = 0;
+                contentView.setPadding(0, contentPaddingTop, 0, 0);
+                setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
+                headView.setVisibility(View.VISIBLE);
+                break;
+            case ACTION_TRANSPARENT:
+                layoutParams_content.topMargin = 0;
+                layoutParams_header.topMargin = 0;
+                contentView.setPadding(0, contentPaddingTop+actionBar_Height+statusBar_Height, 0, 0);
+                setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
+                headView.setVisibility(View.VISIBLE);
                 break;
             default:
                 return null;
         }
+
+        rootLayout.addView(contentView, layoutParams_content);
+        rootLayout.addView(headView, layoutParams_header);
         //状态栏颜色
         if (stateBarColorAuto) {
             //view加载完成时回调
@@ -341,10 +377,8 @@ public class ActionBarLayout {
                     setStateBarColor();
                 }
             });
-
         }
-        rootLayout.addView(relativeLayout, layoutParams2);
-        setActionBarThemeColors(Color.WHITE,Color.BLACK);
+        //setActionBarThemeColors(Color.WHITE, Color.BLACK);
         return rootLayout;
     }
 
@@ -388,19 +422,21 @@ public class ActionBarLayout {
         Log.d(TAG, "setStateBarColor2=" + consumingTime2);
     }
 
-    private int[] themeColors = {Color.WHITE,Color.BLACK};
-    public void setActionBarThemeColors(int lightColor,int dartColor){
-        themeColors[0]=lightColor;
-        themeColors[1]=dartColor;
-        setActionBarColorType(themeColorType==1);
+    private int[] themeColors = {Color.WHITE, Color.BLACK};
+
+    public void setActionBarThemeColors(int lightColor, int dartColor) {
+        themeColors[0] = lightColor;
+        themeColors[1] = dartColor;
+        setActionBarColorType(themeColorType == 1);
     }
+
     private void setActionBarColorType(boolean isDart) {
         int color = isDart ? themeColors[0] : themeColors[1];
         setActionBarColor(color);
     }
+
     /**
      * 设置导航栏主题颜色
-     *
      */
     private void setActionBarColor(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -421,7 +457,7 @@ public class ActionBarLayout {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof ImageView) {
                     Drawable drawable = (((ImageView) viewGroup.getChildAt(i)).getDrawable());
-                    if(drawable!=null){
+                    if (drawable != null) {
                         drawable.setTint(color);
                     }
                 } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
@@ -479,8 +515,6 @@ public class ActionBarLayout {
         mBitmap.recycle();
         return dart_point_count < (count_h * count_w) / 2;
     }
-
-
 
 
 }

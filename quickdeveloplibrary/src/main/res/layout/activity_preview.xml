@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,9 +8,11 @@
     tools:context=".helper.simplepicture.PreviewActivity">
 
     <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
+        android:id="@+id/pv_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/red"
         android:scaleType="centerInside"/>
 
-</RelativeLayout>
+
+</FrameLayout>

@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -18,7 +19,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionB
 public class PreviewActivity extends BaseActivityParent {
 
 
-    private PhotoView photo_view;
+    private PhotoView pv_image;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,16 +28,17 @@ public class PreviewActivity extends BaseActivityParent {
 
         actionBarLayout.getRightView().setVisibility(View.GONE);
         actionBarLayout.setActionBarModel(ACTION_STACK_NO_STATUS);
-        init();
+        pv_image = (PhotoView) findViewById(R.id.pv_image);
+        //initV();
     }
 
 
-    private void init() {
+    private void initV() {
+        //pv_image = findViewById(R.id.pv_image);
         if (mBundle != null && mBundle.containsKey("image")) {
             Image image = (Image) mBundle.getSerializable("image");
-            photo_view = findViewById(R.id.photo_view);
             if (image != null && image.getPath() != null) {
-                Glide.with(mContext).load(new File(image.getPath())).into(photo_view);
+                Glide.with(mContext).load(new File(image.getPath())).into(pv_image);
             }
             //File file = new File(image.getPath());
             /*FileInputStream fs = null;
