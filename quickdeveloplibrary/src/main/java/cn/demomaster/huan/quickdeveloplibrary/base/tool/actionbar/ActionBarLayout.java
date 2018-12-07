@@ -308,6 +308,9 @@ public class ActionBarLayout {
         }
         if (actionBar_Height == 0) {
             actionBar_Height = QMUIDisplayHelper.getActionBarHeight(context);
+            if(actionBar_Height>0){
+                actionBar_Height = actionBar_Height-DisplayUtil.dp2px(context,8);
+            }
         }
         FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
         FrameLayout.LayoutParams layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -318,16 +321,16 @@ public class ActionBarLayout {
                 layoutParams_header.topMargin = 0;
                 //headView.setPadding(0,headerPaddingTop+statusBar_Height,0,0);
                 contentView.setPadding(0, contentPaddingTop + statusBar_Height, 0, 0);
-                setActionBarBackGroundDrawable(headerBackgroundDrawable);
-                setActionBarBackGroundColor(headerBackgroundColor);
+                //setActionBarBackGroundDrawable(headerBackgroundDrawable);
+                //setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.GONE);
                 break;
             case NO_ACTION_BAR_NO_STATUS:
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
                 contentView.setPadding(0, contentPaddingTop, 0, 0);
-                setActionBarBackGroundDrawable(headerBackgroundDrawable);
-                setActionBarBackGroundColor(headerBackgroundColor);
+                //setActionBarBackGroundDrawable(headerBackgroundDrawable);
+                //setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.GONE);
                 break;
             case NORMAL:
@@ -335,8 +338,8 @@ public class ActionBarLayout {
                 layoutParams_header.topMargin = 0;
                 headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
                 contentView.setPadding(0, contentPaddingTop, 0, 0);
-                setActionBarBackGroundDrawable(headerBackgroundDrawable);
-                setActionBarBackGroundColor(headerBackgroundColor);
+                //setActionBarBackGroundDrawable(headerBackgroundDrawable);
+                //setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.VISIBLE);
                 break;
             case ACTION_STACK:

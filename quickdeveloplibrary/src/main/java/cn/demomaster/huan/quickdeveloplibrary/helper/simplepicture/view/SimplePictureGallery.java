@@ -33,14 +33,14 @@ public class SimplePictureGallery extends RecyclerView {
 
 
     private GridLayoutManager mLayoutManager;
-    private PictureAdapter mAdapter;
+    //private PictureAdapter mAdapter;
     private int spanCount =4;
     private List<Image> imageList;
     public void init( Context context){
         mLayoutManager = new GridLayoutManager(context, spanCount);
         setLayoutManager(mLayoutManager);
-        mAdapter = new PictureAdapter(context, imageList, true,true);
-        setAdapter(mAdapter);
+        //mAdapter = new PictureAdapter(context, imageList, true,true);
+        //setAdapter(mAdapter);
     }
 
 

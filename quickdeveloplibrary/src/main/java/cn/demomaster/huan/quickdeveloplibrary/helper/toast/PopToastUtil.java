@@ -71,7 +71,7 @@ public class PopToastUtil {
             case Gravity.TOP:
                 popupWindow.setAnimationStyle(R.style.cgq_pop_toast);
                 if(destinc_Y==0){
-                    destinc_Y =  QMUIDisplayHelper.getActionBarHeight(context)+DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
+                    destinc_Y =  QMUIDisplayHelper.getActionBarHeight(context)-DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
                 }
                 break;
             case Gravity.BOTTOM:

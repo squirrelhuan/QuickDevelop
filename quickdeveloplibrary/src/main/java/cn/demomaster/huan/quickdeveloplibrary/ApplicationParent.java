@@ -14,7 +14,7 @@ public class ApplicationParent extends Application {
 
     public static String TAG ="CGQ";
     private static ApplicationParent instance = null;
-    public static Application getInstance(){
+    public static ApplicationParent getInstance(){
         return instance;
     }
     //本地activity栈
