@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -23,7 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
-public class BaseActivityRoot extends AppCompatActivity {
+public class BaseActivityRoot extends AppCompatActivity implements BaseActivityInterface{
 
     public Activity mContext;
     public Bundle mBundle = null;
@@ -71,6 +72,21 @@ public class BaseActivityRoot extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * 动态设置状态栏的显示隐藏
+     * @param enable
+     */
+    private void setFullScreen(boolean enable) {
+        if (enable) {
+            WindowManager.LayoutParams attrs = getWindow().getAttributes();
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            getWindow().setAttributes(attrs);
+        } else {
+            WindowManager.LayoutParams attrs = getWindow().getAttributes();
+            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            getWindow().setAttributes(attrs);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -173,5 +189,8 @@ public class BaseActivityRoot extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public boolean isUseActionBarLayout() {
+        return true;
+    }
 }

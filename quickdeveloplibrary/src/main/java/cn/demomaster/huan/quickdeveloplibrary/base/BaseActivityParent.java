@@ -7,21 +7,41 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
-public class BaseActivityParent extends BaseActivityRoot {
+public abstract class BaseActivityParent extends BaseActivityRoot {
 
 
     //private LayoutInflater inflater;
-    public ActionBarLayout actionBarLayout;
-    public OptionsMenu optionsMenu;
+    private int layoutResID;
+    private ActionBarLayout actionBarLayout;
+    private OptionsMenu optionsMenu;
+
     @Override
     public void setContentView(int layoutResID) {
-        mContext = this;
-        actionBarLayout = ActionBarHelper.init(this,layoutResID);
-        View view = actionBarLayout.getFinalView();
-        optionsMenu = new OptionsMenu(this);
-        super.setContentView(view);
+        this.mContext = this;
+        if (isUseActionBarLayout()) {//是否使用自定义导航栏
+            this.layoutResID = layoutResID;
+            View view = getActionBarLayout().getFinalView();
+            super.setContentView(view);
+        } else {
+            super.setContentView(layoutResID);
+        }
 
     }
-
-
+    //获取自定义导航
+    public ActionBarLayout getActionBarLayout() {
+        if(!isUseActionBarLayout()){
+            return null;
+        }
+        if (actionBarLayout == null) {
+            actionBarLayout = ActionBarHelper.init(this, layoutResID);
+        }
+        return actionBarLayout;
+    }
+    //获取自定义菜单
+    public OptionsMenu getOptionsMenu() {
+        if (optionsMenu == null) {
+            optionsMenu = new OptionsMenu(this);
+        }
+        return optionsMenu;
+    }
 }

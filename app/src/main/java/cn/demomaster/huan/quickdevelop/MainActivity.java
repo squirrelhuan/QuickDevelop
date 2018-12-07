@@ -83,11 +83,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     }
 
     private void init() {
-        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
-        actionBarLayout.setTitle("aaa");
-        actionBarLayout.setStateBarColorAuto(true);//状态栏文字颜色自动
-        actionBarLayout.setActionBarThemeColors(Color.WHITE,Color.BLACK);
-        actionBarLayout.setLeftOnClickListener(new View.OnClickListener() {
+        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayout().setTitle("aaa");
+        getActionBarLayout().setStateBarColorAuto(true);//状态栏文字颜色自动
+        getActionBarLayout().setActionBarThemeColors(Color.WHITE,Color.BLACK);
+        getActionBarLayout().setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
@@ -150,52 +150,52 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
 
             case R.id.btn_ac_01:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
-                actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.black));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black),getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this,"黑色主题");
                 break;
             case R.id.btn_color_white:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.white));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.white),getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this,"白色主题");
                 break;
             case R.id.btn_color_red:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.red));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.red));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.red),getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this,"红色主题");
                 break;
             case R.id.btn_color_gray:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.gray));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.gray));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.gray),getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this,"灰色主题");
                 break;
             case R.id.btn_color_green:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.green));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.green));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.green),getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this,"绿色主题");
                 break;
             case R.id.btn_color_yellow:
-                actionBarLayout.setBackGroundColor(getResources().getColor(R.color.yello));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.yello));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yello),getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this,"黄色主题");
                 break;
@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                     ll_layout.setBackgroundResource(R.mipmap.gudaimeizi);
                     position = 0;
                 }
-                actionBarLayout.changeChildView(ll_layout);
+                getActionBarLayout().changeChildView(ll_layout);
                 break;
         }
     }

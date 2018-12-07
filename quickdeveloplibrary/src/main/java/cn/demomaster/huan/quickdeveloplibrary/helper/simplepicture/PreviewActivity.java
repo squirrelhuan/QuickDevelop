@@ -26,8 +26,8 @@ public class PreviewActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
-        actionBarLayout.getRightView().setVisibility(View.GONE);
-        actionBarLayout.setActionBarModel(ACTION_STACK_NO_STATUS);
+        getActionBarLayout().getRightView().setVisibility(View.GONE);
+        getActionBarLayout().setActionBarModel(ACTION_STACK_NO_STATUS);
         pv_image = (PhotoView) findViewById(R.id.pv_image);
         initV();
     }

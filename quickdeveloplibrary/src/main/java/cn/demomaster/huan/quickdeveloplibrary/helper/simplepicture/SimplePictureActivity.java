@@ -54,8 +54,8 @@ public class SimplePictureActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_picture);
 
-        actionBarLayout.setTitle("图片选择器");
-        actionBarLayout.getRightView().setText("发送");
+        getActionBarLayout().setTitle("图片选择器");
+        getActionBarLayout().getRightView().setText("发送");
         init();
     }
 

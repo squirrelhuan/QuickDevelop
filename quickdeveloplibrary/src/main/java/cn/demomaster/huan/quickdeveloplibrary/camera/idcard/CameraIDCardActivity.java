@@ -61,16 +61,16 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
-        actionBarLayout.setStateBarColorAuto(true);
-        actionBarLayout.setTitle("身份证拍照");
+        getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarLayout().setTitle("身份证拍照");
         initOptionsMenu();
-        actionBarLayout.setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                optionsMenu.show();
+                getOptionsMenu().show();
             }
         });
-        actionBarLayout.getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
+        getActionBarLayout().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
@@ -124,9 +124,9 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
             menu.setPosition(i);
             menus.add(menu);
         }
-        optionsMenu.setMenus(menus);
-        optionsMenu.setAnchor(actionBarLayout.getRightView());
-        optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
+        getOptionsMenu().setMenus(menus);
+        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
                 photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
@@ -210,7 +210,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        optionsMenu.dismiss();
+        getOptionsMenu().dismiss();
         Log.d(TAG, "onActivityResult: requestCode: " + requestCode + ", resultCode: " + requestCode + ", data: " + data + ",resultCode:" + resultCode);
         switch (requestCode) {
             //如果是拍照
