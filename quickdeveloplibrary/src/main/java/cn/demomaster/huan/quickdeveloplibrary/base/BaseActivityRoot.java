@@ -76,7 +76,7 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
      * 动态设置状态栏的显示隐藏
      * @param enable
      */
-    private void setFullScreen(boolean enable) {
+    public void setFullScreen(boolean enable) {
         if (enable) {
             WindowManager.LayoutParams attrs = getWindow().getAttributes();
             attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;

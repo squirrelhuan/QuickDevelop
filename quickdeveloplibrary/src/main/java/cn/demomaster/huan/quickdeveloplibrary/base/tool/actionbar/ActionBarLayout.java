@@ -36,9 +36,9 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionB
 public class ActionBarLayout {
 
     private Activity context;
-    private TextView tv_actionbar_title;
-    private ImageTextView iv_actionbar_common_left;
-    private ImageTextView iv_actionbar_common_right;
+    private ImageTextView it_actionbar_title;
+    private ImageTextView it_actionbar_common_left;
+    private ImageTextView it_actionbar_common_right;
     private View.OnClickListener leftOnClickListener;
     private View.OnClickListener rightOnClickListener;
 
@@ -47,8 +47,8 @@ public class ActionBarLayout {
      *
      * @return
      */
-    public TextView getCenterView() {
-        return tv_actionbar_title;
+    public ImageTextView getCenterView() {
+        return it_actionbar_title;
     }
 
     /**
@@ -57,7 +57,7 @@ public class ActionBarLayout {
      * @return
      */
     public ImageTextView getLeftView() {
-        return iv_actionbar_common_left;
+        return it_actionbar_common_left;
     }
 
     /**
@@ -66,7 +66,7 @@ public class ActionBarLayout {
      * @return
      */
     public ImageTextView getRightView() {
-        return iv_actionbar_common_right;
+        return it_actionbar_common_right;
     }
 
     /**
@@ -94,30 +94,30 @@ public class ActionBarLayout {
 
         this.context = context;
         this.actionBarModel = actionBarModel;
-        if (iv_actionbar_common_left == null) {
-            iv_actionbar_common_left = headView.findViewById(R.id.iv_actionbar_common_left);
+        it_actionbar_title = headView.findViewById(R.id.it_actionbar_common_title);
+        if (context.getTitle() != null) {
+            it_actionbar_title.setText(context.getTitle().toString());
         }
-        if (iv_actionbar_common_right == null) {
-            iv_actionbar_common_right = headView.findViewById(R.id.iv_actionbar_common_right);
-        }
-        if (leftOnClickListener == null && iv_actionbar_common_left != null) {
-            iv_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
+        it_actionbar_common_left = headView.findViewById(R.id.it_actionbar_common_left);
+        it_actionbar_common_right = headView.findViewById(R.id.it_actionbar_common_right);
+        if (leftOnClickListener == null && it_actionbar_common_left != null) {
+            it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ((Activity) context).finish();
                 }
             });
         }
-        if (rightOnClickListener == null && iv_actionbar_common_right != null) {
-            iv_actionbar_common_right.setOnClickListener(new View.OnClickListener() {
+        if (rightOnClickListener == null && it_actionbar_common_right != null) {
+            it_actionbar_common_right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ScreenShotUitl.shot((Activity) context);
                 }
             });
         }
-        AnimationUtil.addScaleAnimition(iv_actionbar_common_left, null);
-        AnimationUtil.addScaleAnimition(iv_actionbar_common_right, null);
+        AnimationUtil.addScaleAnimition(it_actionbar_common_left, null);
+        AnimationUtil.addScaleAnimition(it_actionbar_common_right, null);
 
     }
 
@@ -127,11 +127,8 @@ public class ActionBarLayout {
      * @param text
      */
     public void setTitle(String text) {
-        if (tv_actionbar_title == null) {
-            tv_actionbar_title = headView.findViewById(R.id.tv_actionbar_common_title);
-        }
-        if (tv_actionbar_title != null && text != null) {
-            tv_actionbar_title.setText(text);
+        if (it_actionbar_title != null && text != null) {
+            it_actionbar_title.setText(text);
         }
     }
 
@@ -169,7 +166,7 @@ public class ActionBarLayout {
      */
     public void setLeftOnClickListener(View.OnClickListener leftOnClickListener) {
         this.leftOnClickListener = leftOnClickListener;
-        iv_actionbar_common_left.setOnClickListener(leftOnClickListener);
+        it_actionbar_common_left.setOnClickListener(leftOnClickListener);
     }
 
     /**
@@ -179,7 +176,7 @@ public class ActionBarLayout {
      */
     public void setRightOnClickListener(View.OnClickListener rightOnClickListener) {
         this.rightOnClickListener = rightOnClickListener;
-        iv_actionbar_common_right.setOnClickListener(rightOnClickListener);
+        it_actionbar_common_right.setOnClickListener(rightOnClickListener);
     }
 
     /**
@@ -308,8 +305,8 @@ public class ActionBarLayout {
         }
         if (actionBar_Height == 0) {
             actionBar_Height = QMUIDisplayHelper.getActionBarHeight(context);
-            if(actionBar_Height>0){
-                actionBar_Height = actionBar_Height-DisplayUtil.dp2px(context,8);
+            if (actionBar_Height > 0) {
+                actionBar_Height = actionBar_Height - DisplayUtil.dp2px(context, 8);
             }
         }
         FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
@@ -360,7 +357,7 @@ public class ActionBarLayout {
             case ACTION_TRANSPARENT:
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
-                contentView.setPadding(0, contentPaddingTop+actionBar_Height+statusBar_Height, 0, 0);
+                contentView.setPadding(0, contentPaddingTop + actionBar_Height + statusBar_Height, 0, 0);
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
                 break;
@@ -463,6 +460,8 @@ public class ActionBarLayout {
                     if (drawable != null) {
                         drawable.setTint(color);
                     }
+                }if (viewGroup.getChildAt(i) instanceof ImageTextView) {
+                    ((ImageTextView) viewGroup.getChildAt(i)).setTextColor(color);
                 } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
                     setTintAll(viewGroup.getChildAt(i), color);
                 } else if (viewGroup.getChildAt(i) instanceof TextView) {
