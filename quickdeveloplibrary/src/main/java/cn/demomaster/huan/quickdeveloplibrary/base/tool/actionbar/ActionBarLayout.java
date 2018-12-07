@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -78,6 +79,9 @@ public class ActionBarLayout {
         return headView;
     }
 
+
+    private int contentLayoutResID;
+    private int headLayoutResID;
     /**
      * 构造方法
      *
@@ -86,13 +90,14 @@ public class ActionBarLayout {
      * @param headView
      * @param contentView
      */
-    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, ViewGroup headView, ViewGroup contentView) {
-        this.context = context;
-        this.headView = headView;
-        this.contentView = contentView;
-        this.actionBarModel = actionBarModel;
+    ;
 
+    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
         this.context = context;
+        this.headLayoutResID = headLayoutResID;
+        this.contentLayoutResID = contentLayoutResID;
+        initLayout();
+
         this.actionBarModel = actionBarModel;
         it_actionbar_title = headView.findViewById(R.id.it_actionbar_common_title);
         if (context.getTitle() != null) {
@@ -119,6 +124,61 @@ public class ActionBarLayout {
         AnimationUtil.addScaleAnimition(it_actionbar_common_left, null);
         AnimationUtil.addScaleAnimition(it_actionbar_common_right, null);
 
+    }
+
+    private FrameLayout.LayoutParams layoutParams_header;
+    private FrameLayout.LayoutParams layoutParams_content;
+
+    private void initLayout() {
+
+        LayoutInflater mInflater = LayoutInflater.from(context);
+        rootLayout = new FrameLayout(context);
+        //contentView宽高
+        mInflater.inflate(contentLayoutResID, rootLayout);
+        contentView = (ViewGroup) rootLayout.getChildAt(0);
+                //header宽高
+         mInflater.inflate(headLayoutResID, rootLayout);
+        headView = (ViewGroup) rootLayout.getChildAt(1);
+
+        //记录背景drawable
+        headerBackgroundDrawable = headView.getBackground();
+        if (headerBackgroundDrawable instanceof ColorDrawable) {
+            ColorDrawable colordDrawable = (ColorDrawable) headerBackgroundDrawable;
+            headerBackgroundColor = colordDrawable.getColor();
+        }
+        //记录原始paddingTop
+        headerPaddingTop = headView.getPaddingTop();
+
+        //记录原始paddingTop
+        contentPaddingTop = contentView.getPaddingTop();
+
+        //记录状态栏高度
+        statusBar_Height = DisplayUtil.getStatusBarHeight(context);
+
+        //记录导航栏高度
+        actionBar_Height = QMUIDisplayHelper.getActionBarHeight(context);
+        if (actionBar_Height > 0) {
+            actionBar_Height = actionBar_Height - DisplayUtil.dp2px(context, 8);
+        }
+
+
+        layoutParams_header = (FrameLayout.LayoutParams) this.headView.getLayoutParams();
+        if (layoutParams_header == null) {
+            layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
+        } else {
+            layoutParams_header.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            layoutParams_header.height = statusBar_Height + actionBar_Height;
+        }
+        headView.setLayoutParams(layoutParams_header);
+
+        layoutParams_content = (FrameLayout.LayoutParams) this.contentView.getLayoutParams();
+        if (layoutParams_content == null) {
+            layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        } else {
+            layoutParams_content.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            layoutParams_content.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        contentView.setLayoutParams(layoutParams_content);
     }
 
     /**
@@ -226,24 +286,24 @@ public class ActionBarLayout {
         private ActionBarLayout activityLayout;
         private ACTIONBAR_TYPE actionBarModel = ACTIONBAR_TYPE.NORMAL;//1,上下顺序排列（普通样式），2层叠排列（actionbar背景透明），3只显示内容
         private Activity context;
-        private ViewGroup contentView;
-        private ViewGroup headView;
+        private int contentLayoutResID;
+        private int headLayoutResID;
 
         public Builder(Activity context) {
             this.context = context;
         }
 
         public ActionBarLayout create() {
-            activityLayout = new ActionBarLayout(context, actionBarModel, headView, contentView);
+            activityLayout = new ActionBarLayout(context, actionBarModel, headLayoutResID, contentLayoutResID);
             return activityLayout;
         }
 
-        public void setContentView(ViewGroup contentView) {
-            this.contentView = contentView;
+        public void setContentView(int layoutResID) {
+            this.contentLayoutResID = layoutResID;
         }
 
-        public void setHeadView(ViewGroup headView) {
-            this.headView = headView;
+        public void setHeadView(int layoutResID) {
+            this.headLayoutResID = layoutResID;
         }
     }
 
@@ -264,7 +324,6 @@ public class ActionBarLayout {
 
     private void refresh() {
         startTime = System.currentTimeMillis();
-
         getFinalView();
         long consumingTime = System.currentTimeMillis() - startTime;
         Log.d(TAG, "time=" + consumingTime);
@@ -282,35 +341,9 @@ public class ActionBarLayout {
      * @return
      */
     public ViewGroup getFinalView() {
-        if (rootLayout == null) {
-            rootLayout = new FrameLayout(context);
-        } else {
-            rootLayout.removeAllViews();
-        }
-        if (headerBackgroundDrawable == null) {
-            headerBackgroundDrawable = headView.getBackground();
-            if (headerBackgroundDrawable instanceof ColorDrawable) {
-                ColorDrawable colordDrawable = (ColorDrawable) headerBackgroundDrawable;
-                headerBackgroundColor = colordDrawable.getColor();
-            }
-        }
-        if (headerPaddingTop == -1) {
-            headerPaddingTop = headView.getPaddingTop();
-        }
-        if (contentPaddingTop == -1) {
-            contentPaddingTop = contentView.getPaddingTop();
-        }
-        if (statusBar_Height == 0) {
-            statusBar_Height = DisplayUtil.getStatusBarHeight(context);
-        }
-        if (actionBar_Height == 0) {
-            actionBar_Height = QMUIDisplayHelper.getActionBarHeight(context);
-            if (actionBar_Height > 0) {
-                actionBar_Height = actionBar_Height - DisplayUtil.dp2px(context, 8);
-            }
-        }
-        FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
-        FrameLayout.LayoutParams layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        // FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
+        //FrameLayout.LayoutParams layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (actionBarModel) {
             case NO_ACTION_BAR:
                 //contentView.layout(0,statusBar_Height ,0,0);
@@ -335,8 +368,8 @@ public class ActionBarLayout {
                 layoutParams_header.topMargin = 0;
                 headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
                 contentView.setPadding(0, contentPaddingTop, 0, 0);
-                //setActionBarBackGroundDrawable(headerBackgroundDrawable);
-                //setActionBarBackGroundColor(headerBackgroundColor);
+                setActionBarBackGroundDrawable(headerBackgroundDrawable);
+                setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.VISIBLE);
                 break;
             case ACTION_STACK:
@@ -365,18 +398,20 @@ public class ActionBarLayout {
                 return null;
         }
 
-        rootLayout.addView(contentView, layoutParams_content);
-        rootLayout.addView(headView, layoutParams_header);
+        this.contentView.setLayoutParams(layoutParams_content);
+        this.headView.setLayoutParams(layoutParams_header);
+        //rootLayout.addView(contentView, layoutParams_content);
+        //rootLayout.addView(headView, layoutParams_header);
         //状态栏颜色
         if (stateBarColorAuto) {
             //view加载完成时回调
-            rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+           /* rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     setStateBarColor();
                 }
-            });
+            });*/
         }
         //setActionBarThemeColors(Color.WHITE, Color.BLACK);
         return rootLayout;
@@ -405,7 +440,6 @@ public class ActionBarLayout {
      * 设置状态栏字体颜色
      */
     private void setStateBarColor() {
-
         long consumingTime = System.currentTimeMillis() - startTime;
         Log.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
@@ -460,7 +494,8 @@ public class ActionBarLayout {
                     if (drawable != null) {
                         drawable.setTint(color);
                     }
-                }if (viewGroup.getChildAt(i) instanceof ImageTextView) {
+                }
+                if (viewGroup.getChildAt(i) instanceof ImageTextView) {
                     ((ImageTextView) viewGroup.getChildAt(i)).setTextColor(color);
                 } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
                     setTintAll(viewGroup.getChildAt(i), color);

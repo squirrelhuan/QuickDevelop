@@ -124,7 +124,7 @@ public class TabMenuLayout extends LinearLayout {
 
     private void showTabMenuView(View tabGroup, View tabButton, int tabIndex) {
         //获取第tabIndex个标签下的字符数组来生成list
-        String[] items = tabSelectModels.get(tabIndex).getTabItems();
+        //String[] items = tabSelectModels.get(tabIndex).getTabItems();
        /* List<TabListViewItem> menus = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             TabListViewItem menu = new TabListViewItem();
@@ -135,7 +135,7 @@ public class TabMenuLayout extends LinearLayout {
         tabListViewItems.clear();
         tabListViewItems.addAll(menus);*/
         columnCount = tabSelectModels.get(tabIndex).getColumnCount();//默认内容列表显示几列
-        initSingTabContent(tabGroup,tabButton, tabIndex);
+        initSingTabContent(tabGroup, tabButton, tabIndex);
         popupWindow.showAsDropDown(tabGroup);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
 
@@ -144,7 +144,8 @@ public class TabMenuLayout extends LinearLayout {
     private PopupWindow popupWindow;
     private RecyclerView recy_tab_content;
     private TabMenuAdapter adapter;
-    private RelativeLayout rel_root;
+    private RelativeLayout rel_root,rl_tab_menu_custom_panel;
+    private LinearLayout ll_tab_content_panel;
     private View contentView;
     private int tabToBottom = 100;
 
@@ -166,33 +167,28 @@ public class TabMenuLayout extends LinearLayout {
             tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
             tabGroup.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
             System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
-            popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1] ), true).build();
+            popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1]), true).build();
 
-            contentView.setPadding(0,tabGroup.getHeight(),0,0);
-            LinearLayout ll_tab_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_panel.getLayoutParams();
+            contentView.setPadding(0, tabGroup.getHeight(), 0, 0);
+            ll_tab_content_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_content_panel.getLayoutParams();
             layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, DisplayUtil.dp2px(context, tabToBottom));
+            rl_tab_menu_custom_panel = contentView.findViewById(R.id.rl_tab_menu_custom_panel);
             rel_root = contentView.findViewById(R.id.rel_root);
             rel_root.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(motionEvent.getX()>location[0]&&motionEvent.getX()<(location[0]+tabGroup.getWidth())&&motionEvent.getY()<tabGroup.getHeight()){
-                        int wc = tabGroup.getWidth()/tabCount;
-                        int x = (int)motionEvent.getX() - location[0];
-                        int index = (int)(x / wc);
+                    if (motionEvent.getX() > location[0] && motionEvent.getX() < (location[0] + tabGroup.getWidth()) && motionEvent.getY() < tabGroup.getHeight()) {
+                        int wc = tabGroup.getWidth() / tabCount;
+                        int x = (int) motionEvent.getX() - location[0];
+                        int index = (int) (x / wc);
                         tabRadioGroup.setCurrentTab(index);
-                    }else {
+                    } else {
                         popupWindow.dismiss();
                     }
                     return false;
                 }
             });
-            /*rel_root.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    popupWindow.dismiss();
-                }
-            });*/
             recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
 
             popupWindow.setTouchable(true);
@@ -205,33 +201,44 @@ public class TabMenuLayout extends LinearLayout {
                 }
             });
         }
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
-        if (columnCount==1){
-            recy_tab_content.setLayoutManager(new LinearLayoutManager(context));
-            //默认位置在当前tab下平分viewgroup宽度
-            layoutParams.width = width / tabCount;
-            recy_tab_content.setLayoutParams(layoutParams);
-            recy_tab_content.setX(location[0]+(tabIndex*2)*tabButton.getWidth()/2+tabButton.getWidth()/2-layoutParams.width/2);//QMUIDisplayHelper.getScreenWidth(context)
-        }else if(columnCount>1){
-            layoutParams.width = QMUIDisplayHelper.getScreenWidth(context);
-            recy_tab_content.setLayoutParams(layoutParams);
-            recy_tab_content.setX(0);//QMUIDisplayHelper.getScreenWidth(context)
-            recy_tab_content.setLayoutManager(new GridLayoutManager(context,columnCount));
-        }
-        adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
-        recy_tab_content.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick( View view, int position) {
-                tabMenuInterface.onSelected(tabIndex, position);
-                //adapter.setOnClickItem(position);
-                adapter.setOnItemClicked(position);
-                tabSelectModels = adapter.getTabMenuModels();
-                //popupWindow.dismiss();
+        if (columnCount == 1 || columnCount > 1) {
+            rl_tab_menu_custom_panel.setVisibility(GONE);
+            recy_tab_content.setVisibility(VISIBLE);
+            LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
+            if (columnCount == 1) {
+                recy_tab_content.setLayoutManager(new LinearLayoutManager(context));
+                //默认位置在当前tab下平分viewgroup宽度
+                layoutParams.width = width / tabCount;
+                recy_tab_content.setLayoutParams(layoutParams);
+                recy_tab_content.setX(location[0] + (tabIndex * 2) * tabButton.getWidth() / 2 + tabButton.getWidth() / 2 - layoutParams.width / 2);//QMUIDisplayHelper.getScreenWidth(context)
+            } else if (columnCount > 1) {
+                layoutParams.width = QMUIDisplayHelper.getScreenWidth(context);
+                recy_tab_content.setLayoutParams(layoutParams);
+                recy_tab_content.setX(0);//QMUIDisplayHelper.getScreenWidth(context)
+                recy_tab_content.setLayoutManager(new GridLayoutManager(context, columnCount));
             }
-        });
+            adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
+            recy_tab_content.setAdapter(adapter);
 
+            adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    tabMenuInterface.onSelected(tabIndex, position);
+                    //adapter.setOnClickItem(position);
+                    adapter.setOnItemClicked(position);
+                    tabSelectModels = adapter.getTabMenuModels();
+                    //popupWindow.dismiss();
+                }
+            });
+        } else if (columnCount == -1) {//自定义contentView
+            recy_tab_content.setVisibility(GONE);
+            rl_tab_menu_custom_panel.removeAllViews();
+            rl_tab_menu_custom_panel.setVisibility(VISIBLE);
+            View view = LayoutInflater.from(context).inflate(tabSelectModels.get(tabIndex).getContentResId(), rl_tab_menu_custom_panel, true);
+            if(tabSelectModels.get(tabIndex).getOnCreatTabContentView()!=null) {
+                tabSelectModels.get(tabIndex).getOnCreatTabContentView().onCreat(view);
+            }
+        }
 
     }
 

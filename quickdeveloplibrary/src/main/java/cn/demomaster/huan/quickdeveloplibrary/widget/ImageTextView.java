@@ -42,8 +42,8 @@ public class ImageTextView extends AppCompatImageView {
         init(context, attrs);
     }
 
-    private int textColor = 0x00000000;
-    private int textSize = 0;
+    private int textColor = -1;
+    private int textSize = -1;
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
@@ -60,7 +60,7 @@ public class ImageTextView extends AppCompatImageView {
             AttributeHelper attributeHelper = new AttributeHelper(context,attrs);
             //attributeHelper.hasAttr("textSize")
 
-            int count = attrs.getAttributeCount();
+          /*  int count = attrs.getAttributeCount();
             for (int i = 0; i < count; i++) {
                 String attrName = attrs.getAttributeName(i);
                 String attrVal = attrs.getAttributeValue(i);
@@ -71,8 +71,8 @@ public class ImageTextView extends AppCompatImageView {
                     }
                 }
                 Log.e(TAG, "attrName = " + attrName + " , attrVal = " + attrVal);
-            }
-            if (attributeHelper.hasAttr("textColor")) {
+            }*/
+            if (textColor==-1&&attributeHelper.hasAttr("textColor")) {
                 String colorArr = attributeHelper.getValue("textColor");
                 if (colorArr.startsWith("@")) {
                     int colorId = Integer.valueOf(colorArr.replace("@",""));
@@ -83,7 +83,7 @@ public class ImageTextView extends AppCompatImageView {
                 }
             }
 
-            if (attributeHelper.hasAttr("textSize")) {
+            if (textSize==-1&&attributeHelper.hasAttr("textSize")) {
                 String textSizeArr = attributeHelper.getValue("textSize");
                 if (textSizeArr.startsWith("@")) {
                     int textSizeId = Integer.valueOf(textSizeArr.replace("@",""));
@@ -108,6 +108,7 @@ public class ImageTextView extends AppCompatImageView {
             textWidth = mPaint.measureText(text);
             // 文字baseline在y轴方向的位置
             baseLineY = Math.abs(mPaint.ascent() + mPaint.descent()) / 2;
+
 
             int minimumWidth = getSuggestedMinimumWidth();
             int minimumHeight = getSuggestedMinimumHeight();
@@ -185,6 +186,7 @@ public class ImageTextView extends AppCompatImageView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (text != null) {
+            initPaint();
             drawText(canvas);
         }
     }
@@ -211,7 +213,11 @@ public class ImageTextView extends AppCompatImageView {
 
     private void drawText(Canvas canvas) {
         int h = getHeight();
-        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY / 2, mPaint);
+       /* // 计算Baseline绘制的起点X轴坐标
+        int baseX = (int) (canvas.getWidth() / 2 - mPaint.measureText(text) / 2);
+        // 计算Baseline绘制的Y坐标(有点难理解，记住)
+        int baseY = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));*/
+        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY , mPaint);
         //canvas.drawLine( 0,  height/2,  width,  height/2, mPaint);
     }
 

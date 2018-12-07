@@ -62,6 +62,16 @@ public class TabMenuActivity extends BaseActivityParent {
         tabMenuModel2.setColumnCount(3);
         tabSelectModels.add(tabMenuModel2);
 
+        //添加自定义布局
+        TabMenuModel tabMenuModel3 =new TabMenuModel("自定义", R.layout.layout_date_picker, new TabMenuModel.OnCreatTabContentView() {
+            @Override
+            public void onCreat(View root) {
+
+            }
+        });
+        tabMenuModel3.setTabButtonView(new TButton(this));
+        tabSelectModels.add(tabMenuModel3);
+
         /*********************      组建初始化                   ************************/
         tabMenuLayout = findViewById(R.id.tab_menu_layout);
         tabMenuLayout.setData(tabSelectModels,new TabMenuLayout.TabMenuInterface() {

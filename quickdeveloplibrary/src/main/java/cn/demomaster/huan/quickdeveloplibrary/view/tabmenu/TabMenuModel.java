@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 
+import android.view.View;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +17,9 @@ public class TabMenuModel {
     private String tabName;//Tab名称
     private String[] tabItems;//子内容列表
     private int columnCount =1;//默认内容列表显示几列
+    private int contentResId=-1;//自定义布局id
     private TabRadioGroup.TabRadioButton tabButtonView;
+    private OnCreatTabContentView onCreatTabContentView;
 
     public TabMenuModel( String tabName, String[] tabItems,int selectCount, List<Integer> selectDeftData) {
         this.selectCount = selectCount;
@@ -27,6 +31,12 @@ public class TabMenuModel {
         this.selectDeftData = selectDeftData;
         this.tabName = tabName;
         this.tabItems = tabItems;
+    }
+
+    public TabMenuModel( String tabName,int contentResId,OnCreatTabContentView onCreatTabContentView) {
+        this.tabName = tabName;
+        this.contentResId = contentResId;
+        this.onCreatTabContentView = onCreatTabContentView;
     }
 
     public int getSelectCount() {
@@ -70,10 +80,31 @@ public class TabMenuModel {
     }
 
     public int getColumnCount() {
+        if(contentResId!=-1&&tabItems==null){return -1;}
         return columnCount;
     }
 
     public void setColumnCount(int columnCount) {
         this.columnCount = columnCount;
+    }
+
+    public int getContentResId() {
+        return contentResId;
+    }
+
+    public void setContentResId(int contentResId) {
+        this.contentResId = contentResId;
+    }
+
+    public OnCreatTabContentView getOnCreatTabContentView() {
+        return onCreatTabContentView;
+    }
+
+    public void setOnCreatTabContentView(OnCreatTabContentView onCreatTabContentView) {
+        this.onCreatTabContentView = onCreatTabContentView;
+    }
+
+    public static interface OnCreatTabContentView{
+        void onCreat(View root);
     }
 }

@@ -29,6 +29,5 @@ dependencies {
     implementation project(path: ':quickdeveloplibrary')
     //implementation 'com.github.yuzhiqiang1993:zxing:2.2.1'
 
-
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 }

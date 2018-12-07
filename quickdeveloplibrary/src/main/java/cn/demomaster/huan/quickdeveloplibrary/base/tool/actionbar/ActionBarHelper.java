@@ -16,10 +16,10 @@ public class ActionBarHelper {
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         //inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ActionBarLayout.Builder builder = new ActionBarLayout.Builder(mContext);
-        ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
-        builder.setContentView(contentView_rel);
-        ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common, null);
-        builder.setHeadView(headerView);
+       // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
+        builder.setContentView(layoutResID);
+       // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common, null);
+        builder.setHeadView(R.layout.activity_actionbar_common);
         return  builder.create();
     }
 }

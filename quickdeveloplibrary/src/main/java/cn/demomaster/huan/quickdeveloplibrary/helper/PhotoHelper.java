@@ -178,7 +178,6 @@ public class PhotoHelper {
         startActivityForResult(CameraIDCardActivity.class, resultCodeTakePhoto);
     }
 
-
     private void selectPhotoFromGallery(int resultCodeTakePhoto) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
