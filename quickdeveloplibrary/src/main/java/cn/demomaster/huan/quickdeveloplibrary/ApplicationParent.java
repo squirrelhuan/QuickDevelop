@@ -13,7 +13,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 public class ApplicationParent extends Application {
 
     public static String TAG ="CGQ";
-    public static ApplicationParent instance = null;
+    private static ApplicationParent instance = null;
+    public static Application getInstance(){
+        return instance;
+    }
     //本地activity栈
     public static List<Activity> activitys = new ArrayList<Activity>();
     @Override
