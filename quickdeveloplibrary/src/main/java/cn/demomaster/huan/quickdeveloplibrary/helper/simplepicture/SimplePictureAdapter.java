@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -33,6 +34,11 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     private LayoutInflater mInflater;
 
     private static int mMaxCount;
+    private THEME themeType = THEME.number;
+    enum THEME{
+        number,
+        normal
+    }
     //保存选中的图片
     private static LinkedHashMap<Integer, Image> map;
     private boolean useCamera;
@@ -98,6 +104,16 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     @Override
     public int getItemCount() {
         return mImages == null ? 0 : mImages.size();
+    }
+
+    public ArrayList<Image> getImages() {
+        ArrayList<Image> images =  new ArrayList<>();
+        Object[] objects = map.entrySet().toArray();
+        for(int i=0;i<map.size();i++){
+            Map.Entry entry = (Map.Entry) objects[i];
+            images.add((Image) entry.getValue());
+        }
+        return images;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -203,7 +219,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
             if (isSelect) {
                 if (mMaxCount == 1) {
                     holder.ct_select.setRound(false);
-                    holder.ct_select.setBackgroundColor(R.drawable.ic_check_box_black_24dp);
+                    holder.ct_select.setDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_box_black_24dp));
                 } else {
                     holder.ct_select.setRound(true);
                     holder.ct_select.setBackgroundColor(Color.BLUE);
@@ -213,7 +229,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
             } else {
                 if (mMaxCount == 1) {
                     holder.ct_select.setRound(false);
-                    holder.ct_select.setBackgroundColor(R.drawable.ic_check_box_outline_blank_black_24dp);
+                    holder.ct_select.setDrawable(mContext.getResources().getDrawable(R.drawable.ic_check_box_outline_blank_black_24dp));
                 } else {
                     holder.ct_select.setRound(true);
                     holder.ct_select.setBackgroundColor(mContext.getResources().getColor(R.color.transparent_light_33));

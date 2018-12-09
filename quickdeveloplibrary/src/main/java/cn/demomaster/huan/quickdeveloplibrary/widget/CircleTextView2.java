@@ -2,11 +2,16 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -78,6 +83,12 @@ public class CircleTextView2 extends TextView {
         this.backgroundColor = backgroundColor;
     }
 
+    private Drawable drawable;
+    public void setDrawable(Drawable background) {
+        this.drawable = background;
+        postInvalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         //this.setTextColor(textColor);
@@ -122,7 +133,29 @@ public class CircleTextView2 extends TextView {
             super.onDraw(canvas); //恢复Canvas
             canvas.restore();
         } else {
+            //canvas.save();
             super.onDraw(canvas);
+            //失效了
+            //drawable.draw(canvas);
+           /* BitmapDrawable bd = (BitmapDrawable) drawable;
+            Bitmap bm= bd.getBitmap();*/
+            int padding_l = usePadding?getPaddingLeft():0;
+            int padding_t = usePadding?getPaddingTop():0;
+            int padding_r = usePadding?getPaddingRight():0;
+            int padding_b = usePadding?getPaddingBottom():0;
+            Rect rect = new Rect(padding_l,padding_t,width-padding_r,height-padding_b);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                drawable.setTint(getTextColors().getDefaultColor());
+            }
+            drawable.setBounds(rect);
+            drawable.draw(canvas);
+            /*Paint paint = new Paint();
+            canvas.drawBitmap(bm,rect,rect,paint);*/
+            /*float sx = (float) (width-padding_l-padding_r)/width;
+            float sy = (float) (height-padding_t-padding_b)/height;
+            canvas.scale(sx,sy);
+            canvas.translate(padding_l,padding_t);*/
+
         }
     }
 

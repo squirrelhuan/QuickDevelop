@@ -144,9 +144,18 @@ public class ScreenShotUitl {
         return bitmap;
     }
 
-    public static Bitmap getCacheBitmapFromViewTop(View view,int height) {
+    public static Bitmap getCacheBitmapFromViewTop(View view,int height){
+        return getCacheBitmapFromViewTop( view, height, 0);
+    }
+    public static Bitmap getCacheBitmapFromViewTop(View view,int height,int width) {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
+        if(width==0){
+            width = view.getMeasuredWidth();
+            if(width==0){
+                return null;
+            }
+        }
         Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, view.getMeasuredWidth(), height);
         view.setDrawingCacheEnabled(false);
         view.destroyDrawingCache();

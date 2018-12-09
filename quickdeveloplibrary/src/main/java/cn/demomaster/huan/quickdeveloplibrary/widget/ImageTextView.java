@@ -42,8 +42,8 @@ public class ImageTextView extends AppCompatImageView {
         init(context, attrs);
     }
 
-    private int textColor = -1;
-    private int textSize = -1;
+    public int textColor = -1;
+    public int textSize = -1;
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
@@ -51,7 +51,7 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     public void setTextSize(int textSize) {
-        this.textSize = textSize;
+        this.textSize = DisplayUtil.sp2px(getContext(),textSize);
         postInvalidate();
     }
 
@@ -220,5 +220,8 @@ public class ImageTextView extends AppCompatImageView {
         canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY , mPaint);
         //canvas.drawLine( 0,  height/2,  width,  height/2, mPaint);
     }
+    private int showType;
+    public void asTextView() {
 
+    }
 }

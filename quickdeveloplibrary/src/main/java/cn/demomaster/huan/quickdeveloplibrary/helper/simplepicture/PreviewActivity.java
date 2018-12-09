@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
@@ -35,8 +36,10 @@ public class PreviewActivity extends BaseActivityParent {
 
     private void initV() {
         //pv_image = findViewById(R.id.pv_image);
-        if (mBundle != null && mBundle.containsKey("image")) {
-            Image image = (Image) mBundle.getSerializable("image");
+        if (mBundle != null && mBundle.containsKey("images")) {
+            ArrayList<Image> images = (ArrayList<Image>) mBundle.getSerializable("images");
+            int index = mBundle.getInt("imageIndex",0);
+            Image image = images.get(index);
             if (image != null && image.getPath() != null) {
                 Glide.with(mContext).load(new File(image.getPath())).into(pv_image);
             }

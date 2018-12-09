@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
 
 public class PickActivity extends BaseActivityParent {
@@ -23,6 +25,7 @@ public class PickActivity extends BaseActivityParent {
 //    private String mProvince = null; // 省份
 //    private String mCity = null; // 城市
     private LoopView loopView;
+    private LoopView2 loopView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +103,24 @@ public class PickActivity extends BaseActivityParent {
             }
         });
         loopView.setTextSize(25);//must be called before setDateList
-        loopView.setDataList(getList());
+        loopView.setDataList(getList(50));
+
+        loopView2 = (LoopView2) findViewById(R.id.loop_view2);
+        loopView2.setLoopListener(new LoopScrollListener() {
+            @Override
+            public void onItemSelect(int item) {
+                PopToastUtil.ShowToast(mContext,"item="+item);
+            }
+        });
+        loopView2.setTextSize(25);//must be called before setDateList
+        loopView2.setDataList(getList(20));
+        loopView2.setCurrentIndex(10);
 //        ((new ProvinceInfoParserTask(this, mHandler))).execute();// 解析本地地址信息文件
     }
 
-    public ArrayList<String> getList(){
+    public ArrayList<String> getList(int c){
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < c; i++) {
             list.add("DAY TEST:" + i);
         }
         return list;

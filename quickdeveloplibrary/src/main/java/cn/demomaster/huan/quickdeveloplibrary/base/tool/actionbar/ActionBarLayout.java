@@ -136,8 +136,8 @@ public class ActionBarLayout {
         //contentView宽高
         mInflater.inflate(contentLayoutResID, rootLayout);
         contentView = (ViewGroup) rootLayout.getChildAt(0);
-                //header宽高
-         mInflater.inflate(headLayoutResID, rootLayout);
+        //header宽高
+        mInflater.inflate(headLayoutResID, rootLayout);
         headView = (ViewGroup) rootLayout.getChildAt(1);
 
         //记录背景drawable
@@ -216,7 +216,9 @@ public class ActionBarLayout {
     }
 
     private void setActionBarBackGroundDrawable(Drawable headerBackgroundDrawable) {
-        headView.setBackground(headerBackgroundDrawable);
+        if (headerBackgroundDrawable != null) {
+            headView.setBackground(headerBackgroundDrawable);
+        }
     }
 
     /**
@@ -405,13 +407,13 @@ public class ActionBarLayout {
         //状态栏颜色
         if (stateBarColorAuto) {
             //view加载完成时回调
-           /* rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     setStateBarColor();
                 }
-            });*/
+            });
         }
         //setActionBarThemeColors(Color.WHITE, Color.BLACK);
         return rootLayout;
@@ -444,6 +446,9 @@ public class ActionBarLayout {
         Log.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
         Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(rootLayout, statusBar_Height);
+        if(bitmap==null){
+            return;
+        }
         boolean isDart;
         isDart = getBitmapMainColor(bitmap);
         if (themeColorType != (isDart ? 1 : 0)) {

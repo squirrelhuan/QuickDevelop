@@ -4,7 +4,9 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,15 +19,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
+import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
 
 public class SimplePictureActivity extends BaseActivityParent {
 
@@ -54,8 +60,26 @@ public class SimplePictureActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_picture);
 
+        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
+
         getActionBarLayout().setTitle("图片选择器");
         getActionBarLayout().getRightView().setText("发送");
+        getActionBarLayout().getRightView().setImageResource(0);
+        getActionBarLayout().getRightView().setTextSize(16);
+        getActionBarLayout().getRightView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //拍照完成，返回对应图片路径
+                Intent intent = new Intent();
+                ArrayList<Image> images = mAdapter.getImages();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(PHOTOHELPER_RESULT_PATHES,images);
+                intent.putExtras(bundle);
+                setResult(result, intent);
+                mContext.finish();
+            }
+        });
+        getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
         init();
     }
 
@@ -135,6 +159,7 @@ public class SimplePictureActivity extends BaseActivityParent {
            mLayoutManager = new GridLayoutManager(this, 6);
        }
        rvImage.setLayoutManager(mLayoutManager);
+       maxCount = getIntent().getIntExtra("MaxCount",0);
        mAdapter = new SimplePictureAdapter(mContext, mFolders.get(0).getImages(), maxCount,true,rvImage);
        rvImage.setAdapter(mAdapter);
 
@@ -142,7 +167,10 @@ public class SimplePictureActivity extends BaseActivityParent {
            @Override
            public void onItemPreview(View view, int position, Image image) {
                Bundle bundle = new Bundle();
-               bundle.putSerializable("image",image);
+               ArrayList<Image> images = new ArrayList<>();
+               images.add(image);
+               bundle.putSerializable("images",images);
+               bundle.putInt("imageIndex",0);
                startActivity(PreviewActivity.class,bundle);
            }
 

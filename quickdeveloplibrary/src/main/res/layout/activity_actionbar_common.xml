@@ -13,6 +13,8 @@
         android:layout_width="@dimen/activity_actionbar_button_width"
         android:layout_height="match_parent"
         android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical"
         android:src="@drawable/ic_arrow_back_black_24dp" />
 
@@ -34,6 +36,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical"
         android:src="@drawable/ic_more_vert_black_24dp" />
 

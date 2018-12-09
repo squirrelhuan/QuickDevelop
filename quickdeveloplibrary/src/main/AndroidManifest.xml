@@ -19,8 +19,8 @@
         <activity android:name=".camera.scan.ScanActivity" />
         <activity android:name=".camera.idcard.IDCardActivity" />
         <activity android:name=".camera.idcard.CameraIDCardActivity" />
-        <activity android:name=".helper.simplepicture.SimplePictureActivity" />
-        <activity android:name=".helper.simplepicture.PreviewActivity"/>
+        <activity android:name=".helper.simplepicture.SimplePictureActivity" android:label="@string/image"/>
+        <activity android:name=".helper.simplepicture.PreviewActivity" android:label=""/>
     </application>
 
 </manifest>

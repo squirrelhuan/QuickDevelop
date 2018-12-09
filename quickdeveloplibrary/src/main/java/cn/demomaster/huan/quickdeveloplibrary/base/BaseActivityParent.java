@@ -27,9 +27,10 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         }
 
     }
+
     //获取自定义导航
     public ActionBarLayout getActionBarLayout() {
-        if(!isUseActionBarLayout()){
+        if (!isUseActionBarLayout()) {
             return null;
         }
         if (actionBarLayout == null) {
@@ -37,6 +38,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         }
         return actionBarLayout;
     }
+
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {

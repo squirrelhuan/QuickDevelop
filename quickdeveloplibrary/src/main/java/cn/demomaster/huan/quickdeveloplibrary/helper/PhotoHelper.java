@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -16,11 +17,14 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 
 /**
@@ -40,7 +44,7 @@ public class PhotoHelper {
         this.context = context;
     }
 
-    public void scanQrcode(OnTakePhotoResult onTakePhotoResult){
+    public void scanQrcode(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_SCAN_QRCODE);
     }
 
@@ -59,8 +63,8 @@ public class PhotoHelper {
     }
 
     // 调用自定义图库获取图片
-    public void selectPhotoFromMyGallery(OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_SIMPLE_PICTURE);
+    public void selectPhotoFromMyGallery(OnSelectPictureResult onSelectPictureResult) {
+        takePhoto2(onSelectPictureResult, RESULT_CODE_SIMPLE_PICTURE);
     }
 
     //调用相册并截取
@@ -82,11 +86,11 @@ public class PhotoHelper {
         takePhoto2(onTakePhotoResult, RESULT_CODE_TAKE_PHOTO_FOR_IDCARD);
     }
 
-    private void takePhoto2(final OnTakePhotoResult onTakePhotoResult, final int resultCodeTakePhoto) {
+    private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto) {
         takePhoto2(onTakePhotoResult, resultCodeTakePhoto, null);
     }
 
-    private void takePhoto2(final OnTakePhotoResult onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
+    private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         PermissionManager.chekPermission(context, permissions, new PermissionManager.OnCheckPermissionListener() {
             @Override
@@ -109,7 +113,7 @@ public class PhotoHelper {
                         scanQrcode(resultCodeTakePhoto);
                         break;
                     case RESULT_CODE_SIMPLE_PICTURE:
-                        startSimplePictureActivity(resultCodeTakePhoto);
+                        startSimplePictureActivity(resultCodeTakePhoto,onTakePhotoResult);
                         break;
 
 
@@ -124,7 +128,7 @@ public class PhotoHelper {
     }
 
 
-    private Map<Integer, OnTakePhotoResult> photoResultMap = new HashMap<>();
+    private Map<Integer, Object> photoResultMap = new HashMap<>();
 
     private void takePhoto(int resultCodeTakePhoto) {
         Uri fileUri;
@@ -186,7 +190,7 @@ public class PhotoHelper {
     }
 
     private void scanQrcode(int resultCodeTakePhoto) {
-        Intent intent = new Intent(context,CaptureActivity.class);
+        Intent intent = new Intent(context, CaptureActivity.class);
         /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
          * 不传的话  默认都为默认不震动  其他都为true
@@ -202,11 +206,13 @@ public class PhotoHelper {
         ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE);
     }
 
-   private void startSimplePictureActivity(int resultCodeTakePhoto){
-       Intent intent = new Intent(context,SimplePictureActivity.class);
-       intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-       ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
-   }
+    private void startSimplePictureActivity(int resultCodeTakePhoto, Object onTakePhotoResult) {
+        OnSelectPictureResult onSelectPictureResult = (OnSelectPictureResult) onTakePhotoResult;
+        Intent intent = new Intent(context, SimplePictureActivity.class);
+        intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+        intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
+        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
+    }
 
 
     private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int resultCodeTakePhoto) {
@@ -230,46 +236,57 @@ public class PhotoHelper {
     public final static int PHOTOHELPER_REQUEST_CODE_PHOTO_CROP = 1002;
     public final static int PHOTOHELPER_REQUEST_CODE_GALLERY = 1003;
     public final static int PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP = 1004;
-    public final static int PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE= 1005;
+    public final static int PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE = 1005;
 
-    public final static int PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE =1020;
+    public final static int PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE = 1020;
 
     public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
     public final static String PHOTOHELPER_RESULT_PATH = "PHOTOHELPER_RESULT_PATH";
+    public final static String PHOTOHELPER_RESULT_PATHES = "PHOTOHELPER_RESULT_PATHES";
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String path = null;
         OnTakePhotoResult onTakePhotoResult = null;
+        OnSelectPictureResult onSelectPictureResult = null;
         if (data != null) {
 
-            if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
-                path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
-            }else if(data.getExtras() != null && data.getExtras().containsKey(Constant.CODED_CONTENT)){
-                path = data.getStringExtra(Constant.CODED_CONTENT);
-            } else if (data.getData() != null) {
-                path = data.getData().toString();
-            }
             switch (resultCode) {
                 case RESULT_CODE_TAKE_PHOTO:
-                    onTakePhotoResult = photoResultMap.get(resultCode);
+                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
                     break;
                 case RESULT_CODE_PHOTO_CROP:
-                    onTakePhotoResult = photoResultMap.get(resultCode);
+                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
                     break;
                 case RESULT_CODE_TAKE_PHOTO_FOR_IDCARD:
-                    onTakePhotoResult = photoResultMap.get(resultCode);
+                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
                     break;
                 case RESULT_CODE_SELECT_PHOTO_FROM_GALLERY:
-                    onTakePhotoResult = photoResultMap.get(resultCode);
+                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
+                    break;
+                case RESULT_CODE_SIMPLE_PICTURE:
+                    onSelectPictureResult = (OnSelectPictureResult) photoResultMap.get(resultCode);
                     break;
                 default:
-                    onTakePhotoResult = photoResultMap.get(resultCode);
+                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
                     break;
             }
+
+
             if (onTakePhotoResult != null) {
+                if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
+                    path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
+                } else if (data.getExtras() != null && data.getExtras().containsKey(Constant.CODED_CONTENT)) {
+                    path = data.getStringExtra(Constant.CODED_CONTENT);
+                } else if (data.getData() != null) {
+                    path = data.getData().toString();
+                }
+
                 onTakePhotoResult.onSuccess(data, path);
-            } else {
-                onTakePhotoResult.onFailure("");
+            }
+            if (onSelectPictureResult != null) {
+                Bundle bundle = data.getExtras();
+                ArrayList<Image> images = (ArrayList<Image>) bundle.getSerializable(PHOTOHELPER_RESULT_PATHES);
+                onSelectPictureResult.onSuccess(data, images);
             }
         }
 
@@ -277,7 +294,14 @@ public class PhotoHelper {
 
     public static interface OnTakePhotoResult {
         void onSuccess(Intent data, String path);
+
         void onFailure(String error);
+    }
+
+    public static interface OnSelectPictureResult {
+        void onSuccess(Intent data, ArrayList<Image> images);
+        void onFailure(String error);
+        int getImageCount();
     }
 
 }
