@@ -173,12 +173,12 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             case R.id.btn_color_black:
                 getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black),getResources().getColor(R.color.white));
-                PopToastUtil.ShowToast(this,"黑色主题");
+                showMessage("黑色主题");
                 break;
             case R.id.btn_color_white:
                 getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.white),getResources().getColor(R.color.black));
-                PopToastUtil.ShowToast(this,"白色主题");
+                showMessage("白色主题");
                 break;
             case R.id.btn_color_red:
                 getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.red));

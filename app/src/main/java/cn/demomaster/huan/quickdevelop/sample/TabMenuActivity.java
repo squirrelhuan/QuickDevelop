@@ -20,6 +20,8 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabRadioGroup;
@@ -63,10 +65,20 @@ public class TabMenuActivity extends BaseActivityParent {
         tabSelectModels.add(tabMenuModel2);
 
         //添加自定义布局
-        TabMenuModel tabMenuModel3 =new TabMenuModel("自定义", R.layout.layout_date_picker, new TabMenuModel.OnCreatTabContentView() {
+        TabMenuModel tabMenuModel3 =new TabMenuModel("自定义", R.layout.layout_date_picker2, new TabMenuModel.OnCreatTabContentView() {
             @Override
             public void onCreat(View root) {
-
+                LoopView2 loopView2;
+                loopView2 = (LoopView2) root.findViewById(R.id.loop_view2);
+                loopView2.setLoopListener(new LoopScrollListener() {
+                    @Override
+                    public void onItemSelect(int item) {
+                        PopToastUtil.ShowToast(mContext,"item="+item);
+                    }
+                });
+                loopView2.setTextSize(16);//must be called before setDateList
+                loopView2.setDataList(getList(20));
+                loopView2.setCurrentIndex(10);
             }
         });
         tabMenuModel3.setTabButtonView(new TButton(this));
@@ -82,6 +94,14 @@ public class TabMenuActivity extends BaseActivityParent {
             }
 
         });
+    }
+
+    public ArrayList<String> getList(int c){
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < c; i++) {
+            list.add("DAY TEST:" + i);
+        }
+        return list;
     }
 
     public class TButton extends TabRadioGroup.TabRadioButton{

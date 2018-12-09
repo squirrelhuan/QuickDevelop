@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.toast;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.widget.PopupWindow;
 
@@ -13,7 +14,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 public class CPopupWindow extends PopupWindow {
 
 
-    private Activity context;
+    private Context context;
 
     private CPopupWindow(PopBuilder builder) {
         this.context = builder.context;
@@ -28,11 +29,11 @@ public class CPopupWindow extends PopupWindow {
 
     public static class PopBuilder {
         private View contentView;
-        private Activity context;
+        private Context context;
         private int width, height;
         private boolean focusable;
 
-        public PopBuilder(Activity context) {
+        public PopBuilder(Context context) {
             this.context = context;
         }
 

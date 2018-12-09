@@ -44,7 +44,7 @@ public class Folder {
     }
 
     public void addImage(Image image) {
-        if (image != null && TextUtils.isEmpty(image.getPath())) {
+        if (image != null && !TextUtils.isEmpty(image.getPath())) {
             if (images == null) {
                 images = new ArrayList<>();
             }

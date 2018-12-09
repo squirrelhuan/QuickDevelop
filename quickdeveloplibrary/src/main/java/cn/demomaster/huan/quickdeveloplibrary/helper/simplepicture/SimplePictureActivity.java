@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,19 +17,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
-import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
 
 public class SimplePictureActivity extends BaseActivityParent {
@@ -55,12 +50,13 @@ public class SimplePictureActivity extends BaseActivityParent {
             mAdapter.notifyDataSetChanged();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_picture);
 
-        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
+        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
         getActionBarLayout().setTitle("图片选择器");
         getActionBarLayout().getRightView().setText("发送");
@@ -73,7 +69,7 @@ public class SimplePictureActivity extends BaseActivityParent {
                 Intent intent = new Intent();
                 ArrayList<Image> images = mAdapter.getImages();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(PHOTOHELPER_RESULT_PATHES,images);
+                bundle.putSerializable(PHOTOHELPER_RESULT_PATHES, images);
                 intent.putExtras(bundle);
                 setResult(result, intent);
                 mContext.finish();
@@ -83,21 +79,22 @@ public class SimplePictureActivity extends BaseActivityParent {
         init();
     }
 
-    private TextView tvFolderName,tv_preview;
+    private TextView tvFolderName, tv_preview;
     private RecyclerView rvImage;
     private SimplePictureAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
     private int result;
+
     private void init() {
 
-        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
+        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
         PermissionManager.chekPermission(mContext, permission, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
-               initView();
+                initView();
             }
 
             @Override
@@ -110,10 +107,10 @@ public class SimplePictureActivity extends BaseActivityParent {
     }
 
     private void initView() {
-        tv_preview= (TextView) findViewById(R.id.tv_preview);
+        tv_preview = (TextView) findViewById(R.id.tv_preview);
         tvFolderName = (TextView) findViewById(R.id.tv_folder_name);
         tv_preview.setVisibility(View.GONE);
-        rl_mark =  findViewById(R.id.rl_mark);
+        rl_mark = findViewById(R.id.rl_mark);
         rvImage = findViewById(R.id.recy_picture_grid);
         rvImage.setLayoutManager(mLayoutManager);
         rl_mark.setOnClickListener(new View.OnClickListener() {
@@ -150,41 +147,42 @@ public class SimplePictureActivity extends BaseActivityParent {
     }
 
     private int maxCount = 3;
-   public void initAdapter(){
-       // 判断屏幕方向
-       Configuration configuration = getResources().getConfiguration();
-       if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-           mLayoutManager = new GridLayoutManager(this, 4);
-       } else {
-           mLayoutManager = new GridLayoutManager(this, 6);
-       }
-       rvImage.setLayoutManager(mLayoutManager);
-       maxCount = getIntent().getIntExtra("MaxCount",0);
-       mAdapter = new SimplePictureAdapter(mContext, mFolders.get(0).getImages(), maxCount,true,rvImage);
-       rvImage.setAdapter(mAdapter);
 
-       mAdapter.setOnItemClickListener(new SimplePictureAdapter.OnItemClickListener() {
-           @Override
-           public void onItemPreview(View view, int position, Image image) {
-               Bundle bundle = new Bundle();
-               ArrayList<Image> images = new ArrayList<>();
-               images.add(image);
-               bundle.putSerializable("images",images);
-               bundle.putInt("imageIndex",0);
-               startActivity(PreviewActivity.class,bundle);
-           }
+    public void initAdapter() {
+        // 判断屏幕方向
+        Configuration configuration = getResources().getConfiguration();
+        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mLayoutManager = new GridLayoutManager(this, 4);
+        } else {
+            mLayoutManager = new GridLayoutManager(this, 6);
+        }
+        rvImage.setLayoutManager(mLayoutManager);
+        maxCount = getIntent().getIntExtra("MaxCount", 0);
+        mAdapter = new SimplePictureAdapter(mContext, mFolders.get(0).getImages(), maxCount, true, rvImage);
+        rvImage.setAdapter(mAdapter);
 
-           @Override
-           public void onItemClick(View view, int position,Map<Integer, Image> map) {
-               if(map==null||map.size()==0){
-                   tv_preview.setVisibility(View.GONE);
-               }else {
-                   tv_preview.setVisibility(View.VISIBLE);
-                    tv_preview.setText(mContext.getResources().getString(R.string.preview)+"("+map.size()+"/"+maxCount+")");
-               }
+        mAdapter.setOnItemClickListener(new SimplePictureAdapter.OnItemClickListener() {
+            @Override
+            public void onItemPreview(View view, int position, Image image) {
+                Bundle bundle = new Bundle();
+                ArrayList<Image> images = new ArrayList<>();
+                images.add(image);
+                bundle.putSerializable("images", images);
+                bundle.putInt("imageIndex", 0);
+                startActivity(PreviewActivity.class, bundle);
+            }
 
-           }
-       });
+            @Override
+            public void onItemClick(View view, int position, Map<Integer, Image> map) {
+                if (map == null || map.size() == 0) {
+                    tv_preview.setVisibility(View.GONE);
+                } else {
+                    tv_preview.setVisibility(View.VISIBLE);
+                    tv_preview.setText(mContext.getResources().getString(R.string.preview) + "(" + map.size() + "/" + maxCount + ")");
+                }
+
+            }
+        });
     }
 
     private ArrayList<Folder> mFolders;
@@ -193,6 +191,7 @@ public class SimplePictureActivity extends BaseActivityParent {
     private boolean isOpenFolder;
     private RecyclerView rvFolder;
     private RelativeLayout rl_mark;
+
     /**
      * 初始化图片文件夹列表
      */
@@ -221,7 +220,7 @@ public class SimplePictureActivity extends BaseActivityParent {
     private void setFolder(Folder folder) {
         if (folder != null && mAdapter != null && !folder.equals(mFolder)) {
             mFolder = folder;
-            tvFolderName.setText((TextUtils.isEmpty(folder.getName())?mContext.getResources().getString(R.string.image):folder.getName()));
+            tvFolderName.setText((TextUtils.isEmpty(folder.getName()) ? mContext.getResources().getString(R.string.image) : folder.getName()));
             rvImage.scrollToPosition(0);
             mAdapter.refresh(folder.getImages(), false);
         }
@@ -246,6 +245,7 @@ public class SimplePictureActivity extends BaseActivityParent {
             isOpenFolder = true;
         }
     }
+
     /**
      * 收起文件夹列表
      */

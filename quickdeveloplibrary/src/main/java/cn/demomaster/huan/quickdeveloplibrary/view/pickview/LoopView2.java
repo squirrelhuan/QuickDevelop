@@ -33,6 +33,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 
 public class LoopView2 extends View {
     private static final String TAG = LoopView2.class.getSimpleName();
@@ -113,7 +114,7 @@ public class LoopView2 extends View {
     private void initView(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoopView);
         if (array != null) {
-            this.mTextSize = array.getDimensionPixelSize(R.styleable.LoopView_textSize, this.sp2px(context, 16.0F));
+            this.mTextSize = array.getDimensionPixelSize(R.styleable.LoopView_textSize, DisplayUtil.sp2px(context, 16));
             this.mDrawItemsCount = array.getInt(R.styleable.LoopView_drawItemCount, 5);
             array.recycle();
         }
@@ -333,7 +334,7 @@ public class LoopView2 extends View {
     }
 
     public final void setTextSize(float size) {
-        this.mTextSize = this.sp2px(this.mContext, size);
+        this.mTextSize = DisplayUtil.sp2px(this.mContext, size);
     }
 
     public void setLoopListener(LoopScrollListener LoopListener) {
@@ -387,10 +388,7 @@ public class LoopView2 extends View {
         this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView2.FlingRunnable(velocityY), 0L, (long) velocityFling, TimeUnit.MILLISECONDS);
     }
 
-    public int sp2px(Context context, float spValue) {
-        float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5F);
-    }
+
 
     class FlingRunnable implements Runnable {
         float velocity;

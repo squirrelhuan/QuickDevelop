@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#33000000">
+
+    <LinearLayout
+        android:id="@+id/container_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2
+            android:id="@+id/loop_view2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loop_view"
+            app:canLoop="true"
+            app:centerTextColor="#ff000000"
+            app:drawItemCount="5"
+            app:initPosition="3"
+            app:lineColor="@color/white"
+            app:textSize="16sp"
+            app:topBottomTextColor="@color/white"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.View;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
 public abstract class BaseActivityParent extends BaseActivityRoot {
@@ -45,5 +46,9 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
             optionsMenu = new OptionsMenu(this);
         }
         return optionsMenu;
+    }
+
+    public void showMessage(String message){
+        getMesageHelper().showMessage(message);
     }
 }

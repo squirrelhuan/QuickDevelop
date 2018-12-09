@@ -22,6 +22,8 @@ import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.MessageHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 public class BaseActivityRoot extends AppCompatActivity implements BaseActivityInterface{
@@ -189,8 +191,15 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     }
 
 
+    /*
+    是否实用自定义导航
+     */
     @Override
     public boolean isUseActionBarLayout() {
         return true;
+    }
+
+    public MessageHelper getMesageHelper(){
+       return MessageHelper.getInstance(mContext);
     }
 }

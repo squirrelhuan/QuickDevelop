@@ -6,12 +6,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
@@ -62,22 +66,36 @@ public class PictureManager {
         }).start();
     }
 
+    private static LinkedHashMap<String, Folder> folderMap = new LinkedHashMap<>();
+
     /**
      * 把图片按文件夹拆分，第一个文件夹保存所有的图片
      */
-    private static ArrayList<Folder> splitFolder(ArrayList<Image> images) {
+    private static ArrayList<Folder> splitFolder(ArrayList<Image> images1) {
         ArrayList<Folder> folders = new ArrayList<>();
-        folders.add(new Folder("全部图片", images));
+        ArrayList<Image> images = new ArrayList<>();
+        for (int i = 0; i < images1.size(); i++) {
+            if (images1.get(i) != null) {
+                images.add(images1.get(i));
+            }
+        }
+        folderMap.put("全部图片", new Folder("全部图片", images));
         if (images != null && !images.isEmpty()) {
             int size = images.size();
             for (int i = 0; i < size; i++) {
                 String path = images.get(i).getPath();
+                //  Log.d("CGQ",i+" image path"+path);
                 String name = getFolderName(path);
-                if (TextUtils.isEmpty(name)) {
-                    Folder folder = getFolder(name, folders);
-                    folder.addImage(images.get(i));
+                if (!TextUtils.isEmpty(name)) {
+                    if (images.get(i) != null) {
+                        getFolder(name, images.get(i));
+                    }
+                    //folder.addImage();
                 }
             }
+        }
+        for (Map.Entry entry : folderMap.entrySet()) {
+            folders.add((Folder) entry.getValue());
         }
         return folders;
     }
@@ -86,28 +104,28 @@ public class PictureManager {
      * 根据图片路径，获取图片文件夹名称
      */
     private static String getFolderName(String path) {
-        if (TextUtils.isEmpty(path)) {
+        if (!TextUtils.isEmpty(path)) {
             String[] strings = path.split(File.separator);
+            //Log.d("CGQ", "strings " + strings);
             if (strings.length >= 2) {
+                //Log.d("CGQ", "length " + strings.length);
                 return strings[strings.length - 2];
             }
         }
         return "";
     }
 
-    private static Folder getFolder(String name, List<Folder> folders) {
-        if (folders != null && !folders.isEmpty()) {
-            int size = folders.size();
-            for (int i = 0; i < size; i++) {
-                Folder folder = folders.get(i);
-                if (name.equals(folder.getName())) {
-                    return folder;
-                }
-            }
+    private static void getFolder(String name, Image image) {
+        if (!folderMap.containsKey(name)) {
+            Log.i("CGQ","containsKey="+name);
+            Folder folder = new Folder(name);
+            folder.addImage(image);
+            folderMap.put(name,folder);
+        } else {
+            Folder folder = folderMap.get(name);
+            folder.addImage(image);
+            folderMap.put(name,folder);
         }
-        Folder newFolder = new Folder(name);
-        folders.add(newFolder);
-        return newFolder;
     }
 
     public interface DataCallback {
