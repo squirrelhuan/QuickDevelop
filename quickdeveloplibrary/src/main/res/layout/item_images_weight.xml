@@ -15,6 +15,7 @@
         android:layout_centerInParent="true"
         android:scaleType="centerCrop" />
 
+
     <ImageView
         android:id="@+id/iv_delete"
         android:layout_width="wrap_content"
