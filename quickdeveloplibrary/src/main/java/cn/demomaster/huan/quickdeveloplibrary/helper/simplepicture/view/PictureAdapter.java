@@ -1,18 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -21,15 +16,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
 
 /**
@@ -100,7 +89,6 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         if (holder != null && holder.getType() == 0) {
             Image image = mImages.get(position);
             holder.setImage(image);
@@ -108,19 +96,19 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
             //.diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.ivImage);
             if (modelType == MODEL.edit) {
                 holder.iv_delete.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.iv_delete.setVisibility(View.GONE);
             }
-                holder.iv_delete.setTag(position);
-                holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onItemClickListener != null) {
-                            int p = holder.getAdapterPosition();
-                            onItemClickListener.onItemDelete(view, p, mImages.get(p));
-                        }
+            holder.iv_delete.setTag(position);
+            holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onItemClickListener != null) {
+                        int p = holder.getAdapterPosition();
+                        onItemClickListener.onItemDelete(view, p, mImages.get(p));
                     }
-                });
+                }
+            });
             holder.itemView.setTag(position);
             //点击选中/取消选中图片
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -128,7 +116,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
                 public boolean onLongClick(View view) {
                     int p = holder.getAdapterPosition();
                     setModelType(MODEL.edit);
-                    Vibrator vibrator = (Vibrator)mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+                    Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
                     long[] patter = {100, 50, 50};
                     vibrator.vibrate(patter, -1);
                     return true;
@@ -193,12 +181,9 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
                         //处理完后remove掉，至于为什么，后面有解释
                         iv_picture.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                        //int a = DisplayUtil.dp2px(mContext,30);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) iv_picture.getLayoutParams();
                         int w = iv_picture.getWidth() / 3;
                         int h = iv_picture.getHeight() / 3;
-                        //layoutParams.height=a; jini
-                        //layoutParams.width=a;
                         iv_picture.setPadding(w, h, w, h);
                         iv_picture.setLayoutParams(layoutParams);
                         iv_picture.setImageResource(R.drawable.ic_add_black_24dp);
