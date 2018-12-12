@@ -10,7 +10,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
 public abstract class BaseActivityParent extends BaseActivityRoot {
 
-
     //private LayoutInflater inflater;
     private int layoutResID;
     private ActionBarLayout actionBarLayout;

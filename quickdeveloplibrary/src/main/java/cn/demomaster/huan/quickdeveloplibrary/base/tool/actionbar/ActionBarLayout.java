@@ -200,7 +200,7 @@ public class ActionBarLayout {
     public void setBackGroundColor(int color) {
         headerBackgroundColor = color;
         headView.setBackgroundColor(color);
-        setStateBarColor();
+        refreshStateBarColor();
     }
 
     /**
@@ -251,7 +251,7 @@ public class ActionBarLayout {
             @Override
             public void onGlobalLayout() {
                 ll_layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setStateBarColor();
+                refreshStateBarColor();
             }
         });
     }
@@ -410,7 +410,7 @@ public class ActionBarLayout {
                 @Override
                 public void onGlobalLayout() {
                     rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    setStateBarColor();
+                    refreshStateBarColor();
                 }
             });
         }
@@ -418,10 +418,6 @@ public class ActionBarLayout {
         return rootLayout;
     }
 
-
-    public void refreshStateBarColor() {
-        refresh();
-    }
 
     private boolean stateBarColorAuto;
 
@@ -440,7 +436,7 @@ public class ActionBarLayout {
     /**
      * 设置状态栏字体颜色
      */
-    private void setStateBarColor() {
+    public void refreshStateBarColor() {
         long consumingTime = System.currentTimeMillis() - startTime;
         Log.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
