@@ -46,6 +46,11 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     private int maxCount = 5;//最大图片数量
     private boolean canPreview=true;//是否可以预览
     private List<Image> imageList = new ArrayList<>();
+    private OnPictureChangeListener onPictureChangeListener;
+
+    public void setOnPictureChangeListener(OnPictureChangeListener onPictureChangeListener) {
+        this.onPictureChangeListener = onPictureChangeListener;
+    }
 
     public void init(final Context context) {
         this.context = context;
@@ -76,6 +81,9 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                     public void onSuccess(Intent data, ArrayList<Image> images) {
                         imageList.addAll(images);
                         mAdapter.notifyDataSetChanged();
+                        if (onPictureChangeListener!=null){
+                            onPictureChangeListener.onChanged(imageList);
+                        }
                     }
 
                     @Override
@@ -94,6 +102,9 @@ public class SimplePictureGallery extends ScrollRecyclerView {
             public void onItemDelete(View view, int position, Image image) {
                 imageList.remove(position);
                 mAdapter.notifyDataSetChanged();
+                if (onPictureChangeListener!=null){
+                    onPictureChangeListener.onChanged(imageList);
+                }
             }
         });
 
@@ -130,5 +141,10 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     public void setCanPreview(boolean canPreview) {
         this.canPreview = canPreview;
         init(context);
+    }
+
+
+    public static interface OnPictureChangeListener{
+       void onChanged(List<Image> images);
     }
 }
