@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -24,9 +27,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.MessageHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
-public class BaseActivityRoot extends AppCompatActivity implements BaseActivityInterface{
+public class BaseActivityRoot extends AppCompatActivity implements BaseActivityInterface {
 
     public Activity mContext;
     public Bundle mBundle = null;
@@ -47,11 +51,32 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
         super.onCreate(savedInstanceState);
         StatusBarUtil.transparencyBar(mContext);
         initHelper();
+
     }
-   public PhotoHelper photoHelper;
+
+    public PhotoHelper photoHelper;
+    public NetWorkChangReceiver netWorkChangReceiver;
+    public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
+    public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
+        this.onNetStateChangedListener = onNetStateChangedListener;
+        if(netWorkChangReceiver!=null){
+            netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
+        }
+    }
+
     //实例化各种帮助类
     private void initHelper() {
-        photoHelper = new PhotoHelper(mContext);
+        if (photoHelper == null) {
+            photoHelper = new PhotoHelper(mContext);
+        }
+        if (netWorkChangReceiver == null) {
+            netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            registerReceiver(netWorkChangReceiver, filter);
+        }
     }
 
 
@@ -76,6 +101,7 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
 
     /**
      * 动态设置状态栏的显示隐藏
+     *
      * @param enable
      */
     public void setFullScreen(boolean enable) {
@@ -124,17 +150,6 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
 
     }
 
-   /* @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PermissionManager.REQUEST_PERMISS_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                //用户同意，执行操作
-                PermissionManager.getInstance(mContext).onPass();
-            }
-
-    }*/
-
 
 
 
@@ -181,6 +196,7 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
 
     /**
      * 获取InputMethodManager，隐藏软键盘
+     *
      * @param token
      */
     private void hideKeyboard(IBinder token) {
@@ -199,7 +215,13 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
         return true;
     }
 
-    public MessageHelper getMesageHelper(){
-       return MessageHelper.getInstance(mContext);
+    public MessageHelper getMesageHelper() {
+        return MessageHelper.getInstance(mContext);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(netWorkChangReceiver);
     }
 }

@@ -7,6 +7,9 @@
     android:background="@color/transparent_dark_33"
     android:gravity="center_horizontal">
 
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView
+        android:layout_width="120dp"
+        android:layout_height="80dp"/>
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
         android:layout_width="120dp"
         android:layout_height="80dp"/>

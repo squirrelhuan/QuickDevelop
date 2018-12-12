@@ -535,7 +535,7 @@ public class ActionBarLayout {
                 if ((red + green + blue) / 3 > 128) {
                     dart_point_count++;
                 }
-                Log.i(TAG, "color=" + color + ",red=" + red + ",green=" + green + ",blue=" + blue);
+                //Log.i(TAG, "color=" + color + ",red=" + red + ",green=" + green + ",blue=" + blue);
                 if (i * count_w + j > (count_h * count_w) / 2) {
                     if (dart_point_count > (count_h * count_w) / 2) {
                         return false;
