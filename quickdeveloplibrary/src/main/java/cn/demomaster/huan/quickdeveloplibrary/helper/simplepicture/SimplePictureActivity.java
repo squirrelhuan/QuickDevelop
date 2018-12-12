@@ -76,6 +76,7 @@ public class SimplePictureActivity extends BaseActivityParent {
             }
         });
         getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
+        getActionBarLayout().setStateBarColorAuto(true);
         init();
     }
 
@@ -108,6 +109,12 @@ public class SimplePictureActivity extends BaseActivityParent {
 
     private void initView() {
         tv_preview = (TextView) findViewById(R.id.tv_preview);
+        tv_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previewImage();
+            }
+        });
         tvFolderName = (TextView) findViewById(R.id.tv_folder_name);
         tv_preview.setVisibility(View.GONE);
         rl_mark = findViewById(R.id.rl_mark);
@@ -144,6 +151,14 @@ public class SimplePictureActivity extends BaseActivityParent {
                 });
             }
         });
+    }
+
+    private void previewImage() {
+        Bundle bundle = new Bundle();
+        ArrayList<Image> images = mAdapter.getImages();
+        bundle.putSerializable("images", images);
+        bundle.putInt("imageIndex", 0);
+        startActivity(PreviewActivity.class, bundle);
     }
 
     private int maxCount = 3;

@@ -201,7 +201,7 @@ public class TabMenuLayout extends LinearLayout {
                 }
             });
         }
-        if (columnCount == 1 || columnCount > 1) {
+        if (columnCount  >= 1) {//默认布局样式
             rl_tab_menu_custom_panel.setVisibility(GONE);
             recy_tab_content.setVisibility(VISIBLE);
             LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());

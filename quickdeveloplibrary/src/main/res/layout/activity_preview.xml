@@ -7,12 +7,13 @@
     android:background="@color/black"
     tools:context=".helper.simplepicture.PreviewActivity">
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/pv_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:scaleType="centerInside"/>
 
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
 
 </FrameLayout>

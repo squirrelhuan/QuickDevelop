@@ -76,7 +76,6 @@ public class IDCardActivity extends BaseActivityParent {
                 String imgBase64 = imageToBase64(path);
                 Log.i("CGQ",imgBase64);
             }
-
             @Override
             public void onFailure(String error) {
 

@@ -23,4 +23,22 @@ public class ExampleUnitTest {
         System.out.println(r);
     }
 
+
+    @Test
+    public void testClass(){
+        String className = this.getClass().getName();
+        System.out.println(className);
+        Class clazz = null;
+        try {
+            clazz = Class.forName("cn.demomaster.huan.quickdevelop.ExampleUnitTest");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("----------");
+        }
+
+        System.out.println(clazz.getClass().getName());
+        System.out.println(this.getClass().getPackage().getName());
+        System.out.println(Test.class.getResource(""));
+        System.out.println(Test.class.getResource("/"));
+    }
 }

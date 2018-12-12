@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,12 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("cn.demomaster.huan.quickdeveloplibrary.test", appContext.getPackageName());
+    }
+
+
+    @Test
+    public void testClass(){
+        System.out.println(Test.class.getResource("/"));
     }
 
 

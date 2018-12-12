@@ -29,6 +29,9 @@ public class PictureSelectActivity extends BaseActivityParent {
         setContentView(R.layout.activity_picture_select);
 
         SimplePictureGallery recyclerView = findViewById(R.id.ga_picture);
+        recyclerView.setMaxCount(13);
+        recyclerView.setSpanCount(3);
+        recyclerView.setCanPreview(false);
         recyclerView.getImages();
         /*mLayoutManager = new GridLayoutManager(mContext, 4);
         mAdapter = new PictureAdapter(mContext, imageList, true,true);

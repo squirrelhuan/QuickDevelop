@@ -6,13 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".sample.PictureSelectActivity">
 
-
-    <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery
-        android:id="@+id/ga_picture"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery
+                android:id="@+id/ga_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow">
 
+            </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

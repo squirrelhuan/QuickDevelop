@@ -343,7 +343,6 @@ public class ActionBarLayout {
      * @return
      */
     public ViewGroup getFinalView() {
-
         // FrameLayout.LayoutParams layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);
         //FrameLayout.LayoutParams layoutParams_content = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (actionBarModel) {
@@ -446,7 +445,7 @@ public class ActionBarLayout {
         Log.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
         Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(rootLayout, statusBar_Height);
-        if(bitmap==null){
+        if (bitmap == null) {
             return;
         }
         boolean isDart;
