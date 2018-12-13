@@ -175,6 +175,7 @@ public class TabMenuLayout extends LinearLayout {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_content_panel.getLayoutParams();
             layoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin, layoutParams.rightMargin, DisplayUtil.dp2px(context, tabToBottom));
             rl_tab_menu_custom_panel = contentView.findViewById(R.id.rl_tab_menu_custom_panel);
+            recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
             rel_root = contentView.findViewById(R.id.rel_root);
             rel_root.setOnTouchListener(new OnTouchListener() {
                 @Override
@@ -202,7 +203,6 @@ public class TabMenuLayout extends LinearLayout {
             });
         }
         if (columnCount >= 1) {//默认布局样式
-            recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
             rl_tab_menu_custom_panel.setVisibility(GONE);
             recy_tab_content.setVisibility(VISIBLE);
             LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
