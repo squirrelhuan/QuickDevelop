@@ -3,16 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
+
+import java.util.LinkedHashMap;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
@@ -21,17 +18,17 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  * @date 2018/11/8.
  * description：加载动画
  */
-public class LoadingCircleView extends View {
+public class LoadingCircleAlphaView extends View {
 
-    public LoadingCircleView(Context context) {
+    public LoadingCircleAlphaView(Context context) {
         super(context);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs) {
+    public LoadingCircleAlphaView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LoadingCircleAlphaView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -57,34 +54,43 @@ public class LoadingCircleView extends View {
         }
     }
 
-    private int pointCount =4;
+    private int pointCount = 3;
+
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(getResources().getColor(R.color.colorPrimary));
+
 
         //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
         int a = width / 2;
         int b = height / 2;
         int maxRadius = Math.min(width, height) / 14;
         int r = Math.min(width, height) / 2 - maxRadius;
+        int index = (int) progress / 360 / pointCount;
+        int yu = (int) (progress % 360 / pointCount);
+        if (map.size() < pointCount) {
+            int x = (int) (Math.random() * 10 % 3*width);
+            int y = (int) (Math.random() * 10 % 3*height);
+            map.put(index, new PointF(x, y));
+        } else  {
+            int x = (int) (Math.random() * 10 % 3*width);
+            int y = (int) (Math.random() * 10 % 3*height);
+            map.put(index, new PointF(x, y));
+        }
         //centerX centerY 圆的中心点
-        float angle = progress/2;
-        for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*12);
-            if(c<0||c>360){
-                c=0;
-            }else {
-                c = (float) (Math.sin(Math.toRadians(c/2))*360);
-            }
-            mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
-            PointF p = getPointByAngle(a, b, r, c);
-            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
+        float angle = progress / 2;
+        for (int i = 0; i < map.size(); i++) {
+            float c = (angle - i * (360 / pointCount));
+
+            //mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
+            PointF p = map.get(i);
+            canvas.drawCircle(p.x, p.y, r / 2, mPaint);
         }
 
     }
 
-    private PointF getPointByAngle(int x, int y, int r, float angle) {
+    private PointF getPointByAngle(int x, int y, float r, float angle) {
         int a = (int) (x + (float) r * Math.cos(angle * 3.14 / 180));
         int b = (int) (y + (float) r * Math.sin(angle * 3.14 / 180));
         return new PointF(a, b);
@@ -92,6 +98,8 @@ public class LoadingCircleView extends View {
 
     private float progress;
     private boolean isForward = true;
+
+    private LinkedHashMap<Integer, PointF> map = new LinkedHashMap<Integer, PointF>();
 
     public void startAnimation() {
         isPlaying = true;

@@ -4,34 +4,34 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 
 /**
  * @author squirrel桓
  * @date 2018/11/8.
  * description：加载动画
  */
-public class LoadingCircleView extends View {
+public class LoadingCircleBallInnerView extends View {
 
-    public LoadingCircleView(Context context) {
+    public LoadingCircleBallInnerView(Context context) {
         super(context);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs) {
+    public LoadingCircleBallInnerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LoadingCircleBallInnerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -57,30 +57,30 @@ public class LoadingCircleView extends View {
         }
     }
 
-    private int pointCount =4;
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        mPaint.setColor(getResources().getColor(R.color.red));
 
         //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
         int a = width / 2;
         int b = height / 2;
         int maxRadius = Math.min(width, height) / 14;
         int r = Math.min(width, height) / 2 - maxRadius;
-        //centerX centerY 圆的中心点
-        float angle = progress/2;
-        for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*12);
-            if(c<0||c>360){
-                c=0;
-            }else {
-                c = (float) (Math.sin(Math.toRadians(c/2))*360);
-            }
-            mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
-            PointF p = getPointByAngle(a, b, r, c);
-            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
-        }
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(), 2));
+        mPaint.setAlpha((int) (255 * .7f));
+        canvas.drawCircle(a, b, r, mPaint);
+
+
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setAlpha((int) (255 * .7f));
+        PointF p = getPointByAngle(a, b, r*2/3, progress);
+        Shader mShader = new LinearGradient(p.x,p.y,p.x+r/2,p.y+r/2,new int[] {0xaaffffff,0x11ffffff},null,Shader.TileMode.REPEAT);
+//新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
+        mShader = new RadialGradient(p.x,p.y,maxRadius,new int[] {0xccffffff,0x11ffffff},new float[]{0.3f,1f},Shader.TileMode.REPEAT);
+        mPaint.setShader(mShader);
+        canvas.drawCircle(p.x, p.y, maxRadius, mPaint);
 
     }
 
@@ -120,5 +120,6 @@ public class LoadingCircleView extends View {
         //animator.setInterpolator(new CycleInterpolator());
         animator.start();
     }
+
 
 }

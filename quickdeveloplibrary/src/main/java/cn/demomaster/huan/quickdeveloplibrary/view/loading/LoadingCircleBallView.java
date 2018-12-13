@@ -3,35 +3,31 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 
 /**
  * @author squirrel桓
  * @date 2018/11/8.
  * description：加载动画
  */
-public class LoadingCircleView extends View {
+public class LoadingCircleBallView extends View {
 
-    public LoadingCircleView(Context context) {
+    public LoadingCircleBallView(Context context) {
         super(context);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs) {
+    public LoadingCircleBallView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LoadingCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LoadingCircleBallView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -57,7 +53,6 @@ public class LoadingCircleView extends View {
         }
     }
 
-    private int pointCount =4;
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -68,19 +63,15 @@ public class LoadingCircleView extends View {
         int b = height / 2;
         int maxRadius = Math.min(width, height) / 14;
         int r = Math.min(width, height) / 2 - maxRadius;
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(), 2));
+        mPaint.setAlpha((int) (255 * .4f));
+        canvas.drawCircle(a, b, r, mPaint);
         //centerX centerY 圆的中心点
-        float angle = progress/2;
-        for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*12);
-            if(c<0||c>360){
-                c=0;
-            }else {
-                c = (float) (Math.sin(Math.toRadians(c/2))*360);
-            }
-            mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
-            PointF p = getPointByAngle(a, b, r, c);
-            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
-        }
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setAlpha((int) (255 * .7f));
+        PointF p = getPointByAngle(a, b, r, progress);
+        canvas.drawCircle(p.x, p.y, maxRadius, mPaint);
 
     }
 
