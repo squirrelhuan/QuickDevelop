@@ -9,10 +9,10 @@
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView
         android:layout_width="120dp"
-        android:layout_height="80dp"/>
-    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
+        android:layout_height="100dp"/>
+    <!--<cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
         android:layout_width="120dp"
-        android:layout_height="80dp"/>
+        android:layout_height="90dp"/>-->
 
     <TextView
         android:id="@+id/tv_message"

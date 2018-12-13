@@ -14,6 +14,8 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+
 /**
  * @author squirrel桓
  * @date 2018/11/8.
@@ -59,17 +61,17 @@ public class LoadingCircleView extends View {
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.GREEN);
+        mPaint.setColor(getResources().getColor(R.color.colorPrimary));
 
         //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
         int a = width / 2;
         int b = height / 2;
-        int maxRadius = Math.min(width, height) / 12;
+        int maxRadius = Math.min(width, height) / 13;
         int r = Math.min(width, height) / 2 - maxRadius;
         //centerX centerY 圆的中心点
         float angle = progress/2;
         for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*15);
+            float c = (angle-i*12);
             if(c<0||c>360){
                 c=0;
             }else {

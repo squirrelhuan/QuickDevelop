@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -144,7 +145,7 @@ public class TabMenuLayout extends LinearLayout {
     private PopupWindow popupWindow;
     private RecyclerView recy_tab_content;
     private TabMenuAdapter adapter;
-    private RelativeLayout rel_root,rl_tab_menu_custom_panel;
+    private RelativeLayout rel_root, rl_tab_menu_custom_panel;
     private LinearLayout ll_tab_content_panel;
     private View contentView;
     private int tabToBottom = 100;
@@ -159,7 +160,7 @@ public class TabMenuLayout extends LinearLayout {
 
 
     //初始化单个tab内容页
-    private void initSingTabContent(final View tabGroup, View tabButton, final int tabIndex) {
+    private void initSingTabContent(final View tabGroup, final View tabButton, final int tabIndex) {
         if (popupWindow == null) {
             CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
             contentView = LayoutInflater.from(context).inflate(R.layout.layout_mul_menu, null, false);
@@ -189,7 +190,6 @@ public class TabMenuLayout extends LinearLayout {
                     return false;
                 }
             });
-            recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
 
             popupWindow.setTouchable(true);
             popupWindow.setFocusable(true);
@@ -201,24 +201,37 @@ public class TabMenuLayout extends LinearLayout {
                 }
             });
         }
-        if (columnCount  >= 1) {//默认布局样式
+        if (columnCount >= 1) {//默认布局样式
+            recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
             rl_tab_menu_custom_panel.setVisibility(GONE);
             recy_tab_content.setVisibility(VISIBLE);
             LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
             if (columnCount == 1) {
-                recy_tab_content.setLayoutManager(new LinearLayoutManager(context));
-                //默认位置在当前tab下平分viewgroup宽度
-                layoutParams.width = width / tabCount;
-                recy_tab_content.setLayoutParams(layoutParams);
-                recy_tab_content.setX(location[0] + (tabIndex * 2) * tabButton.getWidth() / 2 + tabButton.getWidth() / 2 - layoutParams.width / 2);//QMUIDisplayHelper.getScreenWidth(context)
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setAutoMeasureEnabled(true);
+                recy_tab_content.setLayoutManager(linearLayoutManager);
+                //view加载完成时回调
+                recy_tab_content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        recy_tab_content.setX(location[0] + ((tabIndex * 2) + 1) * tabButton.getWidth() / 2 - recy_tab_content.getWidth() / 2);//QMUIDisplayHelper.getScreenWidth(context)
+                    }
+                });
             } else if (columnCount > 1) {
-                layoutParams.width = QMUIDisplayHelper.getScreenWidth(context);
-                recy_tab_content.setLayoutParams(layoutParams);
-                recy_tab_content.setX(0);//QMUIDisplayHelper.getScreenWidth(context)
                 recy_tab_content.setLayoutManager(new GridLayoutManager(context, columnCount));
+                //view加载完成时回调
+                recy_tab_content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        recy_tab_content.setX((QMUIDisplayHelper.getScreenWidth(context)-recy_tab_content.getWidth()) / 2);//
+                    }
+                });
             }
             adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
             recy_tab_content.setAdapter(adapter);
+            //recy_tab_content.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
             adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
                 @Override
@@ -235,7 +248,7 @@ public class TabMenuLayout extends LinearLayout {
             rl_tab_menu_custom_panel.removeAllViews();
             rl_tab_menu_custom_panel.setVisibility(VISIBLE);
             View view = LayoutInflater.from(context).inflate(tabSelectModels.get(tabIndex).getContentResId(), rl_tab_menu_custom_panel, true);
-            if(tabSelectModels.get(tabIndex).getOnCreatTabContentView()!=null) {
+            if (tabSelectModels.get(tabIndex).getOnCreatTabContentView() != null) {
                 tabSelectModels.get(tabIndex).getOnCreatTabContentView().onCreat(view);
             }
         }

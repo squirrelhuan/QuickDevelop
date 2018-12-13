@@ -39,15 +39,15 @@ public class TabMenuActivity extends BaseActivityParent {
         /*********************      数据初始化                   ************************/
         String[] aaa=new String[30];
         for (int i = 0; i < aaa.length; i++) {
-            aaa[i]="aaa" + i;
+            aaa[i]="aaa" + (i<10?"---":"****#####a");
         }
-        String[] bbb=new String[10];
+        String[] bbb=new String[20];
         for (int i = 0; i < bbb.length; i++) {
-            bbb[i]="bbb"+i;
+            bbb[i]="bbb"+ (i<10?"---":"****#####bbbbbbbbbb");
         }
         String[] ccc=new String[120];
         for (int i = 0; i < ccc.length; i++) {
-           ccc[i]="ccc" + i;
+           ccc[i]="ccc" + (i<10?"---":"****#####c");
         }
         List<Integer> selectData_a = new ArrayList<>();selectData_a.add(1);
         List<Integer>  selectData_b =  new ArrayList<>();selectData_b.add(2);selectData_b.add(3);
