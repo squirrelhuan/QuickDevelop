@@ -38,7 +38,8 @@
         <activity android:name=".sample.CsqliteActivity" />
         <activity android:name=".sample.QDialogActivity" />
         <activity android:name=".sample.TabMenuActivity" />
-        <activity android:name=".sample.PictureSelectActivity"></activity>
+        <activity android:name=".sample.PictureSelectActivity" />
+        <activity android:name=".sample.LoadingActivity"></activity>
     </application>
 
 </manifest>

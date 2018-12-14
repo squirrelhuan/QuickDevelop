@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
+import cn.demomaster.huan.quickdevelop.sample.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     Button btn_scan, btn_db;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
+    Button btn_loading_animation;
     TextView tv_test;
     LinearLayout ll_layout;
     RatingBar ratingBar;
@@ -71,6 +73,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_ac_06 = findViewById(R.id.btn_ac_06);
         btn_ac_06.setOnClickListener(this);
         tv_test = findViewById(R.id.tv_test);
+        btn_loading_animation = findViewById(R.id.btn_loading_animation);
 
 
         findViewById(R.id.btn_tab_menu).setOnClickListener(this);
@@ -87,6 +90,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         findViewById(R.id.btn_color_white).setOnClickListener(this);
         findViewById(R.id.btn_change_bg).setOnClickListener(this);
         ll_layout = findViewById(R.id.ll_layout);
+        btn_loading_animation.setOnClickListener(this);
 
 
         init();
@@ -167,6 +171,10 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.btn_loading_animation:
+                intent = new Intent(MainActivity.this, LoadingActivity.class);
+                startActivityForResult(intent, 1);
+                break;
             case R.id.btn_tab_menu:
                 intent = new Intent(MainActivity.this, TabMenuActivity.class);
                 startActivityForResult(intent, 1);
