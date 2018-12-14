@@ -31,6 +31,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     //获取自定义导航
     public ActionBarLayout getActionBarLayout() {
         if (!isUseActionBarLayout()) {
+            //throw new IllegalStateException("Base URL required.");
             return null;
         }
         if (actionBarLayout == null) {

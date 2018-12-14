@@ -18,10 +18,10 @@
             android:id="@+id/camera_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent_dark_cc"
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="horizontal">
+            <!--android:background="@color/transparent_dark_cc"-->
 
             <ImageView
                 android:id="@+id/camera_take"

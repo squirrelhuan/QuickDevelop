@@ -1,13 +1,22 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
@@ -15,9 +24,11 @@ import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
@@ -79,6 +90,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
 
         init();
+        setUpRecyclerView();
     }
 
     private void init() {
@@ -98,7 +110,55 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 customDialog.show();
             }
         });
+        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getOptionsMenu().show();
+            }
+        });
+        initOptionsMenu();
+    }
 
+    private void initOptionsMenu() {
+        List<OptionsMenu.Menu> menus = new ArrayList<>();
+        String[] menuNames = {"我的二维码","扫描","截图分享"};
+        for (int i = 0; i < menuNames.length; i++) {
+            OptionsMenu.Menu menu = new OptionsMenu.Menu();
+            menu.setTitle(menuNames[i]);
+            menu.setPosition(i);
+            menus.add(menu);
+        }
+        getOptionsMenu().setMenus(menus);
+        getOptionsMenu().setAlpha(.86f);
+        getOptionsMenu().setMargin(2);
+        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
+            @Override
+            public void onItemClick(int position, View view) {
+                switch (position){
+                    case 0:
+                        break;
+                    case 1:
+                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                            @Override
+                            public void onSuccess(Intent data, String path) {
+                                /*setImageToView(data);*/
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+                        });
+                        break;
+                    case 2:
+                        ScreenShotUitl.shot((Activity) mContext);
+                        break;
+                }
+
+
+            }
+        });
     }
 
     private int position;
@@ -140,7 +200,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                             tv_test.setText("扫描结果为：" + path);
                         }
                     }
-
                     @Override
                     public void onFailure(String error) {
 
@@ -210,4 +269,26 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
         }
     }
+    public RecyclerView centerSnapRecyclerView;
+    private AppListAdapter appListCenterAdapter;
+    private void setUpRecyclerView() {
+
+        centerSnapRecyclerView = findViewById(R.id.centerSnapRecyclerView);
+
+        LinearLayoutManager layoutManagerCenter
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        centerSnapRecyclerView.setLayoutManager(layoutManagerCenter);
+        appListCenterAdapter = new AppListAdapter(this);
+        centerSnapRecyclerView.setAdapter(appListCenterAdapter);
+        List<String> names =new ArrayList<>();
+        for(int i=0;i<50;i++){
+            names.add("第几"+i+"个");
+        }
+        appListCenterAdapter.updateList(names);
+        SnapHelper snapHelperCenter = new LinearSnapHelper();
+        snapHelperCenter.attachToRecyclerView(centerSnapRecyclerView);
+
+
+    }
+
 }

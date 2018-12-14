@@ -3,11 +3,15 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
@@ -15,7 +19,11 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.WrapListView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * @author squirrel桓
@@ -31,7 +39,8 @@ public class OptionsMenu {
     private CustomDialog customDialog;
     private LinearLayoutManager linearLayoutManager;
     private OptionsMenuAdapter adapter;
-    private ListView lv_options;
+    private RecyclerView rcv_options;
+    private int rcv_options_width = -1;
     private PopupWindow popupWindow;
     private View contentView;
     private View anchor;
@@ -53,16 +62,38 @@ public class OptionsMenu {
 
         CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
         contentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_option_menu, null, false);
-        lv_options = contentView.findViewById(R.id.lv_options);
+        rcv_options = contentView.findViewById(R.id.rcv_options);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        //设置分割线使用的divider
+        rcv_options.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(context, android.support.v7.widget.DividerItemDecoration.VERTICAL));
+        rcv_options.setLayoutManager(linearLayoutManager);
+        rcv_options.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                rcv_options.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                /*if (rcv_options_width == -1) {
+                    rcv_options_width = rcv_options.getWidth();
+                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) rcv_options.getLayoutParams();
+                    layoutParams.setMargins(rcv_options_width,0,0,0);
+                    rcv_options.setLayoutParams(layoutParams);
+                }*/
+                if (rcv_options_width == -1) {//第一次加载完成才能确定位置
+                    rcv_options_width =0;
+                    popupWindow.update(anchor, rcv_options.getWidth(), rcv_options.getHeight());
+                }
+            }
+        });
+
         popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                /*WindowManager.LayoutParams lp = ((Activity)context).getWindow().getAttributes();
+                WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
                 lp.alpha = 1f;
-                ((Activity)context).getWindow().setAttributes(lp);*/
+                ((Activity) context).getWindow().setAttributes(lp);
             }
         });
         //popupWindow.setAnimationStyle(R.style.pop_toast);
@@ -73,30 +104,88 @@ public class OptionsMenu {
     private void reBuild() {
         if (menus != null) {
             adapter = new OptionsMenuAdapter(context, menus);
-            lv_options.setAdapter(adapter);
+            rcv_options.setAdapter(adapter);
         }
-        lv_options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnItemClickListener(new OptionsMenuAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onMenuItemClicked.onItemClick(position, view);
+            public void onItemClick(int position, Menu menu) {
+                onMenuItemClicked.onItemClick(position, null);
                 popupWindow.dismiss();
             }
         });
 
     }
 
+    private float alpha = 1;
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    private int margin = 4;
+
+    public int getMargin() {
+        return margin;
+    }
+
+    public void setMargin(int margin) {
+        this.margin = margin;
+    }
+
     public void show() {
         if (anchor != null) {
-           /* WindowManager.LayoutParams lp = ((Activity)context).getWindow().getAttributes();
-            lp.alpha = 0.4f;
-            ((Activity)context).getWindow().setAttributes(lp);*/
-            //右侧的算法
-            popupWindow.showAsDropDown(anchor, -context.getResources().getDimensionPixelOffset(R.dimen.quickdev_option_menu_width) + anchor.getWidth(), 0);
+            WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
+            lp.alpha = alpha;
+            ((Activity) context).getWindow().setAttributes(lp);
 
+            /*LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) rcv_options.getLayoutParams();
+            layoutParams.setMargins(0,0,0,0);
+            rcv_options.setLayoutParams(layoutParams);*/
+            /*final int anchorLoc[] = new int[2];
+             // 获取锚点View在屏幕上的左上角坐标位置
+            anchor.getLocationOnScreen(anchorLoc);*/
+            //popupWindow.showAsDropDown(anchor);
+            //右侧的算法
+            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - DisplayUtil.dip2px(context, margin), DisplayUtil.dip2px(context, margin));
+            //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
+        }
+    }
+
+    /*
+     * 循环找到ListView最大宽度
+     */
+    private int getMaxWidth(ListView listView) {
+        int maxWidth = 0;
+        if (listView.getAdapter() == null) {
+            return maxWidth;
         }
 
-        //customDialog.show();
+        int count = listView.getAdapter().getCount();
+        View view = null;
+        for (int i = 0; i < count; i++) {
+            view = listView.getAdapter().getView(i, null, listView);
+            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            view.measure(w, h);
+            int height = view.getMeasuredHeight();
+            int width = view.getMeasuredWidth();
+            if (maxWidth < width) {
+                maxWidth = width;
+            }
+            System.out.println("measure width=" + width + " height=" + height);
+        }
+        return maxWidth;
+
+        /*if (context.getResources().getDisplayMetrics().widthPixels < maxWidth) {
+            return context.getResources().getDisplayMetrics().widthPixels - 50;
+        }*/
+
     }
+
 
 
     /*OptionsMenu(List<Menu> menus) {
@@ -188,6 +277,9 @@ public class OptionsMenu {
             super.setOnDismissListener(onDismissListener);
         }
 
-
+        @Override
+        public void update(int width, int height) {
+            super.update(width, height);
+        }
     }
 }

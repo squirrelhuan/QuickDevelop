@@ -59,7 +59,7 @@ public class CameraCropView extends View {
         //mPaint.setShaderLayer(15,10,10,Color.GRAY);  //第一个参数是阴影扩散半径，紧接着的2个参数是阴影在X和Y方向的偏移量，最后一个参数是颜色
 
         mPaint.setAntiAlias(true);
-        mPaint.setColor(0x88000000);
+        mPaint.setColor(0xcc000000);
         canvas.drawRect(0,0,width,height,mPaint);
 
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形

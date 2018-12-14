@@ -2,6 +2,9 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,53 +15,69 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 
 /**
  * Created by Squirrel桓 on 2018/11/11.
  */
-public class OptionsMenuAdapter extends BaseAdapter {
+public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.ViewHolder> {
 
-    private List<OptionsMenu.Menu> lists=new ArrayList<>();
+    private List<OptionsMenu.Menu> lists = new ArrayList<>();
     private Context context;
     private LayoutInflater inflater;
+
     public OptionsMenuAdapter(Context context, List<OptionsMenu.Menu> lists) {
         this.context = context;
         this.lists = lists;
-        inflater = ((Activity)context).getLayoutInflater();
+        inflater = ((Activity) context).getLayoutInflater();
     }
+
+    @NonNull
     @Override
-    public int getCount() {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_option_menu, viewGroup, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        viewHolder.tv_title.setText(lists.get(i).getTitle());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickListener!=null){
+                    onItemClickListener.onItemClick(viewHolder.getAdapterPosition(),lists.get(viewHolder.getAdapterPosition()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
         return lists.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return lists.get(position);
-    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        private TextView tv_title;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-        if (convertView==null) {
-            convertView = inflater.inflate(R.layout.item_option_menu, parent, false); //加载布局
-            holder = new ViewHolder();
-            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-            convertView.setTag(holder);
-        }else{
-            holder = (ViewHolder) convertView.getTag();
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tv_title = itemView.findViewById(R.id.tv_title);
+
         }
-        holder.tv_title.setText(lists.get(position).getTitle());
-        return convertView;
     }
 
-    private class ViewHolder {
-        TextView tv_title;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
+
+    public static interface OnItemClickListener {
+        void onItemClick(int position, OptionsMenu.Menu menu);
+    }
+
 
 }
 

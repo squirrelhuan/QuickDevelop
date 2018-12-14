@@ -25,10 +25,10 @@ public class WrapListView extends ListView {
     public WrapListView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int maxWidth = meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
-        super.onMeasure(MeasureSpec.makeMeasureSpec(maxWidth,MeasureSpec.UNSPECIFIED),heightMeasureSpec);//注意，这个地方一定是MeasureSpec.UNSPECIFIED
+        super.onMeasure(MeasureSpec.makeMeasureSpec(getMaxWidthWithChild(),MeasureSpec.UNSPECIFIED),heightMeasureSpec);//注意，这个地方一定是MeasureSpec.UNSPECIFIED
     }
     public int meathureWidthByChilds() {
         int maxWidth = 0;
@@ -42,6 +42,9 @@ public class WrapListView extends ListView {
             view = null;
         }
         return maxWidth;
+    }
+    public int getMaxWidthWithChild(){
+        return meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
     }
 
 }

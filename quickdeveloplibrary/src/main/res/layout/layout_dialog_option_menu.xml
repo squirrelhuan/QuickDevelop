@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="@dimen/quickdev_option_menu_width"
+    android:layout_width="match_parent"
+    android:minWidth="70dp"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:gravity="center_horizontal">
 
-    <ListView
-        android:id="@+id/lv_options"
-        android:layout_width="@dimen/quickdev_option_menu_width"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_options"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:background="@drawable/listview_option_menu">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
