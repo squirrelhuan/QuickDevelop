@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".sample.CenterHorizontalActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HorizontalScrollView"/>
+    <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
+        android:id="@+id/achs_test"
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:layout_height="60dp">
+
+    </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="2dp"
+        android:background="@color/red"/>
+</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ViewPager"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_hor"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:overScrollMode="never"
+        android:background="@color/transparent"
+        android:clipChildren="false" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/centerSnapRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="4dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <cn.demomaster.huan.quickdevelop.view.SlidingTabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_sliding_view"/>
+
+
+</LinearLayout>

@@ -39,7 +39,8 @@
         <activity android:name=".sample.QDialogActivity" />
         <activity android:name=".sample.TabMenuActivity" />
         <activity android:name=".sample.PictureSelectActivity" />
-        <activity android:name=".sample.LoadingActivity"></activity>
+        <activity android:name=".sample.LoadingActivity" />
+        <activity android:name=".sample.CenterHorizontalActivity"></activity>
     </application>
 
 </manifest>

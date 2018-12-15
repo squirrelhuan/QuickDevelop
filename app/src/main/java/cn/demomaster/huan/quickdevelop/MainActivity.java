@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
+import cn.demomaster.huan.quickdevelop.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.sample.PickActivity;
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     Button btn_scan, btn_db;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
-    Button btn_loading_animation;
+    Button btn_loading_animation,btn_center_horizontal;
     TextView tv_test;
     LinearLayout ll_layout;
     RatingBar ratingBar;
@@ -74,6 +75,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_ac_06.setOnClickListener(this);
         tv_test = findViewById(R.id.tv_test);
         btn_loading_animation = findViewById(R.id.btn_loading_animation);
+        btn_center_horizontal = findViewById(R.id.btn_center_horizontal);
 
 
         findViewById(R.id.btn_tab_menu).setOnClickListener(this);
@@ -89,12 +91,13 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         findViewById(R.id.btn_color_green).setOnClickListener(this);
         findViewById(R.id.btn_color_white).setOnClickListener(this);
         findViewById(R.id.btn_change_bg).setOnClickListener(this);
+
         ll_layout = findViewById(R.id.ll_layout);
         btn_loading_animation.setOnClickListener(this);
+        btn_center_horizontal.setOnClickListener(this);
 
 
         init();
-        setUpRecyclerView();
     }
 
     private void init() {
@@ -171,6 +174,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+
+            case R.id.btn_center_horizontal:
+                intent = new Intent(MainActivity.this, CenterHorizontalActivity.class);
+                startActivityForResult(intent, 1);
+                break;
             case R.id.btn_loading_animation:
                 intent = new Intent(MainActivity.this, LoadingActivity.class);
                 startActivityForResult(intent, 1);
@@ -277,26 +285,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
         }
     }
-    public RecyclerView centerSnapRecyclerView;
-    private AppListAdapter appListCenterAdapter;
-    private void setUpRecyclerView() {
 
-        centerSnapRecyclerView = findViewById(R.id.centerSnapRecyclerView);
-
-        LinearLayoutManager layoutManagerCenter
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        centerSnapRecyclerView.setLayoutManager(layoutManagerCenter);
-        appListCenterAdapter = new AppListAdapter(this);
-        centerSnapRecyclerView.setAdapter(appListCenterAdapter);
-        List<String> names =new ArrayList<>();
-        for(int i=0;i<50;i++){
-            names.add("第几"+i+"个");
-        }
-        appListCenterAdapter.updateList(names);
-        SnapHelper snapHelperCenter = new LinearSnapHelper();
-        snapHelperCenter.attachToRecyclerView(centerSnapRecyclerView);
-
-
-    }
 
 }
