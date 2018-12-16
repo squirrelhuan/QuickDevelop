@@ -1,9 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,12 +11,10 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-
 /**
  * @author squirrel桓
  * @date 2018/12/14.
- * description：
+ * description：Android横向滚动居中的HorizontalScrollView
  */
 public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     public AutoCenterHorizontalScrollView(Context context) {
@@ -34,39 +32,14 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         init();
     }
 
-
     @Override
     public void addView(View child) {
         super.addView(child);
         init();
     }
 
-    @Override
-    public void addView(View child, int index) {
-        super.addView(child, index);
-        init();
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        super.addView(child, params);
-        init();
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-        init();
-    }
-
-    @Override
-    public void addView(View child, int width, int height) {
-        super.addView(child, width, height);
-        init();
-    }
-
     /**
-     * 选中改变时触发
+     * 选中改变时触发回调
      */
     private OnSelectChangeListener onSelectChangeListener;
 
@@ -78,14 +51,18 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         void onSelectChange(int position);
     }
 
+    /**
+     * itemView适配器很随意
+     */
     private HAdapter adapter;
 
     public static interface HAdapter {
-        int getCount();
+        int getCount();//获取子view个数
 
-        View getItemView(int position);
+        View getItemView(int position);//获取指定index的view
     }
 
+    //自己组装itemView
     public void setAdapter(HAdapter adapter) {
         this.adapter = adapter;
         removeAllViews();
@@ -99,9 +76,9 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 public void onClick(View view) {
                     int index = (int) view.getTag();
                     if (onSelectChangeListener != null) {
-                        onSelectChangeListener.onSelectChange(index);
+                        onSelectChangeListener.onSelectChange(index);//触发选中事件回调
                     }
-                    smoothScrollTo(getChildCenterPosition(index), 0);
+                    smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
                 }
             });
             linearLayout.addView(linearLayout1);
@@ -170,6 +147,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         if (viewGroup == null || viewGroup.getChildCount() == 0) {
             return;
         }
+        //一下代码是设置padding,实现第一个itemview和最后一个能够居中
         View first = viewGroup.getChildAt(0);
         int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -178,8 +156,8 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
         last.measure(w, h);
         int last_width = last.getMeasuredWidth();
-        paddingLeft = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - first_width / 2;
-        paddingRight = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - last_width / 2;
+        paddingLeft = getScreenWidth(getContext()) / 2 - first_width / 2;
+        paddingRight = getScreenWidth(getContext()) / 2 - last_width / 2;
         setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
     }
 
@@ -189,7 +167,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private long delayMillis = 100;
 
     /**
-     * 上次滑动left
+     * 上次滑动left，即x
      */
     private long lastScrollLeft = -1;
     private long nowScrollLeft = -1;
@@ -231,7 +209,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     @Override
     protected int computeHorizontalScrollRange() {
         Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
-        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + QMUIDisplayHelper.getScreenWidth(getContext())));
+        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getScreenWidth(getContext())));
         return super.computeHorizontalScrollRange() + paddingLeft + paddingRight;
     }
 
@@ -270,5 +248,24 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
         return currentIndex;
     }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        return getDisplayMetrics(context).widthPixels;
+    }
+
+    /**
+     * 获取 DisplayMetrics
+     *
+     * @return
+     */
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        return context.getResources().getDisplayMetrics();
+    }
+
 
 }

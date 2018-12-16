@@ -45,6 +45,7 @@ public class CenterHorizontalActivity extends BaseActivityParent {
     private void initHorizontal() {
         AutoCenterHorizontalScrollView autoCenterHorizontalScrollView;
         autoCenterHorizontalScrollView = findViewById(R.id.achs_test);
+        //测试用的随机字符串集合
         List<String> names =new ArrayList<>();
         for(int i=0;i<50;i++){
             String a = ""+i;
@@ -53,13 +54,13 @@ public class CenterHorizontalActivity extends BaseActivityParent {
             }
             names.add(a);
         }
+        //adapter去处理itemView
         HorizontalAdapter hadapter = new HorizontalAdapter(mContext,names);
         autoCenterHorizontalScrollView.setAdapter(hadapter);
         autoCenterHorizontalScrollView.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
             @Override
             public void onSelectChange(int position) {
                 ((TextView) findViewById(R.id.tv_index)).setText("当前"+position);
-                //PopToastUtil.ShowToast(mContext,""+position);
             }
         });
     }
