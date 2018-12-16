@@ -34,6 +34,40 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         init();
     }
 
+
+    @Override
+    public void addView(View child) {
+        super.addView(child);
+        init();
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        super.addView(child, index);
+        init();
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        super.addView(child, params);
+        init();
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        super.addView(child, index, params);
+        init();
+    }
+
+    @Override
+    public void addView(View child, int width, int height) {
+        super.addView(child, width, height);
+        init();
+    }
+
+    /**
+     * 选中改变时触发
+     */
     private OnSelectChangeListener onSelectChangeListener;
 
     public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
@@ -72,12 +106,16 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             });
             linearLayout.addView(linearLayout1);
         }
-
         addView(linearLayout);
-
         init();
     }
 
+    /**
+     * 获取item的X位置
+     *
+     * @param index
+     * @return
+     */
     private int getChildCenterPosition(int index) {
         currentIndex = index;
         offset_current = super.computeHorizontalScrollOffset();
@@ -94,26 +132,32 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int child_width = child.getWidth();
             offset_tmp = offset_tmp + child_width;
             if (i == index) {
-                return offset_tmp - child_width;
+                offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
+                currentIndex = i;
+                return offset_target;
             }
         }
         return 0;
     }
 
-    private int paddingLeft_origenal = 0;
-    private int paddingRight_origenal = 0;
-    private int paddingLeft = 0;
-    private int paddingRight = 0;
-
+    private int paddingLeft = 0;//左侧内边距
+    private int paddingRight = 0;//右侧内边距
+    private float touchDown_X;//判断是否是点击还是滑动来用
 
     void init() {
+        //添加触摸事件，滑动事件会触发
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    handler.removeCallbacks(scrollerTask);
-                    handler.postDelayed(scrollerTask, delayMillis);
-                    //postDelayed(scrollerTask, delayMillis);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
+                    touchDown_X = motionEvent.getX();
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {//抬起事件判断是否是滑动事件
+                    if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
+                        touchDown_X = motionEvent.getX();
+                        handler.removeCallbacks(scrollerTask);
+                        handler.postDelayed(scrollerTask, delayMillis);
+                    }
                 }
                 return false;
             }
@@ -127,96 +171,16 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             return;
         }
         View first = viewGroup.getChildAt(0);
-
         int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         first.measure(w, h);
-        int first_height = first.getMeasuredHeight();
         int first_width = first.getMeasuredWidth();
-
         View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
         last.measure(w, h);
-        int last_height = last.getMeasuredHeight();
         int last_width = last.getMeasuredWidth();
         paddingLeft = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - first_width / 2;
         paddingRight = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - last_width / 2;
-       /* if(paddingLeft_origenal==0){
-            paddingLeft_origenal = getPaddingLeft();
-        }
-        if(paddingRight_origenal==0){
-            paddingRight_origenal = getPaddingRight();
-        }*/
-        setPadding(paddingLeft_origenal + paddingLeft, getPaddingTop(), paddingRight_origenal + paddingRight, getBottom());
-    }
-
-    @Override
-    public void addView(View child) {
-        super.addView(child);
-        init();
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        super.addView(child, index);
-        init();
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        super.addView(child, params);
-        init();
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-        init();
-    }
-
-    @Override
-    public void addView(View child, int width, int height) {
-        super.addView(child, width, height);
-        init();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.d("CGQ", "measureChildren");
-        super.measureChildren(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        Log.d("CGQ", "measureChildWithMargins");
-        Log.d("CGQ", "parentWidthMeasureSpec=" + parentWidthMeasureSpec);
-        Log.d("CGQ", "widthUsed=" + widthUsed);
-        Log.d("CGQ", "parentHeightMeasureSpec=" + parentHeightMeasureSpec);
-        Log.d("CGQ", "heightUsed=" + heightUsed);
-        super.measureChildWithMargins(child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
-    }
-
-    @Override
-    public boolean getMeasureAllChildren() {
-        Log.d("CGQ", "getMeasureAllChildren");
-        return super.getMeasureAllChildren();
-    }
-
-    @Override
-    protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
-        Log.d("measureChild", "parentWidthMeasureSpec=" + parentWidthMeasureSpec);
-        super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec);
-    }
-
-    @Override
-    public void fling(int velocityX) {
-        super.fling(velocityX);
-        Log.d("AutoCenter", "fling velocityX=" + velocityX);
-
+        setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
     }
 
     /**
@@ -225,7 +189,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private long delayMillis = 100;
 
     /**
-     * 上次滑动的时间
+     * 上次滑动left
      */
     private long lastScrollLeft = -1;
     private long nowScrollLeft = -1;
@@ -235,13 +199,13 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             if ((nowScrollLeft == lastScrollLeft)) {
                 lastScrollLeft = nowScrollLeft;
                 nowScrollLeft = -1;
-                getCurrentIndex();
+                int index = getCurrentIndex();
                 if (offset_target != offset_current) {
                     Log.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
                 if (onSelectChangeListener != null) {
-                    onSelectChangeListener.onSelectChange(getCurrentIndex());
+                    onSelectChangeListener.onSelectChange(index);
                 }
             } else {
                 lastScrollLeft = nowScrollLeft;
@@ -250,111 +214,38 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
     };
 
+    /**
+     * 用来判断滚动是否滑动
+     */
     private Handler handler = new Handler();
-
-    @Override
-    protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-        Log.i(tag, "onOverScrolled scrollX=" + scrollX);
-        Log.i(tag, "onOverScrolled scrollY=" + scrollY);
-        Log.i(tag, "onOverScrolled clampedX=" + clampedX);
-        Log.i(tag, "onOverScrolled clampedY=" + clampedY);
-        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
-
-
-    }
-
     String tag = "AutoCenter";
-
-    @Override
-    public void computeScroll() {
-        super.computeScroll();
-        Log.i(tag, "computeScroll");
-
-    }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         Log.i(tag, "left=" + l);
-
-        // 更新ScrollView的滑动时间
+        // 更新ScrollView的滑动位置
         nowScrollLeft = l;
-
-    }
-
-    @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        Log.i(tag, "onNestedScroll。。。");
-    }
-
-    @Override
-    public void onNestedScrollAccepted(View child, View target, int axes) {
-        super.onNestedScrollAccepted(child, target, axes);
-        Log.i(tag, "onNestedScrollAccepted。。。");
-    }
-
-    @Override
-    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.i(tag, "onStartNestedScroll。。。");
-        return super.onStartNestedScroll(child, target, nestedScrollAxes);
-    }
-
-    @Override
-    public void onStopNestedScroll(View child) {
-        super.onStopNestedScroll(child);
-        Log.i(tag, "onStopNestedScroll。。。");
-    }
-
-    @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        super.onNestedPreScroll(target, dx, dy, consumed);
-        Log.i(tag, "onNestedPreScroll。。。");
-    }
-
-    @Override
-    protected int computeHorizontalScrollExtent() {
-        Log.i(tag, "computeHorizontalScrollExtent。。。" + super.computeHorizontalScrollExtent());//
-        return super.computeHorizontalScrollExtent();
-    }
-
-    @Override
-    protected int computeVerticalScrollRange() {
-        Log.i(tag, "computeVerticalScrollRange。。。" + super.computeVerticalScrollRange());//
-        return super.computeVerticalScrollRange();
-    }
-
-    @Override
-    protected int computeVerticalScrollOffset() {
-        Log.i(tag, "computeVerticalScrollOffset。。。" + super.computeVerticalScrollOffset());
-        return super.computeVerticalScrollOffset();
-    }
-
-    @Override
-    protected int computeVerticalScrollExtent() {
-        Log.i(tag, "computeVerticalScrollExtent。。。" + super.computeVerticalScrollExtent());//
-        return super.computeVerticalScrollExtent();
     }
 
     @Override
     protected int computeHorizontalScrollRange() {
         Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
         Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + QMUIDisplayHelper.getScreenWidth(getContext())));
-        return super.computeHorizontalScrollRange() + paddingLeft_origenal + paddingLeft + paddingRight_origenal + paddingRight;
+        return super.computeHorizontalScrollRange() + paddingLeft + paddingRight;
     }
-
-    private int currentIndex = 0;
 
     @Override
     protected int computeHorizontalScrollOffset() {
         Log.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
-        return super.computeHorizontalScrollOffset() + paddingLeft_origenal + paddingLeft;
+        return super.computeHorizontalScrollOffset() + paddingLeft;
     }
 
+    private int offset_target;//目标位置
+    private int offset_current;//当前位置
+    private int currentIndex = 0;//当前选中的item的position
 
-    private int offset_target;
-    private int offset_current;
-
+    //获取当前选中的item的position
     public int getCurrentIndex() {
         currentIndex = 0;
         offset_current = super.computeHorizontalScrollOffset();
@@ -369,9 +260,10 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
             int child_width = child.getWidth();
+
             offset_tmp = offset_tmp + child_width;
-            if (offset_tmp - child_width / 2 > offset_current) {
-                offset_target = offset_tmp - child_width;
+            if (offset_tmp > offset_current) {
+                offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
                 currentIndex = i;
                 break;
             }
@@ -379,48 +271,4 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         return currentIndex;
     }
 
-    @Override
-    protected int computeScrollDeltaToGetChildRectOnScreen(Rect rect) {
-        Log.i(tag, "computeScrollDeltaToGetChildRectOnScreen：" + rect);
-        Rect rect_temp = rect;
-        rect_temp.left = rect.left - QMUIDisplayHelper.getScreenWidth(getContext()) / 2;
-        return super.computeScrollDeltaToGetChildRectOnScreen(rect);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.i(tag, "onLayout changed：" + changed);
-        Log.i(tag, "onLayout l：" + l);
-        Log.i(tag, "onLayout t：" + t);
-        Log.i(tag, "onLayout r：" + b);
-        Log.i(tag, "onLayout b：" + b);
-        super.onLayout(changed, l, t, r, b);
-    }
-
-
-    @Override
-    protected boolean awakenScrollBars() {
-        return super.awakenScrollBars();
-    }
-
-
-    @Override
-    public boolean pageScroll(int direction) {
-        Log.i(tag, "pageScroll direction= " + direction);
-        return super.pageScroll(direction);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i(tag, "onSizeChanged w= " + w);
-        Log.i(tag, "onSizeChanged h= " + h);
-        Log.i(tag, "onSizeChanged oldw= " + oldw);
-        Log.i(tag, "onSizeChanged oldh= " + oldh);
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    @Override
-    public void scrollTo(int x, int y) {
-        super.scrollTo(x, y);
-    }
 }

@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,30 +40,32 @@ public class CenterHorizontalActivity extends BaseActivityParent {
         initSlidingView();
     }
 
-    private AutoCenterHorizontalScrollView autoCenterHorizontalScrollView;
+    //  SnapHelper snapHelperCenter = new LinearSnapHelper();
+
     private void initHorizontal() {
-
-        SnapHelper snapHelperCenter = new LinearSnapHelper();
-
+        AutoCenterHorizontalScrollView autoCenterHorizontalScrollView;
         autoCenterHorizontalScrollView = findViewById(R.id.achs_test);
         List<String> names =new ArrayList<>();
         for(int i=0;i<50;i++){
-            names.add("第几"+i+"个");
+            String a = ""+i;
+            for(int j=0;j<i%4;j++){
+                a=a+"A";
+            }
+            names.add(a);
         }
         HorizontalAdapter hadapter = new HorizontalAdapter(mContext,names);
         autoCenterHorizontalScrollView.setAdapter(hadapter);
         autoCenterHorizontalScrollView.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
             @Override
             public void onSelectChange(int position) {
-                PopToastUtil.ShowToast(mContext,""+position);
+                ((TextView) findViewById(R.id.tv_index)).setText("当前"+position);
+                //PopToastUtil.ShowToast(mContext,""+position);
             }
         });
     }
 
     private SlidingTabLayout id_sliding_view;
     private void initSlidingView() {
-
-
         id_sliding_view =  findViewById(R.id.id_sliding_view);
         id_sliding_view.setViewPager(null);
       /*  SlidingTabView slidingTabView = new SlidingTabView(mContext);

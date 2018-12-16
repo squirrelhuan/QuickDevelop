@@ -7,30 +7,47 @@
     android:orientation="vertical"
     tools:context=".sample.CenterHorizontalActivity">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HorizontalScrollView"/>
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:textSize="20dp"
+        android:text="AutoCenterHorizontalScrollView"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:background="@color/red"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"/>
+    </LinearLayout>
     <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
         android:id="@+id/achs_test"
         android:layout_width="match_parent"
-        android:clipToPadding="false"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content"
+        android:clipToPadding="false">
 
     </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <View
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="2dp"
-        android:background="@color/black"/>
-    <View
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="2dp"
-        android:background="@color/red"/>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:background="@color/gray"
+        android:text="ViewPager"/>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
