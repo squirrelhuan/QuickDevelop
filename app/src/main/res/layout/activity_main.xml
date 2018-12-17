@@ -21,6 +21,10 @@
             android:orientation="vertical">
 
 
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
             <cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="150dp"
