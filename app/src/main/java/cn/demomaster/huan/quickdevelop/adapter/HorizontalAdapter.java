@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdevelop.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -29,9 +31,31 @@ public class HorizontalAdapter implements AutoCenterHorizontalScrollView.HAdapte
     }
 
     @Override
-    public View getItemView(int i) {
+    public RecyclerView.ViewHolder getItemView(int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_warp2, null, false);
-        ((TextView) v.findViewById(R.id.tv_tab_name)).setText(names.get(i));
-        return v;
+        HViewHolder hViewHolder = new HViewHolder(v);
+        hViewHolder.textView.setBackgroundColor(Color.BLACK);
+        hViewHolder.textView.setText(names.get(i));
+        return hViewHolder;
     }
+
+    @Override
+    public void onSelectStateChanged(RecyclerView.ViewHolder viewHolder, int position, boolean isSelected) {
+        if (isSelected) {
+            ((HViewHolder) viewHolder).textView.setBackgroundColor(Color.RED);
+        } else {
+            ((HViewHolder) viewHolder).textView.setBackgroundColor(Color.BLACK);
+        }
+    }
+
+    public static class HViewHolder extends RecyclerView.ViewHolder {
+        public final TextView textView;
+
+        public HViewHolder(View itemView) {
+            super(itemView);
+            textView = (TextView) itemView.findViewById(R.id.tv_tab_name);
+        }
+    }
+
+
 }

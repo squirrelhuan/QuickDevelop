@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author squirrel桓
@@ -39,44 +43,40 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     }
 
     /**
-     * 选中改变时触发回调
-     */
-    private OnSelectChangeListener onSelectChangeListener;
-
-    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
-        this.onSelectChangeListener = onSelectChangeListener;
-    }
-
-    public static interface OnSelectChangeListener {
-        void onSelectChange(int position);
-    }
-
-    /**
      * itemView适配器很随意
      */
     private HAdapter adapter;
-
     public static interface HAdapter {
         int getCount();//获取子view个数
-
-        View getItemView(int position);//获取指定index的view
+        RecyclerView.ViewHolder getItemView(int position);//获取指定index的view
+        void onSelectStateChanged(RecyclerView.ViewHolder itemView,int position,boolean isSelected);//改变选中状态
     }
 
+    List<RecyclerView.ViewHolder> viewHolders = new ArrayList<>();
     //自己组装itemView
-    public void setAdapter(HAdapter adapter) {
+    public void setAdapter(final HAdapter adapter) {
+        if(adapter==null||adapter.getCount()==0){
+            return;
+        }
         this.adapter = adapter;
+        viewHolders.clear();
         removeAllViews();
         LinearLayout linearLayout = new LinearLayout(getContext());
         for (int i = 0; i < adapter.getCount(); i++) {
+            viewHolders.add(adapter.getItemView(i));
             LinearLayout linearLayout1 = new LinearLayout(getContext());
-            linearLayout1.addView(adapter.getItemView(i));
+            linearLayout1.addView(viewHolders.get(i).itemView);
             linearLayout1.setTag(i);
             linearLayout1.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int index = (int) view.getTag();
-                    if (onSelectChangeListener != null) {
-                        onSelectChangeListener.onSelectChange(index);//触发选中事件回调
+                    if (adapter != null) {
+                        //处理上一个
+                        adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+                        //处理当前选中的
+                        adapter.onSelectStateChanged(viewHolders.get(index) ,index,true);//触发选中事件回调
+                        lastIndex = index;
                     }
                     smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
                 }
@@ -94,7 +94,6 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
      * @return
      */
     private int getChildCenterPosition(int index) {
-        currentIndex = index;
         offset_current = super.computeHorizontalScrollOffset();
         if (getChildCount() <= 0) {
             return 0;
@@ -110,7 +109,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             offset_tmp = offset_tmp + child_width;
             if (i == index) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
-                currentIndex = i;
+                setCurrentIndex(i);
                 return offset_target;
             }
         }
@@ -159,13 +158,14 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         paddingLeft = getScreenWidth(getContext()) / 2 - first_width / 2;
         paddingRight = getScreenWidth(getContext()) / 2 - last_width / 2;
         setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
+        //设置默认位置
+        setCurrentIndex(0);
     }
 
     /**
      * Runnable延迟执行的时间
      */
     private long delayMillis = 100;
-
     /**
      * 上次滑动left，即x
      */
@@ -182,8 +182,12 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                     Log.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
-                if (onSelectChangeListener != null) {
-                    onSelectChangeListener.onSelectChange(index);
+                if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
+                    //处理上一个
+                    adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+                    //处理当前选中的
+                    adapter.onSelectStateChanged(viewHolders.get(index) ,index,true);//触发选中事件回调
+                    lastIndex = index;
                 }
             } else {
                 lastScrollLeft = nowScrollLeft;
@@ -222,10 +226,24 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private int offset_target;//目标位置
     private int offset_current;//当前位置
     private int currentIndex = 0;//当前选中的item的position
+    private int lastIndex=0;//上一次选中的位置
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+        if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
+            //处理上一个
+            adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+            //处理当前选中的
+            adapter.onSelectStateChanged(viewHolders.get(currentIndex) ,currentIndex,true);//触发选中事件回调
+            lastIndex = currentIndex;
+            if(onSelectChangeListener!=null){
+                onSelectChangeListener.onSelectChange(currentIndex);
+            }
+        }
+    }
 
     //获取当前选中的item的position
     public int getCurrentIndex() {
-        currentIndex = 0;
         offset_current = super.computeHorizontalScrollOffset();
         if (getChildCount() <= 0) {
             return 0;
@@ -242,11 +260,25 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             offset_tmp = offset_tmp + child_width;
             if (offset_tmp > offset_current) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
-                currentIndex = i;
+                setCurrentIndex(i);
                 break;
             }
         }
         return currentIndex;
+    }
+
+    /**
+     * 选中改变时触发回调
+     */
+    public OnSelectChangeListener onSelectChangeListener;
+
+    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
+        this.onSelectChangeListener = onSelectChangeListener;
+        setCurrentIndex(currentIndex);
+    }
+
+    public static interface OnSelectChangeListener {
+        void onSelectChange( int position);
     }
 
     /**

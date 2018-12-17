@@ -305,13 +305,11 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     public static long getLongFromyyyyMMdd(String date) {
         SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date parse = null;
-
         try {
             parse = mFormat.parse(date);
         } catch (ParseException var4) {
             var4.printStackTrace();
         }
-
         return parse != null ? parse.getTime() : -1L;
     }
 
