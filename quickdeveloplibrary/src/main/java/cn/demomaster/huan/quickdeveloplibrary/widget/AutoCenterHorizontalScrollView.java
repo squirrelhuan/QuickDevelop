@@ -128,7 +128,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
                     touchDown_X = motionEvent.getX();
                 }
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {//抬起事件判断是否是滑动事件
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP||motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
                     if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
                         touchDown_X = motionEvent.getX();
                         handler.removeCallbacks(scrollerTask);
@@ -159,7 +159,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         paddingRight = getScreenWidth(getContext()) / 2 - last_width / 2;
         setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
         //设置默认位置
-        setCurrentIndex(0);
+        setCurrentIndex(currentIndex);
     }
 
     /**
@@ -265,11 +265,16 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 child0.measure(w, h);
                 int child_width0 = child0.getMeasuredWidth();
                 offset_target = offset_tmp - child_width / 2 - child_width0 / 2;
-                smoothScrollTo(offset_target, 0);
+
+                this.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smoothScrollTo(offset_target, 0);
+                    }
+                });
                 return;
             }
         }
-        smoothScrollTo(offset_target, 0);
     }
 
     //获取当前选中的item的position
