@@ -240,6 +240,28 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 onSelectChangeListener.onSelectChange(currentIndex);
             }
         }
+        updateChildCenterPosition(currentIndex);
+    }
+
+    private void updateChildCenterPosition(int currentIndex) {
+        offset_current = super.computeHorizontalScrollOffset();
+        if (getChildCount() <= 0) {
+            return ;
+        }
+        ViewGroup viewGroup = (ViewGroup) getChildAt(0);
+        if (viewGroup == null || viewGroup.getChildCount() == 0) {
+            return ;
+        }
+        int offset_tmp = 0;
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            int child_width = child.getWidth();
+            offset_tmp = offset_tmp + child_width;
+            if (i ==currentIndex) {
+                offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
+                return;
+            }
+        }
     }
 
     //获取当前选中的item的position
