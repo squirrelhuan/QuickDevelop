@@ -64,17 +64,37 @@ public class ToggleButton extends View {
 
     private boolean checked = true;
     private int circle_padding = 3;
+
     private int color_01;
     private int color_02;
+    private int backColor = Color.WHITE;
+    private int lineColor = Color.GRAY;//描边颜色
+    private int toogleColor = Color.GREEN;//选中颜色
+
+    public int getToogleColor() {
+        return toogleColor;
+    }
+
+    public void setToogleColor(int toogleColor) {
+        this.toogleColor = toogleColor;
+    }
+
+    public void setBackColor(int backColor) {
+        this.backColor = backColor;
+    }
+
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
 
     private void drawView(Canvas canvas) {
 
         if (checked) {
-            color_01 = Color.RED;
-            color_02 = Color.WHITE;
+            color_01 = toogleColor;
+            color_02 = backColor;
         } else {
-            color_01 = Color.WHITE;
-            color_02 = Color.RED;
+            color_01 = backColor;
+            color_02 = toogleColor;
         }
 
         Paint mPaint = new Paint();
@@ -82,6 +102,7 @@ public class ToggleButton extends View {
         mPaint.setColor(color_01);
         int r = Math.min(width / 2, height);
 
+        //绘制底色
         circle_padding = r / 20;
         RectF mRecF = new RectF((width / 2 - r), height / 2 - r / 2, (width / 2 - r) + 2 * r, height / 2 + r / 2);
         mPaint.setColor(color_01);
@@ -94,17 +115,21 @@ public class ToggleButton extends View {
         } else {
             mRecF2 = new RectF((width / 2 - r) + r * p, height / 2 - r / 2 * (1 - p), (width / 2 - r) + 2 * r - r * p, height / 2 + r / 2 * (1 - p));
         }
+        //绘制动态区域
         mPaint.setColor(color_02);
+        mPaint.setAlpha((int) ((0.3f+(progress*0.7)) * 255 ));
         canvas.drawRoundRect(mRecF2, r / 2, r / 2, mPaint);
 
-        mPaint.setColor(Color.WHITE);
-        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2, mPaint);
-        mPaint.setColor(Color.GRAY);
+        //画圆
+        mPaint.setColor(backColor);
+        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2-circle_padding, mPaint);
+        mPaint.setColor(lineColor);
         mPaint.setStrokeWidth(3);
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.save();
-        mPaint.setAlpha((int) (progress * 255 * 0.7));
+        mPaint.setAlpha((int) (progress * 255 * 0.6));
         canvas.drawRoundRect(mRecF, r / 2, r / 2, mPaint);
+        //描边
         canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2, mPaint);
     }
 
@@ -115,7 +140,6 @@ public class ToggleButton extends View {
     }
 
     private float progress;
-
     public void startAnimation(boolean checked) {
         int start = 0;
         int end = 1;
