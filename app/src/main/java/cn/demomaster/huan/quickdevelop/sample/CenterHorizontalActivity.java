@@ -63,6 +63,7 @@ public class CenterHorizontalActivity extends BaseActivityParent {
                 ((TextView) findViewById(R.id.tv_index)).setText("当前"+position);
             }
         });
+        autoCenterHorizontalScrollView.setCurrentIndex(11);
     }
 
     private SlidingTabLayout id_sliding_view;

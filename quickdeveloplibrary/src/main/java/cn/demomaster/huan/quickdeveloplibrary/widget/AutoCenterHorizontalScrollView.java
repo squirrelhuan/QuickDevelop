@@ -109,7 +109,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             offset_tmp = offset_tmp + child_width;
             if (i == index) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
-                setCurrentIndex(i);
+                setCurrent(i);
                 return offset_target;
             }
         }
@@ -228,7 +228,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private int currentIndex = 0;//当前选中的item的position
     private int lastIndex=0;//上一次选中的位置
 
-    public void setCurrentIndex(int currentIndex) {
+    private void setCurrent(int currentIndex) {
         this.currentIndex = currentIndex;
         if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
             //处理上一个
@@ -240,11 +240,11 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 onSelectChangeListener.onSelectChange(currentIndex);
             }
         }
-        updateChildCenterPosition(currentIndex);
+
     }
 
-    private void updateChildCenterPosition(int currentIndex) {
-        offset_current = super.computeHorizontalScrollOffset();
+    public void setCurrentIndex(int currentIndex) {
+        setCurrent(currentIndex);
         if (getChildCount() <= 0) {
             return ;
         }
@@ -255,13 +255,21 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         int offset_tmp = 0;
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
-            int child_width = child.getWidth();
+            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            child.measure(w, h);
+            int child_width = child.getMeasuredWidth();
             offset_tmp = offset_tmp + child_width;
             if (i ==currentIndex) {
-                offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
+                View child0 = viewGroup.getChildAt(0);
+                child0.measure(w, h);
+                int child_width0 = child0.getMeasuredWidth();
+                offset_target = offset_tmp - child_width / 2 - child_width0 / 2;
+                smoothScrollTo(offset_target, 0);
                 return;
             }
         }
+        smoothScrollTo(offset_target, 0);
     }
 
     //获取当前选中的item的position
@@ -282,7 +290,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             offset_tmp = offset_tmp + child_width;
             if (offset_tmp > offset_current) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
-                setCurrentIndex(i);
+                setCurrent(i);
                 break;
             }
         }
@@ -296,7 +304,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
 
     public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
         this.onSelectChangeListener = onSelectChangeListener;
-        setCurrentIndex(currentIndex);
+        setCurrent(currentIndex);
     }
 
     public static interface OnSelectChangeListener {
