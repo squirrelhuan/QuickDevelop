@@ -51,8 +51,20 @@ public class ApplicationParent extends Application {
     //退出
     public void deleteAllActivity() {
         if (activitys != null) {
-            for (Activity activity : activitys) {
-                activity.finish();
+            for (int i=0;i<activitys.size();i++) {
+                activitys.get(i).finish();
+                activitys.remove(i);
+            }
+        }
+    }
+    //退出
+    public void deleteOtherActivity(Activity activity) {
+        if (activitys != null) {
+            for (int i=0;i<activitys.size();i++) {
+                if(!activity.equals(activitys.get(i))){
+                    activitys.get(i).finish();
+                    activitys.remove(i);
+                }
             }
         }
     }
