@@ -109,7 +109,6 @@ public class ActionBarTip extends FrameLayout {
                // show();
             }
         });
-
     }
     private int topMax;
     private int topMin;
