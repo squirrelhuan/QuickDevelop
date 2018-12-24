@@ -126,8 +126,15 @@ public class ActionBarLayout {
 
     }
 
+    private ActionBarTip actionBarTip;
+
+    public ActionBarTip getActionBarTip() {
+        return actionBarTip;
+    }
+
     private FrameLayout.LayoutParams layoutParams_header;
     private FrameLayout.LayoutParams layoutParams_content;
+    private FrameLayout.LayoutParams layoutParams_tip;
 
     private void initLayout() {
 
@@ -136,9 +143,19 @@ public class ActionBarLayout {
         //contentView宽高
         mInflater.inflate(contentLayoutResID, rootLayout);
         contentView = (ViewGroup) rootLayout.getChildAt(0);
+
+        actionBarTip = new ActionBarTip(context);
+        actionBarTip.setContentView(R.layout.quickdevelop_activity_actionbar_tip);
+        layoutParams_tip = (FrameLayout.LayoutParams) this.actionBarTip.getLayoutParams();
+        if (layoutParams_tip == null) {
+            layoutParams_tip = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        layoutParams_tip.topMargin=100;
+        actionBarTip.setLayoutParams(layoutParams_tip);
+        rootLayout.addView(actionBarTip);
         //header宽高
         mInflater.inflate(headLayoutResID, rootLayout);
-        headView = (ViewGroup) rootLayout.getChildAt(1);
+        headView = (ViewGroup) rootLayout.getChildAt(2);
 
         //记录背景drawable
         headerBackgroundDrawable = headView.getBackground();
@@ -161,7 +178,7 @@ public class ActionBarLayout {
             actionBar_Height = actionBar_Height - DisplayUtil.dp2px(context, 8);
         }
 
-
+        actionBarTip.setActionBarHeight(statusBar_Height + actionBar_Height);
         layoutParams_header = (FrameLayout.LayoutParams) this.headView.getLayoutParams();
         if (layoutParams_header == null) {
             layoutParams_header = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBar_Height + actionBar_Height);

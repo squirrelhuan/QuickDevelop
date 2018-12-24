@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     Button btn_scan, btn_db;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
-    Button btn_loading_animation,btn_center_horizontal;
+    Button btn_loading_animation,btn_center_horizontal,btn_action_tip;
     TextView tv_test;
     LinearLayout ll_layout;
     RatingBar ratingBar;
@@ -58,6 +58,13 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
 
+        btn_action_tip  = findViewById(R.id.btn_action_tip);
+        btn_action_tip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActionBarLayout().getActionBarTip().show();
+            }
+        });
         btn_ac_01 = findViewById(R.id.btn_ac_01);
         btn_ac_01.setOnClickListener(this);
 
