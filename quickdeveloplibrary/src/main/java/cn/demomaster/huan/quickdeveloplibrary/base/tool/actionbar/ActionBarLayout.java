@@ -87,11 +87,9 @@ public class ActionBarLayout {
      *
      * @param context
      * @param actionBarModel
-     * @param headView
-     * @param contentView
+     * @param
+     * @param
      */
-    ;
-
     public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
         this.context = context;
         this.headLayoutResID = headLayoutResID;
@@ -137,7 +135,6 @@ public class ActionBarLayout {
     private FrameLayout.LayoutParams layoutParams_tip;
 
     private void initLayout() {
-
         LayoutInflater mInflater = LayoutInflater.from(context);
         rootLayout = new FrameLayout(context);
         //contentView宽高
@@ -150,7 +147,6 @@ public class ActionBarLayout {
         if (layoutParams_tip == null) {
             layoutParams_tip = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-        layoutParams_tip.topMargin=100;
         actionBarTip.setLayoutParams(layoutParams_tip);
         rootLayout.addView(actionBarTip);
         //header宽高
@@ -165,7 +161,6 @@ public class ActionBarLayout {
         }
         //记录原始paddingTop
         headerPaddingTop = headView.getPaddingTop();
-
         //记录原始paddingTop
         contentPaddingTop = contentView.getPaddingTop();
 

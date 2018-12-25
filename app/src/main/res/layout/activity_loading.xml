@@ -7,6 +7,10 @@
     android:orientation="vertical"
     tools:context=".sample.LoadingActivity">
 
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
+        android:layout_width="80dp"
+        android:layout_height="80dp"  />
+
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
         android:layout_width="80dp"
         android:layout_height="80dp" />

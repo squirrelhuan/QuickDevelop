@@ -62,7 +62,8 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_action_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().show();
+                //getActionBarLayout().getActionBarTip().show();
+                getActionBarLayout().getActionBarTip().showDelayed(6000);
             }
         });
         btn_ac_01 = findViewById(R.id.btn_ac_01);
