@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     LinearLayout ll_layout;
     RatingBar ratingBar;
 
+    private int stateIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -63,7 +65,24 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             @Override
             public void onClick(View view) {
                 //getActionBarLayout().getActionBarTip().show();
-                getActionBarLayout().getActionBarTip().showDelayed(6000);
+                stateIndex++;
+                switch (stateIndex%3){
+                    case 0:
+                        getActionBarLayout().getActionBarTip().showComplete("完成");
+                        break;
+                    case 1:
+                        getActionBarLayout().getActionBarTip().showWarning("警告警告");
+                        break;
+                    case 2:
+                        getActionBarLayout().getActionBarTip().showError("发生错误啦", new ActionBarTip.OnClickRetryListener() {
+                            @Override
+                            public void reTry() {
+                                PopToastUtil.ShowToast(mContext,"重试");
+                                getActionBarLayout().getActionBarTip().hide();
+                            }
+                        });
+                        break;
+                }
             }
         });
         btn_ac_01 = findViewById(R.id.btn_ac_01);

@@ -15,6 +15,11 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
@@ -38,7 +43,6 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private View contentView;
-
     public View getContentView() {
         return contentView;
     }
@@ -48,12 +52,28 @@ public class ActionBarTip extends FrameLayout {
         this.addView(contentView);
     }
 
+    private StateView stateView;
+    private TextView textView;
+    private ImageTextView itv_retry;
     int contentViewResID;
     public void setContentView(int contentViewResID) {
         this.contentViewResID = contentViewResID;
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         mInflater.inflate(contentViewResID, this);
         this.contentView = this.getChildAt(0);
+        this.stateView = contentView.findViewById(R.id.sv_icon);
+        this.textView = contentView.findViewById(R.id.textView);
+        this.itv_retry = contentView.findViewById(R.id.itv_retry);
+        this.itv_retry.setTextSize(14);
+        this.itv_retry.setText("重试");
+        itv_retry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onClickRetryListener!=null){
+                    onClickRetryListener.reTry();
+                }
+            }
+        });
     }
 
     private FrameLayout.LayoutParams layoutParams_tip;
@@ -78,7 +98,11 @@ public class ActionBarTip extends FrameLayout {
                         break;
                     case MotionEvent.ACTION_UP:
                         position_Y = topMin + motionEvent.getY();
-                        hide();
+                        if(stateType==StateType.ERROR){
+                            show();
+                        }else {
+                            hide();
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
                         float distanc_y = motionEvent.getY() - position_Y;
@@ -120,7 +144,7 @@ public class ActionBarTip extends FrameLayout {
     private int duration = 400;
     ValueAnimator animator;
 
-    public void show() {
+    public void startAnimation() {
         animator = ValueAnimator.ofFloat(topMin, (int) (getHeight() + topMin));
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -141,8 +165,15 @@ public class ActionBarTip extends FrameLayout {
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
     }
-
-    void hide() {
+    public void show() {
+        layoutParams_tip = (LayoutParams) getLayoutParams();
+        if (animator != null) {
+            animator.setFloatValues(layoutParams_tip.topMargin,  (int) (getHeight() + topMin));
+            animator.setDuration((int) (duration * ((float) ((getHeight() + topMin)-layoutParams_tip.topMargin ) / getHeight())));
+            animator.start();
+        }
+    }
+    public void hide() {
         layoutParams_tip = (LayoutParams) getLayoutParams();
         if (animator != null) {
             animator.setFloatValues(topMin, layoutParams_tip.topMargin);
@@ -156,7 +187,6 @@ public class ActionBarTip extends FrameLayout {
         this.actionBarHeight = height;
     }
 
-
     /**
      * 状态
      * 1.可以手动点击关闭
@@ -164,12 +194,15 @@ public class ActionBarTip extends FrameLayout {
      * 3.定时关闭
      * 4.收到更新消息
      */
-
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            hide();
+            if(stateType==StateType.ERROR){
+
+            }else {
+                hide();
+            }
         }
     };
     public void showDelayed(){
@@ -178,10 +211,60 @@ public class ActionBarTip extends FrameLayout {
     private int delayedTime=5000;
     public void showDelayed(int time){
         delayedTime = time;
-        show();
+        startAnimation();
         handler.removeCallbacks(runnable);
         handler.postDelayed(runnable,delayedTime);
     }
 
+    private ActionBarTip.StateType stateType = ActionBarTip.StateType.COMPLETE;
+    public static enum StateType {
+        COMPLETE, WARNING, ERROR
+    }
+
+    public void showWarning(String message){
+        stateType = ActionBarTip.StateType.WARNING;
+        stateView.setStateType(stateType);
+        textView.setText(message);
+        itv_retry.setVisibility(GONE);
+        showDelayed();
+    }
+
+    public void showComplete(String message){
+        stateType = ActionBarTip.StateType.COMPLETE;
+        stateView.setStateType(stateType);
+        textView.setText(message);
+        itv_retry.setVisibility(GONE);
+        showDelayed();
+    }
+    public void showError(String message,OnClickRetryListener onClickRetryListener){
+        this.onClickRetryListener = onClickRetryListener;
+        stateType = ActionBarTip.StateType.ERROR;
+        stateView.setStateType(stateType);
+        textView.setText(message);
+        itv_retry.setVisibility(VISIBLE);
+        showDelayed();
+    }
+
+    private OnClickRetryListener onClickRetryListener;
+
+    public void setOnClickRetryListener(OnClickRetryListener onClickRetryListener) {
+        this.onClickRetryListener = onClickRetryListener;
+    }
+
+    public static interface OnClickRetryListener{
+        void reTry();
+    }
+    /*private OnDataChangeListener onDataChangeListener;
+
+    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener) {
+        this.onDataChangeListener = onDataChangeListener;
+    }
+
+    public static interface OnDataChangeListener{
+       // void setStateType();
+        void setWarning();
+        void setError();
+        void setComplete();
+    }*/
 
 }

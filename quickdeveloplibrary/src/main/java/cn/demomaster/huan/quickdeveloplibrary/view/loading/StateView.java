@@ -3,31 +3,30 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
  * @author squirrel桓
  * @date 2018/11/8.
  * description：加载动画
  */
-public class StateView extends View {
+public class StateView extends ImageTextView {
 
     public StateView(Context context) {
         super(context);
     }
-
     public StateView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
     public StateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -43,20 +42,20 @@ public class StateView extends View {
         center_x = width / 2;
     }
 
-    private boolean isPlaying = false;
-
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         drawView(canvas);
-        if (!isPlaying) {
-            startAnimation();
-        }
+        super.onDraw(canvas);
     }
 
-    private int lineWidth=5;
-    private void drawView(Canvas canvas) {
 
+    private ActionBarTip.StateType stateType = ActionBarTip.StateType.COMPLETE;
+    private int warningColor = Color.YELLOW;
+    private int errorColor = Color.RED;
+    private int completeColor = Color.GREEN;
+    private int lineWidth = 4;
+
+    private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(getResources().getColor(R.color.colorPrimary));
@@ -64,103 +63,102 @@ public class StateView extends View {
         int b = height / 2;
         //canvas.drawCircle(a,b, Math.min(a,b), mPaint);
         mPaint.setColor(getResources().getColor(R.color.white));
-        int linewidth = DisplayUtil.dip2px(getContext(),lineWidth);
-        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(),lineWidth));
+        int linewidth = DisplayUtil.dip2px(getContext(), lineWidth);
+        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(), lineWidth));
 
-       int i = countIndex%3;
-       switch (i){
-           case 0:
-               //
-               mPaint.setColor(getResources().getColor(R.color.green));
-               mPaint.setStyle(Paint.Style.FILL);
-               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
+        switch (stateType) {
+            case COMPLETE://完成
+                mPaint.setColor(completeColor);
+                mPaint.setStyle(Paint.Style.FILL);
+                int r = Math.min(a, b);
+                canvas.drawCircle(a, b, r, mPaint);
 
-               mPaint.setStyle(Paint.Style.STROKE);
-               mPaint.setColor(getResources().getColor(R.color.white));
-               canvas.drawLine(width/4,b,width*2/5,height*2/3,mPaint);
-               canvas.drawLine(width*2/5-linewidth/2,height*2/3+linewidth/2,width*3/4,height/3,mPaint);
-               //canvas.drawPath(path,mPaint);
-               break;
-           case 1:
-               mPaint.setColor(getResources().getColor(R.color.red));
-               mPaint.setStyle(Paint.Style.FILL);
-               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(getResources().getColor(R.color.white));
 
-               mPaint.setStyle(Paint.Style.STROKE);
-               mPaint.setColor(getResources().getColor(R.color.white));
-               canvas.drawLine(width/4,height/4,width*3/4,height*3/4,mPaint);
-               canvas.drawLine(width*3/4,height/4,width/4,height*3/4,mPaint);
-               break;
-           case 2:
-               mPaint.setColor(getResources().getColor(R.color.yello));
-               mPaint.setStyle(Paint.Style.FILL);
-               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
+                int w1 = r * 3 / 5;
+                int w2 = r;
+                PointF pointF = new PointF(width / 2 - r / 12, height / 2 + r * 2 / 5);
+                double degrees_start = 315.0;
+                double radians1 = Math.toRadians(degrees_start);
+                PointF pointF1 = new PointF((float) (pointF.x + Math.sin(radians1) * w1), (float) (pointF.y - Math.cos(radians1) * w1));
 
-               mPaint.setStyle(Paint.Style.STROKE);
-               mPaint.setColor(getResources().getColor(R.color.white));
-               canvas.drawLine(width/2,height/4,width/2,height*5/9,mPaint);
-               canvas.drawLine(width/2,height*6/9,width/2,height*3/4,mPaint);
-               break;
-       }
+                double degrees_end = degrees_start + 90;
+                double radians2 = Math.toRadians(degrees_end);
+                PointF pointF2 = new PointF((float) (pointF.x + Math.sin(radians2) * w2), (float) (pointF.y - Math.cos(radians2) * w2));
 
-        //mPaint.setColor(getResources().getColor(R.color.colorPrimary));
-      /*  //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
-        int maxRadius = Math.min(width, height) / 14;
-        int r = Math.min(width, height) / 2 - maxRadius;
-        //centerX centerY 圆的中心点
-        float angle = progress/2;
-        for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*12);
-            if(c<0||c>360){
-                c=0;
-            }else {
-                c = (float) (Math.sin(Math.toRadians(c/2))*360);
-            }
-            mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
-            PointF p = getPointByAngle(a, b, r, c);
-            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
-        }*/
+                double degrees_end2 = degrees_end + 180;
+                double radians3 = Math.toRadians(degrees_end2);
 
-    }
+                //Log.i(TAG,pointF1.x+","+pointF1.y);
+                mPaint.setColor(getResources().getColor(R.color.white));
+                canvas.drawLine(pointF1.x, pointF1.y, pointF.x, pointF.y, mPaint);
+                canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)), pointF2.x, pointF2.y, mPaint);
+                break;
+            case ERROR://异常
+                mPaint.setColor(errorColor);
+                mPaint.setStyle(Paint.Style.FILL);
+                canvas.drawCircle(a, b, Math.min(a, b), mPaint);
 
-    private PointF getPointByAngle(int x, int y, int r, float angle) {
-        int a = (int) (x + (float) r * Math.cos(angle * 3.14 / 180));
-        int b = (int) (y + (float) r * Math.sin(angle * 3.14 / 180));
-        return new PointF(a, b);
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(getResources().getColor(R.color.white));
+                canvas.drawLine(width / 4, height / 4, width * 3 / 4, height * 3 / 4, mPaint);
+                canvas.drawLine(width * 3 / 4, height / 4, width / 4, height * 3 / 4, mPaint);
+                break;
+            case WARNING://警告
+                mPaint.setColor(warningColor);
+                mPaint.setStyle(Paint.Style.FILL);
+                canvas.drawCircle(a, b, Math.min(a, b), mPaint);
+
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(getResources().getColor(R.color.white));
+                canvas.drawLine(width / 2, height / 4, width / 2, height * 5 / 9, mPaint);
+                canvas.drawLine(width / 2, height * 6 / 9, width / 2, height * 3 / 4, mPaint);
+                break;
+        }
     }
 
     private float progress;
     private boolean isForward = true;
-    private int countIndex;
-    public void startAnimation() {
-        isPlaying = true;
-        final int end = 360;
-        final ValueAnimator animator = ValueAnimator.ofInt(0, end);
-        animator.setDuration(1600);
+    public void setStateType(ActionBarTip.StateType stateType) {
+        this.stateType = stateType;
+        if (animator!=null&&animator.isRunning()) {
+            hide();
+        }else {
+            show();
+        }
+    }
+
+    private ValueAnimator animator;
+    private int duration = 400;
+
+    public void show() {
+        animator = ValueAnimator.ofFloat(0, 1);
+        animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                if(value<progress){
-                    countIndex++;
-                }
-                progress = value;
-                //Log.d(TAG, "progress=" + progress);
-                if (progress >= end) {
-                    isForward = !isForward;
-                    //Log.d(TAG, "isForward=" + isForward);
+                progress = (float) animation.getAnimatedValue();
+                if (progress == 0) {
+                    setVisibility(GONE);
                 } else {
-                    //postInvalidate();
-                    invalidate();
+                    setVisibility(VISIBLE);
                 }
+                invalidate();
             }
         });
-        //animator.setRepeatMode(ValueAnimator.RESTART);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        //new AccelerateInterpolator()
-        animator.setInterpolator(new AccelerateInterpolator());
-        //animator.setInterpolator(new CycleInterpolator());
+        //animator.setRepeatMode(ValueAnimator.REVERSE);
+        //animator.setRepeatCount(ValueAnimator.INFINITE);//accelerate_decelerate_interpolator
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
+    }
+
+    public void hide() {
+        if (animator != null) {
+            animator.setFloatValues(0, progress);
+            animator.setDuration((int) (duration * progress));
+            animator.reverse();
+        }
     }
 
 }
