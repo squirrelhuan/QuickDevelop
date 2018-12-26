@@ -35,7 +35,6 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     public Activity mContext;
     public Bundle mBundle = null;
     public static String TAG = "CGQ";
-
     @Override
     public void setContentView(View view) {
         mContext = this;
@@ -47,11 +46,12 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         mContext = this;
         mBundle = getIntent().getExtras();
-        ((ApplicationParent) getApplicationContext()).addActivity(this);
+        if (getApplicationContext() != null) {
+            ((ApplicationParent) getApplicationContext()).addActivity(this);
+        }
         super.onCreate(savedInstanceState);
         StatusBarUtil.transparencyBar(mContext);
         initHelper();
-
     }
 
     public PhotoHelper photoHelper;
@@ -59,11 +59,10 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
     public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
         this.onNetStateChangedListener = onNetStateChangedListener;
-        if(netWorkChangReceiver!=null){
+        if (netWorkChangReceiver != null) {
             netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
         }
     }
-
     //实例化各种帮助类
     private void initHelper() {
         if (photoHelper == null) {
@@ -78,7 +77,6 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
             registerReceiver(netWorkChangReceiver, filter);
         }
     }
-
 
     public View getContentView() {
         return this.findViewById(android.R.id.content);
@@ -120,7 +118,6 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE://扫描
                 photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SCAN_QRCODE, data);
                 break;
@@ -139,18 +136,11 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
             case PhotoHelper.PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP://相册并截取
                 photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SELECT_PHOTO_FROM_GALLERY_AND_CROP, data);//偷梁换柱
                 break;
-
-
             case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE://自定义的图片选择器
                 photoHelper.onActivityResult(requestCode, PhotoHelper.RESULT_CODE_SIMPLE_PICTURE, data);//偷梁换柱
                 break;
-
         }
-
-
     }
-
-
 
 
     /**

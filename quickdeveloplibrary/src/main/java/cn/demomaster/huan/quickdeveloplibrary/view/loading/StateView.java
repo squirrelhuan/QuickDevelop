@@ -54,43 +54,57 @@ public class StateView extends View {
         }
     }
 
-    private int pointCount =4;
     private int lineWidth=5;
     private void drawView(Canvas canvas) {
+
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(getResources().getColor(R.color.colorPrimary));
         int a = width / 2;
         int b = height / 2;
-        canvas.drawCircle(a,b, Math.min(a,b), mPaint);
+        //canvas.drawCircle(a,b, Math.min(a,b), mPaint);
         mPaint.setColor(getResources().getColor(R.color.white));
-        mPaint.setStyle(Paint.Style.STROKE);
-        Path path = new Path();
-        path.moveTo(width/4,b);
-        path.lineTo(width*2/5,height*2/3);
-        path.lineTo(width*3/4,height/3);
-        path.lineTo(width*3/4,height/3-lineWidth);
-        path.lineTo(width*2/5,height*2/3-lineWidth);
-        path.lineTo(width/4,b-lineWidth);
+        int linewidth = DisplayUtil.dip2px(getContext(),lineWidth);
+        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(),lineWidth));
 
+       int i = countIndex%3;
+       switch (i){
+           case 0:
+               //
+               mPaint.setColor(getResources().getColor(R.color.green));
+               mPaint.setStyle(Paint.Style.FILL);
+               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
 
-        mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(),5));
-        canvas.drawLine(width/4,b,width*2/5,height*2/3,mPaint);
-        canvas.drawLine(width*2/5,height*2/3,width*3/4,height/3,mPaint);
-        //canvas.drawPath(path,mPaint);
+               mPaint.setStyle(Paint.Style.STROKE);
+               mPaint.setColor(getResources().getColor(R.color.white));
+               canvas.drawLine(width/4,b,width*2/5,height*2/3,mPaint);
+               canvas.drawLine(width*2/5-linewidth/2,height*2/3+linewidth/2,width*3/4,height/3,mPaint);
+               //canvas.drawPath(path,mPaint);
+               break;
+           case 1:
+               mPaint.setColor(getResources().getColor(R.color.red));
+               mPaint.setStyle(Paint.Style.FILL);
+               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
 
+               mPaint.setStyle(Paint.Style.STROKE);
+               mPaint.setColor(getResources().getColor(R.color.white));
+               canvas.drawLine(width/4,height/4,width*3/4,height*3/4,mPaint);
+               canvas.drawLine(width*3/4,height/4,width/4,height*3/4,mPaint);
+               break;
+           case 2:
+               mPaint.setColor(getResources().getColor(R.color.yello));
+               mPaint.setStyle(Paint.Style.FILL);
+               canvas.drawCircle(a,b, Math.min(a,b), mPaint);
 
-        mPaint.setColor(getResources().getColor(R.color.red));
-        canvas.drawLine(width/4,height/4,width*3/4,height*3/4,mPaint);
-        canvas.drawLine(width*3/4,height/4,width/4,height*3/4,mPaint);
+               mPaint.setStyle(Paint.Style.STROKE);
+               mPaint.setColor(getResources().getColor(R.color.white));
+               canvas.drawLine(width/2,height/4,width/2,height*5/9,mPaint);
+               canvas.drawLine(width/2,height*6/9,width/2,height*3/4,mPaint);
+               break;
+       }
 
-
-        mPaint.setColor(getResources().getColor(R.color.yello));
-        canvas.drawLine(width/2,height/4,width/2,height*5/9,mPaint);
-        canvas.drawLine(width/2,height*6/9,width/2,height*3/4,mPaint);
-
-
-        //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
+        //mPaint.setColor(getResources().getColor(R.color.colorPrimary));
+      /*  //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
         int maxRadius = Math.min(width, height) / 14;
         int r = Math.min(width, height) / 2 - maxRadius;
         //centerX centerY 圆的中心点
@@ -105,7 +119,7 @@ public class StateView extends View {
             mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
             PointF p = getPointByAngle(a, b, r, c);
             canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
-        }
+        }*/
 
     }
 
@@ -117,7 +131,7 @@ public class StateView extends View {
 
     private float progress;
     private boolean isForward = true;
-
+    private int countIndex;
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -127,6 +141,9 @@ public class StateView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (int) animation.getAnimatedValue();
+                if(value<progress){
+                    countIndex++;
+                }
                 progress = value;
                 //Log.d(TAG, "progress=" + progress);
                 if (progress >= end) {

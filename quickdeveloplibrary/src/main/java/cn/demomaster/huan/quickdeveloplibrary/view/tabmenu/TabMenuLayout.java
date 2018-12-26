@@ -231,6 +231,7 @@ public class TabMenuLayout extends LinearLayout {
             }
             adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
             recy_tab_content.setAdapter(adapter);
+            adapter.setColors(color_selected,color_normal);
             //recy_tab_content.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
             adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
@@ -253,6 +254,15 @@ public class TabMenuLayout extends LinearLayout {
             }
         }
 
+    }
+
+    private int color_selected=Color.RED;
+    private int color_normal=Color.BLACK;
+
+    //设置选中的颜色
+    public void setColors(int color_selected,int color_normal) {
+        this.color_selected = color_selected;
+        this.color_normal = color_normal;
     }
 
     public void setTabMenu(TabMenuInterface menuTab) {

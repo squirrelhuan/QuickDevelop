@@ -33,6 +33,13 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     private Context context;
     private LayoutInflater inflater;
     private boolean isSingle;//单个tab中的状态集合（多选则为list,单选则为int）
+    private int color_selected=Color.RED;
+    private int color_normal=Color.BLACK;
+
+    public void setColors(int color_selected,int color_normal) {
+        this.color_selected = color_selected;
+        this.color_normal = color_normal;
+    }
 
     public TabMenuAdapter(Context context, List<TabMenuModel> tabMenuModels, int tabIndex){
         this.context = context;
@@ -78,9 +85,9 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         if (tabListViewItems.get(position).isSelected()) {
-            holder.tv_title.setTextColor(Color.RED);
+            holder.tv_title.setTextColor(color_selected);
         } else {
-            holder.tv_title.setTextColor(Color.BLACK);
+            holder.tv_title.setTextColor(color_normal);
         }
         holder.tv_title.setText(((TabListViewItem) this.tabListViewItems.get(position)).getItemName());
         holder.itemView.setTag(position);
