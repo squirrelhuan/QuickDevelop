@@ -75,6 +75,7 @@ public class StateView extends ImageTextView {
     private int warningColor = Color.YELLOW;
     private int errorColor = Color.RED;
     private int completeColor = Color.GREEN;
+    private int mainColor = Color.WHITE;
     private int lineWidth = 4;
 
     private void drawView(Canvas canvas) {
@@ -133,7 +134,7 @@ public class StateView extends ImageTextView {
                 double radians3 = Math.toRadians(degrees_end2);
 
                 //Log.i(TAG,pointF1.x+","+pointF1.y);
-                mPaint.setColor(getResources().getColor(R.color.white));
+                mPaint.setColor(mainColor);
                 canvas.drawLine(pointF1.x, pointF1.y, pointF.x, pointF.y, mPaint);
                 canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)), pointF2.x, pointF2.y, mPaint);
                 break;
@@ -158,11 +159,9 @@ public class StateView extends ImageTextView {
 
 
                 mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(getResources().getColor(R.color.white));
+                mPaint.setColor(mainColor);
                 canvas.drawLine(pointF_error_01.x, pointF_error_01.y, pointF_error_02.x, pointF_error_02.y, mPaint);
                 canvas.drawLine(pointF_error_03.x, pointF_error_03.y, pointF_error_04.x, pointF_error_04.y, mPaint);
-                /*canvas.drawLine(width / 4, height / 4, width * 3 / 4, height * 3 / 4, mPaint);
-                canvas.drawLine(width * 3 / 4, height / 4, width / 4, height * 3 / 4, mPaint);*/
                 break;
             case WARNING://警告
                 if (warningColor == targetColor) {
@@ -185,10 +184,7 @@ public class StateView extends ImageTextView {
                 PointF pointF_warning_04 = new PointF(pointF_warning.x, (float) (pointF_warning.y + 0.5 * height_warning));
 
                 mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(getResources().getColor(R.color.white));/*
-                canvas.drawLine(width / 2, height / 4, width / 2, height * 5 / 9, mPaint);
-                canvas.drawLine(width / 2, height * 6 / 9, width / 2, height * 3 / 4, mPaint);*/
-
+                mPaint.setColor(mainColor);
                 canvas.drawLine(pointF_warning_01.x, pointF_warning_01.y, pointF_warning_02.x, pointF_warning_02.y, mPaint);
                 canvas.drawLine(pointF_warning_03.x, pointF_warning_03.y, pointF_warning_04.x, pointF_warning_04.y, mPaint);
                 break;
@@ -196,8 +192,6 @@ public class StateView extends ImageTextView {
     }
 
     private float progress;
-    private boolean isForward = true;
-
     public void setStateType(ActionBarTip.StateType stateType) {
         if (this.stateType != stateType) {
             stateType_target = stateType;
@@ -210,24 +204,16 @@ public class StateView extends ImageTextView {
 
     private ValueAnimator animator;
     private int duration = 800;
-
     public void show() {
-        //setVisibility(VISIBLE);
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progress = (float) animation.getAnimatedValue();
-                /*if (progress == 0) {
-                    setVisibility(GONE);
-                }*/
                 invalidate();
             }
         });
-        //animator.setRepeatMode(ValueAnimator.REVERSE);
-        //animator.setRepeatCount(ValueAnimator.INFINITE);
-        // accelerate_decelerate_interpolator
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
     }
@@ -261,6 +247,29 @@ public class StateView extends ImageTextView {
         }
     }
 
+    public void setWarningColor(int warningColor) {
+        this.warningColor = warningColor;
+    }
+
+    public void setErrorColor(int errorColor) {
+        this.errorColor = errorColor;
+    }
+
+    public void setCompleteColor(int completeColor) {
+        this.completeColor = completeColor;
+    }
+
+    public void setMainColor(int mainColor) {
+        this.mainColor = mainColor;
+    }
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
     /**
      * 根据fraction值来计算当前的颜色。
