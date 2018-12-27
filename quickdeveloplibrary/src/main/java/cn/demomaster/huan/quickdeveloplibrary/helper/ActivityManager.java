@@ -42,7 +42,7 @@ public class ActivityManager {
 
     //删除具体的activity
     public void deleteActivity(Activity activity) {
-        if (activity != null) {
+        if (activity != null&&activity!=null) {
             activity.finish();
             activitys.remove(activity);
         }
@@ -126,7 +126,7 @@ public class ActivityManager {
      * 关闭除了a之外的所有activity
      */
     public void deleteOtherActivity(Activity activity) {
-        if (activitys != null) {
+        if (activitys != null&&activity!=null) {
             for (int i = 0; i < activitys.size(); i++) {
                 if (!activity.equals(activitys.get(i))) {
                     activitys.get(i).finish();
