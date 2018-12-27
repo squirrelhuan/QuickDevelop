@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
 public class ApplicationParent extends Application {
@@ -17,8 +18,6 @@ public class ApplicationParent extends Application {
     public static ApplicationParent getInstance(){
         return instance;
     }
-    //本地activity栈
-    public static List<Activity> activitys = new ArrayList<Activity>();
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,6 +25,7 @@ public class ApplicationParent extends Application {
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
         initDB();
+        ActivityManager.init(this);
 
     }
 
@@ -39,33 +39,22 @@ public class ApplicationParent extends Application {
 
     //添加 <功能详细描述>
     public void addActivity(Activity activity) {
-        activitys.add(activity);
+        ActivityManager.getInstance().addActivity(activity);
     }
     //删除
     public void deleteActivity(Activity activity) {
-        if (activity != null) {
-            activitys.remove(activity);
-            activity.finish();
-        }
+        ActivityManager.getInstance().deleteActivity(activity);
+    }
+    //删除
+    public void deleteActivity(Class clazz) {
+        ActivityManager.getInstance().deleteActivityByClass(clazz);
     }
     //退出
     public void deleteAllActivity() {
-        if (activitys != null) {
-            for (int i=0;i<activitys.size();i++) {
-                activitys.get(i).finish();
-                activitys.remove(i);
-            }
-        }
+        ActivityManager.getInstance().deleteAllActivity();
     }
     //退出
     public void deleteOtherActivity(Activity activity) {
-        if (activitys != null) {
-            for (int i=0;i<activitys.size();i++) {
-                if(!activity.equals(activitys.get(i))){
-                    activitys.get(i).finish();
-                    activitys.remove(i);
-                }
-            }
-        }
+        ActivityManager.getInstance().deleteOtherActivity(activity);
     }
 }
