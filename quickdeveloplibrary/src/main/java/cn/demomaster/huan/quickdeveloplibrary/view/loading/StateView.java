@@ -24,9 +24,11 @@ public class StateView extends ImageTextView {
     public StateView(Context context) {
         super(context);
     }
+
     public StateView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public StateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -40,6 +42,23 @@ public class StateView extends ImageTextView {
         width = w;
         height = h;
         center_x = width / 2;
+
+        animator = ValueAnimator.ofFloat(0, 1);
+        animator.setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                progress = (float) animation.getAnimatedValue();
+                /*if (progress == 0) {
+                    setVisibility(GONE);
+                }*/
+                invalidate();
+            }
+        });
+        //animator.setRepeatMode(ValueAnimator.REVERSE);
+        //animator.setRepeatCount(ValueAnimator.INFINITE);
+        // accelerate_decelerate_interpolator
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
     @Override
@@ -50,6 +69,9 @@ public class StateView extends ImageTextView {
 
 
     private ActionBarTip.StateType stateType = ActionBarTip.StateType.COMPLETE;
+    private ActionBarTip.StateType stateType_target = ActionBarTip.StateType.COMPLETE;
+
+    private int targetColor;
     private int warningColor = Color.YELLOW;
     private int errorColor = Color.RED;
     private int completeColor = Color.GREEN;
@@ -66,12 +88,32 @@ public class StateView extends ImageTextView {
         int linewidth = DisplayUtil.dip2px(getContext(), lineWidth);
         mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(), lineWidth));
 
+
+        int r0 = Math.min(a, b);
+        int r = (int) (progress * r0);
+        warningColor = getContext().getResources().getColor(R.color.orange);
+        switch (stateType_target) {
+            case COMPLETE://完成
+                targetColor = completeColor;
+                break;
+            case ERROR://完成
+                targetColor = errorColor;
+                break;
+            case WARNING://警告
+                targetColor = warningColor;
+                break;
+        }
+        int color;
         switch (stateType) {
             case COMPLETE://完成
-                mPaint.setColor(completeColor);
+                if (completeColor == targetColor) {
+                    color = completeColor;
+                } else {
+                    color = getCurrentColor(progress, completeColor, targetColor);
+                }
+                mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
-                int r = Math.min(a, b);
-                canvas.drawCircle(a, b, r, mPaint);
+                canvas.drawCircle(a, b, r0, mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(getResources().getColor(R.color.white));
@@ -96,59 +138,96 @@ public class StateView extends ImageTextView {
                 canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)), pointF2.x, pointF2.y, mPaint);
                 break;
             case ERROR://异常
-                mPaint.setColor(errorColor);
+                if (errorColor == targetColor) {
+                    color = errorColor;
+                } else {
+                    color = getCurrentColor(progress, errorColor, targetColor);
+                }
+                mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
-                canvas.drawCircle(a, b, Math.min(a, b), mPaint);
+                canvas.drawCircle(a, b, r0, mPaint);
+
+                int width_error = r * 5 / 7;
+                PointF pointF_error = new PointF(width / 2, height / 2);
+                double degrees_error_01 = 315.0;
+                double radians_error_01 = Math.toRadians(degrees_error_01);
+                PointF pointF_error_01 = new PointF((float) (pointF_error.x - Math.sin(radians_error_01) * width_error), (float) (pointF_error.y + Math.cos(radians_error_01) * width_error));
+                PointF pointF_error_02 = new PointF((float) (pointF_error.x + Math.sin(radians_error_01) * width_error), (float) (pointF_error.y - Math.cos(radians_error_01) * width_error));
+                PointF pointF_error_03 = new PointF((float) (pointF_error.x - Math.sin(radians_error_01) * width_error), (float) (pointF_error.y - Math.cos(radians_error_01) * width_error));
+                PointF pointF_error_04 = new PointF((float) (pointF_error.x + Math.sin(radians_error_01) * width_error), (float) (pointF_error.y + Math.cos(radians_error_01) * width_error));
+
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(getResources().getColor(R.color.white));
-                canvas.drawLine(width / 4, height / 4, width * 3 / 4, height * 3 / 4, mPaint);
-                canvas.drawLine(width * 3 / 4, height / 4, width / 4, height * 3 / 4, mPaint);
+                canvas.drawLine(pointF_error_01.x, pointF_error_01.y, pointF_error_02.x, pointF_error_02.y, mPaint);
+                canvas.drawLine(pointF_error_03.x, pointF_error_03.y, pointF_error_04.x, pointF_error_04.y, mPaint);
+                /*canvas.drawLine(width / 4, height / 4, width * 3 / 4, height * 3 / 4, mPaint);
+                canvas.drawLine(width * 3 / 4, height / 4, width / 4, height * 3 / 4, mPaint);*/
                 break;
             case WARNING://警告
-                mPaint.setColor(warningColor);
+                if (warningColor == targetColor) {
+                    color = warningColor;
+                } else {
+                    color = getCurrentColor(progress, warningColor, targetColor);
+                }
+                mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
-                canvas.drawCircle(a, b, Math.min(a, b), mPaint);
+                canvas.drawCircle(a, b, r0, mPaint);
+
+                int height_warning = r * 9 / 7;
+                float weight1 = .6f;
+                float weight2 = .8f;
+                PointF pointF_warning = new PointF(width / 2, height / 2);
+
+                PointF pointF_warning_01 = new PointF(pointF_warning.x, (float) (pointF_warning.y - 0.5 * height_warning));
+                PointF pointF_warning_02 = new PointF(pointF_warning.x, (float) (pointF_warning.y + (weight1 - .5) * height_warning));
+                PointF pointF_warning_03 = new PointF(pointF_warning.x, (float) (pointF_warning.y + (weight2 - .5) * height_warning));
+                PointF pointF_warning_04 = new PointF(pointF_warning.x, (float) (pointF_warning.y + 0.5 * height_warning));
 
                 mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(getResources().getColor(R.color.white));
+                mPaint.setColor(getResources().getColor(R.color.white));/*
                 canvas.drawLine(width / 2, height / 4, width / 2, height * 5 / 9, mPaint);
-                canvas.drawLine(width / 2, height * 6 / 9, width / 2, height * 3 / 4, mPaint);
+                canvas.drawLine(width / 2, height * 6 / 9, width / 2, height * 3 / 4, mPaint);*/
+
+                canvas.drawLine(pointF_warning_01.x, pointF_warning_01.y, pointF_warning_02.x, pointF_warning_02.y, mPaint);
+                canvas.drawLine(pointF_warning_03.x, pointF_warning_03.y, pointF_warning_04.x, pointF_warning_04.y, mPaint);
                 break;
         }
     }
 
     private float progress;
     private boolean isForward = true;
+
     public void setStateType(ActionBarTip.StateType stateType) {
-        this.stateType = stateType;
-        if (animator!=null&&animator.isRunning()) {
-            hide();
-        }else {
+        if (this.stateType != stateType) {
+            stateType_target = stateType;
+            hideAndShow(stateType);
+        } else {
+            this.stateType = stateType;
             show();
         }
     }
 
     private ValueAnimator animator;
-    private int duration = 400;
+    private int duration = 800;
 
     public void show() {
+        //setVisibility(VISIBLE);
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progress = (float) animation.getAnimatedValue();
-                if (progress == 0) {
+                /*if (progress == 0) {
                     setVisibility(GONE);
-                } else {
-                    setVisibility(VISIBLE);
-                }
+                }*/
                 invalidate();
             }
         });
         //animator.setRepeatMode(ValueAnimator.REVERSE);
-        //animator.setRepeatCount(ValueAnimator.INFINITE);//accelerate_decelerate_interpolator
+        //animator.setRepeatCount(ValueAnimator.INFINITE);
+        // accelerate_decelerate_interpolator
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
     }
@@ -159,6 +238,60 @@ public class StateView extends ImageTextView {
             animator.setDuration((int) (duration * progress));
             animator.reverse();
         }
+    }
+
+    //隐藏后显示
+    public void hideAndShow(final ActionBarTip.StateType stateType1) {
+        if (animator != null) {
+            animator.setFloatValues(0, progress);
+            animator.setDuration((int) (duration * progress));
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    progress = (float) animation.getAnimatedValue();
+                    if (progress == 0) {
+                        stateType = stateType1;
+                        show();
+                    } else {
+                        invalidate();
+                    }
+                }
+            });
+            animator.reverse();
+        }
+    }
+
+
+    /**
+     * 根据fraction值来计算当前的颜色。
+     */
+    private int getCurrentColor(float fraction, int startColor, int endColor) {
+        int redCurrent;
+        int blueCurrent;
+        int greenCurrent;
+        int alphaCurrent;
+
+        int redStart = Color.red(startColor);
+        int blueStart = Color.blue(startColor);
+        int greenStart = Color.green(startColor);
+        int alphaStart = Color.alpha(startColor);
+
+        int redEnd = Color.red(endColor);
+        int blueEnd = Color.blue(endColor);
+        int greenEnd = Color.green(endColor);
+        int alphaEnd = Color.alpha(endColor);
+
+        int redDifference = redEnd - redStart;
+        int blueDifference = blueEnd - blueStart;
+        int greenDifference = greenEnd - greenStart;
+        int alphaDifference = alphaEnd - alphaStart;
+
+        redCurrent = (int) (redStart + fraction * redDifference);
+        blueCurrent = (int) (blueStart + fraction * blueDifference);
+        greenCurrent = (int) (greenStart + fraction * greenDifference);
+        alphaCurrent = (int) (alphaStart + fraction * alphaDifference);
+
+        return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
 
 }

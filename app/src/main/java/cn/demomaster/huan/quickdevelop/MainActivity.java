@@ -296,8 +296,8 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 PopToastUtil.ShowToast(this, "绿色主题");
                 break;
             case R.id.btn_color_yellow:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.yello));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.yello), getResources().getColor(R.color.black));
+                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.yellow));
+                PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this, "黄色主题");
                 break;
             case R.id.btn_change_bg:

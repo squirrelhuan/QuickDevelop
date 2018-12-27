@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/green_light"/>
+    <solid android:color="@color/greenyellow"/>
 
     <!--corners标签: 圆角-->
     <!--bottomLeftRadius 左下角-->
@@ -20,7 +20,7 @@
     <!--dashWidth 虚线中实线的长度-->
     <stroke
         android:width="0.1dip"
-        android:color="@color/green"
+        android:color="@color/greenyellow"
         android:dashGap="0dip"
         android:dashWidth="0dip"/>
 </shape>
