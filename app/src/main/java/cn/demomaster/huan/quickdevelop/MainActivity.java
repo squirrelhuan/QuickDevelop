@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
@@ -60,13 +61,35 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
 
+        getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+            @Override
+            public void onLoading(final ActionBarState.Loading loading) {
+                //TODO 处理状态
+                Runnable r = new Runnable(){
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        //loading.hide();
+                        loading.success("加载success");
+                    }
+                };
+
+                Thread t = new Thread(r);
+                t.start();
+            }
+
+        });
         btn_action_tip  = findViewById(R.id.btn_action_tip);
         btn_action_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getActionBarLayout().getActionBarTip().show();
                 stateIndex++;
-                switch (stateIndex%3){
+                switch (stateIndex%4){
                     case 0:
                         getActionBarLayout().getActionBarTip().showComplete("完成");
                         break;
@@ -74,13 +97,10 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                         getActionBarLayout().getActionBarTip().showWarning("警告警告");
                         break;
                     case 2:
-                        getActionBarLayout().getActionBarTip().showError("发生错误啦", new ActionBarTip.OnClickRetryListener() {
-                            @Override
-                            public void reTry() {
-                                PopToastUtil.ShowToast(mContext,"重试");
-                                getActionBarLayout().getActionBarTip().hide();
-                            }
-                        });
+                        getActionBarLayout().getActionBarTip().showError("发生错误啦");
+                        break;
+                    case 3:
+                        getActionBarLayout().getActionBarTip().showLoading("loading...");
                         break;
                 }
             }

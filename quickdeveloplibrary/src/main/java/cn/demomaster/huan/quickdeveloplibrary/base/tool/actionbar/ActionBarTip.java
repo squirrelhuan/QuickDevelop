@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -22,6 +23,9 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.COMPLETE;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.ERROR;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.LOADING;
 
 /**
  * Created by Squirrel桓 on 2018/12/25.
@@ -43,6 +47,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private View contentView;
+
     public View getContentView() {
         return contentView;
     }
@@ -56,6 +61,19 @@ public class ActionBarTip extends FrameLayout {
     private TextView textView;
     private ImageTextView itv_retry;
     int contentViewResID;
+    private ActionBarState.OnLoadingStateListener loadingStateListener;
+    private ActionBarState.Loading retry;
+
+    public void setLoadingStateListener(ActionBarState.OnLoadingStateListener onLoadingStateListener) {
+        if (onLoadingStateListener == null) {
+            return;
+        } else {
+            onLoadingStateListener.setResult(retry);
+        }
+        this.loadingStateListener = onLoadingStateListener;
+        actionBarState.setOnLoadingStateListener(onLoadingStateListener);
+    }
+
     public void setContentView(int contentViewResID) {
         this.contentViewResID = contentViewResID;
         LayoutInflater mInflater = LayoutInflater.from(getContext());
@@ -69,15 +87,84 @@ public class ActionBarTip extends FrameLayout {
         itv_retry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(onClickRetryListener!=null){
-                    onClickRetryListener.reTry();
+                if (actionBarState != null && actionBarState.getOnLoadingStateListener() != null) {
+                    ActionBarTip.this.loading();
+                    actionBarState.getOnLoadingStateListener().loading();
                 }
             }
         });
+
+    }
+
+    private ActionBarState actionBarState;
+
+    public void setActionBarState(ActionBarState actionBarState) {
+        this.actionBarState = actionBarState;
     }
 
     private FrameLayout.LayoutParams layoutParams_tip;
+
     public void init() {
+        retry = new ActionBarState.Loading() {
+            @Override
+            public void hide() {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //成功 结束并隐藏
+                        ActionBarTip.this.hide();
+                    }
+                });
+            }
+
+            @Override
+            public void success() {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //成功 结束并隐藏
+                        ActionBarTip.this.completeAndHide();
+                    }
+                });
+            }
+
+            @Override
+            public void fail() {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //失败 改变状态不隐藏
+                        ActionBarTip.this.errorAndShow();
+                    }
+                });
+            }
+
+            @Override
+            public void success(final String message) {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //成功 结束并隐藏
+                        ActionBarTip.this.completeAndHide();
+                        textView.setText(message);
+                    }
+                });
+            }
+
+            @Override
+            public void fail(final String message) {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //失败 改变状态不隐藏
+                        ActionBarTip.this.errorAndShow();
+                        textView.setText(message);
+                    }
+                });
+            }
+        };
+        actionBarState = new ActionBarState();
+
         if (getLayoutParams() == null) {
             layoutParams_tip = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             setLayoutParams(layoutParams_tip);
@@ -98,9 +185,9 @@ public class ActionBarTip extends FrameLayout {
                         break;
                     case MotionEvent.ACTION_UP:
                         position_Y = topMin + motionEvent.getY();
-                        if(stateType==StateType.ERROR){
+                        if (stateType == ERROR || stateType == LOADING) {
                             show();
-                        }else {
+                        } else {
                             hide();
                         }
                         break;
@@ -165,14 +252,16 @@ public class ActionBarTip extends FrameLayout {
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
     }
+
     public void show() {
         layoutParams_tip = (LayoutParams) getLayoutParams();
         if (animator != null) {
-            animator.setFloatValues(layoutParams_tip.topMargin,  (int) (getHeight() + topMin));
-            animator.setDuration((int) (duration * ((float) ((getHeight() + topMin)-layoutParams_tip.topMargin ) / getHeight())));
+            animator.setFloatValues(layoutParams_tip.topMargin, (int) (getHeight() + topMin));
+            animator.setDuration((int) (duration * ((float) ((getHeight() + topMin) - layoutParams_tip.topMargin) / getHeight())));
             animator.start();
         }
     }
+
     public void hide() {
         layoutParams_tip = (LayoutParams) getLayoutParams();
         if (animator != null) {
@@ -182,7 +271,28 @@ public class ActionBarTip extends FrameLayout {
         }
     }
 
+    //成功 结束并隐藏
+    public void completeAndHide() {
+        stateType = StateView.StateType.COMPLETE;
+        stateView.setStateType(COMPLETE);
+        itv_retry.setVisibility(GONE);
+        hideDelayed(3000);
+    }
+
+    //失败 改变状态不隐藏
+    public void errorAndShow() {
+        stateType = StateView.StateType.ERROR;
+        stateView.setStateType(ERROR);
+    }
+
+    public void loading() {
+        stateType = StateView.StateType.LOADING;
+        stateView.setStateType(stateType);
+        itv_retry.setVisibility(GONE);
+    }
+
     private int actionBarHeight;
+
     public void setActionBarHeight(int height) {
         this.actionBarHeight = height;
     }
@@ -198,73 +308,70 @@ public class ActionBarTip extends FrameLayout {
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if(stateType==StateType.ERROR){
+            if (stateType == ERROR || stateType == LOADING) {
 
-            }else {
+            } else {
                 hide();
             }
         }
     };
-    public void showDelayed(){
+
+    public void showDelayed() {
         showDelayed(5000);
     }
-    private int delayedTime=5000;
-    public void showDelayed(int time){
+
+    private int delayedTime = 5000;
+
+    public void showDelayed(int time) {
         delayedTime = time;
         startAnimation();
         handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable,delayedTime);
+        handler.postDelayed(runnable, delayedTime);
     }
 
-    private ActionBarTip.StateType stateType = ActionBarTip.StateType.COMPLETE;
-    public static enum StateType {
-        COMPLETE, WARNING, ERROR
+    public void hideDelayed() {
+        hideDelayed(5000);
     }
 
-    public void showWarning(String message){
-        stateType = ActionBarTip.StateType.WARNING;
+    public void hideDelayed(int time) {
+        delayedTime = time;
+        handler.removeCallbacks(runnable);
+        handler.postDelayed(runnable, delayedTime);
+    }
+
+    private StateView.StateType stateType = StateView.StateType.COMPLETE;
+
+    public void showWarning(String message) {
+        stateType = StateView.StateType.WARNING;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(GONE);
         showDelayed();
     }
 
-    public void showComplete(String message){
-        stateType = ActionBarTip.StateType.COMPLETE;
+    public void showComplete(String message) {
+        stateType = StateView.StateType.COMPLETE;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(GONE);
         showDelayed();
     }
-    public void showError(String message,OnClickRetryListener onClickRetryListener){
-        this.onClickRetryListener = onClickRetryListener;
-        stateType = ActionBarTip.StateType.ERROR;
+
+    public void showError(String message) {
+        stateType = ERROR;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(VISIBLE);
         showDelayed();
     }
 
-    private OnClickRetryListener onClickRetryListener;
-
-    public void setOnClickRetryListener(OnClickRetryListener onClickRetryListener) {
-        this.onClickRetryListener = onClickRetryListener;
+    public void showLoading(String message) {
+        stateType = StateView.StateType.LOADING;
+        stateView.setStateType(stateType);
+        textView.setText(message);
+        itv_retry.setVisibility(GONE);
+        showDelayed();
     }
 
-    public static interface OnClickRetryListener{
-        void reTry();
-    }
-    /*private OnDataChangeListener onDataChangeListener;
-
-    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener) {
-        this.onDataChangeListener = onDataChangeListener;
-    }
-
-    public static interface OnDataChangeListener{
-       // void setStateType();
-        void setWarning();
-        void setError();
-        void setComplete();
-    }*/
 
 }

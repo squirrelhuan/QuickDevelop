@@ -8,6 +8,7 @@
     tools:context=".sample.LoadingActivity">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
+        android:id="@+id/sv_loading"
         android:layout_width="80dp"
         android:layout_height="80dp"  />
 

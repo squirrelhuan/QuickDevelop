@@ -6,13 +6,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+
+import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 /**
  * @author squirrel桓
@@ -23,15 +28,36 @@ public class StateView extends ImageTextView {
 
     public StateView(Context context) {
         super(context);
+        init();
     }
 
     public StateView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public StateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
+
+    void init(){
+        animator = ValueAnimator.ofFloat(0, 1);
+        animator.setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                progress = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        //animator.setRepeatMode(ValueAnimator.REVERSE);
+        //animator.setRepeatCount(ValueAnimator.INFINITE);
+        // accelerate_decelerate_interpolator
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+    }
+
+
 
     private int center_x, center_y, mwidth, width, height;
 
@@ -43,22 +69,6 @@ public class StateView extends ImageTextView {
         height = h;
         center_x = width / 2;
 
-        animator = ValueAnimator.ofFloat(0, 1);
-        animator.setDuration(duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                /*if (progress == 0) {
-                    setVisibility(GONE);
-                }*/
-                invalidate();
-            }
-        });
-        //animator.setRepeatMode(ValueAnimator.REVERSE);
-        //animator.setRepeatCount(ValueAnimator.INFINITE);
-        // accelerate_decelerate_interpolator
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
     @Override
@@ -67,14 +77,17 @@ public class StateView extends ImageTextView {
         super.onDraw(canvas);
     }
 
-
-    private ActionBarTip.StateType stateType = ActionBarTip.StateType.COMPLETE;
-    private ActionBarTip.StateType stateType_target = ActionBarTip.StateType.COMPLETE;
+    public static enum StateType {
+        COMPLETE, WARNING, ERROR,LOADING
+    }
+    private StateType stateType = StateType.LOADING;
+    private StateType stateType_target = StateType.LOADING;
 
     private int targetColor;
     private int warningColor = Color.YELLOW;
     private int errorColor = Color.RED;
     private int completeColor = Color.GREEN;
+    private int loadingColor = Color.GRAY;
     private int mainColor = Color.WHITE;
     private int lineWidth = 4;
 
@@ -102,6 +115,9 @@ public class StateView extends ImageTextView {
                 break;
             case WARNING://警告
                 targetColor = warningColor;
+                break;
+            case LOADING://加载
+                targetColor = loadingColor;
                 break;
         }
         int color;
@@ -188,11 +204,32 @@ public class StateView extends ImageTextView {
                 canvas.drawLine(pointF_warning_01.x, pointF_warning_01.y, pointF_warning_02.x, pointF_warning_02.y, mPaint);
                 canvas.drawLine(pointF_warning_03.x, pointF_warning_03.y, pointF_warning_04.x, pointF_warning_04.y, mPaint);
                 break;
+
+
+            case LOADING://警告
+                if (loadingColor == targetColor) {
+                    color = loadingColor;
+                } else {
+                    color = getCurrentColor(progress, loadingColor, targetColor);
+                }
+                mPaint.setColor(color);
+                mPaint.setStyle(Paint.Style.FILL);
+                canvas.drawCircle(a, b, r0, mPaint);
+
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(mainColor);
+                RectF oval = new RectF((width-r0)/2,(height-r0)/2,(width-r0)/2+r0,(height-r0)/2+r0);
+                canvas.rotate((float) progress*360,width/2,height/2);
+                canvas.drawArc(oval, 0, 90+Math.abs(progress-0.5f)*140, false, mPaint);
+                //canvas.save();
+                //canvas.translate(0,0);
+                //canvas.rotate((float) (90 - Math.toDegrees(60)));
+                break;
         }
     }
 
     private float progress;
-    public void setStateType(ActionBarTip.StateType stateType) {
+    public void setStateType(StateType stateType) {
         if (this.stateType != stateType) {
             stateType_target = stateType;
             hideAndShow(stateType);
@@ -203,9 +240,18 @@ public class StateView extends ImageTextView {
     }
 
     private ValueAnimator animator;
-    private int duration = 800;
+    private int duration = 500;
     public void show() {
-        animator = ValueAnimator.ofFloat(0, 1);
+       if(animator==null){
+            init();
+        }else {
+            if(animator.isStarted()||animator.isRunning()){
+                animator.cancel();
+                init();
+            }
+        }
+        //animator = MyValueAnimator.ofFloat(0, 1);
+       // animator.setFloatValues(0, 1);
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -214,22 +260,35 @@ public class StateView extends ImageTextView {
                 invalidate();
             }
         });
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        if(stateType==StateType.LOADING){
+            animator.setRepeatCount(ValueAnimator.INFINITE);
+        }else {
+            animator.setRepeatCount(0);
+        }
+        animator.setInterpolator(new LinearInterpolator());
         animator.start();
     }
 
     public void hide() {
         if (animator != null) {
             animator.setFloatValues(0, progress);
+            animator.setRepeatCount(0);
+            animator.addUpdateListener(null);
             animator.setDuration((int) (duration * progress));
             animator.reverse();
         }
     }
 
     //隐藏后显示
-    public void hideAndShow(final ActionBarTip.StateType stateType1) {
+    public void hideAndShow(final StateType stateType1) {
         if (animator != null) {
-            animator.setFloatValues(0, progress);
+            if(animator.isStarted()||animator.isRunning()){
+                animator.cancel();
+            }
+            animator = ValueAnimator.ofFloat(0, progress);
+            //animator.setFloatValues(0, progress);
+            animator.setRepeatCount(0);
             animator.setDuration((int) (duration * progress));
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -246,6 +305,7 @@ public class StateView extends ImageTextView {
             animator.reverse();
         }
     }
+
 
     public void setWarningColor(int warningColor) {
         this.warningColor = warningColor;
@@ -302,5 +362,6 @@ public class StateView extends ImageTextView {
 
         return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
+
 
 }

@@ -10,9 +10,9 @@
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
         android:id="@+id/sv_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="15dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_margin="10dp"
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical" />
@@ -39,7 +39,6 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/quickdev_middle_text_size" />
 
-
     <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/itv_retry"
         android:layout_width="wrap_content"
@@ -50,7 +49,7 @@
         android:layout_gravity="right"
         android:singleLine="true"
         android:text=""
-        android:textColor="@color/cyan"
-        android:textSize="@dimen/quickdev_small_text_size" />
+        android:textColor="@color/dodgerblue"
+        android:textSize="@dimen/quickdev_middle_text_size" />
 
 </FrameLayout>
