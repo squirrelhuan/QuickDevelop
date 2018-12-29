@@ -230,8 +230,8 @@ public class StateView extends ImageTextView {
 
     private float progress;
     public void setStateType(StateType stateType) {
+        stateType_target = stateType;
         if (this.stateType != stateType) {
-            stateType_target = stateType;
             hideAndShow(stateType);
         } else {
             this.stateType = stateType;

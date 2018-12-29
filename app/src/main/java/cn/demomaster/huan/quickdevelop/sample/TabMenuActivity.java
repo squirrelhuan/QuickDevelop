@@ -35,7 +35,6 @@ public class TabMenuActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_menu);
 
-
         /*********************      数据初始化                   ************************/
         String[] aaa=new String[30];
         for (int i = 0; i < aaa.length; i++) {
@@ -140,7 +139,6 @@ public class TabMenuActivity extends BaseActivityParent {
             view = inflater.inflate(R.layout.item_tab_menu_layout,null);
             tv_tab_name =(TextView)view.findViewById(R.id.tv_tab_name);
             view.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
             this.addView(view);
         }
     }
