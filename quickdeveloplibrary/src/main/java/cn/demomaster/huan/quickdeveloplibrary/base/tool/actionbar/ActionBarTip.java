@@ -47,11 +47,9 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private View contentView;
-
     public View getContentView() {
         return contentView;
     }
-
     public void setContentView(View contentView) {
         this.contentView = contentView;
         this.addView(contentView);
@@ -63,7 +61,6 @@ public class ActionBarTip extends FrameLayout {
     int contentViewResID;
     private ActionBarState.OnLoadingStateListener loadingStateListener;
     private ActionBarState.Loading retry;
-
     public void setLoadingStateListener(ActionBarState.OnLoadingStateListener onLoadingStateListener) {
         if (onLoadingStateListener == null) {
             return;
@@ -89,15 +86,25 @@ public class ActionBarTip extends FrameLayout {
             public void onClick(View view) {
                 if (actionBarState != null && actionBarState.getOnLoadingStateListener() != null) {
                     ActionBarTip.this.loading();
-                    actionBarState.getOnLoadingStateListener().loading();
+                    //新线程处理耗时操作
+                    Thread t = new Thread(new Runnable(){
+                        @Override
+                        public void run() {
+                            try {
+                                actionBarState.getOnLoadingStateListener().loading();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e(TAG,"异常/耗时操作，不能直接处理UI");
+                            }
+                        }
+                    });
+                    t.start();
                 }
             }
         });
-
     }
 
     private ActionBarState actionBarState;
-
     public void setActionBarState(ActionBarState actionBarState) {
         this.actionBarState = actionBarState;
     }
@@ -158,6 +165,16 @@ public class ActionBarTip extends FrameLayout {
                     public void run() {
                         //失败 改变状态不隐藏
                         ActionBarTip.this.errorAndShow();
+                        textView.setText(message);
+                    }
+                });
+            }
+
+            @Override
+            public void setText(final String message) {
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         textView.setText(message);
                     }
                 });

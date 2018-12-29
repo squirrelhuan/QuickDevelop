@@ -49,6 +49,7 @@ public  class ActionBarState {
         void success();
         void fail();
         void hide();
+        void setText(String message);
         void success(String message);
         void fail(String message);
     }

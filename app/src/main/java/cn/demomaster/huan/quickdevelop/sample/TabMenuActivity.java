@@ -62,6 +62,7 @@ public class TabMenuActivity extends BaseActivityParent {
         TabMenuModel tabMenuModel2 =new TabMenuModel("c",ccc,3, selectData_c);
         tabMenuModel2.setTabButtonView(new TButton(this));
         tabMenuModel2.setColumnCount(3);
+        tabMenuModel2.setColorContent(Color.GREEN,Color.BLUE);
         tabSelectModels.add(tabMenuModel2);
 
         //添加自定义布局

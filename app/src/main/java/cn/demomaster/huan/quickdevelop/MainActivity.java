@@ -42,12 +42,13 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     Button btn_scan, btn_db;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
-    Button btn_loading_animation,btn_center_horizontal,btn_action_tip;
+    Button btn_loading_animation, btn_center_horizontal, btn_action_tip;
     TextView tv_test;
     LinearLayout ll_layout;
     RatingBar ratingBar;
 
     private int stateIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -65,31 +66,24 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
-                Runnable r = new Runnable(){
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        //loading.hide();
-                        loading.success("加载success");
-                    }
-                };
-
-                Thread t = new Thread(r);
-                t.start();
+                loading.setText("处理状态");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //loading.hide();
+                loading.success("加载success");
             }
 
         });
-        btn_action_tip  = findViewById(R.id.btn_action_tip);
+        btn_action_tip = findViewById(R.id.btn_action_tip);
         btn_action_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getActionBarLayout().getActionBarTip().show();
                 stateIndex++;
-                switch (stateIndex%4){
+                switch (stateIndex % 4) {
                     case 0:
                         getActionBarLayout().getActionBarTip().showComplete("完成");
                         break;
@@ -175,7 +169,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
-        String[] menuNames = {"我的二维码","扫描","截图分享"};
+        String[] menuNames = {"我的二维码", "扫描", "截图分享"};
         for (int i = 0; i < menuNames.length; i++) {
             OptionsMenu.Menu menu = new OptionsMenu.Menu();
             menu.setTitle(menuNames[i]);
@@ -189,11 +183,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
-                switch (position){
+                switch (position) {
                     case 0:
                         break;
                     case 1:
-                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 /*setImageToView(data);*/
@@ -263,6 +257,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                             tv_test.setText("扫描结果为：" + path);
                         }
                     }
+
                     @Override
                     public void onFailure(String error) {
 

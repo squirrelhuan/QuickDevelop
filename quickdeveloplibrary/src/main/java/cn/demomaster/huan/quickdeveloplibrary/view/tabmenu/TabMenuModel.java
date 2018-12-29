@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 
+import android.graphics.Color;
 import android.view.View;
 
 import java.util.Arrays;
@@ -18,6 +19,8 @@ public class TabMenuModel {
     private String[] tabItems;//子内容列表
     private int columnCount =1;//默认内容列表显示几列
     private int contentResId=-1;//自定义布局id
+    private int colorSelect_content =Color.RED;
+    private int colorNormal_content= Color.BLACK;
     private TabRadioGroup.TabRadioButton tabButtonView;
     private OnCreatTabContentView onCreatTabContentView;
 
@@ -69,6 +72,26 @@ public class TabMenuModel {
 
     public void setTabItems(String[] tabItems) {
         this.tabItems = tabItems;
+    }
+
+    public int getColorSelect_content() {
+        return colorSelect_content;
+    }
+
+    public void setColorSelect_content(int colorSelect_content) {
+        this.colorSelect_content = colorSelect_content;
+    }
+
+    public int getColorNormal_content() {
+        return colorNormal_content;
+    }
+
+    public void setColorNormal_content(int colorNormal_content) {
+        this.colorNormal_content = colorNormal_content;
+    }
+    public void setColorContent(int colorSelect_content,int colorNormal_content) {
+        this.colorSelect_content = colorSelect_content;
+        this.colorNormal_content = colorNormal_content;
     }
 
     public TabRadioGroup.TabRadioButton getTabButtonView() {
