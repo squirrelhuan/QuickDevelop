@@ -46,12 +46,13 @@ public class BaseActivityRoot extends AppCompatActivity implements BaseActivityI
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         mContext = this;
         mBundle = getIntent().getExtras();
-        if (getApplicationContext() != null) {
-            ((ApplicationParent) getApplicationContext()).addActivity(this);
-        }
         super.onCreate(savedInstanceState);
-        StatusBarUtil.transparencyBar(mContext);
-        initHelper();
+        if (getApplicationContext() != null&&getApplicationContext() instanceof ApplicationParent) {
+            ((ApplicationParent) getApplicationContext()).addActivity(this);
+            StatusBarUtil.transparencyBar(mContext);
+            initHelper();
+        }
+
     }
 
     public PhotoHelper photoHelper;

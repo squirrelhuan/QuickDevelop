@@ -152,7 +152,7 @@ public class StateView extends ImageTextView {
                 //Log.i(TAG,pointF1.x+","+pointF1.y);
                 mPaint.setColor(mainColor);
                 canvas.drawLine(pointF1.x, pointF1.y, pointF.x, pointF.y, mPaint);
-                canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)), pointF2.x, pointF2.y, mPaint);
+                canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)*progress), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)*progress), pointF2.x, pointF2.y, mPaint);
                 break;
             case ERROR://异常
                 if (errorColor == targetColor) {
@@ -206,7 +206,7 @@ public class StateView extends ImageTextView {
                 break;
 
 
-            case LOADING://警告
+            case LOADING://加载
                 if (loadingColor == targetColor) {
                     color = loadingColor;
                 } else {
