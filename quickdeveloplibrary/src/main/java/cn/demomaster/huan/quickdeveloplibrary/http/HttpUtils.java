@@ -63,21 +63,54 @@ public class HttpUtils {
         return retrofitInterface;
     }*/
 
-    public synchronized static <T> T getRetrofit(Class<T> clazz) {
+    private static String baseUrl = "";
+    private static Class clazz;
+
+    public static void setBaseUrl(String baseUrl) {
+        HttpUtils.baseUrl = baseUrl;
+        if (clazz != null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            retrofitInterface = retrofit.create(clazz);
+        }
+    }
+    private synchronized static <T> T getRetrofit(Class<T> targetClazz) {
+        clazz = targetClazz;
         //初始化retrofit的配置
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(URLConstant.URL_BASE)
+                    .baseUrl(baseUrl)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
-        retrofitInterface = retrofit.create(clazz);
+        retrofitInterface = retrofit.create(targetClazz);
+        return (T) retrofitInterface;
+    }
+
+    private synchronized static <T> T getRetrofit(Class<T> targetClazz,String baseUrl) {
+        HttpUtils.baseUrl = baseUrl;
+        clazz = targetClazz;
+        //初始化retrofit的配置
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }
+        retrofitInterface = retrofit.create(targetClazz);
         return (T) retrofitInterface;
     }
 
     private static HttpUtils instance;
+
     public static HttpUtils getInstance() {
         if (instance == null) {
             instance = new HttpUtils();
