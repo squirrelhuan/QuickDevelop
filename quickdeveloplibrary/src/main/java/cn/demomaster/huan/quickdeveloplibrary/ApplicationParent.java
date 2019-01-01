@@ -10,6 +10,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 
 public class ApplicationParent extends Application {
 
@@ -26,6 +27,8 @@ public class ApplicationParent extends Application {
         SharedPreferencesHelper.init(this);
         initDB();
         ActivityManager.init(this);
+
+
 
     }
 

@@ -4,19 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
+import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
 import cn.demomaster.huan.quickdevelop.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.sample.LoadingActivity;
@@ -32,9 +37,13 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 //import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
 
@@ -165,6 +174,43 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             }
         });
         initOptionsMenu();
+        http();
+    }
+
+    private void http() {
+        //Retrofit
+        RetrofitInterface retrofitInterface = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class);
+        retrofitInterface.getSession()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Object>() {
+                    @Override
+                    public void onNext(@NonNull Object response) {
+                        Log.i(TAG, "onNext: " + JSON.toJSONString(response));
+                        try {
+                            //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
+                            //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
+                            //String token = jsonObject.get("token").toString();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onStart() {
+                        Log.i(TAG, "onStart: ");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        Log.i(TAG, "onError: " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "onComplete: ");
+                    }
+                });
     }
 
     private void initOptionsMenu() {
