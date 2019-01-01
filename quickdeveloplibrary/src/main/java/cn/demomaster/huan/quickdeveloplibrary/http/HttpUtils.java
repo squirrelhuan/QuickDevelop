@@ -65,7 +65,6 @@ public class HttpUtils {
 
     private static String baseUrl = "";
     private static Class clazz;
-
     public static void setBaseUrl(String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         if (clazz != null) {
@@ -78,7 +77,7 @@ public class HttpUtils {
             retrofitInterface = retrofit.create(clazz);
         }
     }
-    private synchronized static <T> T getRetrofit(Class<T> targetClazz) {
+    public synchronized <T> T getRetrofit(Class<T> targetClazz) {
         clazz = targetClazz;
         //初始化retrofit的配置
         if (retrofit == null) {
@@ -93,7 +92,7 @@ public class HttpUtils {
         return (T) retrofitInterface;
     }
 
-    private synchronized static <T> T getRetrofit(Class<T> targetClazz,String baseUrl) {
+    public synchronized <T> T getRetrofit(Class<T> targetClazz,String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         clazz = targetClazz;
         //初始化retrofit的配置
@@ -110,7 +109,6 @@ public class HttpUtils {
     }
 
     private static HttpUtils instance;
-
     public static HttpUtils getInstance() {
         if (instance == null) {
             instance = new HttpUtils();
