@@ -180,6 +180,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     private void http() {
         //Retrofit
         RetrofitInterface retrofitInterface = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class);
+        //RetrofitInterface retrofitInterface2 = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class,"");
         retrofitInterface.getSession()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
