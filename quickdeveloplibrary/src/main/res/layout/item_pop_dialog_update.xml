@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+   <!-- android:background="@drawable/panel_menu_main_bg"-->
+
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="340dp"
+        android:layout_margin="50dp"
+        android:layout_gravity="center">
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:layout_marginBottom="50dp">
+
+        </TextView>
+
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+            android:id="@+id/btn_close"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_close_circle"
+            android:text="关闭"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:minHeight="0dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

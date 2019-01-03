@@ -107,9 +107,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                 }
             }
         });
-
         setAdapter(mAdapter);
-
     }
 
     public List<Image> getImages() {

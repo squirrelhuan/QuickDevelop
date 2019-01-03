@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.camera.idcard;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -125,6 +126,16 @@ public class IDCardActivity extends BaseActivityParent {
                     public void onSuccess(Intent data, String path) {
                         if (!TextUtils.isEmpty(path)) {
                             imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+                        }
+
+                        Bundle extras = data.getExtras();
+                        if (extras != null) {
+                            Bitmap photo = extras.getParcelable("data");
+                            imageView.setImageBitmap(photo);
+                            //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
+                            //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
+                            //iv_personal_icon.setImageBitmap(photo);
+                            //uploadPic(photo);
                         }
                     }
 
