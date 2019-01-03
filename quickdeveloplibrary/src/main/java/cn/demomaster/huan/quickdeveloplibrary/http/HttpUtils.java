@@ -67,13 +67,13 @@ public class HttpUtils {
     private static Class clazz;
     public static void setBaseUrl(String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
         if (clazz != null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
             retrofitInterface = retrofit.create(clazz);
         }
     }

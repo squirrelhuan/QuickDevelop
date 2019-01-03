@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">QuickDevelopLibrary</string>
 
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
     <string name="Confirm">确定</string>
     <string name="Cancel">取消</string>
@@ -16,5 +19,8 @@
     <string name="confirm">确定</string>
     <string name="preview">预览</string>
     <string name="select">选择</string>
+
+    <string name="Components">组建</string>
+
 
 </resources>

@@ -15,12 +15,26 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application>
+    <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
+
         <activity android:name=".camera.scan.ScanActivity" />
         <activity android:name=".camera.idcard.IDCardActivity" />
         <activity android:name=".camera.idcard.CameraIDCardActivity" />
         <activity android:name=".helper.simplepicture.SimplePictureActivity" android:label="@string/image"/>
         <activity android:name=".helper.simplepicture.PreviewActivity" android:label=""/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_path"/>
+        </provider>
+
     </application>
 
 </manifest>

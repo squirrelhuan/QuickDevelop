@@ -17,7 +17,7 @@ import cn.demomaster.huan.quickdevelop.R;
  * 2018/8/25
  */
 public class BlankFragment extends Fragment {
-
+    //Components
     View mView;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {

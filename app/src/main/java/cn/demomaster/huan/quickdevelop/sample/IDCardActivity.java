@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,11 +58,10 @@ public class IDCardActivity extends BaseActivityParent {
     private void takePhoto(final int type) {
         photoHelper.takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
             @Override
-            public void onSuccess(Intent data, String path) {
+            public void onSuccess(Intent data, String path){
                 if (!TextUtils.isEmpty(path)) {
                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
-
                 String imgBase64 = imageToBase64(path);
                 Log.i("CGQ",imgBase64);
 

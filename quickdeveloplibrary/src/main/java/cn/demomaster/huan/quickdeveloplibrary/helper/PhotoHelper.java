@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,18 +139,27 @@ public class PhotoHelper {
 //        if (StorageUtils.hasSdcard()) {
         //设定拍照存放到自己指定的目录,可以先建好
 //            File file = new File(savePath);
-        String savePath = Environment.getExternalStorageDirectory().getPath() + "/photo.jpg";
-        File file_Uri = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
+        String savePath = Environment.getExternalStorageDirectory().getPath() ;
+        File file_Uri = new File(savePath + "/photo.jpg");
         if (!file_Uri.exists()) {
             file_Uri.mkdirs();
         }
         File pictureFile = new File(savePath, "photo.jpg");
+        if (!file_Uri.exists()) {
+            try {
+                file_Uri.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             ContentValues contentValues = new ContentValues(1);
             contentValues.put(MediaStore.Images.Media.DATA, pictureFile.getAbsolutePath());
-            fileUri = ((Activity) context).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            fileUri = ((Activity) context).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
+            //fileUri = FileProvider.getUriForFile(context, "cn.demomaster.huan.quickdeveloplibrary.fileprovider", pictureFile);
+
         } else {
             fileUri = Uri.fromFile(pictureFile);
         }
@@ -271,7 +282,6 @@ public class PhotoHelper {
                     break;
             }
 
-
             if (onTakePhotoResult != null) {
                 if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
                     path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
@@ -280,7 +290,6 @@ public class PhotoHelper {
                 } else if (data.getData() != null) {
                     path = data.getData().toString();
                 }
-
                 onTakePhotoResult.onSuccess(data, path);
             }
             if (onSelectPictureResult != null) {
@@ -294,7 +303,6 @@ public class PhotoHelper {
 
     public static interface OnTakePhotoResult {
         void onSuccess(Intent data, String path);
-
         void onFailure(String error);
     }
 

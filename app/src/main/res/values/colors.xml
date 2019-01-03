@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#ff4EEE94</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
@@ -18,4 +18,10 @@
 
 
     <color name="preview_mock">#aa000000</color>
+
+
+    <color name="qmui_config_color_gray_6">#99A0AA</color>
+
+    <color name="quickdeve_drawable_color_list_pressed">#801B88EE</color>
+
 </resources>

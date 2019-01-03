@@ -86,9 +86,7 @@ public class SimplePictureActivity extends BaseActivityParent {
     private GridLayoutManager mLayoutManager;
 
     private int result;
-
     private void init() {
-
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -103,7 +101,6 @@ public class SimplePictureActivity extends BaseActivityParent {
 
             }
         });
-
 
     }
 

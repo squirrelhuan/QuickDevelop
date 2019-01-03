@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".QDMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,19 @@
         <activity android:name=".sample.TabMenuActivity" />
         <activity android:name=".sample.PictureSelectActivity" />
         <activity android:name=".sample.LoadingActivity" />
-        <activity android:name=".sample.CenterHorizontalActivity"></activity>
+        <activity android:name=".sample.CenterHorizontalActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_path" />
+        </provider>
+
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

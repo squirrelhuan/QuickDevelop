@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -124,6 +126,9 @@ public class IDCardActivity extends BaseActivityParent {
                 photoHelper.takePhoto(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
+                        Log.i(TAG,"map_path="+path);
+                        String map_str2 = JSON.toJSONString(data);
+                        Log.i(TAG,"map_str2="+map_str2);
                         if (!TextUtils.isEmpty(path)) {
                             imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                         }
