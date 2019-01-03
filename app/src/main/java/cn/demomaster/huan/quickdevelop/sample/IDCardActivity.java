@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.sample;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -62,6 +63,16 @@ public class IDCardActivity extends BaseActivityParent {
 
                 String imgBase64 = imageToBase64(path);
                 Log.i("CGQ",imgBase64);
+
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap photo = extras.getParcelable("data");
+                    imageView.setImageBitmap(photo);
+                    //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
+                    //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
+                    //iv_personal_icon.setImageBitmap(photo);
+                    //uploadPic(photo);
+                }
             }
 
             @Override

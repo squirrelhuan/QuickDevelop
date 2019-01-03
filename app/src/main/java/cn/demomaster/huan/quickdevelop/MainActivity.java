@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
@@ -34,10 +35,14 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
+import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
+import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
@@ -146,9 +151,25 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_loading_animation.setOnClickListener(this);
         btn_center_horizontal.setOnClickListener(this);
 
-
+        String conf = FileUtil.getFromAssets(mContext, "config/update.his");
+        if (conf != null) {
+            List<Version> versions = JSON.parseArray(conf,Version.class);
+            final Version version =  versions.get(versions.size()-1);
+            updatePopDialog = new UpdatePopDialog(mContext, versions.get(versions.size()-1).getDescription());
+            updatePopDialog.setOnCloseListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferencesHelper.getInstance().putBoolean(version.getVersionCode()+"",false);
+                }
+            });
+            if(SharedPreferencesHelper.getInstance().getBoolean(version.getVersionCode()+"",true)){
+                updatePopDialog.show();
+            }
+        }
         init();
     }
+
+    private UpdatePopDialog updatePopDialog;
 
     private void init() {
         getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
@@ -179,7 +200,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
     private void http() {
         //Retrofit
-        RetrofitInterface retrofitInterface = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class);
+        RetrofitInterface retrofitInterface = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class, "http://www.demomaster.cn/");
         retrofitInterface.getSession()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -261,7 +282,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-
             case R.id.btn_center_horizontal:
                 intent = new Intent(MainActivity.this, CenterHorizontalActivity.class);
                 startActivityForResult(intent, 1);
