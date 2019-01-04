@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,21 +15,18 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
-import cn.demomaster.huan.quickdevelop.sample.CenterHorizontalActivity;
-import cn.demomaster.huan.quickdevelop.sample.CsqliteActivity;
-import cn.demomaster.huan.quickdevelop.sample.LoadingActivity;
-import cn.demomaster.huan.quickdevelop.sample.PickActivity;
-import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
-import cn.demomaster.huan.quickdevelop.sample.QDialogActivity;
-import cn.demomaster.huan.quickdevelop.sample.TabMenuActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.QDialogActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity;
@@ -50,7 +43,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-//import cn.demomaster.huan.quickdevelop.sample.PictureSelectActivity;
+//import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
 

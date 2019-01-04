@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +20,15 @@ import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.adapter.HorizontalAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.BlankFragment;
 import cn.demomaster.huan.quickdevelop.view.SlidingTabLayout;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
+@ActivityPager(name = "CenterHorizontal",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class CenterHorizontalActivity extends BaseActivityParent {
 
     @Override

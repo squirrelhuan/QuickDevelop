@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,8 +9,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.FileInputStream;

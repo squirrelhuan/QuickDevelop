@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sample.LoadingActivity">
+    tools:context=".activity.sample.component.LoadingActivity">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
         android:id="@+id/sv_loading"

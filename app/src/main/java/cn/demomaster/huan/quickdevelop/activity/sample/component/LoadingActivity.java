@@ -1,12 +1,16 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
+@ActivityPager(name = "Loading",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
 public class LoadingActivity extends BaseActivityParent {
 
     private StateView sv_loading;

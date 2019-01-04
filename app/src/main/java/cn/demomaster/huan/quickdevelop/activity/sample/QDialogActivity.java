@@ -1,9 +1,8 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.DialogHelper;

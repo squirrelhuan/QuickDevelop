@@ -1,16 +1,12 @@
 package cn.demomaster.huan.quickdevelop;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.TabHost;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +14,6 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.fragment.BlankFragment;
 import cn.demomaster.huan.quickdevelop.fragment.ComponentFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
@@ -27,48 +21,91 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 
 public class QDMainActivity extends BaseActivityParent {
 
-    private static final String KEY_FRAGMENT = "key_fragment";
-    private static final int VALUE_FRAGMENT_HOME = 0;
-    private static final int VALUE_FRAGMENT_NOTCH_HELPER = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
 
         getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayout().getLeftView().setVisibility(View.GONE);
 
-        List<Fragment> fragments = new ArrayList<Fragment>();
+     /*   List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ComponentFragment());
         fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        fragments.add(new BlankFragment());
-        FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(),
-                fragments);
+        FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(),fragments);
+*/
+        List<Class> list = new ArrayList<>();
+        list.add(ComponentFragment.class);
+        list.add(BlankFragment.class);
+        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getSupportFragmentManager(), list);
         // Initiate ViewPager
-        ViewPager mViewPager = (ViewPager)findViewById(R.id.viewPager);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPager);
         //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
         //mViewPager.setPageMarginDrawable(R.drawable.viewpager_margin);
-        mViewPager.setOffscreenPageLimit(fragments.size());
-        mViewPager.setAdapter(mPagerAdapter);
-        //mViewPager.setCurrentItem(0);
+        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setAdapter(mPagerAdapter1);
+        mViewPager.setCurrentItem(0);
 
         // Tabs
         initScrollableTabs(mViewPager);
     }
+
     /**
      * Initiate the tabs
      */
     public void initScrollableTabs(ViewPager mViewPager) {
-        ScrollableTabView mScrollingTabs = (ScrollableTabView)findViewById(R.id.scrollingTabs);
+        ScrollableTabView mScrollingTabs = (ScrollableTabView) findViewById(R.id.scrollingTabs);
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(this);
         mScrollingTabs.setAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
 
-        // Theme chooser
-        //ThemeUtils.initThemeChooser(this, mScrollingTabs, "scrollable_tab_background",
-        //        THEME_ITEM_BACKGROUND);
+    }
+
+
+    private class MainFragmentAdapter extends FragmentPagerAdapter {
+        private List<Class> data;
+
+        public MainFragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public MainFragmentAdapter(FragmentManager fm, List<Class> data) {
+            super(fm);
+            this.data = data;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+            Bundle bundle = new Bundle();
+            String className = "";
+            Class catClass = data.get(position);
+            try {
+                // catClass = Class.forName(className);
+                // 实例化这个类
+                fragment = (Fragment) catClass.newInstance();
+                fragment.setArguments(bundle);
+                return fragment;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+
+            fragment = new BlankFragment();
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
     }
 
 }

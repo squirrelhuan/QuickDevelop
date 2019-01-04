@@ -1,15 +1,15 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
@@ -17,7 +17,9 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
+@ActivityPager(name = "Pick",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class PickActivity extends BaseActivityParent {
 
 

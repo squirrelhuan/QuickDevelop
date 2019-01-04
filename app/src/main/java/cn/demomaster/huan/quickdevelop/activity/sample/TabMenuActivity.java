@@ -1,10 +1,9 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,20 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabRadioGroup;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
+@ActivityPager(name = "TabMenu",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class TabMenuActivity extends BaseActivityParent {
 
     TabMenuLayout tabMenuLayout;

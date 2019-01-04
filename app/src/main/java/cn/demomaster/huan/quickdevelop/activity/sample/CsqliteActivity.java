@@ -1,11 +1,8 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,7 +10,6 @@ import android.widget.Button;
 import cn.demomaster.huan.quickdevelop.App;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
 public class CsqliteActivity extends BaseActivityParent {

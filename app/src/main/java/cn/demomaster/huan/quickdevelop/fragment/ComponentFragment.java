@@ -16,14 +16,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
-import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
+
+@ActivityPager(iconRes = R.mipmap.ic_launcher)
 public class ComponentFragment extends Fragment {
     //Components
     View mView;
@@ -44,25 +54,32 @@ public class ComponentFragment extends Fragment {
     private void initView(View mView) {
         recyclerView = (RecyclerView) mView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-//设置布局管理器
-        //使用网格布局展示
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-//设置为垂直布局，这也是默认的
+        //设置布局管理器
+        //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
-        List<String> names = new ArrayList<>();
-        for (int i = 0; i < 150; i++) {
-            names.add("第几" + i + "个");
-        }
-        componentAdapter.updateList(names);
-//设置Adapter
+        List<Class> classList = new ArrayList<>();
+        classList.add(ToggleButtonActivity.class);
+        classList.add(CenterHorizontalActivity.class);
+        classList.add(LoadingActivity.class);
+        classList.add(PickActivity.class);
+        classList.add(TabMenuActivity.class);
+        classList.add(PictureSelectActivity.class);
+
+        componentAdapter.updateList(classList);
+        //设置Adapter
         recyclerView.setAdapter(componentAdapter);
         //设置分隔线
         //recyclerView.addItemDecoration( new DividerGridItemDecoration(this ));
-        //设置分割线使用的divider
-        recyclerView.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(getContext(), android.support.v7.widget.DividerItemDecoration.VERTICAL));
+        //设置行级分割线使用的divider
+        //recyclerView.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(getContext(), android.support.v7.widget.DividerItemDecoration.VERTICAL));
 
-//设置增加或删除条目的动画
+        int spanCount = 3;
+        //使用网格布局展示
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
+        //设置分隔线
+        recyclerView.addItemDecoration(new GridDividerItemDecoration(getContext(), spanCount));
+        //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }

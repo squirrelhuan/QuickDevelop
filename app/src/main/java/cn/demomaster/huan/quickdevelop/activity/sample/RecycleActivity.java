@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.sample;
+package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;

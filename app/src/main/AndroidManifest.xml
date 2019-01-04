@@ -27,20 +27,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.RegisterActivity" />
+        <activity android:name=".activity.sample.RegisterActivity" />
         <!-- <activity android:name=".sample.CaptureActivity" /> -->
-        <activity android:name=".sample.RecycleActivity" />
-        <activity android:name=".sample.PickActivity" />
-        <activity android:name=".sample.IDCardActivity" />
+        <activity android:name=".activity.sample.RecycleActivity" />
+        <activity android:name=".activity.sample.PickActivity" />
+        <activity android:name=".activity.sample.IDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
         <!-- android:screenOrientation="landscape" -->
-        <activity android:name=".sample.CsqliteActivity" />
-        <activity android:name=".sample.QDialogActivity" />
-        <activity android:name=".sample.TabMenuActivity" />
-        <activity android:name=".sample.PictureSelectActivity" />
-        <activity android:name=".sample.LoadingActivity" />
-        <activity android:name=".sample.CenterHorizontalActivity" />
+        <activity android:name=".activity.sample.CsqliteActivity" />
+        <activity android:name=".activity.sample.QDialogActivity" />
+        <activity android:name=".activity.sample.TabMenuActivity" />
+        <activity android:name=".activity.sample.PictureSelectActivity" />
+        <activity android:name=".activity.sample.component.LoadingActivity" />
+        <activity android:name=".activity.sample.CenterHorizontalActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -52,7 +52,8 @@
                 android:resource="@xml/file_provider_path" />
         </provider>
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.sample.component.ToggleButtonActivity"></activity>
     </application>
 
 </manifest>

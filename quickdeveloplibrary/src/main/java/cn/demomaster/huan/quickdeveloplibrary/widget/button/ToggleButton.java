@@ -11,9 +11,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+
 /**
  * Created by Squirrel桓 on 2018/12/17.
  */
+
 public class ToggleButton extends View {
 
     public ToggleButton(Context context) {
@@ -70,6 +74,7 @@ public class ToggleButton extends View {
     private int backColor = Color.WHITE;
     private int lineColor = Color.GRAY;//描边颜色
     private int toogleColor = Color.GREEN;//选中颜色
+    private int lineWidth =3;
 
     public int getToogleColor() {
         return toogleColor;
@@ -100,7 +105,7 @@ public class ToggleButton extends View {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(color_01);
-        int r = Math.min(width / 2, height);
+        int r = Math.min(width / 2, height)-lineWidth;
 
         //绘制底色
         circle_padding = r / 20;
@@ -117,14 +122,14 @@ public class ToggleButton extends View {
         }
         //绘制动态区域
         mPaint.setColor(color_02);
-        mPaint.setAlpha((int) ((0.3f+(progress*0.7)) * 255 ));
+        mPaint.setAlpha((int) ((0.3f + (progress * 0.7)) * 255));
         canvas.drawRoundRect(mRecF2, r / 2, r / 2, mPaint);
 
         //画圆
         mPaint.setColor(backColor);
-        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2-circle_padding, mPaint);
+        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2 - circle_padding, mPaint);
         mPaint.setColor(lineColor);
-        mPaint.setStrokeWidth(3);
+        mPaint.setStrokeWidth(lineWidth);
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.save();
         mPaint.setAlpha((int) (progress * 255 * 0.6));
@@ -140,6 +145,7 @@ public class ToggleButton extends View {
     }
 
     private float progress;
+
     public void startAnimation(boolean checked) {
         int start = 0;
         int end = 1;
