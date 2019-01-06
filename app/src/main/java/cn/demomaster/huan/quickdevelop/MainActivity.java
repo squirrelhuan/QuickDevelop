@@ -22,8 +22,10 @@ import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.QDialogActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
@@ -38,6 +40,7 @@ import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -45,6 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 
 //import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 
+@ActivityPager(name = "MainActivity",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class MainActivity extends BaseActivityParent implements View.OnClickListener {
 
     Button btn_scan, btn_db;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--—导航栏颜色-->
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#ff4EEE94</color>
     <!--—通知栏颜色-->
     <color name="colorPrimaryDark">#00574B</color>
     <!--—控件选中后颜色-->
@@ -166,5 +166,23 @@
     <color name="darkblue">#00008B</color> <!--暗蓝色 -->
     <color name="navy">#000080</color> <!--海军色 -->
     <color name="black">#000000</color> <!--黑色 -->
+
+
+    <!-- 底层背景色 f4f4f4 -->
+    <color name="qd_background_color">#fff4f4f4</color>
+
+    <!-- button -->
+    <color name="qd_btn_border_pressed">#fff4f4f4</color>
+    <color name="qd_btn_border_disabled">#fff4f4f4</color>
+
+    <color name="qd_btn_text_pressed">@color/black</color>
+    <color name="qd_btn_text_disabled">#fff4f4f4</color>
+
+
+    <color name="qd_btn_bg_disabled">#fff4f4f4</color>
+    <color name="qd_btn_bg_pressed">#fff4f4f4</color>
+    <color name="qd_btn_bg_normal">#fff4f4f4</color>
+
+
 
 </resources>

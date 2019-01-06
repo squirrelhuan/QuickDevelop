@@ -29,4 +29,41 @@
         <item>6</item>
     </string-array>
 
+
+    <attr name="qd_backgroundColor" format="color"/>
+    <attr name="qd_borderColor" format="color"/>
+    <attr name="qd_borderWidth" format="dimension"/>
+
+
+    <attr name="QDButtonStyle" format="reference"/>
+    <declare-styleable name="QDButton">
+        <attr name="qd_backgroundColor"/>
+        <attr name="qd_borderColor"/>
+        <attr name="qd_borderWidth"/>
+        <attr name="qd_isRadiusAdjustBounds"/>
+        <attr name="qd_radius"/>
+        <attr name="qd_radiusTopLeft"/>
+        <attr name="qd_radiusTopRight"/>
+        <attr name="qd_radiusBottomLeft"/>
+        <attr name="qd_radiusBottomRight"/>
+        <attr name="qd_btn_internal_width"/>
+
+    </declare-styleable>
+
+
+    <!--**********************************************
+        *                  btn                      *
+        **********************************************-->
+    <attr name="qd_btn_text_size" format="dimension"/>
+    <attr name="qd_btn_border_width" format="dimension"/><!--
+    <attr name="qd_btn_internal_width" format="dimension"/>-->
+    <!-- android 5.0一下不能再selector中用?attr,必须要整个drawable由使用者提供 -->
+    <attr name="qd_btn_bg_color" format="color"/>
+    <attr name="qd_btn_border_color" format="color"/>
+    <attr name="qd_btn_text_color" format="color"/>
+
+
+
+
+
 </resources>

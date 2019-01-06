@@ -41,4 +41,13 @@
     <dimen name="tab_padding_left_right">40dp</dimen>
     <dimen name="tab_height">30dp</dimen>
 
+
+
+    <!--**********************************************
+   *                  Button                        *
+   **********************************************-->
+    <dimen name="qd_btn_text_size">16sp</dimen>
+    <dimen name="qd_btn_border_width">1dp</dimen>
+
+
 </resources>

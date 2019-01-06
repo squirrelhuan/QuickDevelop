@@ -49,6 +49,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     }
 
     public void showMessage(String message){
-        getMesageHelper().showMessage(message);
+        PopToastUtil.ShowToast(this, message);
+        //getMesageHelper().showMessage(message);
     }
 }

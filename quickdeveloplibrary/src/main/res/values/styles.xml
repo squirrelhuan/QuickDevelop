@@ -1,4 +1,5 @@
 <resources>
+
     <style name="NotitleBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/white</item>
@@ -10,7 +11,8 @@
         <item name="android:windowTranslucentNavigation">false</item>-->
         <!--适配华为手机的虚拟按键-->
     </style>
-    <style name="StartAppTheme" parent="AppThemeNoActionBar">
+
+    <style name="StartAppTheme" parent="QDCompat">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/white</item>
 
@@ -58,9 +60,40 @@
     </style>
 
 
+    <!--********************* Button *********************-->
+    <style name="QDButtonStyle" parent="android:Widget.Holo.Light.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="qd_isRadiusAdjustBounds">true</item>
+        <item name="qd_backgroundColor">@color/qd_btn_bg</item>
+        <item name="qd_borderWidth">@dimen/qd_btn_border_width</item>
+        <item name="qd_borderColor">@color/qd_btn_bg</item>
+        <item name="qd_radius">5dp</item>
+        <item name="android:textColor">?attr/qd_btn_text_color</item>
+        <item name="android:textSize">@dimen/quickdev_middle_text_size</item>
+    </style>
 
 
+    <style name="QDCompat" parent="AppThemeNoActionBar">
+        <item name="qd_btn_text_size">@dimen/qd_btn_text_size</item>
+        <item name="qd_btn_border_width">@dimen/qd_btn_border_width</item>
+        <item name="qd_btn_bg_color">@color/qd_btn_bg</item>
+        <item name="qd_btn_border_color">@color/qd_btn_bg</item>
+        <item name="qd_btn_text_color">@color/black</item>
 
+        <item name="QDButtonStyle">@style/QDButtonStyle</item>
+
+    </style>
 
 
 

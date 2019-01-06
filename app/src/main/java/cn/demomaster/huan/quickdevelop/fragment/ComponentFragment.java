@@ -15,17 +15,21 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 
 
 /**
@@ -65,6 +69,12 @@ public class ComponentFragment extends Fragment {
         classList.add(PickActivity.class);
         classList.add(TabMenuActivity.class);
         classList.add(PictureSelectActivity.class);
+        classList.add(ActionBarActivity.class);
+        classList.add(RatingBarActivity.class);
+        classList.add(ActionBarTipActivity.class);
+        classList.add(QDialogActivity.class);
+
+        classList.add(MainActivity.class);
 
         componentAdapter.updateList(classList);
         //设置Adapter

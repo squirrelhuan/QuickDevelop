@@ -10,14 +10,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <Button
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date Pick"
         />
 
-    <Button
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
         android:id="@+id/province"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +27,8 @@
         android:text="Province Pick"
         />
 
-    <Button
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
         android:id="@+id/timepick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +36,8 @@
         android:text="Time Pick"
         />
 
-    <Button
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
         android:id="@+id/demo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

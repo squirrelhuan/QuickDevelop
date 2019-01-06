@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
@@ -24,14 +27,21 @@ public class RatingBar extends View {
 
     public RatingBar(Context context) {
         super(context);
+        init();
     }
 
     public RatingBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public RatingBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        setTouch();
     }
 
     private int center_x, center_y, mwidth, width, height;
@@ -52,27 +62,66 @@ public class RatingBar extends View {
         drawView(canvas);
     }
 
-    private int startCount = 5;
-    private int activateColor=Color.YELLOW,darkColor = Color.LTGRAY;
+    private int count = 5;
+    private int foregroundColor = Color.RED, backgroundColor = Color.LTGRAY;
     private int activateCount = 0;
+    private float progress = .8f;
 
-    public void setColor(int activateColor,int darkColor) {
-        this.activateColor = activateColor;
-        this.darkColor = darkColor;
+    public int getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public void setForegroundColor(int foregroundColor) {
+        this.foregroundColor = foregroundColor;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void setColor(int activateColor, int darkColor) {
+        this.foregroundColor = activateColor;
+        this.backgroundColor = darkColor;
         postInvalidate();
     }
 
-    public void setActivateCount(int count){
-        this.activateCount = count;
+    public void setActivateCount(int activateCount) {
+        this.activateCount = activateCount;
+        this.progress = (float) activateCount / count;
+        postInvalidate();
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
+        postInvalidate();
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
         postInvalidate();
     }
 
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.YELLOW);
+
+        //禁用硬件加速
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        //使用离屏绘制
+        int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), mPaint, Canvas.ALL_SAVE_FLAG);
+
+
         //遍历绘制五角星
-        for (int i = 0; i < startCount; i++) {
+        for (int i = 0; i < count; i++) {
             //一个五角星需要10个定点
 
             //横向排列的五个星所在的坐标位置gravity：left
@@ -80,7 +129,7 @@ public class RatingBar extends View {
 
             int x1 = i * width / 5;
             int x2 = i * width / 5 + cell;
-            int y1 = 0;
+            int y1 = height / 2 - cell / 2;
             int y2 = cell;
 
             //最上面的顶点开始
@@ -99,20 +148,50 @@ public class RatingBar extends View {
             PointF[] points = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10};
             for (PointF pointF : points) {
                 if (path == null) {
-                    path =new Path();
+                    path = new Path();
                     path.moveTo(pointF.x, pointF.y);
                 } else {
                     path.lineTo(pointF.x, pointF.y);
                 }
             }
             path.close();
-            if(activateCount>i){
-                mPaint.setColor(activateColor);
-            }else {
-                mPaint.setColor(darkColor);
-            }
-            canvas.drawPath(path,mPaint);
+            mPaint.setColor(backgroundColor);
+            canvas.drawPath(path, mPaint);
         }
+
+        //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        //设置为在区域内绘制
+        //canvas.clipPath(path);
+        RectF rectF = new RectF(0, 0, width * progress, height);
+        //canvas.clipRect(rectF);
+        mPaint.setColor(foregroundColor);
+        canvas.drawRect(rectF, mPaint);
+        //canvas.drawPath(path,mPaint);
+        //最后将画笔去除Xfermode
+        mPaint.setXfermode(null);
+
+        //还原图层
+        canvas.restoreToCount(layerID);
+    }
+
+
+    private boolean canTouch;//是否可触摸改变进度
+
+    public void setCanTouch(boolean canTouch) {
+        this.canTouch = canTouch;
+    }
+
+    private void setTouch() {
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (canTouch) {
+                    progress = (float) motionEvent.getX() / width;
+                }
+                return false;
+            }
+        });
     }
 
 }

@@ -19,6 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/StartAppTheme">
         <activity android:name=".QDMainActivity">
             <intent-filter>
@@ -36,7 +37,7 @@
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
         <!-- android:screenOrientation="landscape" -->
         <activity android:name=".activity.sample.CsqliteActivity" />
-        <activity android:name=".activity.sample.QDialogActivity" />
+        <activity android:name=".activity.sample.component.QDialogActivity" />
         <activity android:name=".activity.sample.TabMenuActivity" />
         <activity android:name=".activity.sample.PictureSelectActivity" />
         <activity android:name=".activity.sample.component.LoadingActivity" />
@@ -53,7 +54,10 @@
         </provider>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".activity.sample.component.ToggleButtonActivity"></activity>
+        <activity android:name=".activity.sample.component.ToggleButtonActivity" />
+        <activity android:name=".activity.sample.actionbar.ActionBarActivity" />
+        <activity android:name=".activity.sample.actionbar.ActionBarTipActivity" />
+        <activity android:name=".activity.sample.component.RatingBarActivity"></activity>
     </application>
 
 </manifest>
