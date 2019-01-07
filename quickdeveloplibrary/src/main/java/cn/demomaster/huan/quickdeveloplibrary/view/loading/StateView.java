@@ -78,7 +78,7 @@ public class StateView extends ImageTextView {
     }
 
     public static enum StateType {
-        COMPLETE, WARNING, ERROR,LOADING
+        COMPLETE, WARNING, ERROR,LOADING,NONE
     }
     private StateType stateType = StateType.LOADING;
     private StateType stateType_target = StateType.LOADING;
@@ -90,6 +90,7 @@ public class StateView extends ImageTextView {
     private int loadingColor = Color.GRAY;
     private int mainColor = Color.WHITE;
     private int lineWidth = 4;
+    private boolean drawCricleBackground = true;
 
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
@@ -130,6 +131,7 @@ public class StateView extends ImageTextView {
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
+                if(drawCricleBackground)
                 canvas.drawCircle(a, b, r0, mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
@@ -162,6 +164,8 @@ public class StateView extends ImageTextView {
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
+
+                if(drawCricleBackground)
                 canvas.drawCircle(a, b, r0, mPaint);
 
                 int width_error = r * 5 / 7;
@@ -187,6 +191,8 @@ public class StateView extends ImageTextView {
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
+
+                if(drawCricleBackground)
                 canvas.drawCircle(a, b, r0, mPaint);
 
                 int height_warning = r * 9 / 7;
@@ -214,6 +220,8 @@ public class StateView extends ImageTextView {
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
+
+                if(drawCricleBackground)
                 canvas.drawCircle(a, b, r0, mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
@@ -309,26 +317,37 @@ public class StateView extends ImageTextView {
 
     public void setWarningColor(int warningColor) {
         this.warningColor = warningColor;
+        postInvalidate();
     }
 
     public void setErrorColor(int errorColor) {
         this.errorColor = errorColor;
+        postInvalidate();
     }
 
     public void setCompleteColor(int completeColor) {
         this.completeColor = completeColor;
+        postInvalidate();
     }
 
     public void setMainColor(int mainColor) {
         this.mainColor = mainColor;
+        postInvalidate();
     }
 
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
+        postInvalidate();
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
+        postInvalidate();
+    }
+
+    public void setDrawCricleBackground(boolean drawCricleBackground) {
+        this.drawCricleBackground = drawCricleBackground;
+        postInvalidate();
     }
 
     /**

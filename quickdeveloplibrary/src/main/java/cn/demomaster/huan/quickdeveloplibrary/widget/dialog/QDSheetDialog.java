@@ -72,7 +72,8 @@ public class QDSheetDialog extends Dialog {
         getWindow().setGravity(Gravity.BOTTOM );
         setCanceledOnTouchOutside(true);
 
-        getWindow().setWindowAnimations(R.style.FadeInPopWin);  //添加动画
+        //getWindow().setWindowAnimations(R.style.FadeInPopWin);  //添加动画
+        getWindow().setWindowAnimations(-1);  //添加动画
         initData();
 
     }

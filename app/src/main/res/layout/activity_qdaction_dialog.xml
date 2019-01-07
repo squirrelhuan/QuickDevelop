@@ -14,12 +14,5 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:fitsSystemWindows="true"/>
-<!--
-    <Button
-        android:id="@+id/btn_common_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="普通dialog"/>-->
-
 
 </LinearLayout>
