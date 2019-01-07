@@ -3,31 +3,19 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.huan.quickdeveloplibrary.widget.drawable.QDividerDrawable;
-
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 
 /**
  * Created by Squirrel桓 on 2019/1/6.
@@ -35,7 +23,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 public class QDDialog extends Dialog {
 
     private Builder builder;
-
     public QDDialog(Context context, Builder builder) {
         super(context);
         this.builder = builder;
@@ -48,10 +35,16 @@ public class QDDialog extends Dialog {
     private LinearLayout footView;
 
     private void init() {
-
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        int p = DisplayUtil.dip2px(getContext(), 10);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentView = new LinearLayout(builder.context);
         contentView.setOrientation(LinearLayout.VERTICAL);
+        //新建一个Drawable对象
+        QDividerDrawable drawable_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
+        drawable_bg.setCornerRadii(builder.backgroundRadius);
+        drawable_bg.setBackGroundColor(builder.backgroundColor);
+        contentView.setBackground(drawable_bg);
         if (builder.title == null && builder.message != null && builder.actionButtons.size() == 0) {
             builder.showType = ShowType.onlyBody;
         }
@@ -59,7 +52,6 @@ public class QDDialog extends Dialog {
             builder.showType = ShowType.noFoot;
         }
 
-        int p = DisplayUtil.dip2px(getContext(), 10);
         switch (builder.showType) {
             case normal:
                 headerView = new LinearLayout(builder.context);
@@ -81,7 +73,6 @@ public class QDDialog extends Dialog {
         }
         if (headerView != null) {
             contentView.addView(headerView);
-            //headerView.setBackgroundColor(builder.color_header);
             headerView.setBackgroundColor(builder.color_header);
             headerView.setGravity(builder.gravity_header);
             headerView.setTag(builder.gravity_header);
@@ -91,8 +82,7 @@ public class QDDialog extends Dialog {
             contentView.addView(bodyView);
             bodyView.setBackgroundColor(builder.color_body);
             //新建一个Drawable对象
-            QDividerDrawable drawable=new QDividerDrawable(Gravity.BOTTOM);
-
+            QDividerDrawable drawable=new QDividerDrawable(QDividerDrawable.Gravity.BOTTOM);
             bodyView.setBackground(drawable);
             bodyView.setGravity(builder.gravity_body);
             bodyView.setTag(builder.gravity_body);
@@ -188,6 +178,8 @@ public class QDDialog extends Dialog {
         private int color_header = Color.TRANSPARENT;
         private int color_body = Color.TRANSPARENT;
         private int color_foot = Color.TRANSPARENT;
+        private int backgroundColor = Color.WHITE;
+        private float[] backgroundRadius=new float[8];
         private List<ActionButton> actionButtons = new ArrayList<>();
 
         public Builder(Context context) {
@@ -231,6 +223,42 @@ public class QDDialog extends Dialog {
 
         public Builder setGravity_foot(int gravity_foot) {
             this.gravity_foot = gravity_foot;
+            return this;
+        }
+
+        public Builder setContext(Context context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder setColor_header(int color_header) {
+            this.color_header = color_header;
+            return this;
+        }
+
+        public Builder setColor_body(int color_body) {
+            this.color_body = color_body;
+            return this;
+        }
+
+        public Builder setColor_foot(int color_foot) {
+            this.color_foot = color_foot;
+            return this;
+        }
+
+        public Builder setBackgroundColor(int backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public Builder setBackgroundRadius(float backgroundRadiu) {
+            for(int i=0;i<backgroundRadius.length;i++) {
+                this.backgroundRadius[i] = backgroundRadiu;
+            }
+            return this;
+        }
+        public Builder setBackgroundRadius(float[] backgroundRadius) {
+            this.backgroundRadius = backgroundRadius;
             return this;
         }
 

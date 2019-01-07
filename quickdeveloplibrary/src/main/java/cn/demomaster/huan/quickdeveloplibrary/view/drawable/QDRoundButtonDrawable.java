@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdeveloplibrary.widget.drawable;
+package cn.demomaster.huan.quickdeveloplibrary.view.drawable;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
