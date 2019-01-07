@@ -11,7 +11,6 @@
             <item
                 android:drawable="@color/transparent_dark_33"
                 android:state_pressed="false" />
-
             <!-- 点击背景图-->
             <item
                 android:drawable="@color/green"
