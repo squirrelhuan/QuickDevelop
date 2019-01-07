@@ -60,7 +60,6 @@ public class QDSheetDialog extends Dialog {
     private void init() {
         //noinspection ConstantConditions
         getWindow().getDecorView().setPadding(0, 0, 0, 0);
-
         // 在底部，宽度撑满
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -70,8 +69,10 @@ public class QDSheetDialog extends Dialog {
         int screenHeight = QMUIDisplayHelper.getScreenHeight(getContext());
         params.width = screenWidth < screenHeight ? screenWidth : screenHeight;
         getWindow().setAttributes(params);
+        getWindow().setGravity(Gravity.BOTTOM );
         setCanceledOnTouchOutside(true);
 
+        getWindow().setWindowAnimations(R.style.FadeInPopWin);  //添加动画
         initData();
 
     }
