@@ -121,7 +121,6 @@ public class QDActionDialog extends Dialog {
         ViewGroup layout = new RelativeLayout(getContext());
         layout.addView(contentView, layoutParams);
         setContentView(layout, layoutParams);
-
     }
 
     @Override
