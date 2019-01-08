@@ -81,9 +81,7 @@ public class QDDialog extends Dialog {
         if (bodyView != null) {
             contentView.addView(bodyView);
             bodyView.setBackgroundColor(builder.color_body);
-            //新建一个Drawable对象
-            QDividerDrawable drawable=new QDividerDrawable(QDividerDrawable.Gravity.BOTTOM);
-            bodyView.setBackground(drawable);
+
             bodyView.setGravity(builder.gravity_body);
             bodyView.setTag(builder.gravity_body);
             addTextView(bodyView, builder.message);
@@ -96,6 +94,9 @@ public class QDDialog extends Dialog {
             LinearLayout.LayoutParams layoutParams_button;
             if (builder.gravity_foot == Gravity.CENTER) {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+                //新建一个Drawable对象
+                QDividerDrawable drawable=new QDividerDrawable(QDividerDrawable.Gravity.TOP);
+                footView.setBackground(drawable);
             } else {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
@@ -105,7 +106,7 @@ public class QDDialog extends Dialog {
                 button.setText(actionButton.getText());
                 button.setTextSize(16);
                 button.setTextColor(getContext().getResources().getColor(R.color.black));
-                button.setPadding(p * 2, (int) (p * 2), p * 2, (int) (p * 2));
+                button.setPadding(p * 3, (int) (p * 2), p * 3, (int) (p * 2));
                 button.setGravity(Gravity.CENTER);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -129,7 +130,7 @@ public class QDDialog extends Dialog {
     }
 
     private void addTextView(LinearLayout viewGroup, String title) {
-        addTextView(viewGroup, title, getContext().getResources().getColor(R.color.black), 14);
+        addTextView(viewGroup, title, getContext().getResources().getColor(R.color.black), 16);
     }
 
     private void addTextView(LinearLayout viewGroup, String title, int color, int textSize) {
