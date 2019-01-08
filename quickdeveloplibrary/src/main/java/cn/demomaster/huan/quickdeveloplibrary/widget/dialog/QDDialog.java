@@ -2,7 +2,10 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Build;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +111,17 @@ public class QDDialog extends Dialog {
                 button.setTextColor(getContext().getResources().getColor(R.color.black));
                 button.setPadding(p * 3, (int) (p * 2), p * 3, (int) (p * 2));
                 button.setGravity(Gravity.CENTER);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    //获取selectableItemBackground中对应的attrId
+                    TypedValue typedValue = new TypedValue();
+                    getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, typedValue, true);
+
+                    int[] attribute = new int[]{android.R.attr.selectableItemBackground};
+                    TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
+                    button.setForeground(typedArray.getDrawable(0));
+                    typedArray.recycle();
+
+                }
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
