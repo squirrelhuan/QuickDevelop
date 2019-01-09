@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -172,7 +173,7 @@ public class QDialogActivity extends BaseActivityParent {
     }
     private void showMessageWithButton(int gravity) {
         new QDDialog.Builder(mContext).setTitle("标题")
-                .setMessage("确定要发送吗？").addAction("确定").setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
+                .setMessage("确定要发送吗？").addAction("确定").setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
     }
 
     private void showMessageWithButton2(int gravity) {

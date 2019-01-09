@@ -164,6 +164,8 @@ public class QDividerDrawable extends GradientDrawable {
 
     public void setmStrokeColors(int mStrokeColors) {
         this.mStrokeColors = mStrokeColors;
+        //设置边框的厚度以及边框的颜色
+        setStroke(mStrokeWidth, mStrokeColors);
     }
 
     public int getBackGroundColor() {

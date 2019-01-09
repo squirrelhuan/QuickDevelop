@@ -99,6 +99,7 @@ public class QDDialog extends Dialog {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
                 //新建一个Drawable对象
                 QDividerDrawable drawable=new QDividerDrawable(QDividerDrawable.Gravity.TOP);
+                drawable.setmStrokeColors(this.builder.lineColor);
                 footView.setBackground(drawable);
             } else {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -194,6 +195,7 @@ public class QDDialog extends Dialog {
         private int color_body = Color.TRANSPARENT;
         private int color_foot = Color.TRANSPARENT;
         private int backgroundColor = Color.WHITE;
+        private int lineColor = Color.GRAY;
         private float[] backgroundRadius=new float[8];
         private List<ActionButton> actionButtons = new ArrayList<>();
 
@@ -258,6 +260,11 @@ public class QDDialog extends Dialog {
 
         public Builder setColor_foot(int color_foot) {
             this.color_foot = color_foot;
+            return this;
+        }
+
+        public Builder setLineColor(int lineColor) {
+            this.lineColor = lineColor;
             return this;
         }
 
