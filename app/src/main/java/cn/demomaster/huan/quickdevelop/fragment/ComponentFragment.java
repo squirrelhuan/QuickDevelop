@@ -28,6 +28,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity
 import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
@@ -75,6 +76,8 @@ public class ComponentFragment extends Fragment {
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);
         classList.add(QDActionDialogActivity.class);
+        classList.add(BaseFragmentActivity.class);
+
 
         classList.add(MainActivity.class);
 

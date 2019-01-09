@@ -82,6 +82,7 @@ public class ActionBarLayout {
 
     private int contentLayoutResID;
     private int headLayoutResID;
+
     /**
      * 构造方法
      *
@@ -90,10 +91,11 @@ public class ActionBarLayout {
      * @param
      * @param
      */
-    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
+    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup contentView) {
         this.context = context;
         this.headLayoutResID = headLayoutResID;
         this.contentLayoutResID = contentLayoutResID;
+        this.contentView = contentView;
         initLayout();
 
         this.actionBarModel = actionBarModel;
@@ -138,8 +140,12 @@ public class ActionBarLayout {
         LayoutInflater mInflater = LayoutInflater.from(context);
         rootLayout = new FrameLayout(context);
         //contentView宽高
-        mInflater.inflate(contentLayoutResID, rootLayout,true);
-        contentView = (ViewGroup) rootLayout.getChildAt(0);
+        if(contentLayoutResID!=-1){
+            mInflater.inflate(contentLayoutResID, rootLayout, true);
+            contentView = (ViewGroup) rootLayout.getChildAt(0);
+        }else {
+            rootLayout.addView(contentView);
+        }
 
         actionBarTip = new ActionBarTip(context);
         actionBarTip.setContentView(R.layout.quickdevelop_activity_actionbar_tip);
@@ -150,7 +156,7 @@ public class ActionBarLayout {
         actionBarTip.setLayoutParams(layoutParams_tip);
         rootLayout.addView(actionBarTip);
         //header宽高
-        mInflater.inflate(headLayoutResID, rootLayout,true);
+        mInflater.inflate(headLayoutResID, rootLayout, true);
         headView = (ViewGroup) rootLayout.getChildAt(2);
 
         //记录背景drawable
@@ -300,7 +306,8 @@ public class ActionBarLayout {
         private ActionBarLayout activityLayout;
         private ACTIONBAR_TYPE actionBarModel = ACTIONBAR_TYPE.NORMAL;//1,上下顺序排列（普通样式），2层叠排列（actionbar背景透明），3只显示内容
         private Activity context;
-        private int contentLayoutResID;
+        private int contentLayoutResID = -1;
+        private ViewGroup contentView;
         private int headLayoutResID;
 
         public Builder(Activity context) {
@@ -308,12 +315,17 @@ public class ActionBarLayout {
         }
 
         public ActionBarLayout create() {
-            activityLayout = new ActionBarLayout(context, actionBarModel, headLayoutResID, contentLayoutResID);
+            activityLayout = new ActionBarLayout(context, actionBarModel, headLayoutResID, contentLayoutResID,contentView);
+
             return activityLayout;
         }
 
         public void setContentView(int layoutResID) {
             this.contentLayoutResID = layoutResID;
+        }
+
+        public void setContentView(ViewGroup contentView) {
+            this.contentView = contentView;
         }
 
         public void setHeadView(int layoutResID) {
@@ -361,7 +373,7 @@ public class ActionBarLayout {
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
                 //headView.setPadding(0,headerPaddingTop+statusBar_Height,0,0);
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + statusBar_Height, contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + statusBar_Height, contentView.getPaddingRight(), contentView.getPaddingBottom());
                 //setActionBarBackGroundDrawable(headerBackgroundDrawable);
                 //setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.GONE);
@@ -369,7 +381,7 @@ public class ActionBarLayout {
             case NO_ACTION_BAR_NO_STATUS:
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop , contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop, contentView.getPaddingRight(), contentView.getPaddingBottom());
 
                 //setActionBarBackGroundDrawable(headerBackgroundDrawable);
                 //setActionBarBackGroundColor(headerBackgroundColor);
@@ -379,7 +391,7 @@ public class ActionBarLayout {
                 layoutParams_content.topMargin = statusBar_Height + actionBar_Height;
                 layoutParams_header.topMargin = 0;
                 headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop , contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop, contentView.getPaddingRight(), contentView.getPaddingBottom());
                 setActionBarBackGroundDrawable(headerBackgroundDrawable);
                 setActionBarBackGroundColor(headerBackgroundColor);
                 headView.setVisibility(View.VISIBLE);
@@ -388,14 +400,14 @@ public class ActionBarLayout {
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
                 headView.setPadding(0, headerPaddingTop + statusBar_Height, 0, 0);
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + statusBar_Height , contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + statusBar_Height, contentView.getPaddingRight(), contentView.getPaddingBottom());
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
                 break;
             case ACTION_STACK_NO_STATUS:
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop , contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop, contentView.getPaddingRight(), contentView.getPaddingBottom());
 
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
@@ -403,7 +415,7 @@ public class ActionBarLayout {
             case ACTION_TRANSPARENT:
                 layoutParams_content.topMargin = 0;
                 layoutParams_header.topMargin = 0;
-                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + actionBar_Height + statusBar_Height , contentView.getPaddingRight(),  contentView.getPaddingBottom());
+                contentView.setPadding(contentView.getPaddingLeft(), contentPaddingTop + actionBar_Height + statusBar_Height, contentView.getPaddingRight(), contentView.getPaddingBottom());
 
                 setActionBarBackGroundColor(context.getResources().getColor(R.color.transparent));
                 headView.setVisibility(View.VISIBLE);
@@ -411,7 +423,7 @@ public class ActionBarLayout {
             default:
                 return null;
         }
-        Log.i(TAG,"contentPaddingTop="+contentPaddingTop+",actionBar_Height="+actionBar_Height+",statusBar_Height="+statusBar_Height);
+        Log.i(TAG, "contentPaddingTop=" + contentPaddingTop + ",actionBar_Height=" + actionBar_Height + ",statusBar_Height=" + statusBar_Height);
         this.contentView.setLayoutParams(layoutParams_content);
         this.headView.setLayoutParams(layoutParams_header);
         //状态栏颜色

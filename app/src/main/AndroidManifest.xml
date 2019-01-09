@@ -58,7 +58,8 @@
         <activity android:name=".activity.sample.actionbar.ActionBarActivity" />
         <activity android:name=".activity.sample.actionbar.ActionBarTipActivity" />
         <activity android:name=".activity.sample.component.RatingBarActivity" />
-        <activity android:name=".activity.sample.component.QDActionDialogActivity"></activity>
+        <activity android:name=".activity.sample.component.QDActionDialogActivity" />
+        <activity android:name=".activity.sample.fragment.BaseFragmentActivity"></activity>
     </application>
 
 </manifest>
