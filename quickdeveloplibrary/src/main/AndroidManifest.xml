@@ -25,7 +25,7 @@
         <activity android:name=".helper.simplepicture.SimplePictureActivity" android:label="@string/image"/>
         <activity android:name=".helper.simplepicture.PreviewActivity" android:label=""/>
 
-        <provider
+       <!-- <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
             android:exported="false"
@@ -33,7 +33,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_path"/>
-        </provider>
+        </provider>-->
 
     </application>
 
