@@ -54,7 +54,7 @@
         </provider>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".activity.sample.component.ToggleButtonActivity" android:label="tooglebuttontestactivity"/>
+        <activity android:name=".activity.sample.component.ToggleButtonActivity" android:label="tooglebutton"/>
         <activity android:name=".activity.sample.actionbar.ActionBarActivity" />
         <activity android:name=".activity.sample.actionbar.ActionBarTipActivity" />
         <activity android:name=".activity.sample.component.RatingBarActivity" />
