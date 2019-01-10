@@ -169,6 +169,8 @@ public class QDDialog extends Dialog {
                     break;
             }
             textView.setLayoutParams(layoutParams);
+            //
+            textView.setGravity((int) viewGroup.getTag());
             viewGroup.addView(textView);
         }
     }
