@@ -21,3 +21,7 @@ dependencies {
 获取 SharedPreferencesHelper.getInstance().getBoolean("test",false);
 保存 SharedPreferencesHelper.getInstance().putBoolean("test",false);
 ```
+
+### 小组件
+
+![Alt](https://raw.githubusercontent.com/squirrelhuan/QuickDevelop/master/app/src/main/assets/image/component/ToogleButton_GIF.gif)
