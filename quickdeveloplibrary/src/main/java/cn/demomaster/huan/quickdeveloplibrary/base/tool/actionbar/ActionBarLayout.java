@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
@@ -82,20 +84,28 @@ public class ActionBarLayout {
 
     private int contentLayoutResID;
     private int headLayoutResID;
-
-    /**
-     * 构造方法
-     *
-     * @param context
-     * @param actionBarModel
-     * @param
-     * @param
-     */
-    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup contentView) {
+    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
+        initActionBarLayout(context,actionBarModel, headLayoutResID, contentLayoutResID,null);
+    }
+    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup contentView){
+        initActionBarLayout(context,actionBarModel, headLayoutResID, contentLayoutResID,contentView);
+    }
+    public static enum  ContextType{
+        ActivityModel,FragmentModel
+    }
+    private ContextType contextType = ContextType.ActivityModel;
+    private ActionBarLayoutInterface actionBarLayoutInterface;
+    public void initActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup relContentView) {
         this.context = context;
         this.headLayoutResID = headLayoutResID;
         this.contentLayoutResID = contentLayoutResID;
-        this.contentView = contentView;
+        this.contentView = relContentView;//fragment传递过来真实的contentView
+        if(contentLayoutResID==-1){
+            contextType=ContextType.FragmentModel;
+            actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
+        }else {
+            contextType=ContextType.ActivityModel;
+        }
         initLayout();
 
         this.actionBarModel = actionBarModel;
@@ -109,7 +119,11 @@ public class ActionBarLayout {
             it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((Activity) context).finish();
+                    if(contextType==ContextType.FragmentModel){
+                        actionBarLayoutInterface.onBack();
+                    }else {
+                        ((Activity) context).finish();
+                    }
                 }
             });
         }
@@ -126,24 +140,24 @@ public class ActionBarLayout {
 
     }
 
-    private ActionBarTip actionBarTip;
 
+    private ActionBarTip actionBarTip;
     public ActionBarTip getActionBarTip() {
         return actionBarTip;
     }
 
-    private FrameLayout.LayoutParams layoutParams_header;
-    private FrameLayout.LayoutParams layoutParams_content;
-    private FrameLayout.LayoutParams layoutParams_tip;
+    private FrameLayout.LayoutParams layoutParams_header;//顶部导航
+    private FrameLayout.LayoutParams layoutParams_content;//内容区域
+    private FrameLayout.LayoutParams layoutParams_tip;//提示部分
 
     private void initLayout() {
         LayoutInflater mInflater = LayoutInflater.from(context);
         rootLayout = new FrameLayout(context);
         //contentView宽高
-        if(contentLayoutResID!=-1){
+        if(contextType==ContextType.ActivityModel){
             mInflater.inflate(contentLayoutResID, rootLayout, true);
             contentView = (ViewGroup) rootLayout.getChildAt(0);
-        }else {
+        }else if(contextType==ContextType.FragmentModel){
             rootLayout.addView(contentView);
         }
 
@@ -188,6 +202,16 @@ public class ActionBarLayout {
             layoutParams_header.height = statusBar_Height + actionBar_Height;
         }
         headView.setLayoutParams(layoutParams_header);
+        //view加载完成时回调
+       /* headView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                headView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if(onHeadLayoutListener!=null){
+                    onHeadLayoutListener.onLayoutComplete();
+                }
+            }
+        });*/
 
         layoutParams_content = (FrameLayout.LayoutParams) this.contentView.getLayoutParams();
         if (layoutParams_content == null) {
@@ -477,6 +501,14 @@ public class ActionBarLayout {
         }
         long consumingTime2 = System.currentTimeMillis() - startTime;
         Log.d(TAG, "setStateBarColor2=" + consumingTime2);
+    }
+
+
+    public void setHeaderBackgroundColor(int headerBackgroundColor) {
+        this.headerBackgroundColor = headerBackgroundColor;
+        if(headView!=null){
+            headView.setBackgroundColor(headerBackgroundColor);
+        }
     }
 
     private int[] themeColors = {Color.WHITE, Color.BLACK};

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityInterface;
@@ -42,6 +43,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
     private ActionBarLayout actionBarLayout;
     private OptionsMenu optionsMenu;
     ViewGroup mView;
+    View rootView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,13 +55,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
                 mView = getContentView(inflater);
                 actionBarLayout = ActionBarHelper.init(mContext, mView);
             }
-            View view = getActionBarLayout().getFinalView();
-            return view;
+            rootView = getActionBarLayout().getFinalView();
+            initActionBarLayout(getActionBarLayout());
+            return rootView;
             //super.setContentView(view);
         }
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
 
     //获取自定义导航
     public ActionBarLayout getActionBarLayout() {
@@ -94,7 +97,12 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            mContext.registerReceiver(netWorkChangReceiver, filter);
+            try {
+                mContext.registerReceiver(netWorkChangReceiver, filter);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 

@@ -52,6 +52,7 @@ public class ImageTextView extends AppCompatImageView {
 
     public void setTextSize(int textSize) {
         this.textSize = DisplayUtil.sp2px(getContext(),textSize);
+        requestLayout();
         postInvalidate();
     }
 
@@ -79,7 +80,7 @@ public class ImageTextView extends AppCompatImageView {
                     textColor = getResources().getColor(colorId);
                 }else {
                     textColor = Color.parseColor(colorArr);
-                    Log.e(TAG, "colorArr ===================================== " + textColor);
+                    //Log.e(TAG, "colorArr ===================================== " + textColor);
                 }
             }
 
@@ -90,7 +91,7 @@ public class ImageTextView extends AppCompatImageView {
                     textSize = getResources().getDimensionPixelOffset(textSizeId);
                 }else {
                     textSize =(int) DisplayUtil.getDimension(context,textSizeArr);
-                    Log.e(TAG, "textSizeId1 ===================================== " + textSize);
+                   // Log.e(TAG, "textSizeId1 ===================================== " + textSize);
                 }
             }
         }
@@ -121,20 +122,20 @@ public class ImageTextView extends AppCompatImageView {
     private int measureWidth(int defaultWidth, int measureSpec) {
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        Log.e("YViewWidth", "---speSize = " + specSize + "");
+        //Log.e("YViewWidth", "---speSize = " + specSize + "");
 
         switch (specMode) {
             case MeasureSpec.AT_MOST:
                 defaultWidth = (int) mPaint.measureText(text) + getPaddingLeft() + getPaddingRight();
 
-                Log.e("YViewWidth", "---speMode = AT_MOST");
+                //Log.e("YViewWidth", "---speMode = AT_MOST");
                 break;
             case MeasureSpec.EXACTLY:
-                Log.e("YViewWidth", "---speMode = EXACTLY");
+                //Log.e("YViewWidth", "---speMode = EXACTLY");
                 defaultWidth = specSize;
                 break;
             case MeasureSpec.UNSPECIFIED:
-                Log.e("YViewWidth", "---speMode = UNSPECIFIED");
+                //Log.e("YViewWidth", "---speMode = UNSPECIFIED");
                 defaultWidth = Math.max(defaultWidth, specSize);
         }
         return defaultWidth;
@@ -144,20 +145,20 @@ public class ImageTextView extends AppCompatImageView {
 
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        Log.e("YViewHeight", "---speSize = " + specSize + "");
+        //Log.e("YViewHeight", "---speSize = " + specSize + "");
 
         switch (specMode) {
             case MeasureSpec.AT_MOST:
                 defaultHeight = (int) (-mPaint.ascent() + mPaint.descent()) + getPaddingTop() + getPaddingBottom();
-                Log.e("YViewHeight", "---speMode = AT_MOST");
+                //Log.e("YViewHeight", "---speMode = AT_MOST");
                 break;
             case MeasureSpec.EXACTLY:
                 defaultHeight = specSize;
-                Log.e("YViewHeight", "---speSize = EXACTLY");
+                //Log.e("YViewHeight", "---speSize = EXACTLY");
                 break;
             case MeasureSpec.UNSPECIFIED:
                 defaultHeight = Math.max(defaultHeight, specSize);
-                Log.e("YViewHeight", "---speSize = UNSPECIFIED");
+                //Log.e("YViewHeight", "---speSize = UNSPECIFIED");
 //        1.基准点是baseline
 //        2.ascent：是baseline之上至字符最高处的距离
 //        3.descent：是baseline之下至字符最低处的距离
@@ -199,6 +200,7 @@ public class ImageTextView extends AppCompatImageView {
 
     public void setText(String text) {
         this.text = text;
+        requestLayout();
         postInvalidate();
     }
 
