@@ -45,7 +45,7 @@
                 app:pointPaddingTop="5dp"
                 app:pointPaddingLeft="5dp"
                 app:pointPaddingBottom="5dp"
-                app:showPoint="true" />
+                app:showPoint="true"/>
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
                 android:layout_width="50dp"
