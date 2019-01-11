@@ -20,14 +20,35 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextViewPoint
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:text="消息"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_green_small"
+                android:layout_margin="5dp"
+                app:pointText="12"
+                app:pointGravity="rightTop"
+                app:pointTextSize="12sp"
+                app:pointWidth="18dp"
+                app:pointRadius="5dp"
+                app:pointTextColor="@color/white"
+                app:pointBackgroundColor="@color/green"/>
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
                 android:layout_width="50dp"
                 android:layout_height="50dp" />
-<RatingBar
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:progress="35"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progress="35" />
+
             <cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="150dp"
@@ -37,23 +58,27 @@
                 android:id="@+id/tv_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="60sp"
-                android:text="Hello World!" />
+                android:text="Hello World!"
+                android:textSize="60sp" />
+
             <Button
                 android:id="@+id/btn_action_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="actionTip" />
+
             <Button
                 android:id="@+id/btn_center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="横向滚动居中" />
+
             <Button
                 android:id="@+id/btn_loading_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="加载动画" />
+
             <Button
                 android:id="@+id/btn_tab_menu"
                 android:layout_width="wrap_content"
@@ -95,10 +120,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="图片选择器" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_ac_01"
                     android:layout_width="wrap_content"
@@ -110,6 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="隐藏导航" />
+
                 <Button
                     android:id="@+id/btn_ac_05"
                     android:layout_width="wrap_content"
@@ -123,17 +151,17 @@
                 android:orientation="horizontal">
 
 
-            <Button
-                android:id="@+id/btn_ac_03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="叠加导航" />
+                <Button
+                    android:id="@+id/btn_ac_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="叠加导航" />
 
-            <Button
-                android:id="@+id/btn_ac_04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="叠加导航(不占状态栏)" />
+                <Button
+                    android:id="@+id/btn_ac_04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="叠加导航(不占状态栏)" />
 
                 <Button
                     android:id="@+id/btn_ac_06"
@@ -141,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:text="透明导航" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -27,7 +27,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
  */
 public class ImageTextView extends AppCompatImageView {
 
-
     public ImageTextView(Context context) {
         super(context);
     }
@@ -142,7 +141,6 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     private int measureHeight(int defaultHeight, int measureSpec) {
-
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
         //Log.e("YViewHeight", "---speSize = " + specSize + "");
@@ -171,7 +169,7 @@ public class ImageTextView extends AppCompatImageView {
         return defaultHeight;
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    public int center_x, center_y, mwidth, width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

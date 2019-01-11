@@ -63,6 +63,24 @@
     <attr name="qd_btn_text_color" format="color"/>
 
 
+    <declare-styleable name="QDTextViewPoint">
+        <attr name="pointRadius" format="dimension"/>
+        <attr name="pointWidth" format="dimension"/>
+        <attr name="pointMargin" format="dimension"/>
+        <attr name="pointBackgroundColor" format="color"/>
+        <attr name="pointText" format="string"/>
+        <attr name="pointTextColor" format="color"/>
+        <attr name="pointTextSize" format="dimension"/>
+        <attr name="pointGravity" format="enum">
+            <enum name="leftTop" value="0"/>
+            <enum name="leftBottom" value="1"/>
+            <enum name="rightTop" value="2"/>
+            <enum name="rightBottom" value="3"/>
+        </attr>
+        <attr name="showPoint" format="boolean"/>
+    </declare-styleable>
+
+
 
 
 
