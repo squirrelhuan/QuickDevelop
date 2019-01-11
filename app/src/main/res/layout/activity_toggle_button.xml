@@ -22,10 +22,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="控件大小"/>
+        android:text="控件大小" />
+
     <SeekBar
         android:id="@+id/sb_weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="颜色" />
+
+    <SeekBar
+        android:id="@+id/sb_progress_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

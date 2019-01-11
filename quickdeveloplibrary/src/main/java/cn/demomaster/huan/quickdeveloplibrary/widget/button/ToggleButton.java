@@ -82,14 +82,17 @@ public class ToggleButton extends View {
 
     public void setToogleColor(int toogleColor) {
         this.toogleColor = toogleColor;
+        postInvalidate();
     }
 
     public void setBackColor(int backColor) {
         this.backColor = backColor;
+        postInvalidate();
     }
 
     public void setLineColor(int lineColor) {
         this.lineColor = lineColor;
+        postInvalidate();
     }
 
     private void drawView(Canvas canvas) {

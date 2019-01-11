@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class ToggleButtonActivity extends BaseActivityParent {
 
     private SeekBar sb_weight;
     private ToggleButton tooglebutton;
+    private SeekBar sb_progress_color;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,5 +48,28 @@ public class ToggleButtonActivity extends BaseActivityParent {
             }
         });
         sb_weight.setProgress(50);
+
+        tooglebutton.setToogleColor(Color.YELLOW);
+        sb_progress_color = findViewById(R.id.sb_progress_color);
+        sb_progress_color.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                int max = 0xff000000+0xffffff* progress/100;
+                //int w = DisplayUtil.dip2px(mContext,max* progress/100);
+                //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w,w);
+                tooglebutton.setToogleColor(max);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        sb_progress_color.setProgress(50);
     }
 }
