@@ -66,7 +66,19 @@
     <declare-styleable name="QDTextViewPoint">
         <attr name="pointRadius" format="dimension"/>
         <attr name="pointWidth" format="dimension"/>
+
         <attr name="pointMargin" format="dimension"/>
+        <attr name="pointMarginLeft" format="dimension"/>
+        <attr name="pointMarginRight" format="dimension"/>
+        <attr name="pointMarginTop" format="dimension"/>
+        <attr name="pointMarginBottom" format="dimension"/>
+
+        <attr name="pointPadding" format="dimension"/>
+        <attr name="pointPaddingLeft" format="dimension"/>
+        <attr name="pointPaddingRight" format="dimension"/>
+        <attr name="pointPaddingTop" format="dimension"/>
+        <attr name="pointPaddingBottom" format="dimension"/>
+
         <attr name="pointBackgroundColor" format="color"/>
         <attr name="pointText" format="string"/>
         <attr name="pointTextColor" format="color"/>

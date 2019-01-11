@@ -93,6 +93,8 @@
 
         <item name="QDButtonStyle">@style/QDButtonStyle</item>
 
+        <item name="pointPadding">5dp</item>
+
     </style>
 
 

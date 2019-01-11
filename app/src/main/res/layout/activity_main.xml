@@ -32,13 +32,20 @@
                 android:textColor="@color/white"
                 android:background="@drawable/btn_green_small"
                 android:layout_margin="5dp"
-                app:pointText="12"
+                app:pointText="12qw12"
                 app:pointGravity="rightTop"
                 app:pointTextSize="12sp"
                 app:pointWidth="18dp"
                 app:pointRadius="5dp"
                 app:pointTextColor="@color/white"
-                app:pointBackgroundColor="@color/green"/>
+                app:pointBackgroundColor="@color/green"
+                app:pointMarginRight="0dp"
+                app:pointMarginTop="0dp"
+                app:pointPaddingRight="5dp"
+                app:pointPaddingTop="5dp"
+                app:pointPaddingLeft="5dp"
+                app:pointPaddingBottom="5dp"
+                app:showPoint="true"/>
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
                 android:layout_width="50dp"
