@@ -109,6 +109,7 @@ public class FragmentActivityHelper {
                     .addToBackStack("A")
                    .commitAllowingStateLoss();// .commit();
         }
+
     }
 
     public ActionBarLayoutInterface getActionBarLayoutInterface() {
