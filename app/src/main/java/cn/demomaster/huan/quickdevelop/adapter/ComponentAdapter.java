@@ -3,6 +3,8 @@ package cn.demomaster.huan.quickdevelop.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.GuiderFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -114,9 +118,14 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             @Override
                             public void onClick(View v) {
                                     try {
-                                        ((BaseActivityParent)context).startActivity(clazz);
+                                        Class c = clazz.getClass();
+                                        if(Fragment.class.isAssignableFrom(clazz)){
+                                            FragmentActivityHelper.getInstance().startFragment(new GuiderFragment());
+                                        }else if(Activity.class.isAssignableFrom(clazz)){
+                                            ((BaseActivityParent)context).startActivity(clazz);
+                                        }
                                     }catch (Exception e){
-                                        throw new IllegalArgumentException("activityClass must be extends activity!");
+                                        throw new IllegalArgumentException("activityClass must be extends activity!"+e.getMessage());
                                     }
                             }
                         });

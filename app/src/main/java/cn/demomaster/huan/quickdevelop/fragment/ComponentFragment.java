@@ -31,6 +31,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonAct
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -77,6 +78,7 @@ public class ComponentFragment extends Fragment {
         classList.add(QDialogActivity.class);
         classList.add(QDActionDialogActivity.class);
         classList.add(BaseFragmentActivity.class);
+        classList.add(GuiderFragment.class);
 
 
         classList.add(MainActivity.class);

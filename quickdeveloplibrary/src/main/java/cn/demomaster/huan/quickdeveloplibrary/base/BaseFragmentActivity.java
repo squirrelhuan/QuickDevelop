@@ -1,14 +1,12 @@
-package cn.demomaster.huan.quickdevelop.activity.sample.fragment;
+package cn.demomaster.huan.quickdeveloplibrary.base;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.fragment.RouterFragment;
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
@@ -25,9 +23,9 @@ public class BaseFragmentActivity extends AppCompatActivity {
         view.setId(getContentViewId());
         setContentView(view);
         FragmentActivityHelper.getInstance().bindActivity(this);
-        RouterFragment f1 = null;
+        /*RouterFragment f1 = null;
         f1 = new RouterFragment();
-        FragmentActivityHelper.getInstance().replace(f1);
+        FragmentActivityHelper.getInstance().replace(f1);*/
         //开启事务，fragment的控制是由事务来实现的
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -52,21 +50,15 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     }
 
-   /* public void startFragment(Fragment fragment){
+    public void startFragment(Fragment fragment){
          getSupportFragmentManager()
                 .beginTransaction()
                  .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
                 .replace(getContentViewId(), fragment)
                  .addToBackStack("A")
                 .commit();
-    }*/
+    }
     public int getContentViewId(){
        return R.id.qd_fragment_content_view;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FragmentActivityHelper.getInstance().unBindActivity(this);
     }
 }

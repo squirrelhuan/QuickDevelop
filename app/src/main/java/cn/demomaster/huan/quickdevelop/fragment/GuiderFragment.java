@@ -11,18 +11,23 @@ import android.widget.FrameLayout;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
+
+@ActivityPager(name = "OperatGuid",preViewClass = StateView.class,resType = ResType.Custome)
 public class GuiderFragment extends BaseFragment {
     //Components
     ViewGroup mView;

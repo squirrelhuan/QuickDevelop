@@ -163,6 +163,9 @@ public class GuiderView extends View {
 
     private void drawGuider(Canvas canvas) {
 
+        if(guiderModel.getTargetView()==null){
+            return;
+        }
         //初始化数据
         if (rectF_view == null) {
             rectF_view = getViewRectF(guiderModel.getTargetView().get());

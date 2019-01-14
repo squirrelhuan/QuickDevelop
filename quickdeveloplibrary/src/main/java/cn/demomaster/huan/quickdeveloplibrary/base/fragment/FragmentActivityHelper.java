@@ -2,10 +2,12 @@ package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -40,34 +42,44 @@ public class FragmentActivityHelper {
 
     }
 
-    private List<AppCompatActivity> activities = new ArrayList<>();
+    private List<FragmentActivity> activities = new ArrayList<>();
 
     public void add(Fragment fragment) {
         //开启事务，fragment的控制是由事务来实现的
         FragmentTransaction transaction = activities.get(activities.size() - 1).getSupportFragmentManager().beginTransaction();
-        transaction.add(getContentViewId(), fragment);
+        transaction.add(android.R.id.content, fragment);
         transaction.show(fragment);
         //提交事务
-        transaction.commit();
+        //transaction.commit();
+        // 这里吧原来的commit()方法换成了commitAllowingStateLoss()
+        transaction.commitAllowingStateLoss();
     }
 
     public void replace(Fragment fragment) {
         //开启事务，fragment的控制是由事务来实现的
         FragmentTransaction transaction = activities.get(activities.size() - 1).getSupportFragmentManager().beginTransaction();
-        transaction.replace(getContentViewId(), fragment);
+        transaction.replace(android.R.id.content, fragment);
         transaction.show(fragment);
         //提交事务
-        transaction.commit();
+        //transaction.commit();
+        // 这里吧原来的commit()方法换成了commitAllowingStateLoss()
+        transaction.commitAllowingStateLoss();
     }
 
-    public void bindActivity(AppCompatActivity activity) {
-        View view = new FrameLayout(activity);
-        view.setId(getContentViewId());
-        activity.setContentView(view);
+    FragmentActivity activity;
+    public void bindActivity(FragmentActivity activity) {
+        this.activity = activity;
+        if(getContentView(activity)==null){
+            View view = new FrameLayout(activity);
+            activity.setContentView(view);
+
+            //view.setId(getContentView(activity));
+        }
+
         activities.add(activity);
     }
 
-    public void unBindActivity(AppCompatActivity activity) {
+    public void unBindActivity(FragmentActivity activity) {
         if (activities == null) {
             return;
         }
@@ -80,7 +92,7 @@ public class FragmentActivityHelper {
         if (activities != null && activities.size() > 0) {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             if (fragmentManager.getBackStackEntryCount() == 0) {
-                AppCompatActivity activity = activities.get(activities.size() - 1);
+                FragmentActivity activity = activities.get(activities.size() - 1);
                 activity.finish();
                 unBindActivity(activity);
             }else {
@@ -93,9 +105,9 @@ public class FragmentActivityHelper {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
-                    .replace(getContentViewId(), fragment)
+                    .replace(android.R.id.content, fragment)
                     .addToBackStack("A")
-                    .commit();
+                   .commitAllowingStateLoss();// .commit();
         }
     }
 
@@ -103,7 +115,12 @@ public class FragmentActivityHelper {
         return actionBarLayoutInterface;
     }
 
-    public int getContentViewId() {
+    /*public int getContentViewId() {
         return R.id.qd_fragment_content_view;
+    }*/
+    public static View getContentView(Activity ac){
+        ViewGroup view = (ViewGroup)ac.getWindow().getDecorView();
+        FrameLayout content = (FrameLayout)view.findViewById(android.R.id.content);
+        return content.getChildAt(0);
     }
 }

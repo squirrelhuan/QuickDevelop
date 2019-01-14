@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             }
             rootView = getActionBarLayout().getFinalView();
             initActionBarLayout(getActionBarLayout());
+            rootView.setBackgroundColor(Color.WHITE);
             return rootView;
             //super.setContentView(view);
         }
@@ -98,7 +100,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             try {
-                mContext.registerReceiver(netWorkChangReceiver, filter);
+                //mContext.registerReceiver(netWorkChangReceiver, filter);
             }catch (Exception e){
                 e.printStackTrace();
             }
