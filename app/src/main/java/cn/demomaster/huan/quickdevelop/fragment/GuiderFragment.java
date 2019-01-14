@@ -36,6 +36,7 @@ public class GuiderFragment extends BaseFragment {
         Bundle bundle = getArguments();
         String title = "空界面";
         Button btn_01 = mView.findViewById(R.id.btn_01);
+        btn_01.setText("点击按钮");
         btn_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +44,7 @@ public class GuiderFragment extends BaseFragment {
             }
         });
         Button btn_02 = mView.findViewById(R.id.btn_02);
+        btn_02.setText("点击提示框");
         btn_02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +53,7 @@ public class GuiderFragment extends BaseFragment {
             }
         });
         Button btn_03 = mView.findViewById(R.id.btn_03);
+        btn_03.setText("点击任意位置");
         btn_03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +62,7 @@ public class GuiderFragment extends BaseFragment {
             }
         });
         Button btn_04 = mView.findViewById(R.id.btn_04);
+        btn_04.setText("椭圆提示框");
         btn_04.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,10 +71,11 @@ public class GuiderFragment extends BaseFragment {
             }
         });
         Button btn_05 = mView.findViewById(R.id.btn_05);
+        btn_05.setText("超长文本");
         btn_05.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view,4);//超长文本！
 
             }
         });
@@ -142,7 +147,7 @@ public class GuiderFragment extends BaseFragment {
         actionBarLayout.setHeaderBackgroundColor(colors[i]);
     }
 
-    String tips[] ={"点击按钮关闭引导！","点击提示框关闭引导","这里是文本说明区域，点击任意位置关闭提示","椭圆提示框"};
+    String tips[] ={"点击按钮关闭引导！","点击提示框关闭引导","这里是文本说明区域，点击任意位置关闭提示","椭圆提示框","这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
 
     private void showGuider(View view,int i) {
 
@@ -151,8 +156,13 @@ public class GuiderFragment extends BaseFragment {
         guiderModel.setTargetView(new WeakReference<View>(view));
         guiderModel.setMessage(tips[i]);
         guiderModel.setComplateType(GuiderModel.GuidActionType.CLICK);
+        guiderModel.setLineColor(Color.BLACK);
+        guiderModel.setLineWidth(5);
+        guiderModel.setTextColor(Color.GREEN);
+        guiderModel.setTextSize(62);
         GuiderHelper.getInstance().setGuiderModel(guiderModel);
 
+        GuiderHelper.getInstance().add(guiderModel);
 
         switch (i){
             case 0:
@@ -167,10 +177,13 @@ public class GuiderFragment extends BaseFragment {
             case 3:
                 guiderModel.setShape(GuiderModel.SHAPE.oval);
                 break;
+            case 4://超长文本！
+                guiderModel.setShape(GuiderModel.SHAPE.rectangle);
+                break;
         }
 
-        GuiderHelper.getInstance().startGuider(mContext,view,"DBGUIDER");
-        //GuiderHelper.getInstance().startGuider(getActivity(),view,"");
+        //GuiderHelper.getInstance().startGuider(mContext,view,"DBGUIDER");
+        GuiderHelper.getInstance().startGuider(getActivity(),view,"");
         /*ViewGroup mParentView = (FrameLayout) getActivity().getWindow().getDecorView();
         GuiderView guiderSurfaceView = new GuiderView(getContext(), guiderModel,false,null);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

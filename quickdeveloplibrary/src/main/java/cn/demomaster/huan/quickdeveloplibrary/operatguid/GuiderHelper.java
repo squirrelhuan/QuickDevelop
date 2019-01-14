@@ -28,24 +28,43 @@ public class GuiderHelper {
         return instance;
     }
 
-    private List<GuiderModel> guiderModels ;
+    private List<GuiderModel> guiderModels =new ArrayList<>();
+    private int position;
 
     public GuiderHelper(){
         guiderModels=new ArrayList<>();
     }
 
+    private   GuiderView guiderSurfaceView;
+    private  ViewGroup decorView;
     public void startGuider(Activity context, View view, String Tag){
         //initGuiderView(context,view,Tag);
+        decorView = (FrameLayout) context.getWindow().getDecorView();
 
-        final ViewGroup mParentView = (FrameLayout) context.getWindow().getDecorView();
-       final  GuiderView guiderSurfaceView = new GuiderView(context, guiderModel, mParentView, new GuiderActionDialog.OnActionFinishListener() {
+       guiderSurfaceView = new GuiderView(context, guiderModels.get(position), decorView, new GuiderActionDialog.OnActionFinishListener() {
             @Override
             public void onFinish() {
-
+                if(position>guiderModels.size()-2){
+                    //结束；
+                    decorView.removeView(guiderSurfaceView);
+                }else {
+                    //继续下一个
+                    position ++;
+                    toNextGuider();
+                }
             }
         });
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mParentView.addView(guiderSurfaceView, layoutParams);
+        decorView.addView(guiderSurfaceView, layoutParams);
+    }
+
+   public void toNextGuider(){
+       guiderSurfaceView.setGuiderModel(guiderModels.get(position));
+    }
+
+    public void add(GuiderModel guiderModel){
+        position =0;
+        guiderModels.add(guiderModel);
     }
 
     private void initGuiderView(Activity context, View view, String tag) {

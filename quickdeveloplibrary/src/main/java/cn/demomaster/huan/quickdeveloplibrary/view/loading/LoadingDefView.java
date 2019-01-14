@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -67,6 +68,18 @@ public class LoadingDefView extends View {
         } else {
             canvas.drawArc(mRecF, progress, 360 - progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
         }
+
+     /*   Path path = new Path();
+        path.moveTo(0,0);
+        path.quadTo(0,200,200,200);
+        path.quadTo(400,200,400,400);
+       Paint paint = new Paint();
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
+        paint.setAntiAlias(true);
+        paint.setColor(Color.GREEN);
+        canvas.drawPath(path,paint);*/
     }
 
     private float progress;

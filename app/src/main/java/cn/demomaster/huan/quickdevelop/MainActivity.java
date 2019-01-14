@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
 
-        GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
+        //GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
 
 
         getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {

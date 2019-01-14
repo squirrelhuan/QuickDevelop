@@ -17,6 +17,7 @@ public class GuiderModel {
     private int textColor = Color.WHITE;
     private int textSize = 36;
     private int lineColor = Color.WHITE;
+    private int lineWidth = 10;
     private GuidActionType complateType;//结束触发类型
     private GuidActionType startType;//开始触发类型
     private TouchType touchType;
@@ -99,6 +100,14 @@ public class GuiderModel {
 
     public void setStartType(GuidActionType startType) {
         this.startType = startType;
+    }
+
+    public int getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
     }
 
     public enum LINETYPE{
