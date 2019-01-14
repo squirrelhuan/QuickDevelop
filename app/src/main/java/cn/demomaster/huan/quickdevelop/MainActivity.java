@@ -38,6 +38,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
+import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -72,6 +73,9 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_db.setOnClickListener(this);
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
+
+        GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
+
 
         getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override

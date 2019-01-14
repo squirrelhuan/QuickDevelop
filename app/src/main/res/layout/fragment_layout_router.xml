@@ -20,4 +20,10 @@
            android:layout_height="wrap_content"
            android:text="设置title"/>
 
+       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+           android:id="@+id/btn_guider"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="操作引导"/>
+
 </LinearLayout>

@@ -47,6 +47,13 @@ public class RouterFragment extends BaseFragment {
                 getActionBarLayout().setTitle(titles[i]+"");
             }
         });
+        Button btn_guider = mView.findViewById(R.id.btn_guider);
+        btn_guider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startFragment();
+            }
+        });
 
         return mView;
     }
@@ -63,5 +70,9 @@ public class RouterFragment extends BaseFragment {
 
     private void opentFragment() {
         FragmentActivityHelper.getInstance().startFragment(new RouterFragment());
+    }
+
+    private void startFragment(){
+        FragmentActivityHelper.getInstance().startFragment(new GuiderFragment());
     }
 }

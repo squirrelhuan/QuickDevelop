@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
+import com.alibaba.fastjson.JSON;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -10,8 +12,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-
-import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 
 /**
  * @author squirrel桓
@@ -223,5 +223,403 @@ public class Test {
         return Week;
     }
 
+
+
+
+    @org.junit.Test
+    public void testTimer(){
+
+        String str = "[\n" +
+                "        {\n" +
+                "            \"Id\": \"6\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051762\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"7\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051771\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"8\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051777\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"9\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051829\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"10\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051857\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"11\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051862\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"12\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545051898\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"13\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545051906\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"14\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545052277\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"15\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545052316\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"16\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545052322\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"17\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545052326\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"18\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545052331\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"19\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545052338\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"20\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058147\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"21\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058267\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"22\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058287\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"23\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058342\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"24\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058356\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"25\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058428\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"26\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058518\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"27\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058526\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"28\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058619\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"29\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545058752\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"30\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058926\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"31\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058957\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"32\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058967\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"33\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545058986\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"34\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059171\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"35\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059181\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"36\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059215\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"37\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059229\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"38\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059274\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"39\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059285\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"40\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059305\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"41\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059317\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"42\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059342\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"43\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059354\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"44\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059361\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"45\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059399\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"46\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059406\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"47\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059417\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"48\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059425\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"49\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059590\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"50\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059595\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"51\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059634\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"52\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059652\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"53\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545059686\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"54\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545059709\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"55\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545059819\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"56\",\n" +
+                "            \"IsOnline\": \"1\",\n" +
+                "            \"Insert_Time\": \"1545059832\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"57\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545059852\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"58\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545060303\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"59\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545060344\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"60\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545060362\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"Id\": \"61\",\n" +
+                "            \"IsOnline\": \"2\",\n" +
+                "            \"Insert_Time\": \"1545060562\"\n" +
+                "        }\n" +
+                "    ]";
+        List<Timer> timers = new ArrayList();//建立一个存贮时间段的对象
+
+        String lastState = "-1";//上次的状态（1/2）
+        int position =-1;//上次状态的位置
+
+
+        List<Result> results = new ArrayList<>();
+        results = JSON.parseArray(str ,Result.class);
+
+        for(int i=0;i<results.size();i++){
+
+            System.out.println(""+i);
+            if(position==-1){//初始化
+                position = 0;
+            }
+            if(lastState.equals("-1")){//初始化
+                lastState = results.get(i).getIsOnline();
+            }
+
+            Result resultc = results.get(i);
+            if(!lastState.equals(resultc.getIsOnline())){//判断当前状态是否和上次相等
+
+                //获取上个状态开始的时间
+                int t1 = Integer.valueOf(results.get(position).getInsert_Time());
+                //获取当前第i条的时间
+                int t2 = Integer.valueOf(results.get(i).getInsert_Time());
+
+                //添加一条新时间段到新的数组
+                Timer timer = new Timer();
+                timer.setTime(t2-t1);
+                timer.setState(Integer.valueOf(lastState));
+                timers.add(timer);
+
+                lastState = results.get(i).getIsOnline();//更改当前的状态
+                position = i;
+            }
+        }
+        for(int i=0;i<timers.size();i++){
+            System.out.println("第"+i+"次"+(timers.get(i).getState()==1?"在线":"离线")+",时间:"+timers.get(i).getTime());
+        }
+    }
+
+
+    //时间端 对象
+    public static class Timer{
+        int id;
+        int time;
+        int state ;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getTime() {
+            return time;
+        }
+
+        public void setTime(int time) {
+            this.time = time;
+        }
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+    }
+
+    public static class Result{
+
+        /**
+         * Id : 6
+         * IsOnline : 1
+         * Insert_Time : 1545051762
+         */
+
+        private String Id;
+        private String IsOnline;
+        private String Insert_Time;
+
+        public String getId() {
+            return Id;
+        }
+
+        public void setId(String Id) {
+            this.Id = Id;
+        }
+
+        public String getIsOnline() {
+            return IsOnline;
+        }
+
+        public void setIsOnline(String IsOnline) {
+            this.IsOnline = IsOnline;
+        }
+
+        public String getInsert_Time() {
+            return Insert_Time;
+        }
+
+        public void setInsert_Time(String Insert_Time) {
+            this.Insert_Time = Insert_Time;
+        }
+    }
 
 }
