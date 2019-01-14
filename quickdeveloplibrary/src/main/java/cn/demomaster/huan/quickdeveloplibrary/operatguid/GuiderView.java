@@ -97,6 +97,8 @@ public class GuiderView extends View {
         }
         isPlaying = false;
         this.guiderModel = guiderModel;
+        this.rectF_view =null;
+        this.rectF_message =null;
         postInvalidate();
     }
 
