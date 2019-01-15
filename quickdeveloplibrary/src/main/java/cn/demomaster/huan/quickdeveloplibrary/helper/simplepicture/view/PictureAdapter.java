@@ -19,6 +19,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
 
 /**
@@ -35,7 +36,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     //保存选中的图片
     private LinkedHashMap<Integer, Image> map;
-    private boolean useCamera;
+    private boolean showAdd;
     private boolean isViewImage;
     private int maxCount;
 
@@ -58,18 +59,21 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         }
     }
 
-    public PictureAdapter(Context context, List<Image> mImages, boolean useCamera, boolean isViewImage, int maxCount) {
+    public PictureAdapter(Context context, List<Image> mImages, boolean showAdd, boolean isViewImage, int maxCount) {
         this.mImages = mImages;
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
         this.isViewImage = isViewImage;
-        this.useCamera = useCamera;
+        this.showAdd = showAdd;
         this.maxCount = maxCount;
         this.saturated = (maxCount <= mImages.size());
     }
 
     @Override
     public int getItemViewType(int position) {
+        if(!showAdd){
+            return 0;
+        }
         if (saturated) {//饱和了去掉加号
             return 0;
         } else {
@@ -92,7 +96,11 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         if (holder != null && holder.getType() == 0) {
             Image image = mImages.get(position);
             holder.setImage(image);
-            Glide.with(mContext).load(new File(image.getPath())).into(holder.iv_picture);
+            if(image.getUrlType()==UrlType.url){
+                Glide.with(mContext).load(image.getPath()).into(holder.iv_picture);
+            }else if(image.getUrlType()==UrlType.file){
+                Glide.with(mContext).load(new File(image.getPath())).into(holder.iv_picture);
+            }
             //.diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.ivImage);
             if (modelType == MODEL.edit) {
                 holder.iv_delete.setVisibility(View.VISIBLE);
@@ -141,9 +149,10 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        this.saturated = (maxCount <= mImages.size());
-        int a = (useCamera && !saturated ? 1 : 0);
-        return a + (mImages == null ? 0 : mImages.size());
+            this.saturated = (maxCount <= mImages.size());
+            int a = (showAdd && !saturated ? 1 : 0);
+            return a + (mImages == null ? 0 : mImages.size());
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -219,9 +228,9 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     }
 
 
-    public void refresh(ArrayList<Image> data, boolean useCamera) {
+    public void refresh(ArrayList<Image> data, boolean showAdd) {
         mImages = data;
-        this.useCamera = useCamera;
+        this.showAdd = showAdd;
         map.clear();
         notifyDataSetChanged();
     }

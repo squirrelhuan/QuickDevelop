@@ -14,6 +14,11 @@ public class Image implements Serializable {
     private String path;
     private long time;
     private String name;
+    private UrlType urlType= UrlType.file;
+    public Image(String path,UrlType urlType) {
+        this.path = path;
+        this.urlType = urlType;
+    }
 
     public Image(String path, long time, String name) {
         this.path = path;
@@ -43,6 +48,15 @@ public class Image implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public UrlType getUrlType() {
+        return urlType;
+    }
+
+    public void setUrlType(UrlType urlType) {
+        this.urlType = urlType;
     }
 
 }

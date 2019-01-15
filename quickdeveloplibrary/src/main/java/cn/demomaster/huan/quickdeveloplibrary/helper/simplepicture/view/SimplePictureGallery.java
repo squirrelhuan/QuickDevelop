@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     private int spanCount = 4;//横向排列个数
     private int maxCount = 5;//最大图片数量
     private boolean canPreview=true;//是否可以预览
-    private List<Image> imageList = new ArrayList<>();
+    private boolean showAdd=true;//是否可以添加
+    private ArrayList<Image> imageList = new ArrayList<>();
     private OnPictureChangeListener onPictureChangeListener;
 
     public void setOnPictureChangeListener(OnPictureChangeListener onPictureChangeListener) {
@@ -58,7 +60,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
         setLayoutManager(mLayoutManager);
 
         mLayoutManager = new GridLayoutManager(context, spanCount);
-        mAdapter = new PictureAdapter(context, imageList, true, true, maxCount);
+        mAdapter = new PictureAdapter(context, imageList, showAdd, true, maxCount);
         mAdapter.setOnItemClickListener(new PictureAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Image image) {
@@ -66,8 +68,8 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                     Bundle bundle = new Bundle();
                     ArrayList<Image> images = new ArrayList<>();
                     images.add(image);
-                    bundle.putSerializable("images",images);
-                    bundle.putInt("imageIndex",0);
+                    bundle.putSerializable("images", (Serializable) imageList);
+                    bundle.putInt("imageIndex",position);
                     Intent intent = new Intent(context,PreviewActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -76,6 +78,9 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
             @Override
             public void onLastClick(View view) {
+
+
+
                 ((BaseActivityParent) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
                     @Override
                     public void onSuccess(Intent data, ArrayList<Image> images) {
@@ -141,6 +146,39 @@ public class SimplePictureGallery extends ScrollRecyclerView {
         init(context);
     }
 
+    public boolean isShowAdd() {
+        return showAdd;
+    }
+
+    public void setShowAdd(boolean showAdd) {
+        this.showAdd = showAdd;
+        init(context);
+    }
+
+
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<Image> imageList) {
+        this.imageList = imageList;
+        if(mAdapter!=null&&imageList!=null){
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void addImage(Image image){
+        if(imageList!=null&&image!=null){
+            imageList.add(image);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+    public void clearImages(){
+        if(imageList!=null){
+            imageList.clear();
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
     public static interface OnPictureChangeListener{
        void onChanged(List<Image> images);

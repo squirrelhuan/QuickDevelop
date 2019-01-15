@@ -22,6 +22,14 @@
                 android:background="@color/yellow">
 
             </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+
+            <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery
+                android:id="@+id/ga_picture2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow">
+
+            </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -15,6 +15,7 @@ import java.io.File;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
 
 
 /**
@@ -33,8 +34,12 @@ public class PreviewFragment extends Fragment {
         Image image = null;
         if (bundle!=null&& bundle.containsKey("image")){
             image = (Image) bundle.getSerializable("image");
-            if (image != null && image.getPath() != null) {
-                Glide.with(getContext()).load(new File(image.getPath())).into(pv_image);
+            if (image != null && image.getPath() != null ) {
+                if(image.getUrlType()==UrlType.url){
+                    Glide.with(getContext()).load(image.getPath()).into(pv_image);
+                }else if(image.getUrlType()==UrlType.file){
+                    Glide.with(getContext()).load(new File(image.getPath())).into(pv_image);
+                }
             }
         }
 

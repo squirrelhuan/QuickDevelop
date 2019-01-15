@@ -32,6 +32,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.DialogHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -104,6 +105,9 @@ public class QDialogActivity extends BaseActivityParent {
                     case 7:
                         showMessageWithButton2(Gravity.LEFT);
                         break;
+                    case 8:
+                        showMenuDialog();
+                        break;
                 }
             }
         });
@@ -156,7 +160,8 @@ public class QDialogActivity extends BaseActivityParent {
 
     private void showSheetMenu() {
         String[] menus ={"item1","item2","item3"};
-        new QDSheetDialog.Builder(mContext).setData(menus).create().show();
+        QDSheetDialog  dialog = new QDSheetDialog.Builder(mContext).setData(menus).setGravity(Gravity.BOTTOM).setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT).create();
+        dialog.show();
     }
     /*private void showMessagePositiveDialog() {
         DialogHelper.showDialog(this,"title","message");
@@ -188,5 +193,16 @@ public class QDialogActivity extends BaseActivityParent {
         }).addAction("取消").setGravity_foot(gravity).create().show();
     }
 
+
+    private void showMenuDialog() {
+        String[] menus ={"item1","item2","item3"};
+        new QDSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
+            @Override
+            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
+                dialog.dismiss();
+                PopToastUtil.ShowToast(mContext,data.get(position));
+            }
+        }).create().show();
+    }
 
 }
