@@ -30,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
-public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivityInterface {
+public class BaseActivityRoot extends AppCompatActivity implements BaseActivityInterface {
 
     public Activity mContext;
     public Bundle mBundle = null;

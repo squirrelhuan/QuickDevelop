@@ -161,7 +161,8 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     }
 
     public void setImageList(ArrayList<Image> imageList) {
-        this.imageList = imageList;
+        this.imageList.clear();
+        this.imageList.addAll(imageList);
         if(mAdapter!=null&&imageList!=null){
             mAdapter.notifyDataSetChanged();
         }
