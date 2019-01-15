@@ -2,23 +2,34 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import com.alibaba.fastjson.JSON;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.PreviewActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.ImageUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollRecyclerView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
 /**
  * Created by Squirrel桓 on 2018/12/1.
@@ -78,29 +89,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
             @Override
             public void onLastClick(View view) {
-
-
-
-                ((BaseActivityParent) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
-                    @Override
-                    public void onSuccess(Intent data, ArrayList<Image> images) {
-                        imageList.addAll(images);
-                        mAdapter.notifyDataSetChanged();
-                        if (onPictureChangeListener!=null){
-                            onPictureChangeListener.onChanged(imageList);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(String error) {
-
-                    }
-
-                    @Override
-                    public int getImageCount() {
-                        return maxCount - imageList.size();
-                    }
-                });
+                showMenuDialog();
             }
 
             @Override
@@ -113,6 +102,59 @@ public class SimplePictureGallery extends ScrollRecyclerView {
             }
         });
         setAdapter(mAdapter);
+    }
+
+    private void showMenuDialog() {
+        String[] menus ={"拍摄","从相册选择"};
+        new QDSheetDialog.MenuBuilder(context).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
+            @Override
+            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
+                dialog.dismiss();
+                if(position==0){
+                    ((BaseActivityParent) context).photoHelper.takePhoto(new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            Bundle extras = data.getExtras();
+                            if (extras != null) {
+                                Bitmap bitmap = extras.getParcelable("data");
+                               String filePath = ImageUitl.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
+                                imageList.add(new Image(filePath,UrlType.file));
+                                mAdapter.notifyDataSetChanged();
+                                if (onPictureChangeListener!=null){
+                                    onPictureChangeListener.onChanged(imageList);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+                    });
+                }else {//从相册选择
+                    ((BaseActivityParent) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                        @Override
+                        public void onSuccess(Intent data, ArrayList<Image> images) {
+                            imageList.addAll(images);
+                            mAdapter.notifyDataSetChanged();
+                            if (onPictureChangeListener!=null){
+                                onPictureChangeListener.onChanged(imageList);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                        @Override
+                        public int getImageCount() {
+                            return maxCount - imageList.size();
+                        }
+                    });
+                }
+            }
+        }).create().show();
     }
 
     public List<Image> getImages() {

@@ -279,6 +279,7 @@ public class QDSheetDialog extends Dialog {
                    }
                 }
             });
+            vhItem.onbind(i);
         }
 
         @Override
@@ -287,11 +288,11 @@ public class QDSheetDialog extends Dialog {
         }
 
         public class VHItem extends RecyclerView.ViewHolder {
-
+            QDTextView textView;
             public VHItem(@NonNull View itemView) {
                 super(itemView);
-                QDTextView textView = new QDTextView(itemView.getContext());
-                textView.setText("aaa");
+                textView = new QDTextView(itemView.getContext());
+                textView.setText("");
                 int p = DisplayUtil.dip2px(itemView.getContext(), 15);
                 textView.setPadding(p, p, p, p);
                 textView.setTextSize(18);
@@ -299,6 +300,10 @@ public class QDSheetDialog extends Dialog {
                 textView.setBackgroundResource(R.drawable.ripple_bg);
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 ((ViewGroup) itemView).addView(textView, layoutParams);
+            }
+
+            public void onbind(int position){
+                textView.setText(data.get(position)+"");
             }
         }
 
