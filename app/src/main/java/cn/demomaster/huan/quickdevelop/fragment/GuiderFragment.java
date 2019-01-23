@@ -32,7 +32,6 @@ public class GuiderFragment extends BaseFragment {
     //Components
     ViewGroup mView;
 
-
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {

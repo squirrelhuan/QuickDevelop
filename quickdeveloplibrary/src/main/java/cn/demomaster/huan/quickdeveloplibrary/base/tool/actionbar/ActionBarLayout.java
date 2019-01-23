@@ -93,6 +93,9 @@ public class ActionBarLayout {
     public static enum  ContextType{
         ActivityModel,FragmentModel
     }
+    public int getFragmentContentViewId(){
+        return R.id.qd_fragment_content_view;
+    }
     private ContextType contextType = ContextType.ActivityModel;
     private ActionBarLayoutInterface actionBarLayoutInterface;
     public void initActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup relContentView) {
@@ -172,6 +175,11 @@ public class ActionBarLayout {
         //header宽高
         mInflater.inflate(headLayoutResID, rootLayout, true);
         headView = (ViewGroup) rootLayout.getChildAt(2);
+
+        //fragment view容器
+        View FragmentLayout = new FrameLayout(context);
+        FragmentLayout.setId(getFragmentContentViewId());
+        rootLayout.addView(FragmentLayout);
 
         //记录背景drawable
         headerBackgroundDrawable = headView.getBackground();

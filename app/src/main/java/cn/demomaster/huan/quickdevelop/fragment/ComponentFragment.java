@@ -79,6 +79,9 @@ public class ComponentFragment extends Fragment {
         classList.add(QDActionDialogActivity.class);
         classList.add(BaseFragmentActivity.class);
         classList.add(GuiderFragment.class);
+        classList.add(AudioRecordFragment.class);
+
+
 
 
         classList.add(MainActivity.class);

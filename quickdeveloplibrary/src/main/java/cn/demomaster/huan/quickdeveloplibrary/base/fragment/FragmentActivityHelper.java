@@ -105,7 +105,7 @@ public class FragmentActivityHelper {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
-                    .replace(android.R.id.content, fragment)
+                    .replace(R.id.qd_fragment_content_view, fragment)//android.R.id.content
                     .addToBackStack("A")
                    .commitAllowingStateLoss();// .commit();
         }

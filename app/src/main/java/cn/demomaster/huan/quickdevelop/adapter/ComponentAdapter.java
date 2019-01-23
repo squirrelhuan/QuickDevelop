@@ -120,7 +120,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                                     try {
                                         Class c = clazz.getClass();
                                         if(Fragment.class.isAssignableFrom(clazz)){
-                                            FragmentActivityHelper.getInstance().startFragment(new GuiderFragment());
+                                            FragmentActivityHelper.getInstance().startFragment((Fragment) clazz.newInstance());
                                         }else if(Activity.class.isAssignableFrom(clazz)){
                                             ((BaseActivityParent)context).startActivity(clazz);
                                         }

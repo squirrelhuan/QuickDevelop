@@ -170,6 +170,9 @@ public class GuiderView extends View {
         if (rectF_view == null) {
             rectF_view = getViewRectF(guiderModel.getTargetView().get());
         }
+        if(rectF_view==null){
+            return;
+        }
         if (rectF_message == null) {
             Paint paint = getMessagePaint();
             rectF_message = getMessageRectF(rectF_view, paint, guiderModel.getMessage());
@@ -563,6 +566,9 @@ public class GuiderView extends View {
 
 
     private GuiderRectF getViewRectF(View view) {
+        if(view==null){
+            return null;
+        }
         int[] location;
         location = new int[2];
         view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标

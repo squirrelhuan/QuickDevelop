@@ -16,13 +16,19 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 public class BaseFragmentActivity extends AppCompatActivity {
 
     @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        FragmentActivityHelper.getInstance().bindActivity(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_base_fragment);
-        View view = new FrameLayout(this);
+        /*View view = new FrameLayout(this);
         view.setId(getContentViewId());
         setContentView(view);
-        FragmentActivityHelper.getInstance().bindActivity(this);
+        FragmentActivityHelper.getInstance().bindActivity(this);*/
         /*RouterFragment f1 = null;
         f1 = new RouterFragment();
         FragmentActivityHelper.getInstance().replace(f1);*/
