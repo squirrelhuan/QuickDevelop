@@ -1,9 +1,12 @@
 package cn.demomaster.huan.quickdevelop.fragment;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,8 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ProcessService;
+import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
+import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -30,7 +35,18 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 @ActivityPager(name = "NdkTestFragment",preViewClass = StateView.class,resType = ResType.Custome)
 public class NdkTestFragment extends BaseFragment {
 
+    private ServiceToken mToken;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
 
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     //Components
     ViewGroup mView;
@@ -52,7 +68,9 @@ public class NdkTestFragment extends BaseFragment {
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().startService(new Intent(getContext(),ProcessService.class));
+                // Bind to Service
+                mToken = ServiceHelper.bindToService(getActivity(), serviceConnection);
+                //getActivity().startService(new Intent(getContext(),ProcessService.class));
             }
         });
 
@@ -64,5 +82,9 @@ public class NdkTestFragment extends BaseFragment {
 
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        //ServiceHelper.unbindFromService(mToken);
+    }
 }

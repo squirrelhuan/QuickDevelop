@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 往SDCard写入数据权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
@@ -19,29 +19,38 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true">
 
         <activity android:name=".camera.scan.ScanActivity" />
         <activity android:name=".camera.idcard.IDCardActivity" />
         <activity android:name=".camera.idcard.CameraIDCardActivity" />
-        <activity android:name=".helper.simplepicture.SimplePictureActivity" android:label="@string/image"/>
-        <activity android:name=".helper.simplepicture.PreviewActivity" android:label=""/>
+        <activity
+            android:name=".helper.simplepicture.SimplePictureActivity"
+            android:label="@string/image" />
+        <activity
+            android:name=".helper.simplepicture.PreviewActivity"
+            android:label="" />
 
 
         <service
             android:name=".jni.ProcessService"
             android:enabled="true" />
-       <!-- 包含provider会引用依赖包名作为apk包名，引发冲突 <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_path"/>
-        </provider>-->
-
+        <!-- 包含provider会引用依赖包名作为apk包名，引发冲突 <provider
+             android:name="android.support.v4.content.FileProvider"
+             android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <meta-data
+                 android:name="android.support.FILE_PROVIDER_PATHS"
+                 android:resource="@xml/file_provider_path"/>
+         </provider>-->
+        <receiver android:name=".receiver.ApplicationReceiver">
+            <intent-filter>
+                <!--<action android:name="ConnectivityManager.CONNECTIVITY_ACTION"/>//这样写是不对的-->
+                <action android:name="cn.demomaster.huan.quickdeveloplibrary.receiver" />//此处必需指定action，否则监听不到
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
