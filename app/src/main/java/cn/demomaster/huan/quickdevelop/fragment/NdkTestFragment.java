@@ -1,27 +1,23 @@
 package cn.demomaster.huan.quickdevelop.fragment;
 
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.service.SimpleService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
+import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
-import cn.demomaster.huan.quickdeveloplibrary.jni.ProcessService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
@@ -38,8 +34,10 @@ public class NdkTestFragment extends BaseFragment {
     private ServiceToken mToken;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
+        public void onServiceConnected(ComponentName name, IBinder iBinder) {
+           BaseService.BaseBinder baseBinder = (BaseService.BaseBinder) iBinder;
+            SimpleService simpleService = (SimpleService) baseBinder.getService();
+            simpleService.setText("yes");
         }
 
         @Override
@@ -69,10 +67,12 @@ public class NdkTestFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 // Bind to Service
-                mToken = ServiceHelper.bindToService(getActivity(), serviceConnection);
-                //getActivity().startService(new Intent(getContext(),ProcessService.class));
+                mToken = ServiceHelper.bindToService(getActivity(),SimpleService.class, serviceConnection);
+                //getActivity().startService(new Intent(getContext(),BaseService.class));
             }
         });
+
+        //BaseService.baseBinder.getService();
 
         return mView;
     }

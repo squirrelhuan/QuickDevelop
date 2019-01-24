@@ -61,6 +61,9 @@
         <activity android:name=".activity.sample.component.QDActionDialogActivity" />
         <activity android:name=".activity.sample.fragment.BaseFragmentActivity"></activity>
 
+        <service
+            android:name=".service.SimpleService"
+            android:enabled="true" />
         <!--<receiver android:name=".receiver.AppReceiver">
             <intent-filter>
                 &lt;!&ndash;<action android:name="ConnectivityManager.CONNECTIVITY_ACTION"/>//这样写是不对的&ndash;&gt;

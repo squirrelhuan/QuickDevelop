@@ -17,16 +17,16 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
  */
 public class ServiceHelper {
     public static IBaseService mService = null;
-    private static HashMap<Context, ServiceBinder> sConnectionMap = new HashMap<Context, ServiceBinder>();
+    private static HashMap<Context, BaseServiceConnection> sConnectionMap = new HashMap<Context, BaseServiceConnection>();
 
     /**
      * @return
      */
-    public static ServiceToken bindToService(Activity realActivity,ServiceConnection callback){
+    public static ServiceToken bindToService(Activity realActivity, Class service,ServiceConnection callback){
         ContextWrapper cw = new ContextWrapper(realActivity);
-        cw.startService(new Intent(cw, ProcessService.class));
-        ServiceBinder serviceBinder = new ServiceBinder(callback);
-        if (cw.bindService((new Intent()).setClass(cw, ProcessService.class), callback, 0)) {
+        cw.startService(new Intent(cw, service));
+        BaseServiceConnection serviceBinder = new BaseServiceConnection(callback);
+        if (cw.bindService((new Intent()).setClass(cw, service), callback, 0)) {
             sConnectionMap.put(cw, serviceBinder);
             return new ServiceToken(cw);
         }
@@ -37,8 +37,8 @@ public class ServiceHelper {
      * @param context
      * @return
      */
-    public static ServiceToken bindToService(Activity context) {
-        return bindToService(context, null);
+    public static ServiceToken bindToService(Activity context,Class service) {
+        return bindToService(context,service, null);
     }
 
 
@@ -50,7 +50,7 @@ public class ServiceHelper {
             return;
         }
         ContextWrapper cw = token.mWrappedContext;
-        ServiceBinder sb = sConnectionMap.remove(cw);
+        BaseServiceConnection sb = sConnectionMap.remove(cw);
         if (sb == null) {
             return;
         }

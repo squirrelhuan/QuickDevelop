@@ -12,18 +12,18 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
  * description：
  */
 
-public class ServiceBinder implements ServiceConnection {
+public class BaseServiceConnection implements ServiceConnection {
     private final ServiceConnection mCallback;
 
-    public ServiceBinder(ServiceConnection callback) {
+    public BaseServiceConnection(ServiceConnection callback) {
         mCallback = callback;
     }
 
     @Override
-    public void onServiceConnected(ComponentName className, IBinder service) {
-        ServiceHelper.mService = IBaseService.Stub.asInterface(service);
+    public void onServiceConnected(ComponentName className, IBinder iBinder) {
+        ServiceHelper.mService = IBaseService.Stub.asInterface(iBinder);
         if (mCallback != null)
-            mCallback.onServiceConnected(className, service);
+            mCallback.onServiceConnected(className, iBinder);
     }
 
     @Override

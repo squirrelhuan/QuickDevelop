@@ -34,7 +34,7 @@
 
 
         <service
-            android:name=".jni.ProcessService"
+            android:name=".jni.BaseService"
             android:enabled="true" />
         <!-- 包含provider会引用依赖包名作为apk包名，引发冲突 <provider
              android:name="android.support.v4.content.FileProvider"
