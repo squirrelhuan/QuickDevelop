@@ -80,6 +80,7 @@ public class ComponentFragment extends Fragment {
         classList.add(BaseFragmentActivity.class);
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);
+        classList.add(NdkTestFragment.class);
 
 
 

@@ -60,6 +60,13 @@
         <activity android:name=".activity.sample.component.RatingBarActivity" />
         <activity android:name=".activity.sample.component.QDActionDialogActivity" />
         <activity android:name=".activity.sample.fragment.BaseFragmentActivity"></activity>
+
+        <!--<receiver android:name=".receiver.AppReceiver">
+            <intent-filter>
+                &lt;!&ndash;<action android:name="ConnectivityManager.CONNECTIVITY_ACTION"/>//这样写是不对的&ndash;&gt;
+                <action android:name="cn.demomaster.huan.quickdeveloplibrary.receiver" />//此处必需指定action，否则监听不到
+            </intent-filter>
+        </receiver>-->
     </application>
 
 </manifest>
