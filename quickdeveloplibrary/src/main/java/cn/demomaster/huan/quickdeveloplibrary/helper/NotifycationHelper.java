@@ -4,7 +4,9 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -60,7 +62,21 @@ public class NotifycationHelper {
                 NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
     }
-
+    public void sendChatMsg(String message,Class activity) {
+        Intent intent = new Intent(context, activity);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0,  intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new NotificationCompat.Builder(context, "chat")
+                .setContentIntent(contentIntent)
+                .setContentTitle("收到一条消息")
+                .setContentText(message)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setAutoCancel(true)
+                .build();
+        manager.notify(1, notification);
+    }
     public void sendChatMsg(String message) {
         NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         Notification notification = new NotificationCompat.Builder(context, "chat")
