@@ -34,6 +34,7 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(baseBinder==null)
         baseBinder = new BaseBinder(this);
         String packageName = getApplicationContext().getPackageName();
         String serviceName = this.getClass().getName();
@@ -98,6 +99,7 @@ public class BaseService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         //Toast.makeText(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
+        if(baseBinder==null)
         baseBinder=new BaseBinder(this);
         return baseBinder;
     }

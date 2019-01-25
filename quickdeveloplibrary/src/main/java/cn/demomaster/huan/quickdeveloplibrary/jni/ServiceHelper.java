@@ -26,7 +26,7 @@ public class ServiceHelper {
         ContextWrapper cw = new ContextWrapper(realActivity);
         cw.startService(new Intent(cw, service));
         BaseServiceConnection serviceBinder = new BaseServiceConnection(callback);
-        if (cw.bindService((new Intent()).setClass(cw, service), callback, 0)) {
+        if (cw.bindService((new Intent()).setClass(cw, service), serviceBinder, 0)) {
             sConnectionMap.put(cw, serviceBinder);
             return new ServiceToken(cw);
         }

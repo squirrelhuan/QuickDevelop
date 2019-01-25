@@ -21,7 +21,7 @@ public class BaseServiceConnection implements ServiceConnection {
 
     @Override
     public void onServiceConnected(ComponentName className, IBinder iBinder) {
-        ServiceHelper.mService = IBaseService.Stub.asInterface(iBinder);
+        //ServiceHelper.mService = IBaseService.Stub.asInterface(iBinder);
         if (mCallback != null)
             mCallback.onServiceConnected(className, iBinder);
     }
