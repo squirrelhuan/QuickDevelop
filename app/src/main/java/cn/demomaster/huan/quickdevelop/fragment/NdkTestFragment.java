@@ -71,12 +71,12 @@ public class NdkTestFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 // Bind to Service
-                //mToken = ServiceHelper.bindToService(getActivity(),GuardService.class, serviceConnection);
+                mToken = ServiceHelper.bindToService(getActivity(),MessageService.class, serviceConnection);
                 //getActivity().startService(new Intent(getContext(),BaseService.class));
 
                 Intent mIntent = new Intent();
                 mIntent.setClass(mContext, MessageService.class);
-                mContext.startService(mIntent);
+                //mContext.startService(mIntent);
             }
         });
 

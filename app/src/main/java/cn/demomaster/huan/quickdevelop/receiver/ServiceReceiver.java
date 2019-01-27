@@ -35,7 +35,7 @@ public class ServiceReceiver extends BroadcastReceiver {
 
         Intent intent1 = new Intent();
         intent1.setClass( context , GuardService.class);
-        context.startService( intent1 );
+       // context.startService( intent1 );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent1);
         } else {
