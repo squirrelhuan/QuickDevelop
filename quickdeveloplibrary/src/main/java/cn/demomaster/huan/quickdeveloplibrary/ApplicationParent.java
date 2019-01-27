@@ -9,6 +9,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 
@@ -27,7 +28,7 @@ public class ApplicationParent extends Application {
         SharedPreferencesHelper.init(this);
         initDB();
         ActivityManager.init(this);
-
+        NotifycationHelper.getInstance().init(this);
 
 
     }

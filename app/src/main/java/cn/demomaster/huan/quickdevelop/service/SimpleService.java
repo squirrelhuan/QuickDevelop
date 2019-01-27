@@ -24,6 +24,10 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 public class SimpleService extends BaseService {
 
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
     public int index;
 

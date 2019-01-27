@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 
 import java.util.HashMap;
 
@@ -24,7 +25,12 @@ public class ServiceHelper {
      */
     public static ServiceToken bindToService(Activity realActivity, Class service,ServiceConnection callback){
         ContextWrapper cw = new ContextWrapper(realActivity);
-        cw.startService(new Intent(cw, service));
+        //cw.startService(new Intent(cw, service));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            cw.startForegroundService(new Intent(cw, service));
+        } else {
+            cw.startService(new Intent(cw, service));
+        }
         BaseServiceConnection serviceBinder = new BaseServiceConnection(callback);
         if (cw.bindService((new Intent()).setClass(cw, service), serviceBinder, 0)) {
             sConnectionMap.put(cw, serviceBinder);

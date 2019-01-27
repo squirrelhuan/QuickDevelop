@@ -103,8 +103,8 @@ public class BaseService extends Service {
         baseBinder=new BaseBinder(this);
         return baseBinder;
     }
-    private final IBinder mBinder = new ServiceStub(this);
 
+    private final IBinder mBinder = new ServiceStub(this);
     public static BaseBinder baseBinder;
     public static class BaseBinder extends Binder {
         private Service service;

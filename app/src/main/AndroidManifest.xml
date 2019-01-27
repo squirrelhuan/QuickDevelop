@@ -63,13 +63,38 @@
 
         <service
             android:name=".service.SimpleService"
-            android:enabled="true" />
-        <!--<receiver android:name=".receiver.AppReceiver">
+            android:enabled="true"
+            android:process=":guard"/>
+
+        <!-- Message Service -->
+        <service android:name=".service.MessageService"/>
+        <service
+            android:name=".service.GuardService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000"
+            android:process=":guard"/>
+        <receiver
+            android:name=".receiver.ServiceReceiver"
+            android:priority="1000"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                &lt;!&ndash;<action android:name="ConnectivityManager.CONNECTIVITY_ACTION"/>//这样写是不对的&ndash;&gt;
-                <action android:name="cn.demomaster.huan.quickdeveloplibrary.receiver" />//此处必需指定action，否则监听不到
+                <action android:name="cn.demomaster.huan.quickdevelop.service"/>
             </intent-filter>
-        </receiver>-->
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.UploadFilesIntentService"/>
     </application>
 
 </manifest>
