@@ -42,7 +42,6 @@ public class QDNestedFixedView extends FrameLayout {
     private int minHeight = 100;
     private int maxHeight;
     private float progress;
-
     public float getProgress() {
         progress =  (float)(getMeasuredHeight()-minHeight)/(float)(maxHeight-minHeight);
         Log.d(TAG, "getProgress: "+progress+",getMeasuredHeight="+getMeasuredHeight()+",maxHeight="+maxHeight+",minHeight="+minHeight);
