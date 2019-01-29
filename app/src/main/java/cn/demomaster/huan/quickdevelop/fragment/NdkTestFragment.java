@@ -39,9 +39,9 @@ public class NdkTestFragment extends BaseFragment {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder iBinder) {
-           BaseService.BaseBinder baseBinder = (BaseService.BaseBinder) iBinder;
+           /*BaseService.BaseBinder baseBinder = (BaseService.BaseBinder) iBinder;
             SimpleService simpleService = (SimpleService) baseBinder.getService();
-            simpleService.setText("yes");
+            simpleService.setText("yes");*/
         }
 
         @Override
@@ -74,8 +74,8 @@ public class NdkTestFragment extends BaseFragment {
                 mToken = ServiceHelper.bindToService(getActivity(),MessageService.class, serviceConnection);
                 //getActivity().startService(new Intent(getContext(),BaseService.class));
 
-                Intent mIntent = new Intent();
-                mIntent.setClass(mContext, MessageService.class);
+                //Intent mIntent = new Intent();
+               // mIntent.setClass(mContext, MessageService.class);
                 //mContext.startService(mIntent);
             }
         });

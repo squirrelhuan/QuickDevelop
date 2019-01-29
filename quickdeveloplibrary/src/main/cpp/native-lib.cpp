@@ -88,6 +88,7 @@ int child_create_channel() {
         LOGE("绑定错误");
         return 0;
     }
+    LOGE("unlink nest");
 
     //最多同时连接5个
     listen(listenfd, 5);
@@ -108,7 +109,7 @@ int child_create_channel() {
 
 
         m_child = connfd;
-        LOGE("apk 父进程连接上 %s" , m_child);
+        LOGE("apk 父进程连接上 %d" , m_child);
         break;
     }
     return 1;

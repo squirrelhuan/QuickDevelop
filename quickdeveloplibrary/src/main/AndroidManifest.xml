@@ -35,10 +35,9 @@
             android:name=".helper.simplepicture.PreviewActivity"
             android:label="" />
 
-
         <service
             android:name=".jni.BaseService"
-            android:enabled="true" />
+            android:enabled="true"/>
         <!-- 包含provider会引用依赖包名作为apk包名，引发冲突 <provider
              android:name="android.support.v4.content.FileProvider"
              android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"

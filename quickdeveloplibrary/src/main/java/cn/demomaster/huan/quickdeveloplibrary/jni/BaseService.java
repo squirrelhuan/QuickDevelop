@@ -34,15 +34,16 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "BaseService onCreate" + index);
         if(baseBinder==null)
         baseBinder = new BaseBinder(this);
-        String packageName = getApplicationContext().getPackageName();
+       /* String packageName = getApplicationContext().getPackageName();
         String serviceName = this.getClass().getName();
         Log.i(TAG, "packageName=" + packageName+",serviceName="+serviceName);
         Watcher watcher = new Watcher();
         watcher.createWatcher(String.valueOf(Process.myUid()),packageName,serviceName);
         watcher.connectMonitor();
-        Log.i(TAG, "守护进程已启动" + index);
+        Log.i(TAG, "守护进程已启动" + index);*/
        /*final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -73,7 +74,24 @@ public class BaseService extends Service {
 
     }
 
-   public static class ServiceStub extends IBaseService.Stub {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "BaseService onStartCommand" + index);
+
+
+
+        //return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "BaseService onDestroy" + index);
+        super.onDestroy();
+       // startService(new Intent(getApplicationContext(), this.getClass()));
+    }
+
+    public static class ServiceStub extends IBaseService.Stub {
         WeakReference<Service> mService;
 
         ServiceStub(Service service) {
@@ -97,10 +115,17 @@ public class BaseService extends Service {
     }
 
     @Override
+    public boolean onUnbind(Intent intent) {
+        Log.i(TAG, "BaseService onUnbind" + index);
+        return super.onUnbind(intent);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         //Toast.makeText(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
         if(baseBinder==null)
         baseBinder=new BaseBinder(this);
+        Log.i(TAG, "BaseService onBind" + index);
         return baseBinder;
     }
 
