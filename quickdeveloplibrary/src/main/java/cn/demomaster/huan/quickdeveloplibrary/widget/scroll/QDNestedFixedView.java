@@ -38,7 +38,6 @@ public class QDNestedFixedView extends FrameLayout {
             }
         });
     }
-
     private int minHeight = 100;
     private int maxHeight;
     private float progress;
