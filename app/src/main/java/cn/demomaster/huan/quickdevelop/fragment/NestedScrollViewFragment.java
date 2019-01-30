@@ -76,25 +76,29 @@ public class NestedScrollViewFragment extends BaseFragment {
         qdNestedScrollParent.getFixedView().setOnVisibleHeightChangeListener(new QDNestedFixedView.OnVisibleHeightChangeListener() {
             @Override
             public void onChange(final int dx, final int dy) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        headHeight = headHeight + dy;
-                        if(headHeight > qdNestedScrollParent.getFixedView().getMinHeight()){
-                            //headHeight = qdNestedScrollParent.getFixedView().getMinHeight();
-                        }
-                        if (headHeight < qdNestedScrollParent.getFixedView().getMaxHeight()) {
-                            Log.i(TAG, "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
-                            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) iv_head.getLayoutParams();
-                            FrameLayout.LayoutParams layoutParams2 = new FrameLayout.LayoutParams(layoutParams.width, headHeight);
-                            //layoutParams2.setMargins((int) (QMUIDisplayHelper.getScreenWidth(mContext)/2*qdNestedScrollParent.getFixedView().getProgress()-iv_head.getWidth()/2),0,0,0);
-                            layoutParams2.leftMargin = (int) (QMUIDisplayHelper.getScreenWidth(mContext) / 2 * (qdNestedScrollParent.getFixedView().getProgress()) - iv_head.getWidth() / 2);
-                            iv_head.setLayoutParams(layoutParams2);
-                            //iv_head.setLeft(QMUIDisplayHelper.getScreenWidth(mContext)/2-iv_head.getWidth()/2);
-                            //iv_head.requestLayout();
-                        }
-                    }
-                });
+
+                Log.i(TAG, ",headHeight=" + headHeight);
+                if (headHeight + dy <= qdNestedScrollParent.getFixedView().getMinHeight()) {
+                    headHeight = qdNestedScrollParent.getFixedView().getMinHeight();
+                } else if (headHeight + dy >= qdNestedScrollParent.getFixedView().getMaxHeight()) {
+                    headHeight = qdNestedScrollParent.getFixedView().getMaxHeight();
+                } else {
+                    headHeight = headHeight + dy;
+                }
+                Log.i(TAG, "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) iv_head.getLayoutParams();
+                layoutParams.height = headHeight;
+                iv_head.setLayoutParams(layoutParams);
+                int l = (int) (QMUIDisplayHelper.getScreenWidth(mContext) / 2 * (qdNestedScrollParent.getFixedView().getProgress()) - (qdNestedScrollParent.getFixedView().getMaxHeight() / 2 - iv_head.getWidth() / 2) * (1 - qdNestedScrollParent.getFixedView().getProgress()));
+                layoutParams.leftMargin = (int) (l - iv_head.getWidth() / 2);
+              /*  if (layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2) {
+                    Log.i(TAG, layoutParams.leftMargin+">>>>"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
+                } else {
+                    Log.i(TAG, layoutParams.leftMargin+"<<<<"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
+                }*/
+                layoutParams.leftMargin = layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2 ? layoutParams.leftMargin : -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2;
+                Log.i(TAG, "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight + "layoutParams.leftMargin=" + layoutParams.leftMargin);
+
 
             }
         });
