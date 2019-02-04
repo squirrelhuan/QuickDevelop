@@ -47,6 +47,7 @@ public class QDActionDialog extends Dialog {
 
         contentView = new LinearLayout(builder.context);
         contentView.setOrientation(LinearLayout.VERTICAL);
+        delayMillis =builder.delayMillis;
 
         //新建一个Drawable对象
         QDividerDrawable drawable_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
@@ -123,6 +124,7 @@ public class QDActionDialog extends Dialog {
         setContentView(layout, layoutParams);
     }
 
+    private int delayMillis = 1500;
     @Override
     public void show() {
         super.show();
@@ -131,7 +133,7 @@ public class QDActionDialog extends Dialog {
             public void run() {
                 dismiss();
             }
-        },1500);
+        },delayMillis);
     }
 
     public static enum StateType {
@@ -145,6 +147,7 @@ public class QDActionDialog extends Dialog {
         private StateType stateType = StateType.TEXT;
         private int leftImage;
         private int topImage;
+        private int delayMillis = 1500;
 
 
         public Builder(Context context) {
@@ -192,6 +195,11 @@ public class QDActionDialog extends Dialog {
         public Builder setTopImage(int topImage) {
             this.topImage = topImage;
             this.stateType = StateType.TOPIMAGE;
+            return this;
+        }
+
+        public Builder setDelayMillis(int delayMillis) {
+            this.delayMillis = delayMillis;
             return this;
         }
 
