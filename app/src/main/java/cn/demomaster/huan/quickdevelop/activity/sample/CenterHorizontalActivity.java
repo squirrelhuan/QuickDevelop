@@ -36,10 +36,10 @@ public class CenterHorizontalActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_center_horizental);
 
-        init();
+        //init();
         initHorizontal();
-        setUpRecyclerView();
-        initSlidingView();
+        //setUpRecyclerView();
+        //initSlidingView();
     }
 
     //  SnapHelper snapHelperCenter = new LinearSnapHelper();
@@ -66,12 +66,35 @@ public class CenterHorizontalActivity extends BaseActivityParent {
             }
         });
         autoCenterHorizontalScrollView.setCurrentIndex(39);
+
+
+        AutoCenterHorizontalScrollView achs_test2;
+        achs_test2 = findViewById(R.id.achs_test2);
+        //测试用的随机字符串集合
+        List<String> names2 =new ArrayList<>();
+        for(int i=0;i<50;i++){
+            String a = ""+i;
+            for(int j=0;j<i%4;j++){
+                a=a+"A";
+            }
+            names2.add(a);
+        }
+        //adapter去处理itemView
+        HorizontalAdapter hadapter2 = new HorizontalAdapter(mContext,names2);
+        achs_test2.setAdapter(hadapter2);
+        achs_test2.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
+            @Override
+            public void onSelectChange(int position) {
+                ((TextView) findViewById(R.id.tv_index2)).setText("当前"+position);
+            }
+        });
+        achs_test2.setCurrentIndex(16);
     }
 
     private SlidingTabLayout id_sliding_view;
     private void initSlidingView() {
-        id_sliding_view =  findViewById(R.id.id_sliding_view);
-        id_sliding_view.setViewPager(null);
+        //id_sliding_view =  findViewById(R.id.id_sliding_view);
+        //id_sliding_view.setViewPager(null);
       /*  SlidingTabView slidingTabView = new SlidingTabView(mContext);
         for(int i=0;i<50;i++){
            TextView textView = new TextView(mContext);
@@ -85,7 +108,7 @@ public class CenterHorizontalActivity extends BaseActivityParent {
     private AppListAdapter appListCenterAdapter;
     private void setUpRecyclerView() {
 
-        centerSnapRecyclerView = findViewById(R.id.centerSnapRecyclerView);
+        //centerSnapRecyclerView = findViewById(R.id.centerSnapRecyclerView);
 
         LinearLayoutManager layoutManagerCenter
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -105,7 +128,7 @@ public class CenterHorizontalActivity extends BaseActivityParent {
     ViewPager view_pager_tag;
     private SampleFragmentAdapter adapter;
     private void init() {
-        view_pager_tag = findViewById(R.id.view_pager_hor);
+        //view_pager_tag = findViewById(R.id.view_pager_hor);
         view_pager_tag.setClipChildren(false); //VP的内容可以不在限制内绘制
         List<String> list = new ArrayList<>();
         for (int i=0;i<30;i++){

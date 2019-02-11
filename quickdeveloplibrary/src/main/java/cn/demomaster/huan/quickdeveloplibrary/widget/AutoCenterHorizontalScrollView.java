@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -41,6 +42,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         super.addView(child);
         init();
     }
+
 
     /**
      * itemView适配器很随意
@@ -142,24 +144,34 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         if (getChildCount() <= 0) {
             return;
         }
-        ViewGroup viewGroup = (ViewGroup) getChildAt(0);
-        if (viewGroup == null || viewGroup.getChildCount() == 0) {
-            return;
-        }
-        //一下代码是设置padding,实现第一个itemview和最后一个能够居中
-        View first = viewGroup.getChildAt(0);
-        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        first.measure(w, h);
-        int first_width = first.getMeasuredWidth();
-        View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
-        last.measure(w, h);
-        int last_width = last.getMeasuredWidth();
-        paddingLeft = getScreenWidth(getContext()) / 2 - first_width / 2;
-        paddingRight = getScreenWidth(getContext()) / 2 - last_width / 2;
-        setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
-        //设置默认位置
-        setCurrentIndex(currentIndex);
+
+
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                ViewGroup viewGroup = (ViewGroup) getChildAt(0);
+                if (viewGroup == null || viewGroup.getChildCount() == 0) {
+                    return;
+                }
+                //一下代码是设置padding,实现第一个itemview和最后一个能够居中
+                View first = viewGroup.getChildAt(0);
+                int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                first.measure(w, h);
+                int first_width = first.getMeasuredWidth();
+                View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
+                last.measure(w, h);
+                int last_width = last.getMeasuredWidth();
+                paddingLeft = getWidth() / 2 - first_width / 2;
+                paddingRight = getWidth() / 2 - last_width / 2;
+                setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
+                //设置默认位置
+                setCurrentIndex(currentIndex);
+            }
+        });
     }
 
     /**
@@ -213,7 +225,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     @Override
     protected int computeHorizontalScrollRange() {
         Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
-        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getScreenWidth(getContext())));
+        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getWidth()));
         return super.computeHorizontalScrollRange() + paddingLeft + paddingRight;
     }
 
@@ -293,7 +305,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int child_width = child.getWidth();
 
             offset_tmp = offset_tmp + child_width;
-            if (offset_tmp > offset_current) {
+            if (offset_tmp >= offset_current+ viewGroup.getChildAt(0).getWidth() / 2) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
                 setCurrent(i);
                 break;

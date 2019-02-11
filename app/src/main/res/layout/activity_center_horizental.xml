@@ -40,15 +40,48 @@
     <TextView
         android:id="@+id/tv_index"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="40dp"
         android:textColor="@color/white"
         android:background="@color/gray"
         android:text="ViewPager"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <View
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:background="@color/red"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
+        <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
+            android:id="@+id/achs_test2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
+
+        </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+
+
+    </LinearLayout>
     <TextView
+        android:id="@+id/tv_index2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:background="@color/gray"
+        android:text="ViewPager"/>
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ViewPager"/>
@@ -61,21 +94,21 @@
         android:layout_marginBottom="20dp"
         android:overScrollMode="never"
         android:background="@color/transparent"
-        android:clipChildren="false" />
+        android:clipChildren="false" />-->
 
-    <android.support.v7.widget.RecyclerView
+    <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/centerSnapRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="4dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>-->
 
-    <cn.demomaster.huan.quickdevelop.view.SlidingTabLayout
+   <!-- <cn.demomaster.huan.quickdevelop.view.SlidingTabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/id_sliding_view"/>
+        android:id="@+id/id_sliding_view"/>-->
 
 
 </LinearLayout>
