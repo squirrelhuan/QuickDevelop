@@ -74,22 +74,22 @@ public class QDActionDialogActivity extends BaseActivityParent {
                 QDActionDialog qdActionDialog =null;
                 qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setMessage(listItems[position]).create();
                 switch (position) {
-                    case 0:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.LOADING).setMessage(listItems[position]).create();
+                    case 0://Loading 类型提示框
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.LOADING).setMessage(listItems[position]).setDelayMillis(-1).create();
                         break;
-                    case 1:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.COMPLETE).setMessage(listItems[position]).create();
+                    case 1://成功提示类型提示框
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.COMPLETE).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
-                    case 2:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.ERROR).setMessage(listItems[position]).create();
+                    case 2://失败提示类型提示框
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.ERROR).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
-                    case 3:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.WARNING).setMessage(listItems[position]).create();
+                    case 3://信息提示类型提示框
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.WARNING).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
-                    case 4:
+                    case 4://顶部图片类型提示框
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.ic_launcher).setMessage(listItems[position]).create();
                         break;
-                    case 5:
+                    case 5://左侧图片类型提示框
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setLeftImage(R.mipmap.ic_launcher).setMessage(listItems[position]).create();
                         break;
                     case 6:
@@ -115,7 +115,7 @@ public class QDActionDialogActivity extends BaseActivityParent {
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setmCancelable(false).setBackgroundRadius(50).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
                         break;
                     case 12:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundColor(0x33ff0600).setBackgroundRadius(50).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundColor(0x33ff0600).setBackgroundRadius(50).setTopViewClass(LoadingCircleView.class).setDelayMillis(5000).create();
                         break;
                     case 13:
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setDimAmount(0.5f).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
