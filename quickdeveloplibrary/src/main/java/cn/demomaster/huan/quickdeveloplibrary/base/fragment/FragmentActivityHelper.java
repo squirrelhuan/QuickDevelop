@@ -107,9 +107,8 @@ public class FragmentActivityHelper {
                     .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
                     .replace(R.id.qd_fragment_content_view, fragment)//android.R.id.content
                     .addToBackStack("A")
-                   .commitAllowingStateLoss();// .commit();
+                   .commitAllowingStateLoss();//.commit();会报错，commitAllowingStateLoss不会报错，activity状态可能会丢失
         }
-
     }
 
     public ActionBarLayoutInterface getActionBarLayoutInterface() {

@@ -167,7 +167,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 int last_width = last.getMeasuredWidth();
                 paddingLeft = getWidth() / 2 - first_width / 2;
                 paddingRight = getWidth() / 2 - last_width / 2;
-                setPadding(paddingLeft, getPaddingTop(), paddingRight, getBottom());
+                setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
                 //设置默认位置
                 setCurrentIndex(currentIndex);
             }

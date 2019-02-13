@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class LoadingDialog extends Dialog {
         private LayoutInflater inflater;
         private LoadingDialog dialog;
         private int showType;//显示模式
+        private int backgroundColor = 0x00000000;
+        private Drawable background;
 
         public final static int Loading_Builer_Only_Image = 0;
         public final static int Loading_Builer_Image_And_Text = 1;
@@ -51,12 +54,25 @@ public class LoadingDialog extends Dialog {
             return this;
         }
 
+        public Builder setBackgroundColor(int backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public Builder setBackground(Drawable background) {
+            this.background = background;
+            return this;
+        }
+
         public LoadingDialog create() {
             if (contentView == null) {//默认loading视图
                 contentView = inflater.inflate(R.layout.layout_dialog_loading_default, null);
                 if (message != null) {
+                    ((TextView)contentView.findViewById(R.id.tv_message)).setVisibility(View.VISIBLE);
                     ((TextView)contentView.findViewById(R.id.tv_message)).setText(message);
                     showType = 1;
+                }else {
+                    ((TextView)contentView.findViewById(R.id.tv_message)).setVisibility(View.GONE);
                 }
                 switch (showType) {
                     case Loading_Builer_Only_Image://加载动画
@@ -64,6 +80,9 @@ public class LoadingDialog extends Dialog {
                     case Loading_Builer_Image_And_Text://图文并茂
                         break;
                 }
+
+                if(backgroundColor!=-1) contentView.setBackgroundColor(backgroundColor);
+                if(background!=null) contentView.setBackground(background);
             }
             if (!canTouch) {
                 dialog.setCancelable(true);     //用户可以点击手机Back键取消对话框显示

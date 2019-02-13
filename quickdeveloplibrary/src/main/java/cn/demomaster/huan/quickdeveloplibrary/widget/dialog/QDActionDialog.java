@@ -6,8 +6,12 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,6 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIViewHelper;
@@ -37,11 +45,37 @@ public class QDActionDialog extends Dialog {
         init();
     }
 
+    @Override
+    public void setCancelable(boolean flag) {
+        super.setCancelable(flag);
+        builder.mCancelable = flag;
+    }
+
     private LinearLayout contentView;
     private void init() {
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        getWindow().setDimAmount(0f);
-        setCancelable(true);
+        Window win = getWindow();
+        if(builder.backgroundColor != Color.TRANSPARENT){
+            win.getDecorView().setPadding(0, 0, 0, 0);
+            win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+            win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        }
+        // 在底部，宽度撑满
+        WindowManager.LayoutParams params = win.getAttributes();
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.gravity =  builder.gravity;
+        win.setAttributes(params);
+        //getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        //新建一个Drawable对象
+        QDividerDrawable drawable_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
+        //drawable_bg.setCornerRadii(builder.backgroundRadius);
+        drawable_bg.setBackGroundColor(builder.backgroundColor);
+
+        win.setBackgroundDrawable(drawable_bg);
+        win.setDimAmount(builder.dimAmount);
+        setCancelable(builder.mCancelable);
         int p = DisplayUtil.dip2px(getContext(), 15);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -50,12 +84,11 @@ public class QDActionDialog extends Dialog {
         delayMillis =builder.delayMillis;
 
         //新建一个Drawable对象
-        QDividerDrawable drawable_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
-        drawable_bg.setCornerRadii(builder.backgroundRadius);
-        drawable_bg.setBackGroundColor(builder.backgroundColor);
-        contentView.setBackground(drawable_bg);
-        Window win = getWindow();
-        win.getDecorView().setPadding(0, 0, 0, 0);
+        QDividerDrawable drawable_content_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
+        drawable_content_bg.setCornerRadii(builder.backgroundRadius);
+        drawable_content_bg.setBackGroundColor(builder.contentbackgroundColor);
+        contentView.setBackground(drawable_content_bg);
+
         WindowManager.LayoutParams lp = win.getAttributes();
         contentView.setGravity(Gravity.CENTER);
         int w = QMUIDisplayHelper.getScreenWidth(builder.context)/3;
@@ -105,6 +138,70 @@ public class QDActionDialog extends Dialog {
                 imageView.setPadding(0,0,DisplayUtil.dip2px(builder.context,5),0);
                 contentView.addView(imageView);
             }
+            if(builder.stateType==StateType.LEFTVIEWCLASS){
+                contentView.setOrientation(LinearLayout.HORIZONTAL);
+                View imageView =null;
+                if(View.class.isAssignableFrom(builder.leftViewClass)){
+                    try {
+                        //无参数 imageView = (View) builder.leftViewClass.newInstance();
+                        //有参数需要使用Constructor类对象
+                        //这种方式和下面这种方式都行，注意这里的参数类型是 new Class[]
+                        Constructor ct=builder.leftViewClass.getDeclaredConstructor(new Class[]{Context.class});
+                        ct.setAccessible(true);
+                        imageView = (View) ct.newInstance(new Object[] {builder.context});
+                        //imageView.setPadding(0,0,DisplayUtil.dip2px(builder.context,3),0);
+                        //imageView.setMinimumHeight(DisplayUtil.dip2px(builder.context,3));
+                        //imageView.setMinimumWidth(DisplayUtil.dip2px(builder.context,3));
+                        ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(l/2,l/2);
+                        contentView.addView(imageView,layoutParams1);
+                    }catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if(builder.stateType==StateType.TOPVIEWCLASS){
+                contentView.setOrientation(LinearLayout.VERTICAL);
+                View imageView =null;
+                if(View.class.isAssignableFrom(builder.topViewClass)){
+                    try {
+                        //无参数 imageView = (View) builder.leftViewClass.newInstance();
+                        //有参数需要使用Constructor类对象
+                        //这种方式和下面这种方式都行，注意这里的参数类型是 new Class[]
+                        Constructor ct=builder.topViewClass.getDeclaredConstructor(new Class[]{Context.class});
+                        ct.setAccessible(true);
+                        imageView = (View) ct.newInstance(new Object[] {builder.context});
+                        //imageView.setPadding(0,0,DisplayUtil.dip2px(builder.context,15),0);
+                        //imageView.setMinimumHeight(DisplayUtil.dip2px(builder.context,5));
+                        //imageView.setMinimumWidth(DisplayUtil.dip2px(builder.context,5));
+                        ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(l,l);
+                        contentView.addView(imageView,layoutParams1);
+                    }catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if(builder.stateType==StateType.CONTENTVIEW){
+                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                contentView.addView(builder.contentView,layoutParams1);
+            }
+            if(builder.stateType==StateType.CONTENTVIEWID){
+                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                View view = LayoutInflater.from(builder.context).inflate(builder.contentViewLayoutID,null,false);
+                contentView.addView(view,layoutParams1);
+            }
+
         }
         if(builder.message!=null) {
             TextView textView = new TextView(builder.context);
@@ -120,8 +217,19 @@ public class QDActionDialog extends Dialog {
         contentView.setPadding(p,p,p,p);
 
         ViewGroup layout = new RelativeLayout(getContext());
+        ((RelativeLayout) layout).setGravity(builder.gravity);
         layout.addView(contentView, layoutParams);
-        setContentView(layout, layoutParams);
+        layout.setBackgroundColor(builder.backgroundColor);
+        if(builder.mCancelable){
+            layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    dismiss();
+                    return false;
+                }
+            });
+        }
+        setContentView(layout, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     private int delayMillis = 1500;
@@ -137,17 +245,29 @@ public class QDActionDialog extends Dialog {
     }
 
     public static enum StateType {
-        COMPLETE, WARNING, ERROR,LOADING,IMAGE,TEXT,TOPIMAGE,LEFTIMAGE
+        COMPLETE, WARNING, ERROR,LOADING,IMAGE,TEXT,TOPIMAGE,LEFTIMAGE,TOPVIEW,LEFTVIEW,TOPVIEWCLASS,LEFTVIEWCLASS,CONTENTVIEW,CONTENTVIEWID
     }
     public static class Builder {
+        public int gravity = Gravity.CENTER;
         private Context context;
         private String message;
-        private int backgroundColor = Color.WHITE;
+        private float dimAmount = .0f;
+        private int backgroundColor = Color.TRANSPARENT;
+        private int contentbackgroundColor = Color.WHITE;
         private float[] backgroundRadius=new float[8];
         private StateType stateType = StateType.TEXT;
         private int leftImage;
         private int topImage;
+        private View leftView;
+        private View topView;
+        private Class leftViewClass;
+        private Class topViewClass;
         private int delayMillis = 1500;
+        private int imageHeight;
+        private int imageWidth;
+        private View contentView;
+        private int contentViewLayoutID;
+        private boolean mCancelable = true;
 
 
         public Builder(Context context) {
@@ -164,9 +284,41 @@ public class QDActionDialog extends Dialog {
             return this;
         }
 
+        public Builder setmCancelable(boolean mCancelable) {
+            this.mCancelable = mCancelable;
+            return this;
+        }
+
+        public Builder setGravity(int gravity) {
+            this.gravity = gravity;
+            this.stateType = StateType.CONTENTVIEW;
+            return this;
+        }
+
+        public Builder setContentView(View contentView) {
+            this.contentView = contentView;
+            this.stateType = StateType.CONTENTVIEW;
+            return this;
+        }
+
+        public Builder setContentViewLayout(int contentViewLayout) {
+            this.contentViewLayoutID = contentViewLayout;
+            this.stateType = StateType.CONTENTVIEWID;
+            return this;
+        }
+
+        public Builder setDimAmount(float dimAmount) {
+            this.dimAmount = dimAmount;
+            return this;
+        }
 
         public Builder setBackgroundColor(int backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public Builder setContentbackgroundColor(int contentbackgroundColor) {
+            this.contentbackgroundColor = contentbackgroundColor;
             return this;
         }
 
@@ -179,6 +331,38 @@ public class QDActionDialog extends Dialog {
         public Builder setBackgroundRadius(float[] backgroundRadius) {
             this.backgroundRadius = backgroundRadius;
             return this;
+        }
+
+        public Builder setLeftView(View leftView) {
+            this.leftView = leftView;
+            this.stateType = StateType.LEFTVIEW;
+            return this;
+        }
+
+        public Builder setTopView(View topView) {
+            this.topView = topView;
+            this.stateType = StateType.TOPVIEW;
+            return this;
+        }
+
+        public Builder setLeftViewClass(Class leftViewClass) {
+            this.leftViewClass = leftViewClass;
+            this.stateType = StateType.LEFTVIEWCLASS;
+            return this;
+        }
+
+        public Builder setTopViewClass(Class topViewClass) {
+            this.topViewClass = topViewClass;
+            this.stateType = StateType.TOPVIEWCLASS;
+            return this;
+        }
+
+        public View getLeftView() {
+            return leftView;
+        }
+
+        public View getTopView() {
+            return topView;
         }
 
         public Builder setStateType(StateType stateType) {

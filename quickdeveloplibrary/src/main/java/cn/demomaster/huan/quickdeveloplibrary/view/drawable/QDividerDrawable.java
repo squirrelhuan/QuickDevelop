@@ -13,7 +13,7 @@ import java.util.List;
 public class QDividerDrawable extends GradientDrawable {
 
     private int mStrokeWidth = 1;
-    private int mStrokeColors = Color.GRAY;
+    private int mStrokeColors = Color.TRANSPARENT;
     private int backGroundColor = Color.TRANSPARENT;
     /**
      * 圆角大小是否自适应为 View 的高度的一般
