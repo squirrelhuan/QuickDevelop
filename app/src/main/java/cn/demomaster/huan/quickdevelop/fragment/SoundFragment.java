@@ -58,6 +58,13 @@ public class SoundFragment extends BaseFragment {
                 play(3);
             }
         });
+        Button button4 = mView.findViewById(R.id.btn_play4);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                play();
+            }
+        });
 
         return mView;
     }
@@ -74,6 +81,10 @@ public class SoundFragment extends BaseFragment {
     private void play(int index) {
         SoundHelper.getInstance().playByIndex(index);
         //SoundHelper.getInstance().playByResID(R.raw.beep);
+    }
+
+    private void play(){
+        SoundHelper.getInstance().playByResID(R.raw.pikaqiu);
     }
 
 }
