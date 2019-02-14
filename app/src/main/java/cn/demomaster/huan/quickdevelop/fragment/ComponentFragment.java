@@ -82,6 +82,7 @@ public class ComponentFragment extends Fragment {
         classList.add(AudioRecordFragment.class);
         classList.add(NdkTestFragment.class);
         classList.add(NestedScrollViewFragment.class);
+        classList.add(SoundFragment.class);
 
 
 

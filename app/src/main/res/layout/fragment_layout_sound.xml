@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+
+       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+           android:id="@+id/btn_play1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="播放1"/>
+       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+           android:id="@+id/btn_play2"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="播放2"/>
+       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+           android:id="@+id/btn_play3"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="播放3"/>
+
+
+
+</LinearLayout>
