@@ -81,10 +81,10 @@ public class QDialogActivity extends BaseActivityParent {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 0:
+                    case 0://简单提示框
                         showMessage();
                         break;
-                    case 1:
+                    case 1://简单提示框(带标题)
                         showMessage1();
                         break;
                     case 2:
