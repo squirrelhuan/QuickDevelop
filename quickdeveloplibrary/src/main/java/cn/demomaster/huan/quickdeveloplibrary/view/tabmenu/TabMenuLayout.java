@@ -142,6 +142,10 @@ public class TabMenuLayout extends LinearLayout {
 
     }
 
+    public PopupWindow getPopupWindow() {
+        return popupWindow;
+    }
+
     private PopupWindow popupWindow;
     private RecyclerView recy_tab_content;
     private TabMenuAdapter adapter;
