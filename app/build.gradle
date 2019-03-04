@@ -31,10 +31,10 @@ android {
     //友盟分享
     signingConfigs {
         debug {
-            storeFile file('cgqsigned.jks')
-            storePassword "4772317999"
-            keyAlias "cgqsigned"
-            keyPassword "4772317999"
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
         }
     }
 
