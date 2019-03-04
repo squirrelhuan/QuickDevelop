@@ -23,21 +23,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         //友盟分享
-        /*debug{
+        debug{
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles 'proguard-rules.pro'
-        }*/
+        }
     }
     //友盟分享
-/*    signingConfigs {
+    signingConfigs {
         debug {
             storeFile file('debug.keystore')
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
-    }*/
+    }
 
     externalNativeBuild {
         cmake {
