@@ -189,7 +189,7 @@ public class RatingBar extends View {
                 if (canTouch) {
                     progress = (float) motionEvent.getX() / width;
                 }
-                return false;
+                return true;
             }
         });
     }
