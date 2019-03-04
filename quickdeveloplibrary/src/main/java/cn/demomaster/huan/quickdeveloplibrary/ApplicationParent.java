@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
+//import com.umeng.commonsdk.UMConfigure;
+//import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class ApplicationParent extends Application {
      */
     public void initUmengShare(String appkey) {
 
-        UMConfigure.init(this,appkey
+       /* UMConfigure.init(this,appkey
                 ,"umeng", UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
@@ -56,7 +56,7 @@ public class ApplicationParent extends Application {
         PlatformConfig.setKakao("e4f60e065048eb031e235c806b31c70f");
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
-        PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");
+        PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
         //PlatformConfig.setYnote("9c82bf470cba7bd2f1819b0ee26f86c6ce670e9b");
     }
 
