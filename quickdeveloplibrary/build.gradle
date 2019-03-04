@@ -71,7 +71,6 @@ dependencies {
     //沉浸式状态栏
     api 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     //implementation 'com.google.zxing:core:3.3.0'     //谷歌的zxing库
-
     /*添加依赖*/
     api 'com.github.yuzhiqiang1993:zxing:2.2.5'
 
