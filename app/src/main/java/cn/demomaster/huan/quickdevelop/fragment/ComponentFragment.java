@@ -31,8 +31,12 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonAct
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+
+import static com.umeng.socialize.utils.ContextUtil.getContext;
 
 
 /**
@@ -41,9 +45,20 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.ic_launcher)
-public class ComponentFragment extends Fragment {
+public class ComponentFragment extends BaseFragment {
     //Components
     View mView;
+
+    @Override
+    public ViewGroup getContentView(LayoutInflater inflater) {
+        return null;
+    }
+
+    @Override
+    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.getLeftView().setVisibility(View.GONE);
+    }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {

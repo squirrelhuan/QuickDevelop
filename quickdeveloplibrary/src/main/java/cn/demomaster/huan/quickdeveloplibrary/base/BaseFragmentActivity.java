@@ -65,6 +65,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
                 .commit();
     }
     public int getContentViewId(){
-       return R.id.qd_fragment_content_view;
+       return android.R.id.content;//R.id.qd_fragment_content_view;
     }
 }

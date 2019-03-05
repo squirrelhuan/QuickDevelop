@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".QDMainActivity">
+        <activity android:name=".QDMainFragmentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

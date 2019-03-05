@@ -111,6 +111,16 @@ public class FragmentActivityHelper {
         }
     }
 
+    public void startFragment(AppCompatActivity activity,Fragment fragment){
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
+                //.add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
+                .add(R.id.qd_fragment_content_view, fragment, fragment.getClass().getSimpleName())
+                .addToBackStack(fragment.getClass().getSimpleName())
+                .commit();
+    }
+
     public ActionBarLayoutInterface getActionBarLayoutInterface() {
         return actionBarLayoutInterface;
     }

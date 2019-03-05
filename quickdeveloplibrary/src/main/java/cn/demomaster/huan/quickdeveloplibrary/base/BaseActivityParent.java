@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
@@ -14,6 +16,11 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     private int layoutResID;
     private ActionBarLayout actionBarLayout;
     private OptionsMenu optionsMenu;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void setContentView(int layoutResID) {
