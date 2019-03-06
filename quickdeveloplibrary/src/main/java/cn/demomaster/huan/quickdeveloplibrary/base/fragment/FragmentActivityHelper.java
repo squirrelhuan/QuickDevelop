@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.BaseFragmentActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutInterface;
 
 /**
@@ -91,7 +92,7 @@ public class FragmentActivityHelper {
     public void remove() {
         if (activities != null && activities.size() > 0) {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
-            if (fragmentManager.getBackStackEntryCount() == 0) {
+            if (fragmentManager.getBackStackEntryCount() <= 1) {
                 FragmentActivity activity = activities.get(activities.size() - 1);
                 activity.finish();
                 unBindActivity(activity);
@@ -100,7 +101,7 @@ public class FragmentActivityHelper {
             }
         }
     }
-    public void startFragment(Fragment fragment){
+  /*  public void startFragment(Fragment fragment){
         if (activities != null && activities.size() > 0) {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -109,7 +110,7 @@ public class FragmentActivityHelper {
                     .addToBackStack("A")
                    .commitAllowingStateLoss();//.commit();会报错，commitAllowingStateLoss不会报错，activity状态可能会丢失
         }
-    }
+    }*/
 
     public void startFragment(AppCompatActivity activity,Fragment fragment){
         activity.getSupportFragmentManager()
@@ -132,5 +133,15 @@ public class FragmentActivityHelper {
         ViewGroup view = (ViewGroup)ac.getWindow().getDecorView();
         FrameLayout content = (FrameLayout)view.findViewById(android.R.id.content);
         return content.getChildAt(0);
+    }
+
+    public void onBackPressed(BaseFragmentActivity baseFragmentActivity) {
+        //contains
+        if(activities.contains(baseFragmentActivity)){
+            remove();
+            //FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
+            //fragmentManager.get
+            //baseFragmentActivity.onBackPressed();
+        }
     }
 }

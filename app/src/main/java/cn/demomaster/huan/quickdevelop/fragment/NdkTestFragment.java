@@ -86,7 +86,7 @@ public class NdkTestFragment extends BaseFragment {
     }
 
     @Override
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
 
     }
 

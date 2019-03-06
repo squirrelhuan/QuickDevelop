@@ -58,6 +58,11 @@ public class RouterFragment extends BaseFragment {
         return mView;
     }
 
+    @Override
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+
+    }
+
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
@@ -67,12 +72,11 @@ public class RouterFragment extends BaseFragment {
         actionBarLayout.setHeaderBackgroundColor(colors[i]);
     }
 
-
     private void opentFragment() {
-        FragmentActivityHelper.getInstance().startFragment(new RouterFragment());
+        FragmentActivityHelper.getInstance().startFragment(mContext,new RouterFragment());
     }
 
     private void startFragment(){
-        FragmentActivityHelper.getInstance().startFragment(new GuiderFragment());
+        FragmentActivityHelper.getInstance().startFragment(mContext,new GuiderFragment());
     }
 }

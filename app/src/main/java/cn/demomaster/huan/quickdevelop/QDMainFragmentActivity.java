@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,22 +24,24 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 
-
+/**
+ *
+ */
 public class QDMainFragmentActivity extends BaseActivityParent {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_qdmain);
-        setContentView(R.layout.activity_empty);
+        //setContentView(R.layout.activity_empty);
+        setContentView(-1);
         if (savedInstanceState == null) {
-            BaseFragment fragment = new ComponentFragment();
+            BaseFragment fragment = new MainFragment();
             FragmentActivityHelper.getInstance().startFragment( mContext,fragment);
         }
-
-        //getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        //getActionBarLayout().setHeaderBackgroundColor(Color.GRAY);
+        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
         //getActionBarLayout().getLeftView().setVisibility(View.GONE);
-
     }
 
 

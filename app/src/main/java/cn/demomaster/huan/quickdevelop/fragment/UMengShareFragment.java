@@ -89,11 +89,13 @@ public class UMengShareFragment extends BaseFragment {
     }
 
     @Override
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+
         Bundle bundle = getArguments();
         //actionBarLayout.setTitle(title+"---------ASDFGGHHJ");
         actionBarLayout.setHeaderBackgroundColor(Color.BLUE);
     }
+
 
 
 }

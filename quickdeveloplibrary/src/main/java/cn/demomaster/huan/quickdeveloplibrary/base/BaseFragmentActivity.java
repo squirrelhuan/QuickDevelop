@@ -56,15 +56,17 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     }
 
-    public void startFragment(Fragment fragment){
-         getSupportFragmentManager()
-                .beginTransaction()
-                 .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
-                .replace(getContentViewId(), fragment)
-                 .addToBackStack("A")
-                .commit();
+    public void startFragment(AppCompatActivity activity,Fragment fragment){
+        FragmentActivityHelper.getInstance().startFragment(activity,fragment);
     }
     public int getContentViewId(){
        return android.R.id.content;//R.id.qd_fragment_content_view;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        FragmentActivityHelper.getInstance().onBackPressed(this);
+
     }
 }

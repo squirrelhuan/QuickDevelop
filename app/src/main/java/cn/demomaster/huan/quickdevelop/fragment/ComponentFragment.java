@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdevelop.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,58 +21,43 @@ import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
-import static com.umeng.socialize.utils.ContextUtil.getContext;
-
 
 /**
+ * Components视图
  * Squirrel桓
  * 2018/8/25
  */
 
 @ActivityPager(iconRes = R.mipmap.ic_launcher)
 public class ComponentFragment extends BaseFragment {
-    //Components
-    View mView;
-
-    @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        return null;
-    }
-
-    @Override
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
-        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
-        actionBarLayout.getLeftView().setVisibility(View.GONE);
-    }
-
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mView == null) {
-            mView = inflater.inflate(R.layout.fragment_layout_component, null);
-        }
-        Bundle bundle = getArguments();
-        String title = "空界面";
-        initView(mView);
-        return mView;
-    }
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
 
-    private void initView(View mView) {
-        recyclerView = (RecyclerView) mView.findViewById(R.id.recyclerView);
+    @Override
+    public ViewGroup getContentView(LayoutInflater inflater) {
+        return (ViewGroup) inflater.inflate(R.layout.fragment_layout_component, null);
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        actionBarLayout.getLeftView().setVisibility(View.GONE);
+        actionBarLayout.setBackGroundColor(Color.RED);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
         //设置为垂直布局，这也是默认的
@@ -99,14 +82,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(NestedScrollViewFragment.class);
         classList.add(SoundFragment.class);
         classList.add(UMengShareFragment.class);
-
-
-
-
-
-
         classList.add(MainActivity.class);
-
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);
@@ -122,6 +98,6 @@ public class ComponentFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridDividerItemDecoration(getContext(), spanCount));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
+
 }
