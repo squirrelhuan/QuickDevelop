@@ -68,9 +68,10 @@ public class FragmentActivityHelper {
     }
 
     FragmentActivity activity;
+
     public void bindActivity(FragmentActivity activity) {
         this.activity = activity;
-        if(getContentView(activity)==null){
+        if (getContentView(activity) == null) {
             View view = new FrameLayout(activity);
             activity.setContentView(view);
 
@@ -96,7 +97,7 @@ public class FragmentActivityHelper {
                 FragmentActivity activity = activities.get(activities.size() - 1);
                 activity.finish();
                 unBindActivity(activity);
-            }else {
+            } else {
                 fragmentManager.popBackStack();
             }
         }
@@ -112,14 +113,30 @@ public class FragmentActivityHelper {
         }
     }*/
 
-    public void startFragment(AppCompatActivity activity,Fragment fragment){
-        activity.getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
-                //.add(android.R.id.content, fragment, fragment.getClass().getSimpleName())
-                .add(R.id.qd_fragment_content_view, fragment, fragment.getClass().getSimpleName())
+    public void startFragment(AppCompatActivity activity, Fragment fragment) {
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(getListener(activity, fragment));
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            transaction.setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out);
+        }
+        transaction.add(R.id.qd_fragment_content_view, fragment, fragment.getClass().getSimpleName())
                 .addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
+    }
+
+    private FragmentManager.OnBackStackChangedListener getListener(final AppCompatActivity activity, final Fragment fragment) {
+        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                FragmentManager manager = activity.getSupportFragmentManager();
+                if (manager != null) {
+                    Fragment currFrag = fragment;
+                    //currFrag = (Fragment) manager.findFragmentByTag(R.id.fl_home);
+                    currFrag.onResume();
+                }
+            }
+        };
+        return result;
     }
 
     public ActionBarLayoutInterface getActionBarLayoutInterface() {
@@ -129,15 +146,15 @@ public class FragmentActivityHelper {
     /*public int getContentViewId() {
         return R.id.qd_fragment_content_view;
     }*/
-    public static View getContentView(Activity ac){
-        ViewGroup view = (ViewGroup)ac.getWindow().getDecorView();
-        FrameLayout content = (FrameLayout)view.findViewById(android.R.id.content);
+    public static View getContentView(Activity ac) {
+        ViewGroup view = (ViewGroup) ac.getWindow().getDecorView();
+        FrameLayout content = (FrameLayout) view.findViewById(android.R.id.content);
         return content.getChildAt(0);
     }
 
     public void onBackPressed(BaseFragmentActivity baseFragmentActivity) {
         //contains
-        if(activities.contains(baseFragmentActivity)){
+        if (activities.contains(baseFragmentActivity)) {
             remove();
             //FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             //fragmentManager.get

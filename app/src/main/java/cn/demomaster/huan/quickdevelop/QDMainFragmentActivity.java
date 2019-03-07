@@ -32,9 +32,9 @@ public class QDMainFragmentActivity extends BaseActivityParent {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_qdmain);
+        setContentView(R.layout.activity_qdmain);
         //setContentView(R.layout.activity_empty);
-        setContentView(-1);
+        //setContentView(-1);
         if (savedInstanceState == null) {
             BaseFragment fragment = new MainFragment();
             FragmentActivityHelper.getInstance().startFragment( mContext,fragment);

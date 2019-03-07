@@ -40,7 +40,6 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        //actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
         //actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
 
@@ -60,6 +59,7 @@ public class MainFragment extends BaseFragment {
         initScrollableTabs(rootView, mViewPager);
         init();
     }
+
     private void init() {
         getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().setTitle("aaa");
@@ -85,7 +85,6 @@ public class MainFragment extends BaseFragment {
         });
         initOptionsMenu();
     }
-
 
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
