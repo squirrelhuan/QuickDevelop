@@ -28,7 +28,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
  */
 public class BaseService extends Service {
 
-
     public int index;
 
     @Override
