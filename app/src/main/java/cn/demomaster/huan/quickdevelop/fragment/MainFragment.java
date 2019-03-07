@@ -122,8 +122,6 @@ public class MainFragment extends BaseFragment {
                         ScreenShotUitl.shot((Activity) mContext);
                         break;
                 }
-
-
             }
         });
     }

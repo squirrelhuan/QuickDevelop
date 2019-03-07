@@ -61,7 +61,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             rootView.setBackgroundColor(Color.WHITE);
             return rootView;
         }
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -76,7 +75,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         }
         return actionBarLayout;
     }
-
 
     public PhotoHelper photoHelper;
     public NetWorkChangReceiver netWorkChangReceiver;

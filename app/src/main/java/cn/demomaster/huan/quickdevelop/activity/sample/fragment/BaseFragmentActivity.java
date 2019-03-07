@@ -23,16 +23,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*if (savedInstanceState == null) {
-            BaseFragment fragment = new MainFragment();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(getContentViewId(), fragment, fragment.getClass().getSimpleName())
-                    .addToBackStack(fragment.getClass().getSimpleName())
-                    .commit();
-        }*/
-
         //setContentView(R.layout.activity_base_fragment);
         View view = new FrameLayout(this);
         view.setId(getContentViewId());
@@ -40,7 +30,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         FragmentActivityHelper.getInstance().bindActivity(this);
         RouterFragment f1 = null;
         f1 = new RouterFragment();
-        FragmentActivityHelper.getInstance().replace(f1);
+        FragmentActivityHelper.getInstance().replace(this,f1);
         //开启事务，fragment的控制是由事务来实现的
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -65,14 +55,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     }
 
-   /* public void startFragment(Fragment fragment){
-         getSupportFragmentManager()
-                .beginTransaction()
-                 .setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out)
-                .replace(getContentViewId(), fragment)
-                 .addToBackStack("A")
-                .commit();
-    }*/
     public int getContentViewId(){
        return R.id.qd_fragment_content_view;
     }
@@ -80,6 +62,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FragmentActivityHelper.getInstance().unBindActivity(this);
+        //FragmentActivityHelper.getInstance().unBindActivity(this);
     }
 }

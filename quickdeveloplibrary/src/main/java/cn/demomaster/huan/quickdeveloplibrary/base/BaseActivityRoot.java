@@ -99,6 +99,7 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
         Intent intent = new Intent(this, clazz);
         if (bundle != null) intent.putExtras(bundle);
         startActivity(intent);
+        mContext.overridePendingTransition(R.anim.translate_from_right_to_left_enter,  R.anim.anim_null);
     }
 
     /**

@@ -36,13 +36,24 @@ public class FragmentActivityHelper {
     public FragmentActivityHelper() {
         actionBarLayoutInterface = new ActionBarLayoutInterface() {
             @Override
-            public void onBack() {
-                remove();
+            public void onBack(AppCompatActivity activity) {
+                finishFragment(activity);
             }
         };
 
     }
 
+    private void finishFragment(AppCompatActivity activity) {
+        if (activity != null) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            if (fragmentManager.getBackStackEntryCount() <= 1) {
+                activity.finish();
+            } else {
+                fragmentManager.popBackStack();
+            }
+        }
+    }
+/*
     private List<FragmentActivity> activities = new ArrayList<>();
 
     public void add(Fragment fragment) {
@@ -54,11 +65,11 @@ public class FragmentActivityHelper {
         //transaction.commit();
         // 这里吧原来的commit()方法换成了commitAllowingStateLoss()
         transaction.commitAllowingStateLoss();
-    }
+    }*/
 
-    public void replace(Fragment fragment) {
+   public void replace(AppCompatActivity activity,Fragment fragment) {
         //开启事务，fragment的控制是由事务来实现的
-        FragmentTransaction transaction = activities.get(activities.size() - 1).getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(android.R.id.content, fragment);
         transaction.show(fragment);
         //提交事务
@@ -74,13 +85,12 @@ public class FragmentActivityHelper {
         if (getContentView(activity) == null) {
             View view = new FrameLayout(activity);
             activity.setContentView(view);
-
             //view.setId(getContentView(activity));
         }
 
-        activities.add(activity);
+        //activities.add(activity);
     }
-
+/*
     public void unBindActivity(FragmentActivity activity) {
         if (activities == null) {
             return;
@@ -90,7 +100,7 @@ public class FragmentActivityHelper {
         }
     }
 
-    public void remove() {
+    private void remove() {
         if (activities != null && activities.size() > 0) {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
             if (fragmentManager.getBackStackEntryCount() <= 1) {
@@ -101,7 +111,7 @@ public class FragmentActivityHelper {
                 fragmentManager.popBackStack();
             }
         }
-    }
+    }*/
   /*  public void startFragment(Fragment fragment){
         if (activities != null && activities.size() > 0) {
             FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
@@ -153,12 +163,6 @@ public class FragmentActivityHelper {
     }
 
     public void onBackPressed(BaseFragmentActivity baseFragmentActivity) {
-        //contains
-        if (activities.contains(baseFragmentActivity)) {
-            remove();
-            //FragmentManager fragmentManager = activities.get(activities.size() - 1).getSupportFragmentManager();
-            //fragmentManager.get
-            //baseFragmentActivity.onBackPressed();
-        }
+            finishFragment(baseFragmentActivity);
     }
 }

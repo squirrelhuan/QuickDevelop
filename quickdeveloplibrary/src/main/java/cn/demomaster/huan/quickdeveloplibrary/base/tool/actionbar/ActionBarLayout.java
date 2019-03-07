@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -123,7 +124,7 @@ public class ActionBarLayout {
                 @Override
                 public void onClick(View view) {
                     if(contextType==ContextType.FragmentModel){
-                        actionBarLayoutInterface.onBack();
+                        actionBarLayoutInterface.onBack((AppCompatActivity) context);
                     }else {
                         ((Activity) context).finish();
                     }
