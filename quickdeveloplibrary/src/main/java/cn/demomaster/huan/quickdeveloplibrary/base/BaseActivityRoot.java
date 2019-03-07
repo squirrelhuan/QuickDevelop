@@ -32,9 +32,10 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivityInterface {
 
-    public Activity mContext;
+    public AppCompatActivity mContext;
     public Bundle mBundle = null;
     public static String TAG = "CGQ";
+
     @Override
     public void setContentView(View view) {
         mContext = this;
@@ -47,7 +48,7 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
         mContext = this;
         mBundle = getIntent().getExtras();
         super.onCreate(savedInstanceState);
-        if (getApplicationContext() != null&&getApplicationContext() instanceof ApplicationParent) {
+        if (getApplicationContext() != null && getApplicationContext() instanceof ApplicationParent) {
             ((ApplicationParent) getApplicationContext()).addActivity(this);
             StatusBarUtil.transparencyBar(mContext);
             initHelper();
@@ -58,12 +59,14 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
     public PhotoHelper photoHelper;
     public NetWorkChangReceiver netWorkChangReceiver;
     public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
+
     public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
         this.onNetStateChangedListener = onNetStateChangedListener;
         if (netWorkChangReceiver != null) {
             netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
         }
     }
+
     //实例化各种帮助类
     private void initHelper() {
         if (photoHelper == null) {

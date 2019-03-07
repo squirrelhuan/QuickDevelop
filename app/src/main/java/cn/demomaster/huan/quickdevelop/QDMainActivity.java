@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,7 @@ public class QDMainActivity extends BaseActivityParent {
 
         getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
+        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
 
      /*   List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ComponentFragment());
@@ -64,11 +66,9 @@ public class QDMainActivity extends BaseActivityParent {
 
     private class MainFragmentAdapter extends FragmentPagerAdapter {
         private List<Class> data;
-
         public MainFragmentAdapter(FragmentManager fm) {
             super(fm);
         }
-
         public MainFragmentAdapter(FragmentManager fm, List<Class> data) {
             super(fm);
             this.data = data;

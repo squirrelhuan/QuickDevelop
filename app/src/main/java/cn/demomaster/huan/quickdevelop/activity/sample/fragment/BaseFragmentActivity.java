@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.MainFragment;
 import cn.demomaster.huan.quickdevelop.fragment.RouterFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
@@ -20,6 +22,17 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*if (savedInstanceState == null) {
+            BaseFragment fragment = new MainFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(getContentViewId(), fragment, fragment.getClass().getSimpleName())
+                    .addToBackStack(fragment.getClass().getSimpleName())
+                    .commit();
+        }*/
+
         //setContentView(R.layout.activity_base_fragment);
         View view = new FrameLayout(this);
         view.setId(getContentViewId());

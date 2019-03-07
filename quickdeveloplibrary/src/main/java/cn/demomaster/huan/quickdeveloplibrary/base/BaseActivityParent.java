@@ -1,7 +1,10 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
@@ -16,8 +19,16 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     private OptionsMenu optionsMenu;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void setContentView(int layoutResID) {
         this.mContext = this;
+        if(layoutResID==-1){
+            layoutResID = R.layout.activity_layout_empty;
+        }
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             this.layoutResID = layoutResID;
             View view = getActionBarLayout().getFinalView();
@@ -25,7 +36,6 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         } else {
             super.setContentView(layoutResID);
         }
-
     }
 
     //获取自定义导航

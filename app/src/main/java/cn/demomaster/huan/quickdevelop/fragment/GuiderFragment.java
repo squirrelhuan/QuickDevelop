@@ -142,6 +142,11 @@ public class GuiderFragment extends BaseFragment {
         return mView;
     }
 
+    @Override
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+
+    }
+
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 

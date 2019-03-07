@@ -112,6 +112,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             view.setLayoutParams(layoutParams);
                             //view.setOnClickListener(null);
                             view.setClickable(false);
+                            view.setOnTouchListener(null);
                             rl_preview.addView(view);
                         }
                         itemView.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +121,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                                     try {
                                         Class c = clazz.getClass();
                                         if(Fragment.class.isAssignableFrom(clazz)){
-                                             FragmentActivityHelper.getInstance().startFragment((Fragment) clazz.newInstance());
+                                             FragmentActivityHelper.getInstance().startFragment((AppCompatActivity) context,(Fragment) clazz.newInstance());
                                         }else if(Activity.class.isAssignableFrom(clazz)){
                                             ((BaseActivityParent)context).startActivity(clazz);
                                         }

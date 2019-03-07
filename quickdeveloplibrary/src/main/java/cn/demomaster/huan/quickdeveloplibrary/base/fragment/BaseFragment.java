@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,11 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
  */
 public abstract class BaseFragment extends Fragment implements BaseFragmentActivityInterface {
 
-    public Activity mContext;
+    public AppCompatActivity mContext;
     public Bundle mBundle;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mContext = (Activity) this.getContext();
+        mContext = (AppCompatActivity) this.getContext();
         mBundle = getArguments();
         super.onCreate(savedInstanceState);
         StatusBarUtil.transparencyBar(mContext);
@@ -49,18 +50,16 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mContext = (Activity) this.getContext();
+        mContext = (AppCompatActivity) this.getContext();
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             if (mView == null) {
-                //mView = (ViewGroup) super.onCreateView(inflater,container,savedInstanceState);
                 mView = getContentView(inflater);
                 actionBarLayout = ActionBarHelper.init(mContext, mView);
             }
             rootView = getActionBarLayout().getFinalView();
-            initActionBarLayout(getActionBarLayout());
+            initView(mView,actionBarLayout);
             rootView.setBackgroundColor(Color.WHITE);
             return rootView;
-            //super.setContentView(view);
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -104,7 +103,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             }catch (Exception e){
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -114,5 +112,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
     @Override
     public boolean isUseActionBarLayout() {
         return true;
+    }
+
+    //获取自定义菜单
+    public OptionsMenu getOptionsMenu() {
+        if (optionsMenu == null) {
+            optionsMenu = new OptionsMenu(mContext);
+        }
+        return optionsMenu;
     }
 }

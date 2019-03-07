@@ -20,6 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
+ * 音频播放view
  * Squirrel桓
  * 2018/8/25
  */
@@ -64,6 +65,11 @@ public class AudioRecordFragment extends BaseFragment {
 
 
         return mView;
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+
     }
 
     private String[] titles = {"1", "2", "3", "4"};
