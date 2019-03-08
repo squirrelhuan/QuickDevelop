@@ -123,7 +123,6 @@ public class CenterHorizontalActivity extends BaseActivityParent {
         SnapHelper snapHelperCenter = new LinearSnapHelper();
         snapHelperCenter.attachToRecyclerView(centerSnapRecyclerView);
 
-
     }
     ViewPager view_pager_tag;
     private SampleFragmentAdapter adapter;
@@ -140,7 +139,6 @@ public class CenterHorizontalActivity extends BaseActivityParent {
         view_pager_tag.setPageMargin(-QMUIDisplayHelper.getScreenWidth(mContext) +DisplayUtil.dip2px(mContext,60)); //每页的间隔
         //view_pager_tag.setPadding(QMUIDisplayHelper.getScreenWidth(mContext)/2,0,0,0);
     }
-
 
     private class SampleFragmentAdapter extends FragmentPagerAdapter {
         private List<String> data;

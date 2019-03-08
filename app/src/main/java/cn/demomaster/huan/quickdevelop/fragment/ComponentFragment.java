@@ -82,6 +82,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(NestedScrollViewFragment.class);
         classList.add(SoundFragment.class);
         classList.add(UMengShareFragment.class);
+        classList.add(PushCardFragment.class);
         classList.add(MainActivity.class);
         componentAdapter.updateList(classList);
         //设置Adapter

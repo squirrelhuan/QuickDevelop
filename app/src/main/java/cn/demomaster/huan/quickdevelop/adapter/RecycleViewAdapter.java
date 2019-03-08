@@ -16,7 +16,6 @@ import cn.demomaster.huan.quickdevelop.R;
  */
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
-
     private List<String> lists=null;
     private Context context;
 
@@ -48,7 +47,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         public final TextView textView;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.textview);
+            textView = (TextView) itemView.findViewById(R.id.tv_title);
         }
     }
 }

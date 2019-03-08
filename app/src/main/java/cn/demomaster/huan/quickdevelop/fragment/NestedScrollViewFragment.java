@@ -69,7 +69,6 @@ public class NestedScrollViewFragment extends BaseFragment {
             }
         });
 
-
         //BaseService.baseBinder.getService();
         final QDNestedScrollParent qdNestedScrollParent = mView.findViewById(R.id.ns_p_01);
         //qdNestedScrollParent.setMinHeight(200);

@@ -84,7 +84,6 @@ public class UMengShareFragment extends BaseFragment {
             }
         });
 
-
         return mView;
     }
 
