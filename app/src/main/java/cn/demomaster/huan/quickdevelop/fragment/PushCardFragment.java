@@ -52,7 +52,6 @@ public class PushCardFragment extends BaseFragment {
         }
         Bundle bundle = getArguments();
         String title = "空界面";
-
         return mView;
     }
 
@@ -149,7 +148,7 @@ public class PushCardFragment extends BaseFragment {
             }
         });
         //设置默认状态
-        pcl_layout.setDefaultState(PushCardLayout.DefaultStateType.bottom);
+        pcl_layout.setDefaultState(PushCardLayout.DefaultStateType.top);
     }
 
     private String[] titles = {"1", "2", "3", "4"};

@@ -236,6 +236,8 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 showTopLayout();
             }
         }
+
+       Log.i("getMeasuredHeight","初始topLayout 高度:"+topLayout.getMeasuredHeight()+",topLayoutView 高度:"+topLayoutView.getMeasuredHeight()) ;
     }
 
     @Override
@@ -367,6 +369,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      * @param offset 偏移量
      */
     private void scrollCardLayout(int offset) {
+        Log.i("getMeasuredHeight","topLayout 高度:"+topLayout.getMeasuredHeight()+",topLayoutView 高度:"+topLayoutView.getMeasuredHeight()) ;
         if (contentLayout != null) {
             ViewCompat.offsetTopAndBottom(contentLayout, offset);//正数向下移动，负数向上移动
             //topLayout.bringToFront();

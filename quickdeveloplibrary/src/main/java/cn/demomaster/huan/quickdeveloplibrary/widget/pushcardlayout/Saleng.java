@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -71,7 +72,8 @@ public class Saleng extends View {
 
     private void drawBackground(Canvas canvas) {
         paddingTop=(int)(paddingTopAbs*(1-percent));
-        float height = this.height<dp2px(context,120)?dp2px(context,120):this.height;
+        //float height = this.height<dp2px(context,100)?dp2px(context,100):this.height;
+        Log.i("getMeasuredHeight","Saleng 高度:"+height) ;
         //绘制圆
         Paint p = new Paint();
         //p.setColor(0x77000000);
