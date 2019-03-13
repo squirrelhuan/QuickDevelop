@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,6 +28,14 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivi
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
@@ -41,7 +49,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.ic_launcher)
-public class ComponentFragment extends BaseFragment {
+public class HelperFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
@@ -64,26 +72,7 @@ public class ComponentFragment extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
-        classList.add(ToggleButtonActivity.class);
-        classList.add(CenterHorizontalActivity.class);
-        classList.add(LoadingActivity.class);
-        classList.add(PickActivity.class);
-        classList.add(TabMenuActivity.class);
-        classList.add(PictureSelectActivity.class);
-        classList.add(ActionBarActivity.class);
-        classList.add(RatingBarActivity.class);
-        classList.add(ActionBarTipActivity.class);
-        classList.add(QDialogActivity.class);
-        classList.add(QDActionDialogActivity.class);
-        classList.add(BaseFragmentActivity.class);
-        classList.add(GuiderFragment.class);
-        classList.add(AudioRecordFragment.class);
-        classList.add(NdkTestFragment.class);
-        classList.add(NestedScrollViewFragment.class);
-        classList.add(SoundFragment.class);
-        classList.add(UMengShareFragment.class);
-        classList.add(PushCardFragment.class);
-        classList.add(MainActivity.class);
+        classList.add(ErrorTestFragment.class);
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

@@ -77,8 +77,6 @@ public class BaseService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "BaseService onStartCommand" + index);
 
-
-
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }

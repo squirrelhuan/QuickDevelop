@@ -2,7 +2,10 @@ package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
@@ -13,11 +16,14 @@ import com.umeng.socialize.PlatformConfig;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
+import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
+import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
 
 public class ApplicationParent extends Application {
 
@@ -26,6 +32,7 @@ public class ApplicationParent extends Application {
     public static ApplicationParent getInstance(){
         return instance;
     }
+    private static StateObserver stateObserver;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,6 +42,11 @@ public class ApplicationParent extends Application {
         initDB();
         ActivityManager.init(this);
         NotifycationHelper.getInstance().init(this);
+
+
+        AppConfig.init(this, "config/project.conf");
+        //处理崩溃日志
+        initCrash();
 
     }
 
@@ -90,5 +102,71 @@ public class ApplicationParent extends Application {
     //退出
     public void deleteOtherActivity(Activity activity) {
         ActivityManager.getInstance().deleteOtherActivity(activity);
+    }
+
+    public void initCrash(){
+        Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
+        /*if(errorReportActivity==null){
+            return;
+        }*/
+        Thread.setDefaultUncaughtExceptionHandler( new CrashHandler(this,errorReportActivity));
+        stateObserver = new StateObserver(PreferenceManager.getDefaultSharedPreferences(this));
+        registerActivityLifecycleCallbacks(new SimpleActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                //currentActivity = activity;
+            }
+
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                //currentActivity = null;
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                //currentActivity = activity;
+            }
+
+        });
+    }
+
+
+    private static class SimpleActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
     }
 }

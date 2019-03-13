@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

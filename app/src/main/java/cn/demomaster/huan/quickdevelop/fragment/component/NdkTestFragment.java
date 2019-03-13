@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.content.ComponentName;
 import android.content.Intent;

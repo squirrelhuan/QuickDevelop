@@ -12,8 +12,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.demomaster.huan.quickdevelop.fragment.BlankFragment;
-import cn.demomaster.huan.quickdevelop.fragment.ComponentFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
+import cn.demomaster.huan.quickdevelop.fragment.main.ComponentFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;

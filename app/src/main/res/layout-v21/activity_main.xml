@@ -88,16 +88,25 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:text="加载动画" />
 
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:clickable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back_black_24dp"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackgroundBorderless"/>
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@mipmap/ic_close_circle"/>
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:text="test"
+                android:clickable="true"
                 tools:targetApi="lollipop" />
 
             <Button

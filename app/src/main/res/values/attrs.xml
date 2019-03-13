@@ -23,7 +23,7 @@
 
     <string-array name="tab_themt_titles">
         <item>@string/Components</item>
-        <item>2</item>
+        <item>@string/Helper</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>

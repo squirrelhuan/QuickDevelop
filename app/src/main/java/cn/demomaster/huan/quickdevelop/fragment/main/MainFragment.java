@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
@@ -45,7 +46,7 @@ public class MainFragment extends BaseFragment {
 
         List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
-        list.add(BlankFragment.class);
+        list.add(HelperFragment.class);
         MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getActivity().getSupportFragmentManager(), list);
         // Initiate ViewPager
         ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
@@ -62,7 +63,7 @@ public class MainFragment extends BaseFragment {
 
     private void init() {
         getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
-        getActionBarLayout().setTitle("aaa");
+        getActionBarLayout().setTitle("首页");
         getActionBarLayout().setStateBarColorAuto(true);//状态栏文字颜色自动
         getActionBarLayout().setActionBarThemeColors(Color.WHITE, Color.BLACK);
         getActionBarLayout().setLeftOnClickListener(new View.OnClickListener() {

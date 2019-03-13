@@ -295,7 +295,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         if (isEnabled() && (!canChildScrollUp() || !canChildScrollDown())
                 && !mRefreshing && !mNestedScrollInProgress) {
             handled = onTouchEvent(ev);
-            Log.i("CGQ", "事件分发");
+            //Log.i("CGQ", "事件分发");
         }
 
         //父控件消费，子空间就不执行了。父控件不消费，再交给子空间处理
@@ -457,12 +457,14 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         //处理是否触发刷新或者加载更多//(默认拉到三分之二就触发加载)
         if (Math.abs(contentLayout.getTop()) > bottomLayoutHeight / 3 * 2 && (cardState == StateType.isToping || cardState == StateType.isBottoming)) {//拉到2/3以上则触发
             //填充动画（自动下拉到最大高度）
+            Log.i("CGQ1", "填充动画=" );
             showTopLayout();
         } else if (cardState == StateType.isBottomed || cardState == StateType.isToped) {
             setCardState(cardState == StateType.isBottomed ? StateType.isBottoming : StateType.isToping);
             scrollCardLayout(-contentLayout.getTop());
         } else if (cardState == StateType.isBottoming || cardState == StateType.isToping) {
             //回滚动画
+            Log.i("CGQ1", "回滚动画=" );
             ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
             animator.setDuration(200);
             animator.setInterpolator(mDecelerateInterpolator);
@@ -471,19 +473,20 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float animatedValue = (float) animation.getAnimatedValue();
                     scrollCardLayout((int) (-contentLayout.getTop() * animatedValue));
+                    View view = ((cardState == StateType.isToping|| cardState==StateType.isToped)) ? topLayoutView : bottomLayoutView;
                     if (animatedValue == 0) {//动画开始
                         if (animationListener != null) {
-                            animationListener.onStart(cardState == StateType.isToping ? topLayoutView : bottomLayoutView);
+                            animationListener.onStart(view);
                         }
                     } else if (animatedValue == 1f) {//动画结束
                         mTotalUnconsumed = 0;
                         setCardState(StateType.idle);
                         if (animationListener != null) {
-                            animationListener.onEnd(cardState == StateType.isToping ? topLayoutView : bottomLayoutView);
+                            animationListener.onEnd(view);
                         }
                     } else {//动画进行中
                         if (animationListener != null)
-                            animationListener.onRuning(cardState == StateType.isToping ? topLayoutView : bottomLayoutView, cardState == StateType.isToping, animatedValue);
+                            animationListener.onRuning(view, cardState == StateType.isToping, animatedValue);
                     }
                 }
             });
@@ -502,6 +505,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
     }
 
     private void showTopLayout() {
+        Log.i("CGQ1", "zhankai动画=" );
         float startValue = Math.abs(contentLayout.getTop()) / (float) bottomLayoutHeight;
         ValueAnimator animator = ValueAnimator.ofFloat(startValue, 1);
         animator.setDuration((int) (200 * (1 - startValue)));

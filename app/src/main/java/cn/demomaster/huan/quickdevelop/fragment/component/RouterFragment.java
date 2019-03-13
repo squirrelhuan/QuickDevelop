@@ -1,32 +1,23 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
- * 音频播放view
  * Squirrel桓
  * 2018/8/25
  */
-
-@ActivityPager(name = "AudioRecordFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class AudioRecordFragment extends BaseFragment {
+public class RouterFragment extends BaseFragment {
     //Components
     ViewGroup mView;
 
@@ -34,27 +25,18 @@ public class AudioRecordFragment extends BaseFragment {
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_audiorecord, null);
+            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_router, null);
         }
-        audioRecordHelper = AudioRecordHelper.getInstance();
         Bundle bundle = getArguments();
         String title = "空界面";
-        Button button = mView.findViewById(R.id.btn_start);
-        button.setOnTouchListener(new View.OnTouchListener() {
+        Button button = mView.findViewById(R.id.btn_open_new_fragment);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        start();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        stop();
-                        break;
-                }
-                return true;
+            public void onClick(View view) {
+                opentFragment();
             }
         });
-        Button btn_set_title = mView.findViewById(R.id.btn_play);
+        Button btn_set_title = mView.findViewById(R.id.btn_set_title);
         btn_set_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +44,13 @@ public class AudioRecordFragment extends BaseFragment {
                 getActionBarLayout().setTitle(titles[i]+"");
             }
         });
-
+        Button btn_guider = mView.findViewById(R.id.btn_guider);
+        btn_guider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startFragment();
+            }
+        });
 
         return mView;
     }
@@ -81,13 +69,11 @@ public class AudioRecordFragment extends BaseFragment {
         actionBarLayout.setHeaderBackgroundColor(colors[i]);
     }
 
-    AudioRecordHelper audioRecordHelper;
-    private String path = Environment.getExternalStorageDirectory() + "/buku/audio/record.mp3";;
-    private void start() {
-        audioRecordHelper.startRecord(path);
+    private void opentFragment() {
+        FragmentActivityHelper.getInstance().startFragment(mContext,new RouterFragment());
     }
 
-    private void stop(){
-        audioRecordHelper.stopRecord();
+    private void startFragment(){
+        FragmentActivityHelper.getInstance().startFragment(mContext,new GuiderFragment());
     }
 }

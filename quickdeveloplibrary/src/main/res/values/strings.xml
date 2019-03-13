@@ -23,4 +23,6 @@
     <string name="Components">组件</string>
 
 
+    <string name="sorry_for_crash">很抱歉(ಥ _ ಥ)程序遇到未知错误，即将停止运行\n错误代码：</string>
+
 </resources>

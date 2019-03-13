@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.fragment;
+package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -96,7 +96,7 @@ public class PushCardFragment extends BaseFragment {
             @Override
             public void onLoadMoreData() {
                 final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
-                qdActionDialog1.show();
+                //qdActionDialog1.show();
                 pcl_layout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -112,7 +112,7 @@ public class PushCardFragment extends BaseFragment {
             @Override
             public void onRefreshData() {
                 final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
-                qdActionDialog1.show();
+                //qdActionDialog1.show();
                 pcl_layout.postDelayed(new Runnable() {
                     @Override
                     public void run() {

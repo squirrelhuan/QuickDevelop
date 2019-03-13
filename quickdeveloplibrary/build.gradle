@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         //友盟分享
-        debug{
+        debug {
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles 'proguard-rules.pro'
