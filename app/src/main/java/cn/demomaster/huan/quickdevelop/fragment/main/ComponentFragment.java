@@ -33,6 +33,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -90,6 +91,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(SoundFragment.class);
         classList.add(UMengShareFragment.class);
         classList.add(PushCardFragment.class);
+        classList.add(QDTipPopupFragment.class);
         classList.add(MainActivity.class);
         componentAdapter.updateList(classList);
         //设置Adapter

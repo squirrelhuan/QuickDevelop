@@ -54,6 +54,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             if (mView == null) {
                 mView = getContentView(inflater);
+                mView.setClickable(true);
                 actionBarLayout = ActionBarHelper.init(mContext, mView);
             }
             rootView = getActionBarLayout().getFinalView();
