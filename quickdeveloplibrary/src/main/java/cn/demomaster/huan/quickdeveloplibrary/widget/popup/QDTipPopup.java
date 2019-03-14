@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,14 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundArrowDrawable;
+
+import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 public class QDTipPopup extends QDPopup {
     private Builder builder;
@@ -74,17 +78,23 @@ public class QDTipPopup extends QDPopup {
     }
 
     private void show() {
+        ViewGroup.LayoutParams layoutParams = getContentView().getLayoutParams();
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        //getContentView().setBackgroundColor(Color.RED);
         int popupWidth = getContentView().getMeasuredWidth();
         int popupHeight = getContentView().getMeasuredHeight();
+        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
         // 设置好参数之后再show
         int[] location = new int[2];
         mAnchor.getLocationOnScreen(location);
+
         if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {
+            if(popupWidth>=maxWidth) {
+                layoutParams.width = maxWidth;
+                getContentView().setLayoutParams(layoutParams);
+            }
             popupHeight = popupHeight + arrowHeight;
             if (mGravity == GuiderView.Gravity.BOTTOM) {
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, (location[0] + mAnchor.getWidth() / 2) - popupWidth / 2, location[1] + mAnchor.getHeight());
+                showAtLocation(mAnchor, Gravity.NO_GRAVITY, (location[0] + mAnchor.getWidth() / 2) - popupWidth / 2-padding, location[1] + mAnchor.getHeight());
             } else {
                 showAtLocation(mAnchor, Gravity.NO_GRAVITY, (location[0] + mAnchor.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight);
             }
@@ -92,9 +102,16 @@ public class QDTipPopup extends QDPopup {
         if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
             popupWidth = popupWidth + arrowHeight;
             if (mGravity == GuiderView.Gravity.LEFT) {
-                //showAtLocation(mAnchor, Gravity.NO_GRAVITY, location[0] - popupWidth, location[1]);
+                if(popupWidth>=maxWidth) {
+                    layoutParams.width = location[0]-padding;
+                    getContentView().setLayoutParams(layoutParams);
+                }
                 showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             } else {
+                if(popupWidth>=maxWidth) {
+                    layoutParams.width = location[0]+mAnchor.getWidth();
+                    getContentView().setLayoutParams(layoutParams);
+                }
                 showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         }
@@ -160,56 +177,45 @@ public class QDTipPopup extends QDPopup {
     }
 
     private void updatePosition() {
-        int popupWidth = getContentView().getWidth();
-        int popupHeight = getContentView().getHeight();
         // 设置好参数之后再show
         int[] location = new int[2];
         mAnchor.getLocationOnScreen(location);
         ViewGroup.LayoutParams layoutParams = getContentView().getLayoutParams();
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int popupWidth = getContentView().getMeasuredWidth();
+        int popupHeight = getContentView().getMeasuredHeight();
+        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        int x=0 ,y=0,w=0,h=0;
         if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {
-            popupHeight = popupHeight + arrowHeight;
+            int b = ((popupWidth>=maxWidth)?padding:0);
+            x = location[0] + mAnchor.getWidth() / 2 - getContentView().getWidth() / 2+b;
+            x = ((popupWidth>=maxWidth)?padding:x);
+            w = popupWidth>maxWidth?maxWidth:ViewGroup.LayoutParams.WRAP_CONTENT;
+            h = ViewGroup.LayoutParams.WRAP_CONTENT;
             if (mGravity == GuiderView.Gravity.BOTTOM) {
-               /* int maxWidth = popupWidth;
-                if(getContentView().getWidth()>=maxWidth) {
-                    layoutParams.width = maxWidth;
-                }*/
-                getContentView().setLayoutParams(layoutParams);
-                update((location[0] + mAnchor.getWidth() / 2) - popupWidth / 2, location[1] + mAnchor.getHeight(), getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+                y = location[1] + mAnchor.getHeight();
             } else {
-                /*int maxWidth = DisplayUtil.getScreenWidth(context);
-                if(getContentView().getWidth()>=maxWidth) {
-                    layoutParams.width = maxWidth;
-                }*/
-                getContentView().setLayoutParams(layoutParams);
-                update((location[0] + mAnchor.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight, getWidth(),  ViewGroup.LayoutParams.WRAP_CONTENT);
+                y = location[1] - popupHeight-arrowHeight;
             }
-
-            setWidth(getContentView().getWidth());
-            setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-
         }
         if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
             popupWidth = popupWidth + arrowHeight;
+            y = location[1]+(getContentView().getHeight()<mAnchor.getHeight()?(mAnchor.getHeight()-getContentView().getHeight())/2:0);
+            w = layoutParams.width;
+            h = ViewGroup.LayoutParams.WRAP_CONTENT;
             if (mGravity == GuiderView.Gravity.LEFT) {
                 int maxWidth = location[0];
-                if(getContentView().getWidth()>=maxWidth) {
-                    layoutParams.width = location[0];
-                }
                 getContentView().setLayoutParams(layoutParams);
-                update(location[0] - popupWidth, location[1], layoutParams.width, ViewGroup.LayoutParams.WRAP_CONTENT);
+                x = location[0] - popupWidth;
             } else {
                 int maxWidth = DisplayUtil.getScreenWidth(context)-location[0]-mAnchor.getWidth();
-               if(getContentView().getWidth()>=maxWidth) {
-                   layoutParams.width = maxWidth;
-               }
-               getContentView().setLayoutParams(layoutParams);
-               update(location[0] + mAnchor.getWidth(), location[1], layoutParams.width, ViewGroup.LayoutParams.WRAP_CONTENT);
+                getContentView().setLayoutParams(layoutParams);
+                x = location[0] + mAnchor.getWidth();
             }
         }
-
-        //drawable_bg.setArrowHeight(arrowHeight);
-        getContentView().postInvalidate();
+        update(x, y, w,h);
 
     }
 
@@ -217,11 +223,21 @@ public class QDTipPopup extends QDPopup {
     private FrameLayout contentLayout;//内容包裹布局
     private View mContentView;//内容视图
 
+    private int maxWidth;
+    private int maxHeight;
+    private int screenHeight;
+    private int screenWidth;
+    private int padding ;
     private void init() {
         setTouchable(true);
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        padding = DisplayUtil.dip2px(context,30);
+        screenHeight = DisplayUtil.getScreenHeight(context);
+        screenWidth = DisplayUtil.getScreenWidth(context);
+        maxWidth = screenWidth-padding*2;
+        maxHeight = screenHeight-padding*2;
         rootLayout = new FrameLayout(context);
         if (mContentView == null) {//非自定义布局时，仅为提示框
             TextView textView = new TextView(context);
