@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundArrowDrawable;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
@@ -82,7 +83,7 @@ public class QDTipPopup extends QDPopup {
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int popupWidth = getContentView().getMeasuredWidth();
         int popupHeight = getContentView().getMeasuredHeight();
-        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        QDLogger.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
         // 设置好参数之后再show
         int[] location = new int[2];
         mAnchor.getLocationOnScreen(location);
@@ -186,7 +187,7 @@ public class QDTipPopup extends QDPopup {
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int popupWidth = getContentView().getMeasuredWidth();
         int popupHeight = getContentView().getMeasuredHeight();
-        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        QDLogger.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
         int x=0 ,y=0,w=0,h=0;
         if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {
             int b = ((popupWidth>=maxWidth)?padding:0);

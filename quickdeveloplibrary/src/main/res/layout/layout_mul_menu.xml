@@ -35,7 +35,7 @@
             &lt;!&ndash;android:background="@drawable/listview_option_menu"&ndash;&gt;
         </ListView>-->
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recy_tab_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

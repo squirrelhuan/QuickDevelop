@@ -1,11 +1,6 @@
 package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.graphics.Color;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,28 +8,12 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.demomaster.huan.quickdevelop.MainActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
-import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
@@ -65,11 +44,11 @@ public class HelperFragment extends BaseFragment {
         actionBarLayout.getLeftView().setVisibility(View.GONE);
         actionBarLayout.setBackGroundColor(Color.RED);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
         //设置为垂直布局，这也是默认的
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
         classList.add(ErrorTestFragment.class);

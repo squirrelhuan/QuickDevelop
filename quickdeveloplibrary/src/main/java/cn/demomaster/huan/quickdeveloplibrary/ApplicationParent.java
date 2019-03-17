@@ -117,7 +117,6 @@ public class ApplicationParent extends Application {
                 //currentActivity = activity;
             }
 
-
             @Override
             public void onActivityPaused(Activity activity) {
                 //currentActivity = null;

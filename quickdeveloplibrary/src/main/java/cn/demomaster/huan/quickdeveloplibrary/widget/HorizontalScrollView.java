@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
 /**
@@ -191,7 +192,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        Log.d("CGQ", "measureChildWithMargins");
+        QDLogger.d("measureChildWithMargins");
         Log.d("CGQ", "parentWidthMeasureSpec=" + parentWidthMeasureSpec);
         Log.d("CGQ", "widthUsed=" + widthUsed);
         Log.d("CGQ", "parentHeightMeasureSpec=" + parentHeightMeasureSpec);

@@ -3,8 +3,6 @@ package cn.demomaster.huan.quickdevelop.view;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,7 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * Created by moon.zhong.
@@ -154,7 +154,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 /*计算出正在的偏移量*/
                 targetScrollX -= mTitleOffset;
             }
-            Log.v("zgy","==================mWidth======="+mWidth) ;
+            QDLogger.v("zgy","==================mWidth======="+mWidth) ;
             /*这个时候偏移的量就是屏幕的正中间*/
             scrollTo(targetScrollX, 0);
         }

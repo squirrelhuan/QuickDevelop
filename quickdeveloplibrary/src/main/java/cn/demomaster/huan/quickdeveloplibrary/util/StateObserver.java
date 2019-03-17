@@ -1,7 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.SharedPreferences;
-import android.support.v7.widget.SwitchCompat;
+import androidx.appcompat.widget.SwitchCompat;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

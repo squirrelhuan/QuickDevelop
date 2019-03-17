@@ -2,20 +2,18 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 
 /**
  * Created by Squirrel桓 on 2018/11/11.

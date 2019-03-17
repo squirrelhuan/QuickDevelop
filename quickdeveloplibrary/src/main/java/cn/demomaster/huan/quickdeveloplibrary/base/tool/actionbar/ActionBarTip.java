@@ -4,8 +4,8 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -94,7 +94,7 @@ public class ActionBarTip extends FrameLayout {
                                 actionBarState.getOnLoadingStateListener().loading();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Log.e(TAG,"异常/耗时操作，不能直接处理UI");
+                                QDLogger.e(TAG,"异常/耗时操作，不能直接处理UI");
                             }
                         }
                     });
@@ -216,8 +216,8 @@ public class ActionBarTip extends FrameLayout {
                         if (top_c > topMin && top_c < topMax) {
                             layoutParams_tip.topMargin = top_c;
                         }
-                        Log.i(TAG, "topMax=" + topMax);
-                        Log.i(TAG, "topMin=" + topMin);
+                        QDLogger.i(TAG, "topMax=" + topMax);
+                        QDLogger.i(TAG, "topMin=" + topMin);
                         setLayoutParams(layoutParams_tip);
                         break;
                     case MotionEvent.ACTION_CANCEL:

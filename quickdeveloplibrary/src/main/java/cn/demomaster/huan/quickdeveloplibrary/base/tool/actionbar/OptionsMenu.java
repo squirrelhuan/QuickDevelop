@@ -2,16 +2,16 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
@@ -20,10 +20,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.WrapListView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * @author squirrel桓
@@ -66,7 +63,7 @@ public class OptionsMenu {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setAutoMeasureEnabled(true);
         //设置分割线使用的divider
-        rcv_options.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(context, android.support.v7.widget.DividerItemDecoration.VERTICAL));
+        rcv_options.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         rcv_options.setLayoutManager(linearLayoutManager);
         rcv_options.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

@@ -4,21 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PointF;
-import android.support.v7.widget.AppCompatImageView;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
+import androidx.appcompat.widget.AppCompatImageView;
+import android.util.AttributeSet;
+
 import cn.demomaster.huan.quickdeveloplibrary.util.AttributeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 /**
  * @author squirrel桓

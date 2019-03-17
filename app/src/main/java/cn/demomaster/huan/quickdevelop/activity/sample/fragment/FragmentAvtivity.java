@@ -1,8 +1,8 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * Created by Squirrel桓 on 2019/1/10.

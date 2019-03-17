@@ -13,7 +13,7 @@
     <string name="minute">分</string>
     <string name="second">秒</string>
 
-
+    <string name="DesignPattern">设计模式</string>
     <string name="Components">组件</string>
     <string name="Helper">帮助类</string>
 

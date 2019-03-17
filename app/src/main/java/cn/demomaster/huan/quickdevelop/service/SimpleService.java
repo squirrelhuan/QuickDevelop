@@ -18,6 +18,7 @@ import java.util.TimerTask;
 import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
@@ -46,7 +47,7 @@ public class SimpleService extends BaseService {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Log.i(TAG, "run: 客户端进程 " + index);
+                QDLogger.i(TAG, "run: 客户端进程 " + index);
                 Intent intent = new Intent();
                 intent.setAction("cn.demomaster.huan.quickdeveloplibrary.receiver");
                 intent.putExtra("type", "normal");

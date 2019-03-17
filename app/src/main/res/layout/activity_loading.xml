@@ -27,7 +27,12 @@
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallInnerView
         android:layout_width="80dp"
         android:layout_height="80dp" />
-    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleAlphaView
+    <!--<cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleAlphaView
         android:layout_width="80dp"
-        android:layout_height="80dp" />
+        android:layout_height="80dp" />-->
+    
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
 </LinearLayout>

@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.ui.error;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 

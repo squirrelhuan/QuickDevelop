@@ -1,7 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -9,7 +9,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelpe
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
 public abstract class BaseActivityParent extends BaseActivityRoot {
 

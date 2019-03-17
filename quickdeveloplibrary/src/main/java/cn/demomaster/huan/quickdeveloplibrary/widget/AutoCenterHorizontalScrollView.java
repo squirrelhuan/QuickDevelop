@@ -2,10 +2,11 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +192,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 nowScrollLeft = -1;
                 int index = getCurrentIndex();
                 if (offset_target != offset_current) {
-                    Log.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
+                    QDLogger.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
                 if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
@@ -217,21 +218,21 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        Log.i(tag, "left=" + l);
+        QDLogger.i(tag, "left=" + l);
         // 更新ScrollView的滑动位置
         nowScrollLeft = l;
     }
 
     @Override
     protected int computeHorizontalScrollRange() {
-        Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
-        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getWidth()));
+        QDLogger.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
+        QDLogger.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getWidth()));
         return super.computeHorizontalScrollRange() + paddingLeft + paddingRight;
     }
 
     @Override
     protected int computeHorizontalScrollOffset() {
-        Log.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
+        QDLogger.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
         return super.computeHorizontalScrollOffset() + paddingLeft;
     }
 

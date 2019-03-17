@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +38,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
-import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 .subscribe(new DisposableObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object response) {
-                        Log.i(TAG, "onNext: " + JSON.toJSONString(response));
+                        QDLogger.i(TAG, "onNext: " + JSON.toJSONString(response));
                         try {
                             //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
                             //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
@@ -220,17 +220,17 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
 
                     @Override
                     protected void onStart() {
-                        Log.i(TAG, "onStart: ");
+                        QDLogger.i(TAG, "onStart: ");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable throwable) {
-                        Log.i(TAG, "onError: " + throwable.getMessage());
+                        QDLogger.i(TAG, "onError: " + throwable.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.i(TAG, "onComplete: ");
+                        QDLogger.i(TAG, "onComplete: ");
                     }
                 });
     }

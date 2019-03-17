@@ -4,11 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
@@ -47,6 +47,7 @@ public class MainFragment extends BaseFragment {
         List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
         list.add(HelperFragment.class);
+        list.add(DesignPatternFragment.class);
         MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getActivity().getSupportFragmentManager(), list);
         // Initiate ViewPager
         ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
@@ -133,7 +134,7 @@ public class MainFragment extends BaseFragment {
     public void initScrollableTabs(View rootView, ViewPager mViewPager) {
         ScrollableTabView mScrollingTabs = (ScrollableTabView) rootView.findViewById(R.id.scrollingTabs);
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(getActivity());
-        mScrollingTabs.setAdapter(mScrollingTabsAdapter);
+        mScrollingTabs.setScrollingTabsAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
     }
 

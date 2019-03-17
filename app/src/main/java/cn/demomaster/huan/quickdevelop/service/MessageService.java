@@ -3,9 +3,7 @@ package cn.demomaster.huan.quickdevelop.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -13,10 +11,11 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
@@ -34,7 +33,7 @@ public class MessageService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate");
+        QDLogger.d(TAG, "onCreate");
         super.onCreate();
         startGuardService();
         //DeviceEngine.getInst().init(this.getApplicationContext());
@@ -63,7 +62,7 @@ public class MessageService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知
-        Log.d(TAG, "ServiceDemo onStartCommand");
+        QDLogger.d(TAG, "ServiceDemo onStartCommand");
         flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
 
@@ -71,7 +70,7 @@ public class MessageService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        QDLogger.d(TAG, "onDestroy");
         super.onDestroy();
         Intent intent = new Intent(ACTION);
         intent.setAction("cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver");
@@ -92,7 +91,7 @@ public class MessageService extends Service {
                 }*/
         sendBroadcast(intent);
        // unregisterReceiver(conncetReceiver);
-        Log.d(TAG, "sendBroadcast[" + ACTION + "]");
+        QDLogger.d(TAG, "sendBroadcast[" + ACTION + "]");
 
     }
 

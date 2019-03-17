@@ -1,23 +1,16 @@
 package cn.demomaster.huan.quickdeveloplibrary.jni;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Process;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
@@ -33,7 +26,7 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "BaseService onCreate" + index);
+        QDLogger.i(TAG, "BaseService onCreate" + index);
         if(baseBinder==null)
         baseBinder = new BaseBinder(this);
        /* String packageName = getApplicationContext().getPackageName();
@@ -75,7 +68,7 @@ public class BaseService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "BaseService onStartCommand" + index);
+        QDLogger.i(TAG, "BaseService onStartCommand" + index);
 
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
@@ -83,7 +76,7 @@ public class BaseService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "BaseService onDestroy" + index);
+        QDLogger.i(TAG, "BaseService onDestroy" + index);
         super.onDestroy();
        // startService(new Intent(getApplicationContext(), this.getClass()));
     }
@@ -113,7 +106,7 @@ public class BaseService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.i(TAG, "BaseService onUnbind" + index);
+        QDLogger.i(TAG, "BaseService onUnbind" + index);
         return super.onUnbind(intent);
     }
 
@@ -122,7 +115,7 @@ public class BaseService extends Service {
         //Toast.makeText(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
         if(baseBinder==null)
         baseBinder=new BaseBinder(this);
-        Log.i(TAG, "BaseService onBind" + index);
+        QDLogger.i(TAG, "BaseService onBind" + index);
         return baseBinder;
     }
 

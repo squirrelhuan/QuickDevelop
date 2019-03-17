@@ -24,7 +24,7 @@
     <string-array name="tab_themt_titles">
         <item>@string/Components</item>
         <item>@string/Helper</item>
-        <item>3</item>
+        <item>@string/DesignPattern</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>

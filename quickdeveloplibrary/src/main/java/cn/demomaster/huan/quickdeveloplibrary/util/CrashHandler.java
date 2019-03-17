@@ -29,7 +29,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     public void uncaughtException(Thread thread, Throwable ex) {
         try {
-            Log.e(TAG, "Uncaught Exception", ex);
+            QDLogger.e(TAG, "Uncaught Exception", ex);
             String t = applicationWeakReference.get().getString(R.string.sorry_for_crash) + ex.toString();
             Intent intent = new Intent(applicationWeakReference.get(), this.mErrorReportClass);
             intent.putExtra("message", t);

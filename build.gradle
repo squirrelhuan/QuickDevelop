@@ -29,6 +29,11 @@ allprojects {
         maven { url "https://jitpack.io" }
         google()
     }
+    ext{
+        appcompatVersion= '1.1.0-alpha02'
+        materialVersion='1.1.0-alpha03'
+        butterknifeVersion = '10.1.0'
+    }
 }
 
 task clean(type: Delete) {

@@ -1,15 +1,14 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
-import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.view.NestedScrollingParentHelper;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParentHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper.TAG;
 
@@ -135,7 +134,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
         if (dy < 0) {
             int toTop = fixedView.getMeasuredHeight()- fixedView.getMinHeight();
             toTop = toTop>0?toTop:0;
-            Log.d(TAG, "getScrollY="+getScrollY()+"hideImg toTop: "+toTop );
+            QDLogger.d(TAG, "getScrollY="+getScrollY()+"hideImg toTop: "+toTop );
             //toTop = fixedView.getMinHeight();
             if (getScrollY() <= toTop) {
                 return true;

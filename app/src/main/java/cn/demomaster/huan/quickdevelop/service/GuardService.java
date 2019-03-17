@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 /**
@@ -25,7 +27,7 @@ public class GuardService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "守护服务 onCreate");
+        QDLogger.d(TAG, "守护服务 onCreate");
         super.onCreate();
 
     }
@@ -33,14 +35,14 @@ public class GuardService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知
-        Log.d(TAG, "守护服务 onStartCommand");
+        QDLogger.d(TAG, "守护服务 onStartCommand");
         flags = Service.START_STICKY;
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "守护服务onDestroy");
+        QDLogger.d(TAG, "守护服务onDestroy");
         super.onDestroy();
         Intent intent = new Intent( ACTION );
         intent.setAction("cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver");
@@ -60,7 +62,7 @@ public class GuardService extends Service {
                     intent.addFlags(0x01000000);//加上这句话，可以解决在android8.0系统以上2个module之间发送广播接收不到的问题}
                 }*/
         sendBroadcast(intent);
-        Log.d(TAG, "守护服务 sendBroadcast[" + ACTION + "]");
+        QDLogger.d(TAG, "守护服务 sendBroadcast[" + ACTION + "]");
 
     }
 

@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * @author squirrel桓
@@ -44,7 +45,7 @@ public class AppConfig {
 
     public static AppConfig getInstance() {
         if (mContext == null) {
-            Log.e("CGQ", "AppConfig 未初始化");
+            QDLogger.e("CGQ", "AppConfig 未初始化");
             return null;
         }
         if (instance == null) {

@@ -17,7 +17,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -68,9 +70,8 @@ public class ScrollableTabView extends HorizontalScrollView implements
 
     }
 
-    public void setAdapter(TabAdapter adapter) {
+    public void setScrollingTabsAdapter(TabAdapter adapter) {
         this.mAdapter = adapter;
-
         if (mPager != null && mAdapter != null)
             initTabs();
     }
@@ -78,30 +79,21 @@ public class ScrollableTabView extends HorizontalScrollView implements
     public void setViewPager(ViewPager pager) {
         this.mPager = pager;
         mPager.setOnPageChangeListener(this);
-
         if (mPager != null && mAdapter != null)
             initTabs();
     }
 
     private void initTabs() {
-
         mContainer.removeAllViews();
         mTabs.clear();
-
         if (mAdapter == null)
             return;
-
         for (int i = 0; i < mPager.getAdapter().getCount(); i++) {
-
             final int index = i;
-
             View tab = mAdapter.getView(i);
             mContainer.addView(tab);
-
             tab.setFocusable(true);
-
             mTabs.add(tab);
-
             tab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,7 +104,6 @@ public class ScrollableTabView extends HorizontalScrollView implements
                     }
                 }
             });
-
         }
 
         selectTab(mPager.getCurrentItem());
@@ -141,18 +132,15 @@ public class ScrollableTabView extends HorizontalScrollView implements
 
     private void selectTab(int position) {
 
-        for (int i = 0, pos = 0; i < mContainer.getChildCount(); i ++ , pos++) {
+        for (int i = 0, pos = 0; i < mContainer.getChildCount(); i++, pos++) {
             View tab = mContainer.getChildAt(i);
             tab.setSelected(pos == position);
         }
-        
-        View selectedTab = mContainer.getChildAt(position);
 
+        View selectedTab = mContainer.getChildAt(position);
         final int w = selectedTab.getMeasuredWidth();
         final int l = selectedTab.getLeft();
-
         final int x = l - this.getWidth() / 2 + w / 2;
-
         smoothScrollTo(x, this.getScrollY());
 
     }

@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -23,7 +24,7 @@ public class HttpUtils {
     private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            Log.i("CGQ", "OkHttpMessage:" + message);
+            QDLogger.i("CGQ", "OkHttpMessage:" + message);
         }
     }).setLevel(level);
 
@@ -33,7 +34,7 @@ public class HttpUtils {
             loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    Log.i("CGQ", "OkHttpMessage:" + message);
+                    QDLogger.i("CGQ", "OkHttpMessage:" + message);
                 }
             });
             loggingInterceptor.setLevel(level);

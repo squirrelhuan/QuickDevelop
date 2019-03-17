@@ -121,7 +121,7 @@ public class LoadingCircleAlphaView extends View {
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
-        final ValueAnimator animator = ValueAnimator.ofInt(0, end);
+        ValueAnimator animator = ValueAnimator.ofInt(0, end);
         animator.setDuration(1600);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

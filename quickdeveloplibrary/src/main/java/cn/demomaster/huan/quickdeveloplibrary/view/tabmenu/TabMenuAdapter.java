@@ -3,8 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
@@ -61,7 +62,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             item.setPosition(i);
             item.setItemName(tabMenuModel.getTabItems()[i]);
             if (selectCount < tabMenuModel.getSelectDeftData().size()) {
-                Log.e(TAG, "默认选中个数不能超过最大个数");
+                QDLogger.e(TAG, "默认选中个数不能超过最大个数");
                 return;
             }
             if (tabMenuModel.getSelectDeftData() != null ) {
@@ -98,7 +99,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
                     int p = (int)v.getTag();
                     onItemClickListener.onItemClick(v,p);
                 }
-                Log.e("这里是点击每一行item的响应事件",""+position);
+                QDLogger.e("这里是点击每一行item的响应事件",""+position);
             }
         });
     }

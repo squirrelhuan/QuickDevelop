@@ -51,7 +51,7 @@
         <item name="android:paddingLeft">@dimen/tab_padding_left_right</item>
         <item name="android:paddingRight">@dimen/tab_padding_left_right</item>
         <item name="android:paddingTop">@dimen/tab_padding_top_bottom</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/qd_tab_textcolor</item>
         <item name="android:textSize">@dimen/quickdev_middle_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:focusable">true</item>

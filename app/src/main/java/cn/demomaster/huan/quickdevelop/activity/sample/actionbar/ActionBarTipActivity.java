@@ -1,6 +1,6 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.actionbar;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +12,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 @ActivityPager(name = "ActionBarTip",preViewClass = StateView.class,resType = ResType.Custome)
 public class ActionBarTipActivity extends BaseActivityParent {

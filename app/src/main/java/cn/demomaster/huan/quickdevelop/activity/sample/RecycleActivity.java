@@ -1,17 +1,19 @@
 package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
 
@@ -42,7 +44,7 @@ public class RecycleActivity extends AppCompatActivity {
         //recy_drag.setLayoutManager(linearLayoutManager);
         adapter = new RecycleViewAdapter(this, lists);
         //设置分割线使用的divider
-        recy_drag.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(this, android.support.v7.widget.DividerItemDecoration.VERTICAL));
+        recy_drag.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recy_drag.setAdapter(adapter);
     }
 

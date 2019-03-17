@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 /**
  * @author squirrel桓
  * @date 2018/11/19.
@@ -39,7 +41,7 @@ public class CBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table stu_table(id int,sname varchar(20),sage int,ssex varchar(10))";
         //输出创建数据库的日志信息
-        Log.i(TAG, "create Database------------->");
+        QDLogger.i(TAG, "create Database------------->");
         //execSQL函数用于执行SQL语句
         db.execSQL(sql);
     }
@@ -47,7 +49,7 @@ public class CBHelper extends SQLiteOpenHelper {
     //当更新数据库的时候执行该方法
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //输出更新数据库的日志信息
-        Log.i(TAG, "update Database------------->");
+        QDLogger.i(TAG, "update Database------------->");
     }
 
 
@@ -78,7 +80,7 @@ public class CBHelper extends SQLiteOpenHelper {
             if (DATABASE_VERSION != dbVersion) {
                 File dbFile = mContext.getDatabasePath(DATABASE_NAME);
                 if (!dbFile.delete()) {
-                    Log.w(TAG, "Unable to update database");
+                    QDLogger.w(TAG, "Unable to update database");
                 }
             }
         }
@@ -102,7 +104,7 @@ public class CBHelper extends SQLiteOpenHelper {
         File file = new File(parentPath);
         if (!file.exists()) {
             if (!file.mkdir()) {
-                Log.w(TAG, "Unable to create database directory");
+                QDLogger.w(TAG, "Unable to create database directory");
                 return;
             }
         }

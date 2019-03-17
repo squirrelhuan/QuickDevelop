@@ -6,14 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
@@ -89,10 +87,10 @@ public class QDTextViewPoint extends AppCompatTextView {
         array.recycle();
 
         // Log.i(TAG, "pointMargin: " + pointMargin);
-        Log.i(TAG, "width: " + width);
-        Log.i(TAG, "pointText: " + pointText);
-        Log.i(TAG, "pointGravity: " + pointGravity);
-        Log.i(TAG, "showPoint: " + showPoint);
+        QDLogger.i(TAG, "width: " + width);
+        QDLogger.i(TAG, "pointText: " + pointText);
+        QDLogger.i(TAG, "pointGravity: " + pointGravity);
+        QDLogger.i(TAG, "showPoint: " + showPoint);
     }
 
 

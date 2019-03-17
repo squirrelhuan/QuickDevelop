@@ -1,38 +1,34 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -385,7 +381,7 @@ public class ActionBarLayout {
         startTime = System.currentTimeMillis();
         getFinalView();
         long consumingTime = System.currentTimeMillis() - startTime;
-        Log.d(TAG, "time=" + consumingTime);
+        QDLogger.d(TAG, "time=" + consumingTime);
     }
 
     ViewGroup rootLayout;
@@ -456,7 +452,7 @@ public class ActionBarLayout {
             default:
                 return null;
         }
-        Log.i(TAG, "contentPaddingTop=" + contentPaddingTop + ",actionBar_Height=" + actionBar_Height + ",statusBar_Height=" + statusBar_Height);
+        QDLogger.i(TAG, "contentPaddingTop=" + contentPaddingTop + ",actionBar_Height=" + actionBar_Height + ",statusBar_Height=" + statusBar_Height);
         this.contentView.setLayoutParams(layoutParams_content);
         this.headView.setLayoutParams(layoutParams_header);
         //状态栏颜色
@@ -494,7 +490,7 @@ public class ActionBarLayout {
      */
     public void refreshStateBarColor() {
         long consumingTime = System.currentTimeMillis() - startTime;
-        Log.d(TAG, "setStateBarColor=" + consumingTime);
+        QDLogger.d(TAG, "setStateBarColor=" + consumingTime);
         //截图取色
         Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(rootLayout, statusBar_Height);
         if (bitmap == null) {
@@ -509,7 +505,7 @@ public class ActionBarLayout {
             setActionBarColorType(isDart);
         }
         long consumingTime2 = System.currentTimeMillis() - startTime;
-        Log.d(TAG, "setStateBarColor2=" + consumingTime2);
+        QDLogger.d(TAG, "setStateBarColor2=" + consumingTime2);
     }
 
 

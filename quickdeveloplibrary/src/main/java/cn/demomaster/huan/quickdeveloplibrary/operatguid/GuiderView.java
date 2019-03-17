@@ -3,16 +3,14 @@ package cn.demomaster.huan.quickdeveloplibrary.operatguid;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.os.Handler;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -20,12 +18,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
 

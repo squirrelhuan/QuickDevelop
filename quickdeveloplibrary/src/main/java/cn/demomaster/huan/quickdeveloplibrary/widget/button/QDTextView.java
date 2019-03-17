@@ -3,7 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.button;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 

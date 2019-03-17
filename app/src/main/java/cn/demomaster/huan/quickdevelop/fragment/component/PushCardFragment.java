@@ -2,28 +2,26 @@ package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout;
@@ -70,7 +68,7 @@ public class PushCardFragment extends BaseFragment {
         //recy_drag.setLayoutManager(linearLayoutManager);
         adapter = new RecycleViewAdapter(mContext, lists);
         //设置分割线使用的divider
-        recycler_body.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(mContext, android.support.v7.widget.DividerItemDecoration.VERTICAL));
+        recycler_body.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         recycler_body.setAdapter(adapter);
 
         //初始化
@@ -131,19 +129,19 @@ public class PushCardFragment extends BaseFragment {
         pcl_layout.setAnimationListener(new PushCardLayout.PushCardAnimationListener() {
             @Override
             public void onStart(View targetView) {
-                Log.i("Animation", "Animation Start ...");
+                QDLogger.i("Animation", "Animation Start ...");
             }
 
             @Override
             public void onRuning(View targetView,boolean isUpper, final float value) {
-                Log.i("Animation", "Animation onRuning:" + value);
+                QDLogger.i("Animation", "Animation onRuning:" + value);
                 ((Saleng) targetView).setPercent(value );
                 //isUpper 可判断是头部动画还是底部动画
             }
 
             @Override
             public void onEnd(View targetView) {
-                Log.i("Animation", "Animation End ...");
+                QDLogger.i("Animation", "Animation End ...");
                 ((Saleng) targetView). refreshAnimation();
             }
         });
