@@ -145,8 +145,6 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             return;
         }
 
-
-
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {

@@ -1,5 +1,5 @@
-apply plugin: 'com.android.application'
-
+apply plugin: 'com.android.application'/*
+apply plugin: 'com.jakewharton.butterknife'*/
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -53,6 +53,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+/*
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'*/
+
     implementation project(path: ':quickdeveloplibrary')
     //implementation 'com.github.yuzhiqiang1993:zxing:2.2.1'
     //implementation 'com.github.squirrelhuan:QuickDevelop:1.1.13'

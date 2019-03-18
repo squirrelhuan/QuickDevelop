@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+/*apply plugin: 'com.jakewharton.butterknife'*/
 android {
     compileSdkVersion 28
 
@@ -57,6 +57,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+   /* 引入了10.1.0 androidX
+   implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'*/
+
     api 'com.google.code.gson:gson:2.7'
     // fastjson
     api 'com.alibaba:fastjson:1.2.46'

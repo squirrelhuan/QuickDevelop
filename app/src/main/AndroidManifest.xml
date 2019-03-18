@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.demomaster.huan.quickdevelop">
 
     <!--android 9.0上使用前台服务，需要添加权限-->

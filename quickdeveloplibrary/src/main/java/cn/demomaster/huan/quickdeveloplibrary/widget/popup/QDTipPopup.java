@@ -77,44 +77,51 @@ public class QDTipPopup extends QDPopup {
         setDirection(GuiderView.Gravity.BOTTOM);
     }
 
+    private int contentWidth;
+    private int contentHeight;
     private void show() {
+        int x =ViewGroup.LayoutParams.WRAP_CONTENT;
+        int y =ViewGroup.LayoutParams.WRAP_CONTENT;
         ViewGroup.LayoutParams layoutParams = getContentView().getLayoutParams();
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int popupWidth = getContentView().getMeasuredWidth();
-        int popupHeight = getContentView().getMeasuredHeight();
-        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        contentWidth = getContentView().getMeasuredWidth();
+        contentHeight = getContentView().getMeasuredHeight();
+        Log.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"contentWidth="+contentWidth+",contentHeight="+contentHeight);
         // 设置好参数之后再show
         int[] location = new int[2];
         mAnchor.getLocationOnScreen(location);
 
-        if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {
-            if(popupWidth>=maxWidth) {
+        if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {//上下
+            if(contentWidth>=maxWidth) {
                 layoutParams.width = maxWidth;
-                getContentView().setLayoutParams(layoutParams);
             }
-            popupHeight = popupHeight + arrowHeight;
+            getContentView().setLayoutParams(layoutParams);
+            contentHeight = contentHeight + arrowHeight;
             if (mGravity == GuiderView.Gravity.BOTTOM) {
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, (location[0] + mAnchor.getWidth() / 2) - popupWidth / 2-padding, location[1] + mAnchor.getHeight());
+                x = (location[0] + mAnchor.getWidth() / 2) - layoutParams.width / 2-padding;
+                y = location[1] + mAnchor.getHeight();
             } else {
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, (location[0] + mAnchor.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight);
+                x = (location[0] + mAnchor.getWidth() / 2) - layoutParams.width / 2;
+                y = location[1] - contentHeight;
             }
         }
-        if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
-            popupWidth = popupWidth + arrowHeight;
+        if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {//左右
+            contentWidth = contentWidth + arrowHeight;
             if (mGravity == GuiderView.Gravity.LEFT) {
-                if(popupWidth>=maxWidth) {
+                if(contentWidth>=maxWidth) {
                     layoutParams.width = location[0]-padding;
                     getContentView().setLayoutParams(layoutParams);
                 }
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             } else {
-                if(popupWidth>=maxWidth) {
+                if(contentWidth>=maxWidth) {
                     layoutParams.width = location[0]+mAnchor.getWidth();
                     getContentView().setLayoutParams(layoutParams);
                 }
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         }
+        showAtLocation(mAnchor, Gravity.NO_GRAVITY, x, y);
     }
 
     @Override
@@ -137,7 +144,6 @@ public class QDTipPopup extends QDPopup {
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
         mAnchor = anchor;
         super.showAsDropDown(anchor, xoff, yoff, gravity);
-
         if (gravity == Gravity.TOP) {
             setDirection(GuiderView.Gravity.TOP);
         }
@@ -150,11 +156,9 @@ public class QDTipPopup extends QDPopup {
         if (gravity == Gravity.RIGHT) {
             setDirection(GuiderView.Gravity.RIGHT);
         }
-
     }
 
     private boolean isCustomView = true;
-
     @Override
     public void setContentView(final View contentView) {
         //兼容正常的setContentView
@@ -206,11 +210,9 @@ public class QDTipPopup extends QDPopup {
             w = layoutParams.width;
             h = ViewGroup.LayoutParams.WRAP_CONTENT;
             if (mGravity == GuiderView.Gravity.LEFT) {
-                int maxWidth = location[0];
                 getContentView().setLayoutParams(layoutParams);
                 x = location[0] - popupWidth;
             } else {
-                int maxWidth = DisplayUtil.getScreenWidth(context)-location[0]-mAnchor.getWidth();
                 getContentView().setLayoutParams(layoutParams);
                 x = location[0] + mAnchor.getWidth();
             }

@@ -107,7 +107,8 @@ public class QDTipPopupFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 QDTipPopup qdTipPopup = new QDTipPopup.Builder(getContext()).setBackgroundRadius(10).setBackgroundColor(Color.BLUE).setMessage(v.getContentDescription()!=null?v.getContentDescription().toString():"左侧多行提示---------------------------------------------------------------------------------------提示。").create();
-                qdTipPopup.showTip(v, GuiderView.Gravity.LEFT);
+               /// qdTipPopup.showTip(v, GuiderView.Gravity.LEFT);
+                qdTipPopup.showAsDropDown(v);
             }
         });
 
@@ -116,7 +117,8 @@ public class QDTipPopupFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 QDTipPopup qdTipPopup = new QDTipPopup.Builder(getContext()).setBackgroundRadius(10).setBackgroundColor(Color.YELLOW).setTextColor(Color.BLACK).setMessage(v.getContentDescription()!=null?v.getContentDescription().toString():"底部多行提示---------------------------------------------------------------------------------------提示。").create();
-                qdTipPopup.showTip(v, GuiderView.Gravity.BOTTOM);
+                //qdTipPopup.showTip(v, GuiderView.Gravity.BOTTOM);
+                qdTipPopup.showAsDropDown(v);
             }
         });
 
@@ -126,7 +128,8 @@ public class QDTipPopupFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 QDTipPopup qdTipPopup = new QDTipPopup.Builder(getContext()).setBackgroundRadius(10).setBackgroundColor(Color.YELLOW).setTextColor(Color.BLACK).setMessage(v.getContentDescription()!=null?v.getContentDescription().toString():"底部多行提示---------------------------------------------------------------------------------------提示。").create();
-                qdTipPopup.showTip(v, GuiderView.Gravity.BOTTOM);
+                //qdTipPopup.showTip(v, GuiderView.Gravity.BOTTOM);
+                qdTipPopup.showAsDropDown(v);
             }
         });
 

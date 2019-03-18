@@ -17,6 +17,7 @@ public class CsqliteActivity extends BaseActivityParent {
 
     /** Called when the activity is first created. */
 //声明各个按钮
+    //@BindView(R.id.createDatabase)
     private Button createBtn;
     private Button insertBtn;
     private Button updateBtn;

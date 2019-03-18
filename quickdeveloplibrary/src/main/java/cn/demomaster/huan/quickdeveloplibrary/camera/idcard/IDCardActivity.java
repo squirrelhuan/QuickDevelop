@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
@@ -39,7 +40,8 @@ import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 public class IDCardActivity extends BaseActivityParent {
 
-    private ImageView imageView;
+    //@BindView(R2.id.main_image)
+    public ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
