@@ -14,12 +14,20 @@
 
     <style name="StartAppTheme" parent="QDCompat">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/white</item>
+        <!-- 欢迎页背景 -->
+        <item name="android:windowBackground">@drawable/splash</item>
 
         <!--<item name="android:windowBackground">@drawable/layout_list_start_pic</item>-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="SplashTheme" parent="QDCompat">
+        <!-- 欢迎页背景 -->
+        <item name="android:windowBackground">@drawable/splash</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowNoTitle">true</item>
+        <!-- <item name="android:windowIsTranslucent">true</item> --> <!-- 透明背景不要了 -->
+    </style>
 
     <style name="pop_shot">
         <item name="android:windowEnterAnimation">@anim/pop_share_show</item>
