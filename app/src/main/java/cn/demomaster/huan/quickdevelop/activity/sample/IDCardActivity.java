@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
@@ -22,13 +24,15 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 
 public class IDCardActivity extends BaseActivityParent {
 
-    private ImageView imageView;
+    @BindView(R.id.main_image)
+    public ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
-        imageView = (ImageView) findViewById(R.id.main_image);
+        ButterKnife.bind(this);
+        //imageView = (ImageView) findViewById(R.id.main_image);
     }
 
     private String imageToBase64(String path) {

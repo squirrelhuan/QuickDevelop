@@ -23,10 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".QDMainFragmentActivity">
+
+        <!--android:theme="@style/SplashTheme" 添加给启动页来显示启动背景-->
+        <activity android:name=".QDMainFragmentActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

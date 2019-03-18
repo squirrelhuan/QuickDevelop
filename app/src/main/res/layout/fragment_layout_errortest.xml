@@ -20,6 +20,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="除以零错误"/>
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_error_buggly"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="腾讯buggly测试"/>
 
                 </LinearLayout>
         </ScrollView>

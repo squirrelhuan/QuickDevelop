@@ -126,3 +126,10 @@
 -keepattributes Signature
 
 # end 友盟分享混淆
+
+
+# start 腾讯bugly混淆
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+# end 腾讯bugly混淆

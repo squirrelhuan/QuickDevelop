@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -26,13 +28,15 @@ public class PickActivity extends BaseActivityParent {
     //    private ArrayList<ProvinceModel> mProvinceList = null; // 省份列表
 //    private String mProvince = null; // 省份
 //    private String mCity = null; // 城市
-    private LoopView loopView;
+    @BindView(R.id.loop_view)
+    public LoopView loopView;
     private LoopView2 loopView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick);
+        ButterKnife.bind(this);
 
         findViewById(R.id.date).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +99,7 @@ public class PickActivity extends BaseActivityParent {
             }
         });
 
-        loopView = (LoopView) findViewById(R.id.loop_view);
+       // loopView = (LoopView) findViewById(R.id.loop_view);
         loopView.setInitPosition(2);
         loopView.setCanLoop(false);
         loopView.setLoopListener(new LoopScrollListener() {

@@ -23,6 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
@@ -77,11 +78,10 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             //2.1判断该方法上是否存在@Widget
             boolean annotationPresent = clazz.isAnnotationPresent(ActivityPager.class);
             if (annotationPresent) {
-                System.out.println("info方法上存在@Login注释");
+                QDLogger.i("info方法上存在@Login注释");
             } else {
-                System.out.println("info方法上不存在@Login注释");
+                QDLogger.i("info方法上不存在@Login注释");
             }
-
             //获取注释
             Annotation[] annotations = clazz.getAnnotations();
             for (Annotation a : annotations) {
