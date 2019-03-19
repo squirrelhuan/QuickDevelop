@@ -27,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDXml;
 
 public class ApplicationParent extends Application {
 
@@ -49,11 +50,11 @@ public class ApplicationParent extends Application {
         ActivityManager.init(this);
         NotifycationHelper.getInstance().init(this);
 
-
         AppConfig.init(this, "config/project.conf");
         //处理崩溃日志
         initCrash();
 
+        QDXml.parseXmlAssets(this,"config/test.xml");
     }
 
     /**
@@ -62,7 +63,6 @@ public class ApplicationParent extends Application {
      * @param appkey
      */
     public void initUmengShare(String appkey) {
-
         UMConfigure.init(this, appkey
                 , "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 
@@ -84,7 +84,6 @@ public class ApplicationParent extends Application {
 
     public CBHelper dbHelper;
     public SQLiteDatabase db;
-
     private void initDB() {
         dbHelper = new CBHelper(this, "yidao.db", null, 1);
         //得到一个可读的SQLiteDatabase对象
@@ -117,7 +116,7 @@ public class ApplicationParent extends Application {
     }
 
     public void initCrash() {
-        CrashReport.initCrashReport(getApplicationContext(), "7d6d33c554", true);
+        CrashReport.initCrashReport(getApplicationContext(), "7d6d33c554", false);
         if (BuildConfig.DEBUG) {
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
             if (errorReportActivity == null) {

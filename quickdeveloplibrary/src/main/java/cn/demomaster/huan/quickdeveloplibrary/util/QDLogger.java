@@ -98,7 +98,7 @@ public class QDLogger {
     }
 
     private static void Log(Context context,int logType, String tag, Object obj,Throwable tr){
-        String message =(context==null?"":(context.getClass().getName()+":"));
+        String message =(context==null?obj.toString():(context.getClass().getName()+":"));
         if(obj==null) message="null";
         switch (logType){
             case Log.VERBOSE:// = 2;
