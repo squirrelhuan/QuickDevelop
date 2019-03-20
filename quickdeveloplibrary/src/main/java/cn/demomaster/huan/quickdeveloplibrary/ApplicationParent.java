@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,22 +11,19 @@ import android.preference.PreferenceManager;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
-import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
-import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDXml;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.Article;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 
 public class ApplicationParent extends Application {
 
@@ -54,7 +50,14 @@ public class ApplicationParent extends Application {
         //处理崩溃日志
         initCrash();
 
-        QDXml.parseXmlAssets(this,"config/test.xml");
+        QDSaxXml.parseXmlAssets(this,"config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class,null);
+        QDSaxXml.parseXmlAssets(this,"config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class,null);
+        QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
+            @Override
+            public void onComplete(Object result) {
+                QDLogger.d("配置文件初始化完成"+result);
+            }
+        });
     }
 
     /**

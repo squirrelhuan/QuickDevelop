@@ -20,7 +20,7 @@ import javax.xml.parsers.SAXParserFactory;
  * @date 2019/3/19.
  * description：
  */
-public class QDXml {
+public class QDSaxXml {
 
     public static void parseXmlFilePath(String path){
 
@@ -32,7 +32,17 @@ public class QDXml {
 
     }
 
-    public static void parseXmlAssets(Context context, String xmlPath){
+    // 泛型方法 printArray
+    public static < E > void printArray( E[] inputArray )
+    {
+        // 输出数组元素
+        for ( E element : inputArray ){
+            System.out.printf( "%s ", element );
+        }
+        System.out.println();
+    }
+
+    public static < T > void parseXmlAssets(Context context, String xmlPath, Class<T> clazz, QDSaxHandler.OnParseCompleteListener onParseCompleteListener){
         XMLReader xr = null;
         try {
             //使用工厂方法初始化SAXParserFactory变量spf
@@ -42,9 +52,10 @@ public class QDXml {
             //通过SAXParser得到XMLReader的实例
             xr = sp.getXMLReader();
 
-            QDSaxHandler handler = new QDSaxHandler();
+            QDSaxHandler handler = new QDSaxHandler(clazz,onParseCompleteListener);
             xr.setContentHandler(handler);
             xr.setErrorHandler(handler);
+
 
             //获取AssetManager管理器对象
             AssetManager as = context.getAssets();
@@ -60,7 +71,8 @@ public class QDXml {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-
-
     }
+
+
+
 }

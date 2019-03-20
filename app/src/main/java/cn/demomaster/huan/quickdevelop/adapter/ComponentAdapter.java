@@ -78,9 +78,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             //2.1判断该方法上是否存在@Widget
             boolean annotationPresent = clazz.isAnnotationPresent(ActivityPager.class);
             if (annotationPresent) {
-                QDLogger.i("info方法上存在@Login注释");
-            } else {
-                QDLogger.i("info方法上不存在@Login注释");
+                QDLogger.i(clazz.getClass().getName()+"上存在@ActivityPager注释");
             }
             //获取注释
             Annotation[] annotations = clazz.getAnnotations();

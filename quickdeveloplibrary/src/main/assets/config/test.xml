@@ -1,8 +1,4 @@
-<?xml version="1.0"?>
-<poem xmlns="http://www.megginson.com/ns/exp/poetry">
-    <title>Roses are Red</title>
-    <l>Roses are red,</l>
-    <l>Violets are blue;</l>
-    <l>Sugar is sweet,</l>
-    <l>And I love you.</l>
-</poem>
+<?xml version="1.0" encoding="utf-8"?>
+<root  xmlns="poetry"><!--根元素-->
+    <article title="我是文章标题" content="我是内容。。。"></article>
+</root>
