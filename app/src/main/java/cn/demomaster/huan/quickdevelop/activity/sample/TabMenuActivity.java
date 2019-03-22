@@ -91,9 +91,9 @@ public class TabMenuActivity extends BaseActivityParent {
             @Override
             public String onSelected(int tabIndex, int position) {
                 PopToastUtil.ShowToast((Activity) mContext, "" + tabIndex + ":" + position);
+                tabMenuLayout.getPopupWindow().dismiss();
                 return null;
             }
-
         });
     }
 
