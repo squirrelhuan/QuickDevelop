@@ -53,7 +53,7 @@ public class MainFragment extends BaseFragment {
         ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
         //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
         //mViewPager.setPageMarginDrawable(R.drawable.viewpager_margin);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(mPagerAdapter1);
         mViewPager.setCurrentItem(0);
 

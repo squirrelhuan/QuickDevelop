@@ -11,7 +11,6 @@
         android:id="@+id/it_actionbar_common_left"
         android:layout_width="@dimen/activity_actionbar_button_width"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"

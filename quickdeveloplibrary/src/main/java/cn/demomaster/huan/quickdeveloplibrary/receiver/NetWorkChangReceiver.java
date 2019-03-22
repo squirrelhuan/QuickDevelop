@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
 
@@ -42,25 +44,25 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
         if (activeInfo != null) { //网络连接
             switch (activeInfo.getType()) {
                 case TYPE_MOBILE:
-                    Log.i("CGQ", "正在使用2G/3G/4G网络");
+                    QDLogger.i("CGQ", "正在使用2G/3G/4G网络");
                     break;
                 case TYPE_WIFI:
-                    Log.i("CGQ", "正在使用wifi上网");
+                    QDLogger.i("CGQ", "正在使用wifi上网");
                     break;
                 default:
                     break;
             }
-            Log.i("CGQ", "网络连接成功");
+            QDLogger.i("CGQ", "网络连接成功");
             if(netState!=1&&onNetStateChangedListener!=null){
                 netState=1;
-                Log.i("CGQ", "网络状态发生改变，已连接");
+                QDLogger.i("CGQ", "网络状态发生改变，已连接");
                 onNetStateChangedListener.onConnected();
             }
         } else { //网络断开
             Log.i("CGQ", "网络断开");
             if(netState!=0&&onNetStateChangedListener!=null){
                 netState=0;
-                Log.i("CGQ", "网络状态发生改变，已断开");
+                QDLogger.i("CGQ", "网络状态发生改变，已断开");
                 onNetStateChangedListener.onDisConnected();
             }
         }

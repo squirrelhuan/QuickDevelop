@@ -48,7 +48,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_year"

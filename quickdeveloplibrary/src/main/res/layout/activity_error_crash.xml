@@ -5,9 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.error.ErrorCrashActivity">
-<TextView
-    android:id="@+id/tv_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="no"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Error Pager" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
