@@ -205,9 +205,4 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
         return bg;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-
-    }
 }
