@@ -53,13 +53,13 @@ public class TabMenuActivity extends BaseActivityParent {
         List<Integer>  selectData_b =  new ArrayList<>();selectData_b.add(2);selectData_b.add(3);
         List<Integer>  selectData_c =  new ArrayList<>();selectData_c.add(4);selectData_c.add(7);
         final List<TabMenuModel> tabSelectModels = new ArrayList<>();//用来存放初始化选项的状态
-        TabMenuModel tabMenuModel =new TabMenuModel("first",aaa, selectData_a);
+        TabMenuModel tabMenuModel =new TabMenuModel("单选",aaa, selectData_a);
         tabMenuModel.setTabButtonView(new TButton(this));
         tabSelectModels.add(tabMenuModel);
-        TabMenuModel tabMenuModel1 =new TabMenuModel("secend",bbb,2, selectData_b);
+        TabMenuModel tabMenuModel1 =new TabMenuModel("多选",bbb,2, selectData_b);
         tabMenuModel1.setTabButtonView(new TButton(this));
         tabSelectModels.add(tabMenuModel1);
-        TabMenuModel tabMenuModel2 =new TabMenuModel("c",ccc,3, selectData_c);
+        TabMenuModel tabMenuModel2 =new TabMenuModel("多列",ccc,3, selectData_c);
         tabMenuModel2.setTabButtonView(new TButton(this));
         tabMenuModel2.setColumnCount(3);
         tabMenuModel2.setColorContent(Color.GREEN,Color.BLUE);

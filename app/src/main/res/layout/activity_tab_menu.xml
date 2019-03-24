@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.sample.TabMenuActivity">
+    android:background="@color/gray"
+    tools:context=".activity.sample.TabMenuActivity"
+    android:orientation="vertical">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout
         android:id="@+id/tab_menu_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+        android:layout_marginRight="30dp"
+        android:padding="5dp"
+        android:background="@color/white">
 
     </cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
