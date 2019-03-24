@@ -7,6 +7,7 @@ import android.view.View;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
@@ -48,6 +49,11 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         }
         return actionBarLayout;
     }
+
+  /*  public ActionBarLayoutView getActionBarLayout2(){
+        ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext,layoutResID,layoutResID,R.layout.activity_action_bar_test);
+       return builder.creat();
+    }*/
 
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {

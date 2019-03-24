@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.demomaster.huan.quickdevelop">
-
-    <!--android 9.0上使用前台服务，需要添加权限-->
+    <!-- android 9.0上使用前台服务，需要添加权限 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,28 +22,29 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-
-        <!--android:theme="@style/SplashTheme" 添加给启动页来显示启动背景-->
-        <activity android:name=".QDMainFragmentActivity" android:theme="@style/SplashTheme">
+        <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity-->
+        <activity
+            android:name=".QDMainFragmentActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.sample.RegisterActivity" />
-        <!-- <activity android:name=".sample.CaptureActivity" /> -->
+        <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
         <activity android:name=".activity.sample.PickActivity" />
         <activity android:name=".activity.sample.IDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" />
-        <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" />
-        <!-- android:screenOrientation="landscape" -->
+        <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" /> <!-- android:screenOrientation="landscape" -->
         <activity android:name=".activity.sample.CsqliteActivity" />
         <activity android:name=".activity.sample.component.QDialogActivity" />
         <activity android:name=".activity.sample.TabMenuActivity" />
         <activity android:name=".activity.sample.PictureSelectActivity" />
         <activity android:name=".activity.sample.component.LoadingActivity" />
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
+        <activity android:name=".activity.sample.TestActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -57,47 +57,48 @@
         </provider>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".activity.sample.component.ToggleButtonActivity" android:label="tooglebutton"/>
+        <activity
+            android:name=".activity.sample.component.ToggleButtonActivity"
+            android:label="tooglebutton" />
         <activity android:name=".activity.sample.actionbar.ActionBarActivity" />
         <activity android:name=".activity.sample.actionbar.ActionBarTipActivity" />
         <activity android:name=".activity.sample.component.RatingBarActivity" />
         <activity android:name=".activity.sample.component.QDActionDialogActivity" />
-        <activity android:name=".activity.sample.fragment.BaseFragmentActivity"></activity>
+        <activity android:name=".activity.sample.fragment.BaseFragmentActivity" />
 
         <service
             android:name=".service.SimpleService"
             android:enabled="true"
-            android:process=":guard"/>
-
-        <!-- Message Service -->
-        <service android:name=".service.MessageService"/>
+            android:process=":guard" /> <!-- Message Service -->
+        <service android:name=".service.MessageService" />
         <service
             android:name=".service.GuardService"
             android:enabled="true"
             android:exported="true"
             android:priority="1000"
-            android:process=":guard"/>
+            android:process=":guard" />
+
         <receiver
             android:name=".receiver.ServiceReceiver"
-            android:priority="1000"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:priority="1000">
             <intent-filter>
-                <action android:name="cn.demomaster.huan.quickdevelop.service"/>
+                <action android:name="cn.demomaster.huan.quickdevelop.service" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.UploadFilesIntentService"/>
+        <service android:name=".service.UploadFilesIntentService" />
     </application>
 
 </manifest>

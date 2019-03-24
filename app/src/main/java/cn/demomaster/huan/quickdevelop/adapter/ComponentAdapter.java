@@ -21,6 +21,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -120,7 +121,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                                         if(Fragment.class.isAssignableFrom(clazz)){
                                              FragmentActivityHelper.getInstance().startFragment((AppCompatActivity) context,(Fragment) clazz.newInstance());
                                         }else if(Activity.class.isAssignableFrom(clazz)){
-                                            ((BaseActivityParent)context).startActivity(clazz);
+                                            ((QDBaseActivity)context).startActivity(clazz);
                                         }
                                     }catch (Exception e){
                                         throw new IllegalArgumentException("activityClass must be extends activity!"+e.getMessage());

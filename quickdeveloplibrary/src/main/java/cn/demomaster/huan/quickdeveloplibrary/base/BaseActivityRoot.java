@@ -46,7 +46,6 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
             StatusBarUtil.transparencyBar(mContext);
             initHelper();
         }
-
     }
 
     public PhotoHelper photoHelper;

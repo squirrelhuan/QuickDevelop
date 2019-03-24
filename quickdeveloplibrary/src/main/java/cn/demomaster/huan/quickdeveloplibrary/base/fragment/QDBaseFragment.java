@@ -5,14 +5,15 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
@@ -24,10 +25,26 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 /**
  * Created by Squirrel桓 on 2019/1/3.
  */
-public abstract class BaseFragment extends Fragment implements BaseFragmentActivityInterface {
+public abstract class QDBaseFragment extends Fragment implements BaseFragmentActivityInterface {
 
     public AppCompatActivity mContext;
     public Bundle mBundle;
+    public ActionBarLayoutView actionBarLayoutView;
+
+    public ActionBarLayoutView getActionBarLayout(View view) {
+        if (actionBarLayoutView == null) {
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarLayout.ContextType.FragmentModel).setHeaderResId(R.layout.activity_action_bar_test);
+            actionBarLayoutView = builder.creat();
+        }
+
+        return actionBarLayoutView;
+    }
+
+    private int layoutResID;
+    private OptionsMenu optionsMenu;
+    ViewGroup mView;
+    View rootView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         mContext = (AppCompatActivity) this.getContext();
@@ -37,11 +54,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         initHelper();
     }
 
-    private int layoutResID;
-    private ActionBarLayout actionBarLayout;
-    private OptionsMenu optionsMenu;
-    ViewGroup mView;
-    View rootView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,27 +62,17 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             if (mView == null) {
                 mView = getContentView(inflater);
-                mView.setClickable(true);
-                actionBarLayout = ActionBarHelper.init(mContext, mView);
             }
-            rootView = getActionBarLayout().getFinalView();
-            initView(mView,actionBarLayout);
-            rootView.setBackgroundColor(Color.WHITE);
+            rootView = getActionBarLayout(mView);
+            initView(rootView,actionBarLayoutView);
             return rootView;
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     //获取自定义导航
-    public ActionBarLayout getActionBarLayout() {
-        if (!isUseActionBarLayout()) {
-            //throw new IllegalStateException("Base URL required.");
-            return null;
-        }
-        if (actionBarLayout == null) {
-            actionBarLayout = ActionBarHelper.init(mContext, layoutResID);
-        }
-        return actionBarLayout;
+    public ActionBarLayoutView getActionBarLayout() {
+        return actionBarLayoutView;
     }
 
     public PhotoHelper photoHelper;
@@ -115,10 +117,5 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             optionsMenu = new OptionsMenu(mContext);
         }
         return optionsMenu;
-    }
-
-    @Override
-    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
-
     }
 }

@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseFragmentActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseFragmentActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutInterface;
 
 /**
@@ -161,5 +162,8 @@ public class FragmentActivityHelper {
 
     public void onBackPressed(BaseFragmentActivity baseFragmentActivity) {
             finishFragment(baseFragmentActivity);
+    }
+    public void onBackPressed(QDBaseFragmentActivity baseFragmentActivity) {
+        finishFragment(baseFragmentActivity);
     }
 }

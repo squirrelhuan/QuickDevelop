@@ -33,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 /**
  * Created by Squirrel桓 on 2018/11/9.
  */
-public class ActionBarLayout {
+public class ActionBarLayout implements ActionBarInterface{
 
     private Activity context;
     private ImageTextView it_actionbar_title;
@@ -237,6 +237,11 @@ public class ActionBarLayout {
         if (it_actionbar_title != null && text != null) {
             it_actionbar_title.setText(text);
         }
+    }
+
+    @Override
+    public void setStateBarColorAuto(Boolean barColorAuto) {
+
     }
 
     /**

@@ -147,7 +147,7 @@ public class OptionsMenu {
             anchor.getLocationOnScreen(anchorLoc);*/
             //popupWindow.showAsDropDown(anchor);
             //右侧的算法
-            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - DisplayUtil.dip2px(context, margin), DisplayUtil.dip2px(context, margin));
+            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin,  margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
         }
     }
@@ -221,6 +221,11 @@ public class OptionsMenu {
 
     public void dismiss() {
         popupWindow.dismiss();
+    }
+
+    public void show(View v) {
+        setAnchor(v);
+        show();
     }
 
     public interface OnMenuItemClicked {

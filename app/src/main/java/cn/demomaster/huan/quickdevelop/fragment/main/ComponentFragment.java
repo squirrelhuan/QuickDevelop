@@ -19,6 +19,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.TestActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
@@ -78,7 +79,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(PickActivity.class);
         classList.add(TabMenuActivity.class);
         classList.add(PictureSelectActivity.class);
-        classList.add(ActionBarActivity.class);
+        classList.add(TestActivity.class);
         classList.add(RatingBarActivity.class);
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);

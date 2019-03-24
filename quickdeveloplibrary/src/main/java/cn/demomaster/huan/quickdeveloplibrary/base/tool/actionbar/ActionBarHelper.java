@@ -34,4 +34,35 @@ public class ActionBarHelper {
         builder.setHeadView(R.layout.activity_actionbar_common);
         return  builder.create();
     }
+
+    /**
+     * 导航栏构建者
+     */
+    public static class Builder {
+        private int contentResId;
+        private int content2ResId;
+        private int headerResId;
+
+        public Builder(int contentResId, int content2ResId, int headerResId) {
+            this.contentResId = contentResId;
+            this.content2ResId = content2ResId;
+            this.headerResId = headerResId;
+        }
+
+        public void setContent2ResId(int content2ResId) {
+            this.content2ResId = content2ResId;
+        }
+
+        public void setContentResId(int contentResId) {
+            this.contentResId = contentResId;
+        }
+
+        public void setHeaderResId(int headerResId) {
+            this.headerResId = headerResId;
+        }
+
+        public void build(){
+
+        }
+    }
 }

@@ -15,7 +15,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
@@ -28,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "OperatGuid",preViewClass = StateView.class,resType = ResType.Custome)
-public class GuiderFragment extends BaseFragment {
+public class GuiderFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
 
@@ -197,5 +199,9 @@ public class GuiderFragment extends BaseFragment {
         GuiderView guiderSurfaceView = new GuiderView(getContext(), guiderModel,false,null);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mParentView.addView(guiderSurfaceView, layoutParams);*/
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
     }
 }

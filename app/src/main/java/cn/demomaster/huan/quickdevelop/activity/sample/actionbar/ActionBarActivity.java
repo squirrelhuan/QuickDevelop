@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -12,6 +13,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
@@ -20,6 +22,7 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
 
     private LinearLayout ll_root;
     private SeekBar sb_background;
+    private ActionBarLayoutView action_bar;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,40 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
         });
         sb_background.setProgress(50);
 
+        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+
+        //getActionBarLayout2();
+
+/*
+        action_bar = findViewById(R.id.action_bar);
+        findViewById(R.id.btn_NORMAL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+                PopToastUtil.ShowToast(mContext,"NORMAL");
+            }
+        });
+        findViewById(R.id.btn_NO_ACTION_BAR).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                PopToastUtil.ShowToast(mContext,"NO_ACTION_BAR");
+            }
+        });
+        findViewById(R.id.btn_ACTION_STACK).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK);
+                PopToastUtil.ShowToast(mContext,"ACTION_STACK");
+            }
+        });
+        findViewById(R.id.btn_ACTION_STACK_NO_STATUS).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                PopToastUtil.ShowToast(mContext,"ACTION_STACK_NO_STATUS");
+            }
+        });*/
     }
 
 

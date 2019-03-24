@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 
 /**
  * @author squirrel桓
@@ -17,4 +18,5 @@ public interface BaseFragmentActivityInterface {
     ViewGroup getContentView(LayoutInflater inflater);
     //void initActionBarLayout(ActionBarLayout actionBarLayout);
     void initView(View rootView,ActionBarLayout actionBarLayout);
+    void initView(View rootView,ActionBarLayoutView actionBarLayout);
 }

@@ -19,7 +19,9 @@ import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
@@ -32,7 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
  * Squirrel桓
  * 2018/8/25
  */
-public class MainFragment extends BaseFragment {
+public class MainFragment extends QDBaseFragment {
     //Components
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -41,8 +43,32 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        //actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        /*actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
+
+        List<Class> list = new ArrayList<>();
+        list.add(ComponentFragment.class);
+        list.add(HelperFragment.class);
+        list.add(DesignPatternFragment.class);
+        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getActivity().getSupportFragmentManager(), list);
+        // Initiate ViewPager
+        ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
+        //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
+        //mViewPager.setPageMarginDrawable(R.drawable.viewpager_margin);
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setAdapter(mPagerAdapter1);
+        mViewPager.setCurrentItem(0);
+
+        // Tabs
+        initScrollableTabs(rootView, mViewPager);
+        init();*/
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
+        actionBarLayout.setFullScreen(true);
+        actionBarLayout.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
@@ -63,7 +89,6 @@ public class MainFragment extends BaseFragment {
     }
 
     private void init() {
-        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().setTitle("首页");
         getActionBarLayout().setStateBarColorAuto(true);//状态栏文字颜色自动
         getActionBarLayout().setActionBarThemeColors(Color.WHITE, Color.BLACK);
@@ -73,7 +98,6 @@ public class MainFragment extends BaseFragment {
                 /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
                 final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
                 loadingDialog.show();*/
-
                 CustomDialog.Builder builder = new CustomDialog.Builder(mContext, R.layout.layout_dialog_loading_default);
                 final CustomDialog customDialog = builder.setCanTouch(false).create();
                 customDialog.show();
@@ -82,7 +106,7 @@ public class MainFragment extends BaseFragment {
         getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOptionsMenu().show();
+                getOptionsMenu().show(v);
             }
         });
         initOptionsMenu();
@@ -98,7 +122,7 @@ public class MainFragment extends BaseFragment {
             menus.add(menu);
         }
         getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAlpha(.86f);
+        getOptionsMenu().setAlpha(.6f);
         getOptionsMenu().setMargin(2);
         getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {

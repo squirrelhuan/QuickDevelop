@@ -30,7 +30,7 @@ allprojects {
         google()
     }
     ext{
-        appcompatVersion= '1.1.0-alpha02'
+        appcompatVersion= '1.1.0-alpha03'
         materialVersion='1.1.0-alpha03'
         butterknifeVersion = '10.1.0'
     }
