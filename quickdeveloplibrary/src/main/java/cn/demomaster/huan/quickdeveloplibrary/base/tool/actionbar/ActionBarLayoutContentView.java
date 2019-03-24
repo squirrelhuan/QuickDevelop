@@ -146,7 +146,6 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setMarginTopOrPaddingTop();
     }
 
-
     public ActionBarTip.ACTIONBARTIP_TYPE mActionbartip_type = ActionBarTip.ACTIONBARTIP_TYPE.NORMAL;
     public void addActionBarTipView(ActionBarTip actionBarTip) {
         actionBarTip.setBelowContent(this);
