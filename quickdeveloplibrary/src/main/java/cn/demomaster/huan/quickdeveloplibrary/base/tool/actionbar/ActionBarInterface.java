@@ -13,4 +13,6 @@ public interface ActionBarInterface {
     void setRightOnClickListener(View.OnClickListener rightOnClickListener);
 
     void setActionBarThemeColors(int lightColor,int darkColor);
+
+     ActionBarTip getActionBarTip();
 }

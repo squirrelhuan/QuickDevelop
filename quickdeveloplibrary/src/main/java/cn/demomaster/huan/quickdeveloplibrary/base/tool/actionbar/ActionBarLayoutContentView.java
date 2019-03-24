@@ -25,19 +25,9 @@ public class ActionBarLayoutContentView extends FrameLayout {
         initView();
     }
 
-    public ActionBarLayoutContentView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public ActionBarLayoutContentView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView();
-    }
-
-    private FrameLayout contentViewBackLayout;//, contentViewFrontLayout;
-    private View contentViewBack;//, contentViewFront;
-    private ActionBarLayoutView mActionBarLayoutView;
+    private FrameLayout contentViewBackLayout, actionBarTipLayout;
+    public View contentViewBack;//, contentViewFront;
+    public ActionBarLayoutView mActionBarLayoutView;
 
     public ActionBarLayoutContentView(Context context, ActionBarLayoutView actionBarLayoutView) {
         super(context);
@@ -50,11 +40,6 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setContentViewBack((FrameLayout) view);
     }
 
-   /* public void setContentViewFront(int layoutResID) {
-        View view = mInflater.inflate(layoutResID, this, true);
-        setContentViewFront((FrameLayout) view);
-    }*/
-
     public void setContentViewBack(View contentView) {
         this.contentViewBack = contentView;
         if (this.contentViewBackLayout != null) {
@@ -63,30 +48,27 @@ public class ActionBarLayoutContentView extends FrameLayout {
             paddingTop_back = contentViewBack.getPaddingTop();
         }
     }
-/*
-
-    public void setContentViewFront(View contentView) {
-        this.contentViewFront = contentView;
-        if (this.contentViewFrontLayout != null) {
-            this.contentViewFrontLayout.removeAllViews();
-            this.contentViewFrontLayout.addView(contentView);
-            paddingTop_front = contentViewFront.getPaddingTop();
-        }
-    }
-*/
 
     private LayoutInflater mInflater;
 
     private void initView() {
         mInflater = LayoutInflater.from(getContext());
         removeAllViews();
+        initContentLayout();
+
+    }
+
+    private void initContentLayout() {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         contentViewBackLayout = new FrameLayout(getContext());
-        contentViewBackLayout.setBackgroundColor(Color.YELLOW);
         addView(contentViewBackLayout, layoutParams);
-        /*contentViewFrontLayout = new FrameLayout(getContext());
-        contentViewFrontLayout.setId(R.id.qd_fragment_content_view);
-        addView(contentViewFrontLayout, layoutParams);*/
+    }
+
+    private void initActionBarTipLayout() {
+        if (actionBarTipLayout == null) {
+            actionBarTipLayout = new FrameLayout(getContext());
+            addView(actionBarTipLayout);
+        }
     }
 
     private boolean hasContainBackground = true;
@@ -140,17 +122,13 @@ public class ActionBarLayoutContentView extends FrameLayout {
         QDLogger.d(getActionBarPaddingTop());
 
         LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
-        int marginTop =0;
-        int paddingTopBack =0;
-        int paddingTopFront =0;
+        int marginTop = 0;
+        int paddingTopBack = 0;
         if (hasContainBackground) {//设置padding
-
             paddingTopBack = paddingTop_back + getActionBarPaddingTop();
-            paddingTopFront = paddingTop_front + getActionBarPaddingTop();
-        }else {
+        } else {
             marginTop = paddingTop_back + getActionBarPaddingTop();
             paddingTopBack = paddingTop_back;
-            paddingTopFront = paddingTop_front;
         }
         layoutParams.topMargin = marginTop;
 
@@ -158,30 +136,7 @@ public class ActionBarLayoutContentView extends FrameLayout {
             contentViewBack.setPadding(contentViewBack.getPaddingLeft(), paddingTopBack, contentViewBack.getPaddingRight(), contentViewBack.getPaddingBottom());
             contentViewBack.setLayoutParams(layoutParams);
         }
-       /* if (contentViewFront != null) {
-            contentViewFront.setPadding(contentViewFront.getPaddingLeft(), paddingTopFront , contentViewFront.getPaddingRight(), contentViewFront.getPaddingBottom());
-            contentViewFront.setLayoutParams(layoutParams);
-        }*/
-
-
-        if (hasContainBackground) {//设置padding
-         /*   if (contentViewBack != null)
-                contentViewBack.setPadding(contentViewBack.getPaddingLeft(), paddingTop_back + getActionBarPaddingTop(), contentViewBack.getPaddingRight(), contentViewBack.getPaddingBottom());
-
-            if (contentViewFront != null)
-                contentViewFront.setPadding(contentViewFront.getPaddingLeft(), paddingTop_front + getActionBarPaddingTop(), contentViewFront.getPaddingRight(), contentViewFront.getPaddingBottom());
-        */} else {//设置margin
-           /* if (contentViewBack != null) {
-                LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
-                layoutParams.topMargin = paddingTop_back + getActionBarPaddingTop();
-                contentViewBack.setLayoutParams(layoutParams);
-            }
-            if (contentViewFront != null) {
-                LayoutParams layoutParams = (LayoutParams) contentViewFront.getLayoutParams();
-                layoutParams.topMargin = paddingTop_front + getActionBarPaddingTop();
-                contentViewFront.setLayoutParams(layoutParams);
-            }*/
-        }
+        setActionBarTipLayoutTop();
     }
 
     private ActionBarLayoutView.ACTIONBAR_TYPE actionbarType = NORMAL;
@@ -191,5 +146,24 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setMarginTopOrPaddingTop();
     }
 
+
+    public ActionBarTip.ACTIONBARTIP_TYPE mActionbartip_type = ActionBarTip.ACTIONBARTIP_TYPE.NORMAL;
+    public void addActionBarTipView(ActionBarTip actionBarTip) {
+        actionBarTip.setBelowContent(this);
+        if (actionBarTipLayout == null) {
+            initActionBarTipLayout();
+        }
+        actionBarTipLayout.addView(actionBarTip);
+        setActionBarTipLayoutTop();
+    }
+
+    private void setActionBarTipLayoutTop() {
+        if (actionBarTipLayout == null) {
+            initActionBarTipLayout();
+        }
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.topMargin= getActionBarPaddingTop();
+        actionBarTipLayout.setLayoutParams(layoutParams);
+    }
 
 }

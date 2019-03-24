@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -390,5 +391,35 @@ public class ActionBarTip extends FrameLayout {
         showDelayed();
     }
 
+    public void setBelowContent(ActionBarLayoutContentView actionBarLayoutContentView) {
+        mBelowContentView = actionBarLayoutContentView.contentViewBack;
+        mActionbartip_type = actionBarLayoutContentView.mActionbartip_type;
+        paddingTopBack = mBelowContentView.getPaddingTop();
+    }
 
+    /**
+     * 导航栏样式三种
+     */
+    public enum ACTIONBARTIP_TYPE {
+        //有导航栏
+        NORMAL,
+        //层叠
+        STACK
+    }
+    private View mBelowContentView;
+    private int paddingTopBack;
+    public ACTIONBARTIP_TYPE mActionbartip_type = ACTIONBARTIP_TYPE.NORMAL;
+    public void setBelowContent(View contentViewBack,ACTIONBARTIP_TYPE actionbartip_type) {
+        mBelowContentView = contentViewBack;
+        mActionbartip_type = actionbartip_type;
+        paddingTopBack = mBelowContentView.getPaddingTop();
+    }
+
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if(mBelowContentView!=null&&mActionbartip_type!=ACTIONBARTIP_TYPE.STACK){
+            mBelowContentView.setPadding(mBelowContentView.getPaddingLeft(), paddingTopBack+((FrameLayout.LayoutParams)params).topMargin, mBelowContentView.getPaddingRight(), mBelowContentView.getPaddingBottom());
+        }
+    }
 }

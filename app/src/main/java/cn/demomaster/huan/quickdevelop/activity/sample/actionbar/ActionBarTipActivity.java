@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.actionbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,11 +12,12 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "ActionBarTip",preViewClass = StateView.class,resType = ResType.Custome)
-public class ActionBarTipActivity extends BaseActivityParent {
+public class ActionBarTipActivity extends QDBaseActivity {
 
 
     private Button btn_complete;
@@ -34,7 +37,8 @@ public class ActionBarTipActivity extends BaseActivityParent {
         btn_warning = findViewById(R.id.btn_warning);
         btn_error = findViewById(R.id.btn_error);
 
-        getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+        getActionBarLayoutView().setHeaderBackgroundColor(Color.TRANSPARENT);
+        getActionBarLayoutView().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
@@ -53,25 +57,25 @@ public class ActionBarTipActivity extends BaseActivityParent {
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showComplete("完成");
+                getActionBarLayoutView().getActionBarTip().showComplete("完成");
             }
         });
         btn_loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showLoading("加载");
+                getActionBarLayoutView().getActionBarTip().showLoading("加载");
             }
         });
         btn_warning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showWarning("警告");
+                getActionBarLayoutView().getActionBarTip().showWarning("警告");
             }
         });
         btn_error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showError("错误");
+                getActionBarLayoutView().getActionBarTip().showError("错误");
             }
         });
 
@@ -83,7 +87,7 @@ public class ActionBarTipActivity extends BaseActivityParent {
                 int max = 0xff000000+0xffffff* progress/100;
                 //int w = DisplayUtil.dip2px(mContext,max* progress/100);
                 //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w,w);
-                getActionBarLayout().getActionBarTip().setBackgroundColor(max);
+                getActionBarLayoutView().getActionBarTip().setBackgroundColor(max);
             }
 
             @Override

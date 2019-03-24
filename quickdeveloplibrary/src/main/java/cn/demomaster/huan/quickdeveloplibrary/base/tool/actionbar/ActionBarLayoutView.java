@@ -283,7 +283,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
                 layoutParams_tip = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
             actionBarTip.setLayoutParams(layoutParams_tip);
-            actionBarLayoutHeaderView.addView(actionBarTip);
+            actionBarLayoutContentView.addActionBarTipView(actionBarTip);
         }
         return actionBarTip;
     }
