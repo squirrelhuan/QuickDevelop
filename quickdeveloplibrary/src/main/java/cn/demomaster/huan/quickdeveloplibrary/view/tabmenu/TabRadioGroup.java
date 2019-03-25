@@ -3,7 +3,10 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
+
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -16,32 +19,42 @@ import java.util.List;
 public class TabRadioGroup extends LinearLayout {
     public TabRadioGroup(Context context) {
         super(context);
+        mInflater = LayoutInflater.from(getContext());
+        setGravity(Gravity.CENTER);
     }
 
-    public TabRadioGroup(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public TabRadioGroup(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
 
     private List<TabRadioButton> tabRadioButtons = new ArrayList<>();
 
-    public void addTabButton(TabRadioButton child) {
-        tabRadioButtons.add(child);
-        addView(child);
-        if(tabDividerView!=null){
-            if(getChildCount()>1){
-               // addView(tabDividerView);
+    LayoutInflater mInflater;
+    public void setTabRadioButtons(List<TabRadioButton> tabRadioButtons) {
+        this.tabRadioButtons = tabRadioButtons;
+        for (int i = 0; i < tabRadioButtons.size(); i++) {
+            addView(tabRadioButtons.get(i));
+            if (tabDividerResId != -1 && i< tabRadioButtons.size() - 1) {
+               View view =  mInflater.inflate(tabDividerResId,null);
+                addView(view);
             }
         }
     }
 
-    private View tabDividerView;//分割符
+    public void addTabButton(TabRadioButton child) {
+        tabRadioButtons.add(child);
+        addView(child);
+        if (tabDividerResId != -1) {
+            if (getChildCount() > 1) {
+                // addView(tabDividerView);
+            }
+        }
+    }
 
-    public void addTabDividerView(View child) {
-        this.tabDividerView = child;
+    private int tabDividerResId = -1;//分割符
+    public void setTabDividerResId(int layoutId) {
+        this.tabDividerResId = layoutId;
+        if (tabRadioButtons != null) {
+            removeAllViews();
+            setTabRadioButtons(tabRadioButtons);
+        }
     }
 
     public void selectTabButton() {
@@ -51,9 +64,9 @@ public class TabRadioGroup extends LinearLayout {
     }
 
     public void setOnCheckedChangeListener(final OnCheckedChangeListener onCheckedChangeListener) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).setTag(i);
-            getChildAt(i).setOnClickListener(new OnClickListener() {
+        for (int i = 0; i < tabRadioButtons.size(); i++) {
+            tabRadioButtons.get(i).setTag(i);
+            tabRadioButtons.get(i).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onCheckedChangeListener.onCheckedChanged(view, (int) (view.getTag()));
@@ -66,7 +79,7 @@ public class TabRadioGroup extends LinearLayout {
         }
     }
 
-    public void setCurrentTab(int tabIndex){
+    public void setCurrentTab(int tabIndex) {
         getChildAt(tabIndex).performClick();
     }
 

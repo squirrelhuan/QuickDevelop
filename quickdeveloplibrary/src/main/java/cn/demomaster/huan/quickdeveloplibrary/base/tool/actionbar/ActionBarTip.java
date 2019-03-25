@@ -391,10 +391,19 @@ public class ActionBarTip extends FrameLayout {
         showDelayed();
     }
 
+    private View mBelowContentView;
+    private int paddingTopBack;
+    private ActionBarLayoutContentView actionBarLayoutContentView;
+    public ACTIONBARTIP_TYPE mActionbartip_type = ACTIONBARTIP_TYPE.NORMAL;
     public void setBelowContent(ActionBarLayoutContentView actionBarLayoutContentView) {
+        this.actionBarLayoutContentView = actionBarLayoutContentView;
         mBelowContentView = actionBarLayoutContentView.contentViewBack;
-        mActionbartip_type = actionBarLayoutContentView.mActionbartip_type;
+        mActionbartip_type = actionBarLayoutContentView.actionbartipType;
         paddingTopBack = mBelowContentView.getPaddingTop();
+    }
+
+    public void setActionTipType(ACTIONBARTIP_TYPE actionbartip_type) {
+        mActionbartip_type = actionbartip_type;
     }
 
     /**
@@ -406,20 +415,14 @@ public class ActionBarTip extends FrameLayout {
         //层叠
         STACK
     }
-    private View mBelowContentView;
-    private int paddingTopBack;
-    public ACTIONBARTIP_TYPE mActionbartip_type = ACTIONBARTIP_TYPE.NORMAL;
-    public void setBelowContent(View contentViewBack,ACTIONBARTIP_TYPE actionbartip_type) {
-        mBelowContentView = contentViewBack;
-        mActionbartip_type = actionbartip_type;
-        paddingTopBack = mBelowContentView.getPaddingTop();
-    }
 
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
         super.setLayoutParams(params);
         if(mBelowContentView!=null&&mActionbartip_type!=ACTIONBARTIP_TYPE.STACK){
-            mBelowContentView.setPadding(mBelowContentView.getPaddingLeft(), paddingTopBack+((FrameLayout.LayoutParams)params).topMargin, mBelowContentView.getPaddingRight(), mBelowContentView.getPaddingBottom());
+            int h = actionBarLayoutContentView.getActionBarPaddingTop();
+            QDLogger.d("setLayoutParams H=="+h);
+            mBelowContentView.setPadding(mBelowContentView.getPaddingLeft(), h+getHeight()+paddingTopBack+((FrameLayout.LayoutParams)params).topMargin, mBelowContentView.getPaddingRight(), mBelowContentView.getPaddingBottom());
         }
     }
 }

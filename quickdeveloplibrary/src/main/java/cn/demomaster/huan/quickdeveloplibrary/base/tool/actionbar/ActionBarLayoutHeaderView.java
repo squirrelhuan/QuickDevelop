@@ -18,7 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -215,9 +215,9 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         }
     }
 
-    private ActionBarLayoutView.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = NORMAL;
 
-    public void setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         switch (actionbarType) {
             case NORMAL:

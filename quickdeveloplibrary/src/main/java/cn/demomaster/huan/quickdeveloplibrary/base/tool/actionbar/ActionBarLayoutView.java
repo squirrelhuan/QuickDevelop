@@ -250,9 +250,9 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         actionBarLayoutHeaderView.setContentView((FrameLayout) view);
     }
 
-    private ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;
+    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
 
-    public void setActionbarType(ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (actionBarLayoutContentView != null) {
             actionBarLayoutContentView.setActionbarType(actionbarType);
@@ -262,7 +262,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         }
     }
 
-    public void setFragmentActionbarType(ACTIONBAR_TYPE actionbarType) {
+    public void setFragmentActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (actionBarLayoutContentView != null) {
             actionBarLayoutContentView.setActionbarType(actionbarType);
@@ -313,9 +313,16 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         getActionBarLayoutHeaderView().setActionBarThemeColors(lightColor,darkColor);
     }
 
-    /**
+    public void setActionBarTipType(ActionBarTip.ACTIONBARTIP_TYPE actionbartip_type) {
+        getActionBarLayoutContentView().setActionbartipType(actionbartip_type);
+    }
+
+    /*
+    */
+/**
      * 导航栏样式三种
-     */
+     *//*
+
     public enum ACTIONBAR_TYPE {
         //无导航栏
         NO_ACTION_BAR,
@@ -330,6 +337,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         //透明导航栏
         ACTION_TRANSPARENT
     }
+*/
 
 
     /**
@@ -343,7 +351,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private View contentView;
         private View fragmentView;
         private boolean isFullScreen = true;
-        private ACTIONBAR_TYPE actionbarType;
+        private ActionBarLayout.ACTIONBAR_TYPE actionbarType;
         private ActionBarLayout.ContextType contextType = ActionBarLayout.ContextType.ActivityModel;
 
         public Builder(Context context) {

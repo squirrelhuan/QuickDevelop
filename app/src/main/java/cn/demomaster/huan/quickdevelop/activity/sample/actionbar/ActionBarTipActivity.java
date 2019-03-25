@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -14,6 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "ActionBarTip",preViewClass = StateView.class,resType = ResType.Custome)
@@ -25,6 +28,7 @@ public class ActionBarTipActivity extends QDBaseActivity {
     private Button btn_warning;
     private Button btn_error;
     private SeekBar sb_background;
+    private CheckBox cb_001;
 
 
     @Override
@@ -36,6 +40,13 @@ public class ActionBarTipActivity extends QDBaseActivity {
         btn_loading = findViewById(R.id.btn_loading);
         btn_warning = findViewById(R.id.btn_warning);
         btn_error = findViewById(R.id.btn_error);
+        cb_001 = findViewById(R.id.cb_001);
+        cb_001.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                actionBarLayoutView.setActionBarTipType(isChecked?ActionBarTip.ACTIONBARTIP_TYPE.NORMAL:ActionBarTip.ACTIONBARTIP_TYPE.STACK);
+            }
+        });
 
         getActionBarLayoutView().setHeaderBackgroundColor(Color.TRANSPARENT);
         getActionBarLayoutView().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {

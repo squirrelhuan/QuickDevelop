@@ -3,10 +3,12 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -59,10 +62,13 @@ public class TabMenuLayout extends LinearLayout {
     }
 
     private View tabButtonView;//点击的按钮
-    private View tabDividerView;//分割符
+    private int tabDividerResId = -1;//分割符
 
-    public void setTabDividerView(View tabDividerView) {
-        this.tabDividerView = tabDividerView;
+    public void setTabDividerResId(int layoutId) {
+        this.tabDividerResId = layoutId;
+        if (tabRadioGroup != null) {
+            tabRadioGroup.setTabDividerResId(tabDividerResId);
+        }
     }
 
     public void setData(List<TabMenuModel> tabSelectModels, TabMenuInterface tabMenuInterface) {
@@ -99,6 +105,8 @@ public class TabMenuLayout extends LinearLayout {
             this.removeAllViews();
         }
         tabCount = tabSelectModels.size();
+        tabRadioGroup.setTabDividerResId(tabDividerResId);
+        List<TabRadioGroup.TabRadioButton> tabRadioButtons = new ArrayList<>();
         //遍历生成tab按钮
         for (int i = 0; i < tabCount; i++) {
             TabRadioGroup.TabRadioButton textView = tabSelectModels.get(i).getTabButtonView();
@@ -109,9 +117,21 @@ public class TabMenuLayout extends LinearLayout {
             textView.setGravity(Gravity.CENTER);
             textView.setTabName(tabSelectModels.get(i).getTabName());
             textView.setState(false);
-            tabRadioGroup.addTabButton(textView);
-            tabRadioGroup.addTabDividerView(tabDividerView);
+            tabRadioButtons.add(textView);
         }
+        tabRadioGroup.setTabRadioButtons(tabRadioButtons);
+       /* //遍历生成tab按钮
+        for (int i = 0; i < tabCount; i++) {
+            TabRadioGroup.TabRadioButton textView = tabSelectModels.get(i).getTabButtonView();
+            if (textView == null) {
+                textView = new TabButton(context);
+            }
+            textView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            textView.setGravity(Gravity.CENTER);
+            textView.setTabName(tabSelectModels.get(i).getTabName());
+            textView.setState(false);
+            tabRadioGroup.addTabButton(textView);
+        }*/
 
         tabRadioGroup.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabRadioGroup.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
@@ -209,7 +229,7 @@ public class TabMenuLayout extends LinearLayout {
         if (columnCount >= 1) {//默认布局样式
             rl_tab_menu_custom_panel.setVisibility(GONE);
             recy_tab_content.setVisibility(VISIBLE);
-           // LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
+            // LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
             if (columnCount == 1) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                 linearLayoutManager.setAutoMeasureEnabled(true);
@@ -229,12 +249,12 @@ public class TabMenuLayout extends LinearLayout {
                     @Override
                     public void onGlobalLayout() {
                         recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        recy_tab_content.setX((QMUIDisplayHelper.getScreenWidth(context)-recy_tab_content.getWidth()) / 2);//
+                        recy_tab_content.setX((QMUIDisplayHelper.getScreenWidth(context) - recy_tab_content.getWidth()) / 2);//
                     }
                 });
             }
             adapter = new TabMenuAdapter(context, tabSelectModels, tabIndex);
-            adapter.setColors(tabSelectModels.get(tabIndex).getColorSelect_content(),tabSelectModels.get(tabIndex).getColorNormal_content());
+            adapter.setColors(tabSelectModels.get(tabIndex).getColorSelect_content(), tabSelectModels.get(tabIndex).getColorNormal_content());
             recy_tab_content.setAdapter(adapter);
             //adapter.setColors(color_selected,color_normal);
             //recy_tab_content.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -242,7 +262,7 @@ public class TabMenuLayout extends LinearLayout {
             adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    tabMenuInterface.onSelected(tabIndex, position);
+                    tabMenuInterface.onSelected((TabRadioGroup.TabRadioButton) tabButton, tabIndex, position);
                     //adapter.setOnClickItem(position);
                     adapter.setOnItemClicked(position);
                     tabSelectModels = adapter.getTabMenuModels();
@@ -279,7 +299,7 @@ public class TabMenuLayout extends LinearLayout {
         List<String> getItemText(int tabIndex);*/
 
         //点击选项时候触发
-        String onSelected(int tabIndex, int position);/*
+        String onSelected(TabRadioGroup.TabRadioButton TabRadioButton, int tabIndex, int position);/*
         //获取tab的名字
         String[] getTabNames();
         //获取默认状态集合（多选则为list,单选则为int）

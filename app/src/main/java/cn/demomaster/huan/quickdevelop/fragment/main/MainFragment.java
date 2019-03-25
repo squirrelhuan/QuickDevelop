@@ -67,7 +67,7 @@ public class MainFragment extends QDBaseFragment {
     @Override
     public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
         actionBarLayout.setFullScreen(true);
-        actionBarLayout.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         List<Class> list = new ArrayList<>();

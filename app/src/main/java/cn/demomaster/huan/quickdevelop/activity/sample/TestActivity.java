@@ -41,22 +41,22 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.rb_01:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
                         break;
                     case R.id.rb_02:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
                         break;
                     case R.id.rb_03:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                         break;
                     case R.id.rb_04:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                         break;
                     case R.id.rb_05:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                         break;
                     case R.id.rb_06:
-                        action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                        action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                         break;
                 }
             }
@@ -149,22 +149,22 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_ac_01:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
                 break;
             case R.id.btn_ac_02:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
             case R.id.btn_ac_03:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
-                action_bar.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                action_bar.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
                 /*getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.black));

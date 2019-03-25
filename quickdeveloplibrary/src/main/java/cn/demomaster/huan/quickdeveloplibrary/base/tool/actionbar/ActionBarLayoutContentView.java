@@ -1,19 +1,15 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -139,15 +135,24 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setActionBarTipLayoutTop();
     }
 
-    private ActionBarLayoutView.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = NORMAL;
 
-    public void setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         setMarginTopOrPaddingTop();
     }
 
-    public ActionBarTip.ACTIONBARTIP_TYPE mActionbartip_type = ActionBarTip.ACTIONBARTIP_TYPE.NORMAL;
+    public void setActionbartipType(ActionBarTip.ACTIONBARTIP_TYPE actionbartipType) {
+        this.actionbartipType = actionbartipType;
+        setMarginTopOrPaddingTop();
+    }
+
+    public ActionBarTip.ACTIONBARTIP_TYPE actionbartipType = ActionBarTip.ACTIONBARTIP_TYPE.NORMAL;
+
+    private ActionBarTip actionBarTip;
+
     public void addActionBarTipView(ActionBarTip actionBarTip) {
+        this.actionBarTip = actionBarTip;
         actionBarTip.setBelowContent(this);
         if (actionBarTipLayout == null) {
             initActionBarTipLayout();
@@ -160,8 +165,11 @@ public class ActionBarLayoutContentView extends FrameLayout {
         if (actionBarTipLayout == null) {
             initActionBarTipLayout();
         }
+        if (actionBarTip != null) {
+            actionBarTip.setActionTipType(actionbartipType);
+        }
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.topMargin= getActionBarPaddingTop();
+        layoutParams.topMargin = getActionBarPaddingTop();
         actionBarTipLayout.setLayoutParams(layoutParams);
     }
 
