@@ -120,20 +120,6 @@ public class TabMenuLayout extends LinearLayout {
             tabRadioButtons.add(textView);
         }
         tabRadioGroup.setTabRadioButtons(tabRadioButtons);
-       /* //遍历生成tab按钮
-        for (int i = 0; i < tabCount; i++) {
-            TabRadioGroup.TabRadioButton textView = tabSelectModels.get(i).getTabButtonView();
-            if (textView == null) {
-                textView = new TabButton(context);
-            }
-            textView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            textView.setGravity(Gravity.CENTER);
-            textView.setTabName(tabSelectModels.get(i).getTabName());
-            textView.setState(false);
-            tabRadioGroup.addTabButton(textView);
-        }*/
-
-        tabRadioGroup.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabRadioGroup.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(View view, int i) {
@@ -144,17 +130,6 @@ public class TabMenuLayout extends LinearLayout {
     }
 
     private void showTabMenuView(View tabGroup, View tabButton, int tabIndex) {
-        //获取第tabIndex个标签下的字符数组来生成list
-        //String[] items = tabSelectModels.get(tabIndex).getTabItems();
-       /* List<TabListViewItem> menus = new ArrayList<>();
-        for (int i = 0; i < items.length; i++) {
-            TabListViewItem menu = new TabListViewItem();
-            menu.setItemName(items[i]);
-            menu.setPosition(i);
-            menus.add(menu);
-        }
-        tabListViewItems.clear();
-        tabListViewItems.addAll(menus);*/
         columnCount = tabSelectModels.get(tabIndex).getColumnCount();//默认内容列表显示几列
         initSingTabContent(tabGroup, tabButton, tabIndex);
         popupWindow.showAsDropDown(tabGroup);
@@ -174,14 +149,13 @@ public class TabMenuLayout extends LinearLayout {
     private View contentView;
     private int tabToBottom = 100;
 
-
     public void setTabToBottom(int tabToBottom) {
         this.tabToBottom = tabToBottom;
     }
 
     private int[] location;
+    private int[] locationTab;
     private int columnCount = 1;//默认内容列表显示几列
-
 
     //初始化单个tab内容页
     private void initSingTabContent(final View tabGroup, final View tabButton, final int tabIndex) {
@@ -191,6 +165,7 @@ public class TabMenuLayout extends LinearLayout {
             location = new int[2];
             tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
             tabGroup.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+
             System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
             popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1]), true).build();
 
@@ -226,7 +201,11 @@ public class TabMenuLayout extends LinearLayout {
                 }
             });
         }
+
         if (columnCount >= 1) {//默认布局样式
+            locationTab = new int[2];
+            tabButton.getLocationInWindow(locationTab); //获取在当前窗口内的绝对坐标
+            tabButton.getLocationOnScreen(locationTab);//获取在整个屏幕内的绝对坐标
             rl_tab_menu_custom_panel.setVisibility(GONE);
             recy_tab_content.setVisibility(VISIBLE);
             // LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) recy_tab_content.getLayoutParams());
@@ -239,7 +218,7 @@ public class TabMenuLayout extends LinearLayout {
                     @Override
                     public void onGlobalLayout() {
                         recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        recy_tab_content.setX(location[0] + ((tabIndex * 2) + 1) * tabButton.getWidth() / 2 - recy_tab_content.getWidth() / 2);//QMUIDisplayHelper.getScreenWidth(context)
+                        recy_tab_content.setX(locationTab[0] + tabButton.getWidth() / 2 - recy_tab_content.getWidth() / 2);//QMUIDisplayHelper.getScreenWidth(context)
                     }
                 });
             } else if (columnCount > 1) {

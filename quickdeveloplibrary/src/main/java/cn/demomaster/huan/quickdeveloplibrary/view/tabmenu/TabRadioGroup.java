@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -28,22 +29,14 @@ public class TabRadioGroup extends LinearLayout {
 
     LayoutInflater mInflater;
     public void setTabRadioButtons(List<TabRadioButton> tabRadioButtons) {
+        removeAllViews();
         this.tabRadioButtons = tabRadioButtons;
         for (int i = 0; i < tabRadioButtons.size(); i++) {
             addView(tabRadioButtons.get(i));
             if (tabDividerResId != -1 && i< tabRadioButtons.size() - 1) {
                View view =  mInflater.inflate(tabDividerResId,null);
+                view.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 addView(view);
-            }
-        }
-    }
-
-    public void addTabButton(TabRadioButton child) {
-        tabRadioButtons.add(child);
-        addView(child);
-        if (tabDividerResId != -1) {
-            if (getChildCount() > 1) {
-                // addView(tabDividerView);
             }
         }
     }
@@ -52,14 +45,7 @@ public class TabRadioGroup extends LinearLayout {
     public void setTabDividerResId(int layoutId) {
         this.tabDividerResId = layoutId;
         if (tabRadioButtons != null) {
-            removeAllViews();
             setTabRadioButtons(tabRadioButtons);
-        }
-    }
-
-    public void selectTabButton() {
-        for (int i = 0; i < getChildCount(); i++) {
-
         }
     }
 
@@ -80,7 +66,7 @@ public class TabRadioGroup extends LinearLayout {
     }
 
     public void setCurrentTab(int tabIndex) {
-        getChildAt(tabIndex).performClick();
+        tabRadioButtons.get(tabIndex).performClick();
     }
 
     public void resume() {
