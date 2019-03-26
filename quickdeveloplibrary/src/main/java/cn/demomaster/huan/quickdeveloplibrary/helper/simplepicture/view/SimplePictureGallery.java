@@ -99,8 +99,8 @@ public class SimplePictureGallery extends ScrollRecyclerView {
         this.context = context;
         int spanCount_c = spanCount;
         if (autoWidth) {
-            spanCount_c = Math.max((spanCount > imageList.size() ? (imageList.size()+(showAdd?1:0)) : spanCount), 1);
-            w = spanCount > (imageList.size()+(showAdd?1:0)) ? ((float) spanCount_c / spanCount) : 1;
+            spanCount_c = Math.max((spanCount > imageList.size() ? (imageList.size() + (showAdd ? 1 : 0)) : spanCount), 1);
+            w = spanCount > (imageList.size() + (showAdd ? 1 : 0)) ? ((float) spanCount_c / spanCount) : 1;
             getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
@@ -114,7 +114,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
         }
         mLayoutManager = new QDGridLayoutManager(context, spanCount_c);
         setLayoutManager(mLayoutManager);
-        addItemDecoration(new GridSpacesItemDecoration(itemMargin,true));
+        addItemDecoration(new GridSpacesItemDecoration(itemMargin, true));
         mAdapter = new PictureAdapter(context, imageList, showAdd, true, maxCount);
         mAdapter.setOnItemClickListener(new PictureAdapter.OnItemClickListener() {
             @Override
@@ -148,7 +148,6 @@ public class SimplePictureGallery extends ScrollRecyclerView {
         setAdapter(mAdapter);
         mAdapter.setAddButtonPadding(addButtonPadding);
     }
-
 
     private void showMenuDialog() {
         String[] menus = {"拍摄", "从相册选择"};
@@ -207,7 +206,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
      * 更新视图
      */
     private void addImageToView() {
-        if ((imageList.size()+(showAdd?1:0)) <= spanCount) {
+        if ((imageList.size() + (showAdd ? 1 : 0)) <= spanCount) {
             init();
         }
         mAdapter.notifyDataSetChanged();
@@ -217,7 +216,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
      * 更新视图
      */
     private void removeImageFromView() {
-        if ((imageList.size()+(showAdd?1:0)) <= spanCount) {
+        if ((imageList.size() + (showAdd ? 1 : 0)) <= spanCount) {
             init();
         }
         mAdapter.notifyDataSetChanged();
