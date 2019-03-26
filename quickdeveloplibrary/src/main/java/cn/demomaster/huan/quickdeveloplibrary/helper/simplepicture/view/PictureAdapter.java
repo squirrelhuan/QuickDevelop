@@ -2,7 +2,9 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view;
 
 import android.content.Context;
 import android.os.Vibrator;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +73,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if(!showAdd){
+        if (!showAdd) {
             return 0;
         }
         if (saturated) {//饱和了去掉加号
@@ -93,66 +95,76 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (holder != null && holder.getType() == 0) {
-            Image image = mImages.get(position);
-            holder.setImage(image);
-            if(image.getUrlType()==UrlType.url){
-                Glide.with(mContext).load(image.getPath()).into(holder.iv_picture);
-            }else if(image.getUrlType()==UrlType.file){
-                Glide.with(mContext).load(new File(image.getPath())).into(holder.iv_picture);
-            }
-            //.diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.ivImage);
-            if (modelType == MODEL.edit) {
-                holder.iv_delete.setVisibility(View.VISIBLE);
-            } else {
-                holder.iv_delete.setVisibility(View.GONE);
-            }
-            holder.iv_delete.setTag(position);
-            holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClickListener != null) {
-                        int p = holder.getAdapterPosition();
-                        onItemClickListener.onItemDelete(view, p, mImages.get(p));
-                    }
+        if (holder != null) {
+            if (holder.getType() == 0) {
+                Image image = mImages.get(position);
+                holder.setImage(image);
+                if (image.getUrlType() == UrlType.url) {
+                    Glide.with(mContext).load(image.getPath()).into(holder.iv_picture);
+                } else if (image.getUrlType() == UrlType.file) {
+                    Glide.with(mContext).load(new File(image.getPath())).into(holder.iv_picture);
                 }
-            });
-            holder.itemView.setTag(position);
-            //点击选中/取消选中图片
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    int p = holder.getAdapterPosition();
-                    setModelType(MODEL.edit);
-                    Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
-                    long[] patter = {100, 50, 50};
-                    vibrator.vibrate(patter, -1);
-                    return true;
+                //.diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.ivImage);
+                if (modelType == MODEL.edit) {
+                    holder.iv_delete.setVisibility(View.VISIBLE);
+                } else {
+                    holder.iv_delete.setVisibility(View.GONE);
                 }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((View) v.getParent()).findViewById(R.id.iv_delete).setVisibility(View.GONE);
-                    int p = holder.getAdapterPosition();
-                    setModelType(MODEL.normal);
-                    if (isViewImage) {
+                holder.iv_delete.setTag(position);
+                holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         if (onItemClickListener != null) {
-                            onItemClickListener.onItemClick(v, p, mImages.get(p));
+                            int p = holder.getAdapterPosition();
+                            onItemClickListener.onItemDelete(view, p, mImages.get(p));
                         }
                     }
-                }
-            });
-
+                });
+                holder.itemView.setTag(position);
+                //点击选中/取消选中图片
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        int p = holder.getAdapterPosition();
+                        setModelType(MODEL.edit);
+                        Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+                        long[] patter = {100, 50, 50};
+                        vibrator.vibrate(patter, -1);
+                        return true;
+                    }
+                });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((View) v.getParent()).findViewById(R.id.iv_delete).setVisibility(View.GONE);
+                        int p = holder.getAdapterPosition();
+                        setModelType(MODEL.normal);
+                        if (isViewImage) {
+                            if (onItemClickListener != null) {
+                                onItemClickListener.onItemClick(v, p, mImages.get(p));
+                            }
+                        }
+                    }
+                });
+                ((ViewHolder) holder).rmovePadding();
+            } else {
+                ((ViewHolder) holder).setAddButton(addButtonPadding);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-            this.saturated = (maxCount <= mImages.size());
-            int a = (showAdd && !saturated ? 1 : 0);
-            return a + (mImages == null ? 0 : mImages.size());
+        this.saturated = (maxCount <= mImages.size());
+        int a = (showAdd && !saturated ? 1 : 0);
+        return a + (mImages == null ? 0 : mImages.size());
 
+    }
+    private int addButtonPadding;
+
+    public void setAddButtonPadding(int addButtonPadding) {
+        this.addButtonPadding = addButtonPadding;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -183,31 +195,24 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
             iv_picture = itemView.findViewById(R.id.iv_picture);
             iv_delete = itemView.findViewById(R.id.iv_delete);
             if (type == -1) {
-                iv_picture.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        //给GridView设置Adapter，在adapter的getView中获取GridView的高度，在这个回调之前获取的高度都是0
-                        //处理完后remove掉，至于为什么，后面有解释
-                        iv_picture.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) iv_picture.getLayoutParams();
-                        int w = iv_picture.getWidth() / 3;
-                        int h = iv_picture.getHeight() / 3;
-                        iv_picture.setPadding(w, h, w, h);
-                        iv_picture.setLayoutParams(layoutParams);
-                        iv_picture.setImageResource(R.drawable.ic_add_black_24dp);
-                    }
-                });
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setModelType(MODEL.normal);
-                        if (onItemClickListener != null) {
-                            onItemClickListener.onLastClick(view);
-                        }
-                    }
-                });
+                setAddButton(addButtonPadding);
             }
+        }
+        private void rmovePadding( ) {
+            iv_picture.setPadding(0,0,0,0);
+        }
+        private void setAddButton(int p ) {
+            iv_picture.setPadding(p,p,p,p);
+            iv_picture.setImageResource(R.drawable.ic_add_black_24dp);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setModelType(MODEL.normal);
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onLastClick(view);
+                    }
+                }
+            });
         }
     }
 

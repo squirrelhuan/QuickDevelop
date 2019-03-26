@@ -30,6 +30,24 @@
                 android:background="@color/green">
 
             </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+
+            <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery
+                android:id="@+id/ga_picture3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/red">
+
+            </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+
+            <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery
+                android:id="@+id/ga_picture4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue">
+
+            </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery>
+
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

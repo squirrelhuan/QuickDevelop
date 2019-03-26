@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import android.util.AttributeSet;
 
 /**
@@ -31,5 +33,34 @@ public class ScrollRecyclerView extends RecyclerView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
+
+
+
+    }
+
+
+    public int getMySize(int defaultSize, int measureSpec) {
+        int mySize = defaultSize;
+
+        int mode = MeasureSpec.getMode(measureSpec);
+        int size = MeasureSpec.getSize(measureSpec);
+
+        QDLogger.d(mode);
+        switch (mode) {
+            case MeasureSpec.UNSPECIFIED: {//如果没有指定大小，就设置为默认大小
+                mySize = defaultSize;
+                break;
+            }
+            case MeasureSpec.AT_MOST: {//如果测量模式是最大取值为size
+                //我们将大小取最大值,你也可以取其他值
+                mySize = size;
+                break;
+            }
+            case MeasureSpec.EXACTLY: {//如果是固定的大小，那就不要去改变它
+                mySize = size;
+                break;
+            }
+        }
+        return mySize;
     }
 }
