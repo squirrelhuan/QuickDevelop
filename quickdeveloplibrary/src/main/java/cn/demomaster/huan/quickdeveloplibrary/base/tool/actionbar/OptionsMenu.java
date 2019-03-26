@@ -2,11 +2,8 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +14,12 @@ import android.widget.PopupWindow;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
 /**
@@ -41,42 +41,76 @@ public class OptionsMenu {
     private PopupWindow popupWindow;
     private View contentView;
     private View anchor;
+    private float[] backgroundRadius = new float[8];
+    private int backgroundRadiu = 0;
+    private int backgroundColor = Color.WHITE;
+    private boolean usePadding = true;
+    private int textColor = Color.BLACK;
+    private int dividerColor = Color.BLACK;
+    private int textSize = 16;
+    private int textGravity = Gravity.CENTER_VERTICAL;
+    private Builder builder;
+
+    public OptionsMenu(Builder builder) {
+        this.context = builder.context;
+        this.builder = builder;
+        this.alpha = builder.alpha;
+        this.onMenuItemClicked = builder.onMenuItemClicked;
+        this.backgroundColor = builder.backgroundColor;
+        this.backgroundRadiu = builder.backgroundRadiu;
+        this.anchor = builder.anchor;
+        this.usePadding = builder.usePadding;
+        this.margin = builder.margin;
+        this.menus = builder.menus;
+        this.textColor = builder.textColor;
+        this.textGravity = builder.textGravity;
+        this.dividerColor = builder.dividerColor;
+        this.textSize = builder.textSize;
+        init();
+    }
+
+    public void setBackgroundRadiu(int backgroundRadiu) {
+        this.backgroundRadiu = backgroundRadiu;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void setUsePadding(boolean usePadding) {
+        this.usePadding = usePadding;
+    }
 
     public OptionsMenu(final Context context) {
         this.context = context;
-        /*CustomDialog.Builder builder = new CustomDialog.Builder(context, R.layout.layout_dialog_option_menu);
-        customDialog = builder.setCanTouch(true).create();
-        lv_options = customDialog.getContentView().findViewById(R.id.lv_options);
-        Window window = customDialog.getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        window.setGravity(Gravity.NO_GRAVITY);
-        lp.x = 10;
-        lp.y = 10;
-        lp.width = 200;
-        lp.height = 200;
-        lp.alpha = 0.6f;
-        window.setAttributes(lp);*/
+        init();
+    }
 
+    public void init() {
         CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
         contentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_option_menu, null, false);
-        rcv_options = contentView.findViewById(R.id.rcv_options);
+        rcv_options = contentView.findViewById(R.id.qd_option_menu_recycler);
+        QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
+        for (int i = 0; i < backgroundRadius.length; i++) {
+            this.backgroundRadius[i] = backgroundRadiu;
+        }
+        qdRoundDrawable.setCornerRadii(backgroundRadius);
+        qdRoundDrawable.setBackGroundColor(backgroundColor);
+        rcv_options.setBackground(qdRoundDrawable);
+        if (usePadding) {
+            rcv_options.setPadding(rcv_options.getPaddingLeft(), rcv_options.getPaddingTop() + backgroundRadiu, rcv_options.getPaddingRight(), rcv_options.getPaddingBottom() + backgroundRadiu);
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setAutoMeasureEnabled(true);
         //设置分割线使用的divider
-        rcv_options.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        rcv_options.addItemDecoration(new QDDividerItemDecoration(context, DividerItemDecoration.VERTICAL,dividerColor));
         rcv_options.setLayoutManager(linearLayoutManager);
         rcv_options.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 rcv_options.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                /*if (rcv_options_width == -1) {
-                    rcv_options_width = rcv_options.getWidth();
-                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) rcv_options.getLayoutParams();
-                    layoutParams.setMargins(rcv_options_width,0,0,0);
-                    rcv_options.setLayoutParams(layoutParams);
-                }*/
                 if (rcv_options_width == -1) {//第一次加载完成才能确定位置
-                    rcv_options_width =0;
+                    rcv_options_width = 0;
                     popupWindow.update(anchor, rcv_options.getWidth(), rcv_options.getHeight());
                 }
             }
@@ -93,15 +127,18 @@ public class OptionsMenu {
                 ((Activity) context).getWindow().setAttributes(lp);
             }
         });
+        reBuild();
         //popupWindow.setAnimationStyle(R.style.pop_toast);
         //popupWindow.showAtLocation(getContentView(context), Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, dp2px(context,60));
-
     }
 
     private void reBuild() {
         if (menus != null) {
             adapter = new OptionsMenuAdapter(context, menus);
             rcv_options.setAdapter(adapter);
+            adapter.setTextColor(textColor);
+            adapter.setTextGravity(textGravity);
+
         }
         adapter.setOnItemClickListener(new OptionsMenuAdapter.OnItemClickListener() {
             @Override
@@ -110,11 +147,9 @@ public class OptionsMenu {
                 popupWindow.dismiss();
             }
         });
-
     }
 
     private float alpha = 1;
-
     public float getAlpha() {
         return alpha;
     }
@@ -147,14 +182,14 @@ public class OptionsMenu {
             anchor.getLocationOnScreen(anchorLoc);*/
             //popupWindow.showAsDropDown(anchor);
             //右侧的算法
-            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin,  margin);
+            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
         }
     }
-
-    /*
+/*
+    *//*
      * 循环找到ListView最大宽度
-     */
+     *//*
     private int getMaxWidth(ListView listView) {
         int maxWidth = 0;
         if (listView.getAdapter() == null) {
@@ -176,25 +211,6 @@ public class OptionsMenu {
             System.out.println("measure width=" + width + " height=" + height);
         }
         return maxWidth;
-
-        /*if (context.getResources().getDisplayMetrics().widthPixels < maxWidth) {
-            return context.getResources().getDisplayMetrics().widthPixels - 50;
-        }*/
-
-    }
-
-
-
-    /*OptionsMenu(List<Menu> menus) {
-        this.menus = menus;
-    }
-
-    OptionsMenu(List<Menu> menus, OnMenuItemClicked onMenuItemClicked) {
-        this.menus = menus;
-        this.onMenuItemClicked = onMenuItemClicked;
-        Log.d(TAG, "menu子菜单个数："+menus.size());
-        Log.d(TAG, "menu的第一个子菜单标题："+menus.get(0).getTitle());
-        Log.d(TAG, "menu的第一个子菜单id："+menus.get(0).getPosition());
     }*/
 
     public List getMenus() {
@@ -284,4 +300,85 @@ public class OptionsMenu {
             super.update(width, height);
         }
     }
+
+    public static class Builder {
+
+        private Context context;
+        private List<Menu> menus;
+        private OnMenuItemClicked onMenuItemClicked;
+        private float alpha = 1;
+        private int margin = 4;
+        private int backgroundRadiu = 0;
+        private int backgroundColor = Color.WHITE;
+        private int textColor = Color.BLACK;
+        private int textSize = 16;
+        private int dividerColor = Color.BLACK;
+        private int textGravity = Gravity.CENTER_VERTICAL;
+        private boolean usePadding = true;
+        private View anchor;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder(Context context, List<Menu> menus) {
+            this.context = context;
+            this.menus = menus;
+        }
+        public Builder setMenus(List<Menu> menus) {
+            this.menus = menus;
+            return this;
+        }
+        public Builder setOnMenuItemClicked(OnMenuItemClicked onMenuItemClicked) {
+            this.onMenuItemClicked = onMenuItemClicked;
+            return this;
+        }
+        public Builder setAlpha(float alpha) {
+            this.alpha = alpha;
+            return this;
+        }
+        public Builder setMargin(int margin) {
+            this.margin = margin;
+            return this;
+        }
+        public Builder setBackgroundRadiu(int backgroundRadiu) {
+            this.backgroundRadiu = backgroundRadiu;
+            return this;
+        }
+        public Builder setBackgroundColor(int backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            return this;
+        }
+        public Builder setUsePadding(boolean usePadding) {
+            this.usePadding = usePadding;
+            return this;
+        }
+        public Builder setAnchor(View anchor) {
+            this.anchor = anchor;
+            return this;
+        }
+        public Builder setTextColor(int textColor) {
+            this.textColor = textColor;
+            return this;
+        }
+        public Builder setDividerColor(int dividerColor) {
+            this.dividerColor = dividerColor;
+            return this;
+        }
+        public Builder setTextGravity(int textGravity) {
+            this.textGravity = textGravity;
+            return this;
+        }
+
+        public Builder setTextSize(int textSize) {
+            this.textSize = textSize;
+            return this;
+        }
+
+        public OptionsMenu creat() {
+            return new OptionsMenu(this);
+        }
+
+    }
+
 }

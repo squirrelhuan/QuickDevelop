@@ -14,6 +14,7 @@ import android.util.AttributeSet;
  * description：
  */
 public class ScrollRecyclerView extends RecyclerView {
+
     public ScrollRecyclerView(@NonNull Context context) {
         super(context);
     }

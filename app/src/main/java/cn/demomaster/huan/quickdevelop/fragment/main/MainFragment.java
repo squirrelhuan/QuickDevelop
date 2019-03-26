@@ -106,11 +106,13 @@ public class MainFragment extends QDBaseFragment {
         getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOptionsMenu().show(v);
+                optionsMenu.show(v);
             }
         });
         initOptionsMenu();
     }
+
+    OptionsMenu optionsMenu;
 
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
@@ -121,11 +123,17 @@ public class MainFragment extends QDBaseFragment {
             menu.setPosition(i);
             menus.add(menu);
         }
-        getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAlpha(.6f);
-        getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
-        getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
+        getOptionsMenuBuilder().setMenus(menus)
+                .setAlpha(.6f)
+                .setMargin(2)
+                .setUsePadding(true)
+                .setBackgroundColor(Color.RED)
+                .setBackgroundRadiu(30)
+                .setTextColor(Color.GRAY)
+                .setTextSize(20)
+                .setDividerColor(Color.YELLOW)
+                .setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenuBuilder().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
                 switch (position) {
@@ -150,6 +158,14 @@ public class MainFragment extends QDBaseFragment {
                 }
             }
         });
+        optionsMenu = getOptionsMenuBuilder().creat();
+        /*getOptionsMenu().setMenus(menus);
+        getOptionsMenu().setAlpha(.6f);
+        getOptionsMenu().setMargin(80);
+        getOptionsMenu().setUsePadding(true);
+        getOptionsMenu().setBackgroundRadiu(20);
+        getOptionsMenu().setBackgroundColor(Color.RED);
+        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());*/
     }
 
     /**
@@ -164,9 +180,11 @@ public class MainFragment extends QDBaseFragment {
 
     private class MainFragmentAdapter extends FragmentPagerAdapter {
         private List<Class> data;
+
         public MainFragmentAdapter(FragmentManager fm) {
             super(fm);
         }
+
         public MainFragmentAdapter(FragmentManager fm, List<Class> data) {
             super(fm);
             this.data = data;

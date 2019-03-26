@@ -98,7 +98,7 @@ public class TabMenuActivity extends BaseActivityParent {
         tabMenuLayout.setData(tabSelectModels, new TabMenuLayout.TabMenuInterface() {
             @Override
             public String onSelected(TabRadioGroup.TabRadioButton tabButton, int tabIndex, int position) {
-                PopToastUtil.ShowToast((Activity) mContext, "" + tabIndex + ":" + position);
+                PopToastUtil.ShowToast(mContext, "" + tabIndex + ":" + position);
                 tabMenuLayout.getPopupWindow().dismiss();
                 switch (tabIndex) {
                     case 0:

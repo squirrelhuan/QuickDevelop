@@ -42,6 +42,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
 
     private int layoutResID;
     private OptionsMenu optionsMenu;
+    private OptionsMenu.Builder optionsMenubuilder;
     ViewGroup mView;
     View rootView;
 
@@ -117,5 +118,12 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
             optionsMenu = new OptionsMenu(mContext);
         }
         return optionsMenu;
+    }
+    //获取自定义菜单
+    public OptionsMenu.Builder getOptionsMenuBuilder() {
+        if (optionsMenubuilder == null) {
+            optionsMenubuilder = new OptionsMenu.Builder(mContext);
+        }
+        return optionsMenubuilder;
     }
 }

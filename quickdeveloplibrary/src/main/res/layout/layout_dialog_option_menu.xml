@@ -8,7 +8,7 @@
     android:gravity="center_horizontal">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_options"
+        android:id="@+id/qd_option_menu_recycler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
