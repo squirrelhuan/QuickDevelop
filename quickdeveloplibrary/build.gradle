@@ -45,7 +45,6 @@ android {
             path "CMakeLists.txt"
         }
     }
-
 }
 
 dependencies {

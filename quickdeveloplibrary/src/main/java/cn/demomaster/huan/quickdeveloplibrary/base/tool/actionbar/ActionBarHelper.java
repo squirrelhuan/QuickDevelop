@@ -12,6 +12,16 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  */
 public class ActionBarHelper {
 
+    public static ActionBarLayout init(Activity mContext, int layoutResID,int headLayoutResID){
+        LayoutInflater mInflater = LayoutInflater.from(mContext);
+        //inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ActionBarLayout.Builder builder = new ActionBarLayout.Builder(mContext);
+        // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
+        builder.setContentView(layoutResID);
+        // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common_a, null);
+        builder.setHeadView(headLayoutResID);
+        return  builder.create();
+    }
     public static ActionBarLayout init(Activity mContext, int layoutResID){
 
         LayoutInflater mInflater = LayoutInflater.from(mContext);
@@ -19,7 +29,7 @@ public class ActionBarHelper {
         ActionBarLayout.Builder builder = new ActionBarLayout.Builder(mContext);
        // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
         builder.setContentView(layoutResID);
-       // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common, null);
+       // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common_a, null);
         builder.setHeadView(R.layout.activity_actionbar_common);
         return  builder.create();
     }
@@ -30,7 +40,7 @@ public class ActionBarHelper {
         ActionBarLayout.Builder builder = new ActionBarLayout.Builder(mContext);
         // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
         builder.setContentView(layoutView);
-        // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common, null);
+        // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common_a, null);
         builder.setHeadView(R.layout.activity_actionbar_common);
         return  builder.create();
     }

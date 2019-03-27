@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -62,9 +62,14 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     private int stateIndex;
 
     @Override
+    public int getHeadlayoutResID() {
+        return R.layout.activity_actionbar_common_a;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         ratingBar = findViewById(R.id.ratingBar);
         ratingBar.setColor(Color.RED, Color.LTGRAY);

@@ -14,10 +14,13 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 public class QDBaseFragmentActivity extends AppCompatActivity {
     public AppCompatActivity mContext;
     public ActionBarLayoutView actionBarLayoutView;
-
+    private int headlayoutResID = R.layout.activity_action_bar_test;
+    public int getHeadlayoutResID() {
+        return headlayoutResID;
+    }
     public ActionBarLayoutView getActionBarLayout(View view) {
         if (actionBarLayoutView == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(R.layout.activity_action_bar_test);
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(getHeadlayoutResID());
             actionBarLayoutView = builder.creat();
         }
         return actionBarLayoutView;

@@ -15,6 +15,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
 
     //private LayoutInflater inflater;
     private int layoutResID;
+    private int headlayoutResID = R.layout.activity_actionbar_common;
     private ActionBarLayout actionBarLayout;
     private OptionsMenu optionsMenu;
 
@@ -38,6 +39,10 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         }
     }
 
+    public int getHeadlayoutResID() {
+        return headlayoutResID;
+    }
+
     //获取自定义导航
     public ActionBarLayout getActionBarLayout() {
         if (!isUseActionBarLayout()) {
@@ -45,7 +50,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
             return null;
         }
         if (actionBarLayout == null) {
-            actionBarLayout = ActionBarHelper.init(this, layoutResID);
+            actionBarLayout = ActionBarHelper.init(this, layoutResID,getHeadlayoutResID());
         }
         return actionBarLayout;
     }

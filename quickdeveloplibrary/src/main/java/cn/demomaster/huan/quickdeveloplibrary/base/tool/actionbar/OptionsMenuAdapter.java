@@ -92,7 +92,6 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_title);
-
         }
 
         public void setTextSize(int textSize) {

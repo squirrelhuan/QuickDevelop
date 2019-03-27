@@ -59,7 +59,7 @@
 
                 <!-- <action android:name="ConnectivityManager.CONNECTIVITY_ACTION"/>//这样写是不对的 -->
                 <action android:name="cn.demomaster.huan.quickdeveloplibrary.receiver" />
-                //此处必需指定action，否则监听不到
+                <!--//此处必需指定action，否则监听不到-->
             </intent-filter>
         </receiver>
     </application>

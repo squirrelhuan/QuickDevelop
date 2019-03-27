@@ -126,12 +126,12 @@ public class MainFragment extends QDBaseFragment {
         getOptionsMenuBuilder().setMenus(menus)
                 .setAlpha(.6f)
                 .setMargin(2)
-                .setUsePadding(true)
-                .setBackgroundColor(Color.RED)
-                .setBackgroundRadiu(30)
-                .setTextColor(Color.GRAY)
-                .setTextSize(20)
-                .setDividerColor(Color.YELLOW)
+                .setUsePadding(false)
+                .setBackgroundColor(Color.WHITE)
+                .setBackgroundRadiu(15)
+                .setTextColor(Color.BLACK)
+                .setTextSize(16)
+                .setDividerColor(Color.GRAY)
                 .setAnchor(getActionBarLayout().getRightView());
         getOptionsMenuBuilder().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
