@@ -14,7 +14,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 public class QDBaseFragmentActivity extends AppCompatActivity {
     public AppCompatActivity mContext;
     public ActionBarLayoutView actionBarLayoutView;
-    private int headlayoutResID = R.layout.activity_action_bar_test;
+    private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }

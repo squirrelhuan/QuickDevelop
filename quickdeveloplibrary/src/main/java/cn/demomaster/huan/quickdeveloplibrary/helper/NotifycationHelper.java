@@ -71,8 +71,8 @@ public class NotifycationHelper {
                 .setContentTitle("收到一条消息")
                 .setContentText(message)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.mipmap.quickdevelop_ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher))
                 .setAutoCancel(true)
                 .build();
         manager.notify(1, notification);
@@ -83,8 +83,8 @@ public class NotifycationHelper {
                 .setContentTitle("收到一条消息")
                 .setContentText(message)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.mipmap.quickdevelop_ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher))
                 .setAutoCancel(true)
                 .build();
         manager.notify(1, notification);
@@ -96,8 +96,8 @@ public class NotifycationHelper {
                 .setContentTitle("收到一条订阅消息")
                 .setContentText("地铁沿线30万商铺抢购中！")
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.mipmap.quickdevelop_ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher))
                 .setAutoCancel(true)
                 .build();
         manager.notify(2, notification);

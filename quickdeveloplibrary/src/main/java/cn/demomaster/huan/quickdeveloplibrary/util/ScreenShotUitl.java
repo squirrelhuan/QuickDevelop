@@ -67,7 +67,7 @@ public class ScreenShotUitl {
         final PopupWindow popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true).build();
         popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
         ImageView iv_code = contentView.findViewById(R.id.iv_code);
-        Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher);
         String codeStr = "http://weixin.qq.com/r/E0M1LcDE6Z2WrYRO9xYB";
         try {
             //////////iv_code.setImageBitmap(BarcodeUtil.createCode(codeStr,bitmap_app));

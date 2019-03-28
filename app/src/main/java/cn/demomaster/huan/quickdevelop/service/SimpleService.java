@@ -109,7 +109,7 @@ public class SimpleService extends BaseService {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
        /* Notification.Builder builder=new Notification.Builder(this);
-        builder.setSmallIcon(cn.demomaster.huan.quickdeveloplibrary.R.mipmap.ic_launcher);
+        builder.setSmallIcon(cn.demomaster.huan.quickdeveloplibrary.R.mipmap.quickdevelop_ic_launcher);
         builder.setTicker("uploadservice");
         builder.setContentText("请保持程序在后台运行");
         builder.setWhen(System.currentTimeMillis());

@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:scaleType="fitStart"
             android:layout_height="30dp"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@mipmap/quickdevelop_ic_launcher_round" />
 <!--
         <LinearLayout
             android:layout_width="0dp"

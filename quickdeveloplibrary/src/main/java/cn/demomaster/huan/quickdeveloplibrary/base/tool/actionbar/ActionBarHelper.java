@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -30,7 +29,7 @@ public class ActionBarHelper {
        // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
         builder.setContentView(layoutResID);
        // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common_a, null);
-        builder.setHeadView(R.layout.activity_actionbar_common);
+        builder.setHeadView(R.layout.quickdevelop_activity_actionbar_common);
         return  builder.create();
     }
     public static ActionBarLayout init(Activity mContext, ViewGroup layoutView){
@@ -41,7 +40,7 @@ public class ActionBarHelper {
         // ViewGroup contentView_rel = (ViewGroup)mInflater.inflate(layoutResID, null);
         builder.setContentView(layoutView);
         // ViewGroup headerView = (ViewGroup) mInflater.inflate(R.layout.activity_actionbar_common_a, null);
-        builder.setHeadView(R.layout.activity_actionbar_common);
+        builder.setHeadView(R.layout.quickdevelop_activity_actionbar_common);
         return  builder.create();
     }
 

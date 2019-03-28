@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdevelop.activity.sample.component;
 import android.app.Activity;
 import android.content.Intent;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -86,13 +85,13 @@ public class QDActionDialogActivity extends BaseActivityParent {
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.WARNING).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
                     case 4://顶部图片类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.ic_launcher).setMessage(listItems[position]).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage(listItems[position]).create();
                         break;
                     case 5://左侧图片类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setLeftImage(R.mipmap.ic_launcher).setMessage(listItems[position]).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setLeftImage(R.mipmap.quickdevelop_ic_launcher).setMessage(listItems[position]).create();
                         break;
                     case 6:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.ic_launcher).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).create();
                         break;
                     case 7:
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setMessage(listItems[position]).create();

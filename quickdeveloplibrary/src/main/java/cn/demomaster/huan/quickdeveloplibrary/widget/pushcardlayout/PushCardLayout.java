@@ -132,10 +132,10 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         creatBottomLayout(context);
         /****** (START)  测试添加 可删除   ***********/
         /*ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(R.mipmap.ic_launcher_round);
+        imageView.setImageResource(R.mipmap.quickdevelop_ic_launcher_round);
         setTopLayoutView(imageView);
         ImageView imageView2 = new ImageView(getContext());
-        imageView2.setImageResource(R.mipmap.ic_launcher_round);
+        imageView2.setImageResource(R.mipmap.quickdevelop_ic_launcher_round);
         setBottomLayoutView(imageView2);*/
         /******  (END) 测试添加 可删除   ***********/
 

@@ -256,7 +256,7 @@ public class PermissionManager {
         builder.setMessage(message);
         builder.setPositiveButton("确定", listener);
         builder.setCancelable(false);
-        //builder.setIcon(R.mipmap.ic_launcher);
+        //builder.setIcon(R.mipmap.quickdevelop_ic_launcher);
         dialog = builder.create();
         dialog.show();
     }

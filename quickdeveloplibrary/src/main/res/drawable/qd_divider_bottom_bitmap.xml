@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
        android:gravity="fill_horizontal|bottom"
-       android:src="@mipmap/ic_launcher"
+       android:src="@mipmap/quickdevelop_ic_launcher"
        android:tint="@color/transparent_dark_55" />

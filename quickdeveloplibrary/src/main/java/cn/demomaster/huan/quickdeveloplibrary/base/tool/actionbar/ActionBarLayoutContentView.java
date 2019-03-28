@@ -118,6 +118,9 @@ public class ActionBarLayoutContentView extends FrameLayout {
         QDLogger.d(getActionBarPaddingTop());
 
         LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
+        if(layoutParams==null){
+            layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
         int marginTop = 0;
         int paddingTopBack = 0;
         if (hasContainBackground) {//设置padding

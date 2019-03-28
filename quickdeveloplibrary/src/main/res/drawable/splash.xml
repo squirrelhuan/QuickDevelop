@@ -7,6 +7,6 @@
         <!-- 图片 -->
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/quickdevelop_ic_launcher" />
     </item>
 </layer-list>

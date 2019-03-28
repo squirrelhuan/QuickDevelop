@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:id="@+id/ll_root"
-    android:background="@mipmap/ic_launcher_round"
+    android:background="@mipmap/quickdevelop_ic_launcher_round"
     tools:context=".activity.sample.actionbar.ActionBarActivity">
 
     <LinearLayout

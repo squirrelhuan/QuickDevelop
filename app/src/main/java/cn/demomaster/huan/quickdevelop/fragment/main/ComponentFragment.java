@@ -20,7 +20,6 @@ import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TestActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
@@ -49,7 +48,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  * 2018/8/25
  */
 
-@ActivityPager(iconRes = R.mipmap.ic_launcher)
+@ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
 public class ComponentFragment extends BaseFragment {
 
     private RecyclerView recyclerView;

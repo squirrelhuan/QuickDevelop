@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  * 2018/8/25
  */
 
-@ActivityPager(iconRes = R.mipmap.ic_launcher)
+@ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
 public class DesignPatternFragment extends BaseFragment {
 
     private RecyclerView recyclerView;

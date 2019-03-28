@@ -7,7 +7,6 @@ import android.view.View;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
@@ -15,7 +14,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
 
     //private LayoutInflater inflater;
     private int layoutResID;
-    private int headlayoutResID = R.layout.activity_actionbar_common;
+    private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     private ActionBarLayout actionBarLayout;
     private OptionsMenu optionsMenu;
 

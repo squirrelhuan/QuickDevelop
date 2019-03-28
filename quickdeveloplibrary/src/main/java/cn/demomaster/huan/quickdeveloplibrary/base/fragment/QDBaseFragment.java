@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
@@ -31,9 +29,13 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     public Bundle mBundle;
     public ActionBarLayoutView actionBarLayoutView;
 
+    private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
+    public int getHeadlayoutResID() {
+        return headlayoutResID;
+    }
     public ActionBarLayoutView getActionBarLayout(View view) {
         if (actionBarLayoutView == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarLayout.ContextType.FragmentModel).setHeaderResId(R.layout.activity_action_bar_test);
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarLayout.ContextType.FragmentModel).setHeaderResId(getHeadlayoutResID());
             actionBarLayoutView = builder.creat();
         }
 
