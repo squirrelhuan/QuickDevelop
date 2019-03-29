@@ -44,12 +44,12 @@ public class ActionBarTipActivity extends QDBaseActivity {
         cb_001.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                actionBarLayoutView.setActionBarTipType(isChecked?ActionBarTip.ACTIONBARTIP_TYPE.NORMAL:ActionBarTip.ACTIONBARTIP_TYPE.STACK);
+                getActionBarLayout().setActionBarTipType(isChecked?ActionBarTip.ACTIONBARTIP_TYPE.NORMAL:ActionBarTip.ACTIONBARTIP_TYPE.STACK);
             }
         });
 
-        getActionBarLayoutView().setHeaderBackgroundColor(Color.TRANSPARENT);
-        getActionBarLayoutView().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+        getActionBarLayout().setHeaderBackgroundColor(Color.TRANSPARENT);
+        getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
@@ -68,25 +68,25 @@ public class ActionBarTipActivity extends QDBaseActivity {
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayoutView().getActionBarTip().showComplete("完成");
+                getActionBarLayout().getActionBarTip().showComplete("完成");
             }
         });
         btn_loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayoutView().getActionBarTip().showLoading("加载");
+                getActionBarLayout().getActionBarTip().showLoading("加载");
             }
         });
         btn_warning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayoutView().getActionBarTip().showWarning("警告");
+                getActionBarLayout().getActionBarTip().showWarning("警告");
             }
         });
         btn_error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayoutView().getActionBarTip().showError("错误");
+                getActionBarLayout().getActionBarTip().showError("错误");
             }
         });
 
@@ -98,7 +98,7 @@ public class ActionBarTipActivity extends QDBaseActivity {
                 int max = 0xff000000+0xffffff* progress/100;
                 //int w = DisplayUtil.dip2px(mContext,max* progress/100);
                 //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w,w);
-                getActionBarLayoutView().getActionBarTip().setBackgroundColor(max);
+                getActionBarLayout().getActionBarTip().setBackgroundColor(max);
             }
 
             @Override

@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -118,7 +118,7 @@ public class ActionBarLayoutContentView extends FrameLayout {
         QDLogger.d(getActionBarPaddingTop());
 
         LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
-        if(layoutParams==null){
+        if (layoutParams == null) {
             layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
         int marginTop = 0;
@@ -138,9 +138,9 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setActionBarTipLayoutTop();
     }
 
-    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ActionBarInterface.ACTIONBAR_TYPE actionbarType = NORMAL;
 
-    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ActionBarInterface.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         setMarginTopOrPaddingTop();
     }

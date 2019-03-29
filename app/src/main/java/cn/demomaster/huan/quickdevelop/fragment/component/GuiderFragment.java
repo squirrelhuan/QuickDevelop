@@ -6,21 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
-import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -29,10 +25,14 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "OperatGuid",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "OperatGuid", preViewClass = StateView.class, resType = ResType.Custome)
 public class GuiderFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -46,7 +46,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,0);//点击按钮关闭引导！
+                showGuider(view, 0);//点击按钮关闭引导！
             }
         });
         Button btn_02 = mView.findViewById(R.id.btn_02);
@@ -54,7 +54,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击提示框关闭引导！
+                showGuider(view, 1);//点击提示框关闭引导！
 
             }
         });
@@ -63,7 +63,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,2);//点击任意位置关闭提示！
+                showGuider(view, 2);//点击任意位置关闭提示！
 
             }
         });
@@ -72,7 +72,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_04.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,3);//椭圆提示框！
+                showGuider(view, 3);//椭圆提示框！
 
             }
         });
@@ -81,7 +81,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_05.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,4);//超长文本！
+                showGuider(view, 4);//超长文本！
 
             }
         });
@@ -89,7 +89,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_06.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -97,7 +97,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_07.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -105,7 +105,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_08.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -113,7 +113,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_09.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -121,7 +121,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -129,7 +129,7 @@ public class GuiderFragment extends QDBaseFragment {
         btn_11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
@@ -137,30 +137,26 @@ public class GuiderFragment extends QDBaseFragment {
         btn_12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showGuider(view,1);//点击按钮关闭引导！
+                showGuider(view, 1);//点击按钮关闭引导！
 
             }
         });
         return mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-
-    }
 
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
-        actionBarLayout.setTitle(titles[i]+"---------ASDFGGHHJ");
-        actionBarLayout.setHeaderBackgroundColor(colors[i]);
+        actionBarLayoutOld.setTitle(titles[i] + "---------ASDFGGHHJ");
+        actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
     }
 
-    String tips[] ={"点击按钮关闭引导！","点击提示框关闭引导","这里是文本说明区域，点击任意位置关闭提示","椭圆提示框","这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
+    String tips[] = {"点击按钮关闭引导！", "点击提示框关闭引导", "这里是文本说明区域，点击任意位置关闭提示", "椭圆提示框", "这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
 
-    private void showGuider(View view,int i) {
+    private void showGuider(View view, int i) {
 
         GuiderModel guiderModel = new GuiderModel();
         guiderModel.setLineType(GuiderModel.LINETYPE.straight);
@@ -175,7 +171,7 @@ public class GuiderFragment extends QDBaseFragment {
 
         GuiderHelper.getInstance().add(guiderModel);
 
-        switch (i){
+        switch (i) {
             case 0:
                 guiderModel.setTouchType(GuiderModel.TouchType.TargetView);
                 break;
@@ -194,7 +190,7 @@ public class GuiderFragment extends QDBaseFragment {
         }
 
         //GuiderHelper.getInstance().startGuider(mContext,view,"DBGUIDER");
-        GuiderHelper.getInstance().startGuider(getActivity(),view,"");
+        GuiderHelper.getInstance().startGuider(getActivity(), view, "");
         /*ViewGroup mParentView = (FrameLayout) getActivity().getWindow().getDecorView();
         GuiderView guiderSurfaceView = new GuiderView(getContext(), guiderModel,false,null);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -202,6 +198,6 @@ public class GuiderFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
     }
 }

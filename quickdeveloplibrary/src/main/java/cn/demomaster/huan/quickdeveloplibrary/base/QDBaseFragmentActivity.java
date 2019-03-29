@@ -8,26 +8,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 public class QDBaseFragmentActivity extends AppCompatActivity {
     public AppCompatActivity mContext;
-    public ActionBarLayoutView actionBarLayoutView;
+    private ActionBarInterface actionBarLayout;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }
-    public ActionBarLayoutView getActionBarLayout(View view) {
-        if (actionBarLayoutView == null) {
+    public ActionBarInterface getActionBarLayout(View view) {
+        if (actionBarLayout == null) {
             ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(getHeadlayoutResID());
-            actionBarLayoutView = builder.creat();
+            actionBarLayout = builder.creat();
         }
-        return actionBarLayoutView;
+        return actionBarLayout;
     }
 
-    public ActionBarLayoutView getActionBarLayoutView() {
-        return actionBarLayoutView;
+    public ActionBarInterface getActionBarLayout() {
+        return actionBarLayout;
     }
 
     @Override
@@ -44,8 +45,8 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         this.mContext = this;
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             StatusBarUtil.transparencyBar(mContext);
-            actionBarLayoutView = getActionBarLayout(view);
-            super.setContentView(actionBarLayoutView);
+            actionBarLayout = getActionBarLayout(view);
+            super.setContentView(actionBarLayout.generateView());
             FragmentActivityHelper.getInstance().bindActivity(this);
         } else {
             super.setContentView(view);

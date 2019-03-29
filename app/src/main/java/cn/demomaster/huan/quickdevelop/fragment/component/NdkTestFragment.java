@@ -1,8 +1,8 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.LayoutInflater;
@@ -12,15 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.service.GuardService;
 import cn.demomaster.huan.quickdevelop.service.MessageService;
-import cn.demomaster.huan.quickdevelop.service.SimpleService;
-import cn.demomaster.huan.quickdevelop.service.UploadFilesIntentService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
@@ -33,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "NdkTestFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class NdkTestFragment extends BaseFragment {
+public class NdkTestFragment extends QDBaseFragment {
 
     private ServiceToken mToken;
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -53,6 +50,10 @@ public class NdkTestFragment extends BaseFragment {
     //Components
     ViewGroup mView;
 
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -86,7 +87,7 @@ public class NdkTestFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
 
     }
 

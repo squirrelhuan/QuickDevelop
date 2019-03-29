@@ -1,33 +1,21 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.service.MessageService;
-import cn.demomaster.huan.quickdevelop.service.SimpleService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
-import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
-import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
-import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView;
@@ -42,12 +30,16 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
  */
 
 @ActivityPager(name = "NestedScrollView", preViewClass = StateView.class, resType = ResType.Custome)
-public class NestedScrollViewFragment extends BaseFragment {
+public class NestedScrollViewFragment extends QDBaseFragment {
 
 
     //Components
     ViewGroup mView;
     int headHeight;
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -105,7 +97,7 @@ public class NestedScrollViewFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
 
     }
 

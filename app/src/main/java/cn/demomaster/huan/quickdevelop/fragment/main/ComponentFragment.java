@@ -38,7 +38,10 @@ import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -49,7 +52,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class ComponentFragment extends BaseFragment {
+public class ComponentFragment extends QDBaseFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
@@ -60,16 +63,26 @@ public class ComponentFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        actionBarLayout.getLeftView().setVisibility(View.GONE);
-        actionBarLayout.setBackGroundColor(Color.RED);
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+    @Override
+    public boolean isUseActionBarLayout() {
+        return false;
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+        /*actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+//        actionBarLayout.getLeftView().setVisibility(View.GONE);
+        actionBarLayout.setBackGroundColor(Color.RED);*/
+
+        recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
         //设置为垂直布局，这也是默认的
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
         classList.add(ToggleButtonActivity.class);

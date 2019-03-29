@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         //GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
 
 
-        getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+        getActionBarLayoutOld().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
@@ -101,20 +101,20 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_action_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getActionBarLayout().getActionBarTip().show();
+                //getActionBarLayoutOld().getActionBarTip().show();
                 stateIndex++;
                 switch (stateIndex % 4) {
                     case 0:
-                        getActionBarLayout().getActionBarTip().showComplete("完成");
+                        getActionBarLayoutOld().getActionBarTip().showComplete("完成");
                         break;
                     case 1:
-                        getActionBarLayout().getActionBarTip().showWarning("警告警告");
+                        getActionBarLayoutOld().getActionBarTip().showWarning("警告警告");
                         break;
                     case 2:
-                        getActionBarLayout().getActionBarTip().showError("发生错误啦");
+                        getActionBarLayoutOld().getActionBarTip().showError("发生错误啦");
                         break;
                     case 3:
-                        getActionBarLayout().getActionBarTip().showLoading("loading...");
+                        getActionBarLayoutOld().getActionBarTip().showLoading("loading...");
                         break;
                 }
             }
@@ -178,11 +178,11 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     private UpdatePopDialog updatePopDialog;
 
     private void init() {
-        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
-        getActionBarLayout().setTitle("aaa");
-        getActionBarLayout().setStateBarColorAuto(true);//状态栏文字颜色自动
-        getActionBarLayout().setActionBarThemeColors(Color.WHITE, Color.BLACK);
-        getActionBarLayout().setLeftOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayoutOld().setTitle("aaa");
+        getActionBarLayoutOld().setStateBarColorAuto(true);//状态栏文字颜色自动
+        getActionBarLayoutOld().setActionBarThemeColors(Color.WHITE, Color.BLACK);
+        getActionBarLayoutOld().setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
@@ -194,7 +194,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 customDialog.show();
             }
         });
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getOptionsMenu().show();
@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
@@ -338,52 +338,52 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                 break;
 
             case R.id.btn_ac_01:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.black));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
                 showMessage("黑色主题");
                 break;
             case R.id.btn_color_white:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.white));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.white), getResources().getColor(R.color.black));
                 showMessage("白色主题");
                 break;
             case R.id.btn_color_red:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.red));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.red));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.red), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "红色主题");
                 break;
             case R.id.btn_color_gray:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.gray));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.gray));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.gray), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "灰色主题");
                 break;
             case R.id.btn_color_green:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.green));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.green));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.green), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "绿色主题");
                 break;
             case R.id.btn_color_yellow:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.yellow));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.yellow));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this, "黄色主题");
                 break;
@@ -395,7 +395,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                     ll_layout.setBackgroundResource(R.mipmap.gudaimeizi);
                     position = 0;
                 }
-                getActionBarLayout().changeChildView(ll_layout);
+                getActionBarLayoutOld().changeChildView(ll_layout);
                 break;
         }
     }

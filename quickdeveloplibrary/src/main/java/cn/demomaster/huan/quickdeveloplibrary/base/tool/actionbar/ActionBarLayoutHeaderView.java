@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -65,16 +64,6 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         initView();
     }
 
-    public ActionBarLayoutHeaderView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public ActionBarLayoutHeaderView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView();
-    }
-
     public int getStatusBar_Height() {
         return statusBar_Height;
     }
@@ -95,6 +84,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         this.contentView.addView(contentView);
         //设置内边距
         contentView.setPadding(contentView.getPaddingLeft(), getActionBarPaddingTop(), contentView.getPaddingRight(), contentView.getPaddingBottom());
+        initOnClickListener();
     }
 
     public int getActionBarPaddingTop() {
@@ -116,7 +106,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         return paddingTop_old;
     }
 
-    private ActionBarLayout.ContextType mContextType = ActionBarLayout.ContextType.ActivityModel;
+    private ActionBarInterface.ContentType mContextType = ActionBarInterface.ContentType.ActivityModel;
     private LayoutInflater mInflater;
 
     private void initView() {
@@ -129,15 +119,14 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         contentView = new FrameLayout(getContext());
         addView(contentView, layoutParams);
 
-
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    /*    getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // globalLayoutListener.onLoadFinish();
                 initOnClickListener();
             }
-        });
+        });*/
     }
 
     private GlobalLayoutListener globalLayoutListener;
@@ -191,7 +180,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
                 it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (mContextType == ActionBarLayout.ContextType.FragmentModel) {
+                        if (mContextType == ActionBarInterface.ContentType.FragmentModel) {
                             ActionBarLayoutInterface actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
                             actionBarLayoutInterface.onBack(context);
                         } else {
@@ -215,9 +204,9 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         }
     }
 
-    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ActionBarInterface.ACTIONBAR_TYPE actionbarType = NORMAL;
 
-    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ActionBarInterface.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         switch (actionbarType) {
             case NORMAL:
@@ -241,7 +230,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         }
     }
 
-    public void setContentType(ActionBarLayout.ContextType contextType) {
+    public void setContentType(ActionBarInterface.ContentType contextType) {
         mContextType = contextType;
     }
 

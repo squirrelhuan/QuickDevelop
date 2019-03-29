@@ -45,7 +45,7 @@ public class CsqliteActivity extends BaseActivityParent {
         queryBtn = (Button)findViewById(R.id.query);
         deleteBtn = (Button)findViewById(R.id.delete);
 
-        getActionBarLayout().setTitle("数据库操作");
+        getActionBarLayoutOld().setTitle("数据库操作");
     }
 
     //为按钮注册监听的方法

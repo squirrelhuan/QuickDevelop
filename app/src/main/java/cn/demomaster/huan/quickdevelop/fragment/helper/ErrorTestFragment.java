@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,8 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
@@ -42,8 +42,8 @@ public class ErrorTestFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        actionBarLayout.setTitle("异常捕获");
+    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+        actionBarLayoutOld.setTitle("异常捕获");
         btn_error_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,10 +60,10 @@ public class ErrorTestFragment extends BaseFragment {
         });
     }
 
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
-        actionBarLayout.setTitle("audio play");
-        actionBarLayout.setHeaderBackgroundColor(Color.RED);
+        actionBarLayoutOld.setTitle("audio play");
+        actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
     }
 }

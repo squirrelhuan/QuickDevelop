@@ -18,9 +18,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -41,9 +41,9 @@ public class MainFragment extends QDBaseFragment {
         return (ViewGroup) inflater.inflate(R.layout.fragment_layout_main, null);
     }
 
-    @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        /*actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+   /* @Override
+    public void initView(View rootView, ActionBarLayout2 actionBarLayout) {
+        *//*actionBarLayout.setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
 
         List<Class> list = new ArrayList<>();
@@ -61,13 +61,13 @@ public class MainFragment extends QDBaseFragment {
 
         // Tabs
         initScrollableTabs(rootView, mViewPager);
-        init();*/
-    }
+        init();*//*
+    }*/
 
     @Override
-    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
         actionBarLayout.setFullScreen(true);
-        actionBarLayout.setActionbarType(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         List<Class> list = new ArrayList<>();
@@ -165,7 +165,7 @@ public class MainFragment extends QDBaseFragment {
         getOptionsMenu().setUsePadding(true);
         getOptionsMenu().setBackgroundRadiu(20);
         getOptionsMenu().setBackgroundColor(Color.RED);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());*/
+        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());*/
     }
 
     /**

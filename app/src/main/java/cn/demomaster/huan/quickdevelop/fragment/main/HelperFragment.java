@@ -17,7 +17,9 @@ import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -28,10 +30,14 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class HelperFragment extends BaseFragment {
+public class HelperFragment extends QDBaseFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -39,10 +45,10 @@ public class HelperFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        actionBarLayout.getLeftView().setVisibility(View.GONE);
-        actionBarLayout.setBackGroundColor(Color.RED);
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        //actionBarLayout.getLeftView().setVisibility(View.GONE);
+        actionBarLayout.setHeaderBackgroundColor(Color.RED);
 
         recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

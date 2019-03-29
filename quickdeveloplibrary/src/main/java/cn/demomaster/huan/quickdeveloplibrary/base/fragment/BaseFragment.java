@@ -14,7 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -37,8 +38,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         initHelper();
     }
 
+
     private int layoutResID;
-    private ActionBarLayout actionBarLayout;
+    private ActionBarInterface actionBarLayoutOld;
     private OptionsMenu optionsMenu;
     ViewGroup mView;
     View rootView;
@@ -51,26 +53,26 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
             if (mView == null) {
                 mView = getContentView(inflater);
                 mView.setClickable(true);
-                actionBarLayout = ActionBarHelper.init(mContext, mView);
+                actionBarLayoutOld = ActionBarHelper.init(mContext, mView);
             }
-            rootView = getActionBarLayout().getFinalView();
-            initView(mView,actionBarLayout);
-            rootView.setBackgroundColor(Color.WHITE);
+            //rootView = getActionBarLayoutOld().getFinalView();
+            //initView(mView,actionBarLayoutOld);
+            //rootView.setBackgroundColor(Color.WHITE);
             return rootView;
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     //获取自定义导航
-    public ActionBarLayout getActionBarLayout() {
+    public ActionBarInterface getActionBarLayoutOld() {
         if (!isUseActionBarLayout()) {
             //throw new IllegalStateException("Base URL required.");
             return null;
         }
-        if (actionBarLayout == null) {
-            actionBarLayout = ActionBarHelper.init(mContext, layoutResID);
+        if (actionBarLayoutOld == null) {
+            actionBarLayoutOld = ActionBarHelper.init(mContext, layoutResID);
         }
-        return actionBarLayout;
+        return actionBarLayoutOld;
     }
 
     public PhotoHelper photoHelper;
@@ -118,7 +120,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayoutView actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
 
     }
 }

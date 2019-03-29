@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 /**
  * Created by Squirrel桓 on 2018/11/9.
  */
-public class ActionBarLayout implements ActionBarInterface{
+public class ActionBarLayout2 implements ActionBarInterface{
 
     private Activity context;
     private ImageTextView it_actionbar_title;
@@ -78,22 +78,48 @@ public class ActionBarLayout implements ActionBarInterface{
         return headView;
     }
 
+    @Override
+    public void setActionBarType(ActionBarInterface.ACTIONBAR_TYPE noActionBarNoStatus) {
+
+    }
+
+    @Override
+    public View generateView() {
+        return null;
+    }
+
+    @Override
+    public void setFullScreen(boolean b) {
+
+    }
+
+    @Override
+    public View getActionBarLayoutHeaderView() {
+        return null;
+    }
+
+    @Override
+    public void setActionBarTipType(ActionBarTip.ACTIONBARTIP_TYPE actionbartip_type) {
+
+    }
+
+    @Override
+    public void setHasContainBackground(boolean isChecked) {
+
+    }
 
     private int contentLayoutResID;
     private int headLayoutResID;
-    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
+    public ActionBarLayout2(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID) {
         initActionBarLayout(context,actionBarModel, headLayoutResID, contentLayoutResID,null);
     }
-    public ActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup contentView){
+    public ActionBarLayout2(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID, ViewGroup contentView){
         initActionBarLayout(context,actionBarModel, headLayoutResID, contentLayoutResID,contentView);
-    }
-    public static enum  ContextType{
-        ActivityModel,FragmentModel
     }
     public int getFragmentContentViewId(){
         return R.id.qd_fragment_content_view;
     }
-    private ContextType contextType = ContextType.ActivityModel;
+    private ContentType contextType = ContentType.ActivityModel;
     private ActionBarLayoutInterface actionBarLayoutInterface;
     public void initActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup relContentView) {
         this.context = context;
@@ -101,10 +127,10 @@ public class ActionBarLayout implements ActionBarInterface{
         this.contentLayoutResID = contentLayoutResID;
         this.contentView = relContentView;//fragment传递过来真实的contentView
         if(contentLayoutResID==-1){
-            contextType=ContextType.FragmentModel;
+            contextType=ContentType.FragmentModel;
             actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
         }else {
-            contextType=ContextType.ActivityModel;
+            contextType=ContentType.ActivityModel;
         }
         initLayout();
 
@@ -119,7 +145,7 @@ public class ActionBarLayout implements ActionBarInterface{
             it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(contextType==ContextType.FragmentModel){
+                    if(contextType==ContentType.FragmentModel){
                         actionBarLayoutInterface.onBack((AppCompatActivity) context);
                     }else {
                         ((Activity) context).finish();
@@ -154,10 +180,10 @@ public class ActionBarLayout implements ActionBarInterface{
         LayoutInflater mInflater = LayoutInflater.from(context);
         rootLayout = new FrameLayout(context);
         //contentView宽高
-        if(contextType==ContextType.ActivityModel){
+        if(contextType==ContentType.ActivityModel){
             mInflater.inflate(contentLayoutResID, rootLayout, true);
             contentView = (ViewGroup) rootLayout.getChildAt(0);
-        }else if(contextType==ContextType.FragmentModel){
+        }else if(contextType==ContentType.FragmentModel){
             rootLayout.addView(contentView);
         }
 
@@ -308,9 +334,9 @@ public class ActionBarLayout implements ActionBarInterface{
         });
     }
 
-    /**
+/*    *//**
      * 导航栏样式三种
-     */
+     *//*
     public enum ACTIONBAR_TYPE {
         //无导航栏
         NO_ACTION_BAR,
@@ -324,7 +350,7 @@ public class ActionBarLayout implements ActionBarInterface{
         ACTION_STACK_NO_STATUS,
         //透明导航栏
         ACTION_TRANSPARENT
-    }
+    }*/
 
     private ViewGroup headView;
     private ViewGroup contentView;
@@ -337,7 +363,7 @@ public class ActionBarLayout implements ActionBarInterface{
      * 导航栏构建者
      */
     public static class Builder {
-        private ActionBarLayout activityLayout;
+        private ActionBarLayout2 activityLayout;
         private ACTIONBAR_TYPE actionBarModel = ACTIONBAR_TYPE.NORMAL;//1,上下顺序排列（普通样式），2层叠排列（actionbar背景透明），3只显示内容
         private Activity context;
         private int contentLayoutResID = -1;
@@ -348,8 +374,8 @@ public class ActionBarLayout implements ActionBarInterface{
             this.context = context;
         }
 
-        public ActionBarLayout create() {
-            activityLayout = new ActionBarLayout(context, actionBarModel, headLayoutResID, contentLayoutResID,contentView);
+        public ActionBarLayout2 create() {
+            activityLayout = new ActionBarLayout2(context, actionBarModel, headLayoutResID, contentLayoutResID,contentView);
 
             return activityLayout;
         }

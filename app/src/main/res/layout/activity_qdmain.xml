@@ -13,6 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/quickdevelop_ic_launcher"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/quickdev_common_text_size"
+        android:textColor="@color/black"
+        android:text="hello world"/>
     <!--<cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView
         android:id="@+id/scrollingTabs"
         android:layout_width="match_parent"

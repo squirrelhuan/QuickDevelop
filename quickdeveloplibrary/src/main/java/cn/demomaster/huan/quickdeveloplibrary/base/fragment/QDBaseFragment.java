@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -27,19 +30,25 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
 
     public AppCompatActivity mContext;
     public Bundle mBundle;
-    public ActionBarLayoutView actionBarLayoutView;
+    private ActionBarInterface actionBarLayout;
+
+    private int backgroundColor = Color.TRANSPARENT;
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
 
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }
-    public ActionBarLayoutView getActionBarLayout(View view) {
-        if (actionBarLayoutView == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarLayout.ContextType.FragmentModel).setHeaderResId(getHeadlayoutResID());
-            actionBarLayoutView = builder.creat();
-        }
 
-        return actionBarLayoutView;
+    public ActionBarInterface getActionBarLayout(View view) {
+        if (actionBarLayout == null) {
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarInterface.ContentType.FragmentModel).setHeaderResId(getHeadlayoutResID());
+            actionBarLayout = builder.creat();
+        }
+        return actionBarLayout;
     }
 
     private int layoutResID;
@@ -60,33 +69,36 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mContext = (AppCompatActivity) this.getContext();
-        if (isUseActionBarLayout()) {//是否使用自定义导航栏
-            if (mView == null) {
-                mView = getContentView(inflater);
-            }
-            rootView = getActionBarLayout(mView);
-            initView(rootView,actionBarLayoutView);
-            return rootView;
+        if (mView == null) {
+            mView = getContentView(inflater);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        if (isUseActionBarLayout()) {//是否使用自定义导航栏
+            rootView = getActionBarLayout(mView).generateView();
+        } else {
+            rootView = mView;
+        }
+        rootView.setBackgroundColor(getBackgroundColor());
+        initView(rootView, getActionBarLayout());
+        return rootView;
     }
 
     //获取自定义导航
-    public ActionBarLayoutView getActionBarLayout() {
-        return actionBarLayoutView;
+    public ActionBarInterface getActionBarLayout() {
+        return actionBarLayout;
     }
 
     public PhotoHelper photoHelper;
     public NetWorkChangReceiver netWorkChangReceiver;
     public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
+
     public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
         this.onNetStateChangedListener = onNetStateChangedListener;
         if (netWorkChangReceiver != null) {
             netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
         }
     }
+
     //实例化各种帮助类
     private void initHelper() {
         if (photoHelper == null) {
@@ -100,7 +112,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             try {
                 //mContext.registerReceiver(netWorkChangReceiver, filter);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -121,6 +133,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
         }
         return optionsMenu;
     }
+
     //获取自定义菜单
     public OptionsMenu.Builder getOptionsMenuBuilder() {
         if (optionsMenubuilder == null) {

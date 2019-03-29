@@ -58,11 +58,11 @@ public class SimplePictureActivity extends BaseActivityParent {
 
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
-        getActionBarLayout().setTitle("图片选择器");
-        getActionBarLayout().getRightView().setText("发送");
-        getActionBarLayout().getRightView().setImageResource(0);
-        getActionBarLayout().getRightView().setTextSize(16);
-        getActionBarLayout().getRightView().setOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setTitle("图片选择器");
+        getActionBarLayoutOld().getRightView().setText("发送");
+        getActionBarLayoutOld().getRightView().setImageResource(0);
+        getActionBarLayoutOld().getRightView().setTextSize(16);
+        getActionBarLayoutOld().getRightView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //拍照完成，返回对应图片路径
@@ -75,8 +75,8 @@ public class SimplePictureActivity extends BaseActivityParent {
                 mContext.finish();
             }
         });
-        getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
-        getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.white));
+        getActionBarLayoutOld().setStateBarColorAuto(true);
         init();
     }
 

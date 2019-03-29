@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.SeekBar;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -22,7 +21,6 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
 
     private LinearLayout ll_root;
     private SeekBar sb_background;
-    private ActionBarLayoutView action_bar;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +76,7 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
         });
         sb_background.setProgress(50);
 
-        getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 
         //getActionBarLayout2();
 
@@ -122,52 +120,52 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
 
 
             case R.id.btn_ac_01:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NORMAL);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
-                getActionBarLayout().setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.black));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
                 showMessage("黑色主题");
                 break;
             case R.id.btn_color_white:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.white));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.white));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.white), getResources().getColor(R.color.black));
                 showMessage("白色主题");
                 break;
             case R.id.btn_color_red:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.red));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.red));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.red), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "红色主题");
                 break;
             case R.id.btn_color_gray:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.gray));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.gray));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.gray), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "灰色主题");
                 break;
             case R.id.btn_color_green:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.green));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.green));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.green), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "绿色主题");
                 break;
             case R.id.btn_color_yellow:
-                getActionBarLayout().setBackGroundColor(getResources().getColor(R.color.yellow));
+                getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.yellow));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this, "黄色主题");
                 break;
@@ -179,7 +177,7 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
                     ll_layout.setBackgroundResource(R.mipmap.gudaimeizi);
                     position = 0;
                 }
-                getActionBarLayout().changeChildView(ll_layout);*/
+                getActionBarLayoutOld().changeChildView(ll_layout);*/
                 break;
         }
     }

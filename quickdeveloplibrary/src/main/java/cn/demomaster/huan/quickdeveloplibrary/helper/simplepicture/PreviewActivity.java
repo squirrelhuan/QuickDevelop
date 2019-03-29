@@ -15,7 +15,8 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PreviewFragment;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
+
 
 public class PreviewActivity extends BaseActivityParent {
 
@@ -30,9 +31,9 @@ public class PreviewActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
-        getActionBarLayout().getRightView().setVisibility(View.GONE);
-        getActionBarLayout().setActionBarModel(ACTION_STACK_NO_STATUS);
-        getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarLayoutOld().getRightView().setVisibility(View.GONE);
+        getActionBarLayoutOld().setActionBarModel(ACTION_STACK_NO_STATUS);
+        getActionBarLayoutOld().setStateBarColorAuto(true);
         vp_image = findViewById(R.id.vp_image);
         //pv_image = (PhotoView) findViewById(R.id.pv_image);
         initV();
@@ -66,19 +67,19 @@ public class PreviewActivity extends BaseActivityParent {
             return;
         }
         final int imageCount = images.size();
-        getActionBarLayout().setTitle((index + 1) + "/" + images.size());
+        getActionBarLayoutOld().setTitle((index + 1) + "/" + images.size());
         mFragmentManager = getSupportFragmentManager();
         fragmentAdapter = new PictureFragmentAdapter(mFragmentManager, images);
 
         vp_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                getActionBarLayout().refreshStateBarColor();
+                getActionBarLayoutOld().refreshStateBarColor();
             }
 
             @Override
             public void onPageSelected(int position) {
-                getActionBarLayout().setTitle(((position + 1) +"")+ ("/" + imageCount));
+                getActionBarLayoutOld().setTitle(((position + 1) +"")+ ("/" + imageCount));
             }
 
             @Override

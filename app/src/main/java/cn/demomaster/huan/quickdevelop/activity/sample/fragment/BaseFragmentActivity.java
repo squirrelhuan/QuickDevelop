@@ -9,11 +9,12 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.RouterFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "BaseFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class BaseFragmentActivity extends AppCompatActivity {
+public class BaseFragmentActivity extends QDBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -35,7 +35,7 @@ public class QDActionDialogActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdaction_dialog);
 
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getOptionsMenu().show();
@@ -145,7 +145,7 @@ public class QDActionDialogActivity extends BaseActivityParent {
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

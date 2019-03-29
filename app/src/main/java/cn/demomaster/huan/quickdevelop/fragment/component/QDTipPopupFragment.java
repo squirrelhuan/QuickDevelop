@@ -1,29 +1,22 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
-import android.content.ComponentName;
-import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.service.MessageService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
-import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
-import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
+
+import static com.umeng.socialize.utils.ContextUtil.getContext;
 
 
 /**
@@ -32,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
  */
 
 @ActivityPager(name = "QDTipPopupFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class QDTipPopupFragment extends BaseFragment implements View.OnClickListener {
+public class QDTipPopupFragment extends QDBaseFragment implements View.OnClickListener {
     //Components
     ViewGroup mView;
 
@@ -45,7 +38,7 @@ public class QDTipPopupFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
         //Button btn_01 = rootView.findViewById(R.id.btn_01);
         rootView.findViewById(R.id.btn_01).setOnClickListener(new View.OnClickListener() {
             @Override

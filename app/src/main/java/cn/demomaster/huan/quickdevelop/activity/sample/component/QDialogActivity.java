@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -39,7 +38,7 @@ public class QDialogActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdialog);
 
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getOptionsMenu().show();
@@ -118,7 +117,7 @@ public class QDialogActivity extends BaseActivityParent {
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

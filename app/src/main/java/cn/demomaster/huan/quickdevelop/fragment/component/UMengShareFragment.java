@@ -2,9 +2,7 @@ package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,8 +15,9 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
-import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -28,11 +27,13 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "UMengShareFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class UMengShareFragment extends BaseFragment {
+public class UMengShareFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
-
-
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -88,11 +89,11 @@ public class UMengShareFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
 
         Bundle bundle = getArguments();
-        //actionBarLayout.setTitle(title+"---------ASDFGGHHJ");
-        actionBarLayout.setHeaderBackgroundColor(Color.BLUE);
+        //actionBarLayoutOld.setTitle(title+"---------ASDFGGHHJ");
+        actionBarLayoutOld.setHeaderBackgroundColor(Color.BLUE);
     }
 
 

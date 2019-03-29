@@ -23,7 +23,7 @@
 
     <style name="SplashTheme" parent="QDCompat">
         <!-- 欢迎页背景 -->
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@drawable/quickdev_splash</item>
         <!--<item name="android:windowFullscreen">true</item>-->
         <item name="android:windowNoTitle">true</item>
         <!-- <item name="android:windowIsTranslucent">true</item> --> <!-- 透明背景不要了 -->

@@ -17,7 +17,9 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.DesignListAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
@@ -29,10 +31,14 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class DesignPatternFragment extends BaseFragment {
+public class DesignPatternFragment extends QDBaseFragment {
 
     private RecyclerView recyclerView;
     private DesignListAdapter designListAdapter;
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -42,10 +48,10 @@ public class DesignPatternFragment extends BaseFragment {
     private String linksPath = "designHtmls.json";
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
-        actionBarLayout.setActionBarModel(ActionBarLayout.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
-        actionBarLayout.setBackGroundColor(Color.RED);
+        actionBarLayout.setHeaderBackgroundColor(Color.RED);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

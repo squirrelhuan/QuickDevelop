@@ -1,16 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.camera.idcard;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -61,16 +57,16 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
-        getActionBarLayout().setStateBarColorAuto(true);
-        getActionBarLayout().setTitle("身份证拍照");
+        getActionBarLayoutOld().setStateBarColorAuto(true);
+        getActionBarLayoutOld().setTitle("身份证拍照");
         initOptionsMenu();
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getOptionsMenu().show();
             }
         });
-        getActionBarLayout().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
+        getActionBarLayoutOld().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
@@ -125,7 +121,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
             menus.add(menu);
         }
         getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

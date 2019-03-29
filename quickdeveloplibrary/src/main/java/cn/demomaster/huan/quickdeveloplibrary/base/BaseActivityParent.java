@@ -6,7 +6,7 @@ import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
@@ -15,7 +15,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     //private LayoutInflater inflater;
     private int layoutResID;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
-    private ActionBarLayout actionBarLayout;
+    private ActionBarLayout2 actionBarLayoutOld;
     private OptionsMenu optionsMenu;
 
     @Override
@@ -31,7 +31,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
         }
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             this.layoutResID = layoutResID;
-            View view = getActionBarLayout().getFinalView();
+            View view = getActionBarLayoutOld().getFinalView();
             super.setContentView(view);
         } else {
             super.setContentView(layoutResID);
@@ -43,15 +43,15 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     }
 
     //获取自定义导航
-    public ActionBarLayout getActionBarLayout() {
+    public ActionBarLayout2 getActionBarLayoutOld() {
         if (!isUseActionBarLayout()) {
             //throw new IllegalStateException("Base URL required.");
             return null;
         }
-        if (actionBarLayout == null) {
-            actionBarLayout = ActionBarHelper.init(this, layoutResID,getHeadlayoutResID());
+        if (actionBarLayoutOld == null) {
+            actionBarLayoutOld = ActionBarHelper.init(this, layoutResID,getHeadlayoutResID());
         }
-        return actionBarLayout;
+        return actionBarLayoutOld;
     }
 
   /*  public ActionBarLayoutView getActionBarLayout2(){

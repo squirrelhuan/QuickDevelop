@@ -1,40 +1,20 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseFragmentActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
-import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
-
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -70,6 +50,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      *
      * @return
      */
+    @Override
     public ImageTextView getLeftView() {
         return actionBarLayoutHeaderView.getLeftView();
     }
@@ -79,6 +60,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      *
      * @return
      */
+    @Override
     public ImageTextView getRightView() {
         return actionBarLayoutHeaderView.getRightView();
     }
@@ -90,6 +72,23 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      */
     public ViewGroup getHeadView() {
         return actionBarLayoutHeaderView;
+    }
+
+    @Override
+    public void setActionBarType(ACTIONBAR_TYPE actionbarType) {
+        this.actionbarType = actionbarType;
+        if (actionBarLayoutContentView != null) {
+            actionBarLayoutContentView.setActionbarType(actionbarType);
+        }
+        if (actionBarLayoutHeaderView != null) {
+            actionBarLayoutHeaderView.setActionbarType(actionbarType);
+        }
+    }
+
+
+    @Override
+    public View generateView() {
+        return this;
     }
 
     public ActionBarLayoutView(Builder builder) {
@@ -115,22 +114,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         this.actionBarLayoutHeaderView = actionBarLayoutHeaderView;
     }
 
-    public ActionBarLayoutView(@NonNull Context context) {
-        super(context);
-        initView();
-    }
-
-    public ActionBarLayoutView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public ActionBarLayoutView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView();
-    }
-
-
     private int headerBackgroundColor = Color.WHITE;
 
     public void setHeaderBackgroundColor(int headerBackgroundColor) {
@@ -141,7 +124,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     }
 
     private LayoutInflater mInflater;
-
     private void initView() {
         mInflater = LayoutInflater.from(getContext());
 
@@ -151,7 +133,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setActionbarType(actionbarType);
+                setActionBarType(actionbarType);
                 setFullScreen(isFullScreen);
             }
         });
@@ -187,7 +169,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         actionBarLayoutHeaderView.addGlobalLayoutListener(globalLayoutListener);*/
 
 
-        if (mBuilder.contextType != ActionBarLayout.ContextType.FragmentModel) {
+        if (mBuilder.contextType != ContentType.FragmentModel) {
             //Front导航
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(actionBarLayoutFragmentView, layoutParams3);
@@ -201,18 +183,18 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     private boolean isFullScreen;
     public void setFullScreen(boolean isFullScreen) {
         this.isFullScreen = isFullScreen;
-        LayoutParams layoutParams_c = (LayoutParams) getLayoutParams();
+        /*LayoutParams layoutParams_c = (LayoutParams) getLayoutParams();
         if (layoutParams_c == null) {
             layoutParams_c = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
         if (!isFullScreen) {
-            int h = context.getActionBarLayoutView().getActionBarLayoutHeaderView().getHeight();
+            int h = context.getActionBarLayout().getActionBarLayoutHeaderView().getHeight();
             QDLogger.d("h="+h);
             layoutParams_c.topMargin = h;
             setLayoutParams(layoutParams_c);
         } else {
             setLayoutParams(layoutParams_c);
-        }
+        }*/
     }
 
     public void addContentBackView(int layoutResID) {
@@ -250,19 +232,9 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         actionBarLayoutHeaderView.setContentView((FrameLayout) view);
     }
 
-    private ActionBarLayout.ACTIONBAR_TYPE actionbarType = ActionBarLayout.ACTIONBAR_TYPE.NORMAL;
+    public ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;
 
-    public void setActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
-        this.actionbarType = actionbarType;
-        if (actionBarLayoutContentView != null) {
-            actionBarLayoutContentView.setActionbarType(actionbarType);
-        }
-        if (actionBarLayoutHeaderView != null) {
-            actionBarLayoutHeaderView.setActionbarType(actionbarType);
-        }
-    }
-
-    public void setFragmentActionbarType(ActionBarLayout.ACTIONBAR_TYPE actionbarType) {
+    public void setFragmentActionbarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (actionBarLayoutContentView != null) {
             actionBarLayoutContentView.setActionbarType(actionbarType);
@@ -351,8 +323,8 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private View contentView;
         private View fragmentView;
         private boolean isFullScreen = true;
-        private ActionBarLayout.ACTIONBAR_TYPE actionbarType;
-        private ActionBarLayout.ContextType contextType = ActionBarLayout.ContextType.ActivityModel;
+        private ActionBarLayout2.ACTIONBAR_TYPE actionbarType;
+        private ContentType contextType = ContentType.ActivityModel;
 
         public Builder(Context context) {
             this.context = context;
@@ -383,7 +355,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
             return this;
         }
 
-        public Builder setContextType(ActionBarLayout.ContextType contextType) {
+        public Builder setContextType(ContentType contextType) {
             this.contextType = contextType;
             return this;
         }

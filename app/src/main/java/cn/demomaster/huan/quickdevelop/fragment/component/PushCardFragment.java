@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,9 @@ import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
@@ -35,13 +36,18 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.Saleng;
  */
 
 @ActivityPager(name = "PushCard",preViewClass = StateView.class,resType = ResType.Custome)
-public class PushCardFragment extends BaseFragment {
+public class PushCardFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
     private RecyclerView recycler_body;
     private LinearLayoutManager linearLayoutManager;
     private RecycleViewAdapter adapter;
     private List<String> lists;
+
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -54,7 +60,7 @@ public class PushCardFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarLayout actionBarLayout) {
+    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
         recycler_body = rootView.findViewById(R.id.recycler_body);
         //模拟一些数据加载
         lists = new ArrayList<>();
@@ -62,7 +68,7 @@ public class PushCardFragment extends BaseFragment {
             lists.add(i + "item");
         }
         //这里使用线性布局像listview那样展示列表,第二个参数可以改为 HORIZONTAL实现水平展示
-        linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         //使用网格布局展示
         recycler_body.setLayoutManager(new GridLayoutManager(mContext, 1));
         //recy_drag.setLayoutManager(linearLayoutManager);
@@ -152,10 +158,10 @@ public class PushCardFragment extends BaseFragment {
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
-    public void initActionBarLayout(ActionBarLayout actionBarLayout) {
+    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
-        actionBarLayout.setTitle(titles[i]+"---------ASDFGGHHJ");
-        actionBarLayout.setHeaderBackgroundColor(colors[i]);
+        actionBarLayoutOld.setTitle(titles[i]+"---------ASDFGGHHJ");
+        actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
     }
 
 }
