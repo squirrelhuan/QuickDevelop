@@ -63,6 +63,11 @@ public class QDDialog extends Dialog {
                 headerView.setPadding(p, p, p, p);
                 bodyView.setPadding(p, 0, p, p);
                 break;
+            case noHeader:
+                bodyView = new LinearLayout(builder.context);
+                footView = new LinearLayout(builder.context);
+                bodyView.setPadding(p, p, p, p);
+                break;
             case onlyBody:
                 bodyView = new LinearLayout(builder.context);
                 bodyView.setPadding(p, p, p, p);
