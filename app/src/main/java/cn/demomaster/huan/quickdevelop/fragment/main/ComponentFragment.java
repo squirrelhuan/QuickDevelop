@@ -35,6 +35,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragme
 import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
@@ -43,6 +44,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInter
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout;
 
 
 /**
@@ -105,6 +107,7 @@ public class ComponentFragment extends QDBaseFragment {
         classList.add(UMengShareFragment.class);
         classList.add(PushCardFragment.class);
         classList.add(QDTipPopupFragment.class);
+        classList.add(StackSlidingLayoutFragment.class);
         classList.add(MainActivity.class);
         componentAdapter.updateList(classList);
         //设置Adapter

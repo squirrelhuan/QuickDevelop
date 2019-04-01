@@ -118,7 +118,6 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
         Intent intent;
         switch (view.getId()) {
 
-
             case R.id.btn_ac_01:
                 getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
                 break;

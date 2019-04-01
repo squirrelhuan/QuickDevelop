@@ -10,11 +10,11 @@ import android.widget.Button;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -23,14 +23,19 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "SoundFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "SoundFragment", preViewClass = StateView.class, resType = ResType.Custome)
 public class SoundFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
-
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        //QDLogger.d("拦截Activity:"+getClass().getName() + "返回事件");
+        return false;
     }
 
     @Override
@@ -91,8 +96,7 @@ public class SoundFragment extends QDBaseFragment {
         //SoundHelper.getInstance().playByResID(R.raw.beep);
     }
 
-    private void play(){
+    private void play() {
         SoundHelper.getInstance().playByResID(R.raw.pikaqiu);
     }
-
 }

@@ -35,13 +35,13 @@ public class QDLogger {
         Log(Log.DEBUG,tag,obj.toString());
     }
     public static void d(Object obj){
-        Log(Log.DEBUG,TAG,obj.toString());
+        Log(Log.DEBUG,TAG,obj);
     }
     public static void d(Context context ,Object obj){
         Log(context,Log.DEBUG,TAG,obj.toString());
     }
     public static void d(Context context ,String tag,Object obj){
-        Log(context,Log.DEBUG,tag,obj.toString());
+        Log(context,Log.DEBUG,tag,obj);
     }
 
     /**********  e ***********/
@@ -49,7 +49,7 @@ public class QDLogger {
         Log(Log.ERROR,tag,obj.toString());
     }
     public static void e(String tag,Object obj,Throwable tr){
-        Log(null,Log.ERROR,tag,obj.toString(),tr);
+        Log(null,Log.ERROR,tag,obj,tr);
     }
     public static void e(Object obj){
         Log(Log.ERROR,TAG,obj.toString());
@@ -58,10 +58,10 @@ public class QDLogger {
         Log(context,Log.ERROR,TAG,obj.toString());
     }
     public static void e(Context context ,String tag,Object obj){
-        Log(context,Log.ERROR,tag,obj.toString());
+        Log(context,Log.ERROR,tag,obj);
     }
     public static void e(Context context ,String tag,Object obj,Throwable tr){
-        Log(context,Log.ERROR,tag,obj.toString(),tr);
+        Log(context,Log.ERROR,tag,obj,tr);
     }
 
     /**********  v ***********/
@@ -69,13 +69,13 @@ public class QDLogger {
         Log(Log.VERBOSE,tag,obj.toString());
     }
     public static void v(Object obj){
-        Log(Log.VERBOSE,TAG,obj.toString());
+        Log(Log.VERBOSE,TAG,obj);
     }
     public static void v(Context context ,Object obj){
         Log(context,Log.VERBOSE,TAG,obj.toString());
     }
     public static void v(Context context ,String tag,Object obj){
-        Log(context,Log.VERBOSE,tag,obj.toString());
+        Log(context,Log.VERBOSE,tag,obj);
     }
 
     /**********  w ***********/
@@ -83,10 +83,10 @@ public class QDLogger {
         Log(Log.WARN,tag,obj.toString());
     }
     public static void w(Object obj){
-        Log(Log.WARN,TAG,obj.toString());
+        Log(Log.WARN,TAG,obj);
     }
     public static void w(Context context,Object obj){
-        Log(context,Log.WARN,TAG,obj.toString());
+        Log(context,Log.WARN,TAG,obj);
     }
 
     private static void Log(int logType, String tag, Object obj){
@@ -98,8 +98,7 @@ public class QDLogger {
     }
 
     private static void Log(Context context,int logType, String tag, Object obj,Throwable tr){
-        String message =(context==null?obj.toString():(context.getClass().getName()+":"));
-        if(obj==null) message="null";
+        String message =(context==null?(obj==null?"NULL":obj.toString()):(context.getClass().getName()+":"));
         switch (logType){
             case Log.VERBOSE:// = 2;
                 Log.v(tag,message);

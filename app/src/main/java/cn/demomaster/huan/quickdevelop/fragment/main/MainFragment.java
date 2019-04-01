@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,11 @@ public class MainFragment extends QDBaseFragment {
         initScrollableTabs(rootView, mViewPager);
         init();*//*
     }*/
+
+    @Override
+    public boolean onBackPressed() {
+        return true;//屏蔽返回键
+    }
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayout) {

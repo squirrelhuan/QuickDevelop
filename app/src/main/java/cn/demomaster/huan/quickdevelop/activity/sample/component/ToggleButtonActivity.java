@@ -10,11 +10,12 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 @ActivityPager(name = "ToggleButton",preViewClass = ToggleButton.class,resType = ResType.Custome)
-public class ToggleButtonActivity extends BaseActivityParent {
+public class ToggleButtonActivity extends QDBaseActivity {
 
     private SeekBar sb_weight;
     private ToggleButton tooglebutton;

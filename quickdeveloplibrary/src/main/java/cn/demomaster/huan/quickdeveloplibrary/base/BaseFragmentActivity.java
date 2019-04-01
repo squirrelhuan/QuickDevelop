@@ -30,10 +30,5 @@ public class BaseFragmentActivity extends AppCompatActivity {
     public int getContentViewId(){
        return android.R.id.content;//R.id.qd_fragment_content_view;
     }
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        FragmentActivityHelper.getInstance().onBackPressed(this);
 
-    }
 }

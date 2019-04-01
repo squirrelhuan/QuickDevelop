@@ -2,7 +2,9 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,16 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseFragmentActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+
+import static android.view.KeyEvent.ACTION_DOWN;
+import static android.view.KeyEvent.KEYCODE_BACK;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -77,18 +85,38 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     @Override
     public void setActionBarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
-        if (actionBarLayoutContentView != null) {
-            actionBarLayoutContentView.setActionbarType(actionbarType);
-        }
-        if (actionBarLayoutHeaderView != null) {
-            actionBarLayoutHeaderView.setActionbarType(actionbarType);
+        if(loadFinished){
+            initActionBarType();
         }
     }
-
+    private boolean loadFinished;
+    public void initActionBarType(){
+        if (actionBarLayoutHeaderView != null&&actionBarLayoutContentView != null) {
+            actionBarLayoutHeaderView.setActionbarType(actionbarType);
+        }else if (actionBarLayoutContentView != null) {
+            actionBarLayoutContentView.setActionbarType(actionbarType);
+        }
+    }
 
     @Override
     public View generateView() {
         return this;
+    }
+
+    @Override
+    public void onClickBack() {
+        int eventCode = KEYCODE_BACK;
+        long now = SystemClock.uptimeMillis();
+        KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
+        if (mBuilder.contextType == ActionBarInterface.ContentType.FragmentModel) {
+            if (mBuilder.fragment instanceof BaseFragmentActivityInterface) {
+                boolean ret = ((BaseFragmentActivityInterface) mBuilder.fragment).onBackPressed();
+                if (ret) {
+                    QDLogger.d("fragment 消费了返回事件");
+                }
+            }
+        }
+        context.onKeyDown(eventCode,down);
     }
 
     public ActionBarLayoutView(Builder builder) {
@@ -124,6 +152,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     }
 
     private LayoutInflater mInflater;
+
     private void initView() {
         mInflater = LayoutInflater.from(getContext());
 
@@ -133,7 +162,8 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setActionBarType(actionbarType);
+                loadFinished = true;
+                initActionBarType();
                 setFullScreen(isFullScreen);
             }
         });
@@ -152,7 +182,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         addContentBackView(mBuilder.contentView);
 
         //头部导航
-        actionBarLayoutHeaderView = new ActionBarLayoutHeaderView(getContext());
+        actionBarLayoutHeaderView = new ActionBarLayoutHeaderView(getContext(),this);
         FrameLayout.LayoutParams layoutParams2 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(actionBarLayoutHeaderView, layoutParams2);
         addHeadView(mBuilder.headerResId);
@@ -167,7 +197,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
             }
         };
         actionBarLayoutHeaderView.addGlobalLayoutListener(globalLayoutListener);*/
-
 
         if (mBuilder.contextType != ContentType.FragmentModel) {
             //Front导航
@@ -229,7 +258,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
 
     private void addHeadView(View view) {
         if (view == null) return;
-        actionBarLayoutHeaderView.setContentView((FrameLayout) view);
+        actionBarLayoutHeaderView.setContentView(view);
     }
 
     public ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;
@@ -245,7 +274,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     }
 
     private ActionBarTip actionBarTip;
-
     public ActionBarTip getActionBarTip() {
         if (actionBarTip == null) {
             actionBarTip = new ActionBarTip(getContext());
@@ -282,35 +310,12 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
 
     @Override
     public void setActionBarThemeColors(int lightColor, int darkColor) {
-        getActionBarLayoutHeaderView().setActionBarThemeColors(lightColor,darkColor);
+        getActionBarLayoutHeaderView().setActionBarThemeColors(lightColor, darkColor);
     }
 
     public void setActionBarTipType(ActionBarTip.ACTIONBARTIP_TYPE actionbartip_type) {
         getActionBarLayoutContentView().setActionbartipType(actionbartip_type);
     }
-
-    /*
-    */
-/**
-     * 导航栏样式三种
-     *//*
-
-    public enum ACTIONBAR_TYPE {
-        //无导航栏
-        NO_ACTION_BAR,
-        //有导航栏
-        NORMAL,
-        //无导航栏并且内容可填充到状态栏
-        NO_ACTION_BAR_NO_STATUS,
-        //层叠
-        ACTION_STACK,
-        //层叠并且内容可填充到状态栏
-        ACTION_STACK_NO_STATUS,
-        //透明导航栏
-        ACTION_TRANSPARENT
-    }
-*/
-
 
     /**
      * 导航栏构建者
@@ -324,6 +329,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private View fragmentView;
         private boolean isFullScreen = true;
         private ActionBarLayout2.ACTIONBAR_TYPE actionbarType;
+        private Fragment fragment;
         private ContentType contextType = ContentType.ActivityModel;
 
         public Builder(Context context) {
@@ -355,18 +361,25 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
             return this;
         }
 
-        public Builder setContextType(ContentType contextType) {
+        /*public Builder setContextType(ContentType contextType) {
             this.contextType = contextType;
             return this;
-        }
+        }*/
 
         public Builder setFullScreen(boolean fullScreen) {
             isFullScreen = fullScreen;
             return this;
         }
 
+        public Builder setFragment(Fragment fragment) {
+            this.fragment = fragment;
+            this.contextType = ContentType.FragmentModel;
+            return this;
+        }
+
         public ActionBarLayoutView creat() {
             return new ActionBarLayoutView(this);
         }
+
     }
 }

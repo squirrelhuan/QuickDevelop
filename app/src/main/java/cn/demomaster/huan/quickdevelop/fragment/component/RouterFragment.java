@@ -10,6 +10,8 @@ import android.widget.Button;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 
 
@@ -17,18 +19,24 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
  * Squirrel桓
  * 2018/8/25
  */
-public class RouterFragment extends BaseFragment {
+public class RouterFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
-
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_router, null);
         }
-        Bundle bundle = getArguments();
-        String title = "空界面";
+
+        return mView;
+    }
+
+    @Override
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+        int i = (int) (Math.random() * 10 % 4);
+        actionBarLayout.setTitle(titles[i]+"sss");
+        actionBarLayout.setHeaderBackgroundColor(colors[i]);
         Button button = mView.findViewById(R.id.btn_open_new_fragment);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +49,7 @@ public class RouterFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 int i = (int) (Math.random() * 10 % 4);
-                getActionBarLayoutOld().setTitle(titles[i]+"");
+                actionBarLayout.setTitle(titles[i]+"");
             }
         });
         Button btn_guider = mView.findViewById(R.id.btn_guider);
@@ -52,18 +60,10 @@ public class RouterFragment extends BaseFragment {
             }
         });
 
-        return mView;
     }
 
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        int i = (int) (Math.random() * 10 % 4);
-        actionBarLayoutOld.setTitle(titles[i]+"---------ASDFGGHHJ");
-        actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
-    }
-
     private void opentFragment() {
         FragmentActivityHelper.getInstance().startFragment(mContext,new RouterFragment());
     }

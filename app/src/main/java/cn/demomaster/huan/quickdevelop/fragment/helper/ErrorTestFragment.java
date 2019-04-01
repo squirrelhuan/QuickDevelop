@@ -13,6 +13,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
@@ -25,7 +26,13 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "ErrorTestFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class ErrorTestFragment extends BaseFragment {
+public class ErrorTestFragment extends QDBaseFragment {
+
+    @Override
+    public int getBackgroundColor() {
+        return Color.WHITE;
+    }
+
     //Components
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;

@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,10 @@ public class ActionBarLayout2 implements ActionBarInterface{
     private ImageTextView it_actionbar_common_right;
     private View.OnClickListener leftOnClickListener;
     private View.OnClickListener rightOnClickListener;
+
+    @Override
+    public void onClickBack() {
+    }
 
     /**
      * 获取中间视图
@@ -120,7 +125,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
         return R.id.qd_fragment_content_view;
     }
     private ContentType contextType = ContentType.ActivityModel;
-    private ActionBarLayoutInterface actionBarLayoutInterface;
+    //private ActionBarLayoutInterface actionBarLayoutInterface;
     public void initActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup relContentView) {
         this.context = context;
         this.headLayoutResID = headLayoutResID;
@@ -128,7 +133,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
         this.contentView = relContentView;//fragment传递过来真实的contentView
         if(contentLayoutResID==-1){
             contextType=ContentType.FragmentModel;
-            actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
+            //actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
         }else {
             contextType=ContentType.ActivityModel;
         }
@@ -146,7 +151,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
                 @Override
                 public void onClick(View view) {
                     if(contextType==ContentType.FragmentModel){
-                        actionBarLayoutInterface.onBack((AppCompatActivity) context);
+                        //actionBarLayoutInterface.onBack((AppCompatActivity) context);
                     }else {
                         ((Activity) context).finish();
                     }

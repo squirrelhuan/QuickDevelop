@@ -11,6 +11,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "BaseFragment",preViewClass = StateView.class,resType = ResType.Custome)
@@ -24,10 +25,10 @@ public class BaseFragmentActivity extends QDBaseActivity {
         View view = new FrameLayout(this);
         view.setId(getContentViewId());
         setContentView(view);
+        getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         FragmentActivityHelper.getInstance().bindActivity(this);
-        RouterFragment f1 = null;
-        f1 = new RouterFragment();
-        FragmentActivityHelper.getInstance().replace(this,f1);
+        RouterFragment f1 = new RouterFragment();
+        FragmentActivityHelper.getInstance().startFragment(this,f1);
         //开启事务，fragment的控制是由事务来实现的
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //第一种方式（add），初始化fragment并添加到事务中，如果为null就new一个

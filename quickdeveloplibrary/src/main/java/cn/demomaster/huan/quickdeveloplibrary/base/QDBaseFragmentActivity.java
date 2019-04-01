@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -10,6 +11,8 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 public class QDBaseFragmentActivity extends AppCompatActivity {
@@ -74,12 +77,17 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        FragmentActivityHelper.getInstance().onBackPressed(this);
-
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        QDLogger.d("getAction="+keyCode+",event="+event);
+       if(!FragmentActivityHelper.getInstance().onBackPressed(mContext)){//未被fragment消费
+           onBackPressed();
+           return true;
+           //return super.onKeyDown(keyCode, event);
+       }else {
+           QDLogger.d("onKeyDown="+true);
+           return true;
+       }
     }
-
 
     /*
  是否实用自定义导航

@@ -15,7 +15,6 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.service.MessageService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
@@ -58,7 +57,7 @@ public class NdkTestFragment extends QDBaseFragment {
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_ndk_test, null);
+            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_ndk, null);
         }
 
         Bundle bundle = getArguments();

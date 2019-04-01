@@ -121,7 +121,7 @@ public class PushCardFragment extends QDBaseFragment {
                     @Override
                     public void run() {
                         //qdActionDialog.dismiss();
-                        final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
+                        QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
                         qdActionDialog.show();
                         pcl_layout.dismiss();
                         qdActionDialog1.dismiss();

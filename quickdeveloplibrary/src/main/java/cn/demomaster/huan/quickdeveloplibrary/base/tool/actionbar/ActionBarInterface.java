@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.graphics.Bitmap;
+import android.view.KeyEvent;
 import android.view.View;
 
 public interface ActionBarInterface {
@@ -35,10 +36,13 @@ public interface ActionBarInterface {
 
     void setHasContainBackground(boolean isChecked);
 
+    void onClickBack();
+
     /**
      * 导航栏样式三种
      */
     public static enum ACTIONBAR_TYPE {
+        NO_STATUS,
         //无导航栏
         NO_ACTION_BAR,
         //无导航栏并且内容可填充到状态栏

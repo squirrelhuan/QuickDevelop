@@ -1,7 +1,10 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NO_STATUS;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -58,32 +63,38 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         return it_actionbar_common_right;
     }
 
+    public ActionBarLayoutView mActionBarLayoutView;
 
-    public ActionBarLayoutHeaderView(@NonNull Context context) {
+    public ActionBarLayoutHeaderView(@NonNull Context context, ActionBarLayoutView actionBarLayoutView) {
         super(context);
+        mActionBarLayoutView = actionBarLayoutView;
         initView();
     }
 
     public int getStatusBar_Height() {
-        return statusBar_Height;
+        return (actionbarType == NO_STATUS) ? 0 : statusBar_Height;
     }
 
     private int statusBar_Height = 0;
     private int actionBar_Height = 0;
     private int paddingTop_old = 0;
-    private FrameLayout contentView;
+    private FrameLayout contentViewLayout;
+    private View contentView;
 
     public void setContentView(int layoutResID) {
         View view = mInflater.inflate(layoutResID, this, false);
         setContentView((FrameLayout) view);
     }
 
-    public void setContentView(FrameLayout contentView) {
-        this.contentView.removeAllViews();
+    public View getContentView() {
+        return contentView;
+    }
+
+    public void setContentView(View contentView) {
+        this.contentView = contentView;
+        this.contentViewLayout.removeAllViews();
         this.paddingTop_old = contentView.getPaddingTop();
-        this.contentView.addView(contentView);
-        //设置内边距
-        contentView.setPadding(contentView.getPaddingLeft(), getActionBarPaddingTop(), contentView.getPaddingRight(), contentView.getPaddingBottom());
+        this.contentViewLayout.addView(contentView);
         initOnClickListener();
     }
 
@@ -93,8 +104,9 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
                 return paddingTop_old + statusBar_Height;
             case ACTION_STACK:
                 return paddingTop_old + statusBar_Height;
+            case NO_STATUS:
+                return paddingTop_old;
             case NO_ACTION_BAR:
-                setVisibility(GONE);
                 return 0;
             case ACTION_TRANSPARENT:
                 return paddingTop_old + statusBar_Height;
@@ -106,7 +118,6 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         return paddingTop_old;
     }
 
-    private ActionBarInterface.ContentType mContextType = ActionBarInterface.ContentType.ActivityModel;
     private LayoutInflater mInflater;
 
     private void initView() {
@@ -116,23 +127,19 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         mInflater = LayoutInflater.from(getContext());
         removeAllViews();
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        contentView = new FrameLayout(getContext());
-        addView(contentView, layoutParams);
+        contentViewLayout = new FrameLayout(getContext());
+        addView(contentViewLayout, layoutParams);
 
-    /*    getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // globalLayoutListener.onLoadFinish();
-                initOnClickListener();
+                //initOnClickListener();
+                loadFinished = true;
+                initActionBarType();
             }
-        });*/
-    }
-
-    private GlobalLayoutListener globalLayoutListener;
-
-    public void addGlobalLayoutListener(GlobalLayoutListener globalLayoutListener) {
-        this.globalLayoutListener = globalLayoutListener;
+        });
     }
 
     public void setTitle(String title) {
@@ -160,16 +167,11 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     }
 
-    public static interface GlobalLayoutListener {
-        void onLoadFinish();
-    }
-
     private void initOnClickListener() {
         it_actionbar_title = findViewById(R.id.it_actionbar_common_title);
         if (context.getTitle() != null) {
             setTitle(context.getTitle().toString());
         }
-
         it_actionbar_common_left = findViewById(R.id.it_actionbar_common_left);
         it_actionbar_common_right = findViewById(R.id.it_actionbar_common_right);
         if (it_actionbar_common_left != null) {
@@ -180,11 +182,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
                 it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (mContextType == ActionBarInterface.ContentType.FragmentModel) {
-                            ActionBarLayoutInterface actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
-                            actionBarLayoutInterface.onBack(context);
-                        } else {
-                            context.finish();
+                        if (getParent() instanceof ActionBarInterface) {
+                            ((ActionBarInterface) getParent()).onClickBack();
                         }
                     }
                 });
@@ -205,9 +204,16 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     }
 
     private ActionBarInterface.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private boolean loadFinished;
 
     public void setActionbarType(ActionBarInterface.ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
+        if (loadFinished) {
+            initActionBarType();
+        }
+    }
+
+    public void initActionBarType() {
         switch (actionbarType) {
             case NORMAL:
                 setVisibility(VISIBLE);
@@ -227,9 +233,24 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
             case NO_ACTION_BAR_NO_STATUS:
                 setVisibility(GONE);
                 break;
+            case NO_STATUS:
+                setVisibility(VISIBLE);
+                break;
         }
+        //设置内边距
+        contentView.setPadding(contentView.getPaddingLeft(), getActionBarPaddingTop(), contentView.getPaddingRight(), contentView.getPaddingBottom());
+
+        mActionBarLayoutView.getActionBarLayoutContentView().setActionbarType(actionbarType);
+        contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                contentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mActionBarLayoutView.getActionBarLayoutContentView().setActionbarType(actionbarType);
+            }
+        });
     }
 
+    private ActionBarInterface.ContentType mContextType = ActionBarInterface.ContentType.ActivityModel;
     public void setContentType(ActionBarInterface.ContentType contextType) {
         mContextType = contextType;
     }

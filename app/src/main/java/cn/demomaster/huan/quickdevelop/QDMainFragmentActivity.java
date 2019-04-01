@@ -27,7 +27,7 @@ public class QDMainFragmentActivity extends QDBaseActivity {
         getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         getActionBarLayout().setHeaderBackgroundColor(Color.GRAY);
         //actionBarLayoutView.setHeaderBackgroundColor();
-        //actionBarLayoutView.setActionbarType(ActionBarLayoutView.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
     }
 

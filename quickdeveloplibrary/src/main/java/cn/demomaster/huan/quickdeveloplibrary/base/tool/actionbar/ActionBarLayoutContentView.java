@@ -98,6 +98,8 @@ public class ActionBarLayoutContentView extends FrameLayout {
         switch (actionbarType) {
             case NORMAL:
                 return paddingTop_old + getChangeHeight();
+            case NO_STATUS:
+                return headerView.getMeasuredHeight();
             case ACTION_STACK:
                 return paddingTop_old + headerView.getStatusBar_Height();
             case NO_ACTION_BAR:
@@ -115,7 +117,6 @@ public class ActionBarLayoutContentView extends FrameLayout {
 
     public void setMarginTopOrPaddingTop() {
         QDLogger.d("setMarginTopOrPaddingTop");
-        QDLogger.d(getActionBarPaddingTop());
 
         LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
         if (layoutParams == null) {
@@ -151,9 +152,7 @@ public class ActionBarLayoutContentView extends FrameLayout {
     }
 
     public ActionBarTip.ACTIONBARTIP_TYPE actionbartipType = ActionBarTip.ACTIONBARTIP_TYPE.NORMAL;
-
     private ActionBarTip actionBarTip;
-
     public void addActionBarTipView(ActionBarTip actionBarTip) {
         this.actionBarTip = actionBarTip;
         actionBarTip.setBelowContent(this);

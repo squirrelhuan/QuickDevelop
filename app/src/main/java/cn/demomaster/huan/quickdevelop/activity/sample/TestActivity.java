@@ -1,15 +1,5 @@
 package cn.demomaster.huan.quickdevelop.activity.sample;
 
-import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,15 +10,22 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
-@ActivityPager(name = "ActionBar",preViewClass = ToggleButton.class,resType = ResType.Custome)
+import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+
+@ActivityPager(name = "ActionBar", preViewClass = ToggleButton.class, resType = ResType.Custome)
 public class TestActivity extends QDBaseActivity implements View.OnClickListener {
 
-    private ActionBarInterface actionBarLayout;
     private CheckBox cb_use_background;
-    private RadioGroup rg_action,rg_action_color;
+    private RadioGroup rg_action, rg_action_color;
     private SeekBar sb_color;
 
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +35,7 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
         rg_action.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_01:
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
                         break;
@@ -57,6 +54,9 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
                     case R.id.rb_06:
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                         break;
+                    case R.id.rb_07:
+                        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_STATUS);
+                        break;
                 }
             }
         });
@@ -65,7 +65,7 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
         rg_action_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_color_01:
                         getActionBarLayout().setHeaderBackgroundColor(Color.WHITE);
                         break;
@@ -94,7 +94,7 @@ public class TestActivity extends QDBaseActivity implements View.OnClickListener
         sb_color.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int max = 0xff000000+0xffffff* progress/100;
+                int max = 0xff000000 + 0xffffff * progress / 100;
                 getActionBarLayout().setHeaderBackgroundColor(max);
             }
 

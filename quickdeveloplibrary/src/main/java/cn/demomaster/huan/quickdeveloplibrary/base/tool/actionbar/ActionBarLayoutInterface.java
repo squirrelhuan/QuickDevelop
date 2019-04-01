@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
+import android.view.KeyEvent;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -9,4 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public interface ActionBarLayoutInterface {
     void onBack(AppCompatActivity activity );
+
+    void onKeyDown(int eventCode, KeyEvent down);
 }

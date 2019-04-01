@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     public Bundle mBundle;
     private ActionBarInterface actionBarLayout;
 
-    private int backgroundColor = Color.TRANSPARENT;
+    private int backgroundColor = Color.WHITE;
 
     public int getBackgroundColor() {
         return backgroundColor;
@@ -45,7 +46,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
 
     public ActionBarInterface getActionBarLayout(View view) {
         if (actionBarLayout == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setContextType(ActionBarInterface.ContentType.FragmentModel).setHeaderResId(getHeadlayoutResID());
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
         }
         return actionBarLayout;
@@ -79,8 +80,19 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
             rootView = mView;
         }
         rootView.setBackgroundColor(getBackgroundColor());
+        rootView.setClickable(true);
         initView(rootView, getActionBarLayout());
         return rootView;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    @Override
+    public void back() {
+        mContext.onBackPressed();
     }
 
     //获取自定义导航
@@ -91,7 +103,6 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     public PhotoHelper photoHelper;
     public NetWorkChangReceiver netWorkChangReceiver;
     public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
-
     public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
         this.onNetStateChangedListener = onNetStateChangedListener;
         if (netWorkChangReceiver != null) {
