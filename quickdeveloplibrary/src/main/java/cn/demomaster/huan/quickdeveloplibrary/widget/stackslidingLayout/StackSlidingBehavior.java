@@ -41,7 +41,7 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         StackSlidingLayout previous = getPreviousChild(parent, child);
         if (previous != null) {
             int offset = previous.getTop() + previous.getHeaderViewHeight();
-            child.offsetTopAndBottom(offset);
+            //child.offsetTopAndBottom(offset);
             CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             layoutParams_c.topMargin = offset;
             //child.setLayoutParams(layoutParams_c);
@@ -102,8 +102,12 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
             while (card != null) {
                 //
                 int offset = getHeaderOverlap(card,current);
-                if (offset > 0)
-                    card.offsetTopAndBottom(-offset);
+                if (offset > 0){
+                   // card.offsetTopAndBottom(-offset);
+
+                    CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) card.getLayoutParams();
+                    layoutParams_c.topMargin = offset;
+                }
                 current = card;
                 card = getPreviousChild(parent, current);
             }
@@ -114,8 +118,10 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
                 //
                 int offset = getHeaderOverlap(current, card);
                 if (offset > 0) {
-                    card.offsetTopAndBottom(offset);
+                    //card.offsetTopAndBottom(offset);
 
+                    CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) card.getLayoutParams();
+                    layoutParams_c.topMargin = offset;
                 }
                 current = card;
                 card = getNextChild(parent, current);
@@ -142,10 +148,12 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         //1.k控制自己的移动
         int initialOffset = child.getTop();
         int offset = clamp(initialOffset - dy, minOffset, maxOffset);
-        child.offsetTopAndBottom(offset);
+        //child.offsetTopAndBottom(offset);
+        CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+        layoutParams_c.topMargin = offset;
         return -offset;//滑动方向
         //2,控制上边和下边child的移动
-        //  super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+        // super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
     }
 
     private int clamp(int i, int minOffset, int maxOffset) {
