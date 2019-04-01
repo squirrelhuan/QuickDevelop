@@ -40,7 +40,8 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
-
+        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+        actionBarLayout.setHeaderBackgroundColor(Color.TRANSPARENT);
     }
 
     @Override

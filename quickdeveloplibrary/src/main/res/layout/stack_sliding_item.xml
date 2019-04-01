@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/red">
-
-    </androidx.recyclerview.widget.RecyclerView>
+    android:orientation="vertical">
     <TextView android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="T"
-        android:textSize="24dp"
-        android:padding="5dp"
-        android:background="#000"
+        android:textSize="16dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:background="@color/transparent_dark_33"
         android:textColor="@color/white"/>
-</merge>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

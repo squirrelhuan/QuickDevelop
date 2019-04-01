@@ -17,6 +17,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 @CoordinatorLayout.DefaultBehavior(StackSlidingBehavior.class)
 public class StackSlidingLayout extends FrameLayout {
     public StackSlidingLayout(@NonNull Context context) {
@@ -41,6 +43,8 @@ public class StackSlidingLayout extends FrameLayout {
         TextView header = findViewById(R.id.header);
         int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random()*10%3)]);
+        header.setText(Math.random()*10+"");
+        QDLogger.d("StackSlidingLayout",header.getText());
         ComponentAdapter adapter = new ComponentAdapter(getContext());
         List<String> items = new ArrayList();
         for(int i=0;i<30;i++){
@@ -49,15 +53,18 @@ public class StackSlidingLayout extends FrameLayout {
         adapter.updateList(items);
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     private int mHeaderViewHeight;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        QDLogger.d("StackSlidingLayout","onSizeChanged w="+w+",h="+h+",oldw="+oldw+ ",oldh="+oldh);
         if(w!=oldw||h!=oldh){
             mHeaderViewHeight = findViewById(R.id.header).getMeasuredHeight();
         }
+        QDLogger.d("StackSlidingLayout","mHeaderViewHeight="+mHeaderViewHeight);
        // super.onSizeChanged(w, h, oldw, oldh);
     }
 
