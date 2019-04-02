@@ -8,19 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
 public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidingLayout> {
+
 
     private int mInitialOffset;
 
-    @Override
+   /* @Override
     public boolean onMeasureChild(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         QDLogger.d("onMeasureChild");
         int offset = getChildMeasureOffset(parent, child);
         int height = View.MeasureSpec.getSize(parentHeightMeasureSpec) - offset;
         child.measure(parentWidthMeasureSpec, View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
         return true;
-    }
+    }*/
 
     private int getChildMeasureOffset(CoordinatorLayout parent, StackSlidingLayout child) {
         QDLogger.d("getChildMeasureOffset");
@@ -46,10 +46,13 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
             //layoutParams_c.topMargin = offset;
             //child.setLayoutParams(layoutParams_c);
             //child.setY();
-            QDLogger.d("StackSlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset+", top="+ child.getTop()+",y="+child.getY());
-        }
+            QDLogger.d("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset+", top="+ child.getTop()+",y="+child.getY());
+        }/*else {
+            int offset = previous.getTop() + previous.getHeaderViewHeight();
+            child.offsetTopAndBottom(offset);
+        }*/
         mInitialOffset = child.getTop();
-        QDLogger.d("StackSlidingBehavior", child.getId() + "mInitialOffset=" + mInitialOffset);
+        QDLogger.d("SlidingBehavior", child.getId() + "mInitialOffset=" + mInitialOffset);
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
@@ -80,53 +83,24 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     }
 
     @Override
+    public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
+        //return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
+        int shift = scroll(parent,child, consumed?0:(int) velocityY, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
+        //shiftSlidings(shift, parent, child);
+        return false;
+    }
+
+    @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        consumed[1] = scroll(child, dy, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
-        shiftSlidings(consumed[1], parent, child);
-       // super.onNestedPreScroll(parent, child, target, dx, dy, consumed, type);
+        consumed[1] = scroll(parent,child, dy, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
+        //shiftSlidings(consumed[1], parent, child);
+         //super.onNestedPreScroll(parent, child, target, dx, dy, consumed, type);
     }
 
     @Override
     public void onNestedScroll(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
-        int shift = scroll(child, dyUnconsumed, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
-        shiftSlidings(shift, parent, child);
-    }
-
-    private void shiftSlidings(int shift, CoordinatorLayout parent, StackSlidingLayout child) {
-        if (shift == 0) {
-            return;
-        }
-        if (shift > 0) {//往上推
-            StackSlidingLayout current = child;
-            StackSlidingLayout card = getPreviousChild(parent, current);
-            while (card != null) {
-                int offset = getHeaderOverlap(card,current);
-                if (offset > 0){
-                    card.offsetTopAndBottom(-offset);
-                    //CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) card.getLayoutParams();
-                    //layoutParams_c.topMargin = -offset;
-                }
-                current = card;
-                card = getPreviousChild(parent, current);
-            }
-        } else {//往下推
-            StackSlidingLayout current = child;
-            StackSlidingLayout card = getNextChild(parent, current);
-            while (card != null) {
-                int offset = getHeaderOverlap(current, card);
-                if (offset > 0) {
-                    card.offsetTopAndBottom(offset);
-                    //CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) card.getLayoutParams();
-                    //layoutParams_c.topMargin = offset;
-                }
-                current = card;
-                card = getNextChild(parent, current);
-            }
-        }
-    }
-
-    private int getHeaderOverlap(StackSlidingLayout above, StackSlidingLayout below) {
-        return above.getTop() + above.getHeaderViewHeight() - below.getTop();
+        int shift = scroll(parent,child, dyUnconsumed, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
+        //shiftSlidings(shift, parent, child);
     }
 
     private StackSlidingLayout getNextChild(CoordinatorLayout parent, StackSlidingLayout child) {
@@ -140,16 +114,65 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         return null;
     }
 
-    private int scroll(StackSlidingLayout child, int dy, int minOffset, int maxOffset) {
+    private int scroll(CoordinatorLayout parent,StackSlidingLayout child, int dy, int minOffset, int maxOffset) {
         //1.k控制自己的移动
         int initialOffset = child.getTop();
-        int offset = clamp(initialOffset - dy, minOffset, maxOffset)-initialOffset;
+        View view = getPreviousChild(parent,child);
+        int heightAll = getAllChildHeight(parent);
+        int top = getChildTop(parent);
+        int bottom = getChildBottom(parent);
+        int offset = clamp(initialOffset - dy, -bottom,-top)-initialOffset;
         child.offsetTopAndBottom(offset);
-        //CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-        //layoutParams_c.topMargin = offset;
+
+
+        moveOther(parent,child,offset);
+
         return -offset;//滑动方向
-        //2,控制上边和下边child的移动
-        // super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+    }
+
+    private int getChildBottom(CoordinatorLayout parent) {
+        int bottom =0;
+        if(parent.getChildCount()>0){
+            View lastChild = parent.getChildAt(parent.getChildCount()-1);
+            bottom = lastChild.getTop()+lastChild.getHeight()-parent.getHeight();
+        }
+        return bottom;
+    }
+
+    private int getChildTop(CoordinatorLayout parent) {
+        int top =0;
+        if(parent.getChildCount()>0){
+            top = parent.getChildAt(0).getTop();
+        }
+        return top;
+    }
+
+    private int getAllChildHeight(CoordinatorLayout parent) {
+        int height=0;
+        for(int i=0;i<parent.getChildCount();i++){
+            height += parent.getChildAt(i).getHeight();
+        }
+        return height;
+    }
+
+    private void moveOther(CoordinatorLayout parent, StackSlidingLayout child,int offset2) {
+        StackSlidingLayout current = child;
+        StackSlidingLayout above = getPreviousChild(parent, current);
+        while (above != null) {
+            int offset = (-above.getHeight()+current.getTop())-above.getTop();
+            above.offsetTopAndBottom(offset);
+            current = above;
+            above = getPreviousChild(parent, current);
+        }
+
+        current = child;
+        StackSlidingLayout below = getNextChild(parent, current);
+        while(below!=null){
+            int offset = (current.getHeight()+current.getTop())-below.getTop();
+            below.offsetTopAndBottom(offset);
+            current = below;
+            below = getNextChild(parent, current);
+        }
     }
 
     private int clamp(int i, int minOffset, int maxOffset) {

@@ -12,19 +12,34 @@
        <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
            android:id="@+id/ssl_01"
            android:layout_width="match_parent"
-           android:layout_height="match_parent">
+           android:layout_height="wrap_content">
 
        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
        <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
            android:id="@+id/ssl_02"
            android:layout_width="match_parent"
-           android:layout_height="match_parent">
+           android:layout_height="wrap_content">
 
        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
        <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
            android:id="@+id/ssl_03"
            android:layout_width="match_parent"
-           android:layout_height="match_parent"
+           android:layout_height="wrap_content"
+           >
+
+       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+           android:id="@+id/ssl_04"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           >
+
+       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+
+       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+           android:id="@+id/ssl_05"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
            >
 
        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
