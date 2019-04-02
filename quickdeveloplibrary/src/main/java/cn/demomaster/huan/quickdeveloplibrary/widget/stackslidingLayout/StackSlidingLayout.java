@@ -21,10 +21,15 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 @CoordinatorLayout.DefaultBehavior(StackSlidingBehavior.class)
 public class StackSlidingLayout extends FrameLayout {
+    private RecyclerView recyclerView;
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
     public StackSlidingLayout(@NonNull Context context) {
         super(context);
         init();
-
     }
 
     public StackSlidingLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -39,7 +44,7 @@ public class StackSlidingLayout extends FrameLayout {
 
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item,this);
-        RecyclerView list = (RecyclerView)findViewById(R.id.list);
+        recyclerView  = findViewById(R.id.list);
         TextView header = findViewById(R.id.header);
         int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random()*10%3)]);
@@ -47,13 +52,13 @@ public class StackSlidingLayout extends FrameLayout {
         QDLogger.d("StackSlidingLayout",header.getText());
         ComponentAdapter adapter = new ComponentAdapter(getContext());
         List<String> items = new ArrayList();
-        int c = (int) (Math.random()*10)*3;
+        int c = (int) (Math.random()*10)*5;
         for(int i=0;i<c;i++){
             items.add("A"+i);
         }
         adapter.updateList(items);
-        list.setAdapter(adapter);
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         setBackgroundColor(Color.TRANSPARENT);
     }
 

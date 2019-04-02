@@ -5,45 +5,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/meizi">
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent_light_77">
-       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
-           android:id="@+id/ssl_01"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
-       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
-           android:id="@+id/ssl_02"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+   <!-- <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.LabNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
-       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
-           android:id="@+id/ssl_03"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
-       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
-           android:id="@+id/ssl_04"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           >
+            <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+            </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
 
-       <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
-           android:id="@+id/ssl_05"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:text="TAG"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+        </LinearLayout>
+    </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.LabNestedScrollView>
+-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_light_77">
+        <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+               android:id="@+id/ssl_01"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+           </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+           <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+               android:id="@+id/ssl_02"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+           </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+           <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+               android:id="@+id/ssl_03"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               >
+
+           </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+        <!--   <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+            android:id="@+id/ssl_04"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+            android:id="@+id/ssl_05"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>-->
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>
