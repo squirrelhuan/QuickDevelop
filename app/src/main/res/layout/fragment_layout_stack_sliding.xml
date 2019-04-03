@@ -44,26 +44,34 @@
         <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
                android:id="@+id/ssl_01"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content">
+               android:layout_height="wrap_content"
+            android:colorBackground="@color/red"
+            android:text="RecycleView A">
 
            </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
            <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
                android:id="@+id/ssl_02"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content">
+               android:layout_height="wrap_content"
+               android:colorBackground="@color/green"
+               android:text="RecycleView B">
 
            </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
            <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
                android:id="@+id/ssl_03"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+               android:colorBackground="@color/yellow"
+               android:text="RecycleView C"
                >
 
            </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
-        <!--   <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
+         <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout
             android:id="@+id/ssl_04"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+             android:colorBackground="@color/blue"
+             android:text="RecycleView D"
             >
 
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
@@ -72,9 +80,11 @@
             android:id="@+id/ssl_05"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:colorBackground="@color/chocolate"
+            android:text="RecycleView E"
             >
 
-        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>-->
+        </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.StackSlidingLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

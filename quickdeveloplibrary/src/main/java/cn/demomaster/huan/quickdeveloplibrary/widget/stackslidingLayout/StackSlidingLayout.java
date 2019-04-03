@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -23,36 +24,36 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 public class StackSlidingLayout extends FrameLayout {
     private RecyclerView recyclerView;
 
-    public RecyclerView getRecyclerView() {
+  /*  public RecyclerView getRecyclerView() {
         return recyclerView;
-    }
+    }*/
 
     public StackSlidingLayout(@NonNull Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public StackSlidingLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public StackSlidingLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item,this);
         recyclerView  = findViewById(R.id.list);
         TextView header = findViewById(R.id.header);
-        int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
+        /*int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random()*10%3)]);
-        header.setText(Math.random()*10+"");
+        header.setText(Math.random()*10+"");*/
         QDLogger.d("StackSlidingLayout",header.getText());
         ComponentAdapter adapter = new ComponentAdapter(getContext());
         List<String> items = new ArrayList();
-        int c = (int) (Math.random()*10)*5;
+        int c = (int) (Math.random()*10)*6;
         for(int i=0;i<c;i++){
             items.add("A"+i);
         }
@@ -60,6 +61,11 @@ public class StackSlidingLayout extends FrameLayout {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         setBackgroundColor(Color.TRANSPARENT);
+        TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.StackSlidingLayout);
+        //header.setBackgroundColor(a.getColor(R.styleable.StackSlidingLayout_android_colorBackground,Color.BLACK));
+        findViewById(R.id.ll_header).setBackgroundColor(a.getColor(R.styleable.StackSlidingLayout_android_colorBackground,Color.BLACK));
+        //header.setText(a.getText(R.styleable.StackSlidingLayout_android_text));
+        a.recycle();
     }
 
     private int mHeaderViewHeight;

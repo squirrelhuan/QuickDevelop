@@ -105,6 +105,9 @@
 
     </style>
 
-
+    <declare-styleable name="StackSlidingLayout">
+        <attr name="android:colorBackground" format="color"/>
+        <attr name="android:text"/>
+    </declare-styleable>
 
 </resources>

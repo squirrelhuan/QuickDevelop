@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:orientation="horizontal"
+        android:background="@color/transparent_dark_cc">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:src="@mipmap/quickdevelop_ic_launcher" />
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:background="@color/transparent_light_77"
+            android:paddingLeft="15dp"
+            android:text="T"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:background="@color/transparent_dark_55">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <TextView android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="T"
-        android:textSize="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="15dp"
-        android:background="@color/transparent_dark_33"
-        android:textColor="@color/white"/>
-
-</merge>
+        android:background="@color/transparent_dark_55"
+        android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
