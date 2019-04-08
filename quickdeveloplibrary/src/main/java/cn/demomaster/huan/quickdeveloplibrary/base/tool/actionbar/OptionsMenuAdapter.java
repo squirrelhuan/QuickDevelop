@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,31 +45,53 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.tv_title.setText(lists.get(i).getTitle());
+        Drawable drawable = null;
+        if (lists.get(i).getIconId() != 0) {
+            drawable = context.getResources().getDrawable(lists.get(i).getIconId());
+            if (lists.get(i).getIconWidth() != 0) {
+                //设置大小，注意默认的是 px, UI 图上的 dp 单位需要转换
+                drawable.setBounds(0, 0, lists.get(i).getIconWidth(), lists.get(i).getIconWidth());
+                //给View左边添加一个图片
+                viewHolder.tv_title.setCompoundDrawables(drawable, null, null, null);
+            }else {
+                viewHolder.tv_title.setCompoundDrawablesWithIntrinsicBounds(drawable,
+                        null, null, null);
+            }
+        }else{
+            viewHolder.tv_title.setCompoundDrawables(null, null, null, null);
+        }
+        if (lists.get(i).getIconPadding() != 0) {
+            viewHolder.tv_title.setCompoundDrawablePadding(lists.get(i).getIconPadding());
+        }
+        //
         viewHolder.setTextColor(textColor);
         viewHolder.setTextGravity(textGravity);
         viewHolder.setTextSize(textSize);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onItemClickListener!=null){
-                    onItemClickListener.onItemClick(viewHolder.getAdapterPosition(),lists.get(viewHolder.getAdapterPosition()));
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(viewHolder.getAdapterPosition(), lists.get(viewHolder.getAdapterPosition()));
                 }
             }
         });
     }
 
     private int textColor = Color.BLACK;
+
     public void setTextColor(int textColor) {
         this.textColor = textColor;
         notifyDataSetChanged();
     }
 
     private int textGravity = Gravity.CENTER_VERTICAL;
+
     public void setTextGravity(int textGravity) {
         this.textGravity = textGravity;
         notifyDataSetChanged();
     }
-    private int  textSize =16;
+
+    private int textSize = 16;
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
@@ -81,6 +104,7 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
+
         public void setTextColor(int textColor) {
             tv_title.setTextColor(textColor);
         }
