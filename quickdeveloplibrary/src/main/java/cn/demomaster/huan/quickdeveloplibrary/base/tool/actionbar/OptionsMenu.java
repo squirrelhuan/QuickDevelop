@@ -255,6 +255,8 @@ public class OptionsMenu {
         private String title;
         private int iconId;
         private int position;
+        private int iconWidth;
+        private int iconPadding;
 
         public String getTitle() {
             return title;
@@ -278,6 +280,22 @@ public class OptionsMenu {
 
         public void setPosition(int position) {
             this.position = position;
+        }
+
+        public int getIconWidth() {
+            return iconWidth;
+        }
+
+        public void setIconWidth(int iconWidth) {
+            this.iconWidth = iconWidth;
+        }
+
+        public int getIconPadding() {
+            return iconPadding;
+        }
+
+        public void setIconPadding(int iconPadding) {
+            this.iconPadding = iconPadding;
         }
     }
 

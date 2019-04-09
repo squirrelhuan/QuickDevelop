@@ -127,6 +127,9 @@ public class MainFragment extends QDBaseFragment {
             OptionsMenu.Menu menu = new OptionsMenu.Menu();
             menu.setTitle(menuNames[i]);
             menu.setPosition(i);
+            menu.setIconId(R.mipmap.quickdevelop_ic_launcher);
+            menu.setIconPadding(100);
+            menu.setIconWidth(100);
             menus.add(menu);
         }
         getOptionsMenuBuilder().setMenus(menus)

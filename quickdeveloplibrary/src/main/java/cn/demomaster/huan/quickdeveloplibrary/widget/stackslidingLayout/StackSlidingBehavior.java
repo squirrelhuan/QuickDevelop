@@ -407,6 +407,9 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     @Override
     public boolean onTouchEvent(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull MotionEvent event) {
 
+        if(!isInital){
+            init(parent);
+        }
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
