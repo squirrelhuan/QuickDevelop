@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -58,6 +59,7 @@ public class HelperFragment extends QDBaseFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
         classList.add(ErrorTestFragment.class);
+        classList.add(FileManagerFragment.class);
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

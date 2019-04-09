@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -66,6 +67,14 @@ public class StackSlidingLayout extends FrameLayout {
         findViewById(R.id.ll_header).setBackgroundColor(a.getColor(R.styleable.StackSlidingLayout_android_colorBackground,Color.BLACK));
         //header.setText(a.getText(R.styleable.StackSlidingLayout_android_text));
         a.recycle();
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        recyclerView.dispatchTouchEvent(event);
+        return true;
+        //return super.onTouchEvent(event);
     }
 
     private int mHeaderViewHeight;

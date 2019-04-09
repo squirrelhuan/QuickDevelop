@@ -26,26 +26,6 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     CoordinatorLayout parent;
     private int mInitialOffset;
 
- /*   @Override
-    public boolean onMeasureChild(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        QDLogger.d("onMeasureChild");
-        int offset = getChildMeasureOffset(parent, child);
-        int height = View.MeasureSpec.getSize(parentHeightMeasureSpec) - offset;
-        child.measure(parentWidthMeasureSpec, View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-        return true;
-    }*/
-
-    private int getChildMeasureOffset(CoordinatorLayout parent, StackSlidingLayout child) {
-        QDLogger.d("getChildMeasureOffset");
-        int offset = 0;
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            View view = parent.getChildAt(i);
-            if (view != child && view instanceof StackSlidingLayout) {
-                offset += ((StackSlidingLayout) view).getHeaderViewHeight();
-            }
-        }
-        return offset;
-    }
 
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, int layoutDirection) {
@@ -105,7 +85,6 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         //shiftSlidings(shift, parent, child);
         return false;
     }
-
 
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
@@ -256,54 +235,6 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
 
         //2.寻找到可以滚动的下一个child
 
-        return 0;
-    }
-
-
-    /**
-     * 优先父view 消耗
-     *
-     * @param parent
-     * @param dy
-     * @return
-     */
-    private int measureDyParent(StackSlidingLayout parent, int dy) {
-        if (dy > 0) {
-            if (parent.getTop() < dy) {
-                return parent.getTop();
-            }
-        } else if (dy < 0) {
-            if (parent.getTop() < -dy) {
-                return parent.getTop();
-            }
-        }
-        return dy;
-    }
-
-    /**
-     * 优先子view滚动
-     *
-     * @param target
-     * @param dy
-     * @return
-     */
-    private int measureDy(View target, int dy) {
-        if (dy > 0) {//上推
-            for (int i = Math.abs(dy); i > 0; i--) {
-                boolean canScrollUp = ViewCompat.canScrollVertically(target, i);
-                if (canScrollUp) {
-                    return i;
-                }
-            }
-        }
-        if (dy < 0) {//下拉
-            for (int i = Math.abs(dy); i > 0; i--) {
-                boolean canScrollDown = target.canScrollVertically(-i);
-                if (canScrollDown) {
-                    return -i;
-                }
-            }
-        }
         return 0;
     }
 
@@ -668,7 +599,8 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         if (scrollY + dy < 0) {
             dy = -scrollY;
         }
-        scroll(parent, child, dy);
+       // scroll(parent, child, dy);
+        scrollParent(parent,child,null,dy);
     }
 
     //f(x) = (x-1)^5 + 1

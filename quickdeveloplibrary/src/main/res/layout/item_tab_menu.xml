@@ -19,7 +19,7 @@
         android:lines="1"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:textSize="@dimen/quickdev_middle_text_size"/>
+        android:textColor="@color/white"
+        android:textSize="@dimen/quickdev_big_text_size"/>
 
 </LinearLayout>

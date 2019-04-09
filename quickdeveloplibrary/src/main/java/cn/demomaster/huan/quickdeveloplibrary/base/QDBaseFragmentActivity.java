@@ -1,16 +1,22 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import java.io.File;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.LayoutInflaterCompat;
 import androidx.fragment.app.Fragment;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.helper.skin.QDSkinFactory;
+import cn.demomaster.huan.quickdeveloplibrary.helper.skin.QDSkinManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
@@ -28,6 +34,16 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
             actionBarLayout = builder.creat();
         }
         return actionBarLayout;
+    }
+
+    private QDSkinFactory factory = null;
+    public void change(View view) {
+        File file = new File(Environment.getExternalStorageDirectory(),"skin.apk");
+        QDSkinManager.getInstance().loadSkin(file.getAbsolutePath());
+        updateSkin();
+    }
+    public void updateSkin(){
+        factory.apply();
     }
 
     public ActionBarInterface getActionBarLayout() {
@@ -65,6 +81,10 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //换肤
+        factory = new QDSkinFactory();
+        LayoutInflaterCompat.setFactory(getLayoutInflater(),factory);
+        QDSkinManager.getInstance().init(this);
         super.onCreate(savedInstanceState);
     }
 
