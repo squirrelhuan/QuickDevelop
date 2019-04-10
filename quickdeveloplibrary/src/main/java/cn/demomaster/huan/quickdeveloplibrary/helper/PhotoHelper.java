@@ -113,8 +113,6 @@ public class PhotoHelper {
                     case RESULT_CODE_SIMPLE_PICTURE:
                         startSimplePictureActivity(resultCodeTakePhoto,onTakePhotoResult);
                         break;
-
-
                 }
             }
 

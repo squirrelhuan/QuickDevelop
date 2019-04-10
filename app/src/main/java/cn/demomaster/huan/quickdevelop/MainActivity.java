@@ -80,8 +80,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
         btn_scan.setOnClickListener(this);
 
         //GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
-
-
         getActionBarLayoutOld().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
@@ -283,7 +281,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     }
 
     private int position;
-
     @Override
     public void onClick(View view) {
         Intent intent;

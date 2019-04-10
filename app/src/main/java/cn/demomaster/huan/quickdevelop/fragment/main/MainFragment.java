@@ -136,7 +136,7 @@ public class MainFragment extends QDBaseFragment {
                 .setAlpha(.6f)
                 .setMargin(2)
                 .setUsePadding(false)
-                .setBackgroundColor(Color.WHITE)
+                .setBackgroundColor(Color.RED)
                 .setBackgroundRadiu(15)
                 .setTextColor(Color.BLACK)
                 .setTextSize(16)
