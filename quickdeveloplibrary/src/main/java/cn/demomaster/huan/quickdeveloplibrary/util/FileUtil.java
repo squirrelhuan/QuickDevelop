@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
 
@@ -179,6 +181,24 @@ public class FileUtil {
         }
     }
 
+    public static List<File> getEmptyFiles(String rootPath) {
+        List<File> files = new ArrayList<>();
+        //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
+        File file = new File(rootPath);
+        if (file.isDirectory()) {
+            QDLogger.d("正在读取:"+file.getPath());
+            if (file.listFiles().length == 0) {
+                QDLogger.d("空文件夹:"+file.getPath());
+                files.add(file);
+            } else {
+                for (File file1 : file.listFiles()) {
+                    files.addAll(getEmptyFiles(file1.getPath()));
+                }
+            }
+        }
+        return files;
+    }
+
     /**
      * 通过uri获取绝对路径
      * @param context
@@ -190,7 +210,6 @@ public class FileUtil {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
-            ;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
         }

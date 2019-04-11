@@ -47,6 +47,7 @@ public class OptionsMenu {
     public int padding;
     private int arrowWidth ;
     private int arrowHeight;
+    private int animationStyleID = R.style.qd_option_menu_pop_animation;
     private int textGravity = Gravity.CENTER_VERTICAL;
     private Builder builder;
 
@@ -70,6 +71,7 @@ public class OptionsMenu {
         this.arrowHeight = builder.arrowHeight;
         this.arrowWidth = builder.arrowWidth;
         this.withArrow = builder.withArrow;
+        this.animationStyleID = builder.animationStyleID;
         init();
     }
 
@@ -121,6 +123,7 @@ public class OptionsMenu {
                 .setWithArrow(withArrow)
                 .setArrowHeight(arrowHeight)
                 .setArrowWidth(arrowWidth)
+                .setAnimationStyleID(animationStyleID)
                 .create();
         qdTipPopup.setContentView(contentView);
         qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -299,6 +302,7 @@ public class OptionsMenu {
         public int padding;
         private int arrowWidth ;
         private int arrowHeight;
+        public int animationStyleID = R.style.qd_option_menu_pop_animation;
         private View anchor;
 
         public Builder(Context context) {
@@ -403,6 +407,11 @@ public class OptionsMenu {
 
         public Builder setArrowHeight(int arrowHeight) {
             this.arrowHeight = arrowHeight;
+            return this;
+        }
+
+        public Builder setAnimationStyleID(int animationStyleID) {
+            this.animationStyleID = animationStyleID;
             return this;
         }
 

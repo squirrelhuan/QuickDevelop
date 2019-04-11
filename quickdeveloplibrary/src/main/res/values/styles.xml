@@ -109,5 +109,8 @@
         <attr name="android:colorBackground" format="color"/>
         <attr name="android:text"/>
     </declare-styleable>
-
+    <style name="qd_option_menu_pop_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/qd_option_menu_pop_animation_enter</item>
+        <item name="android:windowExitAnimation">@anim/qd_option_menu_pop_animation_exit</item>
+    </style>
 </resources>

@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -33,6 +34,10 @@ public class QDTipPopup extends QDPopup {
         super(context);
         this.builder = builder;
         this.context = context;
+        if(builder.animationStyleID!=-1){
+            setAnimationStyle(builder.animationStyleID);
+        }
+       // setEnterTransition(new );
         init();
     }
 
@@ -117,6 +122,8 @@ public class QDTipPopup extends QDPopup {
                 showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         }
+        // 自动调整箭头的位置
+        updatePosition();
     }
 
     @Override
@@ -271,6 +278,7 @@ public class QDTipPopup extends QDPopup {
         public int textColor = Color.WHITE;
         public int textSize = 14;
         public int padding;
+        public int animationStyleID = -1;
         private Context context;
         private String message;
         private int backgroundColor = Color.BLACK;
@@ -337,6 +345,11 @@ public class QDTipPopup extends QDPopup {
 
         public Builder setWithArrow(boolean withArrow) {
             this.withArrow = withArrow;
+            return this;
+        }
+
+        public Builder setAnimationStyleID(int animationStyleID) {
+            this.animationStyleID = animationStyleID;
             return this;
         }
 
