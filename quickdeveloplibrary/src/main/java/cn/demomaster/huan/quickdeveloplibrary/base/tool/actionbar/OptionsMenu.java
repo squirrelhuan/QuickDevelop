@@ -6,10 +6,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import java.util.List;
@@ -18,9 +15,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
+import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
 
 /**
  * @author squirrel桓
@@ -33,21 +31,22 @@ public class OptionsMenu {
     private Context context;
     private List<Menu> menus;
     private OnMenuItemClicked onMenuItemClicked;
-    private CustomDialog customDialog;
-    private LinearLayoutManager linearLayoutManager;
     private OptionsMenuAdapter adapter;
     private RecyclerView rcv_options;
     private int rcv_options_width = -1;
-    private PopupWindow popupWindow;
     private View contentView;
     private View anchor;
     private float[] backgroundRadius = new float[8];
-    private int backgroundRadiu = 0;
+    private float backgroundRadiu = 0;
     private int backgroundColor = Color.WHITE;
     private boolean usePadding = true;
     private int textColor = Color.BLACK;
     private int dividerColor = Color.BLACK;
     private int textSize = 16;
+    private boolean withArrow = true;
+    public int padding;
+    private int arrowWidth ;
+    private int arrowHeight;
     private int textGravity = Gravity.CENTER_VERTICAL;
     private Builder builder;
 
@@ -57,6 +56,7 @@ public class OptionsMenu {
         this.alpha = builder.alpha;
         this.onMenuItemClicked = builder.onMenuItemClicked;
         this.backgroundColor = builder.backgroundColor;
+        this.backgroundRadius = builder.backgroundRadius;
         this.backgroundRadiu = builder.backgroundRadiu;
         this.anchor = builder.anchor;
         this.usePadding = builder.usePadding;
@@ -66,6 +66,10 @@ public class OptionsMenu {
         this.textGravity = builder.textGravity;
         this.dividerColor = builder.dividerColor;
         this.textSize = builder.textSize;
+        this.padding = builder.padding;
+        this.arrowHeight = builder.arrowHeight;
+        this.arrowWidth = builder.arrowWidth;
+        this.withArrow = builder.withArrow;
         init();
     }
 
@@ -87,39 +91,39 @@ public class OptionsMenu {
     }
 
     public void init() {
-        CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
         contentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_option_menu, null, false);
         rcv_options = contentView.findViewById(R.id.qd_option_menu_recycler);
-        QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
+       /* QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
         for (int i = 0; i < backgroundRadius.length; i++) {
             this.backgroundRadius[i] = backgroundRadiu;
         }
         qdRoundDrawable.setCornerRadii(backgroundRadius);
         qdRoundDrawable.setBackGroundColor(backgroundColor);
-        rcv_options.setBackground(qdRoundDrawable);
+        rcv_options.setBackground(qdRoundDrawable);*/
+        rcv_options.setBackgroundColor(Color.TRANSPARENT);
         if (usePadding) {
-            rcv_options.setPadding(rcv_options.getPaddingLeft(), rcv_options.getPaddingTop() + backgroundRadiu, rcv_options.getPaddingRight(), rcv_options.getPaddingBottom() + backgroundRadiu);
+            int l = (rcv_options==null)?0:rcv_options.getPaddingLeft();
+            int t = (rcv_options==null)?0:rcv_options.getPaddingTop()+ (int)backgroundRadiu;
+            int r = (rcv_options==null)?0:rcv_options.getPaddingRight() ;
+            int b = (rcv_options==null)?0:rcv_options.getPaddingBottom() + (int)backgroundRadiu;
+            rcv_options.setPadding(l, t, r, b);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setAutoMeasureEnabled(true);
         //设置分割线使用的divider
         rcv_options.addItemDecoration(new QDDividerItemDecoration(context, DividerItemDecoration.VERTICAL, dividerColor));
         rcv_options.setLayoutManager(linearLayoutManager);
-        rcv_options.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                rcv_options.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                if (rcv_options_width == -1) {//第一次加载完成才能确定位置
-                    rcv_options_width = 0;
-                    popupWindow.update(anchor, rcv_options.getWidth(), rcv_options.getHeight());
-                }
-            }
-        });
 
-        popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
-        popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        qdTipPopup = new QDTipPopup.Builder(context)
+                .setBackgroundRadius(backgroundRadius)
+                .setBackgroundColor(backgroundColor)
+                .setPadding(padding)
+                .setWithArrow(withArrow)
+                .setArrowHeight(arrowHeight)
+                .setArrowWidth(arrowWidth)
+                .create();
+        qdTipPopup.setContentView(contentView);
+        qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
@@ -145,7 +149,7 @@ public class OptionsMenu {
                 @Override
                 public void onItemClick(int position, Menu menu) {
                     onMenuItemClicked.onItemClick(position, null);
-                    popupWindow.dismiss();
+                    //popupWindow.dismiss();
                 }
             });
         }
@@ -171,12 +175,13 @@ public class OptionsMenu {
         this.margin = margin;
     }
 
+    private QDTipPopup qdTipPopup;
+
     public void show() {
         if (anchor != null) {
             WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
             lp.alpha = alpha;
             ((Activity) context).getWindow().setAttributes(lp);
-
             /*LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) rcv_options.getLayoutParams();
             layoutParams.setMargins(0,0,0,0);
             rcv_options.setLayoutParams(layoutParams);*/
@@ -185,36 +190,12 @@ public class OptionsMenu {
             anchor.getLocationOnScreen(anchorLoc);*/
             //popupWindow.showAsDropDown(anchor);
             //右侧的算法
-            popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
+            //TODO 这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
+
+            qdTipPopup.showTip(anchor, GuiderView.Gravity.BOTTOM);
         }
     }
-    /*
-     *//*
-     * 循环找到ListView最大宽度
-     *//*
-    private int getMaxWidth(ListView listView) {
-        int maxWidth = 0;
-        if (listView.getAdapter() == null) {
-            return maxWidth;
-        }
-
-        int count = listView.getAdapter().getCount();
-        View view = null;
-        for (int i = 0; i < count; i++) {
-            view = listView.getAdapter().getView(i, null, listView);
-            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-            view.measure(w, h);
-            int height = view.getMeasuredHeight();
-            int width = view.getMeasuredWidth();
-            if (maxWidth < width) {
-                maxWidth = width;
-            }
-            System.out.println("measure width=" + width + " height=" + height);
-        }
-        return maxWidth;
-    }*/
 
     public List getMenus() {
         return menus;
@@ -239,7 +220,8 @@ public class OptionsMenu {
     }
 
     public void dismiss() {
-        popupWindow.dismiss();
+        //popupWindow.dismiss();
+        qdTipPopup.dismiss();
     }
 
     public void show(View v) {
@@ -299,52 +281,41 @@ public class OptionsMenu {
         }
     }
 
-
-    public class MyPopupWindow extends PopupWindow {
-        public MyPopupWindow(Context context, WindowManager.LayoutParams lp) {
-            super(context);
-            this.setOnDismissListener(new OnDismissListener() {
-                @Override
-                public void onDismiss() {
-
-                }
-            });
-        }
-
-        @Override
-        public void setOnDismissListener(OnDismissListener onDismissListener) {
-            super.setOnDismissListener(onDismissListener);
-        }
-
-        @Override
-        public void update(int width, int height) {
-            super.update(width, height);
-        }
-    }
-
     public static class Builder {
-
         private Context context;
         private List<Menu> menus;
         private OnMenuItemClicked onMenuItemClicked;
         private float alpha = 1;
         private int margin = 4;
-        private int backgroundRadiu = 0;
+        private float[] backgroundRadius = new float[8];
+        private float backgroundRadiu;
         private int backgroundColor = Color.WHITE;
         private int textColor = Color.BLACK;
         private int textSize = 16;
         private int dividerColor = Color.BLACK;
         private int textGravity = Gravity.CENTER_VERTICAL;
-        private boolean usePadding = true;
+        private boolean usePadding = false;
+        private boolean withArrow = true;
+        public int padding;
+        private int arrowWidth ;
+        private int arrowHeight;
         private View anchor;
 
         public Builder(Context context) {
             this.context = context;
+            initBuilder();
         }
 
         public Builder(Context context, List<Menu> menus) {
             this.context = context;
             this.menus = menus;
+            initBuilder();
+        }
+
+        private void initBuilder() {
+            arrowHeight = DisplayUtil.dip2px(context, 8);
+            arrowWidth = DisplayUtil.dip2px(context, 8);
+            padding = DisplayUtil.dip2px(context, 6);
         }
 
         public Builder setMenus(List<Menu> menus) {
@@ -367,8 +338,16 @@ public class OptionsMenu {
             return this;
         }
 
-        public Builder setBackgroundRadiu(int backgroundRadiu) {
+        public Builder setBackgroundRadius(float backgroundRadiu) {
             this.backgroundRadiu = backgroundRadiu;
+            for (int i = 0; i < backgroundRadius.length; i++) {
+                this.backgroundRadius[i] = backgroundRadiu;
+            }
+            return this;
+        }
+
+        public Builder setBackgroundRadius(float[] backgroundRadius) {
+            this.backgroundRadius = backgroundRadius;
             return this;
         }
 
@@ -392,6 +371,11 @@ public class OptionsMenu {
             return this;
         }
 
+        public Builder setPadding(int padding) {
+            this.padding = padding;
+            return this;
+        }
+
         public Builder setDividerColor(int dividerColor) {
             this.dividerColor = dividerColor;
             return this;
@@ -404,6 +388,21 @@ public class OptionsMenu {
 
         public Builder setTextSize(int textSize) {
             this.textSize = textSize;
+            return this;
+        }
+
+        public Builder setWithArrow(boolean withArrow) {
+            this.withArrow = withArrow;
+            return this;
+        }
+
+        public Builder setArrowWidth(int arrowWidth) {
+            this.arrowWidth = arrowWidth;
+            return this;
+        }
+
+        public Builder setArrowHeight(int arrowHeight) {
+            this.arrowHeight = arrowHeight;
             return this;
         }
 

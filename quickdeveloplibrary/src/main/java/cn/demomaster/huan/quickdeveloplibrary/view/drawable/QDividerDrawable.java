@@ -53,8 +53,7 @@ public class QDividerDrawable extends GradientDrawable {
         setCornerRadius(0);
         //设置背景的形状，默认就是矩形，跟xml文件中类型android:shape的值保持一致，具体有：GradientDrawable.LINE  GradientDrawable.OVAL GradientDrawable.RECTANGLE  GradientDrawable.RING
         setShape(GradientDrawable.RECTANGLE);
-
-
+        
     }
 
     @Override

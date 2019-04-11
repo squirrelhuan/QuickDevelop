@@ -31,6 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
@@ -157,12 +158,12 @@ public class IDCardActivity extends BaseActivityParent {
                 photoHelper.selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
-
+                        QDLogger.i("path="+path);
                     }
 
                     @Override
                     public void onFailure(String error) {
-
+                        QDLogger.i("error="+error);
                     }
                 });
             }

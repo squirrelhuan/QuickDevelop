@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -9,8 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileUtil {
 
@@ -22,21 +19,23 @@ public class FileUtil {
      * @param write_str
      * @throws IOException
      */
-    public static void writeFileSdcardFile(String filePath, String fileName,
+    public static void writeFileSdcardFile(String filePath,String fileName,
                                            String write_str) throws IOException {
         try {
             File dir = new File(filePath);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            File file = new File(filePath + "/" + fileName);
+            File file = new File(filePath+"/"+fileName);
             FileOutputStream fout = new FileOutputStream(file);
             byte[] bytes = write_str.getBytes();
 
             fout.write(bytes);
             fout.flush();
             fout.close();
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -53,7 +52,9 @@ public class FileUtil {
             fin.read(buffer);
             //res = EncodingUtils.getString(buffer, "UTF-8");
             fin.close();
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
         }
         return res;
@@ -71,7 +72,7 @@ public class FileUtil {
         }
     }
 
-    public static String getFromAssets(Context context, String fileName) {
+    public static String getFromAssets(Context context , String fileName) {
         InputStream is;
         String text = "";
         try {
@@ -94,9 +95,10 @@ public class FileUtil {
     }
 
 
-    /**
-     * 删除文件，可以是文件或文件夹
-     *
+
+
+
+    /** 删除文件，可以是文件或文件夹
      * @param delFile 要删除的文件夹或文件名
      * @return 删除成功返回true，否则返回false
      */
@@ -112,9 +114,7 @@ public class FileUtil {
         }
     }
 
-    /**
-     * 删除单个文件
-     *
+    /** 删除单个文件
      * @param filePath$Name 要删除的文件的文件名
      * @return 单个文件删除成功返回true，否则返回false
      */
@@ -133,9 +133,7 @@ public class FileUtil {
         }
     }
 
-    /**
-     * 删除目录及目录下的文件
-     *
+    /** 删除目录及目录下的文件
      * @param filePath 要删除的目录的文件路径
      * @return 目录删除成功返回true，否则返回false
      */
@@ -178,21 +176,4 @@ public class FileUtil {
         }
     }
 
-    public static List<File> getEmptyFiles(String rootPath) {
-        List<File> files = new ArrayList<>();
-        //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
-        File file = new File(rootPath);
-        if (file.isDirectory()) {
-            QDLogger.d("正在读取:"+file.getPath());
-            if (file.listFiles().length == 0) {
-                QDLogger.d("空文件夹:"+file.getPath());
-                files.add(file);
-            } else {
-                for (File file1 : file.listFiles()) {
-                    files.addAll(getEmptyFiles(file1.getPath()));
-                }
-            }
-        }
-        return files;
-    }
 }

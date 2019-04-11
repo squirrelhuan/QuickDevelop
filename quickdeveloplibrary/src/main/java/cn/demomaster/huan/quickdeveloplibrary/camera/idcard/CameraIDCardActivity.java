@@ -19,6 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
@@ -29,8 +30,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHEL
  * 读取身份证界面
  */
 public class CameraIDCardActivity extends BaseActivityParent implements View.OnClickListener {
-    /*
-     */
+
     /**
      * 身份证正面
      */
@@ -125,7 +125,8 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
-                photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                //选取图片并截取
+                /*photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
                     @Override
                     public void onSuccess(Intent data, String path) {
                         setImageToView(data);
@@ -135,8 +136,27 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                     public void onFailure(String error) {
 
                     }
-                });
+                });*/
+                //只选取图片不截取
+                photoHelper.selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                    @Override
+                    public void onSuccess(Intent data, String path) {
+                        QDLogger.e(path);
+                       String relPath = cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getRealPathFromURI(mContext,data.getData());
+                        QDLogger.e(relPath);
+                        //setImageToView(data);
+                        //拍照完成，返回对应图片路径
+                        Intent intent = new Intent();
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, relPath);
+                        setResult(result, intent);
+                        finish();
+                    }
 
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+                });
             }
         });
     }

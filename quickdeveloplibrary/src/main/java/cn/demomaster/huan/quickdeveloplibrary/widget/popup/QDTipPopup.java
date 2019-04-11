@@ -43,6 +43,7 @@ public class QDTipPopup extends QDPopup {
 
     private GuiderView.Gravity mGravity;
     private int arrowHeight;
+    private int arrowWidht;
     private QDRoundArrowDrawable drawable_bg;
     public void setDirection(GuiderView.Gravity gravity) {
         this.mGravity = gravity;
@@ -50,25 +51,25 @@ public class QDTipPopup extends QDPopup {
         drawable_bg = new QDRoundArrowDrawable(mAnchor, mGravity, rootLayout);
         //drawable_bg.setCornerRadii(builder.backgroundRadius);
         drawable_bg.setBackGroundColor(builder.backgroundColor);
-        int radius = DisplayUtil.dip2px(context, 5);
-        drawable_bg.setCornerRadius(radius);
+        //drawable_bg.setCornerRadius(builder.backgroundRadiu);
+        drawable_bg.setCornerRadii(builder.backgroundRadius);
         if (builder.withArrow) {
-            arrowHeight = DisplayUtil.dip2px(context, 8);
+            arrowHeight = builder.arrowHeight;//DisplayUtil.dip2px(context, 8);
+            arrowWidht = builder.arrowWidth;
         } else {
             arrowHeight = 0;
+            arrowWidht = 0;
         }
-        drawable_bg.setArrowHeight(arrowHeight);
+        drawable_bg.setArrowSize(arrowWidht,arrowHeight);
         rootLayout.setBackground(drawable_bg);
         //rootLayout.setBackgroundColor(Color.GREEN);
         show();
     }
 
     private View mAnchor;
-
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
         mAnchor = parent;
-
         super.showAtLocation(parent, gravity, x, y);
     }
 
@@ -101,7 +102,7 @@ public class QDTipPopup extends QDPopup {
             }
         }
         if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
-            popupWidth = popupWidth + arrowHeight;
+            popupWidth = popupWidth + arrowWidht;
             if (mGravity == GuiderView.Gravity.LEFT) {
                 if(popupWidth>=maxWidth) {
                     layoutParams.width = location[0]-padding;
@@ -202,7 +203,7 @@ public class QDTipPopup extends QDPopup {
             }
         }
         if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
-            popupWidth = popupWidth + arrowHeight;
+            popupWidth = popupWidth + arrowWidht;
             y = location[1]+(getContentView().getHeight()<mAnchor.getHeight()?(mAnchor.getHeight()-getContentView().getHeight())/2:0);
             w = layoutParams.width;
             h = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -253,7 +254,7 @@ public class QDTipPopup extends QDPopup {
         contentLayout = new FrameLayout(context);
         contentLayout.setLayoutParams(layoutParams);
         contentLayout.addView(mContentView, layoutParams);
-        int p = DisplayUtil.dip2px(context, 6);
+        int p = builder.padding;//DisplayUtil.dip2px(context, 6);
         contentLayout.setPadding(p, p, p, p);
         rootLayout.addView(contentLayout, layoutParams);
         rootLayout.setLayoutParams(layoutParams);
@@ -269,15 +270,23 @@ public class QDTipPopup extends QDPopup {
     public static class Builder {
         public int textColor = Color.WHITE;
         public int textSize = 14;
+        public int padding;
         private Context context;
         private String message;
         private int backgroundColor = Color.BLACK;
         private float[] backgroundRadius = new float[8];
         private Direction direction;
         private boolean withArrow = true;
+        private int arrowWidth ;
+        private int arrowHeight;
+
 
         public Builder(Context context) {
             this.context = context;
+            arrowWidth = DisplayUtil.dip2px(context,8);
+            arrowHeight = DisplayUtil.dip2px(context,8);
+            padding = DisplayUtil.dip2px(context, 6);
+            setBackgroundRadius(DisplayUtil.dip2px(context,5)) ;
         }
 
         public Builder setMessage(String message) {
@@ -289,7 +298,6 @@ public class QDTipPopup extends QDPopup {
             this.backgroundColor = backgroundColor;
             return this;
         }
-
         public Builder setBackgroundRadius(float backgroundRadiu) {
             for (int i = 0; i < backgroundRadius.length; i++) {
                 this.backgroundRadius[i] = backgroundRadiu;
@@ -309,6 +317,21 @@ public class QDTipPopup extends QDPopup {
 
         public Builder setTextSize(int textSize) {
             this.textSize = textSize;
+            return this;
+        }
+
+        public Builder setPadding(int padding) {
+            this.padding = padding;
+            return this;
+        }
+
+        public Builder setArrowWidth(int arrowWidth) {
+            this.arrowWidth = arrowWidth;
+            return this;
+        }
+
+        public Builder setArrowHeight(int arrowHeight) {
+            this.arrowHeight = arrowHeight;
             return this;
         }
 
