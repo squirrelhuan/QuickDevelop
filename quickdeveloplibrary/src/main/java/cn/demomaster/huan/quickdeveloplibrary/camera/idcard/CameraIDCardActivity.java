@@ -126,7 +126,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
             @Override
             public void onItemClick(int position, View view) {
                 //选取图片并截取
-              /*  photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                /*photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
                     @Override
                     public void onSuccess(Intent data, String path) {
                         setImageToView(data);
@@ -142,10 +142,12 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                     @Override
                     public void onSuccess(Intent data, String path) {
                         QDLogger.e(path);
+                       String relPath = cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getRealPathFromURI(mContext,data.getData());
+                        QDLogger.e(relPath);
                         //setImageToView(data);
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
-                        intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, relPath);
                         setResult(result, intent);
                         finish();
                     }
@@ -154,7 +156,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
                     public void onFailure(String error) {
 
                     }
-                });//.selectPhotoFromGallery
+                });
             }
         });
     }

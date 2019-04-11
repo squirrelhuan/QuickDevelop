@@ -128,19 +128,22 @@ public class MainFragment extends QDBaseFragment {
             menu.setTitle(menuNames[i]);
             menu.setPosition(i);
             menu.setIconId(R.mipmap.quickdevelop_ic_launcher);
-            menu.setIconPadding(100);
-            menu.setIconWidth(100);
+            menu.setIconPadding(30);
+            menu.setIconWidth(80);
             menus.add(menu);
         }
         getOptionsMenuBuilder().setMenus(menus)
                 .setAlpha(.6f)
-                .setMargin(2)
-                .setUsePadding(false)
+                .setUsePadding(true)
                 .setBackgroundColor(Color.RED)
-                .setBackgroundRadiu(15)
-                .setTextColor(Color.BLACK)
+                .setBackgroundRadius(20)
+                .setTextColor(Color.WHITE)
                 .setTextSize(16)
-                .setDividerColor(Color.GRAY)
+                .setPadding(0)
+                .setWithArrow(true)
+                .setArrowHeight(30)
+                .setArrowWidth(30)
+                .setDividerColor(getResources().getColor(R.color.transparent))
                 .setAnchor(getActionBarLayout().getRightView());
         getOptionsMenuBuilder().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override

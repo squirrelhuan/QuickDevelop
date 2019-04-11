@@ -35,7 +35,6 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 public class PhotoHelper {
 
-
     private Context context;
 
     public PhotoHelper(Context context) {
@@ -46,26 +45,43 @@ public class PhotoHelper {
         takePhoto2(onTakePhotoResult, RESULT_CODE_SCAN_QRCODE);
     }
 
+    /**
+     * 调用相机拍照
+     * @param onTakePhotoResult
+     */
     public void takePhoto(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_TAKE_PHOTO);
     }
 
-    //图片截取
+    /**
+     * 图片截取
+     * @param uri 要处理的图片uri
+     * @param onTakePhotoResult
+     */
     public void photoCrop(Uri uri, OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_PHOTO_CROP, uri);
     }
 
-    // 调用图库获取图片
+    /**
+     * 调用图库获取图片
+     * @param onTakePhotoResult
+     */
     public void selectPhotoFromGallery(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_SELECT_PHOTO_FROM_GALLERY);
     }
 
-    // 调用自定义图库获取图片
+    /**
+     * 调用自定义图库获取图片
+     * @param onSelectPictureResult
+     */
     public void selectPhotoFromMyGallery(OnSelectPictureResult onSelectPictureResult) {
         takePhoto2(onSelectPictureResult, RESULT_CODE_SIMPLE_PICTURE);
     }
 
-    //调用相册并截取
+    /**
+     * 调用相册并截取
+     * @param onTakePhotoResult
+     */
     public void selectPhotoFromGalleryAndCrop(final OnTakePhotoResult onTakePhotoResult) {
         selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
             @Override
@@ -80,6 +96,10 @@ public class PhotoHelper {
         });
     }
 
+    /**
+     * 拍摄身份证
+     * @param onTakePhotoResult
+     */
     public void takePhotoForIDCard(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_TAKE_PHOTO_FOR_IDCARD);
     }
@@ -118,14 +138,13 @@ public class PhotoHelper {
 
             @Override
             public void onNoPassed() {
-
+                if(onTakePhotoResult instanceof OnTakePhotoResult )
+                ((OnTakePhotoResult)onTakePhotoResult).onFailure("权限不足");
             }
         });
     }
 
-
     private Map<Integer, Object> photoResultMap = new HashMap<>();
-
     private void takePhoto(int resultCodeTakePhoto) {
         Uri fileUri;
         Intent intent = null;

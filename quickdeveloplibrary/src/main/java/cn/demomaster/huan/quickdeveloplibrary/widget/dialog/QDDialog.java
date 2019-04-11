@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 public class QDDialog extends Dialog {
 
     private Builder builder;
+
     public QDDialog(Context context, Builder builder) {
         super(context);
         this.builder = builder;
@@ -39,12 +40,12 @@ public class QDDialog extends Dialog {
 
     private void init() {
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        int p = DisplayUtil.dip2px(getContext(), 10);
+        int p = builder.actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentView = new LinearLayout(builder.context);
         contentView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
-        QDividerDrawable drawable_bg=new QDividerDrawable(QDividerDrawable.Gravity.NONE);
+        QDividerDrawable drawable_bg = new QDividerDrawable(QDividerDrawable.Gravity.NONE);
         drawable_bg.setCornerRadii(builder.backgroundRadius);
         drawable_bg.setBackGroundColor(builder.backgroundColor);
         contentView.setBackground(drawable_bg);
@@ -103,7 +104,7 @@ public class QDDialog extends Dialog {
             if (builder.gravity_foot == Gravity.CENTER) {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
                 //新建一个Drawable对象
-                QDividerDrawable drawable=new QDividerDrawable(QDividerDrawable.Gravity.TOP);
+                QDividerDrawable drawable = new QDividerDrawable(QDividerDrawable.Gravity.TOP);
                 drawable.setmStrokeColors(this.builder.lineColor);
                 footView.setBackground(drawable);
             } else {
@@ -133,7 +134,7 @@ public class QDDialog extends Dialog {
                     public void onClick(View view) {
                         if (actionButton.onClickListener != null) {
                             actionButton.onClickListener.onClick(QDDialog.this);
-                        }else {
+                        } else {
                             dismiss();
                         }
                     }
@@ -141,6 +142,13 @@ public class QDDialog extends Dialog {
 
                 //button.setBackgroundDrawable(null);
                 footView.addView(button, layoutParams_button);
+                if (i != builder.actionButtons.size() - 1&&builder.gravity_foot == Gravity.CENTER) {
+                    View centerLineView = new View(getContext());
+                    LinearLayout.LayoutParams layoutParams_line = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
+                    centerLineView.setLayoutParams(layoutParams_line);
+                    centerLineView.setBackgroundColor(builder.lineColor);
+                    footView.addView(centerLineView);
+                }
             }
         }
 
@@ -189,6 +197,7 @@ public class QDDialog extends Dialog {
     }
 
     public static class Builder {
+        public int actionButtonPadding;
         private Context context;
         private String title;
         private String message;
@@ -203,11 +212,12 @@ public class QDDialog extends Dialog {
         private int color_foot = Color.TRANSPARENT;
         private int backgroundColor = Color.WHITE;
         private int lineColor = Color.GRAY;
-        private float[] backgroundRadius=new float[8];
+        private float[] backgroundRadius = new float[8];
         private List<ActionButton> actionButtons = new ArrayList<>();
 
         public Builder(Context context) {
             this.context = context;
+            this.actionButtonPadding = DisplayUtil.dip2px(context, 8);
         }
 
         public Builder setTitle(String title) {
@@ -270,6 +280,11 @@ public class QDDialog extends Dialog {
             return this;
         }
 
+        public Builder setActionButtonPadding(int actionButtonPadding) {
+            this.actionButtonPadding = actionButtonPadding;
+            return this;
+        }
+
         public Builder setLineColor(int lineColor) {
             this.lineColor = lineColor;
             return this;
@@ -281,11 +296,12 @@ public class QDDialog extends Dialog {
         }
 
         public Builder setBackgroundRadius(float backgroundRadiu) {
-            for(int i=0;i<backgroundRadius.length;i++) {
+            for (int i = 0; i < backgroundRadius.length; i++) {
                 this.backgroundRadius[i] = backgroundRadiu;
             }
             return this;
         }
+
         public Builder setBackgroundRadius(float[] backgroundRadius) {
             this.backgroundRadius = backgroundRadius;
             return this;
