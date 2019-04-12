@@ -39,8 +39,8 @@ public class QDDialog extends Dialog {
     private LinearLayout footView;
 
     private void init() {
+        getWindow().setWindowAnimations(builder.animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        int p = builder.actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentView = new LinearLayout(builder.context);
         contentView.setOrientation(LinearLayout.VERTICAL);
@@ -56,47 +56,53 @@ public class QDDialog extends Dialog {
             builder.showType = ShowType.noFoot;
         }
 
+        int padding_header = builder.padding_header;
+        int padding_body = builder.padding_body;
         switch (builder.showType) {
             case normal:
                 headerView = new LinearLayout(builder.context);
                 bodyView = new LinearLayout(builder.context);
                 footView = new LinearLayout(builder.context);
-                headerView.setPadding(p, p, p, p);
-                bodyView.setPadding(p, 0, p, p);
+                headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
+                bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
             case noHeader:
                 bodyView = new LinearLayout(builder.context);
                 footView = new LinearLayout(builder.context);
-                bodyView.setPadding(p, p, p, p);
+                bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case onlyBody:
                 bodyView = new LinearLayout(builder.context);
-                bodyView.setPadding(p, p, p, p);
+                bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case noFoot:
                 headerView = new LinearLayout(builder.context);
                 bodyView = new LinearLayout(builder.context);
-                headerView.setPadding(p, p, p, p);
-                bodyView.setPadding(p, 0, p, p);
+                headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
+                bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
         }
         if (headerView != null) {
             contentView.addView(headerView);
+            headerView.setMinimumHeight(builder.minHeight_header);
             headerView.setBackgroundColor(builder.color_header);
             headerView.setGravity(builder.gravity_header);
             headerView.setTag(builder.gravity_header);
-            addTextView(headerView, builder.title, getContext().getResources().getColor(R.color.black), 18);
+            addTextView(headerView, builder.title,builder.text_color_header, builder.text_size_header);
         }
         if (bodyView != null) {
             contentView.addView(bodyView);
+            bodyView.setMinimumHeight(builder.minHeight_body);
             bodyView.setBackgroundColor(builder.color_body);
 
             bodyView.setGravity(builder.gravity_body);
             bodyView.setTag(builder.gravity_body);
-            addTextView(bodyView, builder.message);
+            addBodyTextView(bodyView, builder.message,builder.text_color_body,builder.text_size_body);
         }
+        int actionPadding = builder.actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         if (footView != null) {
             contentView.addView(footView);
+            footView.setMinimumHeight(builder.minHeight_foot);
             footView.setGravity(builder.gravity_foot);
             footView.setBackgroundColor(builder.color_foot);
             footView.setOrientation(LinearLayout.HORIZONTAL);
@@ -114,9 +120,9 @@ public class QDDialog extends Dialog {
                 final ActionButton actionButton = builder.actionButtons.get(i);
                 TextView button = new TextView(getContext());
                 button.setText(actionButton.getText());
-                button.setTextSize(16);
-                button.setTextColor(getContext().getResources().getColor(R.color.black));
-                button.setPadding(p * 3, (int) (p * 2), p * 3, (int) (p * 2));
+                button.setTextSize(builder.text_size_foot);
+                button.setTextColor(builder.text_color_foot);
+                button.setPadding(actionPadding * 3, (int) (actionPadding * 2), actionPadding * 3, (int) (actionPadding * 2));
                 button.setGravity(Gravity.CENTER);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //获取selectableItemBackground中对应的attrId
@@ -157,8 +163,8 @@ public class QDDialog extends Dialog {
         setContentView(layout, layoutParams);
     }
 
-    private void addTextView(LinearLayout viewGroup, String title) {
-        addTextView(viewGroup, title, getContext().getResources().getColor(R.color.black), 16);
+    private void addBodyTextView(LinearLayout viewGroup, String title, int color, int textSize) {
+        addTextView(viewGroup, title, color, textSize);
     }
 
     private void addTextView(LinearLayout viewGroup, String title, int color, int textSize) {
@@ -167,8 +173,7 @@ public class QDDialog extends Dialog {
             textView.setText(title);
             textView.setTextColor(color);
             textView.setTextSize(textSize);
-            int p = DisplayUtil.dip2px(getContext(), 5);
-            textView.setPadding(p, p, p, p);
+            //textView.setPadding(padding, padding, padding, padding);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             switch ((int) viewGroup.getTag()) {
                 case Gravity.LEFT:
@@ -207,17 +212,33 @@ public class QDDialog extends Dialog {
         private int gravity_header = Gravity.LEFT;
         private int gravity_body = Gravity.LEFT;
         private int gravity_foot = Gravity.CENTER;
+        private int padding_header ;
+        private int padding_body ;
+        private int padding_foot ;
+        private int minHeight_header;
+        private int minHeight_body;
+        private int minHeight_foot;
         private int color_header = Color.TRANSPARENT;
         private int color_body = Color.TRANSPARENT;
         private int color_foot = Color.TRANSPARENT;
+        private int text_color_header = Color.BLACK;
+        private int text_color_body = Color.BLACK;
+        private int text_color_foot = Color.BLACK;
+        private int text_size_header = 18;
+        private int text_size_body = 16;
+        private int text_size_foot = 16;
         private int backgroundColor = Color.WHITE;
         private int lineColor = Color.GRAY;
         private float[] backgroundRadius = new float[8];
+        private int animationStyleID = R.style.qd_dialog_animation_center_scale;
         private List<ActionButton> actionButtons = new ArrayList<>();
 
         public Builder(Context context) {
             this.context = context;
             this.actionButtonPadding = DisplayUtil.dip2px(context, 8);
+            this.padding_header = DisplayUtil.dip2px(context, 10);
+            this.padding_body = DisplayUtil.dip2px(context, 10);
+            this.padding_foot = DisplayUtil.dip2px(context, 10);
         }
 
         public Builder setTitle(String title) {
@@ -307,10 +328,74 @@ public class QDDialog extends Dialog {
             return this;
         }
 
+        public Builder setPadding_header(int padding_header) {
+            this.padding_header = padding_header;
+            return this;
+        }
+
+        public Builder setPadding_body(int padding_body) {
+            this.padding_body = padding_body;
+            return this;
+        }
+
+        public Builder setPadding_foot(int padding_foot) {
+            this.padding_foot = padding_foot;
+            return this;
+        }
+
+        public Builder setMinHeight_header(int minHeight_header) {
+            this.minHeight_header = minHeight_header;
+            return this;
+        }
+
+        public Builder setMinHeight_body(int minHeight_body) {
+            this.minHeight_body = minHeight_body;
+            return this;
+        }
+
+        public Builder setMinHeight_foot(int minHeight_foot) {
+            this.minHeight_foot = minHeight_foot;
+            return this;
+        }
+
+        public Builder setText_color_header(int text_color_header) {
+            this.text_color_header = text_color_header;
+            return this;
+        }
+
+        public Builder setText_color_body(int text_color_body) {
+            this.text_color_body = text_color_body;
+            return this;
+        }
+
+        public Builder setText_color_foot(int text_color_foot) {
+            this.text_color_foot = text_color_foot;
+            return this;
+        }
+
+        public Builder setText_size_header(int text_size_header) {
+            this.text_size_header = text_size_header;
+            return this;
+        }
+
+        public Builder setText_size_body(int text_size_body) {
+            this.text_size_body = text_size_body;
+            return this;
+        }
+
+        public Builder setText_size_foot(int text_size_foot) {
+            this.text_size_foot = text_size_foot;
+            return this;
+        }
+
+        public Builder setAnimationStyleID(int animationStyleID) {
+            this.animationStyleID = animationStyleID;
+            return this;
+        }
+
         public Builder addAction(String text) {
             return addAction(text, null);
         }
-
         public Builder addAction(String text, OnClickActionListener onClickListener) {
             ActionButton actionButton = new ActionButton();
             if (text != null) {

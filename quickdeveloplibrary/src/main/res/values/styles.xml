@@ -109,8 +109,15 @@
         <attr name="android:colorBackground" format="color"/>
         <attr name="android:text"/>
     </declare-styleable>
+
     <style name="qd_option_menu_pop_animation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/qd_option_menu_pop_animation_enter</item>
         <item name="android:windowExitAnimation">@anim/qd_option_menu_pop_animation_exit</item>
     </style>
+
+    <style name="qd_dialog_animation_center_scale" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/qd_dialog_animation_center_scale_enter</item>
+        <item name="android:windowExitAnimation">@anim/qd_dialog_animation_center_scale_exit</item>
+    </style>
+
 </resources>
