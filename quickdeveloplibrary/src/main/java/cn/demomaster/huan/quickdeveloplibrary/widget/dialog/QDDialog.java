@@ -49,6 +49,7 @@ public class QDDialog extends Dialog {
         drawable_bg.setCornerRadii(builder.backgroundRadius);
         drawable_bg.setBackGroundColor(builder.backgroundColor);
         contentView.setBackground(drawable_bg);
+        //contentView.setPadding((int)builder.backgroundRadius[0],(int)builder.backgroundRadius[2],(int)builder.backgroundRadius[4],(int)builder.backgroundRadius[6]);
         if (builder.title == null && builder.message != null && builder.actionButtons.size() == 0) {
             builder.showType = ShowType.onlyBody;
         }
@@ -133,7 +134,6 @@ public class QDDialog extends Dialog {
                     TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
                     button.setForeground(typedArray.getDrawable(0));
                     typedArray.recycle();
-
                 }
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
