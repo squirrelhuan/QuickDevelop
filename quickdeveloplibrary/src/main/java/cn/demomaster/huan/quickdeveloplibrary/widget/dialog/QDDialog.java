@@ -298,6 +298,7 @@ public class QDDialog extends Dialog {
 
         public Builder setColor_foot(int color_foot) {
             this.color_foot = color_foot;
+            this.actionButtonPadding = color_foot;
             return this;
         }
 

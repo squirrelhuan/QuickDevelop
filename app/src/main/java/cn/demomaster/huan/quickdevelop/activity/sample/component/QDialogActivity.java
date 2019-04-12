@@ -168,7 +168,7 @@ public class QDialogActivity extends BaseActivityParent {
     }
     private void showMessageWithButton(int gravity) {
         new QDDialog.Builder(mContext)
-                .setMessage("确定要发送吗？").addAction("确定").setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
+                .setMessage("确定要发送吗？").setMinHeight_body(500).setGravity_body(Gravity.CENTER).setText_size_body(60).setText_color_body(Color.BLUE).addAction("确定").setText_size_foot(30).setPadding_foot(50).setActionButtonPadding(50).setText_color_foot(Color.GREEN).setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
     }
 
     private void showMessageWithButton2(int gravity) {
