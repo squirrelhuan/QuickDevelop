@@ -37,11 +37,10 @@ public class QDDialog extends Dialog {
     private LinearLayout headerView;
     private LinearLayout bodyView;
     private LinearLayout footView;
-
     private void init() {
         getWindow().setWindowAnimations(builder.animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(builder.width, ViewGroup.LayoutParams.WRAP_CONTENT);
         contentView = new LinearLayout(builder.context);
         contentView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
@@ -209,6 +208,7 @@ public class QDDialog extends Dialog {
         private int icon;
         private ShowType showType = ShowType.normal;
         private DataType dataType = DataType.text;
+        private int width = ViewGroup.LayoutParams.MATCH_PARENT;
         private int gravity_header = Gravity.LEFT;
         private int gravity_body = Gravity.LEFT;
         private int gravity_foot = Gravity.CENTER;
@@ -391,6 +391,11 @@ public class QDDialog extends Dialog {
 
         public Builder setAnimationStyleID(int animationStyleID) {
             this.animationStyleID = animationStyleID;
+            return this;
+        }
+
+        public Builder setWidth(int width) {
+            this.width = width;
             return this;
         }
 
