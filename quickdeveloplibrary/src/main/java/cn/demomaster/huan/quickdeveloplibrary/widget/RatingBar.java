@@ -182,8 +182,7 @@ public class RatingBar extends View {
      * @return
      */
     public int getProgressInteger() {
-        double a = Math.ceil(progress*count);
-        progressInteger = (int) (isFloat?progress: (float) (a / count));
+        progressInteger= (int) Math.max(progress*count,countMni);
         return progressInteger;
     }
 
@@ -216,12 +215,10 @@ public class RatingBar extends View {
         //使用离屏绘制
         int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), mPaint, Canvas.ALL_SAVE_FLAG);
 
-
         //横向排列的五个星所在的坐标位置gravity：left
         int cell = Math.min(height, width / count);//最大正方形
         //遍历绘制五角星
         for (int i = 0; i < count; i++) {
-
             int x1 = i * width / count;
             int y1 = height / 2 - cell / 2;
             if (!useCustomDrable) {
@@ -267,39 +264,29 @@ public class RatingBar extends View {
 
                 //还原图层
                 canvas.restoreToCount(layerID);
-
             } else {
-
                 //绘制背景
-                Rect rect = new Rect(x1, y1 - cell / 2, (int) (width ), y1 + cell / 2);
+                Rect rect = new Rect(x1, y1 , (int) (width ), y1 + cell );
                 canvas.clipRect(rect);
-                //backResourceId = R.mipmap.quickdevelop_ic_launcher_round;
                 Drawable backDrawable = getContext().getResources().getDrawable(backResourceId);
                 Bitmap bitmap = QDBitmapUtil.drawable2Bitmap(backDrawable);
                 bitmap = QDBitmapUtil.drawable2Bitmap(getContext(), backResourceId);
                 bitmap = QDBitmapUtil.zoomImage(bitmap, cell, cell);
-                // Rect rect = new Rect(x1,(height-cell)/2,x1+cell,height -(height-cell)/2);
-                //canvas.drawBitmap(bitmap,rect,rect,mPaint);
-                canvas.drawBitmap(bitmap, x1, y1 - cell / 2, mPaint);
+                canvas.drawBitmap(bitmap, x1, y1 , mPaint);
                 canvas.save();
                 //绘制前景
-                //frontResourceId = R.mipmap.quickdevelop_ic_launcher;
                 Bitmap frontBitmap = QDBitmapUtil.drawable2Bitmap(getContext(), frontResourceId);
                 frontBitmap = QDBitmapUtil.zoomImage(frontBitmap, cell, cell);
 
-                Rect rect2 = new Rect(x1, y1 - cell / 2, (int) (width * progress_c), y1 + cell / 2);
+                Rect rect2 = new Rect(x1, y1 , (int) (width * progress_c), y1 + cell);
                 canvas.clipRect(rect2);
-                canvas.drawBitmap(frontBitmap, x1, y1 - cell / 2, mPaint);
-                //canvas.drawBitmap(frontBitmap,rect,rect,mPaint);
+                canvas.drawBitmap(frontBitmap, x1, y1, mPaint);
                 canvas.restore();
             }
         }
-
     }
 
-
     private boolean canTouch;//是否可触摸改变进度
-
     public void setCanTouch(boolean canTouch) {
         this.canTouch = canTouch;
     }

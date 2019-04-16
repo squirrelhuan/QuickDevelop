@@ -1,7 +1,5 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -15,12 +13,13 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "RatingBar",preViewClass = RatingBar.class,resType = ResType.Custome)
+@ActivityPager(name = "RatingBar", preViewClass = RatingBar.class, resType = ResType.Custome)
 public class RatingBarActivity extends BaseActivityParent {
 
-    private SeekBar sb_weight,sb_progress;
+    private SeekBar sb_weight, sb_progress;
     private RatingBar ratingBar;
-    private ToggleButton tooglebutton,tooglebutton_datatype,tooglebutton_customdrable,tooglebutton_minValue;
+    private ToggleButton tooglebutton, tooglebutton_datatype, tooglebutton_customdrable, tooglebutton_minValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +31,8 @@ public class RatingBarActivity extends BaseActivityParent {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int max = 200;
-                int w = DisplayUtil.dip2px(mContext,max* progress/100);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w,w);
+                int w = DisplayUtil.dip2px(mContext, max * progress / 100);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w, w);
                 ratingBar.setLayoutParams(layoutParams);
             }
 
@@ -52,7 +51,7 @@ public class RatingBarActivity extends BaseActivityParent {
         sb_progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                ratingBar.setProgress((float)progress/100f);
+                ratingBar.setProgress((float) progress / 100f);
             }
 
             @Override
@@ -104,8 +103,8 @@ public class RatingBarActivity extends BaseActivityParent {
             @Override
             public void onToggle(boolean on) {
                 //使用默认背景前要把自定义的资源设置好
-                ratingBar.setCountMni(on?3:0);//int类型
-                ratingBar.setProgressMin(on?.6f:0f);//int类型
+                ratingBar.setCountMni(on ? 3 : 0);//int类型
+                ratingBar.setProgressMin(on ? .6f : 0f);//int类型
             }
         });
     }
