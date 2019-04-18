@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">QuickDevelop</string>
 
+    <string name="title_home">Home</string>
     <string name="msg_default_status">将二维码放入框内，即可自动扫描</string>
     <string name="title_activity_my_qr_code">MyQrCodeActivity</string>
     <string name="touch_to_focus">触摸屏幕对焦</string>
@@ -13,17 +14,19 @@
     <string name="minute">分</string>
     <string name="second">秒</string>
 
-    <string name="DesignPattern">设计模式</string>
-    <string name="Components">组件</string>
-    <string name="Helper">帮助类</string>
+    <string name="DesignPattern">DesignPattern</string>
+    <string name="Components">Components</string>
+    <string name="Helper">Helper</string>
 
 
-    <string name="lan_chinese">中文</string>
-    <string name="lan_en">英文</string>
-    <string name="lan_ja">日语</string>
-    <string name="lan_de">德语</string>
-    <string name="lan_ko">韩语</string>
-    <string name="select_language">语言切换</string>
-    <string name="select_font">字体切换</string>
+    <string name="lan_chinese">chinese</string>
+    <string name="lan_en">en</string>
+    <string name="lan_ja">Japanese</string>
+    <string name="lan_de">German</string>
+    <string name="lan_ko">Korea</string>
+    <string name="select_language">select language</string>
+    <string name="select_font">select font</string>
+
+
 
 </resources>

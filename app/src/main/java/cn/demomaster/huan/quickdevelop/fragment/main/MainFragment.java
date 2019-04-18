@@ -95,7 +95,7 @@ public class MainFragment extends QDBaseFragment {
     }
 
     private void init() {
-        getActionBarLayout().setTitle("首页");
+        getActionBarLayout().setTitle(getString(R.string.title_home));
         getActionBarLayout().setStateBarColorAuto(true);//状态栏文字颜色自动
         getActionBarLayout().setActionBarThemeColors(Color.WHITE, Color.BLACK);
         getActionBarLayout().setLeftOnClickListener(new View.OnClickListener() {

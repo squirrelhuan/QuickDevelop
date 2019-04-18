@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,11 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 
-import java.util.List;
-
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 
 /**
@@ -60,7 +54,6 @@ public class RatingBar extends View {
     public void setBackResourceId(int backResourceId) {
         this.backResourceId = backResourceId;
         setCustomDrawable();
-        postInvalidate();
     }
 
     /**
@@ -71,11 +64,10 @@ public class RatingBar extends View {
     public void setFrontResourceId(int frontResourceId) {
         this.frontResourceId = frontResourceId;
         setCustomDrawable();
-        postInvalidate();
     }
 
     private void setCustomDrawable() {
-        setUseCustomDrable(backResourceId==0&&frontResourceId==0);
+        setUseCustomDrable(backResourceId != 0 || frontResourceId != 0);
     }
 
     /**
@@ -89,11 +81,11 @@ public class RatingBar extends View {
 
     /**
      * 设置数据类型默认为float
+     *
      * @param isFloat true ?float:int
      */
     public void setFloat(boolean isFloat) {
         this.isFloat = isFloat;
-        postInvalidate();
     }
 
     private void init() {
@@ -124,7 +116,7 @@ public class RatingBar extends View {
     private int activateCount = 0;
     private float progress = .8f;
     private float progressMin = 0f;
-    private  int progressInteger = 0;
+    private int progressInteger = 0;
 
     public int getForegroundColor() {
         return foregroundColor;
@@ -159,30 +151,32 @@ public class RatingBar extends View {
         this.progress = progress;
         postInvalidate();
     }
+
     /**
      * 设置最小取值 float类型时
+     *
      * @param progressMin
      */
     public void setProgressMin(float progressMin) {
         this.progressMin = progressMin;
-        postInvalidate();
     }
 
     /**
      * 设置最小取值 int类型时
+     *
      * @param countMni
      */
     public void setCountMni(int countMni) {
         this.countMni = countMni;
-        postInvalidate();
     }
 
     /**
      * int类型的时候取值
+     *
      * @return
      */
     public int getProgressInteger() {
-        progressInteger= (int) Math.max(progress*count,countMni);
+        progressInteger = (int) Math.max(progress * count, countMni);
         return progressInteger;
     }
 
@@ -192,16 +186,14 @@ public class RatingBar extends View {
 
     public void setCount(int count) {
         this.count = count;
-        postInvalidate();
     }
 
-    private float getProgressByState(){
-        if(!isFloat){//int
-            float a = (float) Math.ceil(progress*count);
-           // float cou = (float) (a / count);
-            return Math.max(a,countMni)/count;
-        }else {
-            return Math.max(progress,progressMin);
+    private float getProgressByState() {
+        if (!isFloat) {//int
+            float a = (float) Math.ceil(progress * count);
+            return Math.max(a, countMni) / count;
+        } else {
+            return Math.max(progress, progressMin);
         }
     }
 
@@ -217,6 +209,16 @@ public class RatingBar extends View {
 
         //横向排列的五个星所在的坐标位置gravity：left
         int cell = Math.min(height, width / count);//最大正方形
+        Bitmap backbitmap = null;
+        Bitmap frontBitmap = null;
+        if (useCustomDrable) {
+            // Bitmap backbitmap = QDBitmapUtil.drawable2Bitmap(backDrawable);
+            backbitmap = QDBitmapUtil.drawable2Bitmap(getContext(), backResourceId);
+            backbitmap = QDBitmapUtil.zoomImage(backbitmap, cell, cell);
+            frontBitmap = QDBitmapUtil.drawable2Bitmap(getContext(), frontResourceId);
+            frontBitmap = QDBitmapUtil.zoomImage(frontBitmap, cell, cell);
+        }
+
         //遍历绘制五角星
         for (int i = 0; i < count; i++) {
             int x1 = i * width / count;
@@ -249,44 +251,38 @@ public class RatingBar extends View {
                 mPaint.setColor(backgroundColor);
                 canvas.drawPath(path, mPaint);
 
-                //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
+                //使用CLEAR作为PorterDuffXfermode绘制的矩形
                 mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-                //设置为在区域内绘制
-                //canvas.clipPath(path);
+                //设置为在区域内重叠部分绘制
                 RectF rectF = new RectF(0, 0, width * progress_c, height);
-
-                //canvas.clipRect(rectF);
                 mPaint.setColor(foregroundColor);
                 canvas.drawRect(rectF, mPaint);
                 //canvas.drawPath(path,mPaint);
                 //最后将画笔去除Xfermode
                 mPaint.setXfermode(null);
-
                 //还原图层
                 canvas.restoreToCount(layerID);
             } else {
-                //绘制背景
-                Rect rect = new Rect(x1, y1 , (int) (width ), y1 + cell );
-                canvas.clipRect(rect);
-                Drawable backDrawable = getContext().getResources().getDrawable(backResourceId);
-                Bitmap bitmap = QDBitmapUtil.drawable2Bitmap(backDrawable);
-                bitmap = QDBitmapUtil.drawable2Bitmap(getContext(), backResourceId);
-                bitmap = QDBitmapUtil.zoomImage(bitmap, cell, cell);
-                canvas.drawBitmap(bitmap, x1, y1 , mPaint);
-                canvas.save();
-                //绘制前景
-                Bitmap frontBitmap = QDBitmapUtil.drawable2Bitmap(getContext(), frontResourceId);
-                frontBitmap = QDBitmapUtil.zoomImage(frontBitmap, cell, cell);
-
-                Rect rect2 = new Rect(x1, y1 , (int) (width * progress_c), y1 + cell);
-                canvas.clipRect(rect2);
-                canvas.drawBitmap(frontBitmap, x1, y1, mPaint);
-                canvas.restore();
+                if (backbitmap != null) {
+                    //绘制背景
+                    Rect rect = new Rect(x1, y1, (int) (width), y1 + cell);
+                    canvas.clipRect(rect);
+                    canvas.drawBitmap(backbitmap, x1, y1, mPaint);
+                    canvas.save();
+                }
+                if (frontBitmap != null) {
+                    //绘制前景
+                    Rect rect2 = new Rect(x1, y1, (int) (width * progress_c), y1 + cell);
+                    canvas.clipRect(rect2);
+                    canvas.drawBitmap(frontBitmap, x1, y1, mPaint);
+                    canvas.restore();
+                }
             }
         }
     }
 
     private boolean canTouch;//是否可触摸改变进度
+
     public void setCanTouch(boolean canTouch) {
         this.canTouch = canTouch;
     }
@@ -302,5 +298,4 @@ public class RatingBar extends View {
             }
         });
     }
-
 }

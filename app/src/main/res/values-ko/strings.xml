@@ -18,12 +18,12 @@
     <string name="Helper">帮助类</string>
 
 
-    <string name="lan_chinese">中文</string>
-    <string name="lan_en">英文</string>
-    <string name="lan_ja">日语</string>
-    <string name="lan_de">德语</string>
-    <string name="lan_ko">韩语</string>
-    <string name="select_language">语言切换</string>
-    <string name="select_font">字体切换</string>
+    <string name="lan_chinese">chinese</string>
+    <string name="lan_en">en</string>
+    <string name="lan_ja">ja</string>
+    <string name="lan_de">de</string>
+    <string name="lan_ko">Korea</string>
+    <string name="select_language">select language</string>
+
 
 </resources>
