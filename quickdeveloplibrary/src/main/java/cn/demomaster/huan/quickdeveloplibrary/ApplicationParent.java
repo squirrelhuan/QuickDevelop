@@ -137,6 +137,7 @@ public class ApplicationParent extends Application {
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            ActivityManager.getInstance().addActivity(activity);
             QDLogger.d(TAG, "onActivityCreated() called with: activity = [" + activity + "], savedInstanceState = [" + savedInstanceState + "]");
         }
 
@@ -148,6 +149,7 @@ public class ApplicationParent extends Application {
         @Override
         public void onActivityResumed(Activity activity) {
             QDLogger.d(TAG, "onActivityResumed() called with: activity = [" + activity + "]");
+            ActivityManager.getInstance().setCurrentActivity(activity);
         }
 
         @Override
@@ -167,6 +169,7 @@ public class ApplicationParent extends Application {
 
         @Override
         public void onActivityDestroyed(Activity activity) {
+            ActivityManager.getInstance().removeActivity(activity);
             QDLogger.d(TAG, "onActivityDestroyed() called with: activity = [" + activity + "]");
         }
     };

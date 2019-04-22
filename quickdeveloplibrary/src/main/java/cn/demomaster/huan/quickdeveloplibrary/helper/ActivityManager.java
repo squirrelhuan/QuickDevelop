@@ -42,12 +42,17 @@ public class ActivityManager {
 
     //删除具体的activity
     public void deleteActivity(Activity activity) {
-        if (activity != null&&activity!=null) {
+        if (activity != null) {
             activity.finish();
             activitys.remove(activity);
         }
     }
-
+    //删除具体的activity
+    public void removeActivity(Activity activity) {
+        if (activity != null) {
+            activitys.remove(activity);
+        }
+    }
     //删除clazz类的activity
     public void deleteActivityByClass(Class clazz) {
         if (clazz != null) {
@@ -136,5 +141,14 @@ public class ActivityManager {
                 }
             }
         }
+    }
+
+    private Activity currentActivity;
+    public void setCurrentActivity(Activity activity) {
+        currentActivity = activity;
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
     }
 }

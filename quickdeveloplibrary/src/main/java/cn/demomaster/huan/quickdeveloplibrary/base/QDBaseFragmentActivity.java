@@ -16,6 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
@@ -119,7 +120,9 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     public void onMessageEvent(String str) {
         switch (str) {
             case EVENT_REFRESH_LANGUAGE:
-                changeAppLanguageAndRefreshUI(mContext);
+                if(ActivityManager.getInstance().getCurrentActivity()==this){
+                    changeAppLanguageAndRefreshUI(mContext);
+                }
                 break;
         }
     }

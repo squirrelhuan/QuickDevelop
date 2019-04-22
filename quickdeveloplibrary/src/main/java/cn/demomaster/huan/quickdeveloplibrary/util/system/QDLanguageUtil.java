@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import java.util.Locale;
@@ -33,6 +34,22 @@ public class QDLanguageUtil {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String language = preferences.getString(SharedPreferencesConstant.System_Language_Setting, "");
         return language;
+    }
+
+    /**
+     * 判断当前语言是否是期待的语言
+     * @param context
+     * @param currentLanguage
+     * @return
+     */
+   public static boolean validLanguageState(Context context,String currentLanguage) {
+        // 本地语言设置
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        if (conf.locale==null||TextUtils.isEmpty(conf.locale.toString())) {
+           return false;
+        }
+        return currentLanguage.equals(conf.locale);
     }
 
     public static void changeAppLanguage(Context context) {
