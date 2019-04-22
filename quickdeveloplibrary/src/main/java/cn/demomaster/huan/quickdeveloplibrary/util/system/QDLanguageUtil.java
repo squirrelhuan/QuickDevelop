@@ -19,7 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.constant.SharedPreferencesConstant
  * description：
  */
 public class QDLanguageUtil {
-    public static void setLanguageLocal(Context context, String language){
+    public static void setLanguageLocal(Context context, String language) {
         SharedPreferences preferences;
         SharedPreferences.Editor editor;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -28,7 +28,7 @@ public class QDLanguageUtil {
         editor.commit();
     }
 
-    public static String getLanguageLocal(Context context){
+    public static String getLanguageLocal(Context context) {
         SharedPreferences preferences;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String language = preferences.getString(SharedPreferencesConstant.System_Language_Setting, "");
@@ -44,16 +44,22 @@ public class QDLanguageUtil {
             DisplayMetrics dm = res.getDisplayMetrics();
             Configuration conf = res.getConfiguration();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                conf.setLocale(myLocale);
+                if (!sta.equals(conf.locale)) {
+                    conf.setLocale(myLocale);
+                    res.updateConfiguration(conf, dm);
+                }
             } else {
-                conf.locale = myLocale;
+                if (!sta.equals(conf.locale)) {
+                    conf.locale = myLocale;
+                    res.updateConfiguration(conf, dm);
+                }
             }
-            res.updateConfiguration(conf, dm);
         }
     }
 
     /**
      * 切换语言并且立马应用
+     *
      * @param context
      */
     public static void changeAppLanguageAndRefreshUI(Activity context) {

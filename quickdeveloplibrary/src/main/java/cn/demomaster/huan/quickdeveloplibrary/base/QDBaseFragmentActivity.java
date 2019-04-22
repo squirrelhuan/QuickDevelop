@@ -7,6 +7,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
@@ -14,6 +19,10 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
+
+import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
+import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
+import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
 
 public class QDBaseFragmentActivity extends AppCompatActivity {
     public AppCompatActivity mContext;
@@ -66,6 +75,9 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
+        EventBus.getDefault().register(this);
+        changeAppLanguage(this);
     }
 
     public void startFragment(AppCompatActivity activity, Fragment fragment) {
@@ -96,5 +108,26 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         return true;
     }
 
+
+    public static class MessageEvent { /* Additional fields if needed */
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {/* Do something */}
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String str) {
+        switch (str) {
+            case EVENT_REFRESH_LANGUAGE:
+                changeAppLanguageAndRefreshUI(mContext);
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
 }

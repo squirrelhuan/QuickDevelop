@@ -133,3 +133,11 @@
 -keep public class com.tencent.bugly.**{*;}
 
 # end 腾讯bugly混淆
+
+
+# start eventbus混淆
+-keepattributes *Annotation*
+-keepclassmembers class ** {@org.greenrobot.eventbus.Subscribe ;}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {(Java.lang.Throwable);}
+# end eventbus混淆

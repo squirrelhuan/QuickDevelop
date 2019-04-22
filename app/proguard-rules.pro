@@ -114,3 +114,30 @@
 -keepattributes Signature
 
 # end 友盟分享混淆
+
+# start eventbus混淆
+-keepattributes *Annotation*
+-keepclassmembers class ** {@org.greenrobot.eventbus.Subscribe ;}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {(Java.lang.Throwable);}
+# end eventbus混淆
+
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+<init>(java.lang.Throwable);
+}
+
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.**{*;}
+
+# okhttp
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# okio
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-keep class okio.**{*;}
