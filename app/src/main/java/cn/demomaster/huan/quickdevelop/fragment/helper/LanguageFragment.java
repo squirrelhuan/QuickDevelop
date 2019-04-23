@@ -2,20 +2,12 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tencent.bugly.crashreport.CrashReport;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +22,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.getLanguageLocal;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
@@ -39,7 +30,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "LanguageFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "LanguageFragment", preViewClass = StateView.class, resType = ResType.Custome)
 public class LanguageFragment extends QDBaseFragment {
 
     @Override
@@ -51,12 +42,13 @@ public class LanguageFragment extends QDBaseFragment {
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
     View mView;
+
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_language, null);
         }
-        ButterKnife.bind(this,mView);
+        ButterKnife.bind(this, mView);
         return (ViewGroup) mView;
     }
 
@@ -72,11 +64,9 @@ public class LanguageFragment extends QDBaseFragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setTitle(R.string.select_language);
-                builder.setItems(cities, new DialogInterface.OnClickListener()
-                {
+                builder.setItems(cities, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         setLanguageLocal(mContext, locals[which]);
                         changeAppLanguage(mContext);
                         EventBus.getDefault().post(EVENT_REFRESH_LANGUAGE);

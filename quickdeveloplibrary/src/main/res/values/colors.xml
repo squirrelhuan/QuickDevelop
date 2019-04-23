@@ -183,6 +183,12 @@
     <color name="qd_btn_bg_pressed">#ffd4d4d4</color>
     <color name="qd_btn_bg_normal">#fff4f4f4</color>
 
-
+    <color name="keyboardBackColor">#212121</color>
+    <color name="keyboardKeyBack">#474749</color>
+    <color name="darkGray">#A9A9A9</color>
+    <color name="lightGray">#D3D3D3</color>
+    <color name="keyboardNormal">#1c69ac</color>
+    <color name="keyboardDeep">#991c69ac</color>
+    <color name="keyboardPress">#1296db</color>
 
 </resources>
