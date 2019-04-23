@@ -23,9 +23,14 @@ import android.widget.LinearLayout;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -64,24 +69,154 @@ public class SafeKeyboard {
     private TranslateAnimation hideAnimation;
     private long lastTouchTime;
     private EditText mEditText;
+    private List<EditText> editTextList;
 
-    public SafeKeyboard(Context mContext, LinearLayout layout, EditText mEditText, int id, int keyId) {
+    public SafeKeyboard(Context mContext, LinearLayout layout, int id, int keyId) {
         this.mContext = mContext;
         this.layout = layout;
-        this.mEditText = mEditText;
         this.keyboardContainerResId = id;
         this.keyboardResId = keyId;
+        //addEditText(mEditText);
 
         initKeyboard();
         initAnimation();
-        addListeners();
+        //TODO  addListeners();
+    }
+
+    public void removeEditText(EditText editText) {
+        if(editText==null){
+            return;
+        }
+        if (editTextList == null) {
+            return;
+        }
+        if (editTextList.contains(editText)) {
+            QDLogger.d("contains=true");
+            editText.setOnTouchListener(null);
+            editText.setOnFocusChangeListener(null);
+            editText.clearFocus();
+            editTextList.remove(editText);
+        }else {
+            QDLogger.d("contains=false");
+        }
+    }
+    public void addEditText(EditText editText) {
+        if(editText==null){
+            return;
+        }
+        if (editTextList == null) {
+            editTextList = new ArrayList<>();
+        }
+        if (!editTextList.contains(editText)) {
+            editTextList.add(editText);
+        }
+
+        editText.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                boolean result = isValidTouch();
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    setCurrentFocus((EditText) v);
+                    hideSystemKeyBoard((EditText) v);
+                    if (result) {
+                        if (!isKeyboardShown() && !isShowStart) {
+                            showHandler.removeCallbacks(showRun);
+                            showHandler.postDelayed(showRun, SHOW_DELAY);
+                        }
+                    } else {
+                        showHandler.removeCallbacks(showRun);
+                        showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置默认获取焦点的editText
+     *
+     * @param editText
+     */
+    private void setCurrentFocus(EditText editText) {
+        mEditText = editText;
+        for (int i = 0; i < editTextList.size(); i++) {
+            if (editTextList.get(i) == editText) {
+                editTextList.get(i).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            hideSystemKeyBoard((EditText) v);
+                            if (!isKeyboardShown() && !isShowStart) {
+                                showHandler.removeCallbacks(showRun);
+                                showHandler.postDelayed(showRun, SHOW_DELAY);
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+                editTextList.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        boolean result = isValidTouch();
+                        if (v instanceof EditText) {
+                            if (!hasFocus) {
+                                if (result) {
+                                    if (isKeyboardShown() && !isHideStart) {
+                                        hideKeyboard();
+                                    }
+                                } else {
+                                    hideKeyboard();
+                                }
+                            } else {
+                                hideSystemKeyBoard((EditText) v);
+                                if (result) {
+                                    if (!isKeyboardShown() && !isShowStart) {
+                                        showHandler.removeCallbacks(showRun);
+                                        showHandler.postDelayed(showRun, SHOW_DELAY);
+                                    }
+                                } else {
+                                    showHandler.removeCallbacks(showRun);
+                                    showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                editTextList.get(i).setOnTouchListener(null);
+                editTextList.get(i).setOnFocusChangeListener(new android.view.View.
+                        OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        boolean result = isValidTouch();
+                        if (hasFocus) {
+                            // 此处为得到焦点时的处理内容
+                            setCurrentFocus((EditText) v);
+                            hideSystemKeyBoard((EditText) v);
+                            if (result) {
+                                if (!isKeyboardShown() && !isShowStart) {
+                                    showHandler.removeCallbacks(showRun);
+                                    showHandler.postDelayed(showRun, SHOW_DELAY);
+                                }
+                            } else {
+                                showHandler.removeCallbacks(showRun);
+                                showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
 
     public SafeKeyboard(Context mContext, LinearLayout layout, EditText mEditText, int id, int keyId,
-                 Drawable del, Drawable low, Drawable up) {
+                        Drawable del, Drawable low, Drawable up) {
         this.mContext = mContext;
         this.layout = layout;
-        this.mEditText = mEditText;
+        addEditText(mEditText);
         this.keyboardContainerResId = id;
         this.keyboardResId = keyId;
         this.delDrawable = del;
@@ -90,7 +225,7 @@ public class SafeKeyboard {
 
         initKeyboard();
         initAnimation();
-        addListeners();
+        //TODO addListeners();
     }
 
     private void initAnimation() {
@@ -375,7 +510,7 @@ public class SafeKeyboard {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void addListeners() {
+    private void addListeners1() {
         mEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -486,4 +621,5 @@ public class SafeKeyboard {
         this.upDrawable = upDrawable;
         keyboardView.setUpDrawable(upDrawable);
     }
+
 }
