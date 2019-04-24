@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.keybored;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -24,19 +28,16 @@ import android.widget.LinearLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
  */
 
-public class SafeKeyboard {
+public class QDKeyboard {
 
     private static final String TAG = "SafeKeyboard";
 
@@ -49,14 +50,11 @@ public class SafeKeyboard {
     private Keyboard keyboardLetter;        //字母键盘
     private Keyboard keyboardSymbol;        //符号键盘
     private static boolean isCapes = false;
-    private boolean isShowStart = false;
-    private boolean isHideStart = false;
+    private boolean isOpening = false;
+    private boolean isClosing = false;
     private int keyboardType = 1;
     private static final long HIDE_TIME = 300;
-    private static final long SHOW_DELAY = 200;
     private static final long SHOW_TIME = 300;
-    private static final long DELAY_TIME = 100;
-    private Handler showHandler = new Handler(Looper.getMainLooper());
     private Handler hEndHandler = new Handler(Looper.getMainLooper());
     private Handler sEndHandler = new Handler(Looper.getMainLooper());
     private Drawable delDrawable;
@@ -65,13 +63,12 @@ public class SafeKeyboard {
     private int keyboardContainerResId;
     private int keyboardResId;
 
-    private TranslateAnimation showAnimation;
-    private TranslateAnimation hideAnimation;
-    private long lastTouchTime;
+    // private TranslateAnimation showAnimation;
+    //private TranslateAnimation hideAnimation;
     private EditText mEditText;
-    private List<EditText> editTextList;
+    public List<EditText> editTextList;
 
-    public SafeKeyboard(Context mContext, LinearLayout layout, int id, int keyId) {
+    public QDKeyboard(Context mContext, LinearLayout layout, int id, int keyId) {
         this.mContext = mContext;
         this.layout = layout;
         this.keyboardContainerResId = id;
@@ -79,12 +76,10 @@ public class SafeKeyboard {
         //addEditText(mEditText);
 
         initKeyboard();
-        initAnimation();
-        //TODO  addListeners();
     }
 
     public void removeEditText(EditText editText) {
-        if(editText==null){
+        if (editText == null) {
             return;
         }
         if (editTextList == null) {
@@ -96,12 +91,13 @@ public class SafeKeyboard {
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();
             editTextList.remove(editText);
-        }else {
+        } else {
             QDLogger.d("contains=false");
         }
     }
+
     public void addEditText(EditText editText) {
-        if(editText==null){
+        if (editText == null) {
             return;
         }
         if (editTextList == null) {
@@ -111,23 +107,16 @@ public class SafeKeyboard {
             editTextList.add(editText);
         }
 
-        editText.setOnFocusChangeListener(new android.view.View.
+        editText.setOnFocusChangeListener(new View.
                 OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                boolean result = isValidTouch();
+                hideSystemKeyBoard((EditText) v);
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                     setCurrentFocus((EditText) v);
-                    hideSystemKeyBoard((EditText) v);
-                    if (result) {
-                        if (!isKeyboardShown() && !isShowStart) {
-                            showHandler.removeCallbacks(showRun);
-                            showHandler.postDelayed(showRun, SHOW_DELAY);
-                        }
-                    } else {
-                        showHandler.removeCallbacks(showRun);
-                        showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
+                    if ((isClosed || isClosing)) {
+                        showKeyboard();
                     }
                 }
             }
@@ -146,11 +135,10 @@ public class SafeKeyboard {
                 editTextList.get(i).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        hideSystemKeyBoard((EditText) v);
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            hideSystemKeyBoard((EditText) v);
-                            if (!isKeyboardShown() && !isShowStart) {
-                                showHandler.removeCallbacks(showRun);
-                                showHandler.postDelayed(showRun, SHOW_DELAY);
+                            if ((isClosed || isClosing)) {
+                                showKeyboard();
                             }
                         }
                         return false;
@@ -160,49 +148,26 @@ public class SafeKeyboard {
                 editTextList.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        boolean result = isValidTouch();
-                        if (v instanceof EditText) {
-                            if (!hasFocus) {
-                                if (result) {
-                                    if (isKeyboardShown() && !isHideStart) {
-                                        hideKeyboard();
-                                    }
-                                } else {
-                                    hideKeyboard();
-                                }
-                            } else {
-                                hideSystemKeyBoard((EditText) v);
-                                if (result) {
-                                    if (!isKeyboardShown() && !isShowStart) {
-                                        showHandler.removeCallbacks(showRun);
-                                        showHandler.postDelayed(showRun, SHOW_DELAY);
-                                    }
-                                } else {
-                                    showHandler.removeCallbacks(showRun);
-                                    showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
-                                }
+                        hideSystemKeyBoard((EditText) v);
+                        if (hasFocus) {
+                            if ((isClosed || isClosing)) {
+                                showKeyboard();
                             }
                         }
                     }
                 });
             } else {
                 editTextList.get(i).setOnTouchListener(null);
-                editTextList.get(i).setOnFocusChangeListener(new android.view.View.
+                editTextList.get(i).setOnFocusChangeListener(new View.
                         OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        boolean result = isValidTouch();
+                        hideSystemKeyBoard((EditText) v);
                         if (hasFocus) {
                             // 此处为得到焦点时的处理内容
                             setCurrentFocus((EditText) v);
-                            if (result) {
-                                if (!isKeyboardShown() && !isShowStart) {
-                                    showHandler.removeCallbacks(showRun);
-                                    showHandler.postDelayed(showRun, SHOW_DELAY);
-                                }
-                            } else {
-                                showHandler.removeCallbacks(showRun);
-                                showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
+                            if ((isClosed || isClosing)) {
+                                showKeyboard();
                             }
                         }
                     }
@@ -211,78 +176,50 @@ public class SafeKeyboard {
         }
     }
 
-    public SafeKeyboard(Context mContext, LinearLayout layout, EditText mEditText, int id, int keyId,
-                        Drawable del, Drawable low, Drawable up) {
-        this.mContext = mContext;
-        this.layout = layout;
-        addEditText(mEditText);
-        this.keyboardContainerResId = id;
-        this.keyboardResId = keyId;
-        this.delDrawable = del;
-        this.lowDrawable = low;
-        this.upDrawable = up;
+    private boolean isOpened = false;//
+    private boolean isClosed = true;//
+    private int duration = 300;
+    ValueAnimator animator;
+    float keyContainerHeight = -1;
 
-        initKeyboard();
-        initAnimation();
-        //TODO addListeners();
-    }
-
-    private void initAnimation() {
-        showAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF
-                , 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        hideAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF
-                , 0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-        showAnimation.setDuration(SHOW_TIME);
-        hideAnimation.setDuration(HIDE_TIME);
-
-        showAnimation.setAnimationListener(new Animation.AnimationListener() {
+    public void startAnimation() {
+        if (keyContainerHeight == -1) {
+            keyContainerHeight = keyContainer.getMinimumHeight();
+            keyContainerHeight = 300;
+        }
+        final float h1 = isOpening?keyContainer.getHeight():0;
+        final float h2 = isOpening?keyContainerHeight:keyContainer.getHeight();
+        animator = ValueAnimator.ofFloat(h1,h2 );
+        long d = (long) (duration*(isOpening?(keyContainerHeight-keyContainer.getHeight()):keyContainer.getHeight())/keyContainerHeight);
+        animator.setDuration(d);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-                isShowStart = true;
-                // 在这里设置可见, 会出现第一次显示键盘时直接闪现出来, 没有动画效果, 后面正常
-                // keyContainer.setVisibility(View.VISIBLE);
-                // 动画持续时间 SHOW_TIME 结束后, 不管什么操作, 都需要执行, 把 isShowStart 值设为 false; 否则
-                // 如果 onAnimationEnd 因为某些原因没有执行, 会影响下一次使用
-                sEndHandler.removeCallbacks(showEnd);
-                sEndHandler.postDelayed(showEnd, SHOW_TIME);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                isShowStart = false;
-                keyContainer.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        hideAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                isHideStart = true;
-                // 动画持续时间 HIDE_TIME 结束后, 不管什么操作, 都需要执行, 把 isHideStart 值设为 false; 否则
-                // 如果 onAnimationEnd 因为某些原因没有执行, 会影响下一次使用
-                hEndHandler.removeCallbacks(hideEnd);
-                hEndHandler.postDelayed(hideEnd, HIDE_TIME);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                isHideStart = false;
-                if (keyContainer.getVisibility() != View.GONE) {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = keyContainer.getLayoutParams();
+                layoutParams.height = (int) value;
+                keyContainer.setLayoutParams(layoutParams);
+                QDLogger.i("value=" + value);
+                if (isOpening && value >= h2) {
+                    QDLogger.i("已开启");
+                    isOpening = false;
+                    isOpened = true;
+                    isClosed = false;
+                    isClosing = false;
+                } else if (isClosing && value <= h1) {
+                    QDLogger.i("已隐藏");
                     keyContainer.setVisibility(View.GONE);
+                    isClosing = false;
+                    isClosed = true;
+                    isOpened = false;
+                    isOpening = false;
                 }
-                keyContainer.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
             }
         });
+        //animator.setRepeatMode(ValueAnimator.REVERSE);
+        //animator.setRepeatCount(ValueAnimator.INFINITE);//accelerate_decelerate_interpolator
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.start();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -306,7 +243,7 @@ public class SafeKeyboard {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isKeyboardShown()) {
+                if (isShow()) {
                     hideKeyboard();
                 }
             }
@@ -455,47 +392,21 @@ public class SafeKeyboard {
     }
 
     public void hideKeyboard() {
-        keyContainer.clearAnimation();
-        keyContainer.startAnimation(hideAnimation);
+        if (isOpened || isOpening) {
+            isClosing = true;
+            isOpening = false;
+            animator.reverse();
+        }
     }
-
-    /**
-     * 只起到延时开始显示的作用
-     */
-    private final Runnable showRun = new Runnable() {
-        @Override
-        public void run() {
-            showKeyboard();
-        }
-    };
-
-    private final Runnable hideEnd = new Runnable() {
-        @Override
-        public void run() {
-            isHideStart = false;
-            if (keyContainer.getVisibility() != View.GONE) {
-                keyContainer.setVisibility(View.GONE);
-            }
-        }
-    };
-
-    private final Runnable showEnd = new Runnable() {
-        @Override
-        public void run() {
-            isShowStart = false;
-            // 在迅速点击不同输入框时, 造成自定义软键盘和系统软件盘不停的切换, 偶尔会出现停在使用系统键盘的输入框时, 没有隐藏
-            // 自定义软键盘的情况, 为了杜绝这个现象, 加上下面这段代码
-            if (!mEditText.isFocused()) {
-                hideKeyboard();
-            }
-        }
-    };
 
     private void showKeyboard() {
         keyboardView.setKeyboard(keyboardLetter);
-        keyContainer.setVisibility(View.VISIBLE);
-        keyContainer.clearAnimation();
-        keyContainer.startAnimation(showAnimation);
+        if (isClosed || isClosing) {
+            isOpening = true;
+            isClosing = false;
+            keyContainer.setVisibility(View.VISIBLE);
+            startAnimation();
+        }
     }
 
     private boolean isLowCaseLetter(String str) {
@@ -508,53 +419,8 @@ public class SafeKeyboard {
         return letters.contains(str);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void addListeners1() {
-        mEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    hideSystemKeyBoard((EditText) v);
-                    if (!isKeyboardShown() && !isShowStart) {
-                        showHandler.removeCallbacks(showRun);
-                        showHandler.postDelayed(showRun, SHOW_DELAY);
-                    }
-                }
-                return false;
-            }
-        });
-        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                boolean result = isValidTouch();
-                if (v instanceof EditText) {
-                    if (!hasFocus) {
-                        if (result) {
-                            if (isKeyboardShown() && !isHideStart) {
-                                hideKeyboard();
-                            }
-                        } else {
-                            hideKeyboard();
-                        }
-                    } else {
-                        hideSystemKeyBoard((EditText) v);
-                        if (result) {
-                            if (!isKeyboardShown() && !isShowStart) {
-                                showHandler.removeCallbacks(showRun);
-                                showHandler.postDelayed(showRun, SHOW_DELAY);
-                            }
-                        } else {
-                            showHandler.removeCallbacks(showRun);
-                            showHandler.postDelayed(showRun, SHOW_DELAY + DELAY_TIME);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
     public boolean isShow() {
-        return isKeyboardShown();
+        return isOpening||isOpened;
     }
 
     //隐藏系统键盘关键代码
@@ -592,20 +458,6 @@ public class SafeKeyboard {
         }
     }
 
-    private boolean isKeyboardShown() {
-        return keyContainer.getVisibility() == View.VISIBLE;
-    }
-
-    private boolean isValidTouch() {
-        long thisTouchTime = SystemClock.elapsedRealtime();
-        if (thisTouchTime - lastTouchTime > 500) {
-            lastTouchTime = thisTouchTime;
-            return true;
-        }
-        lastTouchTime = thisTouchTime;
-        return false;
-    }
-
     public void setDelDrawable(Drawable delDrawable) {
         this.delDrawable = delDrawable;
         keyboardView.setDelDrawable(delDrawable);
@@ -621,4 +473,64 @@ public class SafeKeyboard {
         keyboardView.setUpDrawable(upDrawable);
     }
 
+    public void dispatchTouchEvent(Activity activity, MotionEvent me) {
+        QDLogger.i("me.getAction()="+me.getAction());
+        if (me.getAction() == MotionEvent.ACTION_DOWN) {  //把操作放在用户点击的时候
+            View v = activity.getCurrentFocus();      //得到当前页面的焦点,ps:有输入框的页面焦点一般会被输入框占据
+            if (isShouldHideKeyboard(v, me) && !isKeyboard(v)) { //判断用户点击的是否是输入框以外的区域
+                QDLogger.i("isShouldHideKeyboard="+me.getAction());
+                if (editTextList.contains(v)) {
+                    QDLogger.i("contains="+v.getClass().getName());
+                    if (isShow()) {
+                        hideKeyboard();
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isKeyboard(View v) {
+        return validateParent(v);
+    }
+
+    private boolean validateParent(View v) {
+        if (v != null) {
+            if ((v.getId()) == layout.getId()) {
+                return true;
+            } else {
+                if (v.getParent() != null) {
+                    if (v.getParent() instanceof View) {
+                        return validateParent((View) v.getParent());
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    public boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {  //判断得到的焦点控件是否包含EditText
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],    //得到输入框在屏幕中上下左右的位置
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击位置如果是EditText的区域，忽略它，不收起键盘。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略
+        return false;
+    }
 }
