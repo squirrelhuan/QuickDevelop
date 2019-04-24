@@ -3,14 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary.operatguid;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-
-import androidx.annotation.Nullable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -19,9 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-
+import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
 
 /**
@@ -80,20 +78,20 @@ public class GuiderView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-
     public GuiderModel getGuiderModel() {
         return guiderModel;
     }
 
     public void setGuiderModel(GuiderModel guiderModel) {
-
-        if(animator.isRunning()){
+        if (animator.isRunning()) {
             animator.cancel();
         }
+        progress = 0;
+        isAnimationFinished = false;
         isPlaying = false;
         this.guiderModel = guiderModel;
-        this.rectF_view =null;
-        this.rectF_message =null;
+        this.rectF_view = null;
+        this.rectF_message = null;
         postInvalidate();
     }
 
@@ -103,9 +101,69 @@ public class GuiderView extends View {
     private float durations[] = {.0f, .4f, .65f, .95f, 1f};//%百分比叠加
     private int animationIndex = 0;
     private float progress = 0;
-    private int backgroundColor =0xccffffff;
     private ValueAnimator animator;
+    private int backgroundColor = Color.TRANSPARENT;
+    private int textColor = Color.WHITE;
+    private int lineColor = Color.WHITE;
+    private int lineWidth = 2;
+    private int textSize = 24;
+    private int textPadding = 30;
+    private int textBackgroundColor = Color.TRANSPARENT;//文字框背景色
 
+    public void setTextBackgroundColor(int textBackgroundColor) {
+        this.textBackgroundColor = textBackgroundColor;
+    }
+
+    public void setTextPadding(int textPadding) {
+        this.textPadding = textPadding;
+    }
+
+    /**
+     * 设置文字大小
+     *
+     * @param textSize
+     */
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    /**
+     * 设置线条宽度
+     *
+     * @param lineWidth
+     */
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    /**
+     * 线条颜色
+     *
+     * @param lineColor
+     */
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    /**
+     * 文字颜色
+     *
+     * @param textColor
+     */
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    /**
+     * 背景颜色
+     *
+     * @param backgroundColor
+     */
+    public void setGuiderBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    private boolean isAnimationFinished;//加载完毕
     public void startAnimation() {
         isPlaying = true;
         //value值0-1
@@ -130,6 +188,9 @@ public class GuiderView extends View {
                     }
                 }
                 postInvalidate();
+                if (value >= 1) {
+                    isAnimationFinished = true;
+                }
             }
         });
         //animator.setRepeatMode(ValueAnimator.RESTART);
@@ -155,46 +216,45 @@ public class GuiderView extends View {
     private GuiderRectF rectF_view;
     private GuiderRectF rectF_message;
     private RectF rectF_background;
-
     private void drawGuider(Canvas canvas) {
-
-        if(guiderModel.getTargetView()==null){
+        if (guiderModel.getTargetView() == null) {
             return;
         }
         //初始化数据
         if (rectF_view == null) {
             rectF_view = getViewRectF(guiderModel.getTargetView().get());
         }
-        if(rectF_view==null){
+        if (rectF_view == null) {
             return;
         }
         if (rectF_message == null) {
             Paint paint = getMessagePaint();
             rectF_message = getMessageRectF(rectF_view, paint, guiderModel.getMessage());
         }
-
-
-        //step1透明度
+        //绘制背景
         drawBackground(canvas);
-
         //drawTargetView
         drawTargetView(canvas);
-
         //drawLine
         drawLinePath(canvas);
-
         drawMessageBox(canvas);
-
         //写字
         if (animationIndex > 3) {
             //paint.setTextSize(guiderModel.getTextSize());
             //paint.setColor(guiderModel.getTextColor());
             //canvas.drawText(guiderModel.getMessage(), messageContentRectf.left, messageContentRectf.bottom, paint);
-
             TextPaint textPaint = new TextPaint();
-            textPaint.setColor(guiderModel.getTextColor());
+            if (guiderModel.getTextColor() == -1) {
+                textPaint.setColor(textColor);
+            } else {
+                textPaint.setColor(guiderModel.getTextColor());
+            }
             textPaint.setStyle(Paint.Style.FILL);
-            textPaint.setTextSize(guiderModel.getTextSize());
+            if (guiderModel.getTextSize() == -1) {
+                textPaint.setTextSize(textSize);
+            } else {
+                textPaint.setTextSize(guiderModel.getTextSize());
+            }
             String message = guiderModel.getMessage();
             StaticLayout myStaticLayout = new StaticLayout(message, textPaint, (int) (canvas.getWidth() * .8f), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
             int heightText = myStaticLayout.getHeight();
@@ -219,7 +279,12 @@ public class GuiderView extends View {
             progress_c = 1;
         }
         Paint paint = new Paint();
-        paint.setStrokeWidth(guiderModel.getLineWidth());
+        paint.setAntiAlias(true);
+        if (guiderModel.getLineWidth() == -1) {
+            paint.setStrokeWidth(lineWidth);
+        } else {
+            paint.setStrokeWidth(guiderModel.getLineWidth());
+        }
 
         //canvas.drawRect(rectF_message, paint);
         //使用离屏绘制
@@ -238,22 +303,39 @@ public class GuiderView extends View {
         }
 
         paint.setStyle(Paint.Style.FILL);
-
-        paint.setColor(guiderModel.getLineColor());
-        paint.setTextSize(guiderModel.getTextSize());
+        if (guiderModel.getLineColor() == -1) {
+            paint.setColor(lineColor);
+        } else {
+            paint.setColor(guiderModel.getLineColor());
+        }
+        if (guiderModel.getTextSize() == -1) {
+            paint.setTextSize(textSize);
+        } else {
+            paint.setTextSize(guiderModel.getTextSize());
+        }
         float min = Math.min(rectF_message.width(), rectF_message.height()) / 2;
         RectF rectF1 = new RectF(rectF_message.left - min, rectF_message.top - min, rectF_message.right + min, rectF_message.bottom + min);
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         int startAngle = getStartAngle(1);
-
         canvas.drawArc(rectF1, startAngle, progress_c * 360, true, paint);
         //最后将画笔去除Xfermode
         paint.setXfermode(null);
-
         canvas.restoreToCount(layerID);
 
-
+        //设置文本框背景色
+        if(guiderModel.getTextBackgroundColor()!=-1){
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(guiderModel.getTextBackgroundColor());
+            if (guiderModel.getShape() == GuiderModel.SHAPE.oval) {//椭圆
+                canvas.drawArc(rectF_message, 0, 360, true, paint);
+            } else if (guiderModel.getShape() == GuiderModel.SHAPE.rectangle) {//矩形
+                canvas.drawRect(rectF_message, paint);
+            } else {
+                int radio = (int) (Math.min(rectF_message.width(), rectF_message.height()) / 2);
+                canvas.drawRoundRect(rectF_message, radio, radio, paint);
+            }
+        }
     }
 
     /**
@@ -263,7 +345,11 @@ public class GuiderView extends View {
      */
     private Paint getMessagePaint() {
         Paint paint = new Paint();
-        paint.setTextSize(guiderModel.getTextSize());
+        if (guiderModel.getTextSize() == -1) {
+            paint.setTextSize(textSize);
+        } else {
+            paint.setTextSize(guiderModel.getTextSize());
+        }
         return paint;
     }
 
@@ -273,7 +359,6 @@ public class GuiderView extends View {
      * @param canvas
      */
     private void drawBackground(Canvas canvas) {
-
         Paint paint = new Paint();
         //使用离屏绘制
         int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.ALL_SAVE_FLAG);
@@ -281,6 +366,7 @@ public class GuiderView extends View {
         paint.setColor(backgroundColor);
         rectF_background = new RectF(0, 0, screenWidth, screenHeight);
         canvas.drawRect(rectF_background, paint);
+        //canvas.drawColor(backgroundColor);
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         canvas.drawRect(rectF_view, paint);
@@ -288,7 +374,11 @@ public class GuiderView extends View {
         paint.setXfermode(null);
         //使用CLEAR作为PorterDuffXfermode绘制的矩形
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
-        paint.setColor(backgroundColor);
+        if (guiderModel != null && guiderModel.getLineColor() != -1) {
+            paint.setColor(guiderModel.getLineColor());
+        } else {
+            paint.setColor(lineColor);
+        }
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(rectF_view, paint);
 
@@ -297,9 +387,10 @@ public class GuiderView extends View {
 
     private void drawTargetView(Canvas canvas) {
         float progress2 = progress;
-        if(animationIndex==0){
+        if (animationIndex == 0) {
             return;
-        }if (animationIndex > 1) {
+        }
+        if (animationIndex > 1) {
             progress2 = 1;
         }
         Paint paint = new Paint();
@@ -307,10 +398,13 @@ public class GuiderView extends View {
         paint.setColor(backgroundColor);
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
         paint.setXfermode(null);
-        paint.setStrokeWidth(guiderModel.getLineWidth());
+        if (guiderModel.getLineWidth() == -1) {
+            paint.setStrokeWidth(lineWidth);
+        } else {
+            paint.setStrokeWidth(guiderModel.getLineWidth());
+        }
         //使用离屏绘制
         int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.ALL_SAVE_FLAG);
-
 
 
         //最后将画笔去除Xfermode
@@ -319,13 +413,17 @@ public class GuiderView extends View {
         canvas.drawRect(rectF_view, paint);
 
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
-       // paint.setXfermode(null);
-       // canvas.drawRect(rectF_view, paint);
+        // paint.setXfermode(null);
+        // canvas.drawRect(rectF_view, paint);
 
         float min = Math.min(rectF_message.width(), rectF_message.height()) / 2;
         RectF rectF1 = new RectF(rectF_view.left - min, rectF_view.top - min, rectF_view.right + min, rectF_view.bottom + min);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(guiderModel.getLineColor());
+        if (guiderModel.getLineColor() == -1) {
+            paint.setColor(lineColor);
+        } else {
+            paint.setColor(guiderModel.getLineColor());
+        }
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         int startAngle = getStartAngle(0);
@@ -336,9 +434,7 @@ public class GuiderView extends View {
 
         //使用离屏绘制
         canvas.restoreToCount(layerID);
-
     }
-
 
     private int getStartAngle(int type) {
         if (type == 0) {//目标视图初始角度
@@ -388,19 +484,20 @@ public class GuiderView extends View {
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                switch (guiderModel.getComplateType()) {
-                    case CLICK:
-                        if (motionEvent.getX() > rectF_touch.left && motionEvent.getX() < rectF_touch.right && motionEvent.getY() > rectF_touch.top && motionEvent.getY() < rectF_touch.bottom) {
-                            if (onActionFinishListener != null) {
-                                onActionFinishListener.onFinish();
-                               // windowView.removeView(GuiderView.this);
-                                if (animator.isRunning()) {
-                                    animator.cancel();
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isAnimationFinished) {//动画加载完成并且为点击操作
+                    switch (guiderModel.getComplateType()) {
+                        case CLICK:
+                            if (motionEvent.getX() > rectF_touch.left && motionEvent.getX() < rectF_touch.right && motionEvent.getY() > rectF_touch.top && motionEvent.getY() < rectF_touch.bottom) {
+                                if (onActionFinishListener != null) {
+                                    onActionFinishListener.onFinish();
+                                    // windowView.removeView(GuiderView.this);
+                                    if (animator.isRunning()) {
+                                        animator.cancel();
+                                    }
                                 }
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
                 return false;
             }
@@ -428,7 +525,11 @@ public class GuiderView extends View {
         }
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(guiderModel.getLineWidth());
+        if (guiderModel.getLineWidth() == -1) {
+            paint.setStrokeWidth(lineWidth);
+        } else {
+            paint.setStrokeWidth(guiderModel.getLineWidth());
+        }
         //使用离屏绘制
         int layerID = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.ALL_SAVE_FLAG);
 
@@ -466,23 +567,26 @@ public class GuiderView extends View {
         }
         //最后将画笔去除Xfermode
         paint.setXfermode(null);
-        paint.setColor(guiderModel.getLineColor());
+        if (guiderModel.getLineColor() == -1) {
+            paint.setColor(lineColor);
+        } else {
+            paint.setColor(guiderModel.getLineColor());
+        }
         int l = Math.min((int) pointF_start.x, (int) pointF_end.x);
         int t = Math.min((int) pointF_start.y, (int) pointF_end.y);
         int r = Math.max((int) pointF_start.x, (int) pointF_end.x);
         int b = Math.max((int) pointF_start.y, (int) pointF_end.y);
-        if (pointF_start.x > pointF_end.x)
-        {
+        if (pointF_start.x > pointF_end.x) {
             l = (int) (r - Math.abs(r - l) * progress_c);
-        }else if(pointF_start.x < pointF_end.x){
+        } else if (pointF_start.x < pointF_end.x) {
             r = (int) (l + Math.abs(l - r) * progress_c);
-        }else{
-            l = l - getWidth()/2;
-            r = r + getWidth()/2;
+        } else {
+            l = l - getWidth() / 2;
+            r = r + getWidth() / 2;
         }
-        if (pointF_start.y > pointF_end.y){
+        if (pointF_start.y > pointF_end.y) {
             t = (int) (b - Math.abs(t - b) * progress_c);
-        } else if(pointF_start.y < pointF_end.y){
+        } else if (pointF_start.y < pointF_end.y) {
             b = (int) (t + Math.abs(t - b) * progress_c);
         }
         canvas.clipRect(l, t, r, b);
@@ -490,13 +594,16 @@ public class GuiderView extends View {
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-        paint.setColor(guiderModel.getLineColor());
+        if (guiderModel.getLineColor() == -1) {
+            paint.setColor(lineColor);
+        } else {
+            paint.setColor(guiderModel.getLineColor());
+        }
         canvas.drawPath(path, paint);
         canvas.restoreToCount(layerID);
     }
 
     private Gravity gravity;
-
     private GuiderRectF messageContentRectf;
 
     private GuiderRectF getMessageRectF(GuiderRectF rectF_view, Paint paint, String text) {
@@ -513,9 +620,17 @@ public class GuiderView extends View {
         float maxwidth = getWidth() * 0.8f;
         if (textWidth >= maxwidth) {
             TextPaint textPaint = new TextPaint();
-            textPaint.setColor(guiderModel.getTextColor());
             textPaint.setStyle(Paint.Style.FILL);
-            textPaint.setTextSize(guiderModel.getTextSize());
+            if (guiderModel.getTextColor() == -1) {
+                textPaint.setColor(textColor);
+            } else {
+                textPaint.setColor(guiderModel.getTextColor());
+            }
+            if (guiderModel.getTextSize() == -1) {
+                textPaint.setTextSize(textSize);
+            } else {
+                textPaint.setTextSize(guiderModel.getTextSize());
+            }
             String message = guiderModel.getMessage();
             StaticLayout myStaticLayout = new StaticLayout(message, textPaint, (int) (getWidth() * .8f), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
             heightText = myStaticLayout.getHeight();
@@ -550,9 +665,8 @@ public class GuiderView extends View {
                 break;
         }
 
-        int pading = 50;
         messageContentRectf = new GuiderRectF(l, t, r, b, screenWidth, screenHeight);
-        return new GuiderRectF(l - pading, t - pading, r + pading, b + pading, screenWidth, screenHeight);
+        return new GuiderRectF(l - textPadding, t - textPadding, r + textPadding, b + textPadding, screenWidth, screenHeight);
     }
 
     public enum Gravity {
@@ -561,7 +675,7 @@ public class GuiderView extends View {
 
 
     private GuiderRectF getViewRectF(View view) {
-        if(view==null){
+        if (view == null) {
             return null;
         }
         int[] location;

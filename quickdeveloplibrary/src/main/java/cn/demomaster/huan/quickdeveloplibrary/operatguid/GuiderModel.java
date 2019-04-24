@@ -14,13 +14,22 @@ public class GuiderModel {
     private SHAPE shape;
     private LINETYPE lineType;
     private String message;
-    private int textColor = Color.WHITE;
-    private int textSize = 36;
-    private int lineColor = Color.WHITE;
-    private int lineWidth = 10;
+    private int textColor = -1;//-1默认不使用
+    private int textSize = -1;
+    private int textBackgroundColor = -1;//文字框背景色
+    private int lineColor = -1;
+    private int lineWidth = -1;
     private GuidActionType complateType;//结束触发类型
     private GuidActionType startType;//开始触发类型
     private TouchType touchType;
+
+    public int getTextBackgroundColor() {
+        return textBackgroundColor;
+    }
+
+    public void setTextBackgroundColor(int textBackgroundColor) {
+        this.textBackgroundColor = textBackgroundColor;
+    }
 
     public WeakReference<View> getTargetView() {
         return targetView;
@@ -111,7 +120,7 @@ public class GuiderModel {
     }
 
     public enum LINETYPE{
-        straight,curve
+        straight,curve//直线/曲线
     }
     public enum SHAPE{
         roundedrectangle,rectangle,oval
