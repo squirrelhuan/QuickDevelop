@@ -20,7 +20,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInter
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.ComponentAdapter;
 
-
 /**
  * Squirrel桓
  * 2018/8/25
