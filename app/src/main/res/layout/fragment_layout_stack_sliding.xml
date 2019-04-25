@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/meizi">
+    android:background="@color/white">
 
     <!-- <cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.LabNestedScrollView
          android:layout_width="match_parent"
@@ -85,7 +85,6 @@
                     android:id="@+id/list_A"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent_dark_55"
                     android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -134,7 +133,6 @@
                     android:id="@+id/list_B"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent_dark_55"
                     android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -183,7 +181,6 @@
                     android:id="@+id/list_C"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent_dark_55"
                     android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -231,7 +228,6 @@
                     android:id="@+id/list_D"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent_dark_55"
                     android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -275,7 +271,6 @@
                     android:id="@+id/list_E"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent_dark_55"
                     android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>

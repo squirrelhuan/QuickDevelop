@@ -61,7 +61,7 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         //A
         recyclerView_A  = rootView.findViewById(R.id.list_A);
         header_A = rootView.findViewById(R.id.header_A);
-        adapter_A = new ComponentAdapter(getContext());
+        adapter_A = new ComponentAdapter(getContext(),Color.BLACK);
         items_A = new ArrayList();
         int c = 20;
         for(int i=0;i<c;i++){
@@ -74,11 +74,11 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         //B
         recyclerView_B  = rootView.findViewById(R.id.list_B);
         header_B = rootView.findViewById(R.id.header_B);
-        adapter_B = new ComponentAdapter(getContext());
+        adapter_B = new ComponentAdapter(getContext(),Color.BLACK);
         items_B = new ArrayList();
         c = 6;
         for(int i=0;i<c;i++){
-            items_B.add("A"+i);
+            items_B.add("B"+i);
         }
         adapter_B.updateList(items_B);
         recyclerView_B.setAdapter(adapter_B);
@@ -87,11 +87,11 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         //C
         recyclerView_C  = rootView.findViewById(R.id.list_C);
         header_C = rootView.findViewById(R.id.header_C);
-        adapter_C = new ComponentAdapter(getContext());
+        adapter_C = new ComponentAdapter(getContext(),Color.BLACK);
         items_C = new ArrayList();
         c = 33;
         for(int i=0;i<c;i++){
-            items_C.add("A"+i);
+            items_C.add("C"+i);
         }
         adapter_C.updateList(items_C);
         recyclerView_C.setAdapter(adapter_C);
@@ -100,11 +100,11 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         //D
         recyclerView_D  = rootView.findViewById(R.id.list_D);
         header_D = rootView.findViewById(R.id.header_D);
-        adapter_D = new ComponentAdapter(getContext());
+        adapter_D = new ComponentAdapter(getContext(),Color.BLACK);
         items_D = new ArrayList();
         c = 3;
         for(int i=0;i<c;i++){
-            items_D.add("A"+i);
+            items_D.add("D"+i);
         }
         adapter_D.updateList(items_D);
         recyclerView_D.setAdapter(adapter_D);
@@ -113,11 +113,11 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         //E
         recyclerView_E  = rootView.findViewById(R.id.list_E);
         header_E = rootView.findViewById(R.id.header_E);
-        adapter_E = new ComponentAdapter(getContext());
+        adapter_E = new ComponentAdapter(getContext(),Color.BLACK);
         items_E = new ArrayList();
         c = 16;
         for(int i=0;i<c;i++){
-            items_E.add("A"+i);
+            items_E.add("E"+i);
         }
         adapter_E.updateList(items_E);
         recyclerView_E.setAdapter(adapter_E);
