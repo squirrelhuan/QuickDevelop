@@ -23,25 +23,29 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycleContainer> {
 
     CoordinatorLayout parent;
-    private int mInitialOffset;
-
-
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, int layoutDirection) {
         QDLogger.d("onLayoutChild");
         parent.onLayoutChild(child, layoutDirection);
+        //获取上一个MultiRecycleContainer容器
         MultiRecycleContainer previous = getPreviousChild(parent, child);
-        if (previous == null) {
+        if (previous == null) {//为空说明child的position=0
             int offset = child.getTop();
             QDLogger.d("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset + ", top=" + child.getTop() + ",y=" + child.getY());
         } else {
+            //获取上一个MultiRecycleContainer容器，来确定当前child的位置 (当前child的位置为，上一个的top+上一个的height)
             int offset = previous.getTop() + previous.getHeight();
             child.offsetTopAndBottom(offset);
         }
-        mInitialOffset = child.getTop();
         return true;
     }
 
+    /**
+     * 获取MultiRecycleContainer列表中的上一个
+     * @param parent  CoordinatorLayout父容器
+     * @param child  当前MultiRecycleContainer
+     * @return
+     */
     private MultiRecycleContainer getPreviousChild(CoordinatorLayout parent, MultiRecycleContainer child) {
         int cartindex = parent.indexOfChild(child);
         for (int i = cartindex - 1; i >= 0; i--) {
@@ -53,13 +57,12 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         return null;
     }
 
-    boolean isVerticalScroll;
-
+    boolean isVerticalScroll;//是否是垂直滚动
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull MultiRecycleContainer child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         QDLogger.d("onStartNestedScroll axes=" + axes + ",target=" + target.getClass().getName());
         this.parent = coordinatorLayout;
-        if (!isInital) {
+        if (!isInital) {//初始化惯性滚动
             init(parent);
         }
         boolean isVertical = (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
@@ -69,19 +72,17 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
 
     @Override
     public boolean onNestedPreFling(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, float velocityX, float velocityY) {
-
         //int shift = scroll(parent, child, (int) velocityY);
-        return false;
         // return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
+        return false;
     }
 
     @Override
     public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
         QDLogger.d("onNestedFling...");
         //return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
-        int shift = scroll(parent, child, consumed ? 0 : (int) velocityY);
+        scroll(parent, child, consumed ? 0 : (int) velocityY);
         scrollParent(parent, child, null, consumed ? 0 : (int) velocityY);
-        //shiftSlidings(shift, parent, child);
         return false;
     }
 
@@ -208,6 +209,11 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         return null;
     }
 
+    /**
+     * 获取当前子容器中的recycle,注意每个容器中只存放一个recyclerView
+     * @param viewGroup
+     * @return
+     */
     private RecyclerView findRecycleView(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             if (viewGroup.getChildAt(i) instanceof RecyclerView) {
@@ -233,17 +239,13 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
      */
     private int scrollChild(CoordinatorLayout parent, MultiRecycleContainer child, View target, int dy) {
         //1.优先parent滑动
-
         //2.寻找到可以滚动的下一个child
-
         return 0;
     }
 
     @Override
     public void onNestedScroll(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
         QDLogger.d("onNestedScroll...");
-        /*int shift = scroll(parent, child, dyUnconsumed);
-        consumed[1] = shift;*/
 
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
@@ -259,22 +261,9 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         }
     }
 
-    private MultiRecycleContainer getNextChild(CoordinatorLayout parent, MultiRecycleContainer child) {
-        int cartindex = parent.indexOfChild(child);
-        for (int i = cartindex + 1; i < parent.getChildCount(); i++) {
-            View v = parent.getChildAt(i);
-            if (v instanceof MultiRecycleContainer) {
-                return (MultiRecycleContainer) v;
-            }
-        }
-        return null;
-    }
-
     private int scroll(CoordinatorLayout parent, MultiRecycleContainer child, int dy) {
         //1.k控制自己的移动
         int initialOffset = child.getTop();
-        View view = getPreviousChild(parent, child);
-        int heightAll = getAllChildHeight(parent);
         MultiRecycleContainer firstchild = getFirstChild(parent);
         MultiRecycleContainer lastchild = getLastChild(parent);
 
@@ -296,6 +285,28 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         return dy - offset;//滑动方向
     }
 
+    /**
+     * 获取下一个MultiRecycleContainer
+     * @param parent
+     * @param child
+     * @return
+     */
+    private MultiRecycleContainer getNextChild(CoordinatorLayout parent, MultiRecycleContainer child) {
+        int cartindex = parent.indexOfChild(child);
+        for (int i = cartindex + 1; i < parent.getChildCount(); i++) {
+            View v = parent.getChildAt(i);
+            if (v instanceof MultiRecycleContainer) {
+                return (MultiRecycleContainer) v;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取第一个MultiRecycleContainer
+     * @param parent
+     * @return
+     */
     private MultiRecycleContainer getFirstChild(CoordinatorLayout parent) {
         MultiRecycleContainer firstchild = null;
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -307,7 +318,11 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         }
         return firstchild;
     }
-
+    /**
+     * 获取当前MultiRecycleContainer
+     * @param parent
+     * @return
+     */
     private MultiRecycleContainer getCurrentChild(CoordinatorLayout parent) {
         MultiRecycleContainer current = null;
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -318,7 +333,11 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         }
         return current;
     }
-
+    /**
+     * 获取最后一个MultiRecycleContainer
+     * @param parent
+     * @return
+     */
     private MultiRecycleContainer getLastChild(CoordinatorLayout parent) {
         MultiRecycleContainer lastchild = null;
         for (int i = parent.getChildCount() - 1; i >= 0; i--) {
@@ -331,6 +350,11 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         return lastchild;
     }
 
+    /**
+     * 获取CoordinatorLayout所有子view视图高度
+     * @param parent
+     * @return
+     */
     private int getAllChildHeight(CoordinatorLayout parent) {
         int height = 0;
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -339,6 +363,12 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         return height;
     }
 
+    /**
+     * 移动其他平级的MultiRecycleContainer
+     * @param parent
+     * @param child
+     * @param offset
+     */
     private void moveOther(CoordinatorLayout parent, MultiRecycleContainer child, int offset) {
         MultiRecycleContainer current = child;
         MultiRecycleContainer above = getPreviousChild(parent, current);
@@ -359,20 +389,8 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         }
     }
 
-    private int clamp(int i, int minOffset, int maxOffset) {
-        if (i > maxOffset) {
-            return maxOffset;
-        } else if (i < minOffset) {
-            return minOffset;
-        } else {
-            return i;
-        }
-    }
-
-    /****************      惯性滚动      ****************************************************************/
-
+    /****************   以下参考网上的惯性滚动   效果还不是很好     ****************************************************************/
     private boolean isInital;
-
     private void init(View view) {
         isInital = true;
         this.mContext = view.getContext();
@@ -521,7 +539,6 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
     }
 
     private class ViewFlinger implements Runnable {
-
         private int mLastFlingY = 0;
         private OverScroller mScroller;
         private boolean mEatRunOnAnimationRequest = false;

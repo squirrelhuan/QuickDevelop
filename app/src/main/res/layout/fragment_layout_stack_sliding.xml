@@ -133,7 +133,9 @@
                     android:id="@+id/list_B"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -181,7 +183,9 @@
                     android:id="@+id/list_C"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -228,7 +232,9 @@
                     android:id="@+id/list_D"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -271,7 +277,9 @@
                     android:id="@+id/list_E"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>

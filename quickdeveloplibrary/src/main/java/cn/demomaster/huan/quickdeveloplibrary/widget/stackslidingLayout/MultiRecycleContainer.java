@@ -19,10 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 public class MultiRecycleContainer extends FrameLayout {
     private RecyclerView recyclerView;
 
-  /*  public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }*/
-
     public MultiRecycleContainer(@NonNull Context context) {
         super(context);
         init(null);
@@ -48,65 +44,20 @@ public class MultiRecycleContainer extends FrameLayout {
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                onAddView(MultiRecycleContainer.this);
+                findRecyclerView(MultiRecycleContainer.this);
             }
         });
-        /*LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item,this);
-        recyclerView  = findViewById(R.id.list);
-        TextView header = findViewById(R.id.header);
-        QDLogger.d("StackSlidingLayout",header.getText());
-        ComponentAdapter adapter = new ComponentAdapter(getContext());
-        List<String> items = new ArrayList();
-        int c = (int) (Math.random()*10)*6;
-        for(int i=0;i<c;i++){
-            items.add("A"+i);
-        }
-        adapter.updateList(items);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        setBackgroundColor(Color.TRANSPARENT);
-        TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.StackSlidingLayout);
-        //header.setBackgroundColor(a.getColor(R.styleable.StackSlidingLayout_android_colorBackground,Color.BLACK));
-        findViewById(R.id.ll_header).setBackgroundColor(a.getColor(R.styleable.StackSlidingLayout_android_colorBackground,Color.BLACK));
-        //header.setText(a.getText(R.styleable.StackSlidingLayout_android_text));
-        a.recycle();*/
     }
 
-    @Override
-    public void addView(View child) {
-        super.addView(child);
-        onAddView(child);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        super.addView(child, index);
-        onAddView(child);
-    }
-
-    @Override
-    public void addView(View child, int width, int height) {
-        super.addView(child, width, height);
-        onAddView(child);
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        super.addView(child, params);
-        onAddView(child);
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-        onAddView(child);
-    }
-
-    private void onAddView(View child) {
-        if (child instanceof ViewGroup &&!(child instanceof RecyclerView)) {
+    /**
+     * 查找唯一的一个RecyclerView
+     * @param child
+     */
+    private void findRecyclerView(View child) {
+        if (child instanceof ViewGroup && !(child instanceof RecyclerView)) {
             for (int i = 0; i < ((ViewGroup) child).getChildCount(); i++) {
                 View v = ((ViewGroup) child).getChildAt(i);
-                onAddView(v);
+                findRecyclerView(v);
             }
         } else if (child instanceof RecyclerView) {
             recyclerView = (RecyclerView) child;
@@ -115,12 +66,12 @@ public class MultiRecycleContainer extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        QDLogger.d("onTouchEvent="+event);
+        QDLogger.d("onTouchEvent=" + event);
+        /**
+         * 把自身及其他子空间的触摸事件传递给recyclerView,其他控件如果不使用触摸滑动可以在ontouch中消耗掉即可
+         */
         if (recyclerView != null) {
-            QDLogger.d("recyclerView != null");
             recyclerView.dispatchTouchEvent(event);
-        }else {
-            QDLogger.d("recyclerView != null null null null null");
         }
         return true;
         //return super.onTouchEvent(event);
@@ -129,17 +80,18 @@ public class MultiRecycleContainer extends FrameLayout {
     private int mHeaderViewHeight;
     private int mRecycleViewHeight;
     private int mViewHeight;
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        onAddView(this);
-        if(recyclerView==null)return;
-        QDLogger.d("StackSlidingLayout", "onSizeChanged w=" + w + ",h=" + h + ",oldw=" + oldw + ",oldh=" + oldh);
+        findRecyclerView(this);
+        if (recyclerView == null) return;
+        QDLogger.d("onSizeChanged w=" + w + ",h=" + h + ",oldw=" + oldw + ",oldh=" + oldh);
         if (w != oldw || h != oldh) {
-           // mHeaderViewHeight = findViewById(R.id.header).getMeasuredHeight();
+            // mHeaderViewHeight = findViewById(R.id.header).getMeasuredHeight();
             mRecycleViewHeight = recyclerView.getMeasuredHeight();
             mViewHeight = mHeaderViewHeight + mRecycleViewHeight;
         }
-        QDLogger.d("StackSlidingLayout", "mHeaderViewHeight=" + mHeaderViewHeight);
+        QDLogger.d("mHeaderViewHeight=" + mHeaderViewHeight);
     }
 
     public int getHeaderViewHeight() {
