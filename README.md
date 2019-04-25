@@ -25,3 +25,8 @@ dependencies {
 ### 小组件
 
 ![Alt](https://raw.githubusercontent.com/squirrelhuan/QuickDevelop/master/app/src/main/assets/image/component/ToogleButton_GIF.gif)
+
+
+### MultiRecycleContainer(多个RecycleView的复杂界面)
+
+![Alt](https://raw.githubusercontent.com/squirrelhuan/QuickDevelop/master/app/src/main/assets/image/component/QD_MultiRecycle_GIF.gif)
