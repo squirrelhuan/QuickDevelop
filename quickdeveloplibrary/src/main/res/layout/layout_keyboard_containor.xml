@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/ll_keyboard_header"
     android:background="@color/keyboardBackColor"
     android:orientation="vertical">
 
@@ -64,7 +65,7 @@
         android:layout_marginBottom="10sp"
         android:layout_marginTop="2sp">
 
-        <cn.demomaster.huan.quickdeveloplibrary.view.keybored.SafeKeyboardView
+        <cn.demomaster.huan.quickdeveloplibrary.view.keybored.QDKeyboardView
             android:id="@+id/safeKeyboardLetter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

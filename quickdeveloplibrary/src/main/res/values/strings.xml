@@ -26,7 +26,7 @@
     <string name="sorry_for_crash">很抱歉(ಥ _ ಥ)程序遇到未知错误，即将停止运行\n错误代码：</string>
 
     <string name="description">SafeKeyboard</string>
-    <string name="safe_keyboard">智能加密安全软键盘</string>
+    <string name="safe_keyboard">安全软键盘</string>
     <string name="keyboard_key1">"&#64;"</string>
     <string name="keyboard_key2">"&#38;"</string>
     <string name="keyboard_key3">\"</string>

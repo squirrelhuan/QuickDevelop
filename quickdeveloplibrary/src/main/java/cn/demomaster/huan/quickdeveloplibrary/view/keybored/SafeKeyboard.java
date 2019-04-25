@@ -556,7 +556,6 @@ public class SafeKeyboard {
     public boolean isShow() {
         return isKeyboardShown();
     }
-
     //隐藏系统键盘关键代码
     private void hideSystemKeyBoard(EditText edit) {
         this.mEditText = edit;
