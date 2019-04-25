@@ -60,8 +60,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/red"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp"
                     android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
                     android:paddingBottom="36dp">
 
                     <ImageView
@@ -167,10 +167,10 @@
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
-                        android:textStyle="bold"
                         android:text="人生如梦"
                         android:textColor="@color/white"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:layout_width="35dp"
@@ -195,6 +195,7 @@
             android:layout_height="wrap_content"
             android:colorBackground="@color/blue"
             android:text="RecycleView D">
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -242,6 +243,7 @@
             android:layout_height="wrap_content"
             android:colorBackground="@color/chocolate"
             android:text="RecycleView E">
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -255,23 +257,18 @@
                     android:orientation="horizontal"
                     android:padding="6dp">
 
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:padding="5dp"
-                        android:src="@drawable/umeng_socialize_qzone" />
-
                     <TextView
                         android:id="@+id/header_E"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/umeng_socialize_qzone"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:text="过眼云烟"
                         android:textColor="@color/white"
-                        android:textStyle="italic"
-                        android:textSize="22dp" />
+                        android:textSize="22dp"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
