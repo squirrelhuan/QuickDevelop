@@ -29,4 +29,4 @@ dependencies {
 
 ### MultiRecycleContainer(多个RecycleView的复杂界面)
 
-![Alt](https://raw.githubusercontent.com/squirrelhuan/QuickDevelop/master/app/src/main/assets/image/component/QD_MultiRecycle_GIF.gif)
+![Alt](https://raw.githubusercontent.com/squirrelhuan/QuickDevelop/QuickDevelopX/app/src/main/assets/image/component/QD_MultiRecycle_GIF.gif)
