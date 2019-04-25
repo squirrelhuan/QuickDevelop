@@ -10,7 +10,7 @@ allprojects {
 ```
 ```
 dependencies {
-	        implementation 'com.github.squirrelhuan:QuickDevelop:Tag'
+	        implementation 'com.github.squirrelhuan:QuickDevelop:1.1.23'
 	}
 ```
 
