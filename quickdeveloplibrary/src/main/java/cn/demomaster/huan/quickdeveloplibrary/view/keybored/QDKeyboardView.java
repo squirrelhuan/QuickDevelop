@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import java.lang.reflect.Field;
@@ -28,6 +29,7 @@ public class QDKeyboardView extends KeyboardView {
     private Drawable delDrawable;
     private Drawable lowDrawable;
     private Drawable upDrawable;
+    private Drawable hideDrawable;
     /**
      * 按键的宽高至少是图标宽高的倍数
      */
@@ -50,6 +52,7 @@ public class QDKeyboardView extends KeyboardView {
         this.delDrawable = null;
         this.lowDrawable = null;
         this.upDrawable = null;
+        this.hideDrawable = null;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class QDKeyboardView extends KeyboardView {
         try {
             List<Keyboard.Key> keys = getKeyboard().getKeys();
             for (Keyboard.Key key : keys) {
-                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1)
+                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1|| key.codes[0] == -3)
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
@@ -81,6 +84,21 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, lowDrawable);
             }
+        }else if (key.codes[0] == -3) {
+            hideDrawable = getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
+            if (isCap) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    hideDrawable.setTint(Color.WHITE);
+                }
+                drawKeyBackground(R.drawable.keyboard_change, canvas, key);
+                drawTextAndIcon(canvas, key, hideDrawable);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    hideDrawable.setTint(Color.BLACK);
+                }
+                drawKeyBackground(R.drawable.keyboard_change, canvas, key);
+                drawTextAndIcon(canvas, key, hideDrawable);
+            }
         }
     }
 
@@ -101,12 +119,9 @@ public class QDKeyboardView extends KeyboardView {
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setAntiAlias(true);
             paint.setColor(Color.WHITE);
-
             if (key.label != null) {
                 String label = key.label.toString();
-
                 Field field;
-
                 if (label.length() > 1 && key.codes.length < 2) {
                     int labelTextSize = 0;
                     try {
@@ -130,7 +145,6 @@ public class QDKeyboardView extends KeyboardView {
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
                 }
-
                 paint.getTextBounds(key.label.toString(), 0, key.label.toString().length(), bounds);
                 canvas.drawText(key.label.toString(), key.x + (key.width / 2),
                         (key.y + key.height / 2) + bounds.height() / 2, paint);

@@ -302,7 +302,7 @@ public class SafeKeyboard {
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(listener);
 
-        FrameLayout done = keyContainer.findViewById(R.id.keyboardDone);
+        /*FrameLayout done = keyContainer.findViewById(R.id.keyboardDone);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,7 +310,7 @@ public class SafeKeyboard {
                     hideKeyboard();
                 }
             }
-        });
+        });*/
 
         keyboardView.setOnTouchListener(new View.OnTouchListener() {
             @Override

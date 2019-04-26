@@ -16,6 +16,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
@@ -62,6 +63,7 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(ErrorTestFragment.class);
         classList.add(FileManagerFragment.class);
         classList.add(LanguageFragment.class);
+        classList.add(KeyboardFragment.class);
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

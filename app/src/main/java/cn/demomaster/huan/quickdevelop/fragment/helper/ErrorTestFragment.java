@@ -25,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "ErrorTestFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "ErrorTest",preViewClass = StateView.class,resType = ResType.Custome)
 public class ErrorTestFragment extends QDBaseFragment {
 
     @Override

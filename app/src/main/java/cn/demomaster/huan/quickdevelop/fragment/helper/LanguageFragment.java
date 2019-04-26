@@ -30,7 +30,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "LanguageFragment", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Language", preViewClass = StateView.class, resType = ResType.Custome)
 public class LanguageFragment extends QDBaseFragment {
 
     @Override

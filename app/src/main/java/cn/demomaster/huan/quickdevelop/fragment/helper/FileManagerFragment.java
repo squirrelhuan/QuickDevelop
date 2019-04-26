@@ -37,7 +37,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
  * 2018/8/25
  */
 
-@ActivityPager(name = "FileManagerFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "FileManager",preViewClass = StateView.class,resType = ResType.Custome)
 public class FileManagerFragment extends QDBaseFragment {
 
     @Override
