@@ -22,8 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 
 public class QDKeyboardView extends KeyboardView {
 
-    private static final String TAG = "SafeKeyboardView";
-
+    private static final String TAG = "QDKeyboardView";
     private Context mContext;
     private boolean isCap;
     private Drawable delDrawable;
