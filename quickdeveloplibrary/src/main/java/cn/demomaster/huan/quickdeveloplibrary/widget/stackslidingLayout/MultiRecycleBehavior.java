@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
-import android.widget.FrameLayout;
 import android.widget.OverScroller;
 
 import androidx.annotation.NonNull;
@@ -19,48 +17,52 @@ import androidx.core.view.MotionEventCompat;
 import androidx.core.view.VelocityTrackerCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidingLayout> {
+public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycleContainer> {
 
     CoordinatorLayout parent;
-    private int mInitialOffset;
-
-
     @Override
-    public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, int layoutDirection) {
+    public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, int layoutDirection) {
         QDLogger.d("onLayoutChild");
         parent.onLayoutChild(child, layoutDirection);
-        StackSlidingLayout previous = getPreviousChild(parent, child);
-        if (previous == null) {
+        //获取上一个MultiRecycleContainer容器
+        MultiRecycleContainer previous = getPreviousChild(parent, child);
+        if (previous == null) {//为空说明child的position=0
             int offset = child.getTop();
             QDLogger.d("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset + ", top=" + child.getTop() + ",y=" + child.getY());
         } else {
+            //获取上一个MultiRecycleContainer容器，来确定当前child的位置 (当前child的位置为，上一个的top+上一个的height)
             int offset = previous.getTop() + previous.getHeight();
             child.offsetTopAndBottom(offset);
         }
-        mInitialOffset = child.getTop();
         return true;
     }
 
-    private StackSlidingLayout getPreviousChild(CoordinatorLayout parent, StackSlidingLayout child) {
+    /**
+     * 获取MultiRecycleContainer列表中的上一个
+     * @param parent  CoordinatorLayout父容器
+     * @param child  当前MultiRecycleContainer
+     * @return
+     */
+    private MultiRecycleContainer getPreviousChild(CoordinatorLayout parent, MultiRecycleContainer child) {
         int cartindex = parent.indexOfChild(child);
         for (int i = cartindex - 1; i >= 0; i--) {
             View v = parent.getChildAt(i);
-            if (v instanceof StackSlidingLayout) {
-                return (StackSlidingLayout) v;
+            if (v instanceof MultiRecycleContainer) {
+                return (MultiRecycleContainer) v;
             }
         }
         return null;
     }
 
-    boolean isVerticalScroll;
-
+    boolean isVerticalScroll;//是否是垂直滚动
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull StackSlidingLayout child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull MultiRecycleContainer child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         QDLogger.d("onStartNestedScroll axes=" + axes + ",target=" + target.getClass().getName());
         this.parent = coordinatorLayout;
-        if (!isInital) {
+        if (!isInital) {//初始化惯性滚动
             init(parent);
         }
         boolean isVertical = (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
@@ -69,25 +71,23 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     }
 
     @Override
-    public boolean onNestedPreFling(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, float velocityX, float velocityY) {
-
+    public boolean onNestedPreFling(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, float velocityX, float velocityY) {
         //int shift = scroll(parent, child, (int) velocityY);
-        return false;
         // return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
+        return false;
     }
 
     @Override
-    public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
+    public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
         QDLogger.d("onNestedFling...");
         //return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
-        int shift = scroll(parent, child, consumed ? 0 : (int) velocityY);
+        scroll(parent, child, consumed ? 0 : (int) velocityY);
         scrollParent(parent, child, null, consumed ? 0 : (int) velocityY);
-        //shiftSlidings(shift, parent, child);
         return false;
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+    public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         QDLogger.d("dy=" + dy + ",consumed x=" + consumed[0] + ",y=" + consumed[1]);
 
         //dy>0上推，dy<0下拉
@@ -113,13 +113,13 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
      * @param dy
      * @return
      */
-    private int scrollParent(CoordinatorLayout parent, StackSlidingLayout child, View target, int dy) {
+    private int scrollParent(CoordinatorLayout parent, MultiRecycleContainer child, View target, int dy) {
         int py = 0;
         QDLogger.d("获取下一个可滚动的视图");
         //1.获取下一个可滚动的视图
         if (dy > 0) {//上推
             QDLogger.d("上推");
-            StackSlidingLayout upper = getUpperChild(parent);
+            MultiRecycleContainer upper = getUpperChild(parent);
             QDLogger.d("获取下一个可上推的视图:" + upper);
             if (upper == null) {
                 py = dy;
@@ -129,7 +129,7 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
             }
         } else {//下拉
             QDLogger.d("下拉");
-            StackSlidingLayout downer = getDownerChild(parent);//下一个
+            MultiRecycleContainer downer = getDownerChild(parent);//下一个
             QDLogger.d("获取下一个可下拉的视图:" + downer);
             if (downer == null) {
                 py = dy;
@@ -150,15 +150,15 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
      * @param parent
      * @return
      */
-    private StackSlidingLayout getDownerChild(CoordinatorLayout parent) {
-        StackSlidingLayout current = getCurrentChild(parent);
+    private MultiRecycleContainer getDownerChild(CoordinatorLayout parent) {
+        MultiRecycleContainer current = getCurrentChild(parent);
         int index = parent.indexOfChild(current);
         for (int i = index; i > 0; i--) {
             View v = parent.getChildAt(i);
-            if (v instanceof StackSlidingLayout) {
+            if (v instanceof MultiRecycleContainer) {
                 boolean canScrollDown = (getChildRecyclerView((ViewGroup) v)).canScrollVertically(-1);//的值表示是否能向下滚动
                 if (canScrollDown) {//下拉
-                    return (StackSlidingLayout) v;
+                    return (MultiRecycleContainer) v;
                 }
             }
         }
@@ -171,15 +171,17 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
      * @param parent
      * @return
      */
-    private StackSlidingLayout getUpperChild(CoordinatorLayout parent) {
-        StackSlidingLayout current = getCurrentChild(parent);
+    private MultiRecycleContainer getUpperChild(CoordinatorLayout parent) {
+        MultiRecycleContainer current = getCurrentChild(parent);
         int index = parent.indexOfChild(current);
+        W:
         for (int i = index; i < parent.getChildCount(); i++) {
             View v = parent.getChildAt(i);
-            if (v instanceof StackSlidingLayout) {
+            if (v instanceof MultiRecycleContainer) {
+                if (getChildRecyclerView((ViewGroup) v) == null) continue W;
                 boolean canScrollUp = ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
                 if (canScrollUp) {//可上推
-                    return (StackSlidingLayout) v;
+                    return (MultiRecycleContainer) v;
                 }
             }
         }
@@ -207,6 +209,11 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         return null;
     }
 
+    /**
+     * 获取当前子容器中的recycle,注意每个容器中只存放一个recyclerView
+     * @param viewGroup
+     * @return
+     */
     private RecyclerView findRecycleView(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             if (viewGroup.getChildAt(i) instanceof RecyclerView) {
@@ -230,19 +237,15 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
      * @param dy
      * @return
      */
-    private int scrollChild(CoordinatorLayout parent, StackSlidingLayout child, View target, int dy) {
+    private int scrollChild(CoordinatorLayout parent, MultiRecycleContainer child, View target, int dy) {
         //1.优先parent滑动
-
         //2.寻找到可以滚动的下一个child
-
         return 0;
     }
 
     @Override
-    public void onNestedScroll(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
+    public void onNestedScroll(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
         QDLogger.d("onNestedScroll...");
-        /*int shift = scroll(parent, child, dyUnconsumed);
-        consumed[1] = shift;*/
 
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
@@ -258,24 +261,11 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         }
     }
 
-    private StackSlidingLayout getNextChild(CoordinatorLayout parent, StackSlidingLayout child) {
-        int cartindex = parent.indexOfChild(child);
-        for (int i = cartindex + 1; i < parent.getChildCount(); i++) {
-            View v = parent.getChildAt(i);
-            if (v instanceof StackSlidingLayout) {
-                return (StackSlidingLayout) v;
-            }
-        }
-        return null;
-    }
-
-    private int scroll(CoordinatorLayout parent, StackSlidingLayout child, int dy) {
+    private int scroll(CoordinatorLayout parent, MultiRecycleContainer child, int dy) {
         //1.k控制自己的移动
         int initialOffset = child.getTop();
-        View view = getPreviousChild(parent, child);
-        int heightAll = getAllChildHeight(parent);
-        StackSlidingLayout firstchild = getFirstChild(parent);
-        StackSlidingLayout lastchild = getLastChild(parent);
+        MultiRecycleContainer firstchild = getFirstChild(parent);
+        MultiRecycleContainer lastchild = getLastChild(parent);
 
         //dy>0上推，dy<0下拉
         int top = firstchild.getTop();
@@ -295,41 +285,76 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         return dy - offset;//滑动方向
     }
 
-    private StackSlidingLayout getFirstChild(CoordinatorLayout parent) {
-        StackSlidingLayout firstchild = null;
+    /**
+     * 获取下一个MultiRecycleContainer
+     * @param parent
+     * @param child
+     * @return
+     */
+    private MultiRecycleContainer getNextChild(CoordinatorLayout parent, MultiRecycleContainer child) {
+        int cartindex = parent.indexOfChild(child);
+        for (int i = cartindex + 1; i < parent.getChildCount(); i++) {
+            View v = parent.getChildAt(i);
+            if (v instanceof MultiRecycleContainer) {
+                return (MultiRecycleContainer) v;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取第一个MultiRecycleContainer
+     * @param parent
+     * @return
+     */
+    private MultiRecycleContainer getFirstChild(CoordinatorLayout parent) {
+        MultiRecycleContainer firstchild = null;
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
-            if (view instanceof StackSlidingLayout) {
-                firstchild = (StackSlidingLayout) view;
+            if (view instanceof MultiRecycleContainer) {
+                firstchild = (MultiRecycleContainer) view;
                 return firstchild;
             }
         }
         return firstchild;
     }
-
-    private StackSlidingLayout getCurrentChild(CoordinatorLayout parent) {
-        StackSlidingLayout current = null;
+    /**
+     * 获取当前MultiRecycleContainer
+     * @param parent
+     * @return
+     */
+    private MultiRecycleContainer getCurrentChild(CoordinatorLayout parent) {
+        MultiRecycleContainer current = null;
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
             if (view.getTop() >= 0) {
-                return (StackSlidingLayout) view;
+                return (MultiRecycleContainer) view;
             }
         }
         return current;
     }
-
-    private StackSlidingLayout getLastChild(CoordinatorLayout parent) {
-        StackSlidingLayout lastchild = null;
+    /**
+     * 获取最后一个MultiRecycleContainer
+     * @param parent
+     * @return
+     */
+    private MultiRecycleContainer getLastChild(CoordinatorLayout parent) {
+        MultiRecycleContainer lastchild = null;
         for (int i = parent.getChildCount() - 1; i >= 0; i--) {
             View view = parent.getChildAt(i);
-            if (view instanceof StackSlidingLayout) {
-                lastchild = (StackSlidingLayout) view;
+            if (view instanceof MultiRecycleContainer) {
+                lastchild = (MultiRecycleContainer) view;
                 return lastchild;
             }
         }
         return lastchild;
     }
 
+    /**
+     * 获取CoordinatorLayout所有子view视图高度
+     * @param parent
+     * @return
+     */
     private int getAllChildHeight(CoordinatorLayout parent) {
         int height = 0;
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -338,9 +363,15 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         return height;
     }
 
-    private void moveOther(CoordinatorLayout parent, StackSlidingLayout child, int offset) {
-        StackSlidingLayout current = child;
-        StackSlidingLayout above = getPreviousChild(parent, current);
+    /**
+     * 移动其他平级的MultiRecycleContainer
+     * @param parent
+     * @param child
+     * @param offset
+     */
+    private void moveOther(CoordinatorLayout parent, MultiRecycleContainer child, int offset) {
+        MultiRecycleContainer current = child;
+        MultiRecycleContainer above = getPreviousChild(parent, current);
         while (above != null) {
             int offset_c = current.getTop() - above.getHeight() - above.getTop();
             above.offsetTopAndBottom(offset_c);
@@ -349,7 +380,7 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         }
 
         current = child;
-        StackSlidingLayout below = getNextChild(parent, current);
+        MultiRecycleContainer below = getNextChild(parent, current);
         while (below != null) {
             int offset_c = current.getTop() + current.getHeight() - below.getTop();
             below.offsetTopAndBottom(offset_c);
@@ -358,20 +389,8 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         }
     }
 
-    private int clamp(int i, int minOffset, int maxOffset) {
-        if (i > maxOffset) {
-            return maxOffset;
-        } else if (i < minOffset) {
-            return minOffset;
-        } else {
-            return i;
-        }
-    }
-
-    /****************      惯性滚动      ****************************************************************/
-
+    /****************   以下参考网上的惯性滚动   效果还不是很好     ****************************************************************/
     private boolean isInital;
-
     private void init(View view) {
         isInital = true;
         this.mContext = view.getContext();
@@ -405,9 +424,9 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     private VelocityTracker mVelocityTracker;//滑动速度跟踪器
 
     @Override
-    public boolean onTouchEvent(@NonNull CoordinatorLayout parent, @NonNull StackSlidingLayout child, @NonNull MotionEvent event) {
+    public boolean onTouchEvent(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull MotionEvent event) {
 
-        if(!isInital){
+        if (!isInital) {
             init(parent);
         }
         if (mVelocityTracker == null) {
@@ -520,7 +539,6 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
     }
 
     private class ViewFlinger implements Runnable {
-
         private int mLastFlingY = 0;
         private OverScroller mScroller;
         private boolean mEatRunOnAnimationRequest = false;
@@ -592,7 +610,7 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         QDLogger.d("height=" + height + ",width=" + width);
 
         int scrollY = getFirstChild(parent).getTop();
-        StackSlidingLayout child = getCurrentChild(parent);
+        MultiRecycleContainer child = getCurrentChild(parent);
 
         //下边界
         if (mHeight - scrollY - dy < height) {
@@ -602,8 +620,8 @@ public class StackSlidingBehavior extends CoordinatorLayout.Behavior<StackSlidin
         if (scrollY + dy < 0) {
             dy = -scrollY;
         }
-       // scroll(parent, child, dy);
-        scrollParent(parent,child,null,dy);
+        // scroll(parent, child, dy);
+        scrollParent(parent, child, null, dy);
     }
 
     //f(x) = (x-1)^5 + 1

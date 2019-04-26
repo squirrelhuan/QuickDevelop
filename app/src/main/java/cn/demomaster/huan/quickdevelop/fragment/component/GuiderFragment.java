@@ -157,20 +157,18 @@ public class GuiderFragment extends QDBaseFragment {
     String tips[] = {"点击按钮关闭引导！", "点击提示框关闭引导", "这里是文本说明区域，点击任意位置关闭提示", "椭圆提示框", "这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
 
     private void showGuider(View view, int i) {
-
         GuiderModel guiderModel = new GuiderModel();
         guiderModel.setLineType(GuiderModel.LINETYPE.straight);
         guiderModel.setTargetView(new WeakReference<View>(view));
         guiderModel.setMessage(tips[i]);
         guiderModel.setComplateType(GuiderModel.GuidActionType.CLICK);
-        guiderModel.setLineColor(Color.BLACK);
-        guiderModel.setLineWidth(5);
-        guiderModel.setTextColor(Color.GREEN);
-        guiderModel.setTextSize(62);
+        //guiderModel.setLineColor(Color.BLACK);
+        guiderModel.setLineWidth(2);
+        //guiderModel.setTextColor(Color.GREEN);
+        guiderModel.setTextSize(36);
+        //guiderModel.setTextBackgroundColor(Color.YELLOW);
         GuiderHelper.getInstance().setGuiderModel(guiderModel);
-
         GuiderHelper.getInstance().add(guiderModel);
-
         switch (i) {
             case 0:
                 guiderModel.setTouchType(GuiderModel.TouchType.TargetView);
@@ -188,7 +186,10 @@ public class GuiderFragment extends QDBaseFragment {
                 guiderModel.setShape(GuiderModel.SHAPE.rectangle);
                 break;
         }
-
+        GuiderHelper.getInstance().setTextBackgroundColor(Color.GREEN);
+        GuiderHelper.getInstance().setBackgroundColor(0x99000000);
+        GuiderHelper.getInstance().setLineColor(Color.WHITE);
+        GuiderHelper.getInstance().setTextColor(Color.RED);
         //GuiderHelper.getInstance().startGuider(mContext,view,"DBGUIDER");
         GuiderHelper.getInstance().startGuider(getActivity(), view, "");
         /*ViewGroup mParentView = (FrameLayout) getActivity().getWindow().getDecorView();
@@ -199,5 +200,11 @@ public class GuiderFragment extends QDBaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        GuiderHelper.getInstance().destory();
+        return super.onBackPressed();
     }
 }

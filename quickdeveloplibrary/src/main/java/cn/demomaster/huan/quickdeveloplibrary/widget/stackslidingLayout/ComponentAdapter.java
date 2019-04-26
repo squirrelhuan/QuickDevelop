@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +27,18 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
         this.context = context;
         data = new ArrayList<>();
     }
+    public ComponentAdapter(Context context,int textColor) {
+        this.context = context;
+        this.textColor = textColor;
+        data = new ArrayList<>();
+    }
 
     public void updateList(List<String> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
+    private int textColor = Color.WHITE;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu, parent, false);
@@ -40,7 +47,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBind(position);
+        holder.onBind(position,textColor);
     }
 
     @Override
@@ -57,10 +64,10 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             tv_title = itemView.findViewById(R.id.tv_title);
         }
 
-        public void onBind(final int position) {
+        public void onBind( final int position,int textColor) {
             String clazz = data.get(position);
             tv_title.setText(clazz);
-
+            tv_title.setTextColor(textColor);
         }
     }
 
