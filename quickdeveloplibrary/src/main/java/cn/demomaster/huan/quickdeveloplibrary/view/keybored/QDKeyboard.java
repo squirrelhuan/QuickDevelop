@@ -40,11 +40,8 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  */
 
 public class QDKeyboard {
-
     private static final String TAG = "SafeKeyboard";
-
     private Context mContext;               //上下文
-
     private LinearLayout layout;
     private View keyContainer;              //自定义键盘的容器View
     private QDKeyboardView keyboardView;  //键盘的View
