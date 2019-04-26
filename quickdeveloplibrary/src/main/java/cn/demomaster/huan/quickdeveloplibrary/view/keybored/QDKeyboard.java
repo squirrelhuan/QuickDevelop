@@ -38,7 +38,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 /**
  * Created by Administrator on 2018/3/7 0007.
  */
-
 public class QDKeyboard {
     private static final String TAG = "SafeKeyboard";
     private Context mContext;               //上下文
