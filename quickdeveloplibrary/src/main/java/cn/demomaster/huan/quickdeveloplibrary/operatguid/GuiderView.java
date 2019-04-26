@@ -313,7 +313,7 @@ public class GuiderView extends View {
         } else {
             paint.setTextSize(guiderModel.getTextSize());
         }
-        float min = Math.min(rectF_message.width(), rectF_message.height()) / 2;
+        float min = rectF_message.width()/2+rectF_message.height()/2;//Math.min(rectF_message.width(), rectF_message.height()) / 2;
         RectF rectF1 = new RectF(rectF_message.left - min, rectF_message.top - min, rectF_message.right + min, rectF_message.bottom + min);
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
