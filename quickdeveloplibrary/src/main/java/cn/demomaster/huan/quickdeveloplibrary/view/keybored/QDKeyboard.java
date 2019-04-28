@@ -66,7 +66,7 @@ public class QDKeyboard {
     private EditText mEditText;
     public List<EditText> editTextList;
 
-    public QDKeyboard(Context mContext) {
+    public QDKeyboard(Activity mContext) {
         @SuppressLint("InflateParams") View view = LayoutInflater.from(mContext).inflate(R.layout.layout_keyboard_containor, null);
         this.mContext = mContext;
         this.keyboardContainerResId = R.layout.layout_keyboard_containor;
@@ -266,7 +266,8 @@ public class QDKeyboard {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initKeyboard() {
-
+        //解决onresume系统输入法重新弹出，遗留的问题就是不能根据焦点自动弹出输入框了
+        ((Activity)mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         keyContainer = LayoutInflater.from(mContext).inflate(keyboardContainerResId, null, false);
         keyboardNumber = new Keyboard(mContext, R.xml.keyboard_num);            //实例化数字键盘
         keyboardNumber_Only = new Keyboard(mContext, R.xml.keyboard_num_only);            //实例化数字键盘
@@ -556,9 +557,8 @@ public class QDKeyboard {
         if (imm == null)
             return;
         boolean isOpen = imm.isActive();
-        if (isOpen) {
-            imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-        }
+        QDLogger.i("isOpen="+isOpen);
+        imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 
         int currentVersion = Build.VERSION.SDK_INT;
         String methodName = null;
