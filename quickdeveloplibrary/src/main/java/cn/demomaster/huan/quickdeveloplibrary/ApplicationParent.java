@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
 
+import com.didichuxing.doraemonkit.DoraemonKit;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -58,6 +59,8 @@ public class ApplicationParent extends Application {
                 QDLogger.d("配置文件初始化完成"+result);
             }
         });
+
+        DoraemonKit.install(this);
     }
 
     /**
@@ -134,7 +137,6 @@ public class ApplicationParent extends Application {
     }
 
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
-
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             ActivityManager.getInstance().addActivity(activity);
@@ -173,5 +175,4 @@ public class ApplicationParent extends Application {
             QDLogger.d(TAG, "onActivityDestroyed() called with: activity = [" + activity + "]");
         }
     };
-
 }
