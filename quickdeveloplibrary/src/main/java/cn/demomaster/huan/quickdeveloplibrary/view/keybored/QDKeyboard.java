@@ -67,7 +67,7 @@ public class QDKeyboard {
     public List<EditText> editTextList;
 
     public QDKeyboard(Activity mContext) {
-        @SuppressLint("InflateParams") View view = LayoutInflater.from(mContext).inflate(R.layout.layout_keyboard_containor, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_keyboard_containor, null);
         this.mContext = mContext;
         this.keyboardContainerResId = R.layout.layout_keyboard_containor;
         this.keyboardResId = view.findViewById(R.id.safeKeyboardLetter).getId();
