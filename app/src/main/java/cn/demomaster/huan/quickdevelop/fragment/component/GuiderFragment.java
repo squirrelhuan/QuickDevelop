@@ -166,6 +166,7 @@ public class GuiderFragment extends QDBaseFragment {
         guiderModel.setLineWidth(2);
         //guiderModel.setTextColor(Color.GREEN);
         guiderModel.setTextSize(36);
+        guiderModel.setImgResourceId(R.mipmap.ic_launcher2);
         //guiderModel.setTextBackgroundColor(Color.YELLOW);
         GuiderHelper.getInstance().setGuiderModel(guiderModel);
         GuiderHelper.getInstance().add(guiderModel);

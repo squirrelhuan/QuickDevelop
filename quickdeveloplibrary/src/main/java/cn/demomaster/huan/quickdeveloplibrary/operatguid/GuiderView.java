@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.operatguid;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,8 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+
 import androidx.annotation.Nullable;
+
+import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
+
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
 
 /**
@@ -164,6 +169,7 @@ public class GuiderView extends View {
     }
 
     private boolean isAnimationFinished;//加载完毕
+
     public void startAnimation() {
         isPlaying = true;
         //value值0-1
@@ -216,6 +222,7 @@ public class GuiderView extends View {
     private GuiderRectF rectF_view;
     private GuiderRectF rectF_message;
     private RectF rectF_background;
+
     private void drawGuider(Canvas canvas) {
         if (guiderModel.getTargetView() == null) {
             return;
@@ -235,35 +242,70 @@ public class GuiderView extends View {
         drawBackground(canvas);
         //drawTargetView
         drawTargetView(canvas);
-        //drawLine
-        drawLinePath(canvas);
-        drawMessageBox(canvas);
-        //写字
-        if (animationIndex > 3) {
-            //paint.setTextSize(guiderModel.getTextSize());
-            //paint.setColor(guiderModel.getTextColor());
-            //canvas.drawText(guiderModel.getMessage(), messageContentRectf.left, messageContentRectf.bottom, paint);
-            TextPaint textPaint = new TextPaint();
-            if (guiderModel.getTextColor() == -1) {
-                textPaint.setColor(textColor);
-            } else {
-                textPaint.setColor(guiderModel.getTextColor());
+        if (guiderModel.getShape() == GuiderModel.SHAPE.img) {//绘制res资源
+            drawBitmap(canvas);
+        } else {//绘制线条文字
+            //drawLine
+            drawLinePath(canvas);
+            drawMessageBox(canvas);
+            //写字
+            if (animationIndex > 3) {
+                //paint.setTextSize(guiderModel.getTextSize());
+                //paint.setColor(guiderModel.getTextColor());
+                //canvas.drawText(guiderModel.getMessage(), messageContentRectf.left, messageContentRectf.bottom, paint);
+                TextPaint textPaint = new TextPaint();
+                if (guiderModel.getTextColor() == -1) {
+                    textPaint.setColor(textColor);
+                } else {
+                    textPaint.setColor(guiderModel.getTextColor());
+                }
+                textPaint.setStyle(Paint.Style.FILL);
+                if (guiderModel.getTextSize() == -1) {
+                    textPaint.setTextSize(textSize);
+                } else {
+                    textPaint.setTextSize(guiderModel.getTextSize());
+                }
+                String message = guiderModel.getMessage();
+                StaticLayout myStaticLayout = new StaticLayout(message, textPaint, (int) (canvas.getWidth() * .8f), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+                int heightText = myStaticLayout.getHeight();
+                canvas.save();
+                canvas.translate((int) (canvas.getWidth() * .1f), messageContentRectf.top);
+                myStaticLayout.draw(canvas);
+                canvas.restore();
+                initTouch();
             }
-            textPaint.setStyle(Paint.Style.FILL);
-            if (guiderModel.getTextSize() == -1) {
-                textPaint.setTextSize(textSize);
-            } else {
-                textPaint.setTextSize(guiderModel.getTextSize());
-            }
-            String message = guiderModel.getMessage();
-            StaticLayout myStaticLayout = new StaticLayout(message, textPaint, (int) (canvas.getWidth() * .8f), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            int heightText = myStaticLayout.getHeight();
-            canvas.save();
-            canvas.translate((int) (canvas.getWidth() * .1f), messageContentRectf.top);
-            myStaticLayout.draw(canvas);
-            canvas.restore();
-            initTouch();
         }
+    }
+
+    /**
+     * 绘制
+     * @param canvas
+     */
+    private void drawBitmap(Canvas canvas) {
+        if(guiderModel.getImgResourceId()==-1||guiderModel.getImgResourceId()==0){
+            return;
+        }
+        Bitmap backbitmap = null;
+        backbitmap = QDBitmapUtil.drawable2Bitmap(getContext(), guiderModel.getImgResourceId());
+        int w = 0;
+        int h = 0;
+        if (guiderModel.getImgWidth() == -1 && guiderModel.getImgHeight() == -1) {
+
+        } else {
+            if (guiderModel.getImgWidth() == -1) {
+                w = backbitmap.getWidth();
+            } else {
+                w = (int) (guiderModel.getImgScale() * guiderModel.getImgWidth());
+            }
+            if (guiderModel.getImgHeight() == -1) {
+                h = backbitmap.getHeight();
+            } else {
+                h = (int) (guiderModel.getImgScale() * guiderModel.getImgHeight());
+            }
+            backbitmap = QDBitmapUtil.zoomImage(backbitmap, w, h);
+        }
+        canvas.drawBitmap(backbitmap, rectF_view.toLeft, rectF_view.toTop, new Paint());
+        backbitmap.recycle();
     }
 
     /**
@@ -313,7 +355,7 @@ public class GuiderView extends View {
         } else {
             paint.setTextSize(guiderModel.getTextSize());
         }
-        float min = rectF_message.width()/2+rectF_message.height()/2;//Math.min(rectF_message.width(), rectF_message.height()) / 2;
+        float min = rectF_message.width() / 2 + rectF_message.height() / 2;//Math.min(rectF_message.width(), rectF_message.height()) / 2;
         RectF rectF1 = new RectF(rectF_message.left - min, rectF_message.top - min, rectF_message.right + min, rectF_message.bottom + min);
         //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
@@ -324,7 +366,7 @@ public class GuiderView extends View {
         canvas.restoreToCount(layerID);
 
         //设置文本框背景色
-        if(guiderModel.getTextBackgroundColor()!=-1){
+        if (guiderModel.getTextBackgroundColor() != -1) {
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(guiderModel.getTextBackgroundColor());
             if (guiderModel.getShape() == GuiderModel.SHAPE.oval) {//椭圆

@@ -67,6 +67,7 @@ public class QDBitmapUtil {
         opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, opt).copy(Bitmap.Config.ARGB_8888, true);
         bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
+        //bitmap.recycle();
         return bitmap;
     }
 

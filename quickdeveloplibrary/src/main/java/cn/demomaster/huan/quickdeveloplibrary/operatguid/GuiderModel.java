@@ -19,9 +19,48 @@ public class GuiderModel {
     private int textBackgroundColor = -1;//文字框背景色
     private int lineColor = -1;
     private int lineWidth = -1;
+    private int imgResourceId =-1;//图片
+    private int imgWidth =-1;//图片
+    private int imgHeight =-1;//图片
+    private float imgScale=1;//图片缩放比例
     private GuidActionType complateType;//结束触发类型
     private GuidActionType startType;//开始触发类型
     private TouchType touchType;
+
+    public int getImgWidth() {
+        return imgWidth;
+    }
+
+    public void setImgWidth(int imgWidth) {
+        this.imgWidth = imgWidth;
+    }
+
+    public int getImgHeight() {
+        return imgHeight;
+    }
+
+    public void setImgHeight(int imgHeight) {
+        this.imgHeight = imgHeight;
+    }
+
+    public float getImgScale() {
+        return imgScale;
+    }
+
+    public void setImgScale(float imgScale) {
+        this.imgScale = imgScale;
+    }
+
+    public int getImgResourceId() {
+        return imgResourceId;
+    }
+
+    public void setImgResourceId(int imgResourceId) {
+        if(imgResourceId!=0&&imgResourceId!=-1){
+            shape = SHAPE.img;
+        }
+        this.imgResourceId = imgResourceId;
+    }
 
     public int getTextBackgroundColor() {
         return textBackgroundColor;
@@ -123,7 +162,7 @@ public class GuiderModel {
         straight,curve//直线/曲线
     }
     public enum SHAPE{
-        roundedrectangle,rectangle,oval
+        roundedrectangle,rectangle,oval,img
     }
 
 
