@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +53,52 @@ public class TimeDomainPlotFragment extends QDBaseFragment {
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
         TimeDomainPlotView timeDomainPlotView = rootView.findViewById(R.id.timeDomainPlotView);
         List<LinePoint> linePoints = new ArrayList<>();
-        for(int i =0;i<20;i++){
-            linePoints.add(new LinePoint(i*20,((i%2)==1)?200:-200));
+        for(int i =0;i<50;i++){
+            linePoints.add(new LinePoint(i*20, ((i%2)==1)?Math.round( (float) (Math.random() * 100) *100)/100: Math.round(-(float) (Math.random() * 100)*100)/100));
         }
         timeDomainPlotView.setLinePoints(linePoints);
-        timeDomainPlotView.setBaselineY(0);
+        //timeDomainPlotView.setBaselineY(0);
+
+        RadioGroup rg_transitionType = rootView.findViewById(R.id.rg_transitionType);
+        rg_transitionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_transitionType_01:
+                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.horizontal);
+                        break;
+                    case R.id.rb_transitionType_02:
+                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.vertical);
+                        break;
+                    case R.id.rb_transitionType_03:
+                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.transitionXY);
+                        break;
+                    case R.id.rb_transitionType_04:
+                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.none);
+                        break;
+                }
+            }
+        });
+        RadioGroup rg_scaleType = rootView.findViewById(R.id.rg_scaleType);
+        rg_scaleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rg_scaleType_01:
+                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleX);
+                        break;
+                    case R.id.rg_scaleType_02:
+                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleY);
+                        break;
+                    case R.id.rg_scaleType_03:
+                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleXY);
+                        break;
+                    case R.id.rg_scaleType_04:
+                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.none);
+                        break;
+                }
+            }
+        });
     }
 
     @Override

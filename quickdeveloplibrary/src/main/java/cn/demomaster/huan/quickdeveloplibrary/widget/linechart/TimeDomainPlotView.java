@@ -5,20 +5,28 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Interpolator;
+import android.widget.OverScroller;
+import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleBehavior;
+import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer;
 
 /**
  * 时域图
@@ -59,7 +67,6 @@ public class TimeDomainPlotView extends View {
                 mDragHelper = ViewDragHelper.create((ViewGroup) getParent(), 1.0f, new DragHelperCallback());
             }
         });
-
     }
 
     List<LinePoint> linePoints;
@@ -131,7 +138,7 @@ public class TimeDomainPlotView extends View {
         paint.setStrokeWidth(2);
         canvas.drawPath(pathX, paint);
         Path pathY = new Path();
-        pathY.moveTo(offsetX,  0);
+        pathY.moveTo(offsetX, 0);
         pathY.lineTo(offsetX, getHeight());
         canvas.drawPath(pathY, paint);
 
@@ -141,14 +148,14 @@ public class TimeDomainPlotView extends View {
         columnPaint.setColor(columnColor);
         columnPaint.setStrokeWidth(1);
         float g = granularity * scale;
-        int c =1;
-        if(scale<1){
-           c = (int) (1/scale);
+        int c = 1;
+        if (scale < 1) {
+            c = (int) (1 / scale);
         }
-        columnNum = (int) (getWidth() / g);
+        columnNum = (int) (getWidth() / g) + 1;
         W:
-        for (int i = 0; i < columnNum; i+=c) {
-            float startX = i * g + offsetX%g;
+        for (int i = 0; i < columnNum; i += c) {
+            float startX = i * g + offsetX % g;
             canvas.drawLine(startX, 0, startX, getHeight(), columnPaint);
             if (startX > getWidth()) {
                 break W;
@@ -173,12 +180,19 @@ public class TimeDomainPlotView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1);
         paint.setAntiAlias(true);
-        float g = granularity * scale;
+        float w = granularity;
+        if (scaleType != ScaleType.scaleY && scaleType != ScaleType.none) {
+            w = granularity * scale;
+        }
+        float h = 1;
+        if (scaleType != ScaleType.scaleX && scaleType != ScaleType.none) {
+            h = scale;
+        }
         Path path = new Path();
         path.moveTo(0 + offsetX, -linePoints.get(0).getY() / maxY * getHeight() / 2 + centerY - baselineY + offsetY);
         for (int i = startP; i < endP; i++) {
-            float startX = i * g + offsetX;
-            float startY = -linePoints.get(i).getY() / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
+            float startX = i * w + offsetX;
+            float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
             path.lineTo(startX, startY);
         }
         //path.close();
@@ -188,8 +202,8 @@ public class TimeDomainPlotView extends View {
         Paint pointPaint = new Paint();
         pointPaint.setColor(pointColor);
         for (int i = startP; i < endP; i++) {
-            float startX = i * g + offsetX;
-            float startY = -linePoints.get(i).getY() / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
+            float startX = i * w + offsetX;
+            float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
             canvas.drawCircle(startX, startY, pointRadius, pointPaint);
         }
 
@@ -197,13 +211,16 @@ public class TimeDomainPlotView extends View {
         Paint textPaint = new Paint();
         textPaint.setColor(textColor);
         textPaint.setTextSize(textSize);
+        float s = (float) Math.ceil(1 / scale);
         for (int i = startP; i < endP; i++) {
-            float startX = i * g + offsetX;
-            float startY = -linePoints.get(i).getY() / maxY * getHeight() / 2 + centerY - baselineY + offsetY+(linePoints.get(i).getY()>0?-textSize/2-pointRadius:textSize+pointRadius);
-            String text = linePoints.get(i).getY()+"";
-            // 文字宽
-            float textWidth1 = textPaint.measureText(text);
-            canvas.drawText(text,startX-textWidth1/2,startY,textPaint);
+            if (i % s == 0) {
+                float startX = i * w + offsetX;
+                float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY + (linePoints.get(i).getY() > 0 ? -textSize / 2 - pointRadius : textSize + pointRadius);
+                String text = linePoints.get(i).getY() + "";
+                // 文字宽
+                float textWidth1 = textPaint.measureText(text);
+                canvas.drawText(text, startX - textWidth1 / 2, startY, textPaint);
+            }
         }
     }
 
@@ -227,6 +244,7 @@ public class TimeDomainPlotView extends View {
                 default:
                     break;
             }
+            lastMultiTouchTime = System.currentTimeMillis();// 记录双指缩放后的时间
             return mScaleGestureDetector.onTouchEvent(event);//让mScaleGestureDetector处理触摸事件
         } else {
             long currentTimeMillis = System.currentTimeMillis();
@@ -242,6 +260,9 @@ public class TimeDomainPlotView extends View {
         // return super.onTouchEvent(event);
     }
 
+    /**
+     * 控制位移
+     */
     public class DragHelperCallback extends ViewDragHelper.Callback {
         //这个地方实际上函数返回值为true就代表可以滑动 为false 则不能滑动
         @Override
@@ -256,31 +277,90 @@ public class TimeDomainPlotView extends View {
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            QDLogger.i("onViewReleased,xvel=" + xvel + ",yvel=" + yvel);
             //int top = getPaddingTop();
-           // mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+            // mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
+            //mScroller.startScroll;
+            if (transitionType != TransitionType.none) {
+                    fling((int) xvel, (int) yvel);
+            }
         }
 
         @Override
         public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
             QDLogger.i("clampViewPositionHorizontal,left=" + left + ",dx=" + dx);
-            offsetX = offsetX + dx;
-            postInvalidate();
+            if (transitionType != TransitionType.vertical && transitionType != TransitionType.none) {
+                offsetX = offsetX + dx;
+                postInvalidate();
+            }
             return 0;
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
             QDLogger.i("clampViewPositionVertical,top=" + top + ",dy=" + dy);
-            offsetY = offsetY + dy;
-            postInvalidate();
+            if (transitionType != TransitionType.horizontal && transitionType != TransitionType.none) {
+                offsetY = offsetY + dy;
+                postInvalidate();
+            }
             return getTop();
         }
     }
+
+    int dx;
+    int dy;
+
+    private void fling(int xvel, int yvel) {
+        dx = (int) Math.sqrt(xvel );
+        dy = (int) Math.sqrt(yvel );
+        if (transitionType == TransitionType.horizontal||transitionType == TransitionType.transitionXY) {
+                if (dx < 0) {
+                    if (dx < -300) {
+                        dx = -300;
+                    }
+                    offsetX += Math.max(dx, -200);
+                } else {
+                    if (dx > 300) {
+                        dx = 300;
+                    }
+                    offsetX += Math.min(dx, 200);
+                }
+        }
+        if (transitionType == TransitionType.vertical||transitionType == TransitionType.transitionXY) {
+            if (dy < 0) {
+                if (dy < -300) {
+                    dy = -300;
+                }
+                offsetY += Math.max(dy, -200);
+            } else {
+                if (dy > 300) {
+                    dy = 300;
+                }
+                offsetY += Math.min(dy, 200);
+            }
+        }
+        postInvalidate();
+        int t = (transitionType == TransitionType.horizontal? dx:dy);
+        if (Math.abs(t) > 2) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fling(dx, dy);
+                }
+            }, 10);
+        }
+    }
+
+    private Handler handler = new Handler();
+
 
     private long lastMultiTouchTime;// 记录多点触控缩放后的时间
     private float preScale = 1;// 默认前一次缩放比例为1
     private float scale = 1;
 
+    /**
+     * 控制缩放
+     */
     public class ScaleGestureListener implements
             ScaleGestureDetector.OnScaleGestureListener {
 
@@ -317,6 +397,16 @@ public class TimeDomainPlotView extends View {
     private ScaleType scaleType = ScaleType.scaleX;
     private TransitionType transitionType = TransitionType.horizontal;
 
+    public void setScaleType(ScaleType scaleType) {
+        this.scaleType = scaleType;
+        postInvalidate();
+    }
+
+    public void setTransitionType(TransitionType transitionType) {
+        this.transitionType = transitionType;
+        postInvalidate();
+    }
+
     public static enum ScaleType {
         scaleX//x轴缩放
         , scaleY//y轴缩放
@@ -333,5 +423,6 @@ public class TimeDomainPlotView extends View {
         , transitionXY//任意移动
         , none//不允许移动
     }
+
 
 }
