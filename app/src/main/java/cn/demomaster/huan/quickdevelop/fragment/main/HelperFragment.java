@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
@@ -64,6 +65,7 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(FileManagerFragment.class);
         classList.add(LanguageFragment.class);
         classList.add(KeyboardFragment.class);
+        classList.add(DragViewFragment.class);
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

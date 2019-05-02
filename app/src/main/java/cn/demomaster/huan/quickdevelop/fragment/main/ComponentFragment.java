@@ -35,6 +35,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.TimeDomainPlotFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -83,6 +84,7 @@ public class ComponentFragment extends QDBaseFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
         classList.add(ToggleButtonActivity.class);
+        classList.add(TimeDomainPlotFragment.class);
         classList.add(CenterHorizontalActivity.class);
         classList.add(LoadingActivity.class);
         classList.add(PickActivity.class);
