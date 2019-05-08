@@ -81,6 +81,12 @@ public class TimeDomainPlotView extends View {
     private float baselineY;//y轴基线
     private float axisScaleX = 1f;//默认坐标轴最大显示区域比例
     private float axisScaleY = 0.5f;//默认坐标轴最大显示区域比例
+    private boolean showLable = true;
+
+    public void setShowLable(boolean showLable) {
+        this.showLable = showLable;
+        postInvalidate();
+    }
 
     public void setBaselineY(float baselineY) {
         this.baselineY = baselineY;
@@ -113,12 +119,12 @@ public class TimeDomainPlotView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawAxis(canvas);
-        if (linePoints != null) {
+        if (linePoints != null && linePoints.size() > 0) {
             drawLine(canvas);
         }
     }
 
-    private float granularity = 50;//刻度间隔
+    private float granularity = 20;//刻度间隔
     private int columnNum;//纵向刻度数量
     private float offsetX;//x轴偏移量
     private float offsetY;//y轴偏移量
@@ -165,11 +171,17 @@ public class TimeDomainPlotView extends View {
 
     private int columnColor = 0x55888888;//纵向标尺颜色
     private int axisColor = 0xcc888888;//坐标系颜色
+    private int lineWidth = 1;
     private int lineColor = Color.RED;
     private int pointColor = Color.GREEN;
     private int textColor = Color.BLACK;
     private int textSize = 32;
     private int pointRadius = 5;
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+        postInvalidate();
+    }
 
     private void drawLine(Canvas canvas) {
         centerY = getHeight() / 2;
@@ -178,7 +190,7 @@ public class TimeDomainPlotView extends View {
         Paint paint = new Paint();
         paint.setColor(lineColor);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1);
+        paint.setStrokeWidth(lineWidth);
         paint.setAntiAlias(true);
         float w = granularity;
         if (scaleType != ScaleType.scaleY && scaleType != ScaleType.none) {
@@ -189,7 +201,7 @@ public class TimeDomainPlotView extends View {
             h = scale;
         }
         Path path = new Path();
-        path.moveTo(0 + offsetX, -linePoints.get(0).getY() / maxY * getHeight() / 2 + centerY - baselineY + offsetY);
+        path.moveTo(0 + offsetX, -linePoints.get(0).getY()* h / maxY * getHeight() / 2 + centerY - baselineY + offsetY);
         for (int i = startP; i < endP; i++) {
             float startX = i * w + offsetX;
             float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
@@ -207,19 +219,21 @@ public class TimeDomainPlotView extends View {
             canvas.drawCircle(startX, startY, pointRadius, pointPaint);
         }
 
-        //画值
-        Paint textPaint = new Paint();
-        textPaint.setColor(textColor);
-        textPaint.setTextSize(textSize);
-        float s = (float) Math.ceil(1 / scale);
-        for (int i = startP; i < endP; i++) {
-            if (i % s == 0) {
-                float startX = i * w + offsetX;
-                float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY + (linePoints.get(i).getY() > 0 ? -textSize / 2 - pointRadius : textSize + pointRadius);
-                String text = linePoints.get(i).getY() + "";
-                // 文字宽
-                float textWidth1 = textPaint.measureText(text);
-                canvas.drawText(text, startX - textWidth1 / 2, startY, textPaint);
+        if (showLable) {
+            //画值
+            Paint textPaint = new Paint();
+            textPaint.setColor(textColor);
+            textPaint.setTextSize(textSize);
+            float s = (float) Math.ceil(1 / scale);
+            for (int i = startP; i < endP; i++) {
+                if (i % s == 0) {
+                    float startX = i * w + offsetX;
+                    float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY + (linePoints.get(i).getY() > 0 ? -textSize / 2 - pointRadius : textSize + pointRadius);
+                    String text = linePoints.get(i).getY() + "";
+                    // 文字宽
+                    float textWidth1 = textPaint.measureText(text);
+                    canvas.drawText(text, startX - textWidth1 / 2, startY, textPaint);
+                }
             }
         }
     }
@@ -282,7 +296,7 @@ public class TimeDomainPlotView extends View {
             // mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
             //mScroller.startScroll;
             if (transitionType != TransitionType.none) {
-                    fling((int) xvel, (int) yvel);
+                fling((int) xvel, (int) yvel);
             }
         }
 
@@ -311,36 +325,24 @@ public class TimeDomainPlotView extends View {
     int dy;
 
     private void fling(int xvel, int yvel) {
-        dx = (int) Math.sqrt(xvel );
-        dy = (int) Math.sqrt(yvel );
-        if (transitionType == TransitionType.horizontal||transitionType == TransitionType.transitionXY) {
-                if (dx < 0) {
-                    if (dx < -300) {
-                        dx = -300;
-                    }
-                    offsetX += Math.max(dx, -200);
-                } else {
-                    if (dx > 300) {
-                        dx = 300;
-                    }
-                    offsetX += Math.min(dx, 200);
-                }
+        dx = (int) Math.sqrt(xvel);
+        dy = (int) Math.sqrt(yvel);
+        if (transitionType == TransitionType.horizontal || transitionType == TransitionType.transitionXY) {
+            if (dx < 0) {
+                offsetX += Math.max(dx, -200);
+            } else {
+                offsetX += Math.min(dx, 200);
+            }
         }
-        if (transitionType == TransitionType.vertical||transitionType == TransitionType.transitionXY) {
+        if (transitionType == TransitionType.vertical || transitionType == TransitionType.transitionXY) {
             if (dy < 0) {
-                if (dy < -300) {
-                    dy = -300;
-                }
                 offsetY += Math.max(dy, -200);
             } else {
-                if (dy > 300) {
-                    dy = 300;
-                }
                 offsetY += Math.min(dy, 200);
             }
         }
         postInvalidate();
-        int t = (transitionType == TransitionType.horizontal? dx:dy);
+        int t = (transitionType == TransitionType.horizontal ? dx : dy);
         if (Math.abs(t) > 2) {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -352,7 +354,6 @@ public class TimeDomainPlotView extends View {
     }
 
     private Handler handler = new Handler();
-
 
     private long lastMultiTouchTime;// 记录多点触控缩放后的时间
     private float preScale = 1;// 默认前一次缩放比例为1
@@ -370,7 +371,7 @@ public class TimeDomainPlotView extends View {
             float currentSpan = detector.getCurrentSpan();// 本次双指间距
             if (currentSpan < previousSpan) {
                 // 缩小
-                scale = Math.max(preScale * Math.abs(currentSpan / previousSpan), 0.1f);//最小0.1倍数
+                scale = Math.max(preScale * Math.abs(currentSpan / previousSpan), 0.01f);//最小0.1倍数
                 QDLogger.i("缩小:" + scale);
             } else {
                 // 放大
@@ -404,6 +405,8 @@ public class TimeDomainPlotView extends View {
 
     public void setTransitionType(TransitionType transitionType) {
         this.transitionType = transitionType;
+        offsetX = 0;
+        offsetY = 0;
         postInvalidate();
     }
 

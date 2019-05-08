@@ -102,6 +102,5 @@ public class MessageService extends Service {
        startService(intent);
     }
 
-
     public final static String ACTION = "cn.demomaster.huan.quickdevelop.service";
 }

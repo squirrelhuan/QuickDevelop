@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import cn.demomaster.huan.quickdevelop.App;
+import cn.demomaster.huan.quickdevelop.Application;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
@@ -63,9 +63,9 @@ public class CsqliteActivity extends BaseActivityParent {
 
         @Override
         public void onClick(View v) {
-            //App.instance.dbHelper = new CBHelper(mContext,"yidao.db",null,1);
+            //Application.instance.dbHelper = new CBHelper(mContext,"yidao.db",null,1);
             //得到一个可读的SQLiteDatabase对象
-            //App.instance.db =dbHelper.getReadableDatabase();
+            //Application.instance.db =dbHelper.getReadableDatabase();
         }
     }
 
@@ -100,7 +100,7 @@ public class CsqliteActivity extends BaseActivityParent {
             cv.put("name", "xiaoming");
             cv.put("code", 21);
             //调用insert方法，将数据插入数据库
-           // App.instance.db.insert("inner_department_category", null, cv);
+           // Application.instance.db.insert("inner_department_category", null, cv);
             //关闭数据库
             //db.close();
 
@@ -124,7 +124,7 @@ public class CsqliteActivity extends BaseActivityParent {
             //参数5：分组方式
             //参数6：having条件
             //参数7：排序方式
-            Cursor cursor = App.getInstance().db.query("inner_department_category", new String[]{"id","name","code"}, "id=?", new String[]{"1"}, null, null, null);
+            Cursor cursor = Application.getInstance().db.query("inner_department_category", new String[]{"id","name","code"}, "id=?", new String[]{"1"}, null, null, null);
             while(cursor.moveToNext()){
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String code = cursor.getString(cursor.getColumnIndex("code"));
@@ -153,7 +153,7 @@ public class CsqliteActivity extends BaseActivityParent {
             //参数1 是要更新的表名
             //参数2 是一个ContentValeus对象
             //参数3 是where子句
-            //App.instance.db.update("inner_department_category", cv, whereClause, whereArgs);
+            //Application.instance.db.update("inner_department_category", cv, whereClause, whereArgs);
         }
     }
 
@@ -169,7 +169,7 @@ public class CsqliteActivity extends BaseActivityParent {
             String whereClauses = "id=?";
             String [] whereArgs = {String.valueOf(2)};
             //调用delete方法，删除数据
-            App.getInstance().db.delete("inner_department_category", whereClauses, whereArgs);
+            Application.getInstance().db.delete("inner_department_category", whereClauses, whereArgs);
         }
     }
 }

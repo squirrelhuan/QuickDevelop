@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.service.MessageService;
+import cn.demomaster.huan.quickdevelop.service.SimpleService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -71,7 +72,7 @@ public class NdkTestFragment extends QDBaseFragment {
             @Override
             public void onClick(View v) {
                 // Bind to Service
-                mToken = ServiceHelper.bindToService(getActivity(),MessageService.class, serviceConnection);
+                mToken = ServiceHelper.bindToService(getActivity(), SimpleService.class, serviceConnection);
                 //getActivity().startService(new Intent(getContext(),BaseService.class));
 
                 //Intent mIntent = new Intent();

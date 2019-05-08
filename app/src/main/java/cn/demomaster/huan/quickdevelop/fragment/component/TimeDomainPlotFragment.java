@@ -53,7 +53,7 @@ public class TimeDomainPlotFragment extends QDBaseFragment {
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
         TimeDomainPlotView timeDomainPlotView = rootView.findViewById(R.id.timeDomainPlotView);
         List<LinePoint> linePoints = new ArrayList<>();
-        for(int i =0;i<50;i++){
+        for(int i =0;i<50000;i++){
             linePoints.add(new LinePoint(i*20, ((i%2)==1)?Math.round( (float) (Math.random() * 100) *100)/100: Math.round(-(float) (Math.random() * 100)*100)/100));
         }
         timeDomainPlotView.setLinePoints(linePoints);

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.Nullable;
 
-import cn.demomaster.huan.quickdevelop.App;
+import cn.demomaster.huan.quickdevelop.Application;
 
 /**
  * Created by Squirrel桓 on 2019/1/26.
@@ -21,7 +21,7 @@ public class UploadFilesIntentService extends IntentService {
     public void onCreate() {
         super.onCreate();
         //适配8.0service
-        NotificationManager notificationManager = (NotificationManager) App.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) Application.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             mChannel = new NotificationChannel(CHANNEL_ID_STRING, "诺秒贷", NotificationManager.IMPORTANCE_HIGH);

@@ -36,13 +36,13 @@ public class SimpleService extends BaseService {
     public void onCreate() {
         super.onCreate();
         baseBinder = new BaseBinder(this);
-        /*String packageName = getApplicationContext().getPackageName();
+        String packageName = getApplicationContext().getPackageName();
         String serviceName = this.getClass().getName();
         Log.i(TAG, "packageName=" + packageName+",serviceName="+serviceName);
         Watcher watcher = new Watcher();
         watcher.createWatcher(String.valueOf(Process.myUid()),packageName,serviceName);
         watcher.connectMonitor();
-        Log.i(TAG, "守护进程已启动"+str + index);*/
+        Log.i(TAG, "守护进程已启动"+str + index);
        final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

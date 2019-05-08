@@ -2,16 +2,25 @@ package cn.demomaster.huan.quickdevelop;
 
 //import com.umeng.commonsdk.UMConfigure;
 
+import android.content.SharedPreferences;
+
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidParameterException;
+
+import android_serialport_api.SerialPort;
+import android_serialport_api.SerialPortFinder;
 import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 //import com.umeng.socialize.PlatformConfig;
 
 
-public class App extends ApplicationParent {
+public class Application extends ApplicationParent {
 
     @Override
     public void onCreate() {
@@ -42,5 +51,36 @@ public class App extends ApplicationParent {
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");
 
+    }
+
+
+    public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
+    private SerialPort mSerialPort = null;
+
+    public SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
+        if (mSerialPort == null) {
+            /* Read serial port parameters */
+            //SharedPreferences sp = getSharedPreferences("android_serialport_api.sample_preferences", MODE_PRIVATE);//"cn_demomaster_huan_quickdevelop_fragment_helper_serialport_sample_SerialPortPreferences"
+
+            SharedPreferences sp = SharedPreferencesHelper.getInstance().getSharedPreferences();
+            String path = sp.getString("DEVICE", "");
+            int baudrate = Integer.decode(sp.getString("BAUDRATE", "-1"));
+
+            /* Check parameters */
+            if ( (path.length() == 0) || (baudrate == -1)) {
+                throw new InvalidParameterException();
+            }
+
+            /* Open the serial port */
+            mSerialPort = new SerialPort(new File(path), baudrate, 0);
+        }
+        return mSerialPort;
+    }
+
+    public void closeSerialPort() {
+        if (mSerialPort != null) {
+            mSerialPort.close();
+            mSerialPort = null;
+        }
     }
 }
