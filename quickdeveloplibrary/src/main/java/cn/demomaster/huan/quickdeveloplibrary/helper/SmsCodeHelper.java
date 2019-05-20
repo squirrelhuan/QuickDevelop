@@ -61,7 +61,6 @@ public class SmsCodeHelper  {
             validateCode();
         }
     };
-
     private void validateCode() {
         long last = SharedPreferencesHelper.getInstance().getLong(Message_Code_Last_Time, 0);
         long now = System.currentTimeMillis();
@@ -144,5 +143,15 @@ public class SmsCodeHelper  {
         }
     }
 
+    /**
+     * 每次都默认可以点击
+     */
+    public void firstStart(){
+        if(handler!=null){
+            handler.removeCallbacks(runnable);
+        }
+        SharedPreferencesHelper.getInstance().setLong(Message_Code_Last_Time, 0);
+        start();
+    }
 
 }
