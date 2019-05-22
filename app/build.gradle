@@ -15,6 +15,8 @@ android {
                 cppFlags "-frtti -fexceptions"
             }
         }
+        multiDexEnabled true
+       // ndk {abiFilters"armeabi","armeabi-v7a","x86"}
     }
     buildTypes {
         release {
@@ -50,10 +52,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
 }
 
 dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'com.google.android.material:material:1.0.0-beta01'
@@ -61,11 +68,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+
+
     implementation project(path: ':quickdeveloplibrary')
     //implementation 'com.github.yuzhiqiang1993:zxing:2.2.1'
     //implementation 'com.github.squirrelhuan:QuickDevelop:1.1.15'
-
     implementation "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
-
+    implementation files('libs/BaiduLBS_Android.jar')
 }

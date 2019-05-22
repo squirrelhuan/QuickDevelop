@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.demomaster.huan.quickdevelop">
+
+
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
+        tools:ignore="MockLocation,ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- android 9.0上使用前台服务，需要添加权限 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
@@ -45,6 +51,7 @@
         <activity android:name=".activity.sample.component.LoadingActivity" />
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
         <activity android:name=".activity.sample.TestActivity" />
+        <activity android:name=".fragment.helper.location.LocationActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
