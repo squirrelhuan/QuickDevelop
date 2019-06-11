@@ -133,4 +133,6 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
+
+
 }

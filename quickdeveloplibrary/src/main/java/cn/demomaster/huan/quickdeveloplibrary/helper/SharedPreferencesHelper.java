@@ -61,7 +61,9 @@ public class SharedPreferencesHelper {
     public int getInt(String key, int def) {
         return sharedPreferences.getInt(key, def);
     }
-
+    public float getFloat(String key, float def) {
+        return sharedPreferences.getFloat(key, def);
+    }
     public long getLong(String key, long def) {
         return sharedPreferences.getLong(key, def);
     }
@@ -79,6 +81,17 @@ public class SharedPreferencesHelper {
     public void putString(String key, String value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+
+    public void putInt(String key ,int value){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key, value);
+        editor.commit();
+    }
+    public void putFloat(String key ,float value){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(key, value);
         editor.commit();
     }
 

@@ -28,6 +28,22 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
+
+
+        <!-- 声明service组件 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+
+        <!-- AK鉴权 -->
+        <!-- meta-data需要写在application中 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="AuMPh0zN8c1tUwRPGY37pmblqEunsjAO" />  <!-- http://lbsyun.baidu.com/apiconsole/key -->
+
+
         <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity-->
         <activity
             android:name=".QDMainFragmentActivity"

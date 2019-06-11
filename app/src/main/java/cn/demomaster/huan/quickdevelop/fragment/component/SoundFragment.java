@@ -82,15 +82,6 @@ public class SoundFragment extends QDBaseFragment {
 
     }
 
-    private String[] titles = {"1", "2", "3", "4"};
-    private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        int i = (int) (Math.random() * 10 % 4);
-        actionBarLayoutOld.setTitle("audio play");
-        actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
-    }
-
     private void play(int index) {
         SoundHelper.getInstance().playByIndex(index);
         //SoundHelper.getInstance().playByResID(R.raw.beep);

@@ -106,6 +106,7 @@ public class QDKeyboard {
     }
 
     private boolean isTouchedEditText;
+
     /**
      * 设置默认获取焦点的editText
      *
@@ -132,7 +133,7 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d(v.getId()+(hasFocus?"得到焦点":"失去焦点"));
+                        QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             if ((isClosed || isClosing)) {
                                 showKeyboard();
@@ -149,14 +150,14 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d(v.getId()+(hasFocus?"得到焦点":"失去焦点"));
+                        QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             // 此处为得到焦点时的处理内容
                             setCurrentFocus((EditText) v);
                             if ((isClosed || isClosing)) {
                                 showKeyboard();
                             }
-                        } else  {//如果新的焦点不使用自定义键盘则隐藏
+                        } else {//如果新的焦点不使用自定义键盘则隐藏
                             waitHideKeyboard();
                         }
                     }
@@ -165,26 +166,28 @@ public class QDKeyboard {
         }
     }
 
-    private Runnable hideRunnable= new Runnable() {
+    private Runnable hideRunnable = new Runnable() {
         @Override
         public void run() {
             View v = ((Activity) mEditText.getContext()).getCurrentFocus();
             //v=((Activity) mEditText.getContext()).getWindow().getDecorView().findFocus();
             //QDLogger.d(v ==null?"null":v.toString()+ v.getId());
             if (v != null) {
-                if(!editTextList.contains(v)){
+                if (!editTextList.contains(v)) {
                     hideKeyboard();
                 }
             }
         }
     };
+
     /**
      * 延迟隐藏
+     *
      * @return
      */
     private void waitHideKeyboard() {
         mHandler.removeCallbacks(hideRunnable);
-        mHandler.postAtTime(hideRunnable,50);
+        mHandler.postAtTime(hideRunnable, 50);
     }
 
     private Handler mHandler = new Handler();
@@ -267,7 +270,7 @@ public class QDKeyboard {
     @SuppressLint("ClickableViewAccessibility")
     private void initKeyboard() {
         //解决onresume系统输入法重新弹出，遗留的问题就是不能根据焦点自动弹出输入框了
-        ((Activity)mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        ((Activity) mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         keyContainer = LayoutInflater.from(mContext).inflate(keyboardContainerResId, null, false);
         keyboardNumber = new Keyboard(mContext, R.xml.keyboard_num);            //实例化数字键盘
         keyboardNumber_Only = new Keyboard(mContext, R.xml.keyboard_num_only);            //实例化数字键盘
@@ -310,7 +313,7 @@ public class QDKeyboard {
         iv_keyboardDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    hideKeyboard();
+                hideKeyboard();
             }
         });
 
@@ -507,8 +510,10 @@ public class QDKeyboard {
         mDecorView.setLayoutParams(layoutParams);
         IBinder iBinder = mEditText.getWindowToken();
         if (iBinder != null && !((Activity) mEditText.getContext()).isFinishing()) {
-            qdTipPopup.showAtLocation(((Activity) mEditText.getContext()).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
-                    0);
+            if (!((Activity) mEditText.getContext()).isFinishing()) {
+                qdTipPopup.showAtLocation(((Activity) mEditText.getContext()).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
+                        0);
+            }
         }
         /*keyContainer.setFocusable(true);
         keyContainer.setFocusableInTouchMode(true);
@@ -557,7 +562,7 @@ public class QDKeyboard {
         if (imm == null)
             return;
         boolean isOpen = imm.isActive();
-        QDLogger.i("isOpen="+isOpen);
+        QDLogger.i("isOpen=" + isOpen);
         imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 
         int currentVersion = Build.VERSION.SDK_INT;

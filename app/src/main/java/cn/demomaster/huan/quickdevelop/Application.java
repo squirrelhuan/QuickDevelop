@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop;
 //import com.umeng.commonsdk.UMConfigure;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -70,6 +71,8 @@ public class Application extends ApplicationParent {
             if ( (path.length() == 0) || (baudrate == -1)) {
                 throw new InvalidParameterException();
             }
+
+            Log.d("getSerialPort",path+":"+baudrate);
 
             /* Open the serial port */
             mSerialPort = new SerialPort(new File(path), baudrate, 0);

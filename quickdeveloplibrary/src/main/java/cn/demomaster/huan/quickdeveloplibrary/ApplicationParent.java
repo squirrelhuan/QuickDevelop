@@ -122,6 +122,8 @@ public class ApplicationParent extends Application {
     }
 
     public void initCrash() {
+        //注册
+        registerActivityLifecycleCallbacks(mCallbacks);
         CrashReport.initCrashReport(getApplicationContext(), "7d6d33c554", false);
         if (BuildConfig.DEBUG) {
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
@@ -132,8 +134,6 @@ public class ApplicationParent extends Application {
             Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this, errorReportActivity));
             stateObserver = new StateObserver(PreferenceManager.getDefaultSharedPreferences(this));
         }
-        //注册
-        registerActivityLifecycleCallbacks(mCallbacks);
     }
 
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {

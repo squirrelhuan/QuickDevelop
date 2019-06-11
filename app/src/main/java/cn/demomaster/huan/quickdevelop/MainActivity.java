@@ -274,8 +274,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
                         ScreenShotUitl.shot((Activity) mContext);
                         break;
                 }
-
-
             }
         });
     }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
         <cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView
             android:id="@+id/scrollingTabs"
             android:layout_width="match_parent"

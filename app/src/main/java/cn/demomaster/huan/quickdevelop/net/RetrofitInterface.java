@@ -11,7 +11,12 @@ import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
  */
 public interface RetrofitInterface {
 
-    //获取session
+    //get请求
     @GET(URLConstant.URL_BASE)
     Observable<Object> getSession();
+
+
+    //get带参数请求
+    @GET(URLConstant.URL_BASE)
+    Observable<Object> getWithParam(@Query("context") String context);
 }

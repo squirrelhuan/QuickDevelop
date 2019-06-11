@@ -134,7 +134,6 @@ public class TabMenuLayout extends LinearLayout {
         initSingTabContent(tabGroup, tabButton, tabIndex);
         popupWindow.showAsDropDown(tabGroup);
         // popupWindow.showAsDropDown(v,0,0,Gravity.TOP);
-
     }
 
     public PopupWindow getPopupWindow() {

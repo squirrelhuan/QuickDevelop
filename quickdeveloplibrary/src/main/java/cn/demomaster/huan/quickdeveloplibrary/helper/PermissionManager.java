@@ -37,7 +37,6 @@ public class PermissionManager {
         }
         return instance;
     }
-
     public PermissionManager(Activity context) {
         this.context = context;
     }

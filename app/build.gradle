@@ -75,5 +75,4 @@ dependencies {
     //implementation 'com.github.squirrelhuan:QuickDevelop:1.1.15'
     implementation "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
-    implementation files('libs/BaiduLBS_Android.jar')
 }

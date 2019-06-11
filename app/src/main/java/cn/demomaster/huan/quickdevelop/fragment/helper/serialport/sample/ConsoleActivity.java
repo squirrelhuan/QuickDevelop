@@ -20,15 +20,17 @@ import java.io.IOException;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 public class ConsoleActivity extends SerialPortActivity {
 
-	EditText mReception;
+	TextView mReception;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		setContentView(R.layout.activity_serialport_console);
 
 //		setTitle("Loopback test");
-		mReception = (EditText) findViewById(R.id.EditTextReception);
+		mReception = (TextView) findViewById(R.id.EditTextReception);
 
-		EditText Emission = (EditText) findViewById(R.id.EditTextEmission);
+		/*EditText Emission = (EditText) findViewById(R.id.EditTextEmission);
 		Emission.setOnEditorActionListener(new OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				int i;
@@ -54,6 +56,19 @@ public class ConsoleActivity extends SerialPortActivity {
 					e.printStackTrace();
 				}
 				return false;
+			}
+		});*/
+		findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String message = ((TextView)findViewById(R.id.EditTextEmission)).getText().toString();
+				try {
+					mOutputStream.write(message.getBytes());
+					mOutputStream.write('\n');
+					QDLogger.i("已发送："+message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}

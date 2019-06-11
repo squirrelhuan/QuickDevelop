@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.constant;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -30,6 +31,10 @@ public class AppConfig {
 
     private AppConfig() {
         String conf = FileUtil.getFromAssets(mContext, configPath);
+        if(TextUtils.isEmpty(conf)){
+            QDLogger.e("未找到指定配置文件/或为空 ，路径："+configPath);
+            return;
+        }
         map = JSON.parseObject(conf, Map.class);
 
        /* String conf = FileUtil.getFromAssets(mContext, "project.conf");
@@ -40,7 +45,6 @@ public class AppConfig {
         String cof =  JSON.toJSONString(map);
         Log.i(TAG,cof);
         PopToastUtil.ShowToast(mContext,conf);*/
-
     }
 
     public static AppConfig getInstance() {
@@ -57,8 +61,10 @@ public class AppConfig {
     public boolean isPatient() {
         return (boolean) map.get("isPatient");
     }
-
     public static Class getClassFromClassMap(String classNameKey) {
+        if(map==null){
+            return null;
+        }
         String className = (String) map.get(classNameKey);
         return getClassByClassName(className);
     }

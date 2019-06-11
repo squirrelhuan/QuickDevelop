@@ -21,8 +21,8 @@ public class UpdatePopDialog {
     private Context context;
     private String contentText;
     private String btnText;
-    private TextView contentView;
-    private ImageTextView btn_close;
+    public TextView contentView;
+    public ImageTextView btn_close;
     private View.OnClickListener onCloseListener;
 
     public UpdatePopDialog(Context context, String contentText) {
@@ -39,7 +39,7 @@ public class UpdatePopDialog {
         init();
     }
 
-    private CustomDialog customDialog;
+    public CustomDialog customDialog;
 
     private void init() {
         /*View v = LayoutInflater.from(context).inflate(R.layout.item_pop_dialog_common, null, false);
@@ -85,6 +85,11 @@ public class UpdatePopDialog {
         customDialog.show();
     }
 
+    public void dismiss(){
+        if(customDialog!=null&& customDialog.isShowing()){
+        customDialog.dismiss();
+        }
+    }
     public static View getContentView(Context context) {
         if (context instanceof Activity) {
             return ((Activity) context).findViewById(android.R.id.content);

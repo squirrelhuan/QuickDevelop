@@ -19,7 +19,6 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
-import cn.demomaster.huan.quickdevelop.fragment.helper.location.LocationActivity;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -67,7 +66,6 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(KeyboardFragment.class);
         classList.add(DragViewFragment.class);
         classList.add(SerialportMain.class);
-        classList.add(LocationActivity.class);
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

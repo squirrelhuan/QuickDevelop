@@ -141,3 +141,8 @@
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }# Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {(Java.lang.Throwable);}
 # end eventbus混淆
+
+
+-keep class com.baidu.** {*;}
+-keep class mapsdkvi.com.** {*;}
+-dontwarn com.baidu.**
