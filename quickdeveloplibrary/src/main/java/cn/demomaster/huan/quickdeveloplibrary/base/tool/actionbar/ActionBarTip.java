@@ -421,7 +421,7 @@ public class ActionBarTip extends FrameLayout {
         super.setLayoutParams(params);
         if(mBelowContentView!=null&&mActionbartip_type!=ACTIONBARTIP_TYPE.STACK){
             int h = actionBarLayoutContentView.getActionBarPaddingTop();
-            QDLogger.d("setLayoutParams H=="+h);
+            //QDLogger.d("setLayoutParams H=="+h);
             mBelowContentView.setPadding(mBelowContentView.getPaddingLeft(), h+getHeight()+paddingTopBack+((FrameLayout.LayoutParams)params).topMargin, mBelowContentView.getPaddingRight(), mBelowContentView.getPaddingBottom());
         }
     }

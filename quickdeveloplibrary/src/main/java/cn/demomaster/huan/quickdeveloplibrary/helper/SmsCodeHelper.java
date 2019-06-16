@@ -114,12 +114,17 @@ public class SmsCodeHelper  {
         //读秒状态不可点击
         void onTimeChange(long time);
         //可以发起网络请求获取短信验证码 返回是否发起请求了
-        boolean onNextHttpGet();
+        boolean onNextHttpGet();// btn_getSmsCode.setOnClickListener(null);
         //成功接收到短信验证码 （网络请求）
         void onReceiveSuccess(String tip);
         //接收到短信验证码失败 （网络请求）
         void onReceiveFailure(String error);
     }
+    public static interface OnHttpResult{
+       void onSuccess();
+        void onFail();
+    }
+
 
     public static class Builder{
         private String telephone;

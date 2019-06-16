@@ -266,7 +266,6 @@ public class QDKeyboard {
     }
 
     public QDPopup qdTipPopup;
-
     @SuppressLint("ClickableViewAccessibility")
     private void initKeyboard() {
         //解决onresume系统输入法重新弹出，遗留的问题就是不能根据焦点自动弹出输入框了
@@ -655,7 +654,7 @@ public class QDKeyboard {
     }
 
     public void dispatchTouchEvent(MotionEvent me) {
-        QDLogger.i("me.getAction()=" + me.getAction());
+        //QDLogger.i("me.getAction()=" + me.getAction());
        /* if(keyContainer==null||keyContainer.getHeight()==0){
             return;
         }

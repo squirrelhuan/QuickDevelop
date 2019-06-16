@@ -8,4 +8,6 @@ package cn.demomaster.huan.quickdeveloplibrary.constant;
 public class EventBusConstant {
     //eventbus 切换语言
     public final static String EVENT_REFRESH_LANGUAGE = "EVENT_REFRESH_LANGUAGE";
+    //eventbus 全局提示
+    public final static String EVENT_ALERT_MESSAGE = "EVENT_ALERT_MESSAGE";
 }

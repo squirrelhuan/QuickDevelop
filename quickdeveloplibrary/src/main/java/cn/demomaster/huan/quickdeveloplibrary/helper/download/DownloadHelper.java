@@ -13,7 +13,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class DownloadHelper {
 
-    private static String[] PERMISSIONS_STORAGE = {
+    public static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 

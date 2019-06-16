@@ -244,4 +244,110 @@ public class DateTimeUtil {
     }
 
 
+
+    public static MyDate getToday(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int day = cal.get(Calendar.DATE);
+        int hour =0;
+        if (cal.get(Calendar.AM_PM) == 0)
+            hour = cal.get(Calendar.HOUR);
+        else
+            hour = cal.get(Calendar.HOUR)+12;
+        int minute = cal.get(Calendar.MINUTE);
+        int second = cal.get(Calendar.SECOND);
+
+        //my_time_1 = year + "-" + month + "-" + day;
+        //my_time_2 = hour + "-" + minute + "-" + second;
+        MyDate myDate = new MyDate(year,month,day,hour,minute,second);
+        return  myDate;
+    }
+
+    public static String format2LenStr(int num) {
+        return num < 10 ? "0" + num : String.valueOf(num);
+    }
+
+
+    public static class MyDate{
+        private int year;
+        private int month;
+        private int day;
+        private int hour;
+        private int minute;
+        private int second;
+
+        public MyDate(int year, int month, int day, int hour, int minute, int second) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
+        }
+
+        public String getYearMonthDay(){
+            return year+"-"+format2LenStr(month)+"-"+format2LenStr(day);
+        }
+        public String getHourMinuteSecond(){
+            return format2LenStr(hour)+":"+format2LenStr(minute)+":"+format2LenStr(second);
+        }
+        public String getHourMinute(){
+            return format2LenStr(hour)+":"+format2LenStr(minute);
+        }
+        public String getDateTimeStr(){
+            return getYearMonthDay()+" "+getHourMinuteSecond();
+        }
+        public int getYear() {
+            return year;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
+
+        public int getMonth() {
+            return month;
+        }
+
+        public void setMonth(int month) {
+            this.month = month;
+        }
+
+        public int getDay() {
+            return day;
+        }
+
+        public void setDay(int day) {
+            this.day = day;
+        }
+
+        public int getHour() {
+            return hour;
+        }
+
+        public void setHour(int hour) {
+            this.hour = hour;
+        }
+
+        public int getMinute() {
+            return minute;
+        }
+
+        public void setMinute(int minute) {
+            this.minute = minute;
+        }
+
+        public int getSecond() {
+            return second;
+        }
+
+        public void setSecond(int second) {
+            this.second = second;
+        }
+    }
+
+
 }

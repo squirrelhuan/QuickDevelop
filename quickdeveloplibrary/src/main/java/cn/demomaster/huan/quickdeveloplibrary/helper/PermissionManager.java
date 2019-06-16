@@ -12,10 +12,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import android.widget.Toast;
 
 
 /**
@@ -28,8 +29,8 @@ public class PermissionManager {
     public static int SYSTEM_ALERT_WINDOW_CODE = 11004;
     private Activity context;
     private static PermissionManager instance;
-    AlertDialog.Builder builder;
-    AlertDialog dialog;
+    static AlertDialog.Builder builder;
+    static AlertDialog dialog;
 
     public static PermissionManager getInstance(Activity context) {
         if (instance == null) {
@@ -37,6 +38,7 @@ public class PermissionManager {
         }
         return instance;
     }
+
     public PermissionManager(Activity context) {
         this.context = context;
     }
@@ -53,7 +55,7 @@ public class PermissionManager {
 
     //初始化app所需的权限
     public void initPermission() {
-        if (builder != null && dialog != null) {
+        if (dialog != null&&dialog.isShowing()) {
             dialog.dismiss();
         }
         if (getPermissionStatus2(context, PERMISSIONS_SPE)) {//初始化特殊权限
@@ -76,7 +78,7 @@ public class PermissionManager {
     }
 
     //特殊权限弹窗后进入设置页面处理
-    public void showPermissionSettingDialog(final Context context, String permission) {
+    public static void showPermissionSettingDialog(final Context context, String permission) {
         switch (permission) {
             case Manifest.permission.INSTALL_PACKAGES:
                 //弹框提示用户手动打开
@@ -105,7 +107,7 @@ public class PermissionManager {
 
     //跳转到设置-请求悬浮窗权限
     @TargetApi(Build.VERSION_CODES.M)
-    public void getOverlayPermission(Activity context) {
+    public static void getOverlayPermission(Activity context) {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -151,7 +153,7 @@ public class PermissionManager {
     }
 
     //特殊权限
-    public boolean getPermissionStatus2(Context context, String[] permissions) {
+    public static boolean getPermissionStatus2(Context context, String[] permissions) {
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 检查该权限是否已经获取
@@ -249,7 +251,10 @@ public class PermissionManager {
      * @param message  消息
      * @param listener 监听器
      */
-    public void showAlert(Context context, String title, String message, DialogInterface.OnClickListener listener) {
+    public static void showAlert(Context context, String title, String message, DialogInterface.OnClickListener listener) {
+        if(dialog!=null&&dialog.isShowing()){
+            dialog.dismiss();
+        }
         builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(message);
