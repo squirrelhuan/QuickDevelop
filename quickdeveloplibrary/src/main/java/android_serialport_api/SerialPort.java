@@ -38,7 +38,6 @@ public class SerialPort {
     private FileOutputStream mFileOutputStream;
 
     public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
-
         Log.i("test", "device:"+device.getAbsolutePath());
         /* Check access permission */
         if (!device.canRead() || !device.canWrite()) {

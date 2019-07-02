@@ -112,6 +112,22 @@ public class ActivityManager {
     }
 
     /**
+     * 关闭除了a list类，之外的所有activity
+     */
+    public void deleteOtherActivityByClass(List<Class> clazzs) {
+        if (activitys != null && clazzs != null) {
+            for (Activity activity : activitys) {
+                if (!clazzs.contains(activity.getClass())) {
+                    activity.finish();
+                    activitys.remove(activity);
+                    deleteOtherActivityByClass(clazzs);
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
      * 关闭除了a类，之外的所有activity
      */
     public void deleteOtherActivityByClass(Class clazz) {

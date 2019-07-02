@@ -116,7 +116,7 @@ public class ActionBarLayoutContentView extends FrameLayout {
     }
 
     public void setMarginTopOrPaddingTop() {
-        QDLogger.d("setMarginTopOrPaddingTop");
+        //QDLogger.d("setMarginTopOrPaddingTop");
 
         LayoutParams layoutParams = (LayoutParams) contentViewBack.getLayoutParams();
         if (layoutParams == null) {

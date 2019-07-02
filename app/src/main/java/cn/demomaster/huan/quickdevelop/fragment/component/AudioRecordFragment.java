@@ -36,7 +36,6 @@ public class AudioRecordFragment extends QDBaseFragment {
         return Color.WHITE;
     }
 
-
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {

@@ -15,7 +15,6 @@ public interface RetrofitInterface {
     @GET(URLConstant.URL_BASE)
     Observable<Object> getSession();
 
-
     //get带参数请求
     @GET(URLConstant.URL_BASE)
     Observable<Object> getWithParam(@Query("context") String context);

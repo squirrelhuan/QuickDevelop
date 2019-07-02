@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
+import android.content.Context;
+
 import com.alibaba.fastjson.JSON;
 
 import java.lang.reflect.Field;
@@ -23,11 +25,13 @@ public class Test {
 
     private List<Character> list;
     private List<String> aaa;
+
     @org.junit.Test
-    public  void test(){
-        testa(Test.class,"menuTabs");
+    public void test() {
+        testa(Test.class, "menuTabs");
     }
-    public  void testa(Class clazza,String fieldName){
+
+    public void testa(Class clazza, String fieldName) {
         // TODO Auto-generated method stub
         try {
             Field listField = clazza.getDeclaredField(fieldName);
@@ -86,18 +90,17 @@ public class Test {
     }*/
 
 
-
     @org.junit.Test
-    public void test1(){
-        Integer[] a ={1,2,3};
+    public void test1() {
+        Integer[] a = {1, 2, 3};
         List<Integer> al = Arrays.asList(a);
         /*al = new ArrayList<>();
         al.add(1);
         al.add(2);
         al.add(3);*/
         al.remove((Integer) 1);
-        for(Integer i:al){
-            System.out.println("==============="+i);
+        for (Integer i : al) {
+            System.out.println("===============" + i);
         }
     }
 
@@ -106,7 +109,7 @@ public class Test {
      * 获取今天往后一周的集合
      */
     @org.junit.Test
-    public  void get7week(){
+    public void get7week() {
         String week = "";
         List<String> weeksList = new ArrayList<String>();
         List<String> dateList = get7date(21);
@@ -119,12 +122,11 @@ public class Test {
             }
             weeksList.add(week);
         }
-        for(String str :weeksList){
+        for (String str : weeksList) {
             System.out.println(str);
         }
         //return weeksList;
     }
-
 
 
     public static List<String> get7date(int count) {
@@ -135,7 +137,7 @@ public class Test {
                 "yyyy-MM-dd");
         String date = sim.format(c.getTime());
         dates.add(date);
-        for (int i = 0; i < count-1; i++) {
+        for (int i = 0; i < count - 1; i++) {
             c.add(java.util.Calendar.DAY_OF_MONTH, 1);
             date = sim.format(c.getTime());
             dates.add(date);
@@ -151,7 +153,8 @@ public class Test {
 
     /**
      * 获取当前年月日
-     * 
+     *  
+     *
      * @return
      */
     public static String StringData() {
@@ -162,26 +165,29 @@ public class Test {
         mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
         mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
         mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
-        if(Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth)))){
-            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth))));
+        if (Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth)))) {
+            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth))));
         }
-        return mYear + "-" + (mMonth.length()==1?"0"+mMonth:mMonth) + "-" + (mDay.length()==1?"0"+mDay:mDay);
+        return mYear + "-" + (mMonth.length() == 1 ? "0" + mMonth : mMonth) + "-" + (mDay.length() == 1 ? "0" + mDay : mDay);
     }
 
-    /**得到当年当月的最大日期**/
-    public static int MaxDayFromDay_OF_MONTH(int year,int month){
-        Calendar time=Calendar.getInstance();
+    /**
+     * 得到当年当月的最大日期
+     **/
+    public static int MaxDayFromDay_OF_MONTH(int year, int month) {
+        Calendar time = Calendar.getInstance();
         time.clear();
-        time.set(Calendar.YEAR,year);
-        time.set(Calendar.MONTH,month-1);//注意,Calendar对象默认一月为0                 
-        int day=time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
+        time.set(Calendar.YEAR, year);
+        time.set(Calendar.MONTH, month - 1);//注意,Calendar对象默认一月为0                 
+        int day = time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
         return day;
     }
 
 
     /**
      * 根据当前日期获得是星期几
-     * 
+     *  
+     *
      * @return
      */
     public static String getWeek(String time) {
@@ -224,10 +230,8 @@ public class Test {
     }
 
 
-
-
     @org.junit.Test
-    public void testTimer(){
+    public void testTimer() {
 
         String str = "[\n" +
                 "        {\n" +
@@ -514,24 +518,24 @@ public class Test {
         List<Timer> timers = new ArrayList();//建立一个存贮时间段的对象
 
         String lastState = "-1";//上次的状态（1/2）
-        int position =-1;//上次状态的位置
+        int position = -1;//上次状态的位置
 
 
         List<Result> results = new ArrayList<>();
-        results = JSON.parseArray(str ,Result.class);
+        results = JSON.parseArray(str, Result.class);
 
-        for(int i=0;i<results.size();i++){
+        for (int i = 0; i < results.size(); i++) {
 
-            System.out.println(""+i);
-            if(position==-1){//初始化
+            System.out.println("" + i);
+            if (position == -1) {//初始化
                 position = 0;
             }
-            if(lastState.equals("-1")){//初始化
+            if (lastState.equals("-1")) {//初始化
                 lastState = results.get(i).getIsOnline();
             }
 
             Result resultc = results.get(i);
-            if(!lastState.equals(resultc.getIsOnline())){//判断当前状态是否和上次相等
+            if (!lastState.equals(resultc.getIsOnline())) {//判断当前状态是否和上次相等
 
                 //获取上个状态开始的时间
                 int t1 = Integer.valueOf(results.get(position).getInsert_Time());
@@ -540,7 +544,7 @@ public class Test {
 
                 //添加一条新时间段到新的数组
                 Timer timer = new Timer();
-                timer.setTime(t2-t1);
+                timer.setTime(t2 - t1);
                 timer.setState(Integer.valueOf(lastState));
                 timers.add(timer);
 
@@ -548,17 +552,17 @@ public class Test {
                 position = i;
             }
         }
-        for(int i=0;i<timers.size();i++){
-            System.out.println("第"+i+"次"+(timers.get(i).getState()==1?"在线":"离线")+",时间:"+timers.get(i).getTime());
+        for (int i = 0; i < timers.size(); i++) {
+            System.out.println("第" + i + "次" + (timers.get(i).getState() == 1 ? "在线" : "离线") + ",时间:" + timers.get(i).getTime());
         }
     }
 
 
     //时间端 对象
-    public static class Timer{
+    public static class Timer {
         int id;
         int time;
-        int state ;
+        int state;
 
         public int getId() {
             return id;
@@ -585,7 +589,7 @@ public class Test {
         }
     }
 
-    public static class Result{
+    public static class Result {
 
         /**
          * Id : 6
@@ -622,4 +626,10 @@ public class Test {
         }
     }
 
+    @org.junit.Test
+    public void logger() {
+        Class clazz =getClass();
+        System.out.println("clazz:"+clazz.getName());
+        Zprint.log(clazz, "ok");
+    }
 }
