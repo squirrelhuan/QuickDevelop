@@ -121,7 +121,6 @@ public class DownloadHelper {
      */
     private void registerBroadcast(Context context) {
         try {
-
             /**注册service 广播 1.任务完成时 2.进行中的任务被点击*/
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
