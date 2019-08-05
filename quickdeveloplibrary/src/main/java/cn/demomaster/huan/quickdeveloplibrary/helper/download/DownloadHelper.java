@@ -79,6 +79,7 @@ public class DownloadHelper {
         });
     }
 
+    //执行任务
     private void excute(DownloadTask downloadTask) {
         String download_app_folder_name = downloadTask.getDownload_app_folder_name();
         //app下载名称
