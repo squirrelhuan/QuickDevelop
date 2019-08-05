@@ -10,4 +10,7 @@ public class EventBusConstant {
     public final static String EVENT_REFRESH_LANGUAGE = "EVENT_REFRESH_LANGUAGE";
     //eventbus 全局提示
     public final static String EVENT_ALERT_MESSAGE = "EVENT_ALERT_MESSAGE";
+
+    public final static String EVENT_RETURN_PUBLISH_SUCCESS = "EVENT_RETURN_PUBLISH_SUCCESS";
+
 }

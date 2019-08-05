@@ -24,15 +24,22 @@ public class FileUtil {
      * @param write_str
      * @throws IOException
      */
-    public static void writeFileSdcardFile(String filePath,String fileName,
-                                           String write_str) throws IOException {
+    public static void writeFileSdcardFile(String dirPath,String fileName,
+                                           String write_str,boolean append) throws IOException {
+        writeFileSdcardFile(dirPath+"/"+fileName,write_str,append);
+    }
+    public static void writeFileSdcardFile(String fileName,
+                                           String write_str,boolean append) {
         try {
-            File dir = new File(filePath);
-            if (!dir.exists()) {
-                dir.mkdirs();
+            File file = new File(fileName);
+            if (!file.exists()) {
+                File dir = new File(file.getParent());
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                file.createNewFile();
             }
-            File file = new File(filePath+"/"+fileName);
-            FileOutputStream fout = new FileOutputStream(file);
+            FileOutputStream fout = new FileOutputStream(file,append);
             byte[] bytes = write_str.getBytes();
 
             fout.write(bytes);

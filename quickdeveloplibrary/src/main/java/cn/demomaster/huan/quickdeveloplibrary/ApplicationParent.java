@@ -41,13 +41,14 @@ public class ApplicationParent extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        QDLogger.setApplicationContext(this);
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
         initDB();
         ActivityManager.init(this);
         NotifycationHelper.getInstance().init(this);
 
-        AppConfig.init(this, "config/project.conf");
+        AppConfig.getInstance().init(this, "config/project.conf");
         //处理崩溃日志
         initCrash();
 
@@ -140,39 +141,40 @@ public class ApplicationParent extends Application {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             ActivityManager.getInstance().addActivity(activity);
-            QDLogger.d(TAG, "onActivityCreated() called with: activity = [" + activity + "], savedInstanceState = [" + savedInstanceState + "]");
+            QDLogger.d(TAG, "onActivityCreated() 回调: activity = [" + activity + "], savedInstanceState = [" + savedInstanceState + "]");
         }
 
         @Override
         public void onActivityStarted(Activity activity) {
-            QDLogger.d(TAG, "onActivityStarted() called with: activity = [" + activity + "]");
+            QDLogger.d(TAG, "onActivityStarted() 回调: activity = [" + activity + "]");
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
-            QDLogger.d(TAG, "onActivityResumed() called with: activity = [" + activity + "]");
+            QDLogger.d(TAG, "onActivityResumed() 回调: activity = [" + activity + "]");
             ActivityManager.getInstance().setCurrentActivity(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-            QDLogger.d(TAG, "onActivityPaused() called with: activity = [" + activity + "]");
+            QDLogger.d(TAG, "onActivityPaused() 回调: activity = [" + activity + "]");
+            ActivityManager.getInstance().setCurrentActivity(null);
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            QDLogger.d(TAG, "onActivityStopped() called with: activity = [" + activity + "]");
+            QDLogger.d(TAG, "onActivityStopped() 回调: activity = [" + activity + "]");
         }
 
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            QDLogger.d(TAG, "onActivitySaveInstanceState() called with: activity = [" + activity + "], outState = [" + outState + "]");
+            QDLogger.d(TAG, "onActivitySaveInstanceState() 回调: activity = [" + activity + "], outState = [" + outState + "]");
         }
 
         @Override
         public void onActivityDestroyed(Activity activity) {
             ActivityManager.getInstance().removeActivity(activity);
-            QDLogger.d(TAG, "onActivityDestroyed() called with: activity = [" + activity + "]");
+            QDLogger.d(TAG, "onActivityDestroyed() 回调: activity = [" + activity + "]");
         }
     };
 }

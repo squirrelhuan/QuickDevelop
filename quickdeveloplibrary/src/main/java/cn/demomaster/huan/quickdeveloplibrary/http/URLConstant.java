@@ -10,6 +10,6 @@ public class URLConstant {
     //创建用户session
     public static final String USER_CREATE_SESSION = SERVER
             +"yidao/user/createSession ";
-
+    public static final String URL_UPDATE_APP = "http://www.demomaster.cn/demomaster/public/index.php/index/Api/Quickdevelop/getVersion";
 
 }

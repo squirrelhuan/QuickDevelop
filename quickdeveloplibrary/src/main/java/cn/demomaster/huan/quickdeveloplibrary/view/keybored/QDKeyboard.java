@@ -82,7 +82,7 @@ public class QDKeyboard {
             return;
         }
         if (editTextList.contains(editText)) {
-            QDLogger.d("contains=true");
+            //QDLogger.d("contains=true");
             editText.setOnTouchListener(null);
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();
@@ -133,7 +133,7 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                        //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             if ((isClosed || isClosing)) {
                                 showKeyboard();
@@ -150,7 +150,7 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                        //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             // 此处为得到焦点时的处理内容
                             setCurrentFocus((EditText) v);
@@ -561,7 +561,7 @@ public class QDKeyboard {
         if (imm == null)
             return;
         boolean isOpen = imm.isActive();
-        QDLogger.i("isOpen=" + isOpen);
+        //QDLogger.i("isOpen=" + isOpen);
         imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 
         int currentVersion = Build.VERSION.SDK_INT;

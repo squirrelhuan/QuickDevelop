@@ -106,6 +106,16 @@ public class FileManagerFragment extends QDBaseFragment {
             }
         });
 
+        QDLogger.i("getExternalCacheDir="+ getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getFilesDir="+getContext().getFilesDir().getAbsolutePath());
+        QDLogger.i("getCacheDir="+getContext().getCacheDir().getAbsolutePath());
+        QDLogger.i("getExternalStorageDirectory="+android.os.Environment.getExternalStorageDirectory().getAbsolutePath());
+       // QDLogger.i("getExternalStoragePublicDirectory="+android.os.Environment.getExternalStoragePublicDirectory().getAbsolutePath());
+       // QDLogger.i("getExternalFilesDir="+getContext().getExternalFilesDir().getAbsolutePath());
+        QDLogger.i("getExternalStorageDirectory="+getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getExternalCacheDir="+getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getRootDirectory="+android.os.Environment.getRootDirectory().getAbsolutePath());
+
     }
 
     private int count ;

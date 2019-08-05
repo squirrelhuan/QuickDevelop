@@ -27,7 +27,7 @@ public class Version implements Serializable {
     private String description;
     private String downloadUrl;
     private String isShow;
-    private String isMust;
+    private boolean isMust;
     private String fileName;
     private String dateTime;
     private String showType;//html,dialog,
@@ -72,12 +72,12 @@ public class Version implements Serializable {
         this.isShow = isShow;
     }
 
-    public String getIsMust() {
+    public boolean isMust() {
         return isMust;
     }
 
-    public void setIsMust(String isMust) {
-        this.isMust = isMust;
+    public void setMust(boolean must) {
+        isMust = must;
     }
 
     public String getFileName() {

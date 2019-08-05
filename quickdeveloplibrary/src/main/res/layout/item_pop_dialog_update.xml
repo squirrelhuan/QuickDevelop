@@ -8,13 +8,14 @@
 
     <RelativeLayout
         android:layout_width="240dp"
-        android:layout_height="340dp"
+        android:layout_height="300dp"
         android:layout_gravity="center"
         android:layout_margin="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
@@ -23,30 +24,36 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tv_content"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textColor="@color/black" />
+
+           </ScrollView>
+                <TextView
+                    android:id="@+id/tv_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/btn_green_small"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:padding="6dp"
+                    android:text="立即更新"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
         </LinearLayout>
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
-            android:id="@+id/btn_close"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:minHeight="0dp"
-            android:padding="8dp"
-            android:src="@mipmap/ic_close_circle"
-            android:text="关闭"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+
     </RelativeLayout>
 
 

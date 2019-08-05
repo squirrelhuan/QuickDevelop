@@ -18,4 +18,10 @@ public interface RetrofitInterface {
     //get带参数请求
     @GET(URLConstant.URL_BASE)
     Observable<Object> getWithParam(@Query("context") String context);
+
+
+    //get请求
+    @GET(URLConstant.URL_UPDATE_APP)
+    Observable<Object> getVersion();
+
 }

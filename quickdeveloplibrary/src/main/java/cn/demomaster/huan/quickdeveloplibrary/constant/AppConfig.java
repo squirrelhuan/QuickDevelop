@@ -18,27 +18,29 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  */
 public class AppConfig {
 
-    private static String configPath;
-    private static Context mContext;
+    private String configPath;
+    private  Context mContext;
     private static AppConfig instance;
-    private static Map<String, Object> map;
+    private Map<String, Object> configMap;
 
     //要初始化
-    public static void init(Context context, String pathName) {
+    public void init(Context context, String pathName) {
+
         mContext = context;
         configPath = pathName;
-    }
 
-    private AppConfig() {
         String conf = FileUtil.getFromAssets(mContext, configPath);
         if(TextUtils.isEmpty(conf)){
             QDLogger.e("未找到指定配置文件/或为空 ，路径："+configPath);
-            return;
+            throw new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径："+configPath);
         }
-        map = JSON.parseObject(conf, Map.class);
+
+        configMap = JSON.parseObject(conf, Map.class);
+    }
+
+    private AppConfig() {
 
        /* String conf = FileUtil.getFromAssets(mContext, "project.conf");
-
         Map<String,Object> map =new HashMap<>();
         map.put("isPatient",true);
         map.put("version",1);
@@ -48,10 +50,6 @@ public class AppConfig {
     }
 
     public static AppConfig getInstance() {
-        if (mContext == null) {
-            QDLogger.e("CGQ", "AppConfig 未初始化");
-            return null;
-        }
         if (instance == null) {
             instance = new AppConfig();
         }
@@ -59,13 +57,14 @@ public class AppConfig {
     }
 
     public boolean isPatient() {
-        return (boolean) map.get("isPatient");
+        return (boolean) configMap.get("isPatient");
     }
-    public static Class getClassFromClassMap(String classNameKey) {
-        if(map==null){
+
+    public  Class getClassFromClassMap(String classNameKey) {
+        if(configMap==null){
             return null;
         }
-        String className = (String) map.get(classNameKey);
+        String className = (String) configMap.get(classNameKey);
         return getClassByClassName(className);
     }
 
@@ -79,4 +78,7 @@ public class AppConfig {
         return catClass;
     }
 
+    public Map<String, Object> getConfigMap() {
+        return configMap;
+    }
 }

@@ -15,11 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard2Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.UpdateAppFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -65,9 +70,16 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(FileManagerFragment.class);
         classList.add(LanguageFragment.class);
         classList.add(KeyboardFragment.class);
+        classList.add(Keyboard2Fragment.class);
+
         classList.add(DragViewFragment.class);
         classList.add(SerialportMain.class);
         classList.add(DeviceFragment.class);
+        classList.add(DownloadFragment.class);
+        classList.add(UpdateAppFragment.class);
+        classList.add(PermitionFragment.class);
+        classList.add(PositionFragment.class);
+
 
         componentAdapter.updateList(classList);
         //设置Adapter

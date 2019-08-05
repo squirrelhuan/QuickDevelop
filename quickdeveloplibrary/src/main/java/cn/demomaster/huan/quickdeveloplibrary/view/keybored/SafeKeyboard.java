@@ -91,7 +91,7 @@ public class SafeKeyboard {
             return;
         }
         if (editTextList.contains(editText)) {
-            QDLogger.d("contains=true");
+            //QDLogger.d("contains=true");
             editText.setOnTouchListener(null);
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();

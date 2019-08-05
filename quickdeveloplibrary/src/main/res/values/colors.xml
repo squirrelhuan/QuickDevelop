@@ -190,5 +190,8 @@
     <color name="keyboardNormal">#1c69ac</color>
     <color name="keyboardDeep">#991c69ac</color>
     <color name="keyboardPress">#1296db</color>
+    <color name="keyboardNormal2">@color/orange</color>
+    <color name="keyboardDeep2">#991c69ac</color>
+    <color name="keyboardPress2">@color/yellow</color>
 
 </resources>

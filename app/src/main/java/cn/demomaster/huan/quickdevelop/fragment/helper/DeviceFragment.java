@@ -3,10 +3,12 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -50,6 +52,15 @@ public class DeviceFragment extends QDBaseFragment {
     @BindView(R.id.sb_VioceVolume)
     SeekBar sb_VioceVolume;
 
+    @BindView(R.id.tv_MusicVolume)
+    TextView tv_MusicVolume;
+    @BindView(R.id.tv_RingVolume)
+    TextView tv_RingVolume;
+    @BindView(R.id.tv_AlarmVolume)
+    TextView tv_AlarmVolume;
+    @BindView(R.id.tv_VioceVolume)
+    TextView tv_VioceVolume;
+
     View mView;
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -63,18 +74,87 @@ public class DeviceFragment extends QDBaseFragment {
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
         QDDeviceHelper.init(getContext());
+        QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         //媒体音量
+        tv_MusicVolume.setText("媒体"+QDDeviceHelper.getMusicVolumeCurrent()+"/"+QDDeviceHelper.getMusicVolumeMax());
         sb_MusicVolume.setMax(QDDeviceHelper.getMusicVolumeMax());
         sb_MusicVolume.setProgress(QDDeviceHelper.getMusicVolumeCurrent());
+        sb_MusicVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                QDDeviceHelper.setMusicVolume(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         //铃声音量
+        tv_RingVolume.setText("铃声"+QDDeviceHelper.getRingVolumeCurrent()+"/"+QDDeviceHelper.getRingVolumeMax());
         sb_RingVolume.setMax(QDDeviceHelper.getRingVolumeMax());
         sb_RingVolume.setProgress(QDDeviceHelper.getRingVolumeCurrent());
+        sb_RingVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                QDDeviceHelper.setRingVolume(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         //闹钟音量
+        tv_AlarmVolume.setText("闹钟"+QDDeviceHelper.getAlarmVolumeCurrent()+"/"+QDDeviceHelper.getAlarmVolumeMax());
         sb_AlarmVolume.setMax(QDDeviceHelper.getAlarmVolumeMax());
         sb_AlarmVolume.setProgress(QDDeviceHelper.getAlarmVolumeCurrent());
+        sb_AlarmVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                QDDeviceHelper.setAlarmVolume(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         //通话音量
+        tv_VioceVolume.setText("通话"+QDDeviceHelper.getVioceVolumeCurrent()+"/"+QDDeviceHelper.getVioceVolumeMax());
         sb_VioceVolume.setMax(QDDeviceHelper.getVioceVolumeMax());
         sb_VioceVolume.setProgress(QDDeviceHelper.getVioceVolumeCurrent());
+        sb_VioceVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                QDDeviceHelper.setVioceVolume(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
 }

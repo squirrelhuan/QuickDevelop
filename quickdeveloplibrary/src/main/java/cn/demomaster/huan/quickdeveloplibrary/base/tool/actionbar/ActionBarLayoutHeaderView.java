@@ -111,7 +111,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
             case ACTION_TRANSPARENT:
                 return paddingTop_old + statusBar_Height;
             case ACTION_STACK_NO_STATUS:
-                return paddingTop_old + statusBar_Height;
+                return paddingTop_old ;
             case NO_ACTION_BAR_NO_STATUS:
                 return paddingTop_old + statusBar_Height;
         }

@@ -84,6 +84,7 @@ public class SoundFragment extends QDBaseFragment {
 
     private void play(int index) {
         SoundHelper.getInstance().playByIndex(index);
+
         //SoundHelper.getInstance().playByResID(R.raw.beep);
     }
 

@@ -1,5 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
+import android.app.Activity;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,7 +21,9 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelp
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
@@ -77,6 +83,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        //initHelper();
         EventBus.getDefault().register(this);
         changeAppLanguage(this);
     }
@@ -121,7 +128,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         switch (str) {
             case EVENT_REFRESH_LANGUAGE:
                 if(ActivityManager.getInstance().getCurrentActivity()==this){
-                    changeAppLanguageAndRefreshUI(mContext);
+                    onChangeAppLanguage();
                 }
                 break;
         }
@@ -131,8 +138,44 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+       // unregisterReceiver(netWorkChangReceiver);
+    }
+
+    /**
+     * 切换语言并且立马应用
+     */
+    public void onChangeAppLanguage() {
+        changeAppLanguageAndRefreshUI(mContext);
+    }
+
+    public PhotoHelper photoHelper;
+    public NetWorkChangReceiver netWorkChangReceiver;
+    public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
+    public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
+        this.onNetStateChangedListener = onNetStateChangedListener;
+        if (netWorkChangReceiver != null) {
+            netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
+        }
     }
 
 
+    //实例化各种帮助类
+    public void initHelper() {
+        if (photoHelper == null) {
+            photoHelper = new PhotoHelper(mContext);
+        }
+        if (netWorkChangReceiver == null) {
+            netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            try {
+                mContext.registerReceiver(netWorkChangReceiver, filter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
