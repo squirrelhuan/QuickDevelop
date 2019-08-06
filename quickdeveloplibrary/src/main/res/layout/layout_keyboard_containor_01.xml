@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+   <!-- <FrameLayout
+        android:id="@+id/keyboardHeader"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/keyboardBackColor">
+        &lt;!&ndash;&lt;!&ndash;android:layout_height="@dimen/keyboard_tip_height"&ndash;&gt;&ndash;&gt;
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="RelativeOverlap,UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/iv_security"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:tint="@color/lightGray"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/description"
+                android:src="@drawable/ic_security_black_24dp" />
+
+            <TextView
+                android:id="@+id/keyboardTip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3dp"
+                android:text="@string/safe_keyboard"
+                android:textColor="@color/lightGray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_keyboardDone"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="right"
+            android:background="@drawable/bg_keyboard_done"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_keyboard_hide_black_24dp"
+            android:textColor="@color/white" />
+
+    </FrameLayout>
+-->
+    <FrameLayout
+        android:id="@+id/keyboardLayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
+        android:background="@color/keyboardBackColor">
+
+        <cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored01.QDKeyboardView
+            android:id="@+id/safeKeyboardLetter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="@color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:keyBackground="@drawable/keyboard_press_bg_02"
+            android:keyPreviewHeight="70dp"
+            android:keyPreviewLayout="@layout/keyboard_preview_layout"
+            android:keyPreviewOffset="0dp"
+            android:keyTextColor="@color/white" />
+
+    </FrameLayout>
+</LinearLayout>
