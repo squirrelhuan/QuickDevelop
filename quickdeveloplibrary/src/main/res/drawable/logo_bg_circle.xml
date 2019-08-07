@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/transparent_light_33"/>
+
+    <!--corners标签: 圆角-->
+    <!--bottomLeftRadius 左下角-->
+    <!--bottomRightRadius 右下角-->
+    <!--topLeftRadius 左上角-->
+    <!--topRightRadius 右上角-->
+    <!--radius 是四个角, 设置了这个就不需要设置上面的四个了, PS:它的优先级比较低, 会被其他参数覆盖-->
+    <corners
+        android:radius="100dip"/>
+
+    <!--stroke标签: 边框-->
+    <!--width 边框的宽度-->
+    <!--color 边框的颜色-->
+    <!--下面两个参数是 把边框变成虚线用-->
+    <!--dashGap 虚线中空格的长度-->
+    <!--dashWidth 虚线中实线的长度-->
+    <stroke
+        android:width="0dp"
+        android:color="@color/black"
+        android:dashGap="0dip"
+        android:dashWidth="0dip"/>
+</shape>
