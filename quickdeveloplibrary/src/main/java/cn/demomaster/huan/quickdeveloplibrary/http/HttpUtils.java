@@ -41,7 +41,7 @@ public class HttpUtils {
         }
     }
 
-    private static final int DEFAULT_TIMEOUT = 8; //连接 超时的时间，单位：秒
+    private static final int DEFAULT_TIMEOUT = 30; //连接 超时的时间，单位：秒
     private static final OkHttpClient client = new OkHttpClient.Builder().
             connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).addInterceptor(loggingInterceptor).
             readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).

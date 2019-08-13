@@ -20,6 +20,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard2Fragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard3Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
@@ -71,6 +72,7 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(LanguageFragment.class);
         classList.add(KeyboardFragment.class);
         classList.add(Keyboard2Fragment.class);
+        classList.add(Keyboard3Fragment.class);
 
         classList.add(DragViewFragment.class);
         classList.add(SerialportMain.class);

@@ -194,4 +194,6 @@
     <color name="keyboardDeep2">#991c69ac</color>
     <color name="keyboardPress2">@color/yellow</color>
 
+    <color name="keyboardPress3">@color/white</color>
+
 </resources>
