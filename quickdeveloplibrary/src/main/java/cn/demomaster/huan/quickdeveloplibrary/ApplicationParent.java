@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
 
-import com.didichuxing.doraemonkit.DoraemonKit;
+//import com.didichuxing.doraemonkit.DoraemonKit;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -61,7 +61,7 @@ public class ApplicationParent extends Application {
             }
         });
 
-        DoraemonKit.install(this);
+        //DoraemonKit.install(this);
     }
 
     /**
