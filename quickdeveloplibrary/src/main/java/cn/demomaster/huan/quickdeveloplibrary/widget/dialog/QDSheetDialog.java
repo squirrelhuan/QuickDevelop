@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -288,7 +290,9 @@ public class QDSheetDialog extends Dialog {
                 textView.setPadding(p, p, p, p);
                 textView.setTextSize(18);
                 textView.setTextColor(Color.BLACK);
-                textView.setBackgroundResource(R.drawable.ripple_bg);
+                if (Build.VERSION.SDK_INT >= 19) {
+                    textView.setBackgroundResource(cn.demomaster.huan.quickdeveloplibrary.R.drawable.ripple_bg);
+                }
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 ((ViewGroup) itemView).addView(textView, layoutParams);
             }

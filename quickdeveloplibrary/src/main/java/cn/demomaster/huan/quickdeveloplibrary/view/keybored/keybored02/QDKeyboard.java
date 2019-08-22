@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -35,6 +36,8 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
 /**
  * 机柜端横屏键盘
@@ -167,8 +170,8 @@ public class QDKeyboard {
     private Runnable hideRunnable = new Runnable() {
         @Override
         public void run() {
-            View v = ((Activity) mEditText.getContext()).getCurrentFocus();
-            //v=((Activity) mEditText.getContext()).getWindow().getDecorView().findFocus();
+            View v = ((Activity) getActivityFromView( mEditText)).getCurrentFocus();
+            //v=((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findFocus();
             //QDLogger.d(v ==null?"null":v.toString()+ v.getId());
             if (v != null) {
                 if (!editTextList.contains(v)) {
@@ -320,10 +323,10 @@ public class QDKeyboard {
         qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                WindowManager.LayoutParams lp = ((Activity) mEditText.getContext()).getWindow().getAttributes();
+                WindowManager.LayoutParams lp = ((Activity) getActivityFromView( mEditText)).getWindow().getAttributes();
                 lp.alpha = 1f;
-                ((Activity) mEditText.getContext()).getWindow().setAttributes(lp);
-                contentView = ((Activity) mEditText.getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+                ( getActivityFromView( mEditText)).getWindow().setAttributes(lp);
+                contentView = ((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findViewById(android.R.id.content);
                 mDecorView = (View) contentView.getParent();
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
                 layoutParams.bottomMargin = (int) 0;
@@ -499,16 +502,16 @@ public class QDKeyboard {
         if (qdTipPopup.isShowing()) {
             return;
         }
-        contentView = ((Activity) mEditText.getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+        contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
         mDecorView = (View) contentView.getParent();
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
         layoutParams.bottomMargin = getEditorBottomY();
         layoutParams.topMargin = -getEditorBottomY();
         mDecorView.setLayoutParams(layoutParams);
         IBinder iBinder = mEditText.getWindowToken();
-        if (iBinder != null && !((Activity) mEditText.getContext()).isFinishing()) {
-            if (!((Activity) mEditText.getContext()).isFinishing()) {
-                qdTipPopup.showAtLocation(((Activity) mEditText.getContext()).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
+        if (iBinder != null && !getActivityFromView( mEditText).isFinishing()) {
+            if (!getActivityFromView(mEditText).isFinishing()) {
+                qdTipPopup.showAtLocation(getActivityFromView( mEditText).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
                         0);
             }
         }
@@ -524,6 +527,7 @@ public class QDKeyboard {
         }*/
     }
 
+
     /**
      * 获取需要向上调整的布局高度
      *
@@ -534,7 +538,7 @@ public class QDKeyboard {
         mEditText.getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
-        int d = DisplayUtil.getScreenHeight(mEditText.getContext()) - y - mEditText.getHeight();
+        int d = DisplayUtil.getScreenHeight(getActivityFromView( mEditText)) - y - mEditText.getHeight();
         return d > keyContainerHeight ? 0 : (int) (keyContainerHeight - d);
     }
 

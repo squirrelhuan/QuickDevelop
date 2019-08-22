@@ -150,7 +150,7 @@ public class QDKeyboardView extends KeyboardView {
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
                     //paint.setTypeface(Typeface.DEFAULT_BOLD);
-                    QDLogger.i("mLabelTextSize="+labelTextSize);
+                    //QDLogger.i("mLabelTextSize="+labelTextSize);
                 } else {
                     int keyTextSize = 0;
                     try {

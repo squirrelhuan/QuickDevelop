@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/gray"> <!--波纹颜色-->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- 填充背景色-->
+            <solid android:color="@color/transparent"/>
+        </shape>
+        <selector>
+            <!-- 未点击背景图-->
+            <item
+                android:drawable="@color/transparent_dark_33"
+                android:state_pressed="false" />
+            <!-- 点击背景图-->
+            <item
+                android:drawable="@color/green"
+                android:state_pressed="true" />
+        </selector>
+    </item>
+</ripple>

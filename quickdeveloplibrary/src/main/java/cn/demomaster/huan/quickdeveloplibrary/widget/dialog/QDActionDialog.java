@@ -51,7 +51,6 @@ public class QDActionDialog extends Dialog {
             win.getDecorView().setPadding(0, 0, 0, 0);
             win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
             win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         }
         // 在底部，宽度撑满
         WindowManager.LayoutParams params = win.getAttributes();
