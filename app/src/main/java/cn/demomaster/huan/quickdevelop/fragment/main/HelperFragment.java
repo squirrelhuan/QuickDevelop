@@ -18,6 +18,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.ExeCommandFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard2Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard3Fragment;
@@ -81,6 +82,7 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(UpdateAppFragment.class);
         classList.add(PermitionFragment.class);
         classList.add(PositionFragment.class);
+        classList.add(ExeCommandFragment.class);
 
 
         componentAdapter.updateList(classList);

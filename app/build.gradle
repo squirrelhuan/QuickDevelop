@@ -18,6 +18,9 @@ android {
         multiDexEnabled true
        // ndk {abiFilters"armeabi","armeabi-v7a","x86"}
     }
+    lintOptions{
+        abortOnError false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -57,6 +60,7 @@ android {
             jniLibs.srcDir 'libs'
         }
     }
+    buildToolsVersion = '28.0.3'
 }
 
 dependencies {

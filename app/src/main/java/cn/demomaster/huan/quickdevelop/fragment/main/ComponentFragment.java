@@ -1,9 +1,11 @@
 package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +117,30 @@ public class ComponentFragment extends QDBaseFragment {
         //recyclerView.addItemDecoration(new android.support.v7.widget.DividerItemDecoration(getContext(), android.support.v7.widget.DividerItemDecoration.VERTICAL));
 
         int spanCount = 3;
-        //使用网格布局展示
+        //使用网格布局展示NanumSquareRoundr.ttf
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         //设置分隔线
         recyclerView.addItemDecoration(new GridDividerItemDecoration(getContext(), spanCount));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        setFont(rootView);
+    }
+
+
+    void setFont(View view){
+        Typeface typeFaceHold = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NanumSquareRoundEB.ttf");
+        if(view instanceof ViewGroup){
+            ViewGroup viewGroup = (ViewGroup) view;
+            for(int i=0;i<viewGroup.getChildCount();i++){
+                View view1 = viewGroup.getChildAt(i);
+                setFont(view1);
+            }
+        }else {
+            if(view instanceof TextView){
+                ((TextView) view).setTypeface(typeFaceHold);
+            }
+        }
     }
 
 }
