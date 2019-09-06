@@ -11,10 +11,13 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
@@ -35,12 +38,14 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     public AppCompatActivity mContext;
     private ActionBarInterface actionBarLayout;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
+
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }
+
     public ActionBarInterface getActionBarLayout(View view) {
         if (actionBarLayout == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(getHeadlayoutResID());
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(new WeakReference<AppCompatActivity>(mContext)).setContentView(view).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
         }
         return actionBarLayout;
@@ -60,23 +65,24 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         initQDContentView(view);
     }
 
-    private void initQDContentView(View view){
+    private void initQDContentView(View view) {
         this.mContext = this;
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
-            StatusBarUtil.transparencyBar(mContext);
+            StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
             actionBarLayout = getActionBarLayout(view);
             super.setContentView(actionBarLayout.generateView());
-            FragmentActivityHelper.getInstance().bindActivity(this);
+            FragmentActivityHelper.getInstance().bindActivity(new WeakReference<FragmentActivity>(mContext));
         } else {
             super.setContentView(view);
         }
     }
 
     public LayoutInflater mInflater;
-    private void initQDContentView(int layoutResID){
+
+    private void initQDContentView(int layoutResID) {
         mInflater = LayoutInflater.from(this);
-       View view = mInflater.inflate(layoutResID,null);
-       initQDContentView(view);
+        View view = mInflater.inflate(layoutResID, null);
+        initQDContentView(view);
     }
 
     @Override
@@ -98,15 +104,15 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.d("getAction="+keyCode+",event="+event);
-       if(!FragmentActivityHelper.getInstance().onBackPressed(mContext)){//未被fragment消费
-           onBackPressed();
-           return true;
-           //return super.onKeyDown(keyCode, event);
-       }else {
-           QDLogger.d("onKeyDown="+true);
-           return true;
-       }
+        QDLogger.d("getAction=" + keyCode + ",event=" + event);
+        if (!FragmentActivityHelper.getInstance().onBackPressed(mContext)) {//未被fragment消费
+            onBackPressed();
+            return true;
+            //return super.onKeyDown(keyCode, event);
+        } else {
+            QDLogger.d("onKeyDown=" + true);
+            return true;
+        }
     }
 
     /*
@@ -127,7 +133,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     public void onMessageEvent(String str) {
         switch (str) {
             case EVENT_REFRESH_LANGUAGE:
-                if(ActivityManager.getInstance().getCurrentActivity()==this){
+                if (ActivityManager.getInstance().getCurrentActivity() == this) {
                     onChangeAppLanguage();
                 }
                 break;
@@ -137,8 +143,14 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-       // unregisterReceiver(netWorkChangReceiver);
+        try {
+            EventBus.getDefault().unregister(this);
+            if (netWorkChangReceiver != null) {
+                unregisterReceiver(netWorkChangReceiver);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -151,6 +163,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     public PhotoHelper photoHelper;
     public NetWorkChangReceiver netWorkChangReceiver;
     public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
+
     public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
         this.onNetStateChangedListener = onNetStateChangedListener;
         if (netWorkChangReceiver != null) {
@@ -177,5 +190,6 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
@@ -25,8 +28,8 @@ public class ActionBarLayoutContentView extends FrameLayout {
     public View contentViewBack;//, contentViewFront;
     public ActionBarLayoutView mActionBarLayoutView;
 
-    public ActionBarLayoutContentView(Context context, ActionBarLayoutView actionBarLayoutView) {
-        super(context);
+    public ActionBarLayoutContentView(WeakReference<Context> context, ActionBarLayoutView actionBarLayoutView) {
+        super(context.get());
         mActionBarLayoutView = actionBarLayoutView;
         initView();
     }

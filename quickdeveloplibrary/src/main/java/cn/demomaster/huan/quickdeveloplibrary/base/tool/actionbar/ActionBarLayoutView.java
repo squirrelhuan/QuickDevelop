@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.SystemClock;
-import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +10,14 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseFragmentActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -42,7 +42,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         }
     }
 
-    private QDBaseFragmentActivity context;
+    private  WeakReference<AppCompatActivity> context;
 
     /**
      * 获取中间视图
@@ -116,12 +116,12 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
                 }
             }
         }
-        context.onKeyDown(eventCode,down);
+        context.get().onKeyDown(eventCode,down);
     }
 
     public ActionBarLayoutView(Builder builder) {
-        super(builder.context);
-        context = (QDBaseFragmentActivity) builder.context;
+        super(builder.context.get());
+        context = builder.context;
         mBuilder = builder;
         initView();
     }
@@ -173,7 +173,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      * init内容
      */
     private void initChildView() {
-        actionBarLayoutContentView = new ActionBarLayoutContentView(getContext(), this);
+        actionBarLayoutContentView = new ActionBarLayoutContentView(new WeakReference<Context>(getContext()), this);
         actionBarLayoutFragmentView = new ActionBarLayoutFragmentView(getContext());
         //内容区
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -182,7 +182,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         addContentBackView(mBuilder.contentView);
 
         //头部导航
-        actionBarLayoutHeaderView = new ActionBarLayoutHeaderView(getContext(),this);
+        actionBarLayoutHeaderView = new ActionBarLayoutHeaderView(new WeakReference<Context>(getContext()),this);
         FrameLayout.LayoutParams layoutParams2 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(actionBarLayoutHeaderView, layoutParams2);
         addHeadView(mBuilder.headerResId);
@@ -321,7 +321,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      * 导航栏构建者
      */
     public static class Builder {
-        private Context context;
+        private WeakReference<AppCompatActivity> context;
         private int contentResId = -1;
         private int fragmentResId = -1;
         private int headerResId = -1;
@@ -332,7 +332,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private Fragment fragment;
         private ContentType contextType = ContentType.ActivityModel;
 
-        public Builder(Context context) {
+        public Builder( WeakReference<AppCompatActivity> context) {
             this.context = context;
         }
 

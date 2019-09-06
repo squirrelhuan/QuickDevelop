@@ -174,7 +174,6 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
     }
 
     private UpdatePopDialog updatePopDialog;
-
     private void init() {
         getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
         getActionBarLayoutOld().setTitle("aaa");

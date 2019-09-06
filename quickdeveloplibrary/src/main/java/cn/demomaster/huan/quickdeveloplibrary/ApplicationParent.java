@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,7 +10,9 @@ import android.preference.PreferenceManager;
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
 
-//import com.didichuxing.doraemonkit.DoraemonKit;
+import com.didichuxing.doraemonkit.DoraemonKit;
+import androidx.multidex.MultiDex;
+
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -61,7 +64,13 @@ public class ApplicationParent extends Application {
             }
         });
 
-        //DoraemonKit.install(this);
+        DoraemonKit.install(this);
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
+
     }
 
     /**

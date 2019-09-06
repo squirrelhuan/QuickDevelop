@@ -16,6 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadUtil.checkDownloadManagerEnable;
 
 /**
  * 文件下载帮助类
@@ -85,9 +86,10 @@ public class DownloadHelper {
         //app下载名称
         String filename = (download_app_folder_name.endsWith("\\") ? download_app_folder_name : (download_app_folder_name + File.separator)) + downloadTask.getFileName();
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadTask.getDownloadUrl()));
-
+        QDLogger.i("下载文件存放路径："+download_app_folder_name+"，文件名："+filename);
         // 存储的目录
-        request.setDestinationInExternalPublicDir(download_app_folder_name, filename);
+        //request.setDestinationInExternalPublicDir(download_app_folder_name, filename);
+        request.setDestinationInExternalPublicDir(download_app_folder_name, downloadTask.getFileName());
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 
@@ -226,8 +228,13 @@ public class DownloadHelper {
         public DownloadHelper creat(){
             return getInstance(context);
         }
+
         public void start() {
             QDLogger.i("准备下载->" + fileName);
+          /*  if(!checkDownloadManagerEnable(context)){
+                QDLogger.i("下载管理器开启失败" + fileName);
+                return;
+            }*/
             DownloadTask downloadTask = new DownloadTask(context);
             downloadTask.setDownloadUrl(url);
             downloadTask.setFileName(fileName);
@@ -237,7 +244,7 @@ public class DownloadHelper {
         }
 
         public void unregister(Context context) {
-            QDLogger.i("准备下载->" + fileName);
+            QDLogger.i("注销");
             if (context != null) {
                 DownloadHelper.getInstance(context).unregisterReceiver(context);
             }

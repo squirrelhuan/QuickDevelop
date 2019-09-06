@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -43,7 +46,7 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
         super.onCreate(savedInstanceState);
         if (getApplicationContext() != null && getApplicationContext() instanceof ApplicationParent) {
             ((ApplicationParent) getApplicationContext()).addActivity(this);
-            StatusBarUtil.transparencyBar(mContext);
+            StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
             initHelper();
         }
     }
@@ -80,7 +83,7 @@ public class BaseActivityRoot extends BaseFragmentActivity implements BaseActivi
 
     //设置导航栏透明
     public void transparentBar() {
-        StatusBarUtil.transparencyBar(this);
+        StatusBarUtil.transparencyBar(new WeakReference<Activity>(this));
     }
 
     public void startActivity(Class<?> clazz) {

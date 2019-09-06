@@ -14,6 +14,9 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
@@ -65,8 +68,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     public ActionBarLayoutView mActionBarLayoutView;
 
-    public ActionBarLayoutHeaderView(@NonNull Context context, ActionBarLayoutView actionBarLayoutView) {
-        super(context);
+    public ActionBarLayoutHeaderView(@NonNull WeakReference<Context> context, ActionBarLayoutView actionBarLayoutView) {
+        super(context.get());
         mActionBarLayoutView = actionBarLayoutView;
         initView();
     }

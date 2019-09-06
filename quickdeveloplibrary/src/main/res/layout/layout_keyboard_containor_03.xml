@@ -78,7 +78,8 @@
             android:keyPreviewLayout="@layout/keyboard_preview_layout"
             android:keyPreviewOffset="0dp"
             android:keyTextColor="@color/black"
-            android:keyTextSize="32sp" />
+            android:keyTextSize="32sp"
+            android:shadowRadius="0"/>
 
     </FrameLayout>
 </LinearLayout>

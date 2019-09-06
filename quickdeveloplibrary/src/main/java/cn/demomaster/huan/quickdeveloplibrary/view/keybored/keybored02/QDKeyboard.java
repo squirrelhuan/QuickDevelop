@@ -244,8 +244,15 @@ public class QDKeyboard {
         //字母 case 1: keyboardView.setKeyboard(keyboardLetter);
         //符号 case 2: keyboardView.setKeyboard(keyboardSymbol);
         //数字 case 3: keyboardView.setKeyboard(keyboardNumber);
+        QDLogger.i("Keyboard InputType:"+mEditText.getInputType());
         switch (mEditText.getInputType()) {
             case InputType.TYPE_CLASS_NUMBER://数字
+                keyboardView.setKeyboard(keyboardNumber_Only);
+                break;
+            case 18://数字
+                keyboardView.setKeyboard(keyboardNumber_Only);
+                break;
+            case InputType.TYPE_NUMBER_FLAG_SIGNED://数字
                 keyboardView.setKeyboard(keyboardNumber_Only);
                 break;
             case InputType.TYPE_CLASS_PHONE://数字

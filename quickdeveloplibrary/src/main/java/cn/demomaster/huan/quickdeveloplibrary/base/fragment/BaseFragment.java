@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
+import android.app.Activity;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
@@ -34,7 +37,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
         mContext = (AppCompatActivity) this.getContext();
         mBundle = getArguments();
         super.onCreate(savedInstanceState);
-        StatusBarUtil.transparencyBar(mContext);
+        StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
         initHelper();
     }
 

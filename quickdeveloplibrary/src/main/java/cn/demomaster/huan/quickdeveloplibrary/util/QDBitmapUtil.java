@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,6 +10,8 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
+
+import com.bumptech.glide.load.engine.Resource;
 /*
 import core.base.XBaseApplication;*/
 
@@ -65,7 +68,8 @@ public class QDBitmapUtil {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inScaled = false;         //设置这个属性防止因为不同的dpi文件夹导致缩放
         opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, opt).copy(Bitmap.Config.ARGB_8888, true);
+        Resources resources = context.getResources();
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, resId, opt).copy(Bitmap.Config.ARGB_8888, true);
         bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
         //bitmap.recycle();
         return bitmap;

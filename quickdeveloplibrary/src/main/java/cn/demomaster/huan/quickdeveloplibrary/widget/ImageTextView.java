@@ -45,10 +45,10 @@ public class ImageTextView extends AppCompatImageView {
         requestLayout();
         postInvalidate();
     }
-
+    AttributeHelper attributeHelper;
     private void init(Context context, AttributeSet attrs) {
         if (attrs != null) {
-            AttributeHelper attributeHelper = new AttributeHelper(context,attrs);
+            attributeHelper = new AttributeHelper(context,attrs);
             //attributeHelper.hasAttr("textSize")
 
           /*  int count = attrs.getAttributeCount();
@@ -85,6 +85,7 @@ public class ImageTextView extends AppCompatImageView {
                 }
             }
         }
+        attributeHelper =null;
     }
 
     private float textWidth;

@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
+import android.app.Activity;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -14,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
@@ -46,7 +50,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
 
     public ActionBarInterface getActionBarLayout(View view) {
         if (actionBarLayout == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(new WeakReference<AppCompatActivity>(mContext)).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
         }
         return actionBarLayout;
@@ -63,7 +67,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
         mContext = (AppCompatActivity) this.getContext();
         mBundle = getArguments();
         super.onCreate(savedInstanceState);
-        StatusBarUtil.transparencyBar(mContext);
+        StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
         initHelper();
     }
 

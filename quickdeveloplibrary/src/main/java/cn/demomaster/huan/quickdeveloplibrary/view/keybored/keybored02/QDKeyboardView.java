@@ -149,7 +149,7 @@ public class QDKeyboardView extends KeyboardView {
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
-                    //paint.setTypeface(Typeface.DEFAULT_BOLD);
+                    paint.setTypeface(Typeface.DEFAULT_BOLD);
                     //QDLogger.i("mLabelTextSize="+labelTextSize);
                 } else {
                     int keyTextSize = 0;
@@ -162,7 +162,7 @@ public class QDKeyboardView extends KeyboardView {
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
-                    //paint.setTypeface(Typeface.DEFAULT_BOLD);
+                    paint.setTypeface(Typeface.DEFAULT_BOLD);
                    // QDLogger.i("mKeyTextSize="+keyTextSize);
                 }
                 paint.getTextBounds(key.label.toString(), 0, key.label.toString().length(), bounds);

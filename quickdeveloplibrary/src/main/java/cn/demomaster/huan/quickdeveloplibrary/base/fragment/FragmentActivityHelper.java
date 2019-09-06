@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,8 +106,8 @@ public class FragmentActivityHelper {
         transaction.commitAllowingStateLoss();
     }
 
-    public void bindActivity(FragmentActivity activity) {
-        if (getContentView(activity) == null) {
+    public void bindActivity(WeakReference<FragmentActivity> activity) {
+        if (getContentView(activity.get()) == null) {
             //view.setId(getContentView(activity));
         }
     }

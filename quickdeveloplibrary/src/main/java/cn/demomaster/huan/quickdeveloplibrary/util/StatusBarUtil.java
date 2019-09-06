@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -24,9 +27,9 @@ public class StatusBarUtil {
      * @param activity
      */
     @TargetApi(19)
-    public static void transparencyBar(Activity activity){
+    public static void transparencyBar(WeakReference<Activity> activity){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
+            Window window = activity.get().getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -35,7 +38,7 @@ public class StatusBarUtil {
 
         } else
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window =activity.getWindow();
+            Window window =activity.get().getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -54,7 +57,7 @@ public class StatusBarUtil {
             window.setStatusBarColor(activity.getResources().getColor(colorId));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
-            transparencyBar(activity);
+            transparencyBar(new WeakReference<Activity>(activity));
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(colorId);

@@ -3,7 +3,11 @@ package cn.demomaster.huan.quickdeveloplibrary.base;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import android.view.View;
+
+import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -16,7 +20,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-        FragmentActivityHelper.getInstance().bindActivity(this);
+        FragmentActivityHelper.getInstance().bindActivity(new WeakReference<FragmentActivity>(this));
     }
 
     @Override

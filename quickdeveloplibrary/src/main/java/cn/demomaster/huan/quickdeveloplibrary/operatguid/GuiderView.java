@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
 /**
  * Created by Squirrel桓 on 2019/1/12.
@@ -286,7 +287,7 @@ public class GuiderView extends View {
             return;
         }
         Bitmap backbitmap = null;
-        backbitmap = QDBitmapUtil.drawable2Bitmap(getContext(), guiderModel.getImgResourceId());
+        backbitmap = QDBitmapUtil.drawable2Bitmap(getActivityFromView(this) , guiderModel.getImgResourceId());
         int w = 0;
         int h = 0;
         if (guiderModel.getImgWidth() == -1 && guiderModel.getImgHeight() == -1) {

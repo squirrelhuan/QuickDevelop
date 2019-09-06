@@ -100,7 +100,6 @@ public class DownloadChangeObserver extends ContentObserver {
         super(handler);
         this.downLoadHandler = handler;
         this.downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
-        ;
         try {
             executorService = Executors.newSingleThreadScheduledExecutor();
         } catch (Exception e) {

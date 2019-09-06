@@ -194,7 +194,7 @@ public class QDLogger {
                 }
                 FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
             } else {
-                System.out.println("本地日志写入失败，请打开存储权限");
+                Log.e("qdlog error","本地日志写入失败，请打开存储权限");
                 // throw new IllegalArgumentException("log 打印失败，请打开存储权限");
             }
         }

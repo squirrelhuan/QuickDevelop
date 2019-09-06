@@ -1,9 +1,13 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.RouterFragment;
@@ -26,7 +30,7 @@ public class BaseFragmentActivity extends QDBaseActivity {
         view.setId(getContentViewId());
         setContentView(view);
         getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        FragmentActivityHelper.getInstance().bindActivity(this);
+        FragmentActivityHelper.getInstance().bindActivity(new WeakReference<FragmentActivity>(this));
         RouterFragment f1 = new RouterFragment();
         FragmentActivityHelper.getInstance().startFragment(this,f1);
         //开启事务，fragment的控制是由事务来实现的

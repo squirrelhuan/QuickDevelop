@@ -21,7 +21,7 @@ android {
                 cppFlags ""
             }
         }
-
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -106,6 +106,6 @@ dependencies {
     api 'org.greenrobot:eventbus:3.1.1'
 
     //滴滴出行
-    //debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:1.1.5'
-    //releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'
+    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:1.1.5'
+    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'
 }

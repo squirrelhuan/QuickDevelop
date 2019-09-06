@@ -43,9 +43,6 @@ public class PermissionManager {
         this.context = context;
     }
 
-    public void onPass() {
-    }
-
     //普通权限
     private static String[] PERMISSIONS_ALL = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -205,7 +202,9 @@ public class PermissionManager {
                 .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         startRequestPermission(context, permission);
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
