@@ -21,12 +21,13 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="在线升级"/>
-                      <!--  <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_error_buggly"
-                            android:layout_width="match_parent"
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_install_access"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/select_font"/>
--->
+                            android:layout_gravity="center"
+                            android:text="辅助安装"/>
+
                 </LinearLayout>
         </ScrollView>
 

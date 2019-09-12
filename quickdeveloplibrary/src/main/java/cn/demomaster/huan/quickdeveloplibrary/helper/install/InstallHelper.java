@@ -10,11 +10,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -28,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHel
 
 public class InstallHelper {
 
-    public static void downloadAndInstall(final Activity context, final String name , final String url) {
+    public static void downloadAndInstall(final Activity context, final String name, final String url) {
         //兼容8.0 安装权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
@@ -51,14 +56,15 @@ public class InstallHelper {
         PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
-                DownloadHelper.DownloadBuilder  downloadBuilder=  new DownloadHelper.DownloadBuilder(context)
+                DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
                         .setFileName(name)
                         .setUrl(url)
                         .setOnProgressListener(new OnDownloadProgressListener() {
                             @Override
                             public void onComplete(DownloadTask downloadTask) {
                                 QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownIdUri().getPath());
-                                openAPKFile(context,downloadTask.getDownIdUri());
+                                openAPKFile(context, downloadTask.getDownIdUri());
+                                //runInstall(context,downloadTask.getDownIdUri());
                             }
 
                             @Override
@@ -136,6 +142,7 @@ public class InstallHelper {
     }
 
     public static final int INSTALL_PERMISS_CODE = 28757;
+
     /**
      * 跳转到设置-允许安装未知来源-页面
      */
@@ -145,7 +152,7 @@ public class InstallHelper {
         //注意这个是8.0新API
         Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivityForResult(intent,INSTALL_PERMISS_CODE);
+        context.startActivityForResult(intent, INSTALL_PERMISS_CODE);
     }
 
     /**
@@ -168,21 +175,113 @@ public class InstallHelper {
     }
 
 
-
-
     public static boolean checkAppInstalled(Context context, String pkgName) {
-        if (pkgName== null || pkgName.isEmpty()) {
+        if (pkgName == null || pkgName.isEmpty()) {
             return false;
         }
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> info = packageManager.getInstalledPackages(0);
-        if(info == null || info.isEmpty())
+        if (info == null || info.isEmpty())
             return false;
-        for ( int i = 0; i < info.size(); i++ ) {
-            if(pkgName.equals(info.get(i).packageName)) {
+        for (int i = 0; i < info.size(); i++) {
+            if (pkgName.equals(info.get(i).packageName)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static void runInstall(final Context context, final File file) {
+        Uri uri  = Uri.fromFile(file);
+        runInstall(context,uri);
+    }
+
+    public static void runInstall(final Context context, final Uri uri) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean success = installByRoot();
+                if (!success){
+                    if(isAccessBilityOn(context)){
+                        //Intent intent = new Intent(Intent.ACTION_VIEW);
+                        //intent.setDataAndType(uri,"application/vnd.android.package-archive");
+                        //context.startActivity(intent);
+
+                        openAPKFile((Activity) context,uri);
+                    }else {
+                        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public static boolean isAccessBilityOn(Context context) {
+        int i=0;
+        String service = context.getPackageName()+"/"+InstallService.class.getCanonicalName();
+        try {
+            i=Settings.Secure.getInt(context.getApplicationContext().getContentResolver(),Settings.Secure.ACCESSIBILITY_ENABLED);
+            if(i==1){
+                String settingVlue = Settings.Secure.getString(context.getApplicationContext().getContentResolver(),Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+
+                String[] arr = settingVlue.split(":");
+                if(arr!=null&&arr.length>0){
+                    for (String name:arr){
+                        if(service.equalsIgnoreCase(name)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean installByRoot() {
+        boolean result = false;
+        Process process = null;
+        OutputStream os = null;
+        String commond = null;
+        BufferedReader br = null;
+        StringBuffer sb = null;
+        try {
+            process = Runtime.getRuntime().exec("su");
+            os = process.getOutputStream();
+            //
+            os.write("pm install -r".getBytes());
+            os.flush();
+            os.write("exit\n".getBytes());
+            process.waitFor();
+            br = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            sb = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            if (!sb.toString().contains("Failure")) {
+                result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                os=null;
+                br=null;
+                process.destroy();
+            }
+        }
+        return result;
     }
 }

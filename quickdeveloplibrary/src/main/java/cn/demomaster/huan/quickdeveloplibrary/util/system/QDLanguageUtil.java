@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import java.util.Locale;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.SharedPreferencesConstant;
+import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
 /**
  * @author squirrel桓
@@ -33,6 +34,10 @@ public class QDLanguageUtil {
         SharedPreferences preferences;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String language = preferences.getString(SharedPreferencesConstant.System_Language_Setting, "");
+        return language;
+    }
+    public static String getLanguageLocal() {
+        String language = SharedPreferencesHelper.getInstance().getString(SharedPreferencesConstant.System_Language_Setting, "");
         return language;
     }
 

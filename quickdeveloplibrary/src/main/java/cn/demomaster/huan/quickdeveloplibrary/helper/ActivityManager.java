@@ -2,7 +2,9 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +49,14 @@ public class ActivityManager {
             activitys.remove(activity);
         }
     }
+
     //删除具体的activity
     public void removeActivity(Activity activity) {
         if (activity != null) {
             activitys.remove(activity);
         }
     }
+
     //删除clazz类的activity
     public void deleteActivityByClass(Class clazz) {
         if (clazz != null) {
@@ -147,7 +151,7 @@ public class ActivityManager {
      * 关闭除了a之外的所有activity
      */
     public void deleteOtherActivity(Activity activity) {
-        if (activitys != null&&activity!=null) {
+        if (activitys != null && activity != null) {
             for (int i = 0; i < activitys.size(); i++) {
                 if (!activity.equals(activitys.get(i))) {
                     activitys.get(i).finish();
@@ -160,11 +164,72 @@ public class ActivityManager {
     }
 
     private Activity currentActivity;
-    public void setCurrentActivity(Activity activity) {
-        currentActivity = activity;
+    private Activity currentActivity_tmp;
+    public void setCurrentActivity(Activity tmp) {
+        currentActivity_tmp = tmp;
+        handler.removeCallbacks(runnable);
+        if(tmp==null&&currentActivity!=null){
+            runnable.setActivity(tmp);
+            handler.postDelayed(runnable,500);//延迟过滤app页面切换过程中的制空
+        }else if(tmp!=null&&currentActivity==null){
+            currentActivity = tmp;
+            onStateChanged();
+        }
     }
 
     public Activity getCurrentActivity() {
         return currentActivity;
+    }
+
+    Handler handler = new Handler();
+    ARunnable runnable = new ARunnable() {
+        @Override
+        public void run() {
+            if (currentActivity_tmp == null) {
+                currentActivity=activityRef.get();
+                handler.removeCallbacks(runnable);
+                onStateChanged();
+            }
+        }
+    };
+
+    /**
+     * 设置app前后台切换事件
+     */
+    private void onStateChanged() {
+        if (onAppRunStateChangedListenner != null) {
+            if (currentActivity==null) {
+                onAppRunStateChangedListenner.onBackground();
+            } else {
+                onAppRunStateChangedListenner.onForeground();
+            }
+        }
+    }
+
+    OnAppRunStateChangedListenner onAppRunStateChangedListenner;
+
+    /**
+     * 设置app前后台运行切换状态监听
+     * @param onAppRunStateChangedListenner
+     */
+    public void setOnAppRunStateChangedListenner(OnAppRunStateChangedListenner onAppRunStateChangedListenner) {
+        this.onAppRunStateChangedListenner = onAppRunStateChangedListenner;
+    }
+
+    public static interface OnAppRunStateChangedListenner {
+        void onForeground();//前台显示
+        void onBackground();//后台显示
+    }
+
+    public static class ARunnable implements Runnable{
+        public SoftReference<Activity>  activityRef;
+        public void setActivity(Activity activity) {
+           this.activityRef = new SoftReference<>(activity);
+        }
+
+        @Override
+        public void run() {
+
+        }
     }
 }

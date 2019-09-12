@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,8 @@ import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +53,7 @@ import io.reactivex.schedulers.Schedulers;
 import static android.content.Context.DOWNLOAD_SERVICE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager.startInstallPermissionSettingActivity;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.TAG;
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.e;
 
 
 /**
@@ -68,6 +72,9 @@ public class UpdateAppFragment extends QDBaseFragment {
     //Components
     @BindView(R.id.btn_update_app)
     QDButton btn_update_app;
+    @BindView(R.id.btn_install_access)
+    QDButton btn_install_access;
+
     View mView;
 
     @Override
@@ -79,13 +86,22 @@ public class UpdateAppFragment extends QDBaseFragment {
         return (ViewGroup) mView;
     }
 
+    int type = 0;
+
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("文件下载");
-
         btn_update_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                type = 0;
+                updateApp(mContext);
+            }
+        });
+        btn_install_access.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = 1;
                 updateApp(mContext);
             }
         });
@@ -209,7 +225,12 @@ public class UpdateAppFragment extends QDBaseFragment {
                     public void onClick(QDDialog dialog) {
                         dialog.dismiss();
                         //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
-                        InstallHelper.downloadAndInstall(mContext,version.getFileName(),version.getDownloadUrl());
+                        //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
+                        if (type == 0) {
+                            InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
+                        } else {
+                            InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
+                        }
                     }
                 }).addAction("取消").setGravity_foot(Gravity.CENTER).create().show();
     }
