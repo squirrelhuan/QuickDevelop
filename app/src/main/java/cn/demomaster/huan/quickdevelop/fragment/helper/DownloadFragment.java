@@ -27,9 +27,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 /**
  * Squirrel桓
- * 2018/8/25
+ * 2018/8/25 QDTerminal
  */
-
 @ActivityPager(name = "Downloader", preViewClass = StateView.class, resType = ResType.Custome)
 public class DownloadFragment extends QDBaseFragment {
 

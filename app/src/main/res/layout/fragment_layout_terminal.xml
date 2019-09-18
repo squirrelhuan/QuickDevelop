@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@+id/ll_input"
+        android:layout_weight="1"
+        android:background="@color/black">
+
+        <TextView
+            android:id="@+id/tv_execute_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="input"
+            android:textColor="@color/white"
+            android:textColorHint="@color/greenyellow" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_execute_cmd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/orange"
+            android:textSize="20sp" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_execute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送"
+            android:textColor="@color/orange"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_test_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="强制开启全屏模式"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cn.demomaster.huan.quickdevelop">
+    package="cn.demomaster.huan.quickdevelop"
+    ><!--android:sharedUserId="android.uid.system"-->
 
 
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
@@ -19,6 +20,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />--><!--需要系统权限，系统签名-->
 
     <application
         android:name=".Application"

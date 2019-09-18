@@ -7,6 +7,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -75,6 +76,12 @@ public class UpdateAppFragment extends QDBaseFragment {
     @BindView(R.id.btn_install_access)
     QDButton btn_install_access;
 
+    @BindView(R.id.btn_install_silence)
+    QDButton btn_install_silence;
+
+    @BindView(R.id.btn_install_silence2)
+    QDButton btn_install_silence2;
+
     View mView;
 
     @Override
@@ -102,6 +109,23 @@ public class UpdateAppFragment extends QDBaseFragment {
             @Override
             public void onClick(View v) {
                 type = 1;
+                updateApp(mContext);
+            }
+        });
+
+        btn_install_silence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = 2;
+                updateApp(mContext);
+            }
+        });
+
+
+        btn_install_silence2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = 3;
                 updateApp(mContext);
             }
         });
@@ -138,7 +162,6 @@ public class UpdateAppFragment extends QDBaseFragment {
             @Override
             public void onNoPassed() {
 
-
             }
         });
 
@@ -146,7 +169,6 @@ public class UpdateAppFragment extends QDBaseFragment {
 
     /**
      * alert 消息提示框显示
-     *
      * @param context  上下文
      * @param title    标题
      * @param message  消息
@@ -228,8 +250,49 @@ public class UpdateAppFragment extends QDBaseFragment {
                         //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
                         if (type == 0) {
                             InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
-                        } else {
-                            InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
+                        } else  if (type == 1){
+                             InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
+                        }else if (type == 2){
+                            try {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    InstallHelper.silenceInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
+                                        @Override
+                                        public void onCreated(int sessionId) {
+
+                                        }
+
+                                        @Override
+                                        public void onBadgingChanged(int sessionId) {
+
+                                        }
+
+                                        @Override
+                                        public void onActiveChanged(int sessionId, boolean active) {
+
+                                        }
+
+                                        @Override
+                                        public void onProgressChanged(int sessionId, float progress) {
+
+                                        }
+
+                                        @Override
+                                        public void onFinished(int sessionId, boolean success) {
+                                            InstallHelper.launchAPK(mContext,"");
+                                        }
+                                    });
+                                }else{
+                                    QDLogger.e("5.0以上用这种静默安装");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else if (type == 3){
+                            try {
+                                InstallHelper.downloadAndSilenceInstall(mContext,"test.apk", version.getDownloadUrl());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }).addAction("取消").setGravity_foot(Gravity.CENTER).create().show();

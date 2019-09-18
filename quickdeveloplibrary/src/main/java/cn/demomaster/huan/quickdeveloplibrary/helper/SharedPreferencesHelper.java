@@ -68,7 +68,11 @@ public class SharedPreferencesHelper {
         return sharedPreferences.getLong(key, def);
     }
 
+    //
     public void setLong(String key, long value) {
+        putLong(key,value);
+    }
+    public void putLong(String key, long value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(key, value);
         editor.commit();

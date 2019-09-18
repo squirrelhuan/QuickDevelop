@@ -27,6 +27,18 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="辅助安装"/>
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_install_silence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="静默安装"/>
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_install_silence2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="先下载再静默安装"/>
 
                 </LinearLayout>
         </ScrollView>

@@ -51,6 +51,10 @@ public class ExeCommandFragment extends QDBaseFragment {
     QDButton btn_exe_02;
     View mView;
 
+
+    @BindView(R.id.btn_exe_03)
+    QDButton btn_exe_03;
+
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
@@ -74,6 +78,15 @@ public class ExeCommandFragment extends QDBaseFragment {
             @Override
             public void onClick(View v) {
                 String str = "ps |grep "+getActivity().getPackageName();
+                QDLogger.i(str);
+                exeCommand(str);
+            }
+        });
+
+        btn_exe_03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = "adb shell settings put global policy_control immersive.full=*";
                 QDLogger.i(str);
                 exeCommand(str);
             }
