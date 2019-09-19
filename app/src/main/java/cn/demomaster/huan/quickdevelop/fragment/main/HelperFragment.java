@@ -28,6 +28,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.QDTerminalFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.UpdateAppFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.WifiFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -84,6 +85,8 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(PermitionFragment.class);
         classList.add(PositionFragment.class);
         classList.add(ExeCommandFragment.class);
+        classList.add(WifiFragment.class);
+
         //classList.add(QDTerminalFragment.class);
 
 

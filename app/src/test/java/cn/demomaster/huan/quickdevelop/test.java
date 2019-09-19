@@ -1,8 +1,15 @@
 package cn.demomaster.huan.quickdevelop;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 
 public class test {
+    @Test
+    public void time(){
+        System.out.println(System.currentTimeMillis());
+    }
+
 
     /*public static void main(String[] args){
 

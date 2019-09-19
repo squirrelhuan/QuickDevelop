@@ -56,7 +56,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
             if(netState!=1&&onNetStateChangedListener!=null){
                 netState=1;
                 QDLogger.i("CGQ", "网络状态发生改变，已连接");
-                onNetStateChangedListener.onConnected();
+                onNetStateChangedListener.onConnected(activeInfo);
             }
         } else { //网络断开
             Log.i("CGQ", "网络断开");
@@ -69,7 +69,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
     }
 
     public static interface OnNetStateChangedListener{
-        void onConnected();
+        void onConnected(NetworkInfo networkInfo);
         void onDisConnected();
     }
 }

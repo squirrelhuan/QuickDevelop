@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -270,12 +271,13 @@ public class InstallHelper {
 
     /**
      * 静默安装
-     *
      * @param context
      * @param file
      */
     public static void silenceInstall(@NonNull Context context, @NonNull File file) throws Exception {
         //installSlient(context,file);
+        //QDLogger.i("下载文件path:" + file.getAbsolutePath());
+        //QDLogger.e("silenceInstall="+installSilent(file));
         silenceInstall(context, file, null);
     }
 
@@ -359,13 +361,13 @@ public class InstallHelper {
                 /****************/
                 intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
                 PendingIntent restartIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-                AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                /*AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {// 6.0及以上
                     mgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 20000, restartIntent);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {// 4.4及以上
                     mgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 20000, restartIntent);
-                }
+                }*/
                 /****************/
 
 
@@ -459,6 +461,59 @@ public class InstallHelper {
         }
 
         launchAPK(context, apk);
+    }
+
+    public static int installSilent( File file) {
+        //File file = new File(filePath);
+        if (file == null || !file.exists() ) {
+            return 1;
+        }
+        String filePath = file.getAbsolutePath();
+        String[] args = { "pm", "install", "-r", filePath };
+        ProcessBuilder processBuilder = new ProcessBuilder(args);
+        Process process = null;
+        BufferedReader successResult = null;
+        BufferedReader errorResult = null;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder errorMsg = new StringBuilder();
+        int result;
+        try {
+            process = processBuilder.start();
+            successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String s;
+            while ((s = successResult.readLine()) != null) {
+                successMsg.append(s);
+            }
+            while ((s = errorResult.readLine()) != null) {
+                errorMsg.append(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (successResult != null) {
+                    successResult.close();
+                }
+                if (errorResult != null) {
+                    errorResult.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        if (successMsg.toString().contains("Success") || successMsg.toString().contains("success")) {
+            result = 0;
+        } else {
+            result = 2;
+        }
+        Log.d("test-test", "successMsg:" + successMsg + ", ErrorMsg:" + errorMsg);
+        return result;
     }
 
 

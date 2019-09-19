@@ -42,6 +42,7 @@ public class QDMainFragmentActivity extends QDBaseActivity {
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
+        initHelper();
     }
 
 

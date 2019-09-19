@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
 @ActivityPager(name = "QDialog",preViewClass = StateView.class,resType = ResType.Custome)
@@ -95,13 +98,47 @@ public class QDialogActivity extends BaseActivityParent {
                     case 7:
                         showMessageWithButton2(Gravity.LEFT);
                         break;
-                    case 8:
+                    case 8://菜单类型对话框
                         showMenuDialog();
+                        break;
+                    case 9://带 Checkbox 的消息确认框
+
+                        break;
+                    case 10://单选菜单类型对话框
+
+                        break;
+
+                    case 11://多选菜单类型对话框
+
+                        break;
+                    case 12://多选菜单类型对话框(item 数量很多)
+
+                        break;
+                    case 13://带输入框的对话框
+
+                        break;
+                    case 14://高度适应键盘升降的对话框
+                        showInputDialog();
                         break;
                 }
             }
         });
         initOptionsMenu();
+    }
+
+    private void showInputDialog() {
+        new QDInputDialog.Builder(mContext).setTitle("连接wifi")
+                .setMessage("")
+                .setHint("请输入密码")
+                .setBackgroundRadius(backgroundRadio)
+                .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+                .addAction("连接", new QDInputDialog.OnClickActionListener() {
+                    @Override
+                    public void onClick(QDInputDialog dialog, String value) {
+                        Toast.makeText(mContext,"input = "+value,Toast.LENGTH_SHORT).show();
+                        //连接返回editview的value
+                    }
+                }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
     }
 
     //初始化菜单

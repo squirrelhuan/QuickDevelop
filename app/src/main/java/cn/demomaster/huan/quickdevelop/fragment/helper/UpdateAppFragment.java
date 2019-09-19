@@ -237,7 +237,7 @@ public class UpdateAppFragment extends QDBaseFragment {
 
     //app更新弹窗
     private void showUpdateAppDialog(final Context context, final Version version) {
-        version.setDownloadUrl("http://b8.market.mi-img.com/download/AppStore/06d765b1b7432b1ca8deb82524826766bfd439306/cn.youth.news.apk");
+        version.setDownloadUrl("https://b6.market.xiaomi.com/download/AppStore/084df452cadba44cb1b73603138d7fbe8aef2b76d/com.kuaiduizuoye.scan.apk");
         version.setFileName("新闻");
         new QDDialog.Builder(getContext()).setTitle("更新提示")
                 .setMessage("确定要更新吗？")
@@ -289,7 +289,7 @@ public class UpdateAppFragment extends QDBaseFragment {
                             }
                         }else if (type == 3){
                             try {
-                                InstallHelper.downloadAndSilenceInstall(mContext,"test.apk", version.getDownloadUrl());
+                                InstallHelper.downloadAndSilenceInstall(getActivity(),version.getFileName()+".apk", version.getDownloadUrl());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

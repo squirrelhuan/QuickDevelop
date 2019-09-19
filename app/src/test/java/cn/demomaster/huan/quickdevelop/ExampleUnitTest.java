@@ -41,4 +41,9 @@ public class ExampleUnitTest {
         System.out.println(Test.class.getResource(""));
         System.out.println(Test.class.getResource("/"));
     }
+
+    @Test
+    public void time(){
+        System.out.println(System.currentTimeMillis());
+    }
 }
