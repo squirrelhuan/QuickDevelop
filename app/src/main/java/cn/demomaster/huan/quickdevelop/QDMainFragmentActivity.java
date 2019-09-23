@@ -4,10 +4,13 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.View;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
@@ -43,6 +46,15 @@ public class QDMainFragmentActivity extends QDBaseActivity {
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
         initHelper();
+
+        //设置系统时间需要系统权限
+       /* long time = 1243567568;
+        //同步服务器时间
+        SystemClock.setCurrentTimeMillis(time);
+
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+        System.out.println("当前时间：" + simpleDateFormat.format(date));*/
     }
 
 

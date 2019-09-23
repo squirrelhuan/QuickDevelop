@@ -2,9 +2,12 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
@@ -50,6 +53,8 @@ public class QDMainActivity extends BaseActivityParent {
 
         // Tabs
         initScrollableTabs(mViewPager);
+
+
     }
 
     /**
