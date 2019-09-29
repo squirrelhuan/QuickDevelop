@@ -128,6 +128,54 @@ public class ScreenShotUitl {
         view.destroyDrawingCache();
         return bmp;
     }
+    public static Bitmap shotActivity(Activity activity) {
+        // 获取windows中最顶层的view
+        View view = activity.getWindow().getDecorView();
+        view.buildDrawingCache();
+
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        // 获取屏幕宽和高
+        int widths = display.getWidth();
+        int heights = display.getHeight();
+        // 允许当前窗口保存缓存信息
+        view.setDrawingCacheEnabled(true);
+        // 去掉状态栏
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, widths, heights);
+
+        // 销毁缓存信息
+        view.destroyDrawingCache();
+        return bmp;
+    }
+
+    /**
+     * 区域截图
+     * @param activity
+     * @param x0 左上角的x
+     * @param y0 左上角的y
+     * @param x1 右下角的x
+     * @param y1 右下角的y
+     * @return
+     */
+    public static Bitmap shotActivity(Activity activity,int x0,int y0,int x1,int y1) {
+        // 获取windows中最顶层的view
+        View view = activity.getWindow().getDecorView();
+        view.buildDrawingCache();
+
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        // 获取屏幕宽和高
+        int widths = display.getWidth();
+        int heights = display.getHeight();
+        // 允许当前窗口保存缓存信息
+        view.setDrawingCacheEnabled(true);
+        // 去掉状态栏
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), x0, y0, x1-x0, y1-y0);
+
+        // 销毁缓存信息
+        view.destroyDrawingCache();
+        return bmp;
+    }
 
     /**
      * 获取一个 View 的缓存视图
@@ -254,4 +302,11 @@ public class ScreenShotUitl {
         }
     }
 
+    public static int pixel(Activity activity,int x, int y) {
+        int color = shotActivity(activity).getPixel(x, y);
+        int red = (color & 0xff0000) >> 16;
+        int green = (color & 0x00ff00) >> 8;
+        int blue = (color & 0x0000ff);
+        return color;
+    }
 }

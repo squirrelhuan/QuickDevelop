@@ -37,7 +37,7 @@ public class DownloadTask {
     }
 
     //默认下载路径
-    private String download_app_folder_name = AppConfig.getInstance().getConfigMap().get("DownloadFilePath").toString();
+    private String download_app_folder_name = AppConfig.getInstance().getConfig("DownloadFilePath").toString();
 
     public DownloadTask(Context context) {
         this.context = context;

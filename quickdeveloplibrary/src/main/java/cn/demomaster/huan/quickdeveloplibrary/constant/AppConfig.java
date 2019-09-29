@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.Map;
 
+import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
@@ -25,8 +26,7 @@ public class AppConfig {
 
     //要初始化
     public void init(Context context, String pathName) {
-
-        mContext = context;
+        mContext = context.getApplicationContext();
         configPath = pathName;
 
         String conf = FileUtil.getFromAssets(mContext, configPath);
@@ -79,6 +79,17 @@ public class AppConfig {
     }
 
     public Map<String, Object> getConfigMap() {
+        if(configMap==null){
+            try {
+                throw new QDException("请先初始化配置cofig");
+            } catch (QDException e) {
+                e.printStackTrace();
+            }
+        }
         return configMap;
+    }
+
+    public Object getConfig(String key) {
+        return getConfigMap().get(key);
     }
 }

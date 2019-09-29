@@ -58,20 +58,10 @@ public class CBHelper extends SQLiteOpenHelper {
 
 
 
-
-
-
-
-
-
-
-
-
     private static String DATABASE_NAME = "yidao.db";
     private static final int DATABASE_VERSION = 1;
     private static final String SP_KEY_DB_VER = "db_ver";
     private SQLiteDatabase db;
-
     private void initLocalDB() {
         if (databaseExists()) {
             SharedPreferences prefs = PreferenceManager

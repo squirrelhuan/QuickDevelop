@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,12 +27,15 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
+import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getFileCreatTime;
 
 
 /**
@@ -116,6 +122,28 @@ public class FileManagerFragment extends QDBaseFragment {
         QDLogger.i("getExternalCacheDir="+getContext().getExternalCacheDir().getAbsolutePath());
         QDLogger.i("getRootDirectory="+android.os.Environment.getRootDirectory().getAbsolutePath());
 
+        String path = Environment.getExternalStorageDirectory() +File.separator+ "tsetfile.txt";
+        QDLogger.d(path);
+        File file = new File(path);
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+        getFileCreatTime(mContext, file, new FileUtil.OnSearchListener() {
+            @Override
+            public void onResult(QDFile qdFile) {
+                if(qdFile!=null){
+                    //Date date1 = new Date(System.currentTimeMillis());
+                    Date date = new Date(qdFile.getModifyTime());
+                    QDLogger.e("-------------------------"+simpleDateFormat.format(date));
+                }
+            }
+        });
     }
 
     private int count ;

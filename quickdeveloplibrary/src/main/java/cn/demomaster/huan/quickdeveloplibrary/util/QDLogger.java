@@ -177,6 +177,7 @@ public class QDLogger {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
                 SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
                 Date date = new Date(System.currentTimeMillis());
+                String LogFilePath  = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
                 String fileName = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
                 if (!fileName.startsWith(File.separator)) {
                     fileName = File.separator + fileName;
@@ -191,6 +192,10 @@ public class QDLogger {
                     System.out.println("外置内存卡不存在,log存储路径已改为：" + path);
                 } else {
                     //  System.out.println("外置内存卡存在");
+                }
+                File dir = new File(path+(LogFilePath.startsWith(File.separator)?LogFilePath:File.separator+LogFilePath));
+                if(!dir.exists()){
+                    dir.mkdir();
                 }
                 FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
             } else {

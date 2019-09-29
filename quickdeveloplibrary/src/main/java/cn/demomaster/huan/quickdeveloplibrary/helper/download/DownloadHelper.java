@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Environment;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -89,7 +92,24 @@ public class DownloadHelper {
         QDLogger.i("下载文件存放路径："+download_app_folder_name+"，文件名："+filename);
         // 存储的目录
         //request.setDestinationInExternalPublicDir(download_app_folder_name, filename);
-        request.setDestinationInExternalPublicDir(download_app_folder_name, downloadTask.getFileName());
+
+
+        String sdpath = Environment.getExternalStorageDirectory() + "";
+        if (TextUtils.isEmpty(sdpath)) {
+            sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
+            System.out.println("外置内存卡不存在,log存储路径已改为：" + sdpath);
+        } else {
+            //  System.out.println("外置内存卡存在");
+        }
+        String download_app_folder =download_app_folder_name;
+        if(!download_app_folder_name.startsWith(File.separator)){
+            download_app_folder = File.separator+download_app_folder_name;
+        }
+        File dir = new File(sdpath+download_app_folder);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        request.setDestinationInExternalPublicDir(download_app_folder, downloadTask.getFileName());
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 

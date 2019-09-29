@@ -190,7 +190,21 @@ public class DateTimeUtil {
         Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
     }
-
+    public static Date getPreDate(int distanceDay) {
+        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = new Date();
+        Calendar date = Calendar.getInstance();
+        date.setTime(beginDate);
+        date.set(Calendar.DATE, date.get(Calendar.DATE) - distanceDay);
+        Date endDate = null;
+        try {
+            endDate = dft.parse(dft.format(date.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.d("CGQ","前7天==" + dft.format(endDate));
+        return endDate;//dft.format(endDate);
+    }
 //获取本周
     public static long getTimeOfWeekStart(){
         Calendar ca = Calendar.getInstance();

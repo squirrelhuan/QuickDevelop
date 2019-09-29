@@ -31,7 +31,7 @@ public class ADBHelper {
     }
 
     private void init() {
-        File directory = new File("adb");//设定为当前文件夹
+       /* File directory = new File("adb");//设定为当前文件夹
         try {
             System.out.println("获取标准的路径=" + directory.getCanonicalPath());//获取标准的路径
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class ADBHelper {
             Path_Temp = Path_Temp.substring(0, Path_Temp.lastIndexOf(File.separator));
             Path_Def = Path_Temp + File.separator + "res/screen_android/def.png";
             System.out.println("获取绝对路径" + Path_Temp);//获取绝对路径
-        }
+        }*/
     }
 
     OnScreenChangeListener onScreenChangeListener;
@@ -101,7 +101,7 @@ public class ADBHelper {
         execute(cmd, null);
     }
 
-    private void execute(String cmd, OnReceiveListener onReceiveListener) {
+    public void execute(String cmd, OnReceiveListener onReceiveListener) {
         try {
             Process process = Runtime.getRuntime().exec(cmd);
             // 打印程序输出

@@ -7,15 +7,23 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
@@ -145,4 +153,108 @@ public class QDAndroidDeviceUtil {
         m_szUniqueID = m_szUniqueID.toUpperCase();
         return m_szUniqueID;
     }
+
+    //判断手机是否root
+    public static boolean isRoot() {
+        String binPath = "/system/bin/su";
+        String xBinPath = "/system/xbin/su";
+        if (new File(binPath).exists() && isCanExecute(binPath)) {
+            return true;
+        }
+        if (new File(xBinPath).exists() && isCanExecute(xBinPath)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isCanExecute(String filePath) {
+        java.lang.Process process = null;
+        try {
+            process = Runtime.getRuntime().exec("ls -l " + filePath);
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String str = in.readLine();
+            if (str != null && str.length() >= 4) {
+                char flag = str.charAt(3);
+                if (flag == 's' || flag == 'x')
+                    return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSimulator(Context context) {
+        return notHasBlueTooth()||BooleannotHasLightSensorManager(context)||checkIsNotRealPhone();
+    }
+
+    /**
+     * 判断蓝牙是否有效来判断是否为模拟器
+     * @return true 为模拟器
+     */
+    public static boolean notHasBlueTooth() {
+        BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+        if (ba == null) {
+            return true;
+        } else {
+// 如果有蓝牙不一定是有效的。获取蓝牙名称，若为null 则默认为模拟器
+            String name = ba.getName();
+            if (TextUtils.isEmpty(name)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 判断是否存在光传感器来判断是否为模拟器
+     * 部分真机也不存在温度和压力传感器。其余传感器模拟器也存在。
+     * @return true 为模拟器
+     */
+    public static boolean BooleannotHasLightSensorManager(Context context) {
+        SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
+        Sensor sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); //光
+        if (null == sensor8) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * 判断cpu是否为电脑来判断 模拟器
+     * @return true 为模拟器
+     */
+    public static boolean checkIsNotRealPhone() {
+        String cpuInfo =readCpuInfo();
+        if ((cpuInfo.contains("intel") || cpuInfo.contains("amd"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String readCpuInfo() {
+        String result ="";
+        try {
+            String[] args = {"/system/bin/cat", "/proc/cpuinfo"};
+            ProcessBuilder cmd =new ProcessBuilder(args);
+            Process process = cmd.start();
+            StringBuffer sb =new StringBuffer();
+            String readLine ="";
+            BufferedReader responseReader =new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
+            while ((readLine = responseReader.readLine()) !=null) {
+                sb.append(readLine);
+            }
+            responseReader.close();
+            result = sb.toString().toLowerCase();
+        }catch (IOException ex) {
+        }
+        return result;
+    }
+
 }
