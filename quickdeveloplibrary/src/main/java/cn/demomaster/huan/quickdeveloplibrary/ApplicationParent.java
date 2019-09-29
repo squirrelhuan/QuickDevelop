@@ -47,11 +47,15 @@ public class ApplicationParent extends Application {
         QDLogger.setApplicationContext(this);
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
-        initDB();
         ActivityManager.init(this);
         NotifycationHelper.getInstance().init(this);
 
         AppConfig.getInstance().init(this, "config/project.conf");
+        if(AppConfig.getInstance().getConfigMap().containsKey("dbpath")){
+            String dbpath = (String) AppConfig.getInstance().getConfigMap().get("dbpath");
+            initDB(dbpath);
+        }
+
         //处理崩溃日志
         initCrash();
 
@@ -75,7 +79,6 @@ public class ApplicationParent extends Application {
 
     /**
      * 初始化友盟分享
-     *
      * @param appkey
      */
     public void initUmengShare(String appkey) {
@@ -100,8 +103,12 @@ public class ApplicationParent extends Application {
 
     public CBHelper dbHelper;
     public SQLiteDatabase db;
-    private void initDB() {
-        dbHelper = new CBHelper(this, "yidao.db", null, 1);
+    /**
+     * 初始化数据库
+     * @param dbpath
+     */
+    private void initDB(String dbpath) {
+        dbHelper = new CBHelper(this, dbpath, null, 1);
         //得到一个可读的SQLiteDatabase对象
         db = dbHelper.getReadableDatabase();
     }
