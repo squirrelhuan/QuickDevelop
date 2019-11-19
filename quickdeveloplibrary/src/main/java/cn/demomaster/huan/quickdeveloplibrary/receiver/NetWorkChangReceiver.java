@@ -52,7 +52,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
                 default:
                     break;
             }
-            QDLogger.i("CGQ", "网络连接成功");
+            QDLogger.i("CGQ", "ko_network_connection_is_successful");
             if(netState!=1&&onNetStateChangedListener!=null){
                 netState=1;
                 QDLogger.i("CGQ", "网络状态发生改变，已连接");

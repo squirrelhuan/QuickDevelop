@@ -52,7 +52,7 @@
         <Key
             android:codes="-4"
             android:keyHeight="170dp"
-            android:keyLabel="complete" />
+            android:keyLabel="@string/complete" />
     </Row>
     <Row>
         <Key

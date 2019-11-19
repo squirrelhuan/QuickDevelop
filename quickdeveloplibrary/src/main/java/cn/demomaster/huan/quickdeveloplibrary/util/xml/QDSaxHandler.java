@@ -1,20 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.util.xml;
 
-import android.content.res.AssetManager;
-import android.text.TextUtils;
-
-import com.alibaba.fastjson.JSON;
-
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -74,6 +62,13 @@ public class QDSaxHandler<T> extends DefaultHandler {
         if (elements.size() == 0) {//根元素初始化
             try {
                 targetInstance = mClazz.newInstance();
+                //targetInstance = (T) addElementAttr(targetInstance,qName,atts);
+                /*for (int i = 0; atts != null && i < atts.getLength(); i++) {
+                    String attName = atts.getQName(i);
+                    String attValueString = atts.getValue(i);
+                    targetInstance = addField2(targetInstance, attName, attValueString);
+                    // QDLogger.i(" " + attName + "=" + attValueString);
+                }*/
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -84,7 +79,6 @@ public class QDSaxHandler<T> extends DefaultHandler {
             addElement(elements.get(elements.size() - 1), name, atts);
         }
     }
-
 
     /**
      * 当SAX解析器解析到某个元素结束时，会调用的方法
@@ -111,7 +105,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
     @Override
     public void characters(char ch[], int start, int length) {
         String content = new String(ch, start, length);
-       // QDLogger.i(content);
+        QDLogger.i(content);
     }
 
 
@@ -177,6 +171,70 @@ public class QDSaxHandler<T> extends DefaultHandler {
         }
     }
 
+
+    /**
+     * 添加element
+     *
+     * @param elementName
+     */
+    private Object addElementAttr(Object parentElement, String elementName, Attributes atts) {
+        /****************   确定要添加元素类型生成实体类  *******************/
+        Object newElement = elementName;
+        //1.得到Class对象
+        Class c = parentElement.getClass();
+        //2.返回字段的数组
+        Field[] fields = c.getDeclaredFields();
+        for (Field field : fields) {
+            // QDLogger.i(field.getName() + "<----->" + elementName);
+            if (field.getName().endsWith(elementName)) {
+                field.setAccessible(true);
+                if (field.getType() == java.lang.String.class) {//属性:String
+                    newElement = elementName;
+                    try {
+                        field.set(parentElement, elementName);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (field.getType() == java.util.List.class) {//属性:list
+                    // 如果是List类型，得到其Generic的类型
+                    Type genericType = field.getGenericType();
+                    if (genericType == null) continue;
+                    // 如果是泛型参数的类型
+                    if (genericType instanceof ParameterizedType) {
+                        ParameterizedType pt = (ParameterizedType) genericType;
+                        //得到泛型里的class类型对象
+                        Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                        //QDLogger.i(field.getName() + "的泛型：" + genericClazz);
+
+                        Method m = null;
+                        try {
+                            m = (Method) parentElement.getClass().getMethod("get" + getMethodName(field.getName()));
+                            List list = (List) m.invoke(parentElement);
+                            if (list == null) list = new ArrayList();
+                            newElement = genericClazz.newInstance();
+                            for (int i = 0; atts != null && i < atts.getLength(); i++) {
+                                String attName = atts.getQName(i);
+                                String attValueString = atts.getValue(i);
+                                addField(newElement, attName, attValueString);
+                                // QDLogger.i(" " + attName + "=" + attValueString);
+                            }
+                            list.add(newElement);
+                            // QDLogger.d(JSON.toJSON(list));
+                            field.set(parentElement, list);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+           return newElement;
+            //QDLogger.i(field.getName() + "类型：" + field.getType());
+        }
+        return newElement;
+    }
+
     private static String getMethodName(String fildeName) throws Exception {
         byte[] items = fildeName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
@@ -205,12 +263,31 @@ public class QDSaxHandler<T> extends DefaultHandler {
         }
     }*/
 
+    private T addField2(T targetObj, String name, String value) {
+        //1.得到Class对象
+        Class c = targetObj.getClass();
+        //2.返回字段的数组
+        Field[] fields = c.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals(name)) {
+                field.setAccessible(true);
+                // QDLogger.i(field.getName() + "," + field.getType());
+                try {
+                    field.set(targetObj, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            // QDLogger.i(field.getName());
+        }
+        return targetObj;
+    }
     /**
      * 添加属性
      *
      * @param name
      */
-    private void addField(Object targetObj, String name, String value) {
+    private Object addField(Object targetObj, String name, String value) {
         //1.得到Class对象
         Class c = targetObj.getClass();
         //2.返回字段的数组
@@ -227,6 +304,8 @@ public class QDSaxHandler<T> extends DefaultHandler {
             }
            // QDLogger.i(field.getName());
         }
+
+        return targetObj;
     }
 
     private OnParseCompleteListener mOnParseCompleteListener;

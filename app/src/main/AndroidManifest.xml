@@ -18,11 +18,17 @@
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><!--
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />--><!--需要系统权限，系统签名-->
     <!--<uses-permission android:name="android.permission.SET_TIME_ZONE"/>-->
 
+
+    <!--流量监控-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.READ_NETWORK_USAGE_HISTORY" tools:ignore="ProtectedPermissions"/>
 
     <application
         android:name=".Application"
@@ -101,6 +107,7 @@
         <activity android:name=".fragment.helper.serialport.sample.SerialPortActivity"/>
         <activity android:name=".fragment.helper.serialport.sample.SerialPortPreferences"/>
 
+        <service android:name=".service.TrafficFloatingService"/>
         <service
             android:name=".service.SimpleService"
             android:enabled="true"

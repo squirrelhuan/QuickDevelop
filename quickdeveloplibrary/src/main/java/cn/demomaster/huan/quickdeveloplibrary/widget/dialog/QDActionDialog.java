@@ -68,7 +68,7 @@ public class QDActionDialog extends Dialog {
         win.setBackgroundDrawable(drawable_bg);
         win.setDimAmount(builder.dimAmount);
         setCancelable(builder.mCancelable);
-        int p = DisplayUtil.dip2px(getContext(), 15);
+        int p = DisplayUtil.dip2px(getContext(), builder.padding);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         contentView = new LinearLayout(builder.context);
@@ -259,6 +259,7 @@ public class QDActionDialog extends Dialog {
         private View contentView;
         private int contentViewLayoutID;
         private boolean mCancelable = true;
+        private int padding=15;
 
 
         public Builder(Context context) {
@@ -275,6 +276,10 @@ public class QDActionDialog extends Dialog {
             return this;
         }
 
+        public Builder setPadding(int padding) {
+            this.padding = padding;
+            return this;
+        }
         public Builder setmCancelable(boolean mCancelable) {
             this.mCancelable = mCancelable;
             return this;

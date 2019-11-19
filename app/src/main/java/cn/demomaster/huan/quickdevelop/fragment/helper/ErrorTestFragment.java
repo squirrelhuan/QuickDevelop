@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -16,6 +17,8 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnDoubleClickListener;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnMultClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
@@ -38,6 +41,12 @@ public class ErrorTestFragment extends QDBaseFragment {
     QDButton btn_error_01;
     @BindView(R.id.btn_error_buggly)
     QDButton btn_error_buggly;
+
+    @BindView(R.id.btn_double_click)
+    QDButton btn_double_click;
+    @BindView(R.id.btn_three_click)
+    QDButton btn_three_click;
+
     View mView;
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -63,6 +72,19 @@ public class ErrorTestFragment extends QDBaseFragment {
             @Override
             public void onClick(View v) {
                 CrashReport.testJavaCrash();
+            }
+        });
+
+        btn_double_click.setOnClickListener(new OnDoubleClickListener() {
+            @Override
+            public void onDoubleClick(View v) {
+                Toast.makeText(mContext,"double click",Toast.LENGTH_SHORT).show();
+            }
+        });
+        btn_three_click.setOnClickListener(new OnMultClickListener(3,300) {
+            @Override
+            public void onClickEvent(View v) {
+                Toast.makeText(mContext,"three click",Toast.LENGTH_SHORT).show();
             }
         });
     }

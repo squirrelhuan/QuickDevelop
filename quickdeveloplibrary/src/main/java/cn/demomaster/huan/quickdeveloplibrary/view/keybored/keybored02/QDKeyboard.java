@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -294,6 +295,15 @@ public class QDKeyboard {
         keyboardView.setEnabled(true);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(listener);
+        keyboardView.setSoundEffectsEnabled(true);
+        keyboardView.playSoundEffect(SoundEffectConstants.CLICK);//按键音效
+        keyboardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               boolean l = v.hasOnClickListeners();
+               QDLogger.d(l);
+            }
+        });
         keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -381,6 +391,7 @@ public class QDKeyboard {
             if (onKeyClickListener != null) {
                 onKeyClickListener.onKey(primaryCode, keyCodes);
             }
+
             //QDLogger.d("输入键盘值primaryCode:"+primaryCode);
             try {
                 Editable editable = mEditText.getText();
@@ -389,6 +400,7 @@ public class QDKeyboard {
                 if (primaryCode == Keyboard.KEYCODE_CANCEL) {
                     // 隐藏键盘
                     hideKeyboard();
+                    keyboardView.performClick();
                 } else if (primaryCode == Keyboard.KEYCODE_DELETE || primaryCode == -35) {
                     // 回退键,删除字符
                     if (editable != null && editable.length() > 0) {
@@ -397,6 +409,7 @@ public class QDKeyboard {
                         } else { //光标开始和结束位置不同, 即选中EditText中的内容
                             editable.delete(start, end);
                         }
+                        keyboardView.performClick();
                     }
                 } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
                     // 大小写切换
@@ -404,6 +417,7 @@ public class QDKeyboard {
                     // 重新setKeyboard, 进而系统重新加载, 键盘内容才会变化(切换大小写)
                     keyboardType = 1;
                     switchKeyboard();
+                    keyboardView.performClick();
                 } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE) {
                     // 数字与字母键盘互换
                     if (keyboardType == 3) { //当前为数字键盘
@@ -412,6 +426,7 @@ public class QDKeyboard {
                         keyboardType = 3;
                     }
                     switchKeyboard();
+                    keyboardView.performClick();
                 } else if (primaryCode == 100860) {
                     // 字母与符号切换
                     if (keyboardType == 2) { //当前是符号键盘
@@ -420,11 +435,13 @@ public class QDKeyboard {
                         keyboardType = 2;
                     }
                     switchKeyboard();
+                    keyboardView.performClick();
                 } else {
                     // 输入键盘值
                     // editable.insert(start, Character.toString((char) primaryCode));
                     //QDLogger.d("输入键盘值:"+Character.toString((char) primaryCode));
                     editable.replace(start, end, Character.toString((char) primaryCode));
+                    keyboardView.performClick();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

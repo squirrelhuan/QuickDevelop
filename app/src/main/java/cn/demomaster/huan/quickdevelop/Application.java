@@ -18,6 +18,9 @@ import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isApkInDebug;
 //import com.umeng.socialize.PlatformConfig;
 
 
@@ -51,6 +54,8 @@ public class Application extends ApplicationParent {
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");
+
+
 
     }
 

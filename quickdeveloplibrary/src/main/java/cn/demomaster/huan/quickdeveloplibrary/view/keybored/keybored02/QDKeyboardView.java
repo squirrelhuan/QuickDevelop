@@ -11,6 +11,10 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.SoundEffectConstants;
+import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -55,6 +59,7 @@ public class QDKeyboardView extends KeyboardView {
         this.lowDrawable = null;
         this.upDrawable = null;
         this.hideDrawable = null;
+
     }
 
     @Override
@@ -233,4 +238,5 @@ public class QDKeyboardView extends KeyboardView {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
 }

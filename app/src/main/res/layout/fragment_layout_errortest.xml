@@ -26,6 +26,18 @@
                             android:layout_height="wrap_content"
                             android:text="腾讯buggly测试"/>
 
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_double_click"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="双击我"/>
+
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_three_click"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="3击我"/>
+
                 </LinearLayout>
         </ScrollView>
 

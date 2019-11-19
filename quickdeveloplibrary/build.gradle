@@ -36,6 +36,12 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
+
+    //指定jdk版本
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     //友盟分享
     signingConfigs {
         debug {

@@ -28,6 +28,9 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.Article;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isApkInDebug;
 
 public class ApplicationParent extends Application {
 
@@ -69,12 +72,14 @@ public class ApplicationParent extends Application {
         });
 
         //DoraemonKit.install(this);
+        if(isApkInDebug(this)){
+           // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
+        }
     }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(base);
-
     }
 
     /**
@@ -170,7 +175,6 @@ public class ApplicationParent extends Application {
             QDLogger.d(TAG, "onActivityResumed() 回调: activity = [" + activity + "]");
             ActivityManager.getInstance().setCurrentActivity(activity);
         }
-
         @Override
         public void onActivityPaused(Activity activity) {
             QDLogger.d(TAG, "onActivityPaused() 回调: activity = [" + activity + "]");

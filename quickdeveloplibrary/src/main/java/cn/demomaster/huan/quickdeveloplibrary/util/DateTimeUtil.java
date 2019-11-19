@@ -187,7 +187,7 @@ public class DateTimeUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d("CGQ","前7天==" + dft.format(endDate));
+        //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
     }
     public static Date getPreDate(int distanceDay) {
@@ -202,7 +202,7 @@ public class DateTimeUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d("CGQ","前7天==" + dft.format(endDate));
+        //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
     }
 //获取本周

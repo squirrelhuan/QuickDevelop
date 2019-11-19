@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -179,6 +180,7 @@ public class PermissionManager {
     }
 
     public static void chekPermission(Context context, String[] permissions, OnCheckPermissionListener listener) {
+        PermissionManager2.getInstance().chekPermission(context,permissions,listener);
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 检查该权限是否已经获取
@@ -236,7 +238,7 @@ public class PermissionManager {
     /**
      * 监听器，监听权限是否通过
      */
-    public interface OnCheckPermissionListener {
+    public static interface OnCheckPermissionListener {
         void onPassed();//通过
 
         void onNoPassed();//不通过
@@ -262,5 +264,11 @@ public class PermissionManager {
         //builder.setIcon(R.mipmap.quickdevelop_ic_launcher);
         dialog = builder.create();
         dialog.show();
+    }
+
+
+    public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                  @NonNull int[] grantResults) {
+        PermissionManager2.getInstance().onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }

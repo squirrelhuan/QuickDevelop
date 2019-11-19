@@ -38,7 +38,7 @@ public class RecycleActivity extends AppCompatActivity {
             lists.add(i + "item");
         }
         //这里使用线性布局像listview那样展示列表,第二个参数可以改为 HORIZONTAL实现水平展示
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         //使用网格布局展示
         recy_drag.setLayoutManager(new GridLayoutManager(this, 5));
         //recy_drag.setLayoutManager(linearLayoutManager);

@@ -67,11 +67,10 @@ public class FileUtil {
         String res = null;
         try {
             FileInputStream fin = new FileInputStream(fileName);
-
             int length = fin.available();
-
             byte[] buffer = new byte[length];
             fin.read(buffer);
+            res = new String(buffer, "UTF-8");
             //res = EncodingUtils.getString(buffer, "UTF-8");
             fin.close();
         } catch (Exception e) {

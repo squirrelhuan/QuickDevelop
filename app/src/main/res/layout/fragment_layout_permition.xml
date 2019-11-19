@@ -21,6 +21,11 @@
                             android:layout_height="wrap_content"
                             android:text="存储权限"/>
                         <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_write_external_storage2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="存储权限2"/>
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                             android:id="@+id/btn_error_buggly"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -20,6 +20,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ErrorTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ExeCommandFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.FileManagerFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.FloatingFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard2Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard3Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
@@ -27,6 +28,8 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.QDTerminalFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.SocketFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.TrafficFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.UpdateAppFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.WifiFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
@@ -86,6 +89,9 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(PositionFragment.class);
         classList.add(ExeCommandFragment.class);
         classList.add(WifiFragment.class);
+        classList.add(FloatingFragment.class);
+        classList.add(SocketFragment.class);
+        classList.add(TrafficFragment.class);
 
         //classList.add(QDTerminalFragment.class);
 

@@ -6,6 +6,6 @@ package cn.demomaster.huan.quickdeveloplibrary.constant;
  * description：
  */
 public class SharedPreferencesConstant {
-    public static final String System_Language_Setting = "System_Language_Setting";
+    //public static final String System_Language_Setting = "System_Language_Setting";
 
 }

@@ -68,7 +68,7 @@ public class LanguageFragment extends QDBaseFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setLanguageLocal(mContext, locals[which]);
-                        changeAppLanguage(mContext);
+                        //changeAppLanguage(mContext);
                         EventBus.getDefault().post(EVENT_REFRESH_LANGUAGE);
                     }
                 });

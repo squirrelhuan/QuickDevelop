@@ -255,6 +255,7 @@ public class MainActivity extends BaseActivityParent implements View.OnClickList
             public void onItemClick(int position, View view) {
                 switch (position) {
                     case 0:
+
                         break;
                     case 1:
                         photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
