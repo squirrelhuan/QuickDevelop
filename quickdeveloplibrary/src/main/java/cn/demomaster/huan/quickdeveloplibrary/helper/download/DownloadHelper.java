@@ -46,7 +46,7 @@ public class DownloadHelper {
     private DownloadManager downloadManager;
 
     private DownloadHelper() {
-        this.onDownloadStateChangeListener = new OnDownloadStateChangeListener() {
+      /*  this.onDownloadStateChangeListener = new OnDownloadStateChangeListener() {
             @Override
             public void onComplete(long downloadId, Uri downIdUri) {
                 //QDLogger.i("下载完成，存储路径为 ：" + downIdUri.getPath());
@@ -59,8 +59,8 @@ public class DownloadHelper {
                     }
                 }
             }
-        };
-        this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
+        };*/
+       // this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
     }
 
     private void init(Context context) {
@@ -69,6 +69,7 @@ public class DownloadHelper {
         //在执行下载前注册内容监听者
         registerContentObserver(context);
     }
+
     private void pushTask(final DownloadTask downloadTask) {
         PermissionManager.chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
             @Override
@@ -85,30 +86,23 @@ public class DownloadHelper {
 
     //执行任务
     private void excute(DownloadTask downloadTask) {
+        //获取要下载的文件存放路径
         String download_app_folder_name = downloadTask.getDownload_app_folder_name();
-        //app下载名称
-        String filename = (download_app_folder_name.endsWith("\\") ? download_app_folder_name : (download_app_folder_name + File.separator)) + downloadTask.getFileName();
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadTask.getDownloadUrl()));
-        QDLogger.i("下载文件存放路径："+download_app_folder_name+"，文件名："+filename);
-        // 存储的目录
-        //request.setDestinationInExternalPublicDir(download_app_folder_name, filename);
-
+        QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
 
         String sdpath = Environment.getExternalStorageDirectory() + "";
         if (TextUtils.isEmpty(sdpath)) {
             sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
-            System.out.println("外置内存卡不存在,log存储路径已改为：" + sdpath);
-        } else {
-            //  System.out.println("外置内存卡存在");
+            QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
         }
-        String download_app_folder =download_app_folder_name;
-        if(!download_app_folder_name.startsWith(File.separator)){
-            download_app_folder = File.separator+download_app_folder_name;
-        }
-        File dir = new File(sdpath+download_app_folder);
-        if(!dir.exists()){
+        String download_app_folder = download_app_folder_name.startsWith(File.separator)?download_app_folder_name:(File.separator + download_app_folder_name);
+        File dir = new File(sdpath + download_app_folder);
+        if (!dir.exists()) {
             dir.mkdirs();
         }
+
+        // 设置存储的目录 文件夹 文件名
         request.setDestinationInExternalPublicDir(download_app_folder, downloadTask.getFileName());
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
@@ -116,7 +110,7 @@ public class DownloadHelper {
         // 禁止发出通知，既后台下载，如果要使用这一句必须声明一个权限：android.permission.DOWNLOAD_WITHOUT_NOTIFICATION
         request.setShowRunningNotification(true);
         request.setVisibleInDownloadsUi(true);
-        request.setTitle(filename);
+        request.setTitle(downloadTask.getFileName());
         // 不显示下载界面
         request.setVisibleInDownloadsUi(true);
         /*
@@ -148,8 +142,8 @@ public class DownloadHelper {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
             intentFilter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
-            context.registerReceiver(broadcastReceiver, intentFilter);
-        }catch (Exception e){
+            //context.registerReceiver(broadcastReceiver, intentFilter);
+        } catch (Exception e) {
             QDLogger.e(e.getMessage());
         }
     }
@@ -158,13 +152,13 @@ public class DownloadHelper {
      * 注销广播
      */
     private static void unregisterBroadcast(Context context) {
-        if (broadcastReceiver != null) {
+       /* if (broadcastReceiver != null) {
             try {
                 context.unregisterReceiver(broadcastReceiver);
-            }catch (Exception e){
+            } catch (Exception e) {
                 QDLogger.e(e.getMessage());
             }
-        }
+        }*/
     }
 
     /**
@@ -174,7 +168,7 @@ public class DownloadHelper {
         if (downloadChangeObserver != null) {
             try {
                 context.getContentResolver().unregisterContentObserver(downloadChangeObserver);
-            }catch (Exception e){
+            } catch (Exception e) {
                 QDLogger.e(e.getMessage());
             }
         }
@@ -187,20 +181,27 @@ public class DownloadHelper {
         if (downloadChangeObserver != null) {
             try {
                 context.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadChangeObserver);
-            }catch (Exception e){
+            } catch (Exception e) {
                 QDLogger.e(e.getMessage());
             }
         }
     }
 
+    /**
+     * 解绑activity
+     *  @param context
+     */
     public static void unregisterReceiver(Context context) {
         unregisterBroadcast(context);
         unregisterContentObserver(context);
         downloadChangeObserver.close();
     }
 
-    OnDownloadStateChangeListener onDownloadStateChangeListener;
 
+    private OnDownloadStateChangeListener onDownloadStateChangeListener;
+    /**
+     *下载状态监听器
+     */
     public static interface OnDownloadStateChangeListener {
         void onComplete(long downId, Uri downIdUri);
     }
@@ -245,7 +246,8 @@ public class DownloadHelper {
             this.onProgressListener = onProgressListener;
             return this;
         }
-        public DownloadHelper creat(){
+
+        public DownloadHelper creat() {
             return getInstance(context);
         }
 
@@ -259,8 +261,7 @@ public class DownloadHelper {
             downloadTask.setDownloadUrl(url);
             downloadTask.setFileName(fileName);
             downloadTask.setOnProgressListener(onProgressListener);
-            DownloadHelper downloadHelper = DownloadHelper.getInstance(context);
-            downloadHelper.pushTask(downloadTask);
+            DownloadHelper.getInstance(context).pushTask(downloadTask);
         }
 
         public void unregister(Context context) {

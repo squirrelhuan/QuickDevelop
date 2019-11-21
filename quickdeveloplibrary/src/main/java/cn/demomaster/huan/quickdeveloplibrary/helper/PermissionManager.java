@@ -181,7 +181,7 @@ public class PermissionManager {
 
     public static void chekPermission(Context context, String[] permissions, OnCheckPermissionListener listener) {
         PermissionManager2.getInstance().chekPermission(context,permissions,listener);
-        // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
+        /*// 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 检查该权限是否已经获取
             boolean useful = getPermissionStatus(context, permissions);
@@ -193,7 +193,7 @@ public class PermissionManager {
             }
         } else {
             listener.onPassed();
-        }
+        }*/
     }
 
     // 提示用户该请求权限的弹出框

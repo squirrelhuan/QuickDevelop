@@ -78,15 +78,25 @@ public class InstallHelper {
                         .setUrl(url)
                         .setOnProgressListener(new OnDownloadProgressListener() {
                             @Override
-                            public void onComplete(DownloadTask downloadTask) {
-                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownIdUri().getPath());
-                                openAPKFile(context, downloadTask.getDownIdUri());
+                            public void onDownloadRunning(long downloadId, String name, float fraction) {
+                                QDLogger.i("下载进度" + fraction);
+                            }
+
+                            @Override
+                            public void onDownloadSuccess(DownloadTask downloadTask) {
+                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
+                                openAPKFile(context, downloadTask.getDownloadUri());
                                 //runInstall(context,downloadTask.getDownIdUri());
                             }
 
                             @Override
-                            public void onProgress(long downloadId, String name, float fraction) {
-                                QDLogger.i("下载进度" + fraction);
+                            public void onDownloadFail() {
+
+                            }
+
+                            @Override
+                            public void onDownloadPaused() {
+
                             }
                         });
                 downloadBuilder.start();
@@ -235,13 +245,18 @@ public class InstallHelper {
                         .setUrl(url)
                         .setOnProgressListener(new OnDownloadProgressListener() {
                             @Override
-                            public void onComplete(DownloadTask downloadTask) {
-                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownIdUri().getPath());
+                            public void onDownloadRunning(long downloadId, String name, float progress) {
+                                QDLogger.i("下载进度" + progress);
+                            }
+
+                            @Override
+                            public void onDownloadSuccess(DownloadTask downloadTask) {
+                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
                                 try {
                                     //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
-                                    File file = uriToFile(downloadTask.getDownIdUri(), context);
+                                    File file = uriToFile(downloadTask.getDownloadUri(), context);
                                     if (file == null || !file.exists()) {
-                                        QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownIdUri());
+                                        QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownloadUri());
                                         return;
                                     }
                                     QDLogger.i("下载文件path:" + file.getAbsolutePath());
@@ -254,9 +269,15 @@ public class InstallHelper {
                             }
 
                             @Override
-                            public void onProgress(long downloadId, String name, float fraction) {
-                                QDLogger.i("下载进度" + fraction);
+                            public void onDownloadFail() {
+
                             }
+
+                            @Override
+                            public void onDownloadPaused() {
+
+                            }
+
                         });
                 downloadBuilder.start();
             }

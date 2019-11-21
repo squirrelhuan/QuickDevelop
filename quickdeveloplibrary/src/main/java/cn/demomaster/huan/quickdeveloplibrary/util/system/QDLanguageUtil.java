@@ -108,6 +108,11 @@ public class QDLanguageUtil {
         }
     }
 
+    /**
+     * 注意 用applicationcontext获得的是系统语言，用activity 获取的是当前应用语言
+     * @param context
+     * @return
+     */
     public static Locale getLanguageLocal(Context context) {
         return context.getResources().getConfiguration().locale;
     }

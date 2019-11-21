@@ -143,7 +143,7 @@ public class FileUtil {
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
-                Log.e("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
+                //Log.e("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
                 return true;
             } else {
                 return false;
@@ -236,6 +236,9 @@ public class FileUtil {
     }
 
     public static File uriToFile(Uri uri, Context context) {
+        if(uri==null||context==null){
+            return null;
+        }
         String path = null;
         if ("file".equals(uri.getScheme())) {
             path = uri.getEncodedPath();
@@ -274,11 +277,11 @@ public class FileUtil {
             cursor.close();
             return new File(path);
         } else {
+            return new File(uri.getPath());
             //Log.i(TAG, "Uri Scheme:" + uri.getScheme());
         }
         return null;
     }
-
 
     public static Uri getImageContentUri(Context context, File imageFile) {
         String filePath = imageFile.getAbsolutePath();
@@ -299,7 +302,6 @@ public class FileUtil {
             }
         }
     }
-
 
     /**
      * Asyn文件创建时间

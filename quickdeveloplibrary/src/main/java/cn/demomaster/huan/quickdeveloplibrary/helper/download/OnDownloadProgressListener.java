@@ -4,5 +4,7 @@ import android.content.BroadcastReceiver;
 
 public abstract class OnDownloadProgressListener implements OnDownloadProgressInterface {
 
-    public abstract void onComplete(DownloadTask downloadTask);
+    public abstract void  onDownloadFail();
+
+    public abstract void onDownloadPaused();
 }

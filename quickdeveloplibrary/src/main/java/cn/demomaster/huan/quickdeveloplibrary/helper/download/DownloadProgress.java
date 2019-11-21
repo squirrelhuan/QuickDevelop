@@ -7,6 +7,7 @@ public class DownloadProgress {
     private long downloadId;
     private String fileName;//文件名带格式名
     private String downloadUrl;//下载路径
+    private String downloadUri;//下载路径
 
 
 
@@ -63,5 +64,13 @@ public class DownloadProgress {
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
+    }
+
+    public String getDownloadUri() {
+        return downloadUri;
+    }
+
+    public void setDownloadUri(String downloadUri) {
+        this.downloadUri = downloadUri;
     }
 }

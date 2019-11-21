@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,7 +29,8 @@ public class DownloadTask {
     private Context context;
     private String fileName;//文件名带格式名
     private String downloadUrl;//下载路径
-    private Uri downIdUri;
+    private Uri downloadUri;
+    private String downUriStr;
     //
     private OnDownloadProgressListener onProgressListener;//下载进度监听器
 
@@ -79,12 +81,15 @@ public class DownloadTask {
         return downloadId;
     }
 
-    public Uri getDownIdUri() {
-        return downIdUri;
+    public Uri getDownloadUri() {
+        if(downloadUri==null&& !TextUtils.isEmpty(downUriStr)){
+            downloadUri= Uri.parse(downUriStr);
+        }
+        return downloadUri;
     }
 
-    public void setDownIdUri(Uri downIdUri) {
-        this.downIdUri = downIdUri;
+    public void setDownloadUri(Uri downloadUri) {
+        this.downloadUri = downloadUri;
     }
 
     public Context getContext() {
@@ -93,5 +98,17 @@ public class DownloadTask {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public String getDownUriStr() {
+        if(downloadUri!=null&& TextUtils.isEmpty(downUriStr)){
+            downUriStr = downloadUri.getPath();
+        }
+        return downUriStr;
+    }
+
+    public void setDownUriStr(String downUriStr) {
+        this.downUriStr = downUriStr;
+        downloadUri= Uri.parse(downUriStr);
     }
 }

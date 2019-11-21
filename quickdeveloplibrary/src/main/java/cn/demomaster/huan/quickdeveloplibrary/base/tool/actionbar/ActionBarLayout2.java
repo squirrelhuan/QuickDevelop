@@ -417,7 +417,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
         startTime = System.currentTimeMillis();
         getFinalView();
         long consumingTime = System.currentTimeMillis() - startTime;
-        QDLogger.d(TAG, "time=" + consumingTime);
+        //QDLogger.d(TAG, "time=" + consumingTime);
     }
 
     ViewGroup rootLayout;

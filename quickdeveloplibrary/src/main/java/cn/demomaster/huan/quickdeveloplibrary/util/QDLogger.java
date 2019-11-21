@@ -167,6 +167,15 @@ public class QDLogger {
             applicationContext = context.getApplicationContext();
         }
 
+        //Log.d(TAG,new Exception().getStackTrace()[0].getMethodName()); //函数名
+        //Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName()); //函数名
+        //Log.d(TAG, +Thread.currentThread().getStackTrace()[2].getLineNumber()); //行号
+        //Log.d(TAG, Thread.currentThread().getStackTrace()[2].getFileName()); //文件名
+
+        String className = Thread.currentThread().getStackTrace()[2].getFileName();
+        int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+        message="["+className+",@"+lineNumber+"]"+message;
+
         //如果配置了日志目录，则打印log到指定目录
         if (applicationContext != null && AppConfig.getInstance().getConfigMap() != null && AppConfig.getInstance().getConfigMap().containsKey("LogFilePath")) {
             String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -199,6 +208,7 @@ public class QDLogger {
                 }
                 FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
             } else {
+                System.out.println(message);
                 Log.e("qdlog error","本地日志写入失败，请打开存储权限");
                 // throw new IllegalArgumentException("log 打印失败，请打开存储权限");
             }

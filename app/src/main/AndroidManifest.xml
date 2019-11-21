@@ -42,11 +42,11 @@
 
 
         <!-- 声明service组件 -->
-        <service
+      <!--  <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
-        </service>
+        </service>-->
 
         <!-- AK鉴权 -->
         <!-- meta-data需要写在application中 -->

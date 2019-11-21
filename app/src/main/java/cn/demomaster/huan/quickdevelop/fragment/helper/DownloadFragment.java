@@ -62,13 +62,23 @@ public class DownloadFragment extends QDBaseFragment {
                         .setOnProgressListener(
                                 new OnDownloadProgressListener() {
                                     @Override
-                                    public void onComplete(DownloadTask downloadTask) {
-                                        QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownIdUri().getPath());
+                                    public void onDownloadRunning(long downloadId, String name, float progress) {
+                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
                                     }
 
                                     @Override
-                                    public void onProgress(long downloadId, String name, float progress) {
-                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
+                                    public void onDownloadSuccess(DownloadTask downloadTask) {
+                                        QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
+                                    }
+
+                                    @Override
+                                    public void onDownloadFail() {
+
+                                    }
+
+                                    @Override
+                                    public void onDownloadPaused() {
+
                                     }
                                 }).start();
 
@@ -77,13 +87,23 @@ public class DownloadFragment extends QDBaseFragment {
                         .setOnProgressListener(
                                 new OnDownloadProgressListener() {
                                     @Override
-                                    public void onComplete(DownloadTask downloadTask) {
-                                        QDLogger.i("2下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownIdUri().getPath());
+                                    public void onDownloadRunning(long downloadId, String name, float progress) {
+                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
                                     }
 
                                     @Override
-                                    public void onProgress(long downloadId, String name, float progress) {
-                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
+                                    public void onDownloadSuccess(DownloadTask downloadTask) {
+                                        QDLogger.i("2下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
+                                    }
+
+                                    @Override
+                                    public void onDownloadFail() {
+
+                                    }
+
+                                    @Override
+                                    public void onDownloadPaused() {
+
                                     }
                                 }).start();;
             }

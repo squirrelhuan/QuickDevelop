@@ -4,10 +4,15 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,24 +36,24 @@ public class DownloadChangeObserver extends ContentObserver {
 
     public static DownloadChangeObserver getInstance(Context context, DownloadHelper downloadHelper) {
         if (instance == null) {
-            Handler handler = new Handler();
             instance = new DownloadChangeObserver(context, new DownloadHandler());
             instance.downloadHelper = downloadHelper;
         }
         return instance;
     }
 
-    public DownloadChangeObserver(Handler handler, DownloadManager downloadManager) {
-        super(handler);
-        this.downloadManager = downloadManager;
-    }
-
     private DownloadManager downloadManager;
-    private ScheduledExecutorService executorService;
+   /* private ScheduledExecutorService executorService;*/
     private Runnable downloadProgressRunnable = new Runnable() {
         @Override
         public void run() {
-            updateProgress();
+            QDLogger.i("下载进度");
+            for (Map.Entry entry : downloadTaskMap.entrySet()) {
+                updateProgress((Long) entry.getKey());
+            }
+            if(downloadTaskMap.size()>0) {
+                downLoadHandler.postDelayed(downloadProgressRunnable, 1000);
+            }
         }
     };
 
@@ -58,8 +63,8 @@ public class DownloadChangeObserver extends ContentObserver {
      * @param
      * @return
      */
-    private void updateProgress() {
-        DownloadManager.Query query = new DownloadManager.Query().setFilterByStatus(DownloadManager.STATUS_RUNNING);
+    private void updateProgress(long downloadId) {
+        DownloadManager.Query query = new DownloadManager.Query().setFilterById(downloadId);//.setFilterByStatus(DownloadManager.STATUS_RUNNING)
         Cursor cursor = null;
         try {
             cursor = downloadManager.query(query);
@@ -72,11 +77,36 @@ public class DownloadChangeObserver extends ContentObserver {
                     int download_so_far_size = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                     //下载状态
                     int task_status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                    // String fileName = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                    // String fileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
+                    String fileName =null;
+                    String fileUri = null;
+                    if (task_status == DownloadManager.STATUS_SUCCESSFUL) {
+                        //fileName = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
+                        //fileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
+                        int fileUriIdx = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                        fileUri = cursor.getString(fileUriIdx);
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                            if (fileUri != null) {
+                                fileName = Uri.parse(fileUri).getPath();
+                            }
+                        } else {
+                            //Android 7.0以上的方式：请求获取写入权限，这一步报错
+                            //过时的方式：DownloadManager.COLUMN_LOCAL_FILENAME
+                            int fileNameIdx = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+                            fileName = cursor.getString(fileNameIdx);
+                        }
+                    }
                     long column_id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
                     // QDLogger.i("下载编号：" + column_id+",总大小："+file_total_size+",已下载："+download_so_far_size+"，状态："+task_status);
-                    DownloadProgress downloadProgress = new DownloadProgress(column_id, task_status, download_so_far_size, file_total_size);
+                    DownloadProgress downloadProgress = new DownloadProgress(downloadId, task_status, download_so_far_size, file_total_size);
+                    if(!TextUtils.isEmpty(fileName)){
+                        downloadProgress.setFileName(fileName);
+                    }
+                    if(!TextUtils.isEmpty(fileUri)){
+                        downloadProgress.setDownloadUri(fileUri);
+                    }
+                    if (task_status==DownloadManager.STATUS_SUCCESSFUL||task_status==DownloadManager.STATUS_FAILED||task_status==DownloadManager.STATUS_PAUSED){
+                        downloadTaskMap.remove(downloadId);
+                    }
                     Message message = new Message();
                     message.what = HANDLE_DOWNLOAD;
                     message.obj = downloadProgress;
@@ -96,15 +126,15 @@ public class DownloadChangeObserver extends ContentObserver {
      * @param context
      * @param handler
      */
-    public DownloadChangeObserver(Context context, DownloadHandler handler) {
+    private DownloadChangeObserver(Context context, DownloadHandler handler) {
         super(handler);
         this.downLoadHandler = handler;
         this.downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
-        try {
+       /* try {
             executorService = Executors.newSingleThreadScheduledExecutor();
         } catch (Exception e) {
-            QDLogger.e(e.getMessage());
-        }
+            QDLogger.e("QDdownload", "DownloadChangeObserver" + e.getMessage());
+        }*/
     }
 
     /**
@@ -114,27 +144,38 @@ public class DownloadChangeObserver extends ContentObserver {
      */
     @Override
     public void onChange(boolean selfChange) {
-        try {
+       /* try {
             executorService.scheduleAtFixedRate(downloadProgressRunnable, 0, 2, TimeUnit.SECONDS);
         } catch (Exception e) {
-            QDLogger.e(e.getMessage());
-        }
+            QDLogger.e("QDdownload", "onChange" + e.getMessage());
+        }*/
+
+        QDLogger.e("QDdownload", "onChange");
+        downLoadHandler.removeCallbacks(downloadProgressRunnable);
+        downLoadHandler.postDelayed(downloadProgressRunnable,1000);
     }
 
+    /**
+     * 关闭
+     */
     public void close() {
-        if (executorService != null && !executorService.isShutdown()) {
+        /*if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
-        }
+        }*/
         if (downLoadHandler != null) {
-            downLoadHandler.removeCallbacks(downloadProgressRunnable);
+           // downLoadHandler.removeCallbacks(downloadProgressRunnable);
             downLoadHandler.removeCallbacksAndMessages(null);
         }
     }
 
     public static final int HANDLE_DOWNLOAD = 0x001;
     public Handler downLoadHandler;
+    private Map<Long, DownloadTask> downloadTaskMap = new HashMap<>();
 
     public void putTask(DownloadTask downloadTask) {
+        if (downloadTask != null) {
+            downloadTaskMap.put(downloadTask.getDownloadId(), downloadTask);
+        }
     }
 
     public static class DownloadHandler extends Handler {
@@ -151,29 +192,37 @@ public class DownloadChangeObserver extends ContentObserver {
                     //被除数可以为0，除数必须大于0
                     if (downloadProgress != null) {
                         if (downloadProgress.getDownloadId() == -1) {
-                            QDLogger.e("downloadId = -1");
+                            QDLogger.e("QDdownload", "downloadId = -1");
                         } else {
                             //  OnDownloadProgressListener listener = listenerMap.get(downloadTask.getDownloadId());
                             switch (downloadProgress.getStatus()) {
                                 case DownloadManager.STATUS_PENDING:
                                     break;
                                 case DownloadManager.STATUS_PAUSED:
-                                    QDLogger.d("暂停下载");
+                                    QDLogger.d("QDdownload", "暂停下载");
+                                    if (downloadTask != null) {
+                                        downloadTask.getOnProgressListener().onDownloadPaused();
+                                    }
                                     break;
                                 case DownloadManager.STATUS_RUNNING:
                                     //QDLogger.d("下载中");
                                     if (downloadTask.getOnProgressListener() != null) {
-                                        downloadTask.getOnProgressListener().onProgress(downloadProgress.getDownloadId(), downloadTask.getFileName(), downloadProgress.getHasLoadSize() / (float) downloadProgress.getTotalSize());
+                                        downloadTask.getOnProgressListener().onDownloadRunning(downloadProgress.getDownloadId(), downloadTask.getFileName(), downloadProgress.getHasLoadSize() / (float) downloadProgress.getTotalSize());
                                     }
                                     break;
                                 case DownloadManager.STATUS_SUCCESSFUL:
-                                    QDLogger.d("下载成功");
+                                    QDLogger.d("QDdownload", "下载成功");
                                     if (downloadTask != null) {
-                                        //  downloadTask.onDownloadSuccess();
+                                        downloadTask.setFileName(downloadProgress.getFileName());
+                                        downloadTask.setDownUriStr(downloadProgress.getFileName());
+                                        downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
                                     }
                                     break;
                                 case DownloadManager.STATUS_FAILED:
-                                    QDLogger.d("failed");
+                                    QDLogger.d("QDdownload", "下载失败");
+                                    if (downloadTask != null) {
+                                        downloadTask.getOnProgressListener().onDownloadFail();
+                                    }
                                     break;
                             }
                         }
