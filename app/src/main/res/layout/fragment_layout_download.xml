@@ -20,6 +20,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="系统下载"/>
+
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_download_thread"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="查看下载中"/>
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="http://web.baekteori.com:18088/mange-web/app/app-release.apk"/>
                       <!--  <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                             android:id="@+id/btn_error_buggly"
                             android:layout_width="match_parent"

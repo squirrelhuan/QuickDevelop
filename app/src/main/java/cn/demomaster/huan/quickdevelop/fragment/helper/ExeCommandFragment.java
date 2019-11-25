@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,6 +52,11 @@ public class ExeCommandFragment extends QDBaseFragment {
     QDButton btn_exe_02;
     View mView;
 
+    @BindView(R.id.btn_exe_send)
+    QDButton btn_exe_send;
+
+    @BindView(R.id.et_command)
+    EditText et_command;
 
     @BindView(R.id.btn_exe_03)
     QDButton btn_exe_03;
@@ -89,6 +95,13 @@ public class ExeCommandFragment extends QDBaseFragment {
                 String str = "adb shell settings put global policy_control immersive.full=*";
                 QDLogger.i(str);
                 exeCommand(str);
+            }
+        });
+
+        btn_exe_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exeCommand(et_command.getText().toString());
             }
         });
     }

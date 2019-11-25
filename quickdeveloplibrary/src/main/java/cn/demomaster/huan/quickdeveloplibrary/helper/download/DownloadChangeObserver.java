@@ -11,6 +11,8 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.umeng.commonsdk.debug.E;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -43,33 +45,52 @@ public class DownloadChangeObserver extends ContentObserver {
     }
 
     private DownloadManager downloadManager;
-   /* private ScheduledExecutorService executorService;*/
+    /* private ScheduledExecutorService executorService;*/
     private Runnable downloadProgressRunnable = new Runnable() {
         @Override
         public void run() {
             QDLogger.i("下载进度");
-            for (Map.Entry entry : downloadTaskMap.entrySet()) {
-                updateProgress((Long) entry.getKey());
-            }
-            if(downloadTaskMap.size()>0) {
-                downLoadHandler.postDelayed(downloadProgressRunnable, 1000);
+            try {
+                if (downloadTaskMap.size() > 0) {
+                    QDLogger.i("下载进度"+downloadTaskMap.size());
+                    for (Map.Entry entry : downloadTaskMap.entrySet()) {
+                        long id =(Long) entry.getKey();
+                       int r= updateProgress(id);
+                       if(r==-1){
+                           QDLogger.i(id+"下载终止了");
+                       }else if(r==1){
+                           QDLogger.i(id+"下载id在列表");
+                           continue;
+                       }else if(r==0){
+                           QDLogger.i(id+"下载id不存在");
+                           break;
+                       }
+                    }
+                    downLoadHandler.postDelayed(downloadProgressRunnable, 1000);
+                }else {
+                    QDLogger.i("下载进度已经为空");
+                    downLoadHandler.removeCallbacks(downloadProgressRunnable);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
 
     /**
      * 通过query查询下载状态，包括已下载数据大小，总大小，下载状态
-     *
-     * @param
-     * @return
+     * @param downloadId
+     * @return -1下载结束了，1下载进度中，0下载不存在
      */
-    private void updateProgress(long downloadId) {
+    private int updateProgress(long downloadId) {
         DownloadManager.Query query = new DownloadManager.Query().setFilterById(downloadId);//.setFilterByStatus(DownloadManager.STATUS_RUNNING)
         Cursor cursor = null;
+        boolean isExists = false;//该记录是否在下载列表
         try {
             cursor = downloadManager.query(query);
             //遍历游标
             while (cursor != null && cursor.moveToNext()) {
+                isExists = true;
                 //下载文件的总大小
                 int file_total_size = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
                 if (file_total_size > 0) {
@@ -77,7 +98,7 @@ public class DownloadChangeObserver extends ContentObserver {
                     int download_so_far_size = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                     //下载状态
                     int task_status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                    String fileName =null;
+                    String fileName = null;
                     String fileUri = null;
                     if (task_status == DownloadManager.STATUS_SUCCESSFUL) {
                         //fileName = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
@@ -96,21 +117,25 @@ public class DownloadChangeObserver extends ContentObserver {
                         }
                     }
                     long column_id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
-                    // QDLogger.i("下载编号：" + column_id+",总大小："+file_total_size+",已下载："+download_so_far_size+"，状态："+task_status);
+                     QDLogger.i("下载编号：" + column_id+",总大小："+file_total_size+",已下载："+download_so_far_size+"，状态："+task_status);
                     DownloadProgress downloadProgress = new DownloadProgress(downloadId, task_status, download_so_far_size, file_total_size);
-                    if(!TextUtils.isEmpty(fileName)){
+                    if (!TextUtils.isEmpty(fileName)) {
                         downloadProgress.setFileName(fileName);
                     }
-                    if(!TextUtils.isEmpty(fileUri)){
+                    if (!TextUtils.isEmpty(fileUri)) {
                         downloadProgress.setDownloadUri(fileUri);
                     }
-                    if (task_status==DownloadManager.STATUS_SUCCESSFUL||task_status==DownloadManager.STATUS_FAILED||task_status==DownloadManager.STATUS_PAUSED){
-                        downloadTaskMap.remove(downloadId);
-                    }
+
                     Message message = new Message();
                     message.what = HANDLE_DOWNLOAD;
                     message.obj = downloadProgress;
                     downLoadHandler.sendMessage(message);
+                    if (task_status == DownloadManager.STATUS_SUCCESSFUL || task_status == DownloadManager.STATUS_FAILED || task_status == DownloadManager.STATUS_PAUSED) {
+                        downloadTaskMap.remove(downloadId);
+                        return -1;
+                    }
+                }else {
+                    QDLogger.i(downloadId+"下载文件的总大小"+file_total_size);
                 }
             }
         } finally {
@@ -118,6 +143,11 @@ public class DownloadChangeObserver extends ContentObserver {
                 cursor.close();
             }
         }
+        if(!isExists){
+            downloadTaskMap.remove(downloadId);
+            downloadHelper.unregisterReceiver(downloadId);
+        }
+        return !isExists?0:1;
     }
 
     /**
@@ -152,7 +182,7 @@ public class DownloadChangeObserver extends ContentObserver {
 
         QDLogger.e("QDdownload", "onChange");
         downLoadHandler.removeCallbacks(downloadProgressRunnable);
-        downLoadHandler.postDelayed(downloadProgressRunnable,1000);
+        downLoadHandler.postDelayed(downloadProgressRunnable, 1000);
     }
 
     /**
@@ -163,7 +193,7 @@ public class DownloadChangeObserver extends ContentObserver {
             executorService.shutdown();
         }*/
         if (downLoadHandler != null) {
-           // downLoadHandler.removeCallbacks(downloadProgressRunnable);
+            // downLoadHandler.removeCallbacks(downloadProgressRunnable);
             downLoadHandler.removeCallbacksAndMessages(null);
         }
     }
@@ -202,6 +232,7 @@ public class DownloadChangeObserver extends ContentObserver {
                                     QDLogger.d("QDdownload", "暂停下载");
                                     if (downloadTask != null) {
                                         downloadTask.getOnProgressListener().onDownloadPaused();
+                                        downloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     }
                                     break;
                                 case DownloadManager.STATUS_RUNNING:
@@ -212,16 +243,21 @@ public class DownloadChangeObserver extends ContentObserver {
                                     break;
                                 case DownloadManager.STATUS_SUCCESSFUL:
                                     QDLogger.d("QDdownload", "下载成功");
+                                    if (downloadTask.getOnProgressListener() != null) {
+                                        downloadTask.getOnProgressListener().onDownloadRunning(downloadProgress.getDownloadId(), downloadTask.getFileName(), 1);
+                                    }
                                     if (downloadTask != null) {
                                         downloadTask.setFileName(downloadProgress.getFileName());
                                         downloadTask.setDownUriStr(downloadProgress.getFileName());
                                         downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
+                                        downloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     }
                                     break;
                                 case DownloadManager.STATUS_FAILED:
                                     QDLogger.d("QDdownload", "下载失败");
                                     if (downloadTask != null) {
                                         downloadTask.getOnProgressListener().onDownloadFail();
+                                        downloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     }
                                     break;
                             }

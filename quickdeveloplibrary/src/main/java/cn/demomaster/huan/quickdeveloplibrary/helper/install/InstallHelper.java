@@ -218,12 +218,19 @@ public class InstallHelper {
         return false;
     }
 
+
     public static void downloadAndSilenceInstall(final Activity context, final String name, final String url) {
+        downloadAndSilenceInstall(context,name,url,null);
+    }
+    public static void downloadAndSilenceInstallForActivity(final Activity context, final String name, final String url,OnDownloadProgressListener listener) {
+
         //兼容8.0 安装权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
             if (!hasInstallPermission) {
-                // Toast.makeText(context, "请先开启应用安装权限", Toast.LENGTH_SHORT).show();
+                if (listener != null) {
+                    listener.onDownloadFail();
+                }
                 //弹框提示用户手动打开
                 showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -236,6 +243,8 @@ public class InstallHelper {
                 return;
             }
         }
+    }
+    public static void downloadAndSilenceInstall(final Context context, final String name, final String url,OnDownloadProgressListener listener){
         //存储权限
         PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
             @Override
@@ -247,10 +256,16 @@ public class InstallHelper {
                             @Override
                             public void onDownloadRunning(long downloadId, String name, float progress) {
                                 QDLogger.i("下载进度" + progress);
+                                if(listener!=null){
+                                    listener.onDownloadRunning(downloadId,name,progress);
+                                }
                             }
 
                             @Override
                             public void onDownloadSuccess(DownloadTask downloadTask) {
+                                if(listener!=null){
+                                    listener.onDownloadSuccess(downloadTask);
+                                }
                                 QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
                                 try {
                                     //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
@@ -270,12 +285,16 @@ public class InstallHelper {
 
                             @Override
                             public void onDownloadFail() {
-
+                                if(listener!=null){
+                                    listener.onDownloadFail();
+                                }
                             }
 
                             @Override
                             public void onDownloadPaused() {
-
+                                if(listener!=null){
+                                    listener.onDownloadPaused();
+                                }
                             }
 
                         });
@@ -284,8 +303,10 @@ public class InstallHelper {
 
             @Override
             public void onNoPassed() {
-
-
+                QDLogger.e("app未获得存储权限，请先获取权限后重试");
+                if(listener!=null){
+                    listener.onDownloadFail();
+                }
             }
         });
     }

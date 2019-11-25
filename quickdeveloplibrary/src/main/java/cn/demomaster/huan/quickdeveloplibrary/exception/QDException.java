@@ -2,11 +2,11 @@ package cn.demomaster.huan.quickdeveloplibrary.exception;
 
 public class QDException extends Exception {
 
-    public int errorCode;
+    public Object errorCode;
     public QDException(String message) {
         super(message);
     }
-    public QDException(int errorCode,String message) {
+    public QDException(Object errorCode,String message) {
         super(message);
         this.errorCode = errorCode;
     }

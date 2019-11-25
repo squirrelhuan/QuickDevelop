@@ -172,9 +172,6 @@ public class QDLogger {
         //Log.d(TAG, +Thread.currentThread().getStackTrace()[2].getLineNumber()); //行号
         //Log.d(TAG, Thread.currentThread().getStackTrace()[2].getFileName()); //文件名
 
-        String className = Thread.currentThread().getStackTrace()[2].getFileName();
-        int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
-        message="["+className+",@"+lineNumber+"]"+message;
 
         //如果配置了日志目录，则打印log到指定目录
         if (applicationContext != null && AppConfig.getInstance().getConfigMap() != null && AppConfig.getInstance().getConfigMap().containsKey("LogFilePath")) {

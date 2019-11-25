@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".activity.sample.component.LoadingActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
         android:id="@+id/sv_loading"
@@ -35,4 +40,27 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_margin="10dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCubeView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCube2View
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
+
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCube3View
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
 </LinearLayout>

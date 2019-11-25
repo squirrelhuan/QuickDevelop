@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
@@ -66,8 +67,6 @@ public class DownloadHelper {
     private void init(Context context) {
         this.downloadChangeObserver = DownloadChangeObserver.getInstance(context, this);
         this.downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
-        //在执行下载前注册内容监听者
-        registerContentObserver(context);
     }
 
     private void pushTask(final DownloadTask downloadTask) {
@@ -122,8 +121,16 @@ public class DownloadHelper {
         //request.setDestinationInExternalFilesDir(this, null, "tar.apk");
         // 下载完成后保留 下载的notification
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+        //在执行下载前注册内容监听者
+        boolean registerResult = registerContentObserver(downloadTask.getContext());
         //下载任务ID
         long downloadId = downloadManager.enqueue(request);
+        if(registerResult){
+            contextMap.put(downloadId,downloadTask.getContext());
+        }else {
+            QDLogger.e("注册下载监听器失败了");
+        }
         downloadTask.setDownloadId(downloadId);
         taskMap.put(downloadId, downloadTask);
         downloadChangeObserver.putTask(downloadTask);
@@ -174,17 +181,23 @@ public class DownloadHelper {
         }
     }
 
+    public static Map<Long,Context> contextMap = new HashMap<>();
+
     /**
      * 注册ContentObserver
      */
-    private void registerContentObserver(Context context) {
+    private boolean registerContentObserver(Context context) {
         if (downloadChangeObserver != null) {
             try {
-                context.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadChangeObserver);
+                if(!contextMap.containsValue(context)) {//如果没注册过
+                    context.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadChangeObserver);
+                    return true;
+                }
             } catch (Exception e) {
                 QDLogger.e(e.getMessage());
             }
         }
+        return false;
     }
 
     /**
@@ -197,6 +210,11 @@ public class DownloadHelper {
         downloadChangeObserver.close();
     }
 
+    public static void unregisterReceiver(Long downloadId) {
+        if(contextMap.containsKey(downloadId)&&contextMap.get(downloadId)!=null) {
+            unregisterReceiver(contextMap.get(downloadId));
+        }
+    }
 
     private OnDownloadStateChangeListener onDownloadStateChangeListener;
     /**
