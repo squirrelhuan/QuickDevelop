@@ -23,17 +23,19 @@ public class ActivityManager {
         this.context = context.getApplicationContext();
     }
 
+    private ActivityManager() {
+
+    }
+
     //必须要在application里初始化
-    public static ActivityManager init(Context context) {
-        if (instance == null) {
-            instance = new ActivityManager(context);
-        }
+    public ActivityManager init(Context context) {
+        this.context = context;
         return instance;
     }
 
     public static ActivityManager getInstance() {
         if (instance == null) {
-            instance = new ActivityManager(context);
+            instance = new ActivityManager();
         }
         return instance;
     }
@@ -164,44 +166,32 @@ public class ActivityManager {
     }
 
     private Activity currentActivity;
-    private Activity currentActivity_tmp;
+
     public void setCurrentActivity(Activity tmp) {
-        currentActivity_tmp = tmp;
-        handler.removeCallbacks(runnable);
-        if(tmp==null&&currentActivity!=null){
-            runnable.setActivity(tmp);
-            handler.postDelayed(runnable,500);//延迟过滤app页面切换过程中的制空
-        }else if(tmp!=null&&currentActivity==null){
-            currentActivity = tmp;
-            onStateChanged();
-        }
+        currentActivity = tmp;
+        onStateChanged();
     }
 
     public Activity getCurrentActivity() {
         return currentActivity;
     }
 
-    Handler handler = new Handler();
-    ARunnable runnable = new ARunnable() {
-        @Override
-        public void run() {
-            if (currentActivity_tmp == null) {
-                currentActivity=activityRef.get();
-                handler.removeCallbacks(runnable);
-                onStateChanged();
-            }
-        }
-    };
-
     /**
      * 设置app前后台切换事件
      */
     private void onStateChanged() {
         if (onAppRunStateChangedListenner != null) {
-            if (currentActivity==null) {
+            if (currentActivity == null) {
                 onAppRunStateChangedListenner.onBackground();
-            } else {
-                onAppRunStateChangedListenner.onForeground();
+            }else {
+                android.app.ActivityManager mAm = (android.app.ActivityManager) currentActivity.getSystemService(Context.ACTIVITY_SERVICE);
+                String activity_name = mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
+                System.err.println("activity_name="+activity_name+","+currentActivity.getPackageName());
+                if (!activity_name.equals(currentActivity.getPackageName())) {
+                    onAppRunStateChangedListenner.onBackground();
+                } else {
+                    onAppRunStateChangedListenner.onForeground();
+                }
             }
         }
     }
@@ -210,26 +200,21 @@ public class ActivityManager {
 
     /**
      * 设置app前后台运行切换状态监听
+     *
      * @param onAppRunStateChangedListenner
      */
     public void setOnAppRunStateChangedListenner(OnAppRunStateChangedListenner onAppRunStateChangedListenner) {
         this.onAppRunStateChangedListenner = onAppRunStateChangedListenner;
     }
 
+    public void onActivityPaused(Activity activity) {
+        onStateChanged();
+    }
+
     public static interface OnAppRunStateChangedListenner {
         void onForeground();//前台显示
+
         void onBackground();//后台显示
     }
 
-    public static class ARunnable implements Runnable{
-        public SoftReference<Activity>  activityRef;
-        public void setActivity(Activity activity) {
-           this.activityRef = new SoftReference<>(activity);
-        }
-
-        @Override
-        public void run() {
-
-        }
-    }
 }

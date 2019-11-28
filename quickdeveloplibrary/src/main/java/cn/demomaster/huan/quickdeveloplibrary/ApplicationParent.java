@@ -13,11 +13,14 @@ import android.preference.PreferenceManager;
 //import com.didichuxing.doraemonkit.DoraemonKit;
 import androidx.multidex.MultiDex;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
@@ -34,7 +37,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isA
 
 public class ApplicationParent extends Application {
 
-    public static String TAG = "CGQ";
+    //public static String TAG = "CGQ";
     private static ApplicationParent instance = null;
 
     public static ApplicationParent getInstance() {
@@ -43,6 +46,14 @@ public class ApplicationParent extends Application {
 
     private static StateObserver stateObserver;
 
+    private RefWatcher refWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+
+        return instance.refWatcher;
+
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,11 +61,11 @@ public class ApplicationParent extends Application {
         QDLogger.setApplicationContext(this);
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
-        ActivityManager.init(this);
+        ActivityManager.getInstance().init(this);
         NotifycationHelper.getInstance().init(this);
 
         AppConfig.getInstance().init(this, "config/project.conf");
-        if(AppConfig.getInstance().getConfigMap().containsKey("dbpath")){
+        if (AppConfig.getInstance().getConfigMap().containsKey("dbpath")) {
             String dbpath = (String) AppConfig.getInstance().getConfigMap().get("dbpath");
             initDB(dbpath);
         }
@@ -62,20 +73,30 @@ public class ApplicationParent extends Application {
         //处理崩溃日志
         initCrash();
 
-        QDSaxXml.parseXmlAssets(this,"config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class,null);
-        QDSaxXml.parseXmlAssets(this,"config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class,null);
+        QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
+        QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
         QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
             @Override
             public void onComplete(Object result) {
-                QDLogger.d("配置文件初始化完成"+result);
+                QDLogger.d("配置文件初始化完成" + result);
             }
         });
 
         //DoraemonKit.install(this);
-        if(isApkInDebug(this)){
-           // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
+        if (isApkInDebug(this)) {
+            // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
         }
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+
+        LeakCanary.install(this);
+
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -84,6 +105,7 @@ public class ApplicationParent extends Application {
 
     /**
      * 初始化友盟分享
+     *
      * @param appkey
      */
     public void initUmengShare(String appkey) {
@@ -108,8 +130,10 @@ public class ApplicationParent extends Application {
 
     public CBHelper dbHelper;
     public SQLiteDatabase db;
+
     /**
      * 初始化数据库
+     *
      * @param dbpath
      */
     private void initDB(String dbpath) {
@@ -158,43 +182,45 @@ public class ApplicationParent extends Application {
         }
     }
 
+
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             ActivityManager.getInstance().addActivity(activity);
-            QDLogger.d(TAG, "onActivityCreated() 回调: activity = [" + activity + "], savedInstanceState = [" + savedInstanceState + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityCreated() ==> [" + activity + "]");
         }
 
         @Override
         public void onActivityStarted(Activity activity) {
-            QDLogger.d(TAG, "onActivityStarted() 回调: activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityStarted() ==> [" + activity + "]");
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
-            QDLogger.d(TAG, "onActivityResumed() 回调: activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityResumed() ==> [" + activity + "]");
             ActivityManager.getInstance().setCurrentActivity(activity);
         }
+
         @Override
         public void onActivityPaused(Activity activity) {
-            QDLogger.d(TAG, "onActivityPaused() 回调: activity = [" + activity + "]");
-            ActivityManager.getInstance().setCurrentActivity(null);
+            QDLogger.d(TAG.ACTIVITY, "onActivityPaused() ==> activity = [" + activity + "]");
+            ActivityManager.getInstance().onActivityPaused(activity);
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            QDLogger.d(TAG, "onActivityStopped() 回调: activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> activity = [" + activity + "]");
         }
 
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            QDLogger.d(TAG, "onActivitySaveInstanceState() 回调: activity = [" + activity + "], outState = [" + outState + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivitySaveInstanceState() ==> activity = [" + activity + "]");
         }
 
         @Override
         public void onActivityDestroyed(Activity activity) {
             ActivityManager.getInstance().removeActivity(activity);
-            QDLogger.d(TAG, "onActivityDestroyed() 回调: activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityDestroyed() ==> activity = [" + activity + "]");
         }
     };
 }

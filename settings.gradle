@@ -1,1 +1,2 @@
-include ':app', ':quickdeveloplibrary'
+include ':quickdeveloplibrary', ':app'
+project(':app').projectDir = new File('app')

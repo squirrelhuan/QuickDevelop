@@ -301,7 +301,7 @@ public class QDKeyboard {
             @Override
             public void onClick(View v) {
                boolean l = v.hasOnClickListeners();
-               QDLogger.d(l);
+               //QDLogger.d(l);
             }
         });
         keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
@@ -137,6 +138,15 @@ public class QDLogger {
     private static String message;
     private static String Tag;
 
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
+    static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
+    static Locale mLocale = Locale.CHINA;
+    public static void setLocale(Locale locale) {
+        mLocale = locale;
+        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", mLocale);// HH:mm:ss
+        simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", mLocale);// HH:mm:ss
+    }
+
     private static void Log(Context context, int logType, String tag, Object obj, Throwable tr) {
         message = (context == null ? (obj == null ? "NULL" : obj.toString()) : (context.getClass().getName() + ":"));
         Tag = tag;
@@ -180,10 +190,8 @@ public class QDLogger {
             // 检查该权限是否已经获取
             boolean useful = PermissionManager.getPermissionStatus(applicationContext, permissions);
             if (useful) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
                 Date date = new Date(System.currentTimeMillis());
-                String LogFilePath  = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
+                String LogFilePath = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
                 String fileName = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
                 if (!fileName.startsWith(File.separator)) {
                     fileName = File.separator + fileName;
@@ -197,18 +205,31 @@ public class QDLogger {
                     path = applicationContext.getFilesDir().getAbsolutePath();
                     System.out.println("外置内存卡不存在,log存储路径已改为：" + path);
                 } else {
-                    //  System.out.println("外置内存卡存在");
+                    //System.out.println("外置内存卡存在");
                 }
-                File dir = new File(path+(LogFilePath.startsWith(File.separator)?LogFilePath:File.separator+LogFilePath));
-                if(!dir.exists()){
+                File dir = new File(path + (LogFilePath.startsWith(File.separator) ? LogFilePath : File.separator + LogFilePath));
+                if (!dir.exists()) {
                     dir.mkdir();
                 }
-                FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
+                if (canWriteAble) {
+                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
+                }
             } else {
                 System.out.println(message);
-                Log.e("qdlog error","本地日志写入失败，请打开存储权限");
+                Log.e("qdlog error", "本地日志写入失败，请打开存储权限");
                 // throw new IllegalArgumentException("log 打印失败，请打开存储权限");
             }
+        }
+    }
+
+    public static boolean canWriteAble;//是否可以读写日志
+
+    public static void setCanWriteAble(boolean mcanWriteAble) {
+        canWriteAble = mcanWriteAble;
+        if (!mcanWriteAble) {
+            System.err.println("暂停日志文件写入权限");
+        } else {
+            System.err.println("恢复日志写入文件权限");
         }
     }
 }

@@ -15,9 +15,9 @@ import android.view.View;
 
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * Created by Squirrel桓 on 2019/1/20.
@@ -37,7 +37,7 @@ public class NotifycationHelper {
     public void init(Context mcontext){
         context = mcontext;
         if(context==null){
-            Log.e(TAG,"请在application中初始化");
+            Log.e(TAG.APP,"请在application中初始化");
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

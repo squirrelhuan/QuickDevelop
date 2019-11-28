@@ -82,12 +82,12 @@ public class LoadingTengxuntvView extends View {
             //canvas.drawCircle(0,0,59,mPaint);
         }
     }
-
+    ValueAnimator animator;
     private float progress;
     public void startAnimation() {
         isPlaying = true;
         float end = 2f;
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, end);
+        animator = ValueAnimator.ofFloat(0f, end);
         animator.setDuration(1200);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -105,5 +105,10 @@ public class LoadingTengxuntvView extends View {
         animator.setInterpolator(new LinearInterpolator());
         animator.start();
     }
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

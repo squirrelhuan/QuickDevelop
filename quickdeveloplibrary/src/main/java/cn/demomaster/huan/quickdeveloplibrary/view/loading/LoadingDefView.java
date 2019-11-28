@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * @author squirrel桓
@@ -84,11 +83,11 @@ public class LoadingDefView extends View {
 
     private float progress;
     private boolean isForward = true;
-
+    ValueAnimator animator;
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
-        final ValueAnimator animator = ValueAnimator.ofInt(0, end);
+        animator = ValueAnimator.ofInt(0, end);
         animator.setDuration(1200);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -110,5 +109,10 @@ public class LoadingDefView extends View {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

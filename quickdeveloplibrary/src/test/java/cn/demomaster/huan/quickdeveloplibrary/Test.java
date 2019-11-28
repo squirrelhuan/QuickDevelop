@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -631,5 +632,12 @@ public class Test {
         Class clazz =getClass();
         System.out.println("clazz:"+clazz.getName());
         Zprint.log(clazz, "ok");
+    }
+
+
+    @org.junit.Test
+    public void fomatTime(){
+         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.KOREA);// HH:mm:ss
+        System.out.println( simpleDateFormat.format(1574931387065l));
     }
 }

@@ -118,10 +118,11 @@ public class LoadingCircleAlphaView extends View {
 
     private List<CirclePoint> circlePoints = new ArrayList<>();
 
+    ValueAnimator animator;
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
-        ValueAnimator animator = ValueAnimator.ofInt(0, end);
+        animator = ValueAnimator.ofInt(0, end);
         animator.setDuration(1600);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -200,5 +201,10 @@ public class LoadingCircleAlphaView extends View {
             this.angle = angle;
         }
     }
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

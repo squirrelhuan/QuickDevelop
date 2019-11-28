@@ -42,6 +42,7 @@ public class FileUtil {
 
     public static void writeFileSdcardFile(String fileName,
                                            String write_str, boolean append) {
+        FileOutputStream fout = null;
         try {
             File file = new File(fileName);
             if (!file.exists()) {
@@ -51,7 +52,7 @@ public class FileUtil {
                 }
                 file.createNewFile();
             }
-            FileOutputStream fout = new FileOutputStream(file, append);
+            fout = new FileOutputStream(file, append);
             byte[] bytes = write_str.getBytes();
 
             fout.write(bytes);
@@ -59,6 +60,14 @@ public class FileUtil {
             fout.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (fout != null) {
+                try {
+                    fout.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 
@@ -236,7 +245,7 @@ public class FileUtil {
     }
 
     public static File uriToFile(Uri uri, Context context) {
-        if(uri==null||context==null){
+        if (uri == null || context == null) {
             return null;
         }
         String path = null;

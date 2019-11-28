@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android" android:title="Serial port setup(串口設置)">
-<ListPreference android:key="DEVICE" android:title="DEVICE(设备)" android:persistent="true"></ListPreference>
-<ListPreference android:entries="@array/baudrates_name" android:entryValues="@array/baudrates_value" android:key="BAUDRATE" android:persistent="true" android:title="Baud rate BAUDRATE(波特率)"></ListPreference>
-</PreferenceScreen>

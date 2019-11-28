@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -29,7 +30,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -488,7 +488,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
             default:
                 return null;
         }
-        QDLogger.i(TAG, "contentPaddingTop=" + contentPaddingTop + ",actionBar_Height=" + actionBar_Height + ",statusBar_Height=" + statusBar_Height);
+        QDLogger.i(TAG.DEF, "contentPaddingTop=" + contentPaddingTop + ",actionBar_Height=" + actionBar_Height + ",statusBar_Height=" + statusBar_Height);
         this.contentView.setLayoutParams(layoutParams_content);
         this.headView.setLayoutParams(layoutParams_header);
         //状态栏颜色
@@ -526,7 +526,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
      */
     public void refreshStateBarColor() {
         long consumingTime = System.currentTimeMillis() - startTime;
-        QDLogger.d(TAG, "setStateBarColor=" + consumingTime);
+        QDLogger.d(TAG.DEF, "setStateBarColor=" + consumingTime);
         //截图取色
         Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(rootLayout, statusBar_Height);
         if (bitmap == null) {
@@ -541,7 +541,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
             setActionBarColorType(isDart);
         }
         long consumingTime2 = System.currentTimeMillis() - startTime;
-        QDLogger.d(TAG, "setStateBarColor2=" + consumingTime2);
+        QDLogger.d(TAG.DEF, "setStateBarColor2=" + consumingTime2);
     }
 
 

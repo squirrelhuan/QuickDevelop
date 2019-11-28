@@ -17,9 +17,9 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * @author squirrel桓
@@ -56,7 +56,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
             item.setPosition(i);
             item.setItemName(tabMenuModel.getTabItems()[i]);
             if (selectCount < tabMenuModel.getSelectDeftData().size()) {
-                Log.e(TAG, "默认选中个数不能超过最大个数");
+                Log.e(TAG.DEF, "默认选中个数不能超过最大个数");
                 return;
             }
             if (tabMenuModel.getSelectDeftData() != null ) {

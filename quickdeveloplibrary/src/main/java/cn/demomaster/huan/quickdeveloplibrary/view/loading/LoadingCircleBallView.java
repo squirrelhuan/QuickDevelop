@@ -83,11 +83,11 @@ public class LoadingCircleBallView extends View {
 
     private float progress;
     private boolean isForward = true;
-
+    ValueAnimator animator;
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
-        final ValueAnimator animator = ValueAnimator.ofInt(0, end);
+        animator = ValueAnimator.ofInt(0, end);
         animator.setDuration(1600);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -111,5 +111,10 @@ public class LoadingCircleBallView extends View {
         //animator.setInterpolator(new CycleInterpolator());
         animator.start();
     }
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

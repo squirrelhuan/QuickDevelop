@@ -65,7 +65,7 @@ public class DownloadHelper {
     }
 
     private void init(Context context) {
-        this.downloadChangeObserver = DownloadChangeObserver.getInstance(context, this);
+        this.downloadChangeObserver = DownloadChangeObserver.getInstance(context.getApplicationContext(), this);
         this.downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
     }
 
@@ -156,19 +156,6 @@ public class DownloadHelper {
     }
 
     /**
-     * 注销广播
-     */
-    private static void unregisterBroadcast(Context context) {
-       /* if (broadcastReceiver != null) {
-            try {
-                context.unregisterReceiver(broadcastReceiver);
-            } catch (Exception e) {
-                QDLogger.e(e.getMessage());
-            }
-        }*/
-    }
-
-    /**
      * 注销ContentObserver
      */
     private static void unregisterContentObserver(Context context) {
@@ -205,18 +192,25 @@ public class DownloadHelper {
      *  @param context
      */
     public static void unregisterReceiver(Context context) {
-        unregisterBroadcast(context);
         unregisterContentObserver(context);
-        downloadChangeObserver.close();
+        if(contextMap.containsValue(context)) {
+            contextMap.remove(context);
+        }
+        if(contextMap.size()<=0) {
+            downloadChangeObserver.close();
+        }
     }
-
+    /**
+     * 解绑activity
+     *  @param
+     */
     public static void unregisterReceiver(Long downloadId) {
         if(contextMap.containsKey(downloadId)&&contextMap.get(downloadId)!=null) {
             unregisterReceiver(contextMap.get(downloadId));
         }
     }
 
-    private OnDownloadStateChangeListener onDownloadStateChangeListener;
+    //private OnDownloadStateChangeListener onDownloadStateChangeListener;
     /**
      *下载状态监听器
      */

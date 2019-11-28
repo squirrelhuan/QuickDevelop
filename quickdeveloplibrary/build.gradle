@@ -111,6 +111,9 @@ dependencies {
     //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.1.1'
     api 'org.greenrobot:eventbus:3.1.1'
 
+    debugApi'com.squareup.leakcanary:leakcanary-android:1.6.2'
+    releaseApi'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
+
     //滴滴出行
     //debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:1.1.5'
     //releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'

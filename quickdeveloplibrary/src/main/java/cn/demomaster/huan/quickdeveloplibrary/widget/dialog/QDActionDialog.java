@@ -167,6 +167,12 @@ public class QDActionDialog extends Dialog {
                         ct.setAccessible(true);
                         imageView = (View) ct.newInstance(new Object[]{builder.context});
                         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(l, l);
+                        if(builder.imageHeight!=0){
+                            layoutParams1 = new LinearLayout.LayoutParams(layoutParams1.width,builder.imageHeight);
+                        }
+                        if(builder.imageWidth!=0){
+                            layoutParams1 = new LinearLayout.LayoutParams(builder.imageWidth,layoutParams1.height);
+                        }
                         contentView.addView(imageView, layoutParams1);
                     } catch (NoSuchMethodException e) {
                         e.printStackTrace();
@@ -195,7 +201,7 @@ public class QDActionDialog extends Dialog {
             textView.setText(builder.message);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.WHITE);
-            textView.setTextSize(14);
+            textView.setTextSize(builder.messageTextSize);
             textView.setSingleLine(true);
             textView.setEllipsize(TextUtils.TruncateAt.END);
             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -242,6 +248,7 @@ public class QDActionDialog extends Dialog {
         public int gravity = Gravity.CENTER;
         private Context context;
         private String message;
+        private int messageTextSize = 16;
         private float dimAmount = .0f;
         private int backgroundColor = Color.TRANSPARENT;
         private int contentbackgroundColor = Color.WHITE;
@@ -381,6 +388,21 @@ public class QDActionDialog extends Dialog {
 
         public Builder setDelayMillis(int delayMillis) {
             this.delayMillis = delayMillis;
+            return this;
+        }
+
+        public Builder setMessageTextSize(int messageTextSize) {
+            this.messageTextSize = messageTextSize;
+            return this;
+        }
+
+        public Builder setImageHeight(int imageHeight) {
+            this.imageHeight = imageHeight;
+            return this;
+        }
+
+        public Builder setImageWidth(int imageWidth) {
+            this.imageWidth = imageWidth;
             return this;
         }
 

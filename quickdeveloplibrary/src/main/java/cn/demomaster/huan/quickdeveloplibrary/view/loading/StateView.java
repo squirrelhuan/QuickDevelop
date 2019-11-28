@@ -382,5 +382,10 @@ public class StateView extends ImageTextView {
         return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
 
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

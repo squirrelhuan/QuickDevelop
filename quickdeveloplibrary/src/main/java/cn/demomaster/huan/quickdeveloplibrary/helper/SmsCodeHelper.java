@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper.Message_Code_Last_Time;
 
 /**
@@ -75,7 +75,7 @@ public class SmsCodeHelper  {
                         //onReceiveSmsCodeListener.onNextHttpGet();
                         btn_getSmsCode.setOnClickListener(null);
                     }else {
-                        Log.i(TAG,"手机号不合法");
+                        Log.i(TAG.APP,"手机号不合法");
                         onReceiveSmsCodeListener.onReceiveFailure("手机号不合法");
                     }
                 }
@@ -157,6 +157,15 @@ public class SmsCodeHelper  {
         }
         SharedPreferencesHelper.getInstance().setLong(Message_Code_Last_Time, 0);
         start();
+    }
+
+    public void unRegisterSmsListener(){
+        onReceiveSmsCodeListener=null;
+        this.context = null;
+        if(handler!=null){
+            handler.removeCallbacks(runnable);
+        }
+        handler=null;
     }
 
 }

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.ApplicationParent.TAG;
 
 /**
  * @author squirrel桓
@@ -62,7 +62,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             item.setPosition(i);
             item.setItemName(tabMenuModel.getTabItems()[i]);
             if (selectCount < tabMenuModel.getSelectDeftData().size()) {
-                QDLogger.e(TAG, "默认选中个数不能超过最大个数");
+                QDLogger.e(TAG.DEF, "默认选中个数不能超过最大个数");
                 return;
             }
             if (tabMenuModel.getSelectDeftData() != null ) {
