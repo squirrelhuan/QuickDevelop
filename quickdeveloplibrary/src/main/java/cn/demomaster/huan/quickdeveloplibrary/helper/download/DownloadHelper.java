@@ -229,7 +229,7 @@ public class DownloadHelper {
         private OnDownloadProgressListener onProgressListener;//进度监听
 
         public DownloadBuilder(Context context) {
-            this.context = context;
+            this.context = context.getApplicationContext();
         }
 
         public String getUrl() {

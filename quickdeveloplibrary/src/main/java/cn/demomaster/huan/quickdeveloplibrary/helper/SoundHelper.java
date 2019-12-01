@@ -1,17 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
-import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 

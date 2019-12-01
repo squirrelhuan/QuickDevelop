@@ -146,6 +146,7 @@ public class DownloadChangeObserver extends ContentObserver {
         if(!isExists){
             downloadTaskMap.remove(downloadId);
             downloadHelper.unregisterReceiver(downloadId);
+
         }
         return !isExists?0:1;
     }

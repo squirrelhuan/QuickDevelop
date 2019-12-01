@@ -222,6 +222,9 @@ public class InstallHelper {
     public static void downloadAndSilenceInstall(final Activity context, final String name, final String url) {
         downloadAndSilenceInstall(context,name,url,null);
     }
+    public static void downloadAndSilenceInstall(final Context context, final String name, final String url) {
+        downloadAndSilenceInstall(context,name,url,null);
+    }
     public static void downloadAndSilenceInstallForActivity(final Activity context, final String name, final String url,OnDownloadProgressListener listener) {
 
         //兼容8.0 安装权限

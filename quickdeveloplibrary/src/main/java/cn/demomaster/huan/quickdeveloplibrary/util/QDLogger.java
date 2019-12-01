@@ -138,8 +138,8 @@ public class QDLogger {
     private static String message;
     private static String Tag;
 
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
-    static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
+   public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
+    public static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
     static Locale mLocale = Locale.CHINA;
     public static void setLocale(Locale locale) {
         mLocale = locale;
@@ -222,7 +222,7 @@ public class QDLogger {
         }
     }
 
-    public static boolean canWriteAble;//是否可以读写日志
+    public static boolean canWriteAble = true;//是否可以读写日志
 
     public static void setCanWriteAble(boolean mcanWriteAble) {
         canWriteAble = mcanWriteAble;

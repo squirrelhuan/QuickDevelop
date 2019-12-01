@@ -209,12 +209,12 @@ public class ApplicationParent extends Application {
 
         @Override
         public void onActivityStopped(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> activity = [" + activity + "]");
+            //QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> activity = [" + activity + "]");
         }
 
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            QDLogger.d(TAG.ACTIVITY, "onActivitySaveInstanceState() ==> activity = [" + activity + "]");
+            //QDLogger.d(TAG.ACTIVITY, "onActivitySaveInstanceState() ==> activity = [" + activity + "]");
         }
 
         @Override

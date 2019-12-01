@@ -186,7 +186,6 @@ public class ActivityManager {
             }else {
                 android.app.ActivityManager mAm = (android.app.ActivityManager) currentActivity.getSystemService(Context.ACTIVITY_SERVICE);
                 String activity_name = mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
-                System.err.println("activity_name="+activity_name+","+currentActivity.getPackageName());
                 if (!activity_name.equals(currentActivity.getPackageName())) {
                     onAppRunStateChangedListenner.onBackground();
                 } else {
