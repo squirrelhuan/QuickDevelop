@@ -13,6 +13,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
@@ -138,14 +139,25 @@ public class QDLogger {
     private static String message;
     private static String Tag;
 
-   public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
+    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
     public static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
-    static Locale mLocale = Locale.CHINA;
+   /* static Locale mLocale = Locale.CHINA;
     public static void setLocale(Locale locale) {
         mLocale = locale;
         simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", mLocale);// HH:mm:ss
         simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", mLocale);// HH:mm:ss
+    }*/
+
+    /**
+     * 设置时区
+     *
+     * @param timeZone
+     */
+    public static void setTimeZone(TimeZone timeZone) {
+        simpleDateFormat.setTimeZone(timeZone);
+        simpleDateFormat2.setTimeZone(timeZone);
     }
+
 
     private static void Log(Context context, int logType, String tag, Object obj, Throwable tr) {
         message = (context == null ? (obj == null ? "NULL" : obj.toString()) : (context.getClass().getName() + ":"));
