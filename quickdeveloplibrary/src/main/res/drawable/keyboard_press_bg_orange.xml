@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#a5afba" />
+            <corners android:radius="8dp" />
+            <stroke
+                android:width="1px"
+                android:color="#8a8b8e"
+                android:dashGap="0dip"
+                android:dashWidth="0dip" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#EE7600" />
+            <corners android:radius="8dp" />
+            <!--stroke标签: 边框-->
+            <!--width 边框的宽度-->
+            <!--color 边框的颜色-->
+            <!--下面两个参数是 把边框变成虚线用-->
+            <!--dashGap 虚线中空格的长度-->
+            <!--dashWidth 虚线中实线的长度-->
+            <stroke
+                android:width="1px"
+                android:color="#8a8b8e"
+                android:dashGap="0dip"
+                android:dashWidth="0dip" />
+        </shape>
+    </item>
+</selector>

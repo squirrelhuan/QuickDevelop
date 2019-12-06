@@ -54,7 +54,7 @@
             android:keyHeight="170dp"
             android:keyLabel="@string/complete" />
     </Row>
-    <Row>
+    <Row >
         <Key
             android:codes="46"
             android:keyLabel="." />

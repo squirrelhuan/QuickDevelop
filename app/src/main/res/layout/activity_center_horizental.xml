@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.sample.CenterHorizontalActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:textSize="20dp"
+        android:text="AutoCenterHorizontalScrollView"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:background="@color/red"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"/>
+    </LinearLayout>
+    <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
+        android:id="@+id/achs_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false">
+
+    </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:background="@color/gray"
+        android:text="ViewPager"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <View
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:background="@color/red"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
+        <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
+            android:id="@+id/achs_test2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
+
+        </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_index2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:background="@color/gray"
+        android:text="ViewPager"/>
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ViewPager"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_hor"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:overScrollMode="never"
+        android:background="@color/transparent"
+        android:clipChildren="false" />-->
+
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/centerSnapRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="4dp">
+
+    </android.support.v7.widget.RecyclerView>-->
+
+   <!-- <cn.demomaster.huan.quickdevelop.view.SlidingTabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_sliding_view"/>-->
+
+
+</LinearLayout>

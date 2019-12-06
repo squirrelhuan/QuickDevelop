@@ -2,11 +2,17 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 
 import java.lang.ref.SoftReference;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * @author squirrel桓
@@ -216,4 +222,62 @@ public class ActivityManager {
         void onBackground();//后台显示
     }
 
+
+    private static android.app.ActivityManager manager;
+    private static List<android.app.ActivityManager.RunningAppProcessInfo> runningProcesses;
+    private static String packName;
+    private static PackageManager pManager;
+
+    /**
+     * 杀死其他正在运行的程序
+     *
+     * @param context
+     */
+    public static void killOthers(Context context,String pkgName) {
+        pManager = context.getPackageManager();
+        manager = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        runningProcesses = manager.getRunningAppProcesses();
+        for (android.app.ActivityManager.RunningAppProcessInfo runningProcess : runningProcesses) {
+            try {
+                packName = runningProcess.processName;
+                PackageInfo packageInfo = pManager.getPackageInfo(packName, 0);
+                if (packageInfo != null) {
+                    ApplicationInfo applicationInfo = pManager.getPackageInfo(packName, 0).applicationInfo;
+                    if (!pkgName.equals(packName) && filterApp(applicationInfo)) {
+                        forceStopPackage(context,packName);
+                        System.out.println(packName + "JJJJJJ");
+                    }
+                }
+            } catch (Exception e) {
+                //e.printStackTrace();
+                QDLogger.e(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 强制停止应用程序
+     *
+     * @param pkgName
+     */
+    public static void forceStopPackage(Context context,String pkgName) throws Exception {
+        android.app.ActivityManager am = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        Method method = Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", String.class);
+        method.invoke(am, pkgName);
+    }
+
+    /**
+     * 判断某个应用程序是 不是三方的应用程序
+     *
+     * @param info
+     * @return
+     */
+    public static boolean filterApp(ApplicationInfo info) {
+        if ((info.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+            return true;
+        } else if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+            return true;
+        }
+        return false;
+    }
 }

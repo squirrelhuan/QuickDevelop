@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_exe_01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ps" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_exe_02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ps |grep" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_exe_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="强制开启全屏模式"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+
+
+        <!--<EditText
+            android:id="@+id/et_command"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_clear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="clear" />
+    </LinearLayout>
+
+
+       <!-- <TextView
+            android:id="@+id/tv_console"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="$"/>-->
+        <EditText
+            android:id="@+id/et_console"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="left"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:text=""/>
+
+</RelativeLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:background="@mipmap/meizi"
+    tools:context=".activity.sample.actionbar.ActionBarTipActivity">
+
+    <CheckBox
+        android:id="@+id/cb_001"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_margin="20dp"
+        android:checked="true"
+        android:text="向下传动"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+        android:id="@+id/btn_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="完成"
+        android:layout_margin="5dp"
+        app:qd_radius="5dp"
+        app:qd_isRadiusAdjustBounds="true"/>
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+        android:id="@+id/btn_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:qd_radius="5dp"
+        android:text="加载"/>
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+        android:id="@+id/btn_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:qd_radius="5dp"
+        android:text="异常"/>
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+        android:id="@+id/btn_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:qd_radius="5dp"
+        android:text="警告"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tip背景色:"/>
+        <SeekBar
+            android:id="@+id/sb_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</LinearLayout>

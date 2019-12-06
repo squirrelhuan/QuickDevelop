@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:orientation="horizontal"
+    tools:context=".activity.sample.component.LoadingActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
+        android:id="@+id/sv_loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"  />
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallInnerView
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    <!--<cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleAlphaView
+        android:layout_width="80dp"
+        android:layout_height="80dp" />-->
+    
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCubeView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCube2View
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"/>
+
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCube3View
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+</LinearLayout>
