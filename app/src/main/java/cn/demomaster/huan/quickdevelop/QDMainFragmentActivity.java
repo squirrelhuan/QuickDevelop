@@ -58,12 +58,12 @@ public class QDMainFragmentActivity extends QDBaseActivity {
         System.out.println("当前时间：" + simpleDateFormat.format(date));*/
     }
 
-    @Override
+  /*  @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //return super.onKeyDown(keyCode, event);
-        if(keyCode==KeyEvent.KEYCODE_BACK){
+        *//*if(keyCode==KeyEvent.KEYCODE_BACK){
             return false;
-        }
+        }*//*
         return true;
-    }
+    }*/
 }

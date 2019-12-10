@@ -12,9 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.StringUtil.hexStr2Str;
 
 /**
  * @author squirrel桓
@@ -640,4 +644,9 @@ public class Test {
          SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.KOREA);// HH:mm:ss
         System.out.println( simpleDateFormat.format(1574931387065l));
     }
+    @org.junit.Test
+    public void testHexStr2Str(){
+       System.out.println(hexStr2Str("5355444B30383139313030393032323600"));
+    }
+
 }

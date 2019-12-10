@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 import retrofit2.http.PUT;
@@ -92,11 +94,11 @@ public class StringUtil {
     }
 
     /**
-     * 十六进制转换字符串
+     * 十六进制转换字符串 --- 不去除空字符的结果
      * @param String str Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
-    public static String hexStr2Str(String hexStr) {
+    public static String hexStr2Str_(String hexStr) {
         String str = "0123456789ABCDEF";
         char[] hexs = hexStr.toCharArray();
         byte[] bytes = new byte[hexStr.length() / 2];
@@ -108,6 +110,33 @@ public class StringUtil {
             bytes[i] = (byte) (n & 0xff);
         }
         return new String(bytes);
+    }
+    /**
+     * 十六进制转换字符串(去除空字符的结果)
+     * @param String hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
+     * @return String 对应的字符串
+     */
+    public static String hexStr2Str(String hexStr) {
+        String str = "0123456789ABCDEF";
+        char[] hexs = hexStr.toCharArray();
+        int n;
+        LinkedHashMap<Integer,Byte> characterLinkedHashMap = new LinkedHashMap<>();
+        for (int i = 0; i < hexStr.length() / 2; i++) {
+            n = str.indexOf(hexs[2 * i]) * 16;
+            n += str.indexOf(hexs[2 * i + 1]);
+            byte b = (byte) (n & 0xff);
+            if(b!='\0') {
+                characterLinkedHashMap.put(i,b);
+            }
+        }
+        byte[] bytes = new byte[characterLinkedHashMap.size()];
+        int i=0;
+        for(Map.Entry entry: characterLinkedHashMap.entrySet()){
+            bytes[i] = (byte) entry.getValue();
+            i++;
+        }
+        String result = new String(bytes);
+        return result;
     }
 
     /**

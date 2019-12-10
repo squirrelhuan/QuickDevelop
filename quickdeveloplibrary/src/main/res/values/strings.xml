@@ -4,6 +4,7 @@
     <string name="title_home">首页</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="accessibility">为了保证app正常运行，请开启辅助功能</string>
 
     <string name="Confirm">确定</string>
     <string name="Cancel">取消</string>

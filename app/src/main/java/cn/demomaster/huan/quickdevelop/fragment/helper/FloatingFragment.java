@@ -20,6 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
@@ -39,6 +40,9 @@ public class FloatingFragment extends QDBaseFragment {
 
     @BindView(R.id.btn_floating_01)
     Button btn_floating_01;
+
+    @BindView(R.id.btn_floating_02)
+    Button btn_floating_02;
     View mView;
 
     @Override
@@ -90,6 +94,29 @@ public class FloatingFragment extends QDBaseFragment {
                 }*/
             }
         });
+        btn_floating_02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionManager2.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
+                    @Override
+                    public void onPassed() {
+                        Toast.makeText(getContext(),"开启",Toast.LENGTH_SHORT).show();
+                        if(FloatingMenuService.isShowing()){
+                            FloatingMenuService.dissmissWindow(mContext,FloatingMenuService.class);
+                        }else {
+                            FloatingMenuService.showWindow(mContext,FloatingMenuService.class);
+                            btn_floating_02.setText("关闭悬浮");
+                        }
+                    }
+
+                    @Override
+                    public void onNoPassed() {
+                        Toast.makeText(getContext(),"拒绝",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
 
         FloatingService.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override

@@ -61,7 +61,7 @@ public class DownloadHelper {
                 }
             }
         };*/
-       // this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
+        // this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
     }
 
     private void init(Context context) {
@@ -95,7 +95,7 @@ public class DownloadHelper {
             sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
             QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
         }
-        String download_app_folder = download_app_folder_name.startsWith(File.separator)?download_app_folder_name:(File.separator + download_app_folder_name);
+        String download_app_folder = download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name);
         File dir = new File(sdpath + download_app_folder);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -126,15 +126,15 @@ public class DownloadHelper {
         boolean registerResult = registerContentObserver(downloadTask.getContext());
         //下载任务ID
         long downloadId = downloadManager.enqueue(request);
-        if(registerResult){
-            contextMap.put(downloadId,downloadTask.getContext());
-        }else {
+        if (registerResult) {
+            //contextMap.put(downloadId, downloadTask.getContext());
+            downloadTask.setDownloadId(downloadId);
+            taskMap.put(downloadId, downloadTask);
+            downloadChangeObserver.putTask(downloadTask);
+            registerBroadcast(downloadTask.getContext());
+        } else {
             QDLogger.e("注册下载监听器失败了");
         }
-        downloadTask.setDownloadId(downloadId);
-        taskMap.put(downloadId, downloadTask);
-        downloadChangeObserver.putTask(downloadTask);
-        registerBroadcast(downloadTask.getContext());
     }
 
     /**
@@ -168,7 +168,7 @@ public class DownloadHelper {
         }
     }
 
-    public static Map<Long,Context> contextMap = new HashMap<>();
+    //public static Map<Long, Context> contextMap = new HashMap<>();
 
     /**
      * 注册ContentObserver
@@ -176,10 +176,10 @@ public class DownloadHelper {
     private boolean registerContentObserver(Context context) {
         if (downloadChangeObserver != null) {
             try {
-                if(!contextMap.containsValue(context)) {//如果没注册过
-                    context.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadChangeObserver);
-                    return true;
-                }
+                //if(!contextMap.containsValue(context)) {//如果没注册过
+                context.getApplicationContext().getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), false, downloadChangeObserver);
+                return true;
+                //}
             } catch (Exception e) {
                 QDLogger.e(e.getMessage());
             }
@@ -189,30 +189,34 @@ public class DownloadHelper {
 
     /**
      * 解绑activity
-     *  @param context
+     *
+     * @param context
      */
     public static void unregisterReceiver(Context context) {
-        unregisterContentObserver(context);
-        if(contextMap.containsValue(context)) {
+        /*unregisterContentObserver(context);
+        if (contextMap.containsValue(context)) {
             contextMap.remove(context);
         }
-        if(contextMap.size()<=0) {
+        if (contextMap.size() <= 0) {
             downloadChangeObserver.close();
-        }
+        }*/
     }
+
     /**
      * 解绑activity
-     *  @param
+     *
+     * @param
      */
     public static void unregisterReceiver(Long downloadId) {
-        if(contextMap.containsKey(downloadId)&&contextMap.get(downloadId)!=null) {
+       /* if (contextMap.containsKey(downloadId) && contextMap.get(downloadId) != null) {
             unregisterReceiver(contextMap.get(downloadId));
-        }
+        }*/
     }
 
     //private OnDownloadStateChangeListener onDownloadStateChangeListener;
+
     /**
-     *下载状态监听器
+     * 下载状态监听器
      */
     public static interface OnDownloadStateChangeListener {
         void onComplete(long downId, Uri downIdUri);

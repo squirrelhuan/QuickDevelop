@@ -5,7 +5,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.HashMap;
-import java.util.logging.Handler;
 
 public class InstallService extends AccessibilityService {
     HashMap<Integer,Boolean> hashMap = new HashMap<>();
