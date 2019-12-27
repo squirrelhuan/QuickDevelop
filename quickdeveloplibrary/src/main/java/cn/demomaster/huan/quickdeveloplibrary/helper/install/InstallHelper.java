@@ -247,12 +247,24 @@ public class InstallHelper {
             }
         }
     }
+
+    /**
+     * okhttp 下载
+     * @param context
+     * @param name
+     * @param url
+     * @param listener
+     */
     public static void downloadAndSilenceInstall(final Context context, final String name, final String url,OnDownloadProgressListener listener){
+        downloadAndSilenceInstall(context,name,url,DownloadTask.DownloadType.Okhttp,listener);
+    }
+    public static void downloadAndSilenceInstall(final Context context, final String name, final String url,DownloadTask.DownloadType downloadType ,OnDownloadProgressListener listener){
         //存储权限
         PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
                 DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
+                        .setDownloadType(downloadType)
                         .setFileName(name)
                         .setUrl(url)
                         .setOnProgressListener(new OnDownloadProgressListener() {

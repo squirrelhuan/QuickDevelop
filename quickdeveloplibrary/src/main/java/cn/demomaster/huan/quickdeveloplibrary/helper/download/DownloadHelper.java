@@ -7,10 +7,16 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +24,11 @@ import java.util.Map;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadUtil.checkDownloadManagerEnable;
@@ -34,9 +45,8 @@ public class DownloadHelper {
 
     public static DownloadHelper getInstance(Context context) {
         if (instance == null) {
-            instance = new DownloadHelper();
+            instance = new DownloadHelper(context.getApplicationContext());
         }
-        instance.init(context);
         return instance;
     }
 
@@ -46,22 +56,9 @@ public class DownloadHelper {
     private static DownloadChangeObserver downloadChangeObserver;//下载变更观察者
     private DownloadManager downloadManager;
 
-    private DownloadHelper() {
-      /*  this.onDownloadStateChangeListener = new OnDownloadStateChangeListener() {
-            @Override
-            public void onComplete(long downloadId, Uri downIdUri) {
-                //QDLogger.i("下载完成，存储路径为 ：" + downIdUri.getPath());
-                if (taskMap.containsKey(downloadId)) {
-                    DownloadTask downloadTask = taskMap.get(downloadId);
-                    if (downloadTask != null) {
-                        downloadTask.setDownIdUri(downIdUri);
-                        downloadTask.getOnProgressListener().onComplete(downloadTask);
-                        taskMap.remove(downloadTask);
-                    }
-                }
-            }
-        };*/
+    private DownloadHelper(Context context) {
         // this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
+        init(context);
     }
 
     private void init(Context context) {
@@ -73,12 +70,107 @@ public class DownloadHelper {
         PermissionManager.chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
-                excute(downloadTask);
+                if(downloadTask.getDownloadType()== DownloadTask.DownloadType.DownloadManager) {
+                    excute(downloadTask);
+                }else {
+                    downloadFile(downloadTask);
+                }
             }
 
             @Override
             public void onNoPassed() {
                 Toast.makeText(downloadTask.getContext(), "请打开相关权限！", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void downloadFile(DownloadTask downloadTask){
+        final long startTime = System.currentTimeMillis();
+        QDLogger.i("DOWNLOAD","startTime="+startTime+"，URL="+downloadTask.getDownloadUrl());
+
+        //获取要下载的文件存放路径
+        String download_app_folder_name = downloadTask.getDownload_app_folder_name();
+        QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
+
+        String sdpath = Environment.getExternalStorageDirectory() + "";
+        if (TextUtils.isEmpty(sdpath)) {
+            sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
+            QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
+        }
+        String download_app_folder =(download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name));
+        File dir = new File(sdpath + download_app_folder);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().url(downloadTask.getDownloadUrl()).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 下载失败
+                e.printStackTrace();
+                QDLogger.i("DOWNLOAD","download failed");
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadTask.getOnProgressListener().onDownloadFail();
+                    }
+                });//在子线程中直接去new 一个handler
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                InputStream is = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                FileOutputStream fos = null;
+                // 储存下载文件的目录
+                String savePath =Environment.getExternalStorageDirectory().getAbsolutePath()+  download_app_folder;
+                try {
+                    is = response.body().byteStream();
+                    long total = response.body().contentLength();
+                    File file = new File(savePath, downloadTask.getFileName());
+                    fos = new FileOutputStream(file);
+                    long sum = 0;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                        sum += len;
+                        float progress =  (sum * 1.0f / total );
+                        // 下载中
+                        downloadTask.getOnProgressListener().onDownloadRunning(downloadTask.getDownloadId(),downloadTask.getFileName(),progress);
+                    }
+                    fos.flush();
+                    downloadTask.setDownUriStr(file.getAbsolutePath());
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 下载完成
+                            downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
+                        }
+                    });//在子线程中直接去new 一个handler
+                    Log.i("DOWNLOAD","download success");
+                    Log.i("DOWNLOAD","totalTime="+ (System.currentTimeMillis() - startTime));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("DOWNLOAD","download failed 1");
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadTask.getOnProgressListener().onDownloadFail();
+                        }
+                    });//在子线程中直接去new 一个handler
+                } finally {
+                    try {
+                        if (is != null)
+                            is.close();
+                    } catch (IOException e) {
+                    }
+                    try {
+                        if (fos != null)
+                            fos.close();
+                    } catch (IOException e) {
+                    }
+                }
             }
         });
     }
@@ -193,6 +285,7 @@ public class DownloadHelper {
      * @param context
      */
     public static void unregisterReceiver(Context context) {
+        //TODO
         /*unregisterContentObserver(context);
         if (contextMap.containsValue(context)) {
             contextMap.remove(context);
@@ -230,6 +323,7 @@ public class DownloadHelper {
         private Context context;
         private String url;//下载路径
         private String fileName;//文件名.格式
+        private DownloadTask.DownloadType downloadType= DownloadTask.DownloadType.DownloadManager;
         private OnDownloadProgressListener onProgressListener;//进度监听
 
         public DownloadBuilder(Context context) {
@@ -260,6 +354,11 @@ public class DownloadHelper {
 
         public DownloadBuilder setOnProgressListener(OnDownloadProgressListener onProgressListener) {
             this.onProgressListener = onProgressListener;
+            return this;
+        }
+
+        public DownloadBuilder setDownloadType(DownloadTask.DownloadType downloadType) {
+            this.downloadType = downloadType;
             return this;
         }
 

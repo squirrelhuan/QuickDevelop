@@ -27,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -193,6 +194,15 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private OptionsMenu optionsMenu;
+    //获取自定义菜单
+    public OptionsMenu getOptionsMenu() {
+        if (optionsMenu == null) {
+            optionsMenu = new OptionsMenu(this);
+        }
+        return optionsMenu;
     }
 
 

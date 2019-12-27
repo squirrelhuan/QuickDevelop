@@ -60,7 +60,7 @@ public class AnimationUtil {
                         //pointF.y = location[1]+y;
                         if (y > 0&& motionEvent.getY() < targetView.getHeight()) {
                             //执行点击事件
-                            Log.i("CGQ", "event type = " + motionEvent.getAction());
+                            //Log.i("CGQ", "event type = " + motionEvent.getAction());
                             if (listener != null) {
                                 View.OnClickListener ref = listener;
                                 try {

@@ -41,6 +41,7 @@ public class SmsCodeHelper  {
 
     public void start(){
         //初始化
+        handler.removeCallbacks(runnable);
         handler.post(runnable);
     }
     //@TODO must use this method when you get SmsCode success

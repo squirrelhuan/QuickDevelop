@@ -1,30 +1,14 @@
 package cn.demomaster.huan.quickdevelop;
 
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.View;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-
-import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.getLanguageLocal;
 
 /**
  *

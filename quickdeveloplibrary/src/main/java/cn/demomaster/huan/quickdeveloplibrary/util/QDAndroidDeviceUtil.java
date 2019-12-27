@@ -257,4 +257,21 @@ public class QDAndroidDeviceUtil {
         return result;
     }
 
+    /**
+     * 获取运营商sim卡的ICCID号
+     * Manifest.permission.READ_PHONE_STATE)
+     * @return ICCID号
+     */
+    public static String getICCID(Context context) {
+        TelephonyManager tm = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        // 获取sim卡的ICCID号
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                return null;
+            }
+        }
+        return tm.getSimSerialNumber();
+    }
+
 }

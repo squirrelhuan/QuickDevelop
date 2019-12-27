@@ -21,6 +21,12 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  * 下载任务
  */
 public class DownloadTask {
+
+    public static enum  DownloadType{
+        DownloadManager,
+        Okhttp
+    }
+
     // 权限
     public static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -31,6 +37,7 @@ public class DownloadTask {
     private String downloadUrl;//下载路径
     private Uri downloadUri;
     private String downUriStr;
+    private DownloadType downloadType;
     //
     private OnDownloadProgressListener onProgressListener;//下载进度监听器
 
@@ -110,5 +117,13 @@ public class DownloadTask {
     public void setDownUriStr(String downUriStr) {
         this.downUriStr = downUriStr;
         downloadUri= Uri.parse(downUriStr);
+    }
+
+    public DownloadType getDownloadType() {
+        return downloadType;
+    }
+
+    public void setDownloadType(DownloadType downloadType) {
+        this.downloadType = downloadType;
     }
 }

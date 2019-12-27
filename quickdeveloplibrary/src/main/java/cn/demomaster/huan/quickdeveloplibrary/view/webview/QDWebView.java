@@ -101,7 +101,7 @@ public class QDWebView extends WebView {
             }
         });
 
-        loadUrl(mUrl);
+        //loadUrl(mUrl);
     }
 
 

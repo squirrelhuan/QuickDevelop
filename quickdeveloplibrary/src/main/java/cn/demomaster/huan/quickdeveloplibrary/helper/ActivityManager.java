@@ -144,10 +144,13 @@ public class ActivityManager {
      */
     public void deleteOtherActivityByClass(Class clazz) {
         if (activitys != null && clazz != null) {
-            for (Activity activity : activitys) {
+           // android.app.ActivityManager mActivityManager = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            for (int i = activitys.size()-1; i >= 0; i--) {
+                Activity activity = activitys.get(i);
                 if (!activity.getClass().equals(clazz)) {
                     activity.finish();
                     activitys.remove(activity);
+                    //QDLogger.d("移除"+activity.getClass().getName());
                     deleteOtherActivityByClass(clazz);
                     return;
                 }
@@ -189,7 +192,7 @@ public class ActivityManager {
         if (onAppRunStateChangedListenner != null) {
             if (currentActivity == null) {
                 onAppRunStateChangedListenner.onBackground();
-            }else {
+            } else {
                 android.app.ActivityManager mAm = (android.app.ActivityManager) currentActivity.getSystemService(Context.ACTIVITY_SERVICE);
                 String activity_name = mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
                 if (!activity_name.equals(currentActivity.getPackageName())) {
@@ -233,7 +236,7 @@ public class ActivityManager {
      *
      * @param context
      */
-    public static void killOthers(Context context,String pkgName) {
+    public static void killOthers(Context context, String pkgName) {
         pManager = context.getPackageManager();
         manager = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         runningProcesses = manager.getRunningAppProcesses();
@@ -244,7 +247,7 @@ public class ActivityManager {
                 if (packageInfo != null) {
                     ApplicationInfo applicationInfo = pManager.getPackageInfo(packName, 0).applicationInfo;
                     if (!pkgName.equals(packName) && filterApp(applicationInfo)) {
-                        forceStopPackage(context,packName);
+                        forceStopPackage(context, packName);
                         System.out.println(packName + "JJJJJJ");
                     }
                 }
@@ -260,7 +263,7 @@ public class ActivityManager {
      *
      * @param pkgName
      */
-    public static void forceStopPackage(Context context,String pkgName) throws Exception {
+    public static void forceStopPackage(Context context, String pkgName) throws Exception {
         android.app.ActivityManager am = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         Method method = Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", String.class);
         method.invoke(am, pkgName);

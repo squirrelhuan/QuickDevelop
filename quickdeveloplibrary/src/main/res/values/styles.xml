@@ -1,5 +1,12 @@
 <resources>
 
+    <style name="TranslucentTheme" parent="StartAppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
     <style name="NotitleBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/white</item>

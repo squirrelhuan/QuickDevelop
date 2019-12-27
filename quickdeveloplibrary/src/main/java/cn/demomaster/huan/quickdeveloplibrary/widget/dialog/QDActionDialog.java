@@ -45,6 +45,10 @@ public class QDActionDialog extends Dialog {
 
     private LinearLayout contentView;
 
+    public LinearLayout getContentView() {
+        return contentView;
+    }
+
     private void init() {
         Window win = getWindow();
         if (builder.backgroundColor != Color.TRANSPARENT) {

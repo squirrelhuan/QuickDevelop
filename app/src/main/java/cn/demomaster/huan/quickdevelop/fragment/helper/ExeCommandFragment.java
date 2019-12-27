@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -30,9 +31,12 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.QDEditView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
@@ -78,6 +82,8 @@ public class ExeCommandFragment extends QDBaseFragment {
     @BindView(R.id.et_console)
     EditText et_console;
 
+    @BindView(R.id.qet_console)
+    QDEditView qet_console;
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -138,20 +144,31 @@ public class ExeCommandFragment extends QDBaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(et_console.getText().toString())&&s.toString().endsWith("\n")) {
+                Log.e("MainActivity", "onTextChanged: "+s);
+               /* if (!TextUtils.isEmpty(et_console.getText().toString())&&s.toString().endsWith("\n")) {
                     String[] strings = et_console.getText().toString().split("\n");
+                    exeCommand(strings[strings.length-1]);
+                }*/
+                String str=s.toString();
+                if (str.indexOf("\r")>=0 || str.indexOf("\n")>=0){//发现输入回车符或换行符
+                    /*et_console.setText(str.replace("\r","").replace("\n",""));//去掉回车符和换行符
+                    //et_console.requestFocus();//让editText2获取焦点
+                    et_console.setSelection(et_console.getText().length());//将光标移动到文本末尾*/
+                    Log.e("MainActivity", "发现输入回车符或换行符 ");
+                    String[] strings = str.split("\n");
                     exeCommand(strings[strings.length-1]);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                Log.e("MainActivity", "afterTextChanged: "+s);
 
             }
         };
         et_console.addTextChangedListener(textWatcher2);
 
-        et_console.setOnKeyListener(new View.OnKeyListener() {
+        /*et_console.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 Log.e("MainActivity", "onKey: 按下回车键");
@@ -164,19 +181,36 @@ public class ExeCommandFragment extends QDBaseFragment {
                 }
                 return false;
             }
+        });*/
+
+        QDRuntimeHelper.getInstance().addReceiver(new QDRuntimeHelper.RuntimeReceiver() {
+            @Override
+            public void onReceive(String data) {
+                System.out.println("data="+data);
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        et_console.removeTextChangedListener(textWatcher2);
+                        et_console.setText(et_console.getText()+"\n" + data);
+                        et_console.addTextChangedListener(textWatcher2);
+                        content = et_console.getText().toString();
+                    }
+                });
+            }
         });
+
+        qet_console.getText();
+        //getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
     }
 
-
+    public static String content;
     public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        int i = (int) (Math.random() * 10 % 4);
-        actionBarLayoutOld.setTitle("audio play");
         actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
     }
 
     private void exeCommand(String command) {
-        et_console.setText(et_console.getText()+"\n" + command);
-        Runtime runtime = Runtime.getRuntime();
+        QDRuntimeHelper.getInstance().exeCommand(command);
+        /*Runtime runtime = Runtime.getRuntime();
         try {
             Process proc = runtime.exec(command);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
@@ -187,6 +221,12 @@ public class ExeCommandFragment extends QDBaseFragment {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //QDRuntimeHelper.getInstance().removeReceiver();
     }
 }

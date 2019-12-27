@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
@@ -93,16 +94,30 @@ public class SoundHelper {
         //soundMap.put(R.raw.timer_start,R.raw.no_kill);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            soundPool = new SoundPool.Builder().build();
+            //AudioAttributes是一个封装音频各种属性的方法
+            AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+            //设置音频流的合适的属性
+            attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);
+            soundPool = new SoundPool.Builder().setAudioAttributes(attrBuilder.build()).build();
         } else {
-            soundPool = new SoundPool(soundMap.size(), AudioManager.STREAM_SYSTEM, 0);
+            soundPool = new SoundPool(soundMap.size(), AudioManager.STREAM_MUSIC, 0);//AudioManager.STREAM_SYSTEM
         }
         //加载音频文件
+        loadAudio();
+
+    }
+
+    private void loadAudio() {
         Iterator iter = soundMap.keySet().iterator();
         while (iter.hasNext()) {
             Object key = iter.next();
             //Object val = soundMap.get(key);
-            soundPool.load(context, (Integer) key, 1);
+            try {
+                soundPool.load(context, (Integer) key, 1);
+            }catch (Exception e){
+                e.getMessage();
+                return;
+            }
         }
     }
 
