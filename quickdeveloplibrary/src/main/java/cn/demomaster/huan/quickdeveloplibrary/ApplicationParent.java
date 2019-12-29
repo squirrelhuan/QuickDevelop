@@ -22,16 +22,14 @@ import com.umeng.socialize.PlatformConfig;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
-import cn.demomaster.huan.quickdeveloplibrary.util.xml.Article;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isApkInDebug;
 
@@ -61,7 +59,7 @@ public class ApplicationParent extends Application {
         QDLogger.setApplicationContext(this);
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
-        ActivityManager.getInstance().init(this);
+        QDActivityManager.getInstance().init(this);
         NotifycationHelper.getInstance().init(this);
 
         AppConfig.getInstance().init(this, "config/project.conf");
@@ -144,27 +142,27 @@ public class ApplicationParent extends Application {
 
     //添加 <功能详细描述>
     public void addActivity(Activity activity) {
-        ActivityManager.getInstance().addActivity(activity);
+        QDActivityManager.getInstance().addActivity(activity);
     }
 
     //删除
     public void deleteActivity(Activity activity) {
-        ActivityManager.getInstance().deleteActivity(activity);
+        QDActivityManager.getInstance().deleteActivity(activity);
     }
 
     //删除
     public void deleteActivity(Class clazz) {
-        ActivityManager.getInstance().deleteActivityByClass(clazz);
+        QDActivityManager.getInstance().deleteActivityByClass(clazz);
     }
 
     //退出
     public void deleteAllActivity() {
-        ActivityManager.getInstance().deleteAllActivity();
+        QDActivityManager.getInstance().deleteAllActivity();
     }
 
     //退出
     public void deleteOtherActivity(Activity activity) {
-        ActivityManager.getInstance().deleteOtherActivity(activity);
+        QDActivityManager.getInstance().deleteOtherActivity(activity);
     }
 
     public void initCrash() {
@@ -186,7 +184,7 @@ public class ApplicationParent extends Application {
     private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            ActivityManager.getInstance().addActivity(activity);
+            QDActivityManager.getInstance().addActivity(activity);
             QDLogger.d(TAG.ACTIVITY, "onActivityCreated() ==> [" + activity + "]");
         }
 
@@ -198,13 +196,13 @@ public class ApplicationParent extends Application {
         @Override
         public void onActivityResumed(Activity activity) {
             QDLogger.d(TAG.ACTIVITY, "onActivityResumed() ==> [" + activity + "]");
-            ActivityManager.getInstance().setCurrentActivity(activity);
+            QDActivityManager.getInstance().setCurrentActivity(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
             QDLogger.d(TAG.ACTIVITY, "onActivityPaused() ==> activity = [" + activity + "]");
-            ActivityManager.getInstance().onActivityPaused(activity);
+            QDActivityManager.getInstance().onActivityPaused(activity);
         }
 
         @Override
@@ -219,7 +217,7 @@ public class ApplicationParent extends Application {
 
         @Override
         public void onActivityDestroyed(Activity activity) {
-            ActivityManager.getInstance().removeActivity(activity);
+            QDActivityManager.getInstance().removeActivity(activity);
             QDLogger.d(TAG.ACTIVITY, "onActivityDestroyed() ==> activity = [" + activity + "]");
         }
     };

@@ -28,16 +28,14 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelp
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
-import cn.demomaster.huan.quickdeveloplibrary.helper.ActivityManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
 
 public class QDBaseFragmentActivity extends AppCompatActivity {
@@ -139,7 +137,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     public void onMessageEvent(String str) {
         switch (str) {
             case EVENT_REFRESH_LANGUAGE:
-                if (ActivityManager.getInstance().getCurrentActivity() == this) {
+                if (QDActivityManager.getInstance().getCurrentActivity() == this) {
                     onChangeAppLanguage();
                 }
                 break;

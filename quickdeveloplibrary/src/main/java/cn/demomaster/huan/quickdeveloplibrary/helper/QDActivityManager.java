@@ -5,12 +5,11 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 
-import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
@@ -19,35 +18,35 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  * @date 2018/12/27.
  * description：
  */
-public class ActivityManager {
-    private static ActivityManager instance;
+public class QDActivityManager {
+    private static QDActivityManager instance;
     private static Context context;
     //本地activity栈
-    private List<Activity> activitys = new ArrayList<Activity>();
+    private LinkedHashMap<String,Activity> activitys = new LinkedHashMap<>();
 
-    public ActivityManager(Context context) {
+    public QDActivityManager(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    private ActivityManager() {
-
+    private QDActivityManager() {
     }
 
     //必须要在application里初始化
-    public ActivityManager init(Context context) {
+    public QDActivityManager init(Context context) {
         this.context = context;
         return instance;
     }
 
-    public static ActivityManager getInstance() {
+    public static QDActivityManager getInstance() {
         if (instance == null) {
-            instance = new ActivityManager();
+            instance = new QDActivityManager();
         }
         return instance;
     }
 
     public void addActivity(Activity activity) {
-        activitys.add(activity);
+        QDLogger.d("QDActivityManager","addActivity:"+activity);
+        activitys.put(activity+"",activity);
     }
 
     //删除具体的activity
@@ -61,16 +60,21 @@ public class ActivityManager {
     //删除具体的activity
     public void removeActivity(Activity activity) {
         if (activity != null) {
-            activitys.remove(activity);
+            QDLogger.d("QDActivityManager","removeActivity:"+activity);
+            if(currentActivity==activity){
+                currentActivity = null;
+            }
+            activitys.remove(activity+"");
         }
     }
 
     //删除clazz类的activity
     public void deleteActivityByClass(Class clazz) {
         if (clazz != null) {
-            for (Activity activity : activitys) {
+            for (Map.Entry entry : activitys.entrySet()) {
+                Activity activity = (Activity) entry.getValue();
                 if (activity.getClass().equals(clazz)) {
-                    activitys.remove(activity);
+                    activitys.remove(entry.getKey());
                     activity.finish();
                     deleteActivityByClass(clazz);
                     return;
@@ -82,7 +86,8 @@ public class ActivityManager {
     //删除clazzes类的activity
     public void deleteActivityByClasses(List<Class> clazz) {
         if (clazz != null) {
-            for (Activity activity : activitys) {
+            for (Map.Entry entry : activitys.entrySet()) {
+                Activity activity = (Activity) entry.getValue();
                 if (clazz.contains(activity.getClass())) {
                     activitys.remove(activity);
                     activity.finish();
@@ -112,7 +117,8 @@ public class ActivityManager {
      */
     public void deleteOtherActivityByClasses(List<Class> clazz) {
         if (activitys != null && clazz != null) {
-            for (Activity activity : activitys) {
+            for (Map.Entry entry : activitys.entrySet()) {
+                Activity activity = (Activity) entry.getValue();
                 if (!clazz.contains(activity.getClass())) {
                     activity.finish();
                     activitys.remove(activity);
@@ -128,7 +134,8 @@ public class ActivityManager {
      */
     public void deleteOtherActivityByClass(List<Class> clazzs) {
         if (activitys != null && clazzs != null) {
-            for (Activity activity : activitys) {
+            for (Map.Entry entry : activitys.entrySet()) {
+                Activity activity = (Activity) entry.getValue();
                 if (!clazzs.contains(activity.getClass())) {
                     activity.finish();
                     activitys.remove(activity);
@@ -144,7 +151,7 @@ public class ActivityManager {
      */
     public void deleteOtherActivityByClass(Class clazz) {
         if (activitys != null && clazz != null) {
-           // android.app.ActivityManager mActivityManager = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+           // android.app.QDActivityManager mActivityManager = (android.app.QDActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             for (int i = activitys.size()-1; i >= 0; i--) {
                 Activity activity = activitys.get(i);
                 if (!activity.getClass().equals(clazz)) {

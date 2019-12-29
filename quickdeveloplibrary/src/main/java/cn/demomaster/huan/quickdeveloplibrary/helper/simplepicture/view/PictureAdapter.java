@@ -32,7 +32,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
 // ① 创建Adapter
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
 
-    private static Context mContext;
+    private Context mContext;
     private List<Image> mImages;
     private LayoutInflater mInflater;
 
