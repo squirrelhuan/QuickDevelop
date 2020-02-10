@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -80,6 +81,15 @@ public class QDDialog extends Dialog {
                 bodyView = new LinearLayout(builder.context);
                 headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
                 bodyView.setPadding(padding_body, 0, padding_body, padding_body);
+                break;
+            case contentView:
+                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                contentView.addView(builder.contentView, layoutParams1);
+                break;
+            case contentLayout:
+                ViewGroup.LayoutParams layoutParams2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                View view = LayoutInflater.from(builder.context).inflate(builder.contentViewLayoutID, null, false);
+                contentView.addView(view, layoutParams2);
                 break;
         }
         if (headerView != null) {
@@ -193,7 +203,7 @@ public class QDDialog extends Dialog {
     }
 
     public static enum ShowType {
-        normal, noHeader, noFoot, onlyBody
+        normal, noHeader, noFoot, onlyBody,contentView,contentLayout
     }
 
     public static enum DataType {
@@ -227,6 +237,9 @@ public class QDDialog extends Dialog {
         private int text_size_header = 18;
         private int text_size_body = 16;
         private int text_size_foot = 16;
+        private View contentView;
+        private int contentViewLayoutID;
+
         private int backgroundColor = Color.WHITE;
         private int lineColor = Color.GRAY;
         private float[] backgroundRadius = new float[8];
@@ -283,6 +296,19 @@ public class QDDialog extends Dialog {
 
         public Builder setContext(Context context) {
             this.context = context;
+            return this;
+        }
+
+
+        public Builder setContentView(View contentView) {
+            this.contentView = contentView;
+            this.showType = ShowType.contentView;
+            return this;
+        }
+
+        public Builder setContentViewLayout(int contentViewLayout) {
+            this.contentViewLayoutID = contentViewLayout;
+            this.showType = ShowType.contentLayout;
             return this;
         }
 

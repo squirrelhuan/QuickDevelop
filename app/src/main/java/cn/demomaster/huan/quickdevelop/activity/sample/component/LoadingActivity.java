@@ -7,6 +7,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "Loading",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
@@ -21,6 +22,6 @@ public class LoadingActivity extends BaseActivityParent {
         getActionBarLayoutOld().setTitle("加载动画");
 
         sv_loading = findViewById(R.id.sv_loading);
-        sv_loading.setStateType(StateView.StateType.LOADING);
+        sv_loading.setStateType(LoadStateType.LOADING);
     }
 }

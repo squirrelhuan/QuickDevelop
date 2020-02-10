@@ -1,14 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFileUtil {
-
 
     /**
      * 在/data/data/下创建一个res文件夹，存放4个文件
@@ -68,27 +65,27 @@ public class ZipFileUtil {
      * @param sourcePath    源文件（待压缩的文件路径）
      * @param targetZipName 压缩到此处
      */
-    public static void compressFile(String sourcePath, String targetZipName) {
+    public static void compressFile(String sourcePath, String targetZipName) throws FileNotFoundException {
         File targetFile = new File(targetZipName);
 
         //创建文件夹
         File sourceFile = new File(sourcePath);
-        if (!targetFile.getParentFile().exists()) {
-            targetFile.getParentFile().mkdirs();
+        if (!sourceFile.exists()) {
+            throw new FileNotFoundException();
         }
         if (targetFile.exists()) {
-            QDLogger.e("压缩目标文件已存在");
+            QDLogger.e("压缩目标文件已存在--删除");
             FileUtil.delete(targetFile.getAbsolutePath());
-            return;
         }
-
+        FileUtil.createFile(targetFile);
         try {
             ZipOutputStream zipOutputStream = new ZipOutputStream(new CheckedOutputStream(new FileOutputStream(targetFile), new CRC32()));
-            zip(zipOutputStream, targetFile.getName(), sourceFile);
+            zip(zipOutputStream, sourceFile.getName(), sourceFile);
             zipOutputStream.flush();
             zipOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            QDLogger.d("压缩error=" + e.getMessage());
         }
         QDLogger.d("压缩完成[" + targetZipName + "]");
     }

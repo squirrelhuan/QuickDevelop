@@ -19,7 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 @ActivityPager(name = "PictureSelect",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class PictureSelectActivity extends BaseActivityParent {
 
-
     private GridLayoutManager mLayoutManager;
     private PictureAdapter mAdapter;
     private List<Image> imageList=new ArrayList<>();

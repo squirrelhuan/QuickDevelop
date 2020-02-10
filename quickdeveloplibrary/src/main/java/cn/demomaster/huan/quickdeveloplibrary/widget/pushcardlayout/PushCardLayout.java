@@ -510,7 +510,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float animatedValue = (float) animation.getAnimatedValue();
-                //(cardState==StateType.isToping?1:-1)
+                //(cardState==LoadStateType.isToping?1:-1)
                 scrollCardLayout((int) ((((cardState == StateType.isToping|| cardState==StateType.isToped) ? 1 : -1) * bottomLayoutHeight - contentLayout.getTop()) * animatedValue));
                 if (animationListener == null){
                     return;

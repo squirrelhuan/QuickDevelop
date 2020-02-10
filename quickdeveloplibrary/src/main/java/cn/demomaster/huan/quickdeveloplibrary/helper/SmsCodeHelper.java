@@ -110,7 +110,6 @@ public class SmsCodeHelper  {
         return second;
     }
 
-
     public static interface OnSmsCodeListener{
         //读秒状态不可点击
         void onTimeChange(long time);
@@ -125,7 +124,6 @@ public class SmsCodeHelper  {
        void onSuccess();
         void onFail();
     }
-
 
     public static class Builder{
         private String telephone;

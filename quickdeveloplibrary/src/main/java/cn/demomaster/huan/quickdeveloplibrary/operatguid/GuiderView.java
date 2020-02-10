@@ -712,10 +712,9 @@ public class GuiderView extends View {
         return new GuiderRectF(l - textPadding, t - textPadding, r + textPadding, b + textPadding, screenWidth, screenHeight);
     }
 
-    public enum Gravity {
+    public static enum Gravity {
         LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTOM, TOP, LEFT, RIGHT, BOTTOM
     }
-
 
     private GuiderRectF getViewRectF(View view) {
         if (view == null) {

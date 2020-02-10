@@ -5,10 +5,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 /**
  * Created by Squirrel桓 on 2018/12/17.
@@ -63,14 +65,16 @@ public class ToggleButton extends View {
     }
 
     private boolean checked = true;
-    private int circle_padding = 3;
+    private float circle_padding = 3;
 
-    private int color_01;
-    private int color_02;
+    //private int color_01;
+    //private int color_02;
     private int backColor = Color.WHITE;
-    private int lineColor = Color.GRAY;//描边颜色
-    private int toogleColor = Color.GREEN;//选中颜色
-    private int lineWidth =3;
+    private int lineColor = Color.parseColor("#dadbda");//描边颜色
+    private int toogleColor =  Color.parseColor("#4ebb7f");//选中颜色
+    /** 手柄颜色*/
+    private int spotColor = Color.parseColor("#ffffff");
+    private int lineWidth =4;
 
     public int getToogleColor() {
         return toogleColor;
@@ -92,49 +96,38 @@ public class ToggleButton extends View {
     }
 
     private void drawView(Canvas canvas) {
-
-        if (checked) {
-            color_01 = toogleColor;
-            color_02 = backColor;
-        } else {
-            color_01 = backColor;
-            color_02 = toogleColor;
-        }
-
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(color_01);
-        int r = Math.min(width / 2, height)-lineWidth;
+        int w = height/2;
+        float lineWidth2 = lineWidth*(progress);
+        float r = w -lineWidth2;
 
         //绘制底色
-        circle_padding = r / 20;
-        RectF mRecF = new RectF((width / 2 - r), height / 2 - r / 2, (width / 2 - r) + 2 * r, height / 2 + r / 2);
-        mPaint.setColor(color_01);
-        canvas.drawRoundRect(mRecF, r / 2, r / 2, mPaint);
-
-        float p = Math.min(3 / 2 * progress, 1);
-        RectF mRecF2;
-        if (checked) {
-            mRecF2 = new RectF((width / 2 - r) + r * (1 - p), height / 2 - r / 2 * (p), (width / 2 - r) + 2 * r - r * (1 - p), height / 2 + r / 2 * (p));
-        } else {
-            mRecF2 = new RectF((width / 2 - r) + r * p, height / 2 - r / 2 * (1 - p), (width / 2 - r) + 2 * r - r * p, height / 2 + r / 2 * (1 - p));
-        }
-        //绘制动态区域
-        mPaint.setColor(color_02);
-        mPaint.setAlpha((int) ((0.3f + (progress * 0.7)) * 255));
-        canvas.drawRoundRect(mRecF2, r / 2, r / 2, mPaint);
-
-        //画圆
+        circle_padding = r / 8;
+        RectF mRecF = new RectF(0, height / 2 - r , width , height / 2 + r);
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(backColor);
-        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2 - circle_padding, mPaint);
+        canvas.drawRoundRect(mRecF, w, w , mPaint);
+        mPaint.setStrokeWidth(lineWidth2);
+        mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(lineColor);
-        mPaint.setStrokeWidth(lineWidth);
+        canvas.drawRoundRect(mRecF, w, w , mPaint);
+
+        PointF pointF = new PointF(r+(width-2*r)*(1-progress),height/2);
+        RectF mRecF_left = new RectF(lineWidth2, height / 2 - r + lineWidth2, pointF.x + r, height / 2 + r - lineWidth2);
+        mPaint.setStyle(Paint.Style.FILL);
+        //绘制动态区域
+        mPaint.setColor(toogleColor);
+        canvas.drawRoundRect(mRecF_left, Math.min(r,mRecF_left.right) , Math.min(r,mRecF_left.right) , mPaint);
+        //画圆
+        mPaint.setColor(spotColor);
+        canvas.drawCircle((1-progress) * (width-2*w)+w, height / 2, r - circle_padding*(1-progress), mPaint);
+        mPaint.setColor(lineColor);
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.save();
-        mPaint.setAlpha((int) (progress * 255 * 0.6));
-        canvas.drawRoundRect(mRecF, r / 2, r / 2, mPaint);
-        //描边
-        canvas.drawCircle((width / 2 - r) + 2 * r - r / 2 - (progress) * r, height / 2, r / 2, mPaint);
+        mPaint.setAlpha((int) ((progress) * 255 ));
+        //描边w
+        canvas.drawCircle((1-progress) * (width-2*w)+r, height / 2,     r-(circle_padding)*(1-progress), mPaint);
     }
 
     @Override
@@ -144,7 +137,6 @@ public class ToggleButton extends View {
     }
 
     private float progress;
-
     public void startAnimation(boolean checked) {
         int start = 0;
         int end = 1;
@@ -154,6 +146,7 @@ public class ToggleButton extends View {
         }
         ValueAnimator animator = ValueAnimator.ofFloat(start, end);
         animator.setDuration(200);
+        //animator.setInterpolator(new OvershootInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

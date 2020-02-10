@@ -19,6 +19,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+
 
 /**
  * 系统权限管理
@@ -180,6 +183,22 @@ public class PermissionManager {
     }
 
     public static void chekPermission(Context context, String[] permissions, OnCheckPermissionListener listener) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            boolean b =false;
+            String[] newArray = new String[permissions.length>0?permissions.length-1:0];
+            int j = 0;
+            for(int i=0;i<permissions.length; i++) {
+                if(permissions[i].equals(Manifest.permission.INSTALL_PACKAGES)){
+                    b=true;
+                }else {
+                    newArray[j] = permissions[i];
+                    j++;
+                }
+            }
+            if(b){
+                permissions = newArray;
+            }
+        }
         PermissionManager2.getInstance().chekPermission(context,permissions,listener);
 
     }
@@ -200,7 +219,7 @@ public class PermissionManager {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(context, "请开启权限后再操作", Toast.LENGTH_LONG).show();
+                        QdToast.show(context, "请开启权限后再操作", Toast.LENGTH_LONG);
                         getInstance((Activity) context).initPermission();
                     }
                 }).setCancelable(false).show();

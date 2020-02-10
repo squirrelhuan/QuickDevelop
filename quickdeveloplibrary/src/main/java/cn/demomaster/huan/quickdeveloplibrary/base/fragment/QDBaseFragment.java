@@ -144,7 +144,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {
-            optionsMenu = new OptionsMenu(mContext);
+            optionsMenu = new OptionsMenu(new OptionsMenu.Builder(mContext));
         }
         return optionsMenu;
     }

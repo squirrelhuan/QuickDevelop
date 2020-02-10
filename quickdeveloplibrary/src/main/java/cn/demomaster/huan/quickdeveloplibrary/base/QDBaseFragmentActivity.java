@@ -198,11 +198,19 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {
-            optionsMenu = new OptionsMenu(this);
+            optionsMenu = new OptionsMenu(new OptionsMenu.Builder(mContext));
         }
         return optionsMenu;
     }
 
+    private OptionsMenu.Builder optionsMenubuilder;
+    //获取自定义菜单
+    public OptionsMenu.Builder getOptionsMenuBuilder() {
+        if (optionsMenubuilder == null) {
+            optionsMenubuilder = new OptionsMenu.Builder(mContext);
+        }
+        return optionsMenubuilder;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

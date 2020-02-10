@@ -19,9 +19,11 @@ public interface RetrofitInterface {
     @GET(URLConstant.URL_BASE)
     Observable<Object> getWithParam(@Query("context") String context);
 
-
     //get请求
     @GET(URLConstant.URL_UPDATE_APP)
     Observable<Object> getVersion();
 
+    @FormUrlEncoded
+    @POST(URLConstant.URL_BASE)
+    Observable<Object> getPostRequest();
 }

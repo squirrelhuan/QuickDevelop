@@ -45,8 +45,9 @@ public class QDLanguageUtil {
         QDLogger.d("locale.toString() ="+getLanguageLocal(context).getLanguage());
         //setLanguageLocal(context,locale.toString());
     }
+    public static String System_Language_Setting ="System_Language_Setting";
     public static void setLanguageLocal(Activity context, String language) {
-
+        SharedPreferencesHelper.getInstance().putString(System_Language_Setting, language);
         setLanguageLocal(context,new Locale(language));
     }
 

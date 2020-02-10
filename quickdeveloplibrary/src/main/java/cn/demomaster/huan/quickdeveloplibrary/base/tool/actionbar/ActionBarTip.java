@@ -7,7 +7,6 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,18 +14,18 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.COMPLETE;
-import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.ERROR;
-import static cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView.StateType.LOADING;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.COMPLETE;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.ERROR;
+import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.LOADING;
 
 /**
  * Created by Squirrel桓 on 2018/12/25.
@@ -291,7 +290,7 @@ public class ActionBarTip extends FrameLayout {
 
     //成功 结束并隐藏
     public void completeAndHide() {
-        stateType = StateView.StateType.COMPLETE;
+        stateType = LoadStateType.COMPLETE;
         stateView.setStateType(COMPLETE);
         itv_retry.setVisibility(GONE);
         hideDelayed(3000);
@@ -299,12 +298,12 @@ public class ActionBarTip extends FrameLayout {
 
     //失败 改变状态不隐藏
     public void errorAndShow() {
-        stateType = StateView.StateType.ERROR;
+        stateType = LoadStateType.ERROR;
         stateView.setStateType(ERROR);
     }
 
     public void loading() {
-        stateType = StateView.StateType.LOADING;
+        stateType = LoadStateType.LOADING;
         stateView.setStateType(stateType);
         itv_retry.setVisibility(GONE);
     }
@@ -357,10 +356,10 @@ public class ActionBarTip extends FrameLayout {
         handler.postDelayed(runnable, delayedTime);
     }
 
-    private StateView.StateType stateType = StateView.StateType.COMPLETE;
+    private LoadStateType stateType = LoadStateType.COMPLETE;
 
     public void showWarning(String message) {
-        stateType = StateView.StateType.WARNING;
+        stateType = LoadStateType.WARNING;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(GONE);
@@ -368,7 +367,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     public void showComplete(String message) {
-        stateType = StateView.StateType.COMPLETE;
+        stateType = LoadStateType.COMPLETE;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(GONE);
@@ -384,7 +383,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     public void showLoading(String message) {
-        stateType = StateView.StateType.LOADING;
+        stateType = LoadStateType.LOADING;
         stateView.setStateType(stateType);
         textView.setText(message);
         itv_retry.setVisibility(GONE);

@@ -8,16 +8,12 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 /**
  * @author squirrel桓
@@ -77,11 +73,11 @@ public class StateView extends ImageTextView {
         super.onDraw(canvas);
     }
 
-    public static enum StateType {
+   /* public static enum LoadStateType {
         COMPLETE, WARNING, ERROR,LOADING,NONE
-    }
-    private StateType stateType = StateType.LOADING;
-    private StateType stateType_target = StateType.LOADING;
+    }*/
+    private LoadStateType stateType = LoadStateType.LOADING;
+    private LoadStateType stateType_target = LoadStateType.LOADING;
 
     private int targetColor;
     private int warningColor = Color.YELLOW;
@@ -237,7 +233,7 @@ public class StateView extends ImageTextView {
     }
 
     private float progress;
-    public void setStateType(StateType stateType) {
+    public void setStateType(LoadStateType stateType) {
         stateType_target = stateType;
         if (this.stateType != stateType) {
             hideAndShow(stateType);
@@ -269,7 +265,7 @@ public class StateView extends ImageTextView {
             }
         });
 
-        if(stateType==StateType.LOADING){
+        if(stateType== LoadStateType.LOADING){
             animator.setRepeatCount(ValueAnimator.INFINITE);
         }else {
             animator.setRepeatCount(0);
@@ -289,7 +285,7 @@ public class StateView extends ImageTextView {
     }
 
     //隐藏后显示
-    public void hideAndShow(final StateType stateType1) {
+    public void hideAndShow(final LoadStateType stateType1) {
         if (animator != null) {
             if(animator.isStarted()||animator.isRunning()){
                 animator.cancel();

@@ -87,7 +87,7 @@ public class PermitionFragment extends QDBaseFragment {
             public void onClick(View v) {
                 PermissionManager2.getInstance().chekPermission(mContext, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_SETTINGS,Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
 
                     @Override
                     public void onPassed() {

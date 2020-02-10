@@ -45,7 +45,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
 
     public SimplePictureAdapter(Context context, ArrayList<Image> mImages, int maxCount, boolean isViewImage, RecyclerView recyclerView) {
         this.mImages = mImages;
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.mInflater = LayoutInflater.from(mContext);
         this.mMaxCount = maxCount;
         this.isViewImage = isViewImage;

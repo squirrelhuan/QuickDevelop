@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import okhttp3.Call;
@@ -79,7 +80,7 @@ public class DownloadHelper {
 
             @Override
             public void onNoPassed() {
-                Toast.makeText(downloadTask.getContext(), "请打开相关权限！", Toast.LENGTH_SHORT).show();
+                QdToast.show(downloadTask.getContext(), "请打开相关权限！", Toast.LENGTH_SHORT);
             }
         });
     }

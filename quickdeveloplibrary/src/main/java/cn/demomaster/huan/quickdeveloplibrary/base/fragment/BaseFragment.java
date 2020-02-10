@@ -117,7 +117,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentActiv
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {
-            optionsMenu = new OptionsMenu(mContext);
+            optionsMenu = new OptionsMenu(new OptionsMenu.Builder(mContext));
         }
         return optionsMenu;
     }

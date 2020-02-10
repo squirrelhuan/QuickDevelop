@@ -108,9 +108,11 @@ public class SharedPreferencesHelper {
     public Set<String> getStringSet(String key, Set<String> value) {
         return sharedPreferences.getStringSet(key, value);
     }
-
     public <T> T getObject(Class<T> clazz) {
         String key = getKey(clazz);
+        return getObject(key,clazz);
+    }
+    public <T> T getObject(String key,Class<T> clazz) {
         String json = getString(key, null);
         if (TextUtils.isEmpty(json)) {
             return null;
@@ -125,6 +127,9 @@ public class SharedPreferencesHelper {
 
     public void putObject(Object object) {
         String key = getKey(object.getClass());
+        putObject(key,object);
+    }
+    public void putObject(String key,Object object) {
         Gson gson = new Gson();
         String json = gson.toJson(object);
         putString(key, json);

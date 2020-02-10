@@ -45,19 +45,15 @@ public class FileUtil {
         FileOutputStream fout = null;
         try {
             File file = new File(fileName);
-            if (!file.exists()) {
-                File dir = new File(file.getParent());
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                file.createNewFile();
-            }
-            fout = new FileOutputStream(file, append);
-            byte[] bytes = write_str.getBytes();
+            createFile(file);
+            if (file.exists()) {
+                fout = new FileOutputStream(file, append);
+                byte[] bytes = write_str.getBytes();
 
-            fout.write(bytes);
-            fout.flush();
-            fout.close();
+                fout.write(bytes);
+                fout.flush();
+                fout.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -389,6 +385,29 @@ public class FileUtil {
             rs = sb.toString();
         }
         System.out.println(rs);
+    }
+
+    public static String createFile(File file) {
+        try {
+            if (!file.exists()) {
+                //创建目录之后再创建文件
+                createDir(file.getParentFile().getAbsolutePath());
+                System.out.println("----- 创建文件" + file.getAbsolutePath());
+                if (file.getParentFile().exists()) {
+                    file.createNewFile();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String createDir(String dirPath) {
+        File file = new File(dirPath);
+        System.out.println("----- 创建文件夹" + file.getAbsolutePath());
+        file.mkdirs();
+        return dirPath;
     }
 
     public static interface OnSearchListener {

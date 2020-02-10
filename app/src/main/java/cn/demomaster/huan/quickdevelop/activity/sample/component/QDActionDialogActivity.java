@@ -21,7 +21,9 @@ import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
@@ -73,16 +75,16 @@ public class QDActionDialogActivity extends BaseActivityParent {
                 qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setMessage(listItems[position]).setMessageTextSize(24).setPadding(50).create();
                 switch (position) {
                     case 0://Loading 类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.LOADING).setMessage(listItems[position]).setDelayMillis(-1).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.LOADING).setMessage(listItems[position]).setDelayMillis(-1).create();
                         break;
                     case 1://成功提示类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.COMPLETE).setMessage(listItems[position]).setDelayMillis(2000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.COMPLETE).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
                     case 2://失败提示类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.ERROR).setMessage(listItems[position]).setDelayMillis(2000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.ERROR).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
                     case 3://信息提示类型提示框
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.StateType.WARNING).setMessage(listItems[position]).setDelayMillis(2000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.WARNING).setMessage(listItems[position]).setDelayMillis(2000).create();
                         break;
                     case 4://顶部图片类型提示框
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage(listItems[position]).create();
@@ -105,6 +107,8 @@ public class QDActionDialogActivity extends BaseActivityParent {
                         //TextView textView = new TextView(mContext);
                         //textView.setText(listItems[position]);
                         qdActionDialog = new QDActionDialog.Builder(mContext).setBackgroundRadius(50).setContentViewLayout(R.layout.item_warp2).create();
+                        EmoticonView emoticonView = qdActionDialog.getContentView().findViewById(R.id.ev_emtion);
+                        emoticonView.setStateType(LoadStateType.COMPLETE);
                         break;
                     case 10:
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setmCancelable(false).setBackgroundRadius(50).setTopViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
@@ -118,7 +122,6 @@ public class QDActionDialogActivity extends BaseActivityParent {
                     case 13:
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setDimAmount(0.5f).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
                         break;
-
                 }
                 qdActionDialog.show();
                 mListView.postDelayed(new Runnable() {

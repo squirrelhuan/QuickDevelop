@@ -14,6 +14,7 @@ import java.util.List;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -45,7 +46,7 @@ public class OptionsMenu {
     private int textSize = 16;
     private boolean withArrow = true;
     public int padding;
-    private int arrowWidth ;
+    private int arrowWidth;
     private int arrowHeight;
     private int animationStyleID = R.style.qd_option_menu_pop_animation;
     private int textGravity = Gravity.CENTER_VERTICAL;
@@ -87,10 +88,10 @@ public class OptionsMenu {
         this.usePadding = usePadding;
     }
 
-    public OptionsMenu(final Context context) {
+   /* public OptionsMenu(final Context context) {
         this.context = context;
         init();
-    }
+    }*/
 
     public void init() {
         contentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_option_menu, null, false);
@@ -104,10 +105,10 @@ public class OptionsMenu {
         rcv_options.setBackground(qdRoundDrawable);*/
         rcv_options.setBackgroundColor(Color.TRANSPARENT);
         if (usePadding) {
-            int l = (rcv_options==null)?0:rcv_options.getPaddingLeft();
-            int t = (rcv_options==null)?0:rcv_options.getPaddingTop()+ (int)backgroundRadiu;
-            int r = (rcv_options==null)?0:rcv_options.getPaddingRight() ;
-            int b = (rcv_options==null)?0:rcv_options.getPaddingBottom() + (int)backgroundRadiu;
+            int l = (rcv_options == null) ? 0 : rcv_options.getPaddingLeft();
+            int t = (rcv_options == null) ? 0 : rcv_options.getPaddingTop() + (int) backgroundRadiu;
+            int r = (rcv_options == null) ? 0 : rcv_options.getPaddingRight();
+            int b = (rcv_options == null) ? 0 : rcv_options.getPaddingBottom() + (int) backgroundRadiu;
             rcv_options.setPadding(l, t, r, b);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -196,7 +197,7 @@ public class OptionsMenu {
             //TODO 这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
 
-            qdTipPopup.showTip(anchor, GuiderView.Gravity.BOTTOM);
+            qdTipPopup.showTip(anchor, builder.gravity);
         }
     }
 
@@ -300,10 +301,16 @@ public class OptionsMenu {
         private boolean usePadding = false;
         private boolean withArrow = true;
         public int padding;
-        private int arrowWidth ;
+        private int arrowWidth;
         private int arrowHeight;
         public int animationStyleID = R.style.qd_option_menu_pop_animation;
         private View anchor;
+        private GuiderView.Gravity gravity = GuiderView.Gravity.TOP;
+
+        public Builder setGravity(GuiderView.Gravity gravity) {
+            this.gravity = gravity;
+            return this;
+        }
 
         public Builder(Context context) {
             this.context = context;

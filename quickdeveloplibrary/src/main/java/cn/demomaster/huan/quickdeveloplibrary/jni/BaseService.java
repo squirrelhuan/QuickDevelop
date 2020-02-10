@@ -112,7 +112,7 @@ public class BaseService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        //Toast.makeText(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
+        //QdToast.show(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
         if(baseBinder==null)
         baseBinder=new BaseBinder(this);
         QDLogger.i(TAG, "BaseService onBind" + index);

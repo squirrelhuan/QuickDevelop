@@ -55,8 +55,6 @@ public class NotifycationHelper {
 
     @TargetApi(Build.VERSION_CODES.O)
     public static void createNotificationChannel(String channelId, String channelName, int importance) {
-
-
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
                 NOTIFICATION_SERVICE);

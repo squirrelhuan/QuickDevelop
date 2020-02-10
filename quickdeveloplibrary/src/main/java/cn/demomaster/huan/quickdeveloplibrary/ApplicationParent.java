@@ -11,10 +11,8 @@ import android.preference.PreferenceManager;
 //import com.umeng.socialize.PlatformConfig;
 
 //import com.didichuxing.doraemonkit.DoraemonKit;
-import androidx.multidex.MultiDex;
 
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -37,20 +35,11 @@ public class ApplicationParent extends Application {
 
     //public static String TAG = "CGQ";
     private static ApplicationParent instance = null;
-
     public static ApplicationParent getInstance() {
         return instance;
     }
 
-    private static StateObserver stateObserver;
-
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-
-        return instance.refWatcher;
-
-    }
+    public static StateObserver stateObserver;
 
     @Override
     public void onCreate() {
@@ -71,8 +60,8 @@ public class ApplicationParent extends Application {
         //处理崩溃日志
         initCrash();
 
-        QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
-        QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
+        //QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
+        //QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
         QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
             @Override
             public void onComplete(Object result) {
@@ -84,21 +73,12 @@ public class ApplicationParent extends Application {
         if (isApkInDebug(this)) {
             // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
         }
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-
-        LeakCanary.install(this);
-
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(base);
+        //MultiDex.install(base);
     }
 
     /**
@@ -131,7 +111,6 @@ public class ApplicationParent extends Application {
 
     /**
      * 初始化数据库
-     *
      * @param dbpath
      */
     private void initDB(String dbpath) {
@@ -165,10 +144,16 @@ public class ApplicationParent extends Application {
         QDActivityManager.getInstance().deleteOtherActivity(activity);
     }
 
+    public String getBugglyAppID(){
+        return "7d6d33c554";
+    }
+    /**
+     * 处理异常捕获
+     */
     public void initCrash() {
-        //注册
-        registerActivityLifecycleCallbacks(mCallbacks);
-        CrashReport.initCrashReport(getApplicationContext(), "7d6d33c554", false);
+        registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+        //CrashReport.initCrashReport(getApplicationContext(), getBugglyAppID(), false);
+        Bugly.init(getApplicationContext(), getBugglyAppID(), false);
         if (BuildConfig.DEBUG) {
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
             if (errorReportActivity == null) {
@@ -180,8 +165,7 @@ public class ApplicationParent extends Application {
         }
     }
 
-
-    private ActivityLifecycleCallbacks mCallbacks = new ActivityLifecycleCallbacks() {
+    private ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             QDActivityManager.getInstance().addActivity(activity);
@@ -196,18 +180,19 @@ public class ApplicationParent extends Application {
         @Override
         public void onActivityResumed(Activity activity) {
             QDLogger.d(TAG.ACTIVITY, "onActivityResumed() ==> [" + activity + "]");
-            QDActivityManager.getInstance().setCurrentActivity(activity);
+            QDActivityManager.getInstance().onActivityResumed(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityPaused() ==> activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityPaused() ==> [" + activity + "]");
             QDActivityManager.getInstance().onActivityPaused(activity);
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            //QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> [" + activity + "]");
+            QDActivityManager.getInstance().onActivityStopped(activity);
         }
 
         @Override
@@ -218,7 +203,7 @@ public class ApplicationParent extends Application {
         @Override
         public void onActivityDestroyed(Activity activity) {
             QDActivityManager.getInstance().removeActivity(activity);
-            QDLogger.d(TAG.ACTIVITY, "onActivityDestroyed() ==> activity = [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, "onActivityDestroyed() ==> [" + activity + "]");
         }
     };
 }

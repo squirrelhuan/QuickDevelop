@@ -288,7 +288,6 @@ public class QDTipPopup extends QDPopup {
         private int arrowWidth ;
         private int arrowHeight;
 
-
         public Builder(Context context) {
             this.context = context;
             arrowWidth = DisplayUtil.dip2px(context,8);
@@ -352,6 +351,12 @@ public class QDTipPopup extends QDPopup {
             this.animationStyleID = animationStyleID;
             return this;
         }
+
+       /* private GuiderView.Gravity gravity;
+        public Builder setGravity(GuiderView.Gravity gravity) {
+            this.gravity = gravity;
+            return this;
+        }*/
 
         public void setDirection(Direction direction) {
             this.direction = direction;

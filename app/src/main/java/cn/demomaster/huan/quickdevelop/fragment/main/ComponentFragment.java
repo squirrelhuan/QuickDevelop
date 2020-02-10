@@ -33,6 +33,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.PopUpFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
@@ -97,6 +98,7 @@ public class ComponentFragment extends QDBaseFragment {
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);
         classList.add(QDActionDialogActivity.class);
+        classList.add(PopUpFragment.class);
         classList.add(BaseFragmentActivity.class);
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);

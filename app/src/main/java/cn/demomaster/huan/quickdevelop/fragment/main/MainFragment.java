@@ -119,7 +119,6 @@ public class MainFragment extends QDBaseFragment {
     }
 
     OptionsMenu optionsMenu;
-
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
         String[] menuNames = {"我的二维码", "扫描", "截图分享"};

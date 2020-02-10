@@ -62,7 +62,7 @@ public abstract class BaseActivityParent extends BaseActivityRoot {
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {
-            optionsMenu = new OptionsMenu(this);
+            optionsMenu = new OptionsMenu(new OptionsMenu.Builder(mContext));
         }
         return optionsMenu;
     }

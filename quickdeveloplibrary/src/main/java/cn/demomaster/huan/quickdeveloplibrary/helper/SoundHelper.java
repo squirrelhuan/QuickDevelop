@@ -24,7 +24,7 @@ public class SoundHelper {
     private SoundPool soundPool;
 
     public static SoundHelper init(Context mcontext, boolean autoLoaded, Object rawClass) {
-        context = mcontext;
+        context = mcontext.getApplicationContext();
         if (autoLoaded) {//自动加载raw下的资源
             Class a = (Class) rawClass;
             Field[] fields = a.getDeclaredFields();
@@ -48,7 +48,6 @@ public class SoundHelper {
 
     /**
      * 初始化
-     *
      * @param mcontext
      * @return
      */
@@ -116,7 +115,6 @@ public class SoundHelper {
                 soundPool.load(context, (Integer) key, 1);
             }catch (Exception e){
                 e.getMessage();
-                return;
             }
         }
     }

@@ -19,9 +19,11 @@ import android.widget.TextView;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 /**
@@ -51,6 +53,9 @@ public class QDActionDialog extends Dialog {
 
     private void init() {
         Window win = getWindow();
+        if (builder.animationStyleID != -1) {
+            win.setWindowAnimations(builder.animationStyleID);
+        }
         if (builder.backgroundColor != Color.TRANSPARENT) {
             win.getDecorView().setPadding(0, 0, 0, 0);
             win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
@@ -92,30 +97,32 @@ public class QDActionDialog extends Dialog {
         contentView.setMinimumWidth(w);
         int w2 = QMUIDisplayHelper.getScreenWidth(builder.context) / 2;
         int l = w / 3 * 2;
-        if (builder.stateType == StateType.COMPLETE || builder.stateType == StateType.LOADING || builder.stateType == StateType.ERROR || builder.stateType == StateType.WARNING) {
+        if (builder.stateType == ActionStateType.COMPLETE) {
             contentView.setOrientation(LinearLayout.VERTICAL);
-
             StateView stateView = new StateView(builder.context);
             stateView.setLayoutParams(new LinearLayout.LayoutParams(l, l * 3 / 4));
-            if (builder.stateType == StateType.COMPLETE) {
-                stateView.setStateType(StateView.StateType.COMPLETE);
+            LoadStateType stateType = LoadStateType.NONE;
+            if (builder.stateType == ActionStateType.COMPLETE) {
+                stateType = LoadStateType.COMPLETE;
             }
-            if (builder.stateType == StateType.LOADING) {
-                stateView.setStateType(StateView.StateType.LOADING);
-                //LoadingCircleView loadingCircleView = new LoadingCircleView(builder.context);
-                //loadingCircleView.setLayoutParams(new LinearLayout.LayoutParams(l,l*3/4));
-                //contentView.addView(loadingCircleView);
+            if (builder.stateType == ActionStateType.ERROR) {
+                stateType = LoadStateType.ERROR;
             }
-            if (builder.stateType == StateType.ERROR) {
-                stateView.setStateType(StateView.StateType.ERROR);
+            if (builder.stateType == ActionStateType.LOADING) {
+                stateType = LoadStateType.LOADING;
             }
-            if (builder.stateType == StateType.WARNING) {
-                stateView.setStateType(StateView.StateType.WARNING);
+            if (builder.stateType == ActionStateType.WARNING) {
+                stateType = LoadStateType.WARNING;
             }
+            stateView.setStateType(stateType);
+            //LoadingCircleView loadingCircleView = new LoadingCircleView(builder.context);
+            //loadingCircleView.setLayoutParams(new LinearLayout.LayoutParams(l,l*3/4));
+            //contentView.addView(loadingCircleView);
+
             stateView.setDrawCricleBackground(false);
             contentView.addView(stateView);
         } else {
-            if (builder.stateType == StateType.TOPIMAGE) {
+            if (builder.stateType == ActionStateType.TOPIMAGE) {
                 contentView.setOrientation(LinearLayout.VERTICAL);
                 ImageView imageView = new ImageView(builder.context);
                 imageView.setImageResource(builder.topImage);
@@ -124,7 +131,7 @@ public class QDActionDialog extends Dialog {
                 imageView.setMaxWidth(l);
                 contentView.addView(imageView);
             }
-            if (builder.stateType == StateType.LEFTIMAGE) {
+            if (builder.stateType == ActionStateType.LEFTIMAGE) {
                 contentView.setOrientation(LinearLayout.HORIZONTAL);
                 ImageView imageView = new ImageView(builder.context);
                 imageView.setImageResource(builder.leftImage);
@@ -134,7 +141,7 @@ public class QDActionDialog extends Dialog {
                 imageView.setPadding(0, 0, DisplayUtil.dip2px(builder.context, 5), 0);
                 contentView.addView(imageView);
             }
-            if (builder.stateType == StateType.LEFTVIEWCLASS) {
+            if (builder.stateType == ActionStateType.LEFTVIEWCLASS) {
                 contentView.setOrientation(LinearLayout.HORIZONTAL);
                 View imageView = null;
                 if (View.class.isAssignableFrom(builder.leftViewClass)) {
@@ -159,7 +166,7 @@ public class QDActionDialog extends Dialog {
                     }
                 }
             }
-            if (builder.stateType == StateType.TOPVIEWCLASS) {
+            if (builder.stateType == ActionStateType.TOPVIEWCLASS) {
                 contentView.setOrientation(LinearLayout.VERTICAL);
                 View imageView = null;
                 if (View.class.isAssignableFrom(builder.topViewClass)) {
@@ -171,11 +178,11 @@ public class QDActionDialog extends Dialog {
                         ct.setAccessible(true);
                         imageView = (View) ct.newInstance(new Object[]{builder.context});
                         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(l, l);
-                        if(builder.imageHeight!=0){
-                            layoutParams1 = new LinearLayout.LayoutParams(layoutParams1.width,builder.imageHeight);
+                        if (builder.imageHeight != 0) {
+                            layoutParams1 = new LinearLayout.LayoutParams(layoutParams1.width, builder.imageHeight);
                         }
-                        if(builder.imageWidth!=0){
-                            layoutParams1 = new LinearLayout.LayoutParams(builder.imageWidth,layoutParams1.height);
+                        if (builder.imageWidth != 0) {
+                            layoutParams1 = new LinearLayout.LayoutParams(builder.imageWidth, layoutParams1.height);
                         }
                         contentView.addView(imageView, layoutParams1);
                     } catch (NoSuchMethodException e) {
@@ -189,11 +196,11 @@ public class QDActionDialog extends Dialog {
                     }
                 }
             }
-            if (builder.stateType == StateType.CONTENTVIEW) {
+            if (builder.stateType == ActionStateType.CONTENTVIEW) {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 contentView.addView(builder.contentView, layoutParams1);
             }
-            if (builder.stateType == StateType.CONTENTVIEWID) {
+            if (builder.stateType == ActionStateType.CONTENTVIEWID) {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 View view = LayoutInflater.from(builder.context).inflate(builder.contentViewLayoutID, null, false);
                 contentView.addView(view, layoutParams1);
@@ -244,7 +251,7 @@ public class QDActionDialog extends Dialog {
         }
     }
 
-    public static enum StateType {
+    public static enum ActionStateType {
         COMPLETE, WARNING, ERROR, LOADING, IMAGE, TEXT, TOPIMAGE, LEFTIMAGE, TOPVIEW, LEFTVIEW, TOPVIEWCLASS, LEFTVIEWCLASS, CONTENTVIEW, CONTENTVIEWID
     }
 
@@ -257,7 +264,7 @@ public class QDActionDialog extends Dialog {
         private int backgroundColor = Color.TRANSPARENT;
         private int contentbackgroundColor = Color.WHITE;
         private float[] backgroundRadius = new float[8];
-        private StateType stateType = StateType.TEXT;
+        private ActionStateType stateType = ActionStateType.TEXT;
         private int leftImage;
         private int topImage;
         private View leftView;
@@ -270,7 +277,9 @@ public class QDActionDialog extends Dialog {
         private View contentView;
         private int contentViewLayoutID;
         private boolean mCancelable = true;
-        private int padding=15;
+        private int padding = 15;
+        private int animationStyleID = -1;
+        // private int animationStyleID = R.style.qd_dialog_animation_center_scale;
 
 
         public Builder(Context context) {
@@ -291,6 +300,7 @@ public class QDActionDialog extends Dialog {
             this.padding = padding;
             return this;
         }
+
         public Builder setmCancelable(boolean mCancelable) {
             this.mCancelable = mCancelable;
             return this;
@@ -298,19 +308,19 @@ public class QDActionDialog extends Dialog {
 
         public Builder setGravity(int gravity) {
             this.gravity = gravity;
-            this.stateType = StateType.CONTENTVIEW;
+            this.stateType = ActionStateType.CONTENTVIEW;
             return this;
         }
 
         public Builder setContentView(View contentView) {
             this.contentView = contentView;
-            this.stateType = StateType.CONTENTVIEW;
+            this.stateType = ActionStateType.CONTENTVIEW;
             return this;
         }
 
         public Builder setContentViewLayout(int contentViewLayout) {
             this.contentViewLayoutID = contentViewLayout;
-            this.stateType = StateType.CONTENTVIEWID;
+            this.stateType = ActionStateType.CONTENTVIEWID;
             return this;
         }
 
@@ -343,25 +353,25 @@ public class QDActionDialog extends Dialog {
 
         public Builder setLeftView(View leftView) {
             this.leftView = leftView;
-            this.stateType = StateType.LEFTVIEW;
+            this.stateType = ActionStateType.LEFTVIEW;
             return this;
         }
 
         public Builder setTopView(View topView) {
             this.topView = topView;
-            this.stateType = StateType.TOPVIEW;
+            this.stateType = ActionStateType.TOPVIEW;
             return this;
         }
 
         public Builder setLeftViewClass(Class leftViewClass) {
             this.leftViewClass = leftViewClass;
-            this.stateType = StateType.LEFTVIEWCLASS;
+            this.stateType = ActionStateType.LEFTVIEWCLASS;
             return this;
         }
 
         public Builder setTopViewClass(Class topViewClass) {
             this.topViewClass = topViewClass;
-            this.stateType = StateType.TOPVIEWCLASS;
+            this.stateType = ActionStateType.TOPVIEWCLASS;
             return this;
         }
 
@@ -373,20 +383,20 @@ public class QDActionDialog extends Dialog {
             return topView;
         }
 
-        public Builder setStateType(StateType stateType) {
+        public Builder setStateType(ActionStateType stateType) {
             this.stateType = stateType;
             return this;
         }
 
         public Builder setLeftImage(int leftImage) {
             this.leftImage = leftImage;
-            this.stateType = StateType.LEFTIMAGE;
+            this.stateType = ActionStateType.LEFTIMAGE;
             return this;
         }
 
         public Builder setTopImage(int topImage) {
             this.topImage = topImage;
-            this.stateType = StateType.TOPIMAGE;
+            this.stateType = ActionStateType.TOPIMAGE;
             return this;
         }
 
@@ -407,6 +417,12 @@ public class QDActionDialog extends Dialog {
 
         public Builder setImageWidth(int imageWidth) {
             this.imageWidth = imageWidth;
+            return this;
+        }
+
+
+        public Builder setAnimationStyleID(int animationStyleID) {
+            this.animationStyleID = animationStyleID;
             return this;
         }
 

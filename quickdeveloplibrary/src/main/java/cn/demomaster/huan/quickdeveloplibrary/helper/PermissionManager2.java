@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 
@@ -111,6 +112,7 @@ public class PermissionManager2 {
         specialMap.put(Manifest.permission.SYSTEM_ALERT_WINDOW, "允许弹出悬浮窗");
         specialMap.put(Manifest.permission.INSTALL_PACKAGES, "允许安装应用");
         specialMap.put(Manifest.permission.PACKAGE_USAGE_STATS, "数据包状态查看");
+        specialMap.put(Manifest.permission.WRITE_SETTINGS, "修改系统设置");
 
 
 /*
@@ -174,12 +176,12 @@ public class PermissionManager2 {
         switch (permission) {
             case Manifest.permission.INSTALL_PACKAGES:
                 //弹框提示用户手动打开
-                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
+                showAlert(mContext, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //此方法需要API>=26才能使用
-                        startInstallPermissionSettingActivity((Activity) context);
+                        startInstallPermissionSettingActivity( mContext);
                     }
                 });
                 break;
@@ -206,6 +208,12 @@ public class PermissionManager2 {
                         ((Activity) context).startActivityForResult(intent3, REQUEST_PERMISS_SPECIAL_CODE);
                     }
                 });
+                break;
+            case Manifest.permission.WRITE_SETTINGS:
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
                 break;
         }
     }
@@ -246,7 +254,7 @@ public class PermissionManager2 {
 
     // 跳转到设置-允许安装未知来源-页面
     @TargetApi(Build.VERSION_CODES.O)
-    public static void startInstallPermissionSettingActivity(final Activity context) {
+    public static void startInstallPermissionSettingActivity(final Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Uri packageURI = Uri.parse("package:" + context.getPackageName());
             //注意这个是8.0新API
@@ -278,9 +286,9 @@ public class PermissionManager2 {
     public static boolean getPermissionStatusByName(Context context, String permissionName) {
         switch (permissionName) {
             case Manifest.permission.INSTALL_PACKAGES:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return context.getPackageManager().canRequestPackageInstalls();
-                }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        return context.getPackageManager().canRequestPackageInstalls();
+                    }
                 break;
             case Manifest.permission.SYSTEM_ALERT_WINDOW:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -290,6 +298,16 @@ public class PermissionManager2 {
             case Manifest.permission.PACKAGE_USAGE_STATS:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     return isGrantedUsagePremission(context);
+                }
+                break;
+            case Manifest.permission.WRITE_SETTINGS:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    return Settings.System.canWrite(context);
+                }
+                break;
+            case Manifest.permission.WRITE_SECURE_SETTINGS:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    return Settings.System.canWrite(context);
                 }
                 break;
         }
@@ -315,9 +333,9 @@ public class PermissionManager2 {
             // 检查该权限是否已经获取
             for (String str : permissions) {
                 if (specialMap.containsKey(str)) {//特殊权限
-                    if (!getPermissionStatusByName(context, str)) {
-                        return false;
-                    }
+                        if (!getPermissionStatusByName(context, str)) {
+                            return false;
+                        }
                 } else {//普通权限
                     if (!getPermissionStatus(context, str)) {
                         return false;

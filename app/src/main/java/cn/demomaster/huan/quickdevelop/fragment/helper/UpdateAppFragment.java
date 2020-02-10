@@ -255,7 +255,7 @@ public class UpdateAppFragment extends QDBaseFragment {
                         }else if (type == 2){
                             try {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    InstallHelper.silenceInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
+                                    InstallHelper.silenceInstall(mContext, true,new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
                                         @Override
                                         public void onCreated(int sessionId) {
 
@@ -289,7 +289,7 @@ public class UpdateAppFragment extends QDBaseFragment {
                             }
                         }else if (type == 3){
                             try {
-                                InstallHelper.downloadAndSilenceInstall(getActivity(),version.getFileName()+".apk", version.getDownloadUrl());
+                                InstallHelper.downloadAndSilenceInstall(getActivity(),true,version.getFileName()+".apk", version.getDownloadUrl());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

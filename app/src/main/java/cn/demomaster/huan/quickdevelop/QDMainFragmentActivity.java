@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
@@ -40,7 +41,22 @@ public class QDMainFragmentActivity extends QDBaseActivity {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
         System.out.println("当前时间：" + simpleDateFormat.format(date));*/
+
+
+        Handler handler = new Handler();
+        handler.removeCallbacks(reConnectRunnable);
+        handler.postDelayed(reConnectRunnable, 5000);
+        handler.postDelayed(reConnectRunnable, 5000);
+        handler.postDelayed(reConnectRunnable, 5000);
+        handler.postDelayed(reConnectRunnable, 5000);
+        handler.postDelayed(reConnectRunnable, 5000);
     }
+    private Runnable reConnectRunnable = new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("123");
+        }
+    };
 
   /*  @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -24,7 +24,19 @@
     <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />--><!--需要系统权限，系统签名-->
     <!--<uses-permission android:name="android.permission.SET_TIME_ZONE"/>-->
 
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!--修改系统设置-->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions"/>
     <!--流量监控-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
@@ -80,10 +92,10 @@
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
         <activity android:name=".activity.sample.TestActivity" />
         <activity android:name=".fragment.helper.location.LocationActivity" />
-
+       <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"-->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"
+            android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
