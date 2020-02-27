@@ -53,7 +53,7 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity
+        <!--<activity
             android:name=".activity.sample.Main2Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/StartAppTheme.NoActionBar">
@@ -62,7 +62,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <!-- 声明service组件 -->
         <!--
   <service
@@ -77,7 +77,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AuMPh0zN8c1tUwRPGY37pmblqEunsjAO" /> <!-- http://lbsyun.baidu.com/apiconsole/key -->
         <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity -->
-        <!--
+
 <activity
             android:name=".QDMainFragmentActivity"
             android:process=":main"
@@ -89,7 +89,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        -->
+
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
         <activity android:name=".activity.sample.PickActivity" />

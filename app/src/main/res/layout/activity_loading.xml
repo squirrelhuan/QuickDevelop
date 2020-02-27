@@ -61,6 +61,13 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"/>
-
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDownLoadView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"/>
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDownView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"/>
     </LinearLayout>
 </LinearLayout>

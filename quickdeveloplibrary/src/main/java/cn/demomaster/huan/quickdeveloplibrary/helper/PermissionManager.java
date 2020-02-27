@@ -19,6 +19,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 
@@ -185,16 +188,21 @@ public class PermissionManager {
     public static void chekPermission(Context context, String[] permissions, OnCheckPermissionListener listener) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
             boolean b =false;
-            String[] newArray = new String[permissions.length>0?permissions.length-1:0];
-            int j = 0;
+           // String[] newArray = new String[permissions.length>0?permissions.length-1:0];
+            List<String> stringList = new ArrayList<>();
+           // String[] newArray = new String[permissions.length>0?permissions.length-1:0];
+            //int j = 0;
             for(int i=0;i<permissions.length; i++) {
                 if(permissions[i].equals(Manifest.permission.INSTALL_PACKAGES)){
                     b=true;
                 }else {
-                    newArray[j] = permissions[i];
-                    j++;
+                    stringList.add(permissions[i]);
+                   /* newArray[j] = permissions[i];
+                    j++;*/
                 }
             }
+            String[] newArray = new String[stringList.size()];
+            stringList.toArray(newArray);
             if(b){
                 permissions = newArray;
             }
