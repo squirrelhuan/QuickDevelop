@@ -35,7 +35,7 @@ public class NotifycationHelper {
     }
 
     public void init(Context mcontext){
-        context = mcontext;
+        context = mcontext.getApplicationContext();
         if(context==null){
             Log.e(TAG.APP,"请在application中初始化");
             return;

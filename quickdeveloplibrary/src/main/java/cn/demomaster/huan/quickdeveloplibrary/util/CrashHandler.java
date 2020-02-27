@@ -4,13 +4,10 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
  * Created by Stardust on 2017/2/2.
  */
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Process;
-import android.os.UserHandle;
-import android.util.Log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -25,7 +22,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private WeakReference<Context> applicationWeakReference;
     private CrashDealType mCrashDealType;
     private OnCrashListener mOnCrashListener;
-
 
     public CrashHandler(Context context, Class<?> errorReportClass) {
         mCrashDealType = CrashDealType.showError;

@@ -70,7 +70,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     }
 
     private void initQDContentView(View view) {
-        this.mContext = this;
+        mContext = this;
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
             actionBarLayout = getActionBarLayout(view);
@@ -82,7 +82,6 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     }
 
     public LayoutInflater mInflater;
-
     private void initQDContentView(int layoutResID) {
         mInflater = LayoutInflater.from(this);
         View view = mInflater.inflate(layoutResID, null);
@@ -120,18 +119,11 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
     }
 
     /*
- 是否实用自定义导航
+ 是否使用自定义导航
   */
     public boolean isUseActionBarLayout() {
         return true;
     }
-
-
-    public static class MessageEvent { /* Additional fields if needed */
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {/* Do something */}
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String str) {
@@ -150,6 +142,7 @@ public class QDBaseFragmentActivity extends AppCompatActivity {
         try {
             EventBus.getDefault().unregister(this);
             if (netWorkChangReceiver != null) {
+                netWorkChangReceiver.setOnNetStateChangedListener(null);
                 unregisterReceiver(netWorkChangReceiver);
             }
         } catch (Exception e) {

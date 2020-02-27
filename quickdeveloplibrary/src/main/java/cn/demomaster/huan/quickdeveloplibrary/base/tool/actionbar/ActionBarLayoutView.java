@@ -108,7 +108,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         int eventCode = KEYCODE_BACK;
         long now = SystemClock.uptimeMillis();
         KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
-        if (mBuilder.contextType == ActionBarInterface.ContentType.FragmentModel) {
+        if (mBuilder.contextType == ActivityContentType.FragmentModel) {
             if (mBuilder.fragment instanceof BaseFragmentActivityInterface) {
                 boolean ret = ((BaseFragmentActivityInterface) mBuilder.fragment).onBackPressed();
                 if (ret) {
@@ -198,7 +198,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         };
         actionBarLayoutHeaderView.addGlobalLayoutListener(globalLayoutListener);*/
 
-        if (mBuilder.contextType != ContentType.FragmentModel) {
+        if (mBuilder.contextType != ActivityContentType.FragmentModel) {
             //Front导航
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(actionBarLayoutFragmentView, layoutParams3);
@@ -328,9 +328,9 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private View contentView;
         private View fragmentView;
         private boolean isFullScreen = true;
-        private ActionBarLayout2.ACTIONBAR_TYPE actionbarType;
+        private ACTIONBAR_TYPE actionbarType;
         private Fragment fragment;
-        private ContentType contextType = ContentType.ActivityModel;
+        private ActivityContentType contextType = ActivityContentType.ActivityModel;
 
         public Builder( WeakReference<AppCompatActivity> context) {
             this.context = context;
@@ -373,7 +373,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
 
         public Builder setFragment(Fragment fragment) {
             this.fragment = fragment;
-            this.contextType = ContentType.FragmentModel;
+            this.contextType = ActivityContentType.FragmentModel;
             return this;
         }
 

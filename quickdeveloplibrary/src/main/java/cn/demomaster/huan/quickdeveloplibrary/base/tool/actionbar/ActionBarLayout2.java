@@ -84,7 +84,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
     }
 
     @Override
-    public void setActionBarType(ActionBarInterface.ACTIONBAR_TYPE noActionBarNoStatus) {
+    public void setActionBarType(ACTIONBAR_TYPE noActionBarNoStatus) {
 
     }
 
@@ -124,7 +124,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
     public int getFragmentContentViewId(){
         return R.id.qd_fragment_content_view;
     }
-    private ContentType contextType = ContentType.ActivityModel;
+    private ActivityContentType contextType = ActivityContentType.ActivityModel;
     //private ActionBarLayoutInterface actionBarLayoutInterface;
     public void initActionBarLayout(final Activity context, ACTIONBAR_TYPE actionBarModel, int headLayoutResID, int contentLayoutResID,ViewGroup relContentView) {
         this.context = context;
@@ -132,10 +132,10 @@ public class ActionBarLayout2 implements ActionBarInterface{
         this.contentLayoutResID = contentLayoutResID;
         this.contentView = relContentView;//fragment传递过来真实的contentView
         if(contentLayoutResID==-1){
-            contextType=ContentType.FragmentModel;
+            contextType=ActivityContentType.FragmentModel;
             //actionBarLayoutInterface = FragmentActivityHelper.getInstance().getActionBarLayoutInterface();
         }else {
-            contextType=ContentType.ActivityModel;
+            contextType=ActivityContentType.ActivityModel;
         }
         initLayout();
 
@@ -150,7 +150,7 @@ public class ActionBarLayout2 implements ActionBarInterface{
             it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(contextType==ContentType.FragmentModel){
+                    if(contextType==ActivityContentType.FragmentModel){
                         //actionBarLayoutInterface.onBack((AppCompatActivity) context);
                     }else {
                         ((Activity) context).finish();
@@ -185,10 +185,10 @@ public class ActionBarLayout2 implements ActionBarInterface{
         LayoutInflater mInflater = LayoutInflater.from(context);
         rootLayout = new FrameLayout(context);
         //contentView宽高
-        if(contextType==ContentType.ActivityModel){
+        if(contextType==ActivityContentType.ActivityModel){
             mInflater.inflate(contentLayoutResID, rootLayout, true);
             contentView = (ViewGroup) rootLayout.getChildAt(0);
-        }else if(contextType==ContentType.FragmentModel){
+        }else if(contextType==ActivityContentType.FragmentModel){
             rootLayout.addView(contentView);
         }
 

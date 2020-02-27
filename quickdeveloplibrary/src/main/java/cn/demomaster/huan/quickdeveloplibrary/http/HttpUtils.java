@@ -2,8 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.http;
 
 
 import android.util.Log;
-
-
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;

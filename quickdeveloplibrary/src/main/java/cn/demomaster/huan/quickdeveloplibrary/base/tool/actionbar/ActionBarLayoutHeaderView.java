@@ -24,8 +24,9 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NO_STATUS;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_STATUS;
+
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -37,7 +38,6 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     private ImageTextView it_actionbar_common_right;
     private View.OnClickListener leftOnClickListener;
     private View.OnClickListener rightOnClickListener;
-    private AppCompatActivity context;
 
     /**
      * 获取中间视图
@@ -124,7 +124,6 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     private LayoutInflater mInflater;
 
     private void initView() {
-        context = (AppCompatActivity) getContext();
         //记录状态栏高度
         statusBar_Height = DisplayUtil.getStatusBarHeight(getContext());
         mInflater = LayoutInflater.from(getContext());
@@ -172,8 +171,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     private void initOnClickListener() {
         it_actionbar_title = findViewById(R.id.it_actionbar_common_title);
-        if (context.getTitle() != null) {
-            setTitle(context.getTitle().toString());
+        if (getContext()instanceof AppCompatActivity&&((AppCompatActivity)getContext()).getTitle() != null) {
+            setTitle(((AppCompatActivity)getContext()).getTitle().toString());
         }
         it_actionbar_common_left = findViewById(R.id.it_actionbar_common_left);
         it_actionbar_common_right = findViewById(R.id.it_actionbar_common_right);
@@ -199,17 +198,18 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
                 it_actionbar_common_right.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ScreenShotUitl.shot(context);
+                        if (getContext()instanceof AppCompatActivity) {
+                            ScreenShotUitl.shot(((AppCompatActivity)getContext()));
+                        }
                     }
                 });
             }
         }
     }
 
-    private ActionBarInterface.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ACTIONBAR_TYPE actionbarType = NORMAL;
     private boolean loadFinished;
-
-    public void setActionbarType(ActionBarInterface.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (loadFinished) {
             initActionBarType();
@@ -253,8 +253,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         });
     }
 
-    private ActionBarInterface.ContentType mContextType = ActionBarInterface.ContentType.ActivityModel;
-    public void setContentType(ActionBarInterface.ContentType contextType) {
+    private ActivityContentType mContextType = ActivityContentType.ActivityModel;
+    public void setContentType(ActivityContentType contextType) {
         mContextType = contextType;
     }
 

@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,20 +26,15 @@ import static android.content.Context.ACTIVITY_SERVICE;
  */
 public class QDActivityManager {
     private static QDActivityManager instance;
-    private static Context context;
+    private Context context;
     //本地activity栈
-    private LinkedHashMap<String, Activity> activitys = new LinkedHashMap<>();
-
-    public QDActivityManager(Context context) {
-        this.context = context.getApplicationContext();
-    }
-
+    private LinkedHashMap<String, WeakReference<Activity>> activitys = new LinkedHashMap<>();
     private QDActivityManager() {
     }
 
     //必须要在application里初始化
     public QDActivityManager init(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         return instance;
     }
 
@@ -51,14 +47,14 @@ public class QDActivityManager {
 
     public void addActivity(Activity activity) {
         QDLogger.d("QDActivityManager", "addActivity:" + activity);
-        activitys.put(activity + "", activity);
+        activitys.put(activity + "",new WeakReference(activity) );
     }
 
     //删除具体的activity
     public void deleteActivity(Activity activity) {
         if (activity != null) {
             activity.finish();
-            activitys.remove(activity);
+            activitys.remove(activity+ "");
         }
     }
 
@@ -77,13 +73,16 @@ public class QDActivityManager {
     public void deleteActivityByClass(Class clazz) {
         if (clazz != null) {
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activity = (Activity) entry.getValue();
-                if (activity.getClass().equals(clazz)) {
+                Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activity!=null&&activity.getClass().equals(clazz)) {
                     activitys.remove(entry.getKey());
                     activity.finish();
                     deleteActivityByClass(clazz);
                     return;
                 }
+                activitys.remove(entry.getKey()+"");
+                deleteActivityByClass(clazz);
+                return;
             }
         }
     }
@@ -92,10 +91,15 @@ public class QDActivityManager {
     public void deleteActivityByClasses(List<Class> clazz) {
         if (clazz != null) {
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activity = (Activity) entry.getValue();
-                if (clazz.contains(activity.getClass())) {
-                    activitys.remove(activity);
+                Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activity!=null&&clazz.contains(activity.getClass())) {
+                    activitys.remove(entry.getKey()+"");
                     activity.finish();
+                    deleteActivityByClasses(clazz);
+                    return;
+                }
+                if(activity==null){
+                    activitys.remove(entry.getKey()+"");
                     deleteActivityByClasses(clazz);
                     return;
                 }
@@ -108,9 +112,11 @@ public class QDActivityManager {
      */
     public void deleteAllActivity() {
         for (Map.Entry entry : activitys.entrySet()) {
-            Activity activity = (Activity) entry.getValue();
-            activitys.remove(activity);
-            activity.finish();
+            Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+            activitys.remove(entry.getKey()+ "");
+            if(activity!=null){
+                activity.finish();
+            }
             deleteAllActivity();
             return;
         }
@@ -122,10 +128,14 @@ public class QDActivityManager {
     public void deleteOtherActivityByClasses(List<Class> clazz) {
         if ( clazz != null) {
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activity = (Activity) entry.getValue();
-                if (!clazz.contains(activity.getClass())) {
+                Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activity!=null&&!clazz.contains(activity.getClass())) {
+                    activitys.remove(entry.getKey()+ "");
                     activity.finish();
-                    activitys.remove(activity);
+                    deleteOtherActivityByClasses(clazz);
+                    return;
+                }else if(activity==null){
+                    activitys.remove(entry.getKey()+ "");
                     deleteOtherActivityByClasses(clazz);
                     return;
                 }
@@ -139,10 +149,14 @@ public class QDActivityManager {
     public void deleteOtherActivityByClass(List<Class> clazzs) {
         if ( clazzs != null) {
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activity = (Activity) entry.getValue();
-                if (!clazzs.contains(activity.getClass())) {
+                Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activity!=null&&!clazzs.contains(activity.getClass())) {
+                    activitys.remove(entry.getKey()+ "");
                     activity.finish();
-                    activitys.remove(entry.getKey());
+                    deleteOtherActivityByClass(clazzs);
+                    return;
+                }else if(activity==null){
+                    activitys.remove(entry.getKey()+ "");
                     deleteOtherActivityByClass(clazzs);
                     return;
                 }
@@ -157,11 +171,15 @@ public class QDActivityManager {
         if (clazz != null) {
             // android.app.QDActivityManager mActivityManager = (android.app.QDActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activity = (Activity) entry.getValue();
-                if (!activity.getClass().equals(clazz)) {
-                    activity.finish();
+                Activity activity = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activity!=null&&!activity.getClass().equals(clazz)) {
                     activitys.remove(entry.getKey());
+                    activity.finish();
                     //QDLogger.d("移除"+activity.getClass().getName());
+                    deleteOtherActivityByClass(clazz);
+                    return;
+                }else if(activity==null){
+                    activitys.remove(entry.getKey());
                     deleteOtherActivityByClass(clazz);
                     return;
                 }
@@ -175,10 +193,14 @@ public class QDActivityManager {
     public void deleteOtherActivity(Activity activity) {
         if (activity != null) {
             for (Map.Entry entry : activitys.entrySet()) {
-                Activity activityT = (Activity) entry.getValue();
-                if (!activity.equals(activityT)) {
+                Activity activityT = ((WeakReference<Activity>) entry.getValue()).get();
+                if (activityT!=null&&!activity.equals(activityT)) {
+                    activitys.remove(entry.getKey()+"");
                     activityT.finish();
-                    activitys.remove(activityT);
+                    deleteOtherActivity(activity);
+                    return;
+                }else if(activityT==null){
+                    activitys.remove(entry.getKey()+"");
                     deleteOtherActivity(activity);
                     return;
                 }
@@ -254,7 +276,7 @@ public class QDActivityManager {
         List<ActivityManager.RunningAppProcessInfo> appProcessInfos = activityManager.getRunningAppProcesses();
         // 枚举进程
         for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfos) {
-            QDLogger.i("isRunningOnForeground="+appProcessInfo.processName+appProcessInfo.importance );
+            //QDLogger.i("isRunningOnForeground="+appProcessInfo.processName+appProcessInfo.importance );
             if (appProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 //ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
                 if (appProcessInfo.processName.equals(context.getApplicationInfo().processName)) {
@@ -263,11 +285,10 @@ public class QDActivityManager {
                 }
             }
         }
-        QDLogger.i("isRunningOnForeground="+false);
+        //QDLogger.i("isRunningOnForeground="+false);
         return false;
     }
     OnAppRunStateChangedListenner onAppRunStateChangedListenner;
-
     /**
      * 设置app前后台运行切换状态监听
      * @param onAppRunStateChangedListenner

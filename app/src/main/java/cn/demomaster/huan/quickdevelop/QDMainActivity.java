@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.fragment.main.ComponentFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
@@ -30,7 +31,7 @@ public class QDMainActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
 
-        getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NORMAL);
         getActionBarLayoutOld().getLeftView().setVisibility(View.GONE);
         getActionBarLayoutOld().setHeaderBackgroundColor(Color.RED);
 

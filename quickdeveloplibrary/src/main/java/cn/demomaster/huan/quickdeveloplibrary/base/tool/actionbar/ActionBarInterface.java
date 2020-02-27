@@ -41,7 +41,7 @@ public interface ActionBarInterface {
     /**
      * 导航栏样式三种
      */
-    public static enum ACTIONBAR_TYPE {
+   /* public static enum ACTIONBAR_TYPE {
         NO_STATUS,
         //无导航栏
         NO_ACTION_BAR,
@@ -55,10 +55,10 @@ public interface ActionBarInterface {
         ACTION_STACK_NO_STATUS,
         //透明导航栏
         ACTION_TRANSPARENT
-    }
+    }*/
 
 
-    public static enum  ContentType{
+  /*  public static enum  ContentType{
         ActivityModel,FragmentModel
-    }
+    }*/
 }

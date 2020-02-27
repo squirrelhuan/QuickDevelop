@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
@@ -73,7 +74,7 @@ public class MainFragment extends QDBaseFragment {
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
         actionBarLayout.setFullScreen(true);
-        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NORMAL);
+        actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         List<Class> list = new ArrayList<>();

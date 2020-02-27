@@ -18,6 +18,7 @@ import cn.demomaster.huan.quickdevelop.adapter.DesignListAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
@@ -49,7 +50,7 @@ public class DesignPatternFragment extends QDBaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayout) {
-        actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
         actionBarLayout.setHeaderBackgroundColor(Color.RED);
 

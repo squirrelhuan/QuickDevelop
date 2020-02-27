@@ -424,4 +424,10 @@ public class ActionBarTip extends FrameLayout {
             mBelowContentView.setPadding(mBelowContentView.getPaddingLeft(), h+getHeight()+paddingTopBack+((FrameLayout.LayoutParams)params).topMargin, mBelowContentView.getPaddingRight(), mBelowContentView.getPaddingBottom());
         }
     }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(animator!=null)
+            animator.cancel();
+    }
 }

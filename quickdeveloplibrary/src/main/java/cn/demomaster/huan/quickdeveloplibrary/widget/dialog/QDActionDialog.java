@@ -32,7 +32,6 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 public class QDActionDialog extends Dialog {
 
     private Builder builder;
-
     public QDActionDialog(Context context, Builder builder) {
         super(context);
         this.builder = builder;

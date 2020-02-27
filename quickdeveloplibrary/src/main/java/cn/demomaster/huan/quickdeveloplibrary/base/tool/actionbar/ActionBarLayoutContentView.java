@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-
 import java.lang.ref.WeakReference;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_STACK;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_TRANSPARENT;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_ACTION_BAR;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_STATUS;
 
 /**
  * Created by Squirrel桓 on 2018/11/9.
@@ -142,9 +145,9 @@ public class ActionBarLayoutContentView extends FrameLayout {
         setActionBarTipLayoutTop();
     }
 
-    private ActionBarInterface.ACTIONBAR_TYPE actionbarType = NORMAL;
+    private ACTIONBAR_TYPE actionbarType = NORMAL;
 
-    public void setActionbarType(ActionBarInterface.ACTIONBAR_TYPE actionbarType) {
+    public void setActionbarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         setMarginTopOrPaddingTop();
     }

@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
@@ -29,7 +30,7 @@ public class BaseFragmentActivity extends QDBaseActivity {
         View view = new FrameLayout(this);
         view.setId(getContentViewId());
         setContentView(view);
-        getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         FragmentActivityHelper.getInstance().bindActivity(new WeakReference<FragmentActivity>(this));
         RouterFragment f1 = new RouterFragment();
         FragmentActivityHelper.getInstance().startFragment(this,f1);

@@ -39,8 +39,6 @@ public class ApplicationParent extends Application {
         return instance;
     }
 
-    public static StateObserver stateObserver;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -124,26 +122,10 @@ public class ApplicationParent extends Application {
         QDActivityManager.getInstance().addActivity(activity);
     }
 
-    //删除
-    public void deleteActivity(Activity activity) {
-        QDActivityManager.getInstance().deleteActivity(activity);
-    }
-
-    //删除
-    public void deleteActivity(Class clazz) {
-        QDActivityManager.getInstance().deleteActivityByClass(clazz);
-    }
-
-    //退出
-    public void deleteAllActivity() {
-        QDActivityManager.getInstance().deleteAllActivity();
-    }
-
-    //退出
-    public void deleteOtherActivity(Activity activity) {
-        QDActivityManager.getInstance().deleteOtherActivity(activity);
-    }
-
+    /**
+     * 设置buggly appID
+     * @return
+     */
     public String getBugglyAppID(){
         return "7d6d33c554";
     }
@@ -151,6 +133,7 @@ public class ApplicationParent extends Application {
      * 处理异常捕获
      */
     public void initCrash() {
+        QDLogger.i("initCrash");
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
         //CrashReport.initCrashReport(getApplicationContext(), getBugglyAppID(), false);
         Bugly.init(getApplicationContext(), getBugglyAppID(), false);
@@ -161,11 +144,11 @@ public class ApplicationParent extends Application {
                 return;
             }
             Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this, errorReportActivity));
-            stateObserver = new StateObserver(PreferenceManager.getDefaultSharedPreferences(this));
+            StateObserver stateObserver = new StateObserver(PreferenceManager.getDefaultSharedPreferences(this));
         }
     }
 
-    private ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
+    public ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             QDActivityManager.getInstance().addActivity(activity);

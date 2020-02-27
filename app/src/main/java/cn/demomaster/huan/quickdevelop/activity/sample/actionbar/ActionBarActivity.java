@@ -11,6 +11,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
@@ -76,7 +77,7 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
         });
         sb_background.setProgress(50);
 
-        getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 
         //getActionBarLayout2();
 
@@ -119,24 +120,24 @@ public class ActionBarActivity extends BaseActivityParent implements View.OnClic
         switch (view.getId()) {
 
             case R.id.btn_ac_01:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NORMAL);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
-                getActionBarLayoutOld().setActionBarModel(ActionBarLayout2.ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
                 getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.black));

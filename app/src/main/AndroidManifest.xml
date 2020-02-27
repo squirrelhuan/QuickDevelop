@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cn.demomaster.huan.quickdevelop"
-    ><!--android:sharedUserId="android.uid.system"-->
-
-
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
+    package="cn.demomaster.huan.quickdevelop">
+    <!-- android:sharedUserId="android.uid.system" -->
+    <uses-permission
+        android:name="android.permission.ACCESS_MOCK_LOCATION"
         tools:ignore="MockLocation,ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- android 9.0上使用前台服务，需要添加权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- android 9.0上使用前台服务，需要添加权限 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,29 +16,33 @@
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><!--
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />--><!--需要系统权限，系统签名-->
-    <!--<uses-permission android:name="android.permission.SET_TIME_ZONE"/>-->
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> -->
+    <!-- 需要系统权限，系统签名 -->
+    <!-- <uses-permission android:name="android.permission.SET_TIME_ZONE"/> -->
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!--修改系统设置-->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions"/>
-    <!--流量监控-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 修改系统设置 -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" /> <!-- 流量监控 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
-    <uses-permission android:name="android.permission.READ_NETWORK_USAGE_HISTORY" tools:ignore="ProtectedPermissions"/>
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.READ_NETWORK_USAGE_HISTORY"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".Application"
@@ -51,33 +53,43 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
+        <activity
+            android:name=".activity.sample.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/StartAppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- 声明service组件 -->
-      <!--  <service
+        <!--
+  <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
-        </service>-->
-
+        </service>
+        -->
         <!-- AK鉴权 -->
         <!-- meta-data需要写在application中 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="AuMPh0zN8c1tUwRPGY37pmblqEunsjAO" />  <!-- http://lbsyun.baidu.com/apiconsole/key -->
-
-
-        <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity-->
-        <activity
+            android:value="AuMPh0zN8c1tUwRPGY37pmblqEunsjAO" /> <!-- http://lbsyun.baidu.com/apiconsole/key -->
+        <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity -->
+        <!--
+<activity
             android:name=".QDMainFragmentActivity"
-            android:theme="@style/SplashTheme"
-            android:process=":main">
+            android:process=":main"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
         <activity android:name=".activity.sample.PickActivity" />
@@ -91,8 +103,7 @@
         <activity android:name=".activity.sample.component.LoadingActivity" />
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
         <activity android:name=".activity.sample.TestActivity" />
-        <activity android:name=".fragment.helper.location.LocationActivity" />
-       <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider"-->
+        <activity android:name=".fragment.helper.location.LocationActivity" /> <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -103,16 +114,17 @@
                 android:resource="@xml/file_provider_path" />
         </provider>
 
-        <activity android:name=".MainActivity"
-            android:process=":second"
+        <activity
+            android:name=".MainActivity"
+            android:icon="@mipmap/ic_launcher_round"
             android:launchMode="singleInstance"
-            android:icon="@mipmap/ic_launcher_round" >
+            android:process=":second">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activity.sample.component.ToggleButtonActivity"
@@ -122,15 +134,14 @@
         <activity android:name=".activity.sample.component.RatingBarActivity" />
         <activity android:name=".activity.sample.component.QDActionDialogActivity" />
         <activity android:name=".activity.sample.fragment.BaseFragmentActivity" />
+        <activity android:name=".fragment.helper.serialport.sample.SerialportMain" />
+        <activity android:name=".fragment.helper.serialport.sample.ConsoleActivity" />
+        <activity android:name=".fragment.helper.serialport.sample.LoopbackActivity" />
+        <activity android:name=".fragment.helper.serialport.sample.Sending01010101Activity" />
+        <activity android:name=".fragment.helper.serialport.sample.SerialPortActivity" />
+        <activity android:name=".fragment.helper.serialport.sample.SerialPortPreferences" />
 
-        <activity android:name=".fragment.helper.serialport.sample.SerialportMain"/>
-        <activity android:name=".fragment.helper.serialport.sample.ConsoleActivity"/>
-        <activity android:name=".fragment.helper.serialport.sample.LoopbackActivity"/>
-        <activity android:name=".fragment.helper.serialport.sample.Sending01010101Activity"/>
-        <activity android:name=".fragment.helper.serialport.sample.SerialPortActivity"/>
-        <activity android:name=".fragment.helper.serialport.sample.SerialPortPreferences"/>
-
-        <service android:name=".service.TrafficFloatingService"/>
+        <service android:name=".service.TrafficFloatingService" />
         <service
             android:name=".service.SimpleService"
             android:enabled="true"

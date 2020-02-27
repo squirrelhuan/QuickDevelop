@@ -9,6 +9,7 @@ import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 
 /**
@@ -24,10 +25,10 @@ public class QDMainFragmentActivity extends QDBaseActivity {
             QDBaseFragment fragment = new MainFragment();
             FragmentActivityHelper.getInstance().startFragment(mContext, fragment);
         }
-        getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         getActionBarLayout().setHeaderBackgroundColor(Color.GRAY);
         //actionBarLayoutView.setHeaderBackgroundColor();
-        getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);

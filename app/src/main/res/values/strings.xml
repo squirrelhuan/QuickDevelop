@@ -32,5 +32,6 @@
 		port.</string>
     <string name="error_unknown">The serial port can not be opened for an unknown
 		reason.</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
