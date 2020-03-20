@@ -1,17 +1,12 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.app.AppOpsManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,18 +16,10 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
-import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-
-import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2.isGrantedUsagePremission;
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 
 /**
@@ -41,7 +28,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Traffic", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Traffic", preViewClass = TextView.class, resType = ResType.Custome)
 public class TrafficFragment extends QDBaseFragment {
 
     @Override

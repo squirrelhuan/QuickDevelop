@@ -1,16 +1,12 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +21,6 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
-import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
@@ -36,7 +30,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "Permition", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Permition", preViewClass = TextView.class, resType = ResType.Custome)
 public class PermitionFragment extends QDBaseFragment {
 
     @Override

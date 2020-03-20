@@ -20,8 +20,6 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-
 /**
  * @author squirrel桓
  * @date 2019/1/24.
@@ -38,16 +36,16 @@ public class SimpleService extends BaseService {
         baseBinder = new BaseBinder(this);
         String packageName = getApplicationContext().getPackageName();
         String serviceName = this.getClass().getName();
-        Log.i(TAG, "packageName=" + packageName+",serviceName="+serviceName);
+        QDLogger.i( "packageName=" + packageName+",serviceName="+serviceName);
         Watcher watcher = new Watcher();
         watcher.createWatcher(String.valueOf(Process.myUid()),packageName,serviceName);
         watcher.connectMonitor();
-        Log.i(TAG, "守护进程已启动"+str + index);
+        QDLogger.i( "守护进程已启动"+str + index);
        final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                QDLogger.i(TAG, "run: 客户端进程 " + index);
+                QDLogger.i( "run: 客户端进程 " + index);
                 Intent intent = new Intent();
                 intent.setAction("cn.demomaster.huan.quickdeveloplibrary.receiver");
                 intent.putExtra("type", "normal");

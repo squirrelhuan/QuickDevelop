@@ -28,14 +28,21 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 public class GuiderActionDialog extends Dialog {
 
-    private Activity context;
-    private Builder builder;
+   // private Builder builder;
     private boolean hasStateBar = true;
+    private Activity context;
+    private String message;
+    private GuiderModel guiderModel;
+    private int backgroundColor = Color.WHITE;
+    private float[] backgroundRadius = new float[8];
 
     public GuiderActionDialog(Activity context, Builder builder) {
         super(context);
         this.context = context;
-        this.builder = builder;
+        message = builder.message;
+        guiderModel = builder.guiderModel;
+        backgroundColor = builder.backgroundColor;
+        backgroundRadius = builder.backgroundRadius;
         //去除遮罩
         getWindow().setDimAmount(0f);
         getWindow().getDecorView().setPadding(0, 0, 0, 0);
@@ -64,7 +71,7 @@ public class GuiderActionDialog extends Dialog {
         setCancelable(true);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        contentView = new LinearLayout(builder.context);
+        contentView = new LinearLayout(context);
         //contentView.setBackgroundColor(Color.WHITE);
         onActionFinishListener = new OnActionFinishListener() {
             @Override
@@ -72,7 +79,7 @@ public class GuiderActionDialog extends Dialog {
                 dismiss();
             }
         };
-        GuiderView guiderSurfaceView = new GuiderView(builder.context, builder.guiderModel,hasStateBar,onActionFinishListener);
+        GuiderView guiderSurfaceView = new GuiderView(context, guiderModel,hasStateBar,onActionFinishListener);
         contentView.addView(guiderSurfaceView, layoutParams);
         //contentView.setBackgroundResource(R.color.red);
         ViewGroup layout = new RelativeLayout(getContext());

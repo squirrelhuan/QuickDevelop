@@ -33,6 +33,13 @@
     <attr name="qd_backgroundColor" format="color"/>
     <attr name="qd_borderColor" format="color"/>
     <attr name="qd_borderWidth" format="dimension"/>
+    <attr name="qd_isRadiusAdjustBounds" format="boolean"/>
+    <attr name="qd_radius" format="dimension"/>
+    <attr name="qd_radiusTopLeft" format="dimension"/>
+    <attr name="qd_radiusTopRight" format="dimension"/>
+    <attr name="qd_radiusBottomLeft" format="dimension"/>
+    <attr name="qd_radiusBottomRight" format="dimension"/>
+    <attr name="qd_btn_internal_width" format="dimension"/>
 
 
     <attr name="QDButtonStyle" format="reference"/>

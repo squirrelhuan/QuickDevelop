@@ -22,21 +22,18 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
 
 public class QDLogger {
-
-    public static boolean enable = true;
+    public static boolean enable = true;//是否启用
     public static String TAG = "QDLogger";
     private static Context applicationContext;
-
-    public static void setApplicationContext(Context applicationContext) {
-        QDLogger.applicationContext = applicationContext;
+    public static void setApplicationContext(Context context) {
+        applicationContext = context.getApplicationContext();
     }
 
     public static void setEnable(boolean enable) {
         QDLogger.enable = enable;
     }
-
-    public static void setTAG(String TAG) {
-        QDLogger.TAG = TAG;
+    public static void setTAG(String tag) {
+        TAG = tag;
     }
 
     /**********  i ***********/
@@ -158,7 +155,8 @@ public class QDLogger {
         simpleDateFormat2.setTimeZone(timeZone);
     }
 
-
+    static String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static void Log(Context context, int logType, String tag, Object obj, Throwable tr) {
         message = (context == null ? (obj == null ? "NULL" : obj.toString()) : (context.getClass().getName() + ":"));
         Tag = tag;
@@ -194,11 +192,8 @@ public class QDLogger {
         //Log.d(TAG, +Thread.currentThread().getStackTrace()[2].getLineNumber()); //行号
         //Log.d(TAG, Thread.currentThread().getStackTrace()[2].getFileName()); //文件名
 
-
         //如果配置了日志目录，则打印log到指定目录
-        if (applicationContext != null && AppConfig.getInstance().getConfigMap() != null && AppConfig.getInstance().getConfigMap().containsKey("LogFilePath")) {
-            String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (enable && applicationContext != null && AppConfig.getInstance().getConfigMap() != null && AppConfig.getInstance().getConfigMap().containsKey("LogFilePath")) {
             // 检查该权限是否已经获取
             boolean useful = PermissionManager.getPermissionStatus(applicationContext, permissions);
             if (useful) {
@@ -235,7 +230,6 @@ public class QDLogger {
     }
 
     public static boolean canWriteAble = true;//是否可以读写日志
-
     public static void setCanWriteAble(boolean mcanWriteAble) {
         canWriteAble = mcanWriteAble;
         if (!mcanWriteAble) {

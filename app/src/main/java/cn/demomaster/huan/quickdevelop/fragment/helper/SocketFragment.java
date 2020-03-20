@@ -4,9 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.tencent.bugly.crashreport.CrashReport;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,8 +14,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnDoubleClickListener;
-import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnMultClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
@@ -30,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Socket",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "Socket",preViewClass = TextView.class,resType = ResType.Custome)
 public class SocketFragment extends QDBaseFragment {
 
     @Override

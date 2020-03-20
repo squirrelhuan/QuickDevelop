@@ -17,23 +17,42 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundArrowDrawable;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-
 public class QDTipPopup extends QDPopup {
-    private Builder builder;
-    private Context context;
-
-
+   // private Builder builder;
+    private WeakReference<Context> contextWeakReference;
+    public int textColor = Color.WHITE;
+    public int textSize = 14;
+    public int padding;
+    public int animationStyleID = -1;
+    private String message;
+    private int backgroundColor = Color.BLACK;
+    private float[] backgroundRadius = new float[8];
+    private Direction direction;
+    private boolean withArrow = true;
+    private int arrowWidth ;
+    private int arrowHeight;
     public QDTipPopup(Context context, Builder builder) {
         super(context);
-        this.builder = builder;
-        this.context = context;
+        this.contextWeakReference = new WeakReference<>(context);
+        textColor = builder.textColor;
+        textSize = builder.textSize;
+        padding = builder.padding;
+        animationStyleID = builder.animationStyleID;
+        message = builder.message;
+        backgroundColor = builder.backgroundColor;
+        backgroundRadius = builder.backgroundRadius;
+        direction = builder.direction;
+        withArrow = builder.withArrow;
+        arrowWidth =builder.arrowWidth;
+        arrowHeight =builder.arrowHeight;
         if(builder.animationStyleID!=-1){
             setAnimationStyle(builder.animationStyleID);
         }
@@ -47,7 +66,7 @@ public class QDTipPopup extends QDPopup {
     }
 
     private GuiderView.Gravity mGravity;
-    private int arrowHeight;
+    //private int arrowHeight;
     private int arrowWidht;
     private QDRoundArrowDrawable drawable_bg;
     public void setDirection(GuiderView.Gravity gravity) {
@@ -55,12 +74,12 @@ public class QDTipPopup extends QDPopup {
         //新建一个Drawable对象
         drawable_bg = new QDRoundArrowDrawable(mAnchor, mGravity, rootLayout);
         //drawable_bg.setCornerRadii(builder.backgroundRadius);
-        drawable_bg.setBackGroundColor(builder.backgroundColor);
+        drawable_bg.setBackGroundColor(backgroundColor);
         //drawable_bg.setCornerRadius(builder.backgroundRadiu);
-        drawable_bg.setCornerRadii(builder.backgroundRadius);
-        if (builder.withArrow) {
-            arrowHeight = builder.arrowHeight;//DisplayUtil.dip2px(context, 8);
-            arrowWidht = builder.arrowWidth;
+        drawable_bg.setCornerRadii(backgroundRadius);
+        if (withArrow) {
+            arrowHeight = arrowHeight;//DisplayUtil.dip2px(context, 8);
+            arrowWidht = arrowWidth;
         } else {
             arrowHeight = 0;
             arrowWidht = 0;
@@ -89,7 +108,7 @@ public class QDTipPopup extends QDPopup {
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int popupWidth = getContentView().getMeasuredWidth();
         int popupHeight = getContentView().getMeasuredHeight();
-        QDLogger.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        QDLogger.d("getScreenWidth="+DisplayUtil.getScreenWidth(contextWeakReference.get())+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
         // 设置好参数之后再show
         int[] location = new int[2];
         mAnchor.getLocationOnScreen(location);
@@ -110,7 +129,7 @@ public class QDTipPopup extends QDPopup {
             popupWidth = popupWidth + arrowWidht;
             if (mGravity == GuiderView.Gravity.LEFT) {
                 if(popupWidth>=maxWidth) {
-                    layoutParams.width = location[0]-padding;
+                    layoutParams.width = location[0]-padding1;
                     getContentView().setLayoutParams(layoutParams);
                 }
                 showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -195,12 +214,12 @@ public class QDTipPopup extends QDPopup {
         getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         int popupWidth = getContentView().getMeasuredWidth();
         int popupHeight = getContentView().getMeasuredHeight();
-        QDLogger.d(TAG,"getScreenWidth="+DisplayUtil.getScreenWidth(context)+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
+        QDLogger.d("getScreenWidth="+DisplayUtil.getScreenWidth(contextWeakReference.get())+"popupWidth="+popupWidth+",popupHeight="+popupHeight);
         int x=0 ,y=0,w=0,h=0;
         if (mGravity == GuiderView.Gravity.BOTTOM || mGravity == GuiderView.Gravity.TOP) {
-            int b = ((popupWidth>=maxWidth)?padding:0);
+            int b = ((popupWidth>=maxWidth)?padding1:0);
             x = location[0] + mAnchor.getWidth() / 2 - getContentView().getWidth() / 2+b;
-            x = ((popupWidth>=maxWidth)?padding:x);
+            x = ((popupWidth>=maxWidth)?padding1:x);
             w = popupWidth>maxWidth?maxWidth:ViewGroup.LayoutParams.WRAP_CONTENT;
             h = ViewGroup.LayoutParams.WRAP_CONTENT;
             if (mGravity == GuiderView.Gravity.BOTTOM) {
@@ -219,7 +238,7 @@ public class QDTipPopup extends QDPopup {
                 getContentView().setLayoutParams(layoutParams);
                 x = location[0] - popupWidth;
             } else {
-                int maxWidth = DisplayUtil.getScreenWidth(context)-location[0]-mAnchor.getWidth();
+                int maxWidth = DisplayUtil.getScreenWidth(contextWeakReference.get())-location[0]-mAnchor.getWidth();
                 getContentView().setLayoutParams(layoutParams);
                 x = location[0] + mAnchor.getWidth();
             }
@@ -236,32 +255,32 @@ public class QDTipPopup extends QDPopup {
     private int maxHeight;
     private int screenHeight;
     private int screenWidth;
-    private int padding ;
+    private int padding1 ;
     private void init() {
         setTouchable(true);
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        padding = DisplayUtil.dip2px(context,30);
-        screenHeight = DisplayUtil.getScreenHeight(context);
-        screenWidth = DisplayUtil.getScreenWidth(context);
-        maxWidth = screenWidth-padding*2;
-        maxHeight = screenHeight-padding*2;
-        rootLayout = new FrameLayout(context);
+        padding1 = DisplayUtil.dip2px(contextWeakReference.get(),30);
+        screenHeight = DisplayUtil.getScreenHeight(contextWeakReference.get());
+        screenWidth = DisplayUtil.getScreenWidth(contextWeakReference.get());
+        maxWidth = screenWidth-padding1*2;
+        maxHeight = screenHeight-padding1*2;
+        rootLayout = new FrameLayout(contextWeakReference.get());
         if (mContentView == null) {//非自定义布局时，仅为提示框
-            TextView textView = new TextView(context);
-            textView.setText(builder.message);
-            textView.setTextSize(builder.textSize);
-            textView.setTextColor(builder.textColor);
+            TextView textView = new TextView(contextWeakReference.get());
+            textView.setText(message);
+            textView.setTextSize(textSize);
+            textView.setTextColor(textColor);
            // textView.setBackgroundColor(Color.YELLOW);
             textView.setPadding(0,0,0,0);
             mContentView = textView;
         }
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLayout = new FrameLayout(context);
+        contentLayout = new FrameLayout(contextWeakReference.get());
         contentLayout.setLayoutParams(layoutParams);
         contentLayout.addView(mContentView, layoutParams);
-        int p = builder.padding;//DisplayUtil.dip2px(context, 6);
+        int p = padding;//DisplayUtil.dip2px(context, 6);
         contentLayout.setPadding(p, p, p, p);
         rootLayout.addView(contentLayout, layoutParams);
         rootLayout.setLayoutParams(layoutParams);
@@ -279,7 +298,7 @@ public class QDTipPopup extends QDPopup {
         public int textSize = 14;
         public int padding;
         public int animationStyleID = -1;
-        private Context context;
+        private WeakReference<Context> contextWeakReference;
         private String message;
         private int backgroundColor = Color.BLACK;
         private float[] backgroundRadius = new float[8];
@@ -289,7 +308,7 @@ public class QDTipPopup extends QDPopup {
         private int arrowHeight;
 
         public Builder(Context context) {
-            this.context = context;
+            this.contextWeakReference = new WeakReference<>(context);
             arrowWidth = DisplayUtil.dip2px(context,8);
             arrowHeight = DisplayUtil.dip2px(context,8);
             padding = DisplayUtil.dip2px(context, 6);
@@ -363,7 +382,7 @@ public class QDTipPopup extends QDPopup {
         }
 
         public QDTipPopup create() {
-            return new QDTipPopup(context, this);
+            return new QDTipPopup(contextWeakReference.get(), this);
         }
     }
 }

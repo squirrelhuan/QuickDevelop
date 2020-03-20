@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 
-public class ErrorCrashActivity extends BaseActivityParent {
+public class ErrorCrashActivity extends QDActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

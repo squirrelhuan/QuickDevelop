@@ -1,7 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -9,16 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseFragmentActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivityInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
+import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static android.view.KeyEvent.ACTION_DOWN;
@@ -32,8 +41,32 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
     private ActionBarLayoutContentView actionBarLayoutContentView;
     private ActionBarLayoutHeaderView actionBarLayoutHeaderView;
     private ActionBarLayoutFragmentView actionBarLayoutFragmentView;
-    private Builder mBuilder;
     private boolean hasContainBackground = true;
+
+    private WeakReference<AppCompatActivity> context;
+    private int contentResId = -1;
+    private int fragmentResId = -1;
+    private int headerResId = -1;
+    private View contentView;
+    private View fragmentView;
+    private boolean isFullScreen = true;
+    private ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;;
+    private WeakReference<Fragment> fragmentWeakReference;
+    private ActivityContentType contextType = ActivityContentType.ActivityModel;
+
+    public ActionBarLayoutView(Builder builder) {
+        super(builder.contextWeakReference.get());
+        context = builder.contextWeakReference;
+        contextType = builder.contextType;
+        fragmentWeakReference = builder.fragmentWeakReference;
+        contentResId = builder.contentResId;
+        contentView = builder.contentView;
+        headerResId = builder.headerResId;
+        isFullScreen = builder.isFullScreen;
+        fragmentResId = builder.fragmentResId;
+        fragmentView = builder.fragmentView;
+        initView();
+    }
 
     public void setHasContainBackground(boolean hasContainBackground) {
         this.hasContainBackground = hasContainBackground;
@@ -42,7 +75,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         }
     }
 
-    private  WeakReference<AppCompatActivity> context;
 
     /**
      * 获取中间视图
@@ -108,23 +140,20 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         int eventCode = KEYCODE_BACK;
         long now = SystemClock.uptimeMillis();
         KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
-        if (mBuilder.contextType == ActivityContentType.FragmentModel) {
-            if (mBuilder.fragment instanceof BaseFragmentActivityInterface) {
-                boolean ret = ((BaseFragmentActivityInterface) mBuilder.fragment).onBackPressed();
+        if (contextType == ActivityContentType.FragmentModel) {
+            if (fragmentWeakReference.get() instanceof BaseFragmentActivityInterface) {
+                boolean ret = ((BaseFragmentActivityInterface) fragmentWeakReference.get()).onKeyDown(eventCode,down);
                 if (ret) {
                     QDLogger.d("fragment 消费了返回事件");
                 }
             }
         }
-        context.get().onKeyDown(eventCode,down);
+        //context.get().onKeyDown(eventCode,down);
+        context.get().onBackPressed();
+        //((QDActivityInterface)context.get()).onClickBack();
     }
 
-    public ActionBarLayoutView(Builder builder) {
-        super(builder.context.get());
-        context = builder.context;
-        mBuilder = builder;
-        initView();
-    }
+
 
     public ActionBarLayoutContentView getActionBarLayoutContentView() {
         return actionBarLayoutContentView;
@@ -155,9 +184,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
 
     private void initView() {
         mInflater = LayoutInflater.from(getContext());
-
         initChildView();
-
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -178,17 +205,16 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         //内容区
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(actionBarLayoutContentView, layoutParams);
-        addContentBackView(mBuilder.contentResId);
-        addContentBackView(mBuilder.contentView);
+        addContentBackView(contentResId);
+        addContentBackView(contentView);
 
         //头部导航
         actionBarLayoutHeaderView = new ActionBarLayoutHeaderView(new WeakReference<Context>(getContext()),this);
         FrameLayout.LayoutParams layoutParams2 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(actionBarLayoutHeaderView, layoutParams2);
-        addHeadView(mBuilder.headerResId);
+        addHeadView(headerResId);
         actionBarLayoutHeaderView.setBackgroundColor(headerBackgroundColor);
-        actionBarLayoutHeaderView.setContentType(mBuilder.contextType);
-        isFullScreen = mBuilder.isFullScreen;
+        actionBarLayoutHeaderView.setContentType(contextType);
 
      /*   ActionBarLayoutHeaderView.GlobalLayoutListener globalLayoutListener = new ActionBarLayoutHeaderView.GlobalLayoutListener() {
             @Override
@@ -198,18 +224,17 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         };
         actionBarLayoutHeaderView.addGlobalLayoutListener(globalLayoutListener);*/
 
-        if (mBuilder.contextType != ActivityContentType.FragmentModel) {
+        if (contextType != ActivityContentType.FragmentModel) {
             //Front导航
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(actionBarLayoutFragmentView, layoutParams3);
-            addContentFragmentView(mBuilder.fragmentResId);
-            addContentFragmentView(mBuilder.fragmentView);
+            addContentFragmentView(fragmentResId);
+            addContentFragmentView(fragmentView);
             actionBarLayoutContentView.setActionbarType(actionbarType);
             setFullScreen(isFullScreen);
         }
     }
 
-    private boolean isFullScreen;
     public void setFullScreen(boolean isFullScreen) {
         this.isFullScreen = isFullScreen;
         /*LayoutParams layoutParams_c = (LayoutParams) getLayoutParams();
@@ -261,8 +286,6 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         actionBarLayoutHeaderView.setContentView(view);
     }
 
-    public ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;
-
     public void setFragmentActionbarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (actionBarLayoutContentView != null) {
@@ -288,6 +311,121 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         return actionBarTip;
     }
 
+
+    int themeColorType = -1;//状态栏文字颜色
+    /**
+     * 设置状态栏字体颜色
+     */
+    public void refreshStateBarColor() {
+        //截图取色
+        Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromViewTop(this, actionBarLayoutHeaderView.getStatusBar_Height());
+        if (bitmap == null) {
+            return;
+        }
+        boolean isDart;
+        isDart = getBitmapMainColor(bitmap);
+        if (themeColorType != (isDart ? 1 : 0)) {
+            themeColorType = (isDart ? 1 : 0);
+            StatusBarUtil.setStatusBarMode((Activity) context.get(), !isDart);
+            //TODO 这里并不严谨isDart是对状态栏颜色的判定， 导航栏应该获取状态栏以下部分的颜色
+            setActionBarColorType(isDart);
+        }
+    }
+
+    private int[] themeColors = {Color.WHITE, Color.BLACK};
+
+    /*public void setActionBarThemeColors(int lightColor, int dartColor) {
+        themeColors[0] = lightColor;
+        themeColors[1] = dartColor;
+        setActionBarColorType(themeColorType == 1);
+    }*/
+    private void setActionBarColorType(boolean isDart) {
+        int color = isDart ? themeColors[0] : themeColors[1];
+        setActionBarColor(color);
+    }
+
+    /**
+     * 设置导航栏主题颜色
+     */
+    private void setActionBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setTintAll(actionBarLayoutHeaderView, color);
+        }
+    }
+
+    /**
+     * 遍历view集合，对vector视图tint,对textView视图设置颜色
+     *
+     * @param view
+     * @param color
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setTintAll(View view, int color) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (viewGroup.getChildAt(i) instanceof ImageView) {
+                    Drawable drawable = (((ImageView) viewGroup.getChildAt(i)).getDrawable());
+                    if (drawable != null) {
+                        drawable.setTint(color);
+                    }
+                }
+                if (viewGroup.getChildAt(i) instanceof ImageTextView) {
+                    ((ImageTextView) viewGroup.getChildAt(i)).setTextColor(color);
+                } else if (viewGroup.getChildAt(i) instanceof ViewGroup) {
+                    setTintAll(viewGroup.getChildAt(i), color);
+                } else if (viewGroup.getChildAt(i) instanceof TextView) {
+                    ((TextView) viewGroup.getChildAt(i)).setTextColor(color);
+                }
+            }
+        }
+    }
+    /*
+       获取bitmap主色调
+        */
+    public boolean getBitmapMainColor(Bitmap oldBitmap) {
+        Bitmap mBitmap = oldBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        //循环获得bitmap所有像素点
+        int mBitmapWidth = mBitmap.getWidth();
+        int mBitmapHeight = mBitmap.getHeight();
+        int mArrayColorLengh = mBitmapWidth * mBitmapHeight;
+        //int[] mArrayColor = new int[mArrayColorLengh];
+        int count_h = 3;//垂直方向三个点
+        int count_w = 10;//水平方向10个点
+        int distance_h = mBitmapHeight / count_h;//垂直间距
+        int distance_w = mBitmapWidth / count_w;//水平间距
+        int dart_point_count = 0;
+        for (int i = 0; i < count_h; i++) {
+            for (int j = 0; j < count_w; j++) {
+                //获得Bitmap 图片中每一个点的color颜色值
+                //将需要填充的颜色值如果不是
+                //在这说明一下 如果color 是全透明 或者全黑 返回值为 0
+                //getPixel()不带透明通道 getPixel32()才带透明部分 所以全透明是0x00000000
+                //而不透明黑色是0xFF000000 如果不计算透明部分就都是0了
+                int color = mBitmap.getPixel(j * distance_w, i * distance_h);
+                int red = (color & 0xff0000) >> 16;
+                int green = (color & 0x00ff00) >> 8;
+                int blue = (color & 0x0000ff);
+                if ((red + green + blue) / 3 > 128) {
+                    dart_point_count++;
+                }
+                //Log.i(TAG, "color=" + color + ",red=" + red + ",green=" + green + ",blue=" + blue);
+                if (i * count_w + j > (count_h * count_w) / 2) {
+                    if (dart_point_count > (count_h * count_w) / 2) {
+                        return false;
+                    } else if (i * count_w + j - dart_point_count > (count_h * count_w) / 2) {
+                        return true;
+                    }
+                }
+                //将颜色值存在一个数组中 方便后面修改
+                //if (color == oldColor) {
+                //   mBitmap.setPixel(j, i, newColor);  //将白色替换成透明色
+                // }
+            }
+        }
+        mBitmap.recycle();
+        return dart_point_count < (count_h * count_w) / 2;
+    }
     @Override
     public void setTitle(String title) {
         getActionBarLayoutHeaderView().setTitle(title);
@@ -321,7 +459,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
      * 导航栏构建者
      */
     public static class Builder {
-        private WeakReference<AppCompatActivity> context;
+        private WeakReference<AppCompatActivity> contextWeakReference;
         private int contentResId = -1;
         private int fragmentResId = -1;
         private int headerResId = -1;
@@ -329,11 +467,11 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         private View fragmentView;
         private boolean isFullScreen = true;
         private ACTIONBAR_TYPE actionbarType;
-        private Fragment fragment;
+        private WeakReference<Fragment> fragmentWeakReference;
         private ActivityContentType contextType = ActivityContentType.ActivityModel;
 
-        public Builder( WeakReference<AppCompatActivity> context) {
-            this.context = context;
+        public Builder( AppCompatActivity context) {
+            this.contextWeakReference = new WeakReference<>(context);
         }
 
         public Builder setContentView(View contentView) {
@@ -372,7 +510,7 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         }
 
         public Builder setFragment(Fragment fragment) {
-            this.fragment = fragment;
+            this.fragmentWeakReference = new WeakReference<>(fragment);
             this.contextType = ActivityContentType.FragmentModel;
             return this;
         }

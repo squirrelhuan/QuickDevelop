@@ -13,8 +13,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-
 /**
  * @author squirrel桓
  * @date 2019/1/11.
@@ -87,10 +85,10 @@ public class QDTextViewPoint extends AppCompatTextView {
         array.recycle();
 
         // Log.i(TAG, "pointMargin: " + pointMargin);
-        QDLogger.i(TAG, "width: " + width);
-        QDLogger.i(TAG, "pointText: " + pointText);
-        QDLogger.i(TAG, "pointGravity: " + pointGravity);
-        QDLogger.i(TAG, "showPoint: " + showPoint);
+        QDLogger.i( "width: " + width);
+        QDLogger.i( "pointText: " + pointText);
+        QDLogger.i( "pointGravity: " + pointGravity);
+        QDLogger.i( "showPoint: " + showPoint);
     }
 
 

@@ -21,8 +21,6 @@ public interface BaseFragmentActivityInterface {
     ViewGroup getContentView(LayoutInflater inflater);
 
     void initView(View rootView, ActionBarInterface actionBarLayout);
-
-    boolean onBackPressed();
-
-    void back();
+    boolean onKeyDown(int keyCode, KeyEvent event);
+    //void back();
 }

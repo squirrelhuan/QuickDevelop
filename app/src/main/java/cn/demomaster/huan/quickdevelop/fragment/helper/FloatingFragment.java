@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -30,7 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Floating", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Floating", preViewClass = TextView.class, resType = ResType.Custome)
 public class FloatingFragment extends QDBaseFragment {
 
     @Override

@@ -1,10 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +8,11 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
@@ -36,7 +29,14 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     private ImageTextView it_actionbar_title;
     private ImageTextView it_actionbar_common_left;
     private ImageTextView it_actionbar_common_right;
-    private View.OnClickListener leftOnClickListener;
+    private View.OnClickListener leftOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (getParent() instanceof ActionBarInterface) {
+                ((ActionBarInterface) getParent()).onClickBack();
+            }
+        }
+    };
     private View.OnClickListener rightOnClickListener;
 
     /**
@@ -114,7 +114,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
             case ACTION_TRANSPARENT:
                 return paddingTop_old + statusBar_Height;
             case ACTION_STACK_NO_STATUS:
-                return paddingTop_old ;
+                return paddingTop_old;
             case NO_ACTION_BAR_NO_STATUS:
                 return paddingTop_old + statusBar_Height;
         }
@@ -171,8 +171,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     private void initOnClickListener() {
         it_actionbar_title = findViewById(R.id.it_actionbar_common_title);
-        if (getContext()instanceof AppCompatActivity&&((AppCompatActivity)getContext()).getTitle() != null) {
-            setTitle(((AppCompatActivity)getContext()).getTitle().toString());
+        if (getContext() instanceof AppCompatActivity && ((AppCompatActivity) getContext()).getTitle() != null) {
+            setTitle(((AppCompatActivity) getContext()).getTitle().toString());
         }
         it_actionbar_common_left = findViewById(R.id.it_actionbar_common_left);
         it_actionbar_common_right = findViewById(R.id.it_actionbar_common_right);
@@ -180,15 +180,6 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
             //it_actionbar_common_left.setOnClickListener(leftOnClickListener);
             if (leftOnClickListener != null) {
                 it_actionbar_common_left.setOnClickListener(leftOnClickListener);
-            } else {
-                it_actionbar_common_left.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (getParent() instanceof ActionBarInterface) {
-                            ((ActionBarInterface) getParent()).onClickBack();
-                        }
-                    }
-                });
             }
         }
         if (it_actionbar_common_right != null) {
@@ -198,8 +189,8 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
                 it_actionbar_common_right.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (getContext()instanceof AppCompatActivity) {
-                            ScreenShotUitl.shot(((AppCompatActivity)getContext()));
+                        if (getContext() instanceof AppCompatActivity) {
+                            ScreenShotUitl.shot(((AppCompatActivity) getContext()));
                         }
                     }
                 });
@@ -209,6 +200,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     private ACTIONBAR_TYPE actionbarType = NORMAL;
     private boolean loadFinished;
+
     public void setActionbarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         if (loadFinished) {
@@ -254,8 +246,15 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     }
 
     private ActivityContentType mContextType = ActivityContentType.ActivityModel;
+
     public void setContentType(ActivityContentType contextType) {
         mContextType = contextType;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        leftOnClickListener =null;
+        rightOnClickListener = null;
+    }
 }

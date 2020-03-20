@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebCromeClient;
+
 /**
  * @author squirrel桓
  * @date 2018/11/8.
@@ -18,16 +23,25 @@ import android.view.animation.AccelerateInterpolator;
  */
 public class LoadingDownView extends View {
 
+    int color;
     public LoadingDownView(Context context) {
         super(context);
     }
 
     public LoadingDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingDownView);
+        color = ta.getColor(R.styleable.LoadingDownView_color, Color.parseColor("#87CEFF"));
+        ta.recycle();  //注意回收
+        QDLogger.v("color = "+color);
     }
 
     public LoadingDownView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingDownView);
+        color = ta.getColor(R.styleable.LoadingDownView_color, Color.parseColor("#87CEFF"));
+        ta.recycle();  //注意回收
+        QDLogger.v("color = "+color);
     }
 
     private int center_x, center_y, mwidth, width, height;
@@ -72,15 +86,12 @@ public class LoadingDownView extends View {
         //结束高度，结束位置
         int startY = 0;
         int endY = height-endHeight;
-
         int top = (int) (startY+(endY-startY)*progress);
-
         if (!isDrawed) {
-            mPaint.setColor(Color.RED);
-            mPaint.setColor(Color.parseColor("#87CEFF"));
+            mPaint.setColor(color);
             int lineWidthc = (int) (lineWidth/5*4+lineWidth/5*progress);
             int arrowWidth = lineWidthc*5/4;
-            int arrowWidthc = (int) (arrowWidth/3*2+arrowWidth/3*progress);
+            //int arrowWidthc = (int) (arrowWidth/3*2+arrowWidth/3*progress);
             int arrowHeight = lineWidthc*3/2;
             int arrowHeightc = (int) (arrowHeight/2+arrowHeight/2*(1-progress));
             Path path = new Path();
@@ -94,18 +105,14 @@ public class LoadingDownView extends View {
             path.lineTo(center_x-lineWidthc/2,top);
             canvas.drawPath(path,mPaint);
         }
+    }
 
-     /*   Path path = new Path();
-        path.moveTo(0,0);
-        path.quadTo(0,200,200,200);
-        path.quadTo(400,200,400,400);
-       Paint paint = new Paint();
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
-        paint.setAntiAlias(true);
-        paint.setColor(Color.GREEN);
-        canvas.drawPath(path,paint);*/
+    public static interface OnProgressChanged {
+        void onProgress(float progress);
+    }
+    OnProgressChanged onProgressChanged;
+    public void setOnProgressChanged(OnProgressChanged onProgressChanged) {
+        this.onProgressChanged = onProgressChanged;
     }
 
     private float progress;
@@ -121,6 +128,9 @@ public class LoadingDownView extends View {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 progress = value;
+                if(onProgressChanged!=null){
+                    onProgressChanged.onProgress(progress);
+                }
                 //Log.d(TAG, "progress=" + progress);
                 if (progress >= end) {
                     isForward = !isForward;
@@ -139,7 +149,11 @@ public class LoadingDownView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if(animator!=null) {
             animator.cancel();
+        }
+        if(onProgressChanged!=null){
+            onProgressChanged = null;
+        }
     }
 }

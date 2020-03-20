@@ -36,24 +36,22 @@ public class StateView extends ImageTextView {
         super(context, attrs, defStyleAttr);
         init();
     }
-
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener= new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            progress = (float) animation.getAnimatedValue();
+            invalidate();
+        }
+    };
     void init(){
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
+        animator.addUpdateListener(animatorUpdateListener);
         //animator.setRepeatMode(ValueAnimator.REVERSE);
         //animator.setRepeatCount(ValueAnimator.INFINITE);
         // accelerate_decelerate_interpolator
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
     }
-
-
 
     private int center_x, center_y, mwidth, width, height;
 
@@ -98,7 +96,6 @@ public class StateView extends ImageTextView {
         mPaint.setColor(getResources().getColor(R.color.white));
         int linewidth = DisplayUtil.dip2px(getContext(), lineWidth);
         mPaint.setStrokeWidth(DisplayUtil.dip2px(getContext(), lineWidth));
-
 
         int r0 = Math.min(a, b);
         int r = (int) (progress * r0);
@@ -206,8 +203,6 @@ public class StateView extends ImageTextView {
                 canvas.drawLine(pointF_warning_01.x, pointF_warning_01.y, pointF_warning_02.x, pointF_warning_02.y, mPaint);
                 canvas.drawLine(pointF_warning_03.x, pointF_warning_03.y, pointF_warning_04.x, pointF_warning_04.y, mPaint);
                 break;
-
-
             case LOADING://加载
                 if (loadingColor == targetColor) {
                     color = loadingColor;
@@ -244,6 +239,13 @@ public class StateView extends ImageTextView {
     }
 
     private ValueAnimator animator;
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener2=new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            progress = (float) animation.getAnimatedValue();
+            invalidate();
+        }
+    };
     private int duration = 500;
     public void show() {
        if(animator==null){
@@ -257,13 +259,7 @@ public class StateView extends ImageTextView {
         //animator = MyValueAnimator.ofFloat(0, 1);
        // animator.setFloatValues(0, 1);
         animator.setDuration(duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
+        animator.addUpdateListener(animatorUpdateListener2);
 
         if(stateType== LoadStateType.LOADING){
             animator.setRepeatCount(ValueAnimator.INFINITE);
@@ -283,7 +279,7 @@ public class StateView extends ImageTextView {
             animator.reverse();
         }
     }
-
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener3;
     //隐藏后显示
     public void hideAndShow(final LoadStateType stateType1) {
         if (animator != null) {
@@ -294,22 +290,24 @@ public class StateView extends ImageTextView {
             //animator.setFloatValues(0, progress);
             animator.setRepeatCount(0);
             animator.setDuration((int) (duration * progress));
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    progress = (float) animation.getAnimatedValue();
-                    if (progress == 0) {
-                        stateType = stateType1;
-                        show();
-                    } else {
-                        invalidate();
+            if(animatorUpdateListener3==null){
+                animatorUpdateListener3 = new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        progress = (float) animation.getAnimatedValue();
+                        if (progress == 0) {
+                            stateType = stateType1;
+                            show();
+                        } else {
+                            invalidate();
+                        }
                     }
-                }
-            });
+                };
+            }
+            animator.addUpdateListener(animatorUpdateListener3);
             animator.reverse();
         }
     }
-
 
     public void setWarningColor(int warningColor) {
         this.warningColor = warningColor;
@@ -381,7 +379,17 @@ public class StateView extends ImageTextView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if(animatorUpdateListener!=null){
+            animatorUpdateListener=null;
+        }
+        if(animatorUpdateListener2!=null){
+            animatorUpdateListener2=null;
+        }
+        if(animatorUpdateListener3!=null){
+            animatorUpdateListener3=null;
+        }
+        if(animator!=null){
             animator.cancel();
+        }
     }
 }

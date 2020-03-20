@@ -1,10 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+
+import java.lang.ref.WeakReference;
 
 /**
  * AttributeSet 帮助类,读取Android的属性
@@ -15,11 +14,11 @@ public class AttributeHelper {
 
     public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
-    private Context mContext;
+    private WeakReference<Context> contextWeakReference;
     private AttributeSet mAttrs;
 
     public AttributeHelper(Context context, AttributeSet attrs) {
-        mContext = context;
+        contextWeakReference = new WeakReference<>(context);
         mAttrs = attrs;
     }
 
@@ -63,7 +62,7 @@ public class AttributeHelper {
         String string = getValue(attribute);
 
         if (string != null && string.startsWith("@")) {// 资源文件
-            string = mContext.getResources().getString(
+            string = contextWeakReference.get().getResources().getString(
                     Integer.parseInt(string.substring(1)));
         }
         return string;
@@ -78,7 +77,7 @@ public class AttributeHelper {
     public String[] getTextArray(String attribute) {
         String string = getValue(attribute);
         if (string != null && string.startsWith("@")) {// 资源文件
-            return mContext.getResources().getStringArray(
+            return contextWeakReference.get().getResources().getStringArray(
                     Integer.parseInt(string.substring(1)));
         }
         return null;
@@ -96,7 +95,7 @@ public class AttributeHelper {
         String string = getValue(attribute);
 
         if (string != null && string.startsWith("@")) {// 资源文件
-            return mContext.getResources().getBoolean(
+            return contextWeakReference.get().getResources().getBoolean(
                     Integer.parseInt(string.substring(1)));
         }
         return Boolean.parseBoolean(string);

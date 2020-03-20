@@ -4,9 +4,9 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-
+/*
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.PlatformConfig;*/
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class Application extends ApplicationParent {
         //初始化友盟分享
         //initUmengShare("5c79138f61f564e0380012fa");
 
-        UMConfigure.init(this,"5c79138f61f564e0380012fa"
+       /* UMConfigure.init(this,"5c79138f61f564e0380012fa"
                 ,"umeng", UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
@@ -53,12 +53,10 @@ public class Application extends ApplicationParent {
         PlatformConfig.setKakao("e4f60e065048eb031e235c806b31c70f");
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
-        PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");
-
+        PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
 
 
     }
-
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
     private SerialPort mSerialPort = null;

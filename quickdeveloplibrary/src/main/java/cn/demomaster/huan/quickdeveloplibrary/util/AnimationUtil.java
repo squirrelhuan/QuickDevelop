@@ -79,7 +79,6 @@ public class AnimationUtil {
                     } else {
                         Log.i("CGQ", "event type = 无效點擊");
                     }
-
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
                     if (isClicked) {
                         animator.reverse();

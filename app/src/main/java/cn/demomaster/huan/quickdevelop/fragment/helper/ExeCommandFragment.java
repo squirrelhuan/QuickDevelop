@@ -1,27 +1,15 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,16 +19,12 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
-import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.QDEditView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
-import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
@@ -49,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "ExeCommand", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "ExeCommand", preViewClass = TextView.class, resType = ResType.Custome)
 public class ExeCommandFragment extends QDBaseFragment {
 
     @Override

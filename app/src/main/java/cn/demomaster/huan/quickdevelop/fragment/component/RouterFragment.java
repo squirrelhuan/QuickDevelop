@@ -1,18 +1,16 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 
 
 /**
@@ -65,10 +63,10 @@ public class RouterFragment extends QDBaseFragment {
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void opentFragment() {
-        FragmentActivityHelper.getInstance().startFragment(mContext,new RouterFragment());
+        ((QDActivity)getContext()).getFragmentActivityHelper().startFragment(mContext,new RouterFragment());
     }
 
     private void startFragment(){
-        FragmentActivityHelper.getInstance().startFragment(mContext,new GuiderFragment());
+        ((QDActivity)getContext()).getFragmentActivityHelper().startFragment(mContext,new GuiderFragment());
     }
 }

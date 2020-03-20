@@ -22,10 +22,9 @@ import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
@@ -67,7 +66,8 @@ public class MainFragment extends QDBaseFragment {
     }*/
 
     @Override
-    public boolean onBackPressed() {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+       // return super.onKeyDown(keyCode, event);
         return true;//屏蔽返回键
     }
 
@@ -143,6 +143,7 @@ public class MainFragment extends QDBaseFragment {
                 .setWithArrow(true)
                 .setArrowHeight(30)
                 .setArrowWidth(30)
+                .setGravity(GuiderView.Gravity.BOTTOM)
                 .setDividerColor(getResources().getColor(R.color.transparent))
                 .setAnchor(getActionBarLayout().getRightView());
         getOptionsMenuBuilder().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
@@ -190,7 +191,7 @@ public class MainFragment extends QDBaseFragment {
         mScrollingTabs.setViewPager(mViewPager);
     }
 
-    private class MainFragmentAdapter extends FragmentPagerAdapter {
+    private static class MainFragmentAdapter extends FragmentPagerAdapter {
         private List<Class> data;
 
         public MainFragmentAdapter(FragmentManager fm) {

@@ -11,7 +11,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.umeng.commonsdk.debug.E;
 
 import java.util.HashMap;
 import java.util.Map;

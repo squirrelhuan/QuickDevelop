@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Keyboard3", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Keyboard3", preViewClass = TextView.class, resType = ResType.Custome)
 public class Keyboard3Fragment extends QDBaseFragment {
 
     @Override
@@ -79,14 +80,6 @@ public class Keyboard3Fragment extends QDBaseFragment {
         qdKeyboard.addEditText(et_system_numberPassword);*/
     }
 
-    @Override
-    public boolean onBackPressed() {
-        if (qdKeyboard.isShow()) {
-            qdKeyboard.hideKeyboard();
-            return false;
-        }
-        return super.onBackPressed();
-    }
 
     // 如果是activity 当点击返回键时, 如果软键盘正在显示, 则隐藏软键盘并是此次返回无效
    /* @Override
@@ -109,6 +102,10 @@ public class Keyboard3Fragment extends QDBaseFragment {
         qdKeyboard.removeEditText(et_system_none);
         qdKeyboard.removeEditText(et_system_number);
         qdKeyboard.removeEditText(et_system_numberPassword);*/
+        if (qdKeyboard.isShow()) {
+            qdKeyboard.hideKeyboard();
+        }
         super.onDestroy();
     }
+
 }

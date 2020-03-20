@@ -12,22 +12,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-           <EditText
+           <cn.demomaster.huan.quickdeveloplibrary.widget.edit.CubeEditText
                android:id="@+id/et_system_none"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_margin="5dp"
+               android:background="@null"
+               android:letterSpacing="1"
                android:hint="我是系统输入法"/>
 
-            <EditText
+            <cn.demomaster.huan.quickdeveloplibrary.widget.edit.CubeEditText
                 android:id="@+id/et_system_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="number"
+                android:gravity="center"
                 android:hint="我是系统输入法(number)"/>
 
-            <EditText
+            <cn.demomaster.huan.quickdeveloplibrary.widget.edit.CubeEditText
                 android:id="@+id/et_system_numberPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

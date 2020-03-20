@@ -72,4 +72,5 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
         void onConnected(NetworkInfo networkInfo);
         void onDisConnected();
     }
+
 }

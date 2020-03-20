@@ -9,19 +9,18 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 
 /**
@@ -29,9 +28,8 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
  * 2018/8/25
  */
 
-@ActivityPager(name = "NestedScrollView", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "NestedScrollView", preViewClass = TextView.class, resType = ResType.Custome)
 public class NestedScrollViewFragment extends QDBaseFragment {
-
 
     //Components
     ViewGroup mView;
@@ -68,7 +66,7 @@ public class NestedScrollViewFragment extends QDBaseFragment {
             @Override
             public void onChange(final int dx, final int dy) {
 
-                Log.i(TAG, ",headHeight=" + headHeight);
+                QDLogger.i( ",headHeight=" + headHeight);
                 if (headHeight + dy <= qdNestedScrollParent.getFixedView().getMinHeight()) {
                     headHeight = qdNestedScrollParent.getFixedView().getMinHeight();
                 } else if (headHeight + dy >= qdNestedScrollParent.getFixedView().getMaxHeight()) {
@@ -76,7 +74,7 @@ public class NestedScrollViewFragment extends QDBaseFragment {
                 } else {
                     headHeight = headHeight + dy;
                 }
-                Log.i(TAG, "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
+                QDLogger.i( "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) iv_head.getLayoutParams();
                 layoutParams.height = headHeight;
                 iv_head.setLayoutParams(layoutParams);
@@ -88,7 +86,7 @@ public class NestedScrollViewFragment extends QDBaseFragment {
                     Log.i(TAG, layoutParams.leftMargin+"<<<<"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
                 }*/
                 layoutParams.leftMargin = layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2 ? layoutParams.leftMargin : -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2;
-                Log.i(TAG, "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight + "layoutParams.leftMargin=" + layoutParams.leftMargin);
+                QDLogger.i( "可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight + "layoutParams.leftMargin=" + layoutParams.leftMargin);
 
 
             }

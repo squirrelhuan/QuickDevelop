@@ -22,14 +22,14 @@ import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.view.SlidingTabLayout;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "CenterHorizontal",preViewClass = ToggleButton.class,resType = ResType.Custome)
-public class CenterHorizontalActivity extends BaseActivityParent {
+@ActivityPager(name = "CenterHorizontal",preViewClass = TextView.class,resType = ResType.Custome)
+public class CenterHorizontalActivity extends QDActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

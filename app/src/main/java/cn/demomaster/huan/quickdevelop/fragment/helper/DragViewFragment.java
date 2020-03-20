@@ -23,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "DragView",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "DragView",preViewClass = TextView.class,resType = ResType.Custome)
 public class DragViewFragment extends QDBaseFragment {
 
     @Override

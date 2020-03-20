@@ -47,7 +47,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.uriToFile;
-import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
 public class InstallHelper {
 

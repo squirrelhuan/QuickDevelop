@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
@@ -19,15 +18,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.PreviewActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ImageUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollRecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
@@ -156,7 +152,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
                 if (position == 0) {
-                    ((BaseActivityParent) context).photoHelper.takePhoto(new PhotoHelper.OnTakePhotoResult() {
+                    ((QDActivity) context).photoHelper.takePhoto(new PhotoHelper.OnTakePhotoResult() {
                         @Override
                         public void onSuccess(Intent data, String path) {
                             Bundle extras = data.getExtras();
@@ -177,7 +173,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                         }
                     });
                 } else {//从相册选择
-                    ((BaseActivityParent) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                    ((QDActivity) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
                         @Override
                         public void onSuccess(Intent data, ArrayList<Image> images) {
                             imageList.addAll(images);

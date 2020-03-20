@@ -1,26 +1,22 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.fragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-
-import java.lang.ref.WeakReference;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.RouterFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
-@ActivityPager(name = "BaseFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class BaseFragmentActivity extends QDBaseActivity {
+@ActivityPager(name = "BaseFragment",preViewClass = TextView.class,resType = ResType.Custome)
+public class BaseFragmentActivity extends QDActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +27,9 @@ public class BaseFragmentActivity extends QDBaseActivity {
         view.setId(getContentViewId());
         setContentView(view);
         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        FragmentActivityHelper.getInstance().bindActivity(new WeakReference<FragmentActivity>(this));
+        QDLogger.i("BaseFragmentActivity onCreate");
         RouterFragment f1 = new RouterFragment();
-        FragmentActivityHelper.getInstance().startFragment(this,f1);
+        getFragmentActivityHelper().startFragment(this,f1);
         //开启事务，fragment的控制是由事务来实现的
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //第一种方式（add），初始化fragment并添加到事务中，如果为null就new一个
@@ -64,5 +60,16 @@ public class BaseFragmentActivity extends QDBaseActivity {
     protected void onStop() {
         super.onStop();
         //FragmentActivityHelper.getInstance().unBindActivity(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        QDLogger.i("BaseFragmentActivity onKeyDown"+keyCode);
+        return super.onKeyDown(keyCode, event);
     }
 }

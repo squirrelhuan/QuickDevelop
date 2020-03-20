@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
 
-public class SimplePictureActivity extends BaseActivityParent {
+public class SimplePictureActivity extends QDActivity {
 
     /**
      * 横竖屏切换处理
@@ -58,11 +58,11 @@ public class SimplePictureActivity extends BaseActivityParent {
 
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
-        getActionBarLayoutOld().setTitle("图片选择器");
-        getActionBarLayoutOld().getRightView().setText("发送");
-        getActionBarLayoutOld().getRightView().setImageResource(0);
-        getActionBarLayoutOld().getRightView().setTextSize(16);
-        getActionBarLayoutOld().getRightView().setOnClickListener(new View.OnClickListener() {
+        getActionBarLayout().setTitle("图片选择器");
+        getActionBarLayout().getRightView().setText("发送");
+        getActionBarLayout().getRightView().setImageResource(0);
+        getActionBarLayout().getRightView().setTextSize(16);
+        getActionBarLayout().getRightView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //拍照完成，返回对应图片路径
@@ -75,8 +75,8 @@ public class SimplePictureActivity extends BaseActivityParent {
                 mContext.finish();
             }
         });
-        getActionBarLayoutOld().setBackGroundColor(getResources().getColor(R.color.white));
-        getActionBarLayoutOld().setStateBarColorAuto(true);
+        getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.white));
+        getActionBarLayout().setStateBarColorAuto(true);
         init();
     }
 

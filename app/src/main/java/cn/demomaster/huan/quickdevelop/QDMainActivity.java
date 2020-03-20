@@ -2,12 +2,9 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.View;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
@@ -17,23 +14,22 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.fragment.main.ComponentFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 
 
-public class QDMainActivity extends BaseActivityParent {
+public class QDMainActivity extends QDActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
 
-        getActionBarLayoutOld().setActionBarModel(ACTIONBAR_TYPE.NORMAL);
-        getActionBarLayoutOld().getLeftView().setVisibility(View.GONE);
-        getActionBarLayoutOld().setHeaderBackgroundColor(Color.RED);
+        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
+        getActionBarLayout().getLeftView().setVisibility(View.GONE);
+        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
 
      /*   List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ComponentFragment());
@@ -69,8 +65,7 @@ public class QDMainActivity extends BaseActivityParent {
 
     }
 
-
-    private class MainFragmentAdapter extends FragmentPagerAdapter {
+    private static class MainFragmentAdapter extends FragmentPagerAdapter {
         private List<Class> data;
         public MainFragmentAdapter(FragmentManager fm) {
             super(fm);

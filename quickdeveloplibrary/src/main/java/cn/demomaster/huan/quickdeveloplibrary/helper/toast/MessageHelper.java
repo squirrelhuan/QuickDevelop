@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView;
@@ -119,8 +120,14 @@ public class MessageHelper {
 
     private static int residenceTime = 2500;
     private static int timer_t = 2500;
-    private static Handler mHandler = new Handler();
-    private static ToastRunable toastRunable = new ToastRunable() {
+    private static Handler mHandler = new QDHandler();
+    private static ToastRunable toastRunable = new ToastRunable();
+
+    public static class ToastRunable implements Runnable {
+        static PopupWindow popupWindow;
+        public void setPopupWindow(PopupWindow popupWindow) {
+            this.popupWindow = popupWindow;
+        }
         @Override
         public void run() {
             if (timer_t > 0) {
@@ -132,17 +139,6 @@ public class MessageHelper {
                 }
                 mHandler.removeCallbacks(this);
             }
-        }
-    };
-
-    public static class ToastRunable implements Runnable {
-        static PopupWindow popupWindow;
-        public void setPopupWindow(PopupWindow popupWindow) {
-            this.popupWindow = popupWindow;
-        }
-        @Override
-        public void run() {
-
         }
     }
 

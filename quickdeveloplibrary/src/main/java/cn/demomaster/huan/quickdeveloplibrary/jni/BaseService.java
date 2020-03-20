@@ -12,8 +12,6 @@ import java.lang.ref.WeakReference;
 import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-
 /**
  * @author squirrel桓
  * @date 2019/1/24.
@@ -26,7 +24,7 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.i(TAG, "BaseService onCreate" + index);
+        QDLogger.i( "BaseService onCreate" + index);
         if(baseBinder==null)
         baseBinder = new BaseBinder(this);
        /* String packageName = getApplicationContext().getPackageName();
@@ -68,7 +66,7 @@ public class BaseService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        QDLogger.i(TAG, "BaseService onStartCommand" + index);
+        QDLogger.i( "BaseService onStartCommand" + index);
 
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
@@ -76,7 +74,7 @@ public class BaseService extends Service {
 
     @Override
     public void onDestroy() {
-        QDLogger.i(TAG, "BaseService onDestroy" + index);
+        QDLogger.i( "BaseService onDestroy" + index);
         super.onDestroy();
        // startService(new Intent(getApplicationContext(), this.getClass()));
     }
@@ -106,7 +104,7 @@ public class BaseService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        QDLogger.i(TAG, "BaseService onUnbind" + index);
+        QDLogger.i( "BaseService onUnbind" + index);
         return super.onUnbind(intent);
     }
 
@@ -115,7 +113,7 @@ public class BaseService extends Service {
         //QdToast.show(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
         if(baseBinder==null)
         baseBinder=new BaseBinder(this);
-        QDLogger.i(TAG, "BaseService onBind" + index);
+        QDLogger.i( "BaseService onBind" + index);
         return baseBinder;
     }
 

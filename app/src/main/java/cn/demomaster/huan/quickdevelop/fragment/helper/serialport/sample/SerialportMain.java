@@ -17,22 +17,21 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
-@ActivityPager(name = "Serialport",preViewClass = StateView.class,resType = ResType.Custome)
-public class SerialportMain extends QDBaseActivity {
+@ActivityPager(name = "Serialport",preViewClass = TextView.class,resType = ResType.Custome)
+public class SerialportMain extends QDActivity {
 
     /** Called when the activity is first created. */
     @Override

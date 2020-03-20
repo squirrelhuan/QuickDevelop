@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
@@ -29,7 +29,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHEL
  * Created by Squirrel桓
  * 读取身份证界面
  */
-public class CameraIDCardActivity extends BaseActivityParent implements View.OnClickListener {
+public class CameraIDCardActivity extends QDActivity implements View.OnClickListener {
 
     /**
      * 身份证正面
@@ -57,16 +57,16 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
-        getActionBarLayoutOld().setStateBarColorAuto(true);
-        getActionBarLayoutOld().setTitle("身份证拍照");
+        getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarLayout().setTitle("身份证拍照");
         initOptionsMenu();
-        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getOptionsMenu().show();
             }
         });
-        getActionBarLayoutOld().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
+        getActionBarLayout().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
@@ -121,7 +121,7 @@ public class CameraIDCardActivity extends BaseActivityParent implements View.OnC
             menus.add(menu);
         }
         getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

@@ -19,7 +19,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
@@ -28,8 +28,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabRadioGroup;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "TabMenu", preViewClass = ToggleButton.class, resType = ResType.Custome)
-public class TabMenuActivity extends BaseActivityParent {
+@ActivityPager(name = "TabMenu", preViewClass = TextView.class, resType = ResType.Custome)
+public class TabMenuActivity extends QDActivity {
 
     TabMenuLayout tabMenuLayout;
 

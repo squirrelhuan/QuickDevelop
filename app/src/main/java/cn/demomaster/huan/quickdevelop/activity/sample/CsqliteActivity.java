@@ -9,10 +9,10 @@ import android.widget.Button;
 
 import cn.demomaster.huan.quickdevelop.Application;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
-public class CsqliteActivity extends BaseActivityParent {
+public class CsqliteActivity extends QDActivity {
 
 
     /** Called when the activity is first created. */
@@ -45,7 +45,7 @@ public class CsqliteActivity extends BaseActivityParent {
         queryBtn = (Button)findViewById(R.id.query);
         deleteBtn = (Button)findViewById(R.id.delete);
 
-        getActionBarLayoutOld().setTitle("数据库操作");
+        getActionBarLayout().setTitle("数据库操作");
     }
 
     //为按钮注册监听的方法

@@ -1,10 +1,12 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Keyboard2", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Keyboard2", preViewClass = TextView.class, resType = ResType.Custome)
 public class Keyboard2Fragment extends QDBaseFragment {
 
     @Override
@@ -80,12 +82,9 @@ public class Keyboard2Fragment extends QDBaseFragment {
     }
 
     @Override
-    public boolean onBackPressed() {
-        if (qdKeyboard.isShow()) {
-            qdKeyboard.hideKeyboard();
-            return false;
-        }
-        return super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+       // qdKeyboard.dispatchTouchEvent();
+        return super.onKeyDown(keyCode, event);
     }
 
     // 如果是activity 当点击返回键时, 如果软键盘正在显示, 则隐藏软键盘并是此次返回无效
@@ -109,6 +108,9 @@ public class Keyboard2Fragment extends QDBaseFragment {
         qdKeyboard.removeEditText(et_system_none);
         qdKeyboard.removeEditText(et_system_number);
         qdKeyboard.removeEditText(et_system_numberPassword);*/
+        if (qdKeyboard.isShow()) {
+            qdKeyboard.hideKeyboard();
+        }
         super.onDestroy();
     }
 }

@@ -3,7 +3,9 @@ package cn.demomaster.huan.quickdevelop.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +19,13 @@ import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
@@ -54,7 +55,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBind(position);
+        holder.onBind(context, data, position);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout rl_preview;
         ImageTextView item_icon;
@@ -74,7 +75,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             item_name = itemView.findViewById(R.id.item_name);
         }
 
-        public void onBind(final int position) {
+        public void onBind(Context context, List<Class> data, final int position) {
             final Class clazz = data.get(position);
             //2.1判断该方法上是否存在@Widget
             boolean annotationPresent = clazz.isAnnotationPresent(ActivityPager.class);
@@ -95,18 +96,18 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                     try {
                         if (resType == ResType.Custome) {
                             //参数类型数组
-                            Class[] parameterTypes={Context.class};
+                            Class[] parameterTypes = {Context.class};
                             //根据参数类型获取相应的构造函数
-                            java.lang.reflect.Constructor constructor=preViewClass.getConstructor(parameterTypes);
+                            java.lang.reflect.Constructor constructor = preViewClass.getConstructor(parameterTypes);
                             //参数数组
-                            Object[] parameters={context};
+                            Object[] parameters = {context};
                             View view = (View) constructor.newInstance(parameters);
 
                             //view.setBackgroundColor(context.getResources().getColor(R.color.yellow));
-                            int w = DisplayUtil.dp2px(context,60);
-                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(w,w);
-                            int m = DisplayUtil.dp2px(context,5);
-                            layoutParams.setMargins(m,m,m,m);
+                            int w = DisplayUtil.dp2px(context, 60);
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(w, w);
+                            int m = DisplayUtil.dp2px(context, 5);
+                            layoutParams.setMargins(m, m, m, m);
                             view.setLayoutParams(layoutParams);
                             //view.setOnClickListener(null);
                             view.setClickable(false);
@@ -116,16 +117,16 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                         itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                    try {
-                                        Class c = clazz.getClass();
-                                        if(Fragment.class.isAssignableFrom(clazz)){
-                                             FragmentActivityHelper.getInstance().startFragment((AppCompatActivity) context,(Fragment) clazz.newInstance());
-                                        }else if(Activity.class.isAssignableFrom(clazz)){
-                                            ((QDBaseActivity)context).startActivity(clazz);
-                                        }
-                                    }catch (Exception e){
-                                        throw new IllegalArgumentException("activityClass must be extends activity!"+e.getMessage());
+                                try {
+                                    Class c = clazz.getClass();
+                                    if (Fragment.class.isAssignableFrom(clazz)) {
+                                        ((QDActivity) context).getFragmentActivityHelper().startFragment((AppCompatActivity) context, (Fragment) clazz.newInstance());
+                                    } else if (Activity.class.isAssignableFrom(clazz)) {
+                                        ((QDActivity) context).startActivity(clazz);
                                     }
+                                } catch (Exception e) {
+                                    throw new IllegalArgumentException("activityClass must be extends activity!" + e.getMessage());
+                                }
                             }
                         });
                     } catch (IllegalAccessException e) {

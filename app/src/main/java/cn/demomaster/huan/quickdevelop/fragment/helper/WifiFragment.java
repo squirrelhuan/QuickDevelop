@@ -60,7 +60,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  * 2018/8/25
  */
 
-@ActivityPager(name = "wifi", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "wifi", preViewClass = TextView.class, resType = ResType.Custome)
 public class WifiFragment extends QDBaseFragment {
 
     @Override
@@ -91,7 +91,6 @@ public class WifiFragment extends QDBaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
-        QDDeviceHelper.init(getContext());
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
 
         WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);

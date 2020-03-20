@@ -8,8 +8,7 @@ import android.util.Log;
 
 import cn.demomaster.huan.quickdevelop.service.GuardService;
 import cn.demomaster.huan.quickdevelop.service.MessageService;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/26.
@@ -22,7 +21,7 @@ public class ServiceReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
+        QDLogger.d( "onReceive");
         Intent mIntent = new Intent();
         mIntent.setClass( context , MessageService.class );
         //context.startService( mIntent );
@@ -31,7 +30,7 @@ public class ServiceReceiver extends BroadcastReceiver {
         } else {
             context.startService(mIntent);
         }
-        Log.d(TAG, "start MessageService");
+        QDLogger.d( "start MessageService");
 
         Intent intent1 = new Intent();
         intent1.setClass( context , GuardService.class);
@@ -41,6 +40,6 @@ public class ServiceReceiver extends BroadcastReceiver {
         } else {
             context.startService(intent1);
         }
-        Log.d(TAG, "start GuardService");
+        QDLogger.d("start GuardService");
     }
 }

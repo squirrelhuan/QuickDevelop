@@ -8,11 +8,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
@@ -26,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "AudioRecordFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "AudioRecordFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class AudioRecordFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;

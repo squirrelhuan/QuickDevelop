@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -18,8 +16,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +27,11 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
@@ -46,8 +40,6 @@ import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
@@ -56,7 +48,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "DeviceHelper", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "DeviceHelper", preViewClass = TextView.class, resType = ResType.Custome)
 public class DeviceFragment extends QDBaseFragment {
 
     @Override
@@ -96,16 +88,15 @@ public class DeviceFragment extends QDBaseFragment {
 
     @Override
     public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
-        QDDeviceHelper.init(getContext());
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         //媒体音量
-        tv_MusicVolume.setText("媒体" + QDDeviceHelper.getMusicVolumeCurrent() + "/" + QDDeviceHelper.getMusicVolumeMax());
-        sb_MusicVolume.setMax(QDDeviceHelper.getMusicVolumeMax());
-        sb_MusicVolume.setProgress(QDDeviceHelper.getMusicVolumeCurrent());
+        tv_MusicVolume.setText("媒体" + QDDeviceHelper.getMusicVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getMusicVolumeMax(getContext()));
+        sb_MusicVolume.setMax(QDDeviceHelper.getMusicVolumeMax(getContext()));
+        sb_MusicVolume.setProgress(QDDeviceHelper.getMusicVolumeCurrent(getContext()));
         sb_MusicVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setMusicVolume(progress);
+                QDDeviceHelper.setMusicVolume(getContext(),progress);
             }
 
             @Override
@@ -119,13 +110,13 @@ public class DeviceFragment extends QDBaseFragment {
             }
         });
         //铃声音量
-        tv_RingVolume.setText("铃声" + QDDeviceHelper.getRingVolumeCurrent() + "/" + QDDeviceHelper.getRingVolumeMax());
-        sb_RingVolume.setMax(QDDeviceHelper.getRingVolumeMax());
-        sb_RingVolume.setProgress(QDDeviceHelper.getRingVolumeCurrent());
+        tv_RingVolume.setText("铃声" + QDDeviceHelper.getRingVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getRingVolumeMax(getContext()));
+        sb_RingVolume.setMax(QDDeviceHelper.getRingVolumeMax(getContext()));
+        sb_RingVolume.setProgress(QDDeviceHelper.getRingVolumeCurrent(getContext()));
         sb_RingVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setRingVolume(progress);
+                QDDeviceHelper.setRingVolume(getContext(),progress);
             }
 
             @Override
@@ -139,13 +130,13 @@ public class DeviceFragment extends QDBaseFragment {
             }
         });
         //闹钟音量
-        tv_AlarmVolume.setText("闹钟" + QDDeviceHelper.getAlarmVolumeCurrent() + "/" + QDDeviceHelper.getAlarmVolumeMax());
-        sb_AlarmVolume.setMax(QDDeviceHelper.getAlarmVolumeMax());
-        sb_AlarmVolume.setProgress(QDDeviceHelper.getAlarmVolumeCurrent());
+        tv_AlarmVolume.setText("闹钟" + QDDeviceHelper.getAlarmVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getAlarmVolumeMax(getContext()));
+        sb_AlarmVolume.setMax(QDDeviceHelper.getAlarmVolumeMax(getContext()));
+        sb_AlarmVolume.setProgress(QDDeviceHelper.getAlarmVolumeCurrent(getContext()));
         sb_AlarmVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setAlarmVolume(progress);
+                QDDeviceHelper.setAlarmVolume(getContext(),progress);
             }
 
             @Override
@@ -159,13 +150,13 @@ public class DeviceFragment extends QDBaseFragment {
             }
         });
         //通话音量
-        tv_VioceVolume.setText("通话" + QDDeviceHelper.getVioceVolumeCurrent() + "/" + QDDeviceHelper.getVioceVolumeMax());
-        sb_VioceVolume.setMax(QDDeviceHelper.getVioceVolumeMax());
-        sb_VioceVolume.setProgress(QDDeviceHelper.getVioceVolumeCurrent());
+        tv_VioceVolume.setText("通话" + QDDeviceHelper.getVioceVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getVioceVolumeMax(getContext()));
+        sb_VioceVolume.setMax(QDDeviceHelper.getVioceVolumeMax(getContext()));
+        sb_VioceVolume.setProgress(QDDeviceHelper.getVioceVolumeCurrent(getContext()));
         sb_VioceVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setVioceVolume(progress);
+                QDDeviceHelper.setVioceVolume(getContext(),progress);
             }
 
             @Override

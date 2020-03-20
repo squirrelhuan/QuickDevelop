@@ -16,6 +16,7 @@ import com.yzq.zxinglibrary.common.Constant;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,12 +36,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 public class PhotoHelper {
 
-    private Context context;
-
+    private WeakReference<Context> contextWeakReference;
     public PhotoHelper(Context context) {
-        this.context = context;
+        this.contextWeakReference = new WeakReference<>(context);
     }
-
     public void scanQrcode(OnTakePhotoResult onTakePhotoResult) {
         takePhoto2(onTakePhotoResult, RESULT_CODE_SCAN_QRCODE);
     }
@@ -110,7 +109,7 @@ public class PhotoHelper {
 
     private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        PermissionManager.chekPermission(context, permissions, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.chekPermission(contextWeakReference.get(), permissions, new PermissionManager.OnCheckPermissionListener() {
             @Override
             public void onPassed() {
                 photoResultMap.put(resultCodeTakePhoto, onTakePhotoResult);
@@ -170,14 +169,14 @@ public class PhotoHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             ContentValues contentValues = new ContentValues(1);
             contentValues.put(MediaStore.Images.Media.DATA, pictureFile.getAbsolutePath());
-            fileUri = ((Activity) context).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
+            fileUri = ((Activity) contextWeakReference.get()).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
             //fileUri = FileProvider.getUriForFile(context, "cn.demomaster.huan.quickdeveloplibrary.fileprovider", pictureFile);
 
         } else {
             fileUri = Uri.fromFile(pictureFile);
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO);
     }
 
     private void cropPhoto(Uri uri, int resultCodeTakePhoto) {
@@ -198,7 +197,7 @@ public class PhotoHelper {
         intent.putExtra("outputX", 320);
         intent.putExtra("outputY", 200);
         intent.putExtra("return-data", true);
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_PHOTO_CROP);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_PHOTO_CROP);
         //startActivityForResult(CameraIDCardActivity.class,resultCodeTakePhoto);
     }
 
@@ -210,11 +209,11 @@ public class PhotoHelper {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_GALLERY);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_GALLERY);
     }
 
     private void scanQrcode(int resultCodeTakePhoto) {
-        Intent intent = new Intent(context, CaptureActivity.class);
+        Intent intent = new Intent(contextWeakReference.get(), CaptureActivity.class);
         /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
          * 不传的话  默认都为默认不震动  其他都为true
@@ -227,22 +226,22 @@ public class PhotoHelper {
         //config.setShowAlbum(true);//是否显示相册
         //config.setShowFlashLight(true);//是否显示闪光灯
         //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE);
     }
 
     private void startSimplePictureActivity(int resultCodeTakePhoto, Object onTakePhotoResult) {
         OnSelectPictureResult onSelectPictureResult = (OnSelectPictureResult) onTakePhotoResult;
-        Intent intent = new Intent(context, SimplePictureActivity.class);
+        Intent intent = new Intent(contextWeakReference.get(), SimplePictureActivity.class);
         intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
         intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
     }
 
 
     private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int resultCodeTakePhoto) {
-        Intent intent = new Intent(context, cameraIDCardActivityClass);
+        Intent intent = new Intent(contextWeakReference.get(), cameraIDCardActivityClass);
         intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-        ((Activity) context).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_CAMERA);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_CAMERA);
     }
 
     public final static int RESULT_CODE_TAKE_PHOTO = 2001;
@@ -269,11 +268,36 @@ public class PhotoHelper {
     public final static String PHOTOHELPER_RESULT_PATHES = "PHOTOHELPER_RESULT_PATHES";
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE://扫描
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SCAN_QRCODE, data);
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_CAMERA://自定义拍照
+                onActivityResultImp(requestCode, resultCode, data);
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO://拍照
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_TAKE_PHOTO, data);
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_GALLERY://相册选取
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SELECT_PHOTO_FROM_GALLERY, data);//偷梁换柱
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_PHOTO_CROP://图片截取
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_PHOTO_CROP, data);//偷梁换柱
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP://相册并截取
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SELECT_PHOTO_FROM_GALLERY_AND_CROP, data);//偷梁换柱
+                break;
+            case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE://自定义的图片选择器
+                onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SIMPLE_PICTURE, data);//偷梁换柱
+                break;
+        }
+    }
+
+    public void onActivityResultImp(int requestCode, int resultCode, Intent data) {
         String path = null;
         OnTakePhotoResult onTakePhotoResult = null;
         OnSelectPictureResult onSelectPictureResult = null;
         if (data != null) {
-
             switch (resultCode) {
                 case RESULT_CODE_TAKE_PHOTO:
                     onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
@@ -311,7 +335,6 @@ public class PhotoHelper {
                 onSelectPictureResult.onSuccess(data, images);
             }
         }
-
     }
 
     public static interface OnTakePhotoResult {

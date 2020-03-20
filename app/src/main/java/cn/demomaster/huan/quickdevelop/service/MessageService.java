@@ -17,8 +17,6 @@ import android.util.Log;
 import cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
-
 /**
  * Created by Squirrel桓 on 2019/1/26.
  */
@@ -33,11 +31,10 @@ public class MessageService extends Service {
 
     @Override
     public void onCreate() {
-        QDLogger.d(TAG, "onCreate");
+        QDLogger.d("onCreate");
         super.onCreate();
         startGuardService();
         //DeviceEngine.getInst().init(this.getApplicationContext());
-
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
@@ -62,15 +59,14 @@ public class MessageService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知
-        QDLogger.d(TAG, "ServiceDemo onStartCommand");
+        QDLogger.d( "ServiceDemo onStartCommand");
         flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
-
     }
 
     @Override
     public void onDestroy() {
-        QDLogger.d(TAG, "onDestroy");
+        QDLogger.d( "onDestroy");
         super.onDestroy();
         Intent intent = new Intent(ACTION);
         intent.setAction("cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver");
@@ -91,8 +87,7 @@ public class MessageService extends Service {
                 }*/
         sendBroadcast(intent);
        // unregisterReceiver(conncetReceiver);
-        QDLogger.d(TAG, "sendBroadcast[" + ACTION + "]");
-
+        QDLogger.d( "sendBroadcast[" + ACTION + "]");
     }
 
 

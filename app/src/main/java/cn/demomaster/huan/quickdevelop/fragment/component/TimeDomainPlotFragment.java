@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotVie
  * 2018/8/25
  */
 
-@ActivityPager(name = "TimeDomainPlot",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "TimeDomainPlot",preViewClass = TextView.class,resType = ResType.Custome)
 public class TimeDomainPlotFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;

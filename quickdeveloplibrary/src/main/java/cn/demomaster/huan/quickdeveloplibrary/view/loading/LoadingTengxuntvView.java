@@ -7,14 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 
 /**
  * @author squirrel桓

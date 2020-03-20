@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
+
+import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 
@@ -22,20 +25,19 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHel
 public class SmsCodeHelper  {
 
     //1.手机号，2button,3默认text,4等待text,5,onReciveSmsCode,6time
-
     private String telephone;
-    private TextView btn_getSmsCode;
+    private WeakReference<TextView> btn_getSmsCode;
     private int time = 60;
     private SmsCodeHelper.OnSmsCodeListener onReceiveSmsCodeListener;
-    private Context context;
+    private WeakReference<Context> contextWeakReference;
     private String btn_str;
 
     public SmsCodeHelper(String telephone, TextView btn_getSmsCode, SmsCodeHelper.OnSmsCodeListener onReceiveSmsCodeListener, int time) {
         this.telephone = telephone;
-        this.btn_getSmsCode = btn_getSmsCode;
+        this.btn_getSmsCode = new WeakReference<>(btn_getSmsCode);
         this.onReceiveSmsCodeListener = onReceiveSmsCodeListener;
         this.time = time;
-        this.context = btn_getSmsCode.getContext();
+        this.contextWeakReference = new WeakReference<>(btn_getSmsCode.getContext());
         this.btn_str = btn_getSmsCode.getText().toString();
     }
 
@@ -55,7 +57,7 @@ public class SmsCodeHelper  {
         onReceiveSmsCodeListener.onReceiveFailure(error);
     }
 
-    Handler handler = new Handler();
+    Handler handler = new QDHandler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -67,25 +69,33 @@ public class SmsCodeHelper  {
         long now = System.currentTimeMillis();
         long diff = getSecond(now - last);
         if (diff > time) {
-            btn_getSmsCode.setText(btn_str);
-            btn_getSmsCode.setOnClickListener(new View.OnClickListener() {
+            btn_getSmsCode.get().setText(btn_str);
+            btn_getSmsCode.get().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //返回校验结果
-                    if(onReceiveSmsCodeListener.onNextHttpGet()){
-                        //onReceiveSmsCodeListener.onNextHttpGet();
-                        btn_getSmsCode.setOnClickListener(null);
-                    }else {
-                        Log.i(TAG.APP,"手机号不合法");
-                        onReceiveSmsCodeListener.onReceiveFailure("手机号不合法");
+                    if (onReceiveSmsCodeListener != null) {
+                        //返回校验结果
+                        if (onReceiveSmsCodeListener.onNextHttpGet()) {
+                            //onReceiveSmsCodeListener.onNextHttpGet();
+                            btn_getSmsCode.get().setOnClickListener(null);
+                        } else {
+                            Log.i(TAG.APP, "手机号不合法");
+                            onReceiveSmsCodeListener.onReceiveFailure("手机号不合法");
+                        }
                     }
                 }
             });
-            handler.removeCallbacks(runnable);
+            if(handler!=null) {
+                handler.removeCallbacks(runnable);
+            }
         } else {
-            btn_getSmsCode.setOnClickListener(null);
-            onReceiveSmsCodeListener.onTimeChange(time - diff );
-            handler.postDelayed(runnable, 1000);
+            if(btn_getSmsCode!=null&&btn_getSmsCode.get()!=null) {
+                btn_getSmsCode.get().setOnClickListener(null);
+            }
+            if(onReceiveSmsCodeListener!=null) {
+                onReceiveSmsCodeListener.onTimeChange(time - diff);
+                handler.postDelayed(runnable, 1000);
+            }
         }
     }
 
@@ -97,11 +107,10 @@ public class SmsCodeHelper  {
     }
 
     public void onVerifyCodeFailure(String message) {
-        btn_getSmsCode.setOnClickListener(null);
+        btn_getSmsCode.get().setOnClickListener(null);
         validateCode();
         //ToastHelper.showToast(this, "验证码获取失败" + message, Toast.LENGTH_LONG);
     }
-
 
     //时间戳转字符串
     public static long getSecond(long diff) {
@@ -130,7 +139,6 @@ public class SmsCodeHelper  {
         private TextView btn_getSmsCode;
         private SmsCodeHelper.OnSmsCodeListener onReceiveSmsCodeListener;
         private int time = 60;
-        private SmsCodeHelper smsCodeHelper;
 
         public Builder(String telephone, TextView btn_getSmsCode, SmsCodeHelper.OnSmsCodeListener onReceiveSmsCodeListener) {
             this.telephone = telephone;
@@ -142,8 +150,7 @@ public class SmsCodeHelper  {
             return this;
         }
         public SmsCodeHelper create(){
-            smsCodeHelper = new SmsCodeHelper(telephone,btn_getSmsCode,onReceiveSmsCodeListener,time);
-            return smsCodeHelper;
+            return new SmsCodeHelper(telephone,btn_getSmsCode,onReceiveSmsCodeListener,time);
         }
     }
 
@@ -159,10 +166,13 @@ public class SmsCodeHelper  {
     }
 
     public void unRegisterSmsListener(){
-        onReceiveSmsCodeListener=null;
-        this.context = null;
+        if(onReceiveSmsCodeListener!=null) {
+            onReceiveSmsCodeListener = null;
+        }
         if(handler!=null){
             handler.removeCallbacks(runnable);
+            handler.removeCallbacksAndMessages(null);
+            runnable = null;
         }
         handler=null;
     }

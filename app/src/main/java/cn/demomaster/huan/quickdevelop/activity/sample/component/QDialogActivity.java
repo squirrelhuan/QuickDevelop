@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
@@ -31,8 +32,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
-@ActivityPager(name = "QDialog",preViewClass = StateView.class,resType = ResType.Custome)
-public class QDialogActivity extends BaseActivityParent {
+@ActivityPager(name = "QDialog",preViewClass = TextView.class,resType = ResType.Custome)
+public class QDialogActivity extends QDActivity {
 
     private int backgroundRadio=50;
     private ListView mListView;
@@ -41,7 +42,7 @@ public class QDialogActivity extends BaseActivityParent {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdialog);
 
-        getActionBarLayoutOld().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getOptionsMenu().show();
@@ -154,7 +155,7 @@ public class QDialogActivity extends BaseActivityParent {
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayoutOld().getRightView());
+        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

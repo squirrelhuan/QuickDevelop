@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -469,28 +470,43 @@ public class SafeKeyboard {
         }
     };
 
-    private final Runnable hideEnd = new Runnable() {
+    public static class HideRunnable implements Runnable{
+        WeakReference<SafeKeyboard> safeKeyboardWeakReference;
+        public HideRunnable(SafeKeyboard safeKeyboard) {
+            safeKeyboardWeakReference = new WeakReference<>(safeKeyboard);
+        }
+
         @Override
         public void run() {
-            isHideStart = false;
-            if (keyContainer.getVisibility() != View.GONE) {
-                keyContainer.setVisibility(View.GONE);
+            if(safeKeyboardWeakReference!=null&&safeKeyboardWeakReference.get()!=null) {
+                safeKeyboardWeakReference.get().isHideStart = false;
+                if (safeKeyboardWeakReference.get().keyContainer.getVisibility() != View.GONE) {
+                    safeKeyboardWeakReference.get().keyContainer.setVisibility(View.GONE);
+                }
             }
         }
-    };
+    }
 
-    private final Runnable showEnd = new Runnable() {
+    private final Runnable hideEnd = new HideRunnable(this);
+    public static class ShowRunnable implements Runnable{
+        WeakReference<SafeKeyboard> safeKeyboardWeakReference;
+        public ShowRunnable(SafeKeyboard safeKeyboard) {
+            safeKeyboardWeakReference = new WeakReference<>(safeKeyboard);
+        }
+
         @Override
         public void run() {
-            isShowStart = false;
-            // 在迅速点击不同输入框时, 造成自定义软键盘和系统软件盘不停的切换, 偶尔会出现停在使用系统键盘的输入框时, 没有隐藏
-            // 自定义软键盘的情况, 为了杜绝这个现象, 加上下面这段代码
-            if (!mEditText.isFocused()) {
-                hideKeyboard();
+            if(safeKeyboardWeakReference!=null&&safeKeyboardWeakReference.get()!=null) {
+                safeKeyboardWeakReference.get().isShowStart = false;
+                // 在迅速点击不同输入框时, 造成自定义软键盘和系统软件盘不停的切换, 偶尔会出现停在使用系统键盘的输入框时, 没有隐藏
+                // 自定义软键盘的情况, 为了杜绝这个现象, 加上下面这段代码
+                if (!safeKeyboardWeakReference.get().mEditText.isFocused()) {
+                    safeKeyboardWeakReference.get().hideKeyboard();
+                }
             }
         }
-    };
-
+    }
+    private final Runnable showEnd = new ShowRunnable(this);
     private void showKeyboard() {
         keyboardView.setKeyboard(keyboardLetter);
         keyContainer.setVisibility(View.VISIBLE);

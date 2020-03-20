@@ -8,13 +8,13 @@ import android.widget.SeekBar;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 @ActivityPager(name = "RatingBar", preViewClass = RatingBar.class, resType = ResType.Custome)
-public class RatingBarActivity extends BaseActivityParent {
+public class RatingBarActivity extends QDActivity {
 
     private SeekBar sb_weight, sb_progress;
     private RatingBar ratingBar;

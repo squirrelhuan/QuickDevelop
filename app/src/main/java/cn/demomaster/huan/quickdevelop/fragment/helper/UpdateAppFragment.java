@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.e;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Update App", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Update App", preViewClass = TextView.class, resType = ResType.Custome)
 public class UpdateAppFragment extends QDBaseFragment {
 
     @Override

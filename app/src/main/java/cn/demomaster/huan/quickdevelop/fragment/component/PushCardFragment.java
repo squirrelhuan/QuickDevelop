@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionStateType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout;
 import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.Saleng;
 
@@ -35,7 +36,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.Saleng;
  * 2018/8/25
  */
 
-@ActivityPager(name = "PushCard",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "PushCard",preViewClass = TextView.class,resType = ResType.Custome)
 public class PushCardFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
@@ -99,12 +100,12 @@ public class PushCardFragment extends QDBaseFragment {
         pcl_layout.setDataListener(new PushCardLayout.PushCardDatalistener() {
             @Override
             public void onLoadMoreData() {
-                final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
+                final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
                 //qdActionDialog1.show();
                 pcl_layout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
+                        final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
                         qdActionDialog.show();
                         pcl_layout.dismiss();
                         qdActionDialog1.dismiss();
@@ -115,13 +116,13 @@ public class PushCardFragment extends QDBaseFragment {
 
             @Override
             public void onRefreshData() {
-                final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
+                final QDActionDialog qdActionDialog1 = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.LOADING).setMessage("加载中").setDelayMillis(-1).create();
                 //qdActionDialog1.show();
                 pcl_layout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //qdActionDialog.dismiss();
-                        QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionDialog.ActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
+                        QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
                         qdActionDialog.show();
                         pcl_layout.dismiss();
                         qdActionDialog1.dismiss();

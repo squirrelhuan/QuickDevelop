@@ -74,7 +74,6 @@
         <item name="android:selectAllOnFocus">false</item>
     </style>
 
-
     <!--********************* Button *********************-->
     <style name="QDButtonStyle" parent="android:Widget.Holo.Light.Button">
         <item name="android:layout_width">wrap_content</item>
@@ -125,6 +124,15 @@
     <style name="qd_dialog_animation_center_scale" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/qd_dialog_animation_center_scale_enter</item>
         <item name="android:windowExitAnimation">@anim/qd_dialog_animation_center_scale_exit</item>
+    </style>
+
+    <declare-styleable name="LoadingDownView">
+        <attr name="color" format="color" />
+    </declare-styleable>
+
+    <style name="keybored_anim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/keybored_show</item>
+        <item name="android:windowExitAnimation">@anim/keybored_hide</item>
     </style>
 
 </resources>

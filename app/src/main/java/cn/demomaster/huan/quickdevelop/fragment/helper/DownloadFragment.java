@@ -1,21 +1,15 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
-import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import org.greenrobot.eventbus.EventBus;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,22 +21,17 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadProgress;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static android.app.DownloadManager.STATUS_FAILED;
 import static android.app.DownloadManager.STATUS_PAUSED;
@@ -56,7 +45,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  * Squirrel桓
  * 2018/8/25 QDTerminal
  */
-@ActivityPager(name = "Downloader", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Downloader", preViewClass = TextView.class, resType = ResType.Custome)
 public class DownloadFragment extends QDBaseFragment {
 
     @Override

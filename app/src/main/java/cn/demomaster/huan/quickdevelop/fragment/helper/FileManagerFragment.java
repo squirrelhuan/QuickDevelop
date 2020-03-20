@@ -9,12 +9,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.tencent.bugly.crashreport.CrashReport;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +22,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -43,7 +38,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getFileCreatT
  * 2018/8/25
  */
 
-@ActivityPager(name = "FileManager",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "FileManager",preViewClass = TextView.class,resType = ResType.Custome)
 public class FileManagerFragment extends QDBaseFragment {
 
     @Override

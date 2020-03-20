@@ -1,10 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 //import com.umeng.commonsdk.UMConfigure;
@@ -13,16 +11,13 @@ import android.preference.PreferenceManager;
 //import com.didichuxing.doraemonkit.DoraemonKit;
 
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.crashreport.CrashReport;
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
-import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.QDActivityLifecycleCallbacks;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
@@ -85,7 +80,7 @@ public class ApplicationParent extends Application {
      * @param appkey
      */
     public void initUmengShare(String appkey) {
-        UMConfigure.init(this, appkey
+        /*UMConfigure.init(this, appkey
                 , "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
@@ -100,7 +95,7 @@ public class ApplicationParent extends Application {
         PlatformConfig.setKakao("e4f60e065048eb031e235c806b31c70f");
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965", "5My6SNliAaLxEm3Lyd9J");
-        PlatformConfig.setDropbox("oz8v5apet3arcdy", "h7p2pjbzkkxt02a");
+        PlatformConfig.setDropbox("oz8v5apet3arcdy", "h7p2pjbzkkxt02a");*/
         //PlatformConfig.setYnote("9c82bf470cba7bd2f1819b0ee26f86c6ce670e9b");
     }
 
@@ -117,11 +112,6 @@ public class ApplicationParent extends Application {
         db = dbHelper.getReadableDatabase();
     }
 
-    //添加 <功能详细描述>
-    public void addActivity(Activity activity) {
-        QDActivityManager.getInstance().addActivity(activity);
-    }
-
     /**
      * 设置buggly appID
      * @return
@@ -129,6 +119,7 @@ public class ApplicationParent extends Application {
     public String getBugglyAppID(){
         return "7d6d33c554";
     }
+    public ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new QDActivityLifecycleCallbacks();
     /**
      * 处理异常捕获
      */
@@ -148,45 +139,4 @@ public class ApplicationParent extends Application {
         }
     }
 
-    public ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            QDActivityManager.getInstance().addActivity(activity);
-            QDLogger.d(TAG.ACTIVITY, "onActivityCreated() ==> [" + activity + "]");
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityStarted() ==> [" + activity + "]");
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityResumed() ==> [" + activity + "]");
-            QDActivityManager.getInstance().onActivityResumed(activity);
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityPaused() ==> [" + activity + "]");
-            QDActivityManager.getInstance().onActivityPaused(activity);
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, "onActivityStopped() ==> [" + activity + "]");
-            QDActivityManager.getInstance().onActivityStopped(activity);
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            //QDLogger.d(TAG.ACTIVITY, "onActivitySaveInstanceState() ==> activity = [" + activity + "]");
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            QDActivityManager.getInstance().removeActivity(activity);
-            QDLogger.d(TAG.ACTIVITY, "onActivityDestroyed() ==> [" + activity + "]");
-        }
-    };
 }

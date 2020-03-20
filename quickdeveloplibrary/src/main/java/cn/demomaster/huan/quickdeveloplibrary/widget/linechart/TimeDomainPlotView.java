@@ -428,4 +428,11 @@ public class TimeDomainPlotView extends View {
     }
 
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(linePoints!=null) {
+            linePoints = null;
+        }
+    }
 }

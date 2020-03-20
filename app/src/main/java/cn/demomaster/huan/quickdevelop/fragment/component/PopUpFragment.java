@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -22,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
  * 2018/8/25
  */
 
-@ActivityPager(name = "PopUp",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "PopUp",preViewClass = TextView.class,resType = ResType.Custome)
 public class PopUpFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;

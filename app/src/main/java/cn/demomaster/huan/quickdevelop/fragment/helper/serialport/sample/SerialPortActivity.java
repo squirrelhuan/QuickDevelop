@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -29,9 +28,9 @@ import android.os.Bundle;
 import android_serialport_api.SerialPort;
 import cn.demomaster.huan.quickdevelop.Application;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 
-public abstract class SerialPortActivity extends QDBaseActivity {
+public abstract class SerialPortActivity extends QDActivity {
 
 	protected Application mApplication;
 	protected SerialPort mSerialPort;

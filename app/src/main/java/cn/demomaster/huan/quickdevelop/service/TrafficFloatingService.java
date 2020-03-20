@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NetworkStatsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.TrafficHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -50,36 +53,44 @@ public class TrafficFloatingService extends QDFloatingService {
     }
 
     int uid;
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
+    Handler handler = new QDHandler();
+    public static class CRunnable implements Runnable{
+
+        WeakReference<TrafficFloatingService> trafficFloatingServiceWeakReference ;
+        public CRunnable(TrafficFloatingService trafficFloatingService) {
+            trafficFloatingServiceWeakReference = new WeakReference<>(trafficFloatingService);
+        }
+
         @Override
         public void run() {
-            String str1 = "";
-            long value;
-            if (tv_up != null) {
-                value = TrafficHelper.getInstant().getUpdateSpeed();
-                str1 = fomatString(value);
-                tv_up.setText(str1);
-            }
-            if (tv_down != null) {
-                value = TrafficHelper.getInstant().getDownloadSpeed();
-                str1 = fomatString(value);
-                tv_down.setText(str1);
-            }
+            if(trafficFloatingServiceWeakReference!=null&&trafficFloatingServiceWeakReference.get()!=null) {
+                String str1 = "";
+                long value;
+                if (trafficFloatingServiceWeakReference.get().tv_up != null) {
+                    value = TrafficHelper.getInstant().getUpdateSpeed();
+                    str1 = trafficFloatingServiceWeakReference.get().fomatString(value);
+                    trafficFloatingServiceWeakReference.get().tv_up.setText(str1);
+                }
+                if (trafficFloatingServiceWeakReference.get().tv_down != null) {
+                    value = TrafficHelper.getInstant().getDownloadSpeed();
+                    str1 = trafficFloatingServiceWeakReference.get().fomatString(value);
+                    trafficFloatingServiceWeakReference.get().tv_down.setText(str1);
+                }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uid = NetworkStatsHelper.getUidByPackageName(mContext, mContext.getPackageName());
-                QDLogger.d("uid1=" + uid);
-                //value = networkStatsHelper.getAllBytesWifi(mContext);
-                value = TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
-                str1 = "total:"+fomatString(value);
-                tv_today.setText(str1);
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    trafficFloatingServiceWeakReference.get().uid = NetworkStatsHelper.getUidByPackageName(trafficFloatingServiceWeakReference.get().mContext, trafficFloatingServiceWeakReference.get().mContext.getPackageName());
+                    QDLogger.d("uid1=" + trafficFloatingServiceWeakReference.get().uid);
+                    //value = networkStatsHelper.getAllBytesWifi(mContext);
+                    value = TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
+                    str1 = "total:" + trafficFloatingServiceWeakReference.get().fomatString(value);
+                    trafficFloatingServiceWeakReference.get().tv_today.setText(str1);
+                }
 
-            handler.postDelayed(runnable, 1000);
+                trafficFloatingServiceWeakReference.get().handler.postDelayed(trafficFloatingServiceWeakReference.get().runnable, 1000);
+            }
         }
-    };
-
+    }
+    Runnable runnable = new CRunnable(this);
     private String fomatString(long value) {
         String str1 = "";
         if (value > 1073741824) {

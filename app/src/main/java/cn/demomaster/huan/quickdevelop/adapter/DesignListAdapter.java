@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.designer.WebViewFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -83,7 +84,7 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
                         Bundle bundle = new Bundle();
                         bundle.putString("URL", (String) jsonObject.get("url"));
                         webViewFragment.setArguments(bundle);
-                        FragmentActivityHelper.getInstance().startFragment((AppCompatActivity) context, webViewFragment);
+                    ((QDActivity)context).getFragmentActivityHelper().startFragment((AppCompatActivity) context, webViewFragment);
                 }
             });
         }

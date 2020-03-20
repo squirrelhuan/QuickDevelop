@@ -326,7 +326,6 @@ public class ActionBarLayout2 implements ActionBarInterface{
 
     /**
      * 状态栏颜色刷新需要在view加载完成后操作
-     *
      * @param ll_layout
      */
     public void changeChildView(final LinearLayout ll_layout) {

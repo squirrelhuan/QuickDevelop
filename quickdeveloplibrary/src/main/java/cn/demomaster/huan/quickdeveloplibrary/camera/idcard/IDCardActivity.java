@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -38,7 +38,7 @@ import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 
-public class IDCardActivity extends BaseActivityParent {
+public class IDCardActivity extends QDActivity {
 
     private ImageView imageView;
 

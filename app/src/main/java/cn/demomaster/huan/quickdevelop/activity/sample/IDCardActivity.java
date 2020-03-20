@@ -18,11 +18,11 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 
-public class IDCardActivity extends BaseActivityParent {
+public class IDCardActivity extends QDActivity {
 
     @BindView(R.id.main_image)
     public ImageView imageView;

@@ -199,8 +199,9 @@ public abstract class QDFloatingService extends Service {
     }
 
     public static void showWindow(Context context,Class clazz) {
-        if (!isShowing)
+        if (!isShowing) {
             context.getApplicationContext().startService(new Intent(context.getApplicationContext(), clazz));
+        }
     }
 
     public static void dissmissWindow(Context context,Class clazz) {

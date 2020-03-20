@@ -1,7 +1,5 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.actionbar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +7,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
@@ -24,8 +22,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
-@ActivityPager(name = "ActionBarTip", preViewClass = StateView.class, resType = ResType.Custome)
-public class ActionBarTipActivity extends QDBaseActivity {
+@ActivityPager(name = "ActionBarTip", preViewClass = TextView.class, resType = ResType.Custome)
+public class ActionBarTipActivity extends QDActivity {
 
     private Button btn_complete;
     private Button btn_loading;

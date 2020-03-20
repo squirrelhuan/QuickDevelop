@@ -19,6 +19,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 
 /**
@@ -26,112 +27,179 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
  */
 public class QDDialog extends Dialog {
 
-    private Builder builder;
+   // private Builder builder;
+   public int actionButtonPadding;
+    private Context context;
+    private String title;
+    private String message;
+    private int icon;
+    private ShowType showType = ShowType.normal;
+    private DataType dataType = DataType.text;
+    private int width = ViewGroup.LayoutParams.MATCH_PARENT;
+    private int gravity_header = Gravity.LEFT;
+    private int gravity_body = Gravity.LEFT;
+    private int gravity_foot = Gravity.CENTER;
+    private int padding_header ;
+    private int padding_body ;
+    private int padding_foot ;
+    private int minHeight_header;
+    private int minHeight_body;
+    private int minHeight_foot;
+    private int color_header = Color.TRANSPARENT;
+    private int color_body = Color.TRANSPARENT;
+    private int color_foot = Color.TRANSPARENT;
+    private int text_color_header = Color.BLACK;
+    private int text_color_body = Color.BLACK;
+    private int text_color_foot = Color.BLACK;
+    private int text_size_header = 18;
+    private int text_size_body = 16;
+    private int text_size_foot = 16;
+    private View contentView;
+    private int contentViewLayoutID;
 
+    private int backgroundColor = Color.WHITE;
+    private int lineColor = Color.GRAY;
+    private float[] backgroundRadius = new float[8];
+    private int animationStyleID = R.style.qd_dialog_animation_center_scale;
+    private List<ActionButton> actionButtons = new ArrayList<>();
     public QDDialog(Context context, Builder builder) {
         super(context);
-        this.builder = builder;
+        //this.builder = builder;
+        actionButtonPadding = builder.actionButtonPadding;
+        this.context = builder.context;
+        title = builder.title;
+        message = builder.message;
+        icon = builder.icon;
+        showType = builder.showType;
+        dataType = builder.dataType;
+        width = builder.width;
+        gravity_header = builder.gravity_header;
+        gravity_body = builder.gravity_body;
+        gravity_foot = builder.gravity_foot;
+        padding_header =builder.padding_header;
+        padding_body = builder.padding_body;
+        padding_foot = builder.padding_foot;
+        minHeight_header = builder.minHeight_header;
+        minHeight_body = builder.minHeight_body;
+        minHeight_foot = builder.minHeight_foot;
+        color_header = builder.color_header;
+        color_body = builder.color_body;
+        color_foot = builder.color_foot;
+        text_color_header = builder.text_color_header;
+        text_color_body = builder.text_color_body;
+        text_color_foot = builder.text_color_foot;
+        text_size_header = builder.text_size_header;
+        text_size_body = builder.text_size_body;
+        text_size_foot = builder.text_size_foot;
+        contentView = builder.contentView;
+        contentViewLayoutID = builder.contentViewLayoutID;
+
+        backgroundColor = builder.backgroundColor;
+        lineColor = builder.lineColor;
+        backgroundRadius = builder.backgroundRadius;
+        animationStyleID = builder.animationStyleID;
+        actionButtons =builder.actionButtons;
         init();
     }
 
-    private LinearLayout contentView;
+    private LinearLayout contentLinearView;
     private LinearLayout headerView;
     private LinearLayout bodyView;
     private LinearLayout footView;
     private void init() {
-        getWindow().setWindowAnimations(builder.animationStyleID);
+        getWindow().setWindowAnimations(animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(builder.width, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentView = new LinearLayout(builder.context);
-        contentView.setOrientation(LinearLayout.VERTICAL);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentLinearView = new LinearLayout(context);
+        contentLinearView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
-        QDividerDrawable drawable_bg = new QDividerDrawable(QDividerDrawable.Gravity.NONE);
-        drawable_bg.setCornerRadii(builder.backgroundRadius);
-        drawable_bg.setBackGroundColor(builder.backgroundColor);
-        contentView.setBackground(drawable_bg);
+        QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
+        drawable_bg.setCornerRadii(backgroundRadius);
+        drawable_bg.setBackGroundColor(backgroundColor);
+        contentLinearView.setBackground(drawable_bg);
         //contentView.setPadding((int)builder.backgroundRadius[0],(int)builder.backgroundRadius[2],(int)builder.backgroundRadius[4],(int)builder.backgroundRadius[6]);
-        if (builder.title == null && builder.message != null && builder.actionButtons.size() == 0) {
-            builder.showType = ShowType.onlyBody;
+        if (title == null && message != null && actionButtons.size() == 0) {
+            showType = ShowType.onlyBody;
         }
-        if (builder.title != null && builder.message != null && builder.actionButtons.size() == 0) {
-            builder.showType = ShowType.noFoot;
+        if (title != null && message != null && actionButtons.size() == 0) {
+            showType = ShowType.noFoot;
         }
-
-        int padding_header = builder.padding_header;
-        int padding_body = builder.padding_body;
-        switch (builder.showType) {
+/*
+        int padding_header = padding_header;
+        int padding_body = padding_body;*/
+        switch (showType) {
             case normal:
-                headerView = new LinearLayout(builder.context);
-                bodyView = new LinearLayout(builder.context);
-                footView = new LinearLayout(builder.context);
+                headerView = new LinearLayout(context);
+                bodyView = new LinearLayout(context);
+                footView = new LinearLayout(context);
                 headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
                 bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
             case noHeader:
-                bodyView = new LinearLayout(builder.context);
-                footView = new LinearLayout(builder.context);
+                bodyView = new LinearLayout(context);
+                footView = new LinearLayout(context);
                 bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case onlyBody:
-                bodyView = new LinearLayout(builder.context);
+                bodyView = new LinearLayout(context);
                 bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case noFoot:
-                headerView = new LinearLayout(builder.context);
-                bodyView = new LinearLayout(builder.context);
+                headerView = new LinearLayout(context);
+                bodyView = new LinearLayout(context);
                 headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
                 bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
             case contentView:
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                contentView.addView(builder.contentView, layoutParams1);
+                contentLinearView.addView(contentView, layoutParams1);
                 break;
             case contentLayout:
                 ViewGroup.LayoutParams layoutParams2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                View view = LayoutInflater.from(builder.context).inflate(builder.contentViewLayoutID, null, false);
-                contentView.addView(view, layoutParams2);
+                View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
+                contentLinearView.addView(view, layoutParams2);
                 break;
         }
         if (headerView != null) {
-            contentView.addView(headerView);
-            headerView.setMinimumHeight(builder.minHeight_header);
-            headerView.setBackgroundColor(builder.color_header);
-            headerView.setGravity(builder.gravity_header);
-            headerView.setTag(builder.gravity_header);
-            addTextView(headerView, builder.title,builder.text_color_header, builder.text_size_header);
+            contentLinearView.addView(headerView);
+            headerView.setMinimumHeight(minHeight_header);
+            headerView.setBackgroundColor(color_header);
+            headerView.setGravity(gravity_header);
+            headerView.setTag(gravity_header);
+            addTextView(headerView, title,text_color_header, text_size_header);
         }
         if (bodyView != null) {
-            contentView.addView(bodyView);
-            bodyView.setMinimumHeight(builder.minHeight_body);
-            bodyView.setBackgroundColor(builder.color_body);
+            contentLinearView.addView(bodyView);
+            bodyView.setMinimumHeight(minHeight_body);
+            bodyView.setBackgroundColor(color_body);
 
-            bodyView.setGravity(builder.gravity_body);
-            bodyView.setTag(builder.gravity_body);
-            addBodyTextView(bodyView, builder.message,builder.text_color_body,builder.text_size_body);
+            bodyView.setGravity(gravity_body);
+            bodyView.setTag(gravity_body);
+            addBodyTextView(bodyView, message,text_color_body,text_size_body);
         }
-        int actionPadding = builder.actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
+        int actionPadding = actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         if (footView != null) {
-            contentView.addView(footView);
-            footView.setMinimumHeight(builder.minHeight_foot);
-            footView.setGravity(builder.gravity_foot);
-            footView.setBackgroundColor(builder.color_foot);
+            contentLinearView.addView(footView);
+            footView.setMinimumHeight(minHeight_foot);
+            footView.setGravity(gravity_foot);
+            footView.setBackgroundColor(color_foot);
             footView.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams layoutParams_button;
-            if (builder.gravity_foot == Gravity.CENTER) {
+            if (gravity_foot == Gravity.CENTER) {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
                 //新建一个Drawable对象
-                QDividerDrawable drawable = new QDividerDrawable(QDividerDrawable.Gravity.TOP);
-                drawable.setmStrokeColors(this.builder.lineColor);
+                QDividerDrawable drawable = new QDividerDrawable(DividerGravity.TOP);
+                drawable.setmStrokeColors(this.lineColor);
                 footView.setBackground(drawable);
             } else {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
-            for (int i = 0; i < builder.actionButtons.size(); i++) {
-                final ActionButton actionButton = builder.actionButtons.get(i);
+            for (int i = 0; i < actionButtons.size(); i++) {
+                final ActionButton actionButton = actionButtons.get(i);
                 TextView button = new TextView(getContext());
                 button.setText(actionButton.getText());
-                button.setTextSize(builder.text_size_foot);
-                button.setTextColor(builder.text_color_foot);
+                button.setTextSize(text_size_foot);
+                button.setTextColor(text_color_foot);
                 button.setPadding(actionPadding * 3, (int) (actionPadding * 2), actionPadding * 3, (int) (actionPadding * 2));
                 button.setGravity(Gravity.CENTER);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -157,18 +225,18 @@ public class QDDialog extends Dialog {
 
                 //button.setBackgroundDrawable(null);
                 footView.addView(button, layoutParams_button);
-                if (i != builder.actionButtons.size() - 1&&builder.gravity_foot == Gravity.CENTER) {
+                if (i != actionButtons.size() - 1&&gravity_foot == Gravity.CENTER) {
                     View centerLineView = new View(getContext());
                     LinearLayout.LayoutParams layoutParams_line = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
                     centerLineView.setLayoutParams(layoutParams_line);
-                    centerLineView.setBackgroundColor(builder.lineColor);
+                    centerLineView.setBackgroundColor(lineColor);
                     footView.addView(centerLineView);
                 }
             }
         }
 
         ViewGroup layout = new RelativeLayout(getContext());
-        layout.addView(contentView, layoutParams);
+        layout.addView(contentLinearView, layoutParams);
         setContentView(layout, layoutParams);
     }
 

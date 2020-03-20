@@ -19,15 +19,15 @@ public class QDividerDrawable extends GradientDrawable {
      * 圆角大小是否自适应为 View 的高度的一般
      */
     private boolean isRadiusAuto = false;
-    private List<Gravity> gravityList;
+    private List<DividerGravity> gravityList;
 
     public QDividerDrawable() {
         init();
     }
 
-    public QDividerDrawable(Gravity... gravitys) {
+    public QDividerDrawable(DividerGravity... gravitys) {
         this.gravityList = new ArrayList<>();
-        for(Gravity gravity :gravitys){
+        for(DividerGravity gravity :gravitys){
             this.gravityList.add(gravity);
         }
         init();
@@ -42,7 +42,7 @@ public class QDividerDrawable extends GradientDrawable {
     private void init() {
         if(gravityList==null){
             gravityList = new ArrayList<>();
-            gravityList.add(Gravity.ALL);
+            gravityList.add(DividerGravity.ALL);
         }
 
         //设置背景色
@@ -53,7 +53,6 @@ public class QDividerDrawable extends GradientDrawable {
         setCornerRadius(0);
         //设置背景的形状，默认就是矩形，跟xml文件中类型android:shape的值保持一致，具体有：GradientDrawable.LINE  GradientDrawable.OVAL GradientDrawable.RECTANGLE  GradientDrawable.RING
         setShape(GradientDrawable.RECTANGLE);
-        
     }
 
     @Override
@@ -74,63 +73,63 @@ public class QDividerDrawable extends GradientDrawable {
         r.top = r.top - mStrokeWidth;
         r.right = r.right + mStrokeWidth;
         r.bottom = r.bottom + mStrokeWidth;
-        if(gravityList.contains(Gravity.LEFT)){//左边
+        if(gravityList.contains(DividerGravity.LEFT)){//左边
             r.left = r.left + mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.TOP)){//上边
+        if(gravityList.contains(DividerGravity.TOP)){//上边
             r.top = r.top + mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.RIGHT)){//右边
+        if(gravityList.contains(DividerGravity.RIGHT)){//右边
             r.right = r.right - mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.BOTTOM)){//下边
+        if(gravityList.contains(DividerGravity.BOTTOM)){//下边
             r.bottom = r.bottom - mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.VERTICAL)){//上下
+        if(gravityList.contains(DividerGravity.VERTICAL)){//上下
             r.top = r.top + mStrokeWidth;
             r.bottom = r.bottom - mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.HORIZONTAL)){//左右
-            r.left = r.left + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.LEFTTOP)){//左上
-            r.left = r.left + mStrokeWidth;
-            r.top = r.top + mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.LEFTRIGHT)){//左下
-            r.left = r.left + mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.RIGHTTOP)){//右上
-            r.right = r.right - mStrokeWidth;
-            r.top = r.top + mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.RIGHTBOTTOM)){//右下
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.BESIDES_LEFT)){//非左
-            r.top = r.top + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.BESIDES_TOP)){//非上
-            r.left = r.left + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.BESIDES_RIGHT)){//非右
-            r.top = r.top + mStrokeWidth;
-            r.left = r.left + mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(Gravity.BESIDES_BOTTOM)){//非下
-            r.top = r.top + mStrokeWidth;
+        if(gravityList.contains(DividerGravity.HORIZONTAL)){//左右
             r.left = r.left + mStrokeWidth;
             r.right = r.right - mStrokeWidth;
         }
-        if(gravityList.contains(Gravity.ALL)){//所有边
+        if(gravityList.contains(DividerGravity.LEFTTOP)){//左上
+            r.left = r.left + mStrokeWidth;
+            r.top = r.top + mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.LEFTRIGHT)){//左下
+            r.left = r.left + mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.RIGHTTOP)){//右上
+            r.right = r.right - mStrokeWidth;
+            r.top = r.top + mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.RIGHTBOTTOM)){//右下
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.BESIDES_LEFT)){//非左
+            r.top = r.top + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.BESIDES_TOP)){//非上
+            r.left = r.left + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.BESIDES_RIGHT)){//非右
+            r.top = r.top + mStrokeWidth;
+            r.left = r.left + mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.BESIDES_BOTTOM)){//非下
+            r.top = r.top + mStrokeWidth;
+            r.left = r.left + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+        }
+        if(gravityList.contains(DividerGravity.ALL)){//所有边
             r.left = r.left + mStrokeWidth;
             r.top = r.top + mStrokeWidth;
             r.right = r.right - mStrokeWidth;
@@ -143,11 +142,6 @@ public class QDividerDrawable extends GradientDrawable {
             setCornerRadius(Math.min(r.width(), r.height()) / 2);
         }
     }
-
-    public static enum  Gravity{
-        ALL,NONE,LEFT,TOP,RIGHT,BOTTOM,VERTICAL,HORIZONTAL,LEFTTOP,LEFTRIGHT,RIGHTTOP,RIGHTBOTTOM,BESIDES_LEFT,BESIDES_TOP,BESIDES_RIGHT,BESIDES_BOTTOM
-    }
-
 
     public int getmStrokeWidth() {
         return mStrokeWidth;
@@ -177,11 +171,11 @@ public class QDividerDrawable extends GradientDrawable {
         setColor(backGroundColor);
     }
 
-    public List<Gravity> getGravityList() {
+    public List<DividerGravity> getGravityList() {
         return gravityList;
     }
 
-    public void setGravityList(List<Gravity> gravityList) {
+    public void setGravityList(List<DividerGravity> gravityList) {
         this.gravityList = gravityList;
     }
 

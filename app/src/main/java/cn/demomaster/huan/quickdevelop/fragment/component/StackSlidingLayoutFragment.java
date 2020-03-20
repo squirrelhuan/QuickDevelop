@@ -26,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.Componen
  * 2018/8/25
  */
 
-@ActivityPager(name = "StackSliding", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "StackSliding", preViewClass = TextView.class, resType = ResType.Custome)
 public class StackSlidingLayoutFragment extends QDBaseFragment {
 
     //Components

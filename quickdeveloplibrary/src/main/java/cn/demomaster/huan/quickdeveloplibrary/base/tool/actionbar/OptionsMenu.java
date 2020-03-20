@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
 public class OptionsMenu {
 
     public static String TAG = "CGQ";
-    private Context context;
+    private WeakReference<Context> contextWeakReference;
     private List<Menu> menus;
     private OnMenuItemClicked onMenuItemClicked;
     private OptionsMenuAdapter adapter;
@@ -50,12 +51,12 @@ public class OptionsMenu {
     private int arrowHeight;
     private int animationStyleID = R.style.qd_option_menu_pop_animation;
     private int textGravity = Gravity.CENTER_VERTICAL;
-    private Builder builder;
+    private GuiderView.Gravity gravity = GuiderView.Gravity.TOP;
 
     public OptionsMenu(Builder builder) {
-        this.context = builder.context;
-        this.builder = builder;
+        this.contextWeakReference = builder.contextWeakReference;
         this.alpha = builder.alpha;
+        this.gravity = builder.gravity;
         this.onMenuItemClicked = builder.onMenuItemClicked;
         this.backgroundColor = builder.backgroundColor;
         this.backgroundRadius = builder.backgroundRadius;
@@ -94,7 +95,7 @@ public class OptionsMenu {
     }*/
 
     public void init() {
-        contentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_option_menu, null, false);
+        contentView = LayoutInflater.from(contextWeakReference.get()).inflate(R.layout.layout_dialog_option_menu, null, false);
         rcv_options = contentView.findViewById(R.id.qd_option_menu_recycler);
        /* QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
         for (int i = 0; i < backgroundRadius.length; i++) {
@@ -111,13 +112,13 @@ public class OptionsMenu {
             int b = (rcv_options == null) ? 0 : rcv_options.getPaddingBottom() + (int) backgroundRadiu;
             rcv_options.setPadding(l, t, r, b);
         }
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(contextWeakReference.get());
         linearLayoutManager.setAutoMeasureEnabled(true);
         //设置分割线使用的divider
-        rcv_options.addItemDecoration(new QDDividerItemDecoration(context, DividerItemDecoration.VERTICAL, dividerColor));
+        rcv_options.addItemDecoration(new QDDividerItemDecoration(contextWeakReference.get(), DividerItemDecoration.VERTICAL, dividerColor));
         rcv_options.setLayoutManager(linearLayoutManager);
 
-        qdTipPopup = new QDTipPopup.Builder(context)
+        qdTipPopup = new QDTipPopup.Builder(contextWeakReference.get())
                 .setBackgroundRadius(backgroundRadius)
                 .setBackgroundColor(backgroundColor)
                 .setPadding(padding)
@@ -127,37 +128,40 @@ public class OptionsMenu {
                 .setAnimationStyleID(animationStyleID)
                 .create();
         qdTipPopup.setContentView(contentView);
-        qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
-                lp.alpha = 1f;
-                ((Activity) context).getWindow().setAttributes(lp);
-            }
-        });
+        qdTipPopup.setOnDismissListener(onDismissListener);
         reBuild();
         //popupWindow.setAnimationStyle(R.style.pop_toast);
         //popupWindow.showAtLocation(getContentView(context), Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, dp2px(context,60));
     }
 
+    PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = ((Activity) contextWeakReference.get()).getWindow().getAttributes();
+            lp.alpha = 1f;
+            ((Activity) contextWeakReference.get()).getWindow().setAttributes(lp);
+        }
+    };
+
     private void reBuild() {
         if (menus != null) {
-            adapter = new OptionsMenuAdapter(context, menus);
+            adapter = new OptionsMenuAdapter(contextWeakReference.get(), menus);
             rcv_options.setAdapter(adapter);
             adapter.setTextColor(textColor);
             adapter.setTextGravity(textGravity);
-
         }
         if (adapter != null) {
-            adapter.setOnItemClickListener(new OptionsMenuAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position, Menu menu) {
-                    onMenuItemClicked.onItemClick(position, null);
-                    //popupWindow.dismiss();
-                }
-            });
+            adapter.setOnItemClickListener(onItemClickListener);
         }
     }
+
+    OptionsMenuAdapter.OnItemClickListener onItemClickListener = new OptionsMenuAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(int position, Menu menu) {
+            onMenuItemClicked.onItemClick(position, null);
+            //popupWindow.dismiss();
+        }
+    };
 
     private float alpha = 1;
 
@@ -183,9 +187,9 @@ public class OptionsMenu {
 
     public void show() {
         if (anchor != null) {
-            WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
+            WindowManager.LayoutParams lp = ((Activity) contextWeakReference.get()).getWindow().getAttributes();
             lp.alpha = alpha;
-            ((Activity) context).getWindow().setAttributes(lp);
+            ((Activity) contextWeakReference.get()).getWindow().setAttributes(lp);
             /*LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) rcv_options.getLayoutParams();
             layoutParams.setMargins(0,0,0,0);
             rcv_options.setLayoutParams(layoutParams);*/
@@ -197,7 +201,7 @@ public class OptionsMenu {
             //TODO 这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
 
-            qdTipPopup.showTip(anchor, builder.gravity);
+            qdTipPopup.showTip(anchor, gravity);
         }
     }
 
@@ -286,7 +290,7 @@ public class OptionsMenu {
     }
 
     public static class Builder {
-        private Context context;
+        private WeakReference<Context> contextWeakReference;
         private List<Menu> menus;
         private OnMenuItemClicked onMenuItemClicked;
         private float alpha = 1;
@@ -313,20 +317,20 @@ public class OptionsMenu {
         }
 
         public Builder(Context context) {
-            this.context = context;
+            this.contextWeakReference = new WeakReference<>(context);
             initBuilder();
         }
 
         public Builder(Context context, List<Menu> menus) {
-            this.context = context;
+            this.contextWeakReference = new WeakReference<>(context);
             this.menus = menus;
             initBuilder();
         }
 
         private void initBuilder() {
-            arrowHeight = DisplayUtil.dip2px(context, 8);
-            arrowWidth = DisplayUtil.dip2px(context, 8);
-            padding = DisplayUtil.dip2px(context, 6);
+            arrowHeight = DisplayUtil.dip2px(contextWeakReference.get(), 8);
+            arrowWidth = DisplayUtil.dip2px(contextWeakReference.get(), 8);
+            padding = DisplayUtil.dip2px(contextWeakReference.get(), 6);
         }
 
         public Builder setMenus(List<Menu> menus) {

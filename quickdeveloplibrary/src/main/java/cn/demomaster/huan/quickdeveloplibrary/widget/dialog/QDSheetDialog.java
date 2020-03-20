@@ -23,6 +23,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
@@ -35,11 +36,28 @@ import static android.view.View.OVER_SCROLL_NEVER;
  * description：
  */
 public class QDSheetDialog extends Dialog {
-    private Builder builder;
-
+    private List<String> data;
+    private Context context;
+    private int columnCount = 1;
+    private ShowType showType = ShowType.List;
+    private int heightLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private int widthLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private OnDialogActionListener onDialogActionListener;
+    private int gravity = Gravity.CENTER;
+    private int backgroundColor = Color.WHITE;
+    private float[] backgroundRadius = new float[8];
     public QDSheetDialog(Context context, Builder builder) {
         super(context);
-        this.builder = builder;
+        data = builder.data;
+        this.context = builder.context;
+        columnCount = builder.columnCount;
+        showType = builder.showType;
+        heightLayoutType = builder.heightLayoutType;
+        widthLayoutType = builder.widthLayoutType;
+        onDialogActionListener = builder.onDialogActionListener;
+        gravity = builder.gravity;
+        backgroundColor = builder.backgroundColor;
+        backgroundRadius = builder.backgroundRadius;
         init();
     }
 
@@ -55,27 +73,27 @@ public class QDSheetDialog extends Dialog {
 
     private void init() {
 
-        if (builder.widthLayoutType == ViewGroup.LayoutParams.MATCH_PARENT) {
+        if (widthLayoutType == ViewGroup.LayoutParams.MATCH_PARENT) {
             getWindow().getDecorView().setPadding(0, 0, 0, 0);
         }
         // 在底部，宽度撑满
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.height = builder.heightLayoutType;
-        params.width = builder.widthLayoutType;
+        params.height = heightLayoutType;
+        params.width = widthLayoutType;
         params.gravity =  Gravity.CENTER;
 
        /* int screenWidth = QMUIDisplayHelper.getScreenWidth(getContext());
         int screenHeight = QMUIDisplayHelper.getScreenHeight(getContext());
         params.width = screenWidth < screenHeight ? screenWidth : screenHeight;*/
 
-        int gravity = builder.gravity;
+       // int gravity = gravity;
         //getWindow().setWindowAnimations(R.style.FadeInPopWin);  //添加动画
         getWindow().setWindowAnimations(-1);  //添加动画
-        if (MenuBuilder.class.isAssignableFrom(builder.getClass())) {//菜单类型弹窗
+       /* if (MenuBuilder.class.isAssignableFrom(builder.getClass())) {//菜单类型弹窗
 
         } else {
 
-        }
+        }*/
 
         getWindow().setAttributes(params);
         getWindow().setGravity(gravity);
@@ -86,53 +104,52 @@ public class QDSheetDialog extends Dialog {
 
     }
 
-    private LinearLayout contentView;
+    private LinearLayout contentLinearView;
 
     private void initData() {
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         int p = DisplayUtil.dip2px(getContext(), 15);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentView = new LinearLayout(builder.context);
-        contentView.setOrientation(LinearLayout.VERTICAL);
+        contentLinearView = new LinearLayout(context);
+        contentLinearView.setOrientation(LinearLayout.VERTICAL);
 
         //新建一个Drawable对象
-        QDividerDrawable drawable_bg = new QDividerDrawable(QDividerDrawable.Gravity.NONE);
-        drawable_bg.setCornerRadii(builder.backgroundRadius);
-        drawable_bg.setBackGroundColor(builder.backgroundColor);
-        contentView.setBackground(drawable_bg);
+        QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
+        drawable_bg.setCornerRadii(backgroundRadius);
+        drawable_bg.setBackGroundColor(backgroundColor);
+        contentLinearView.setBackground(drawable_bg);
 
         RecyclerView recyclerView = new RecyclerView(getContext());
         recyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
-        switch (builder.showType) {
+        switch (showType) {
             case List:
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setAutoMeasureEnabled(true);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 break;
             case Grid:
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), builder.columnCount));
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnCount));
                 break;
         }
 
-        SheetAdapter adapter = new SheetAdapter(getContext(), builder.data);
+        SheetAdapter adapter = new SheetAdapter(getContext(), data);
         adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                builder.onDialogActionListener.onItemClick(QDSheetDialog.this,position,builder.data);
+                onDialogActionListener.onItemClick(QDSheetDialog.this,position,data);
             }
         });
 
         recyclerView.setAdapter(adapter);
-        contentView.addView(recyclerView);
+        contentLinearView.addView(recyclerView);
         ViewGroup layout = new RelativeLayout(getContext());
-        layout.addView(contentView, layoutParams);
+        layout.addView(contentLinearView, layoutParams);
         setContentView(layout, layoutParams);
     }
 
     public static enum ShowType {
         List, Grid
     }
-
 
     public static class Builder {
         private List<String> data;
@@ -234,7 +251,7 @@ public class QDSheetDialog extends Dialog {
     }
 
 
-    public class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
+    public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
 
         private List data;
         private Context context;

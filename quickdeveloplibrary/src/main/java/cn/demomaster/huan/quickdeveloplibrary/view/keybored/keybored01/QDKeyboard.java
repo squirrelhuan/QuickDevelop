@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,7 +69,6 @@ public class QDKeyboard {
 
     private EditText mEditText;
     public List<EditText> editTextList;
-
     public QDKeyboard(Activity mContext) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_keyboard_containor_01, null);
         this.mContext = mContext;
@@ -108,7 +108,7 @@ public class QDKeyboard {
         setCurrentFocus(editText);
     }
 
-    private boolean isTouchedEditText;
+    private int currentEditKey;
 
     /**
      * 设置默认获取焦点的editText
@@ -122,10 +122,10 @@ public class QDKeyboard {
                 editTextList.get(i).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        isTouchedEditText = true;
                         hideSystemKeyBoard((EditText) v);
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             if ((isClosed || isClosing)) {
+                                currentEditKey = v.getId();
                                 showKeyboard();
                             }
                         }
@@ -136,13 +136,17 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                        QDLogger.d("id="+v.getId()+",currentEditKey="+currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             if ((isClosed || isClosing)) {
+                                currentEditKey = v.getId();
                                 showKeyboard();
                             }
                         } else {//如果新的焦点不使用自定义键盘则隐藏
-                            waitHideKeyboard();
+                            QDLogger.d(v +",currentEditKey="+currentEditKey);
+                            if(currentEditKey==0||currentEditKey==v.getId()){
+                                waitHideKeyboard();
+                            }
                         }
                     }
                 });
@@ -153,15 +157,19 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                       // QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                        QDLogger.d("id="+v.getId()+",currentEditKey="+currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             // 此处为得到焦点时的处理内容
                             setCurrentFocus((EditText) v);
                             if ((isClosed || isClosing)) {
+                                currentEditKey = v.getId();
                                 showKeyboard();
                             }
                         } else {//如果新的焦点不使用自定义键盘则隐藏
-                            waitHideKeyboard();
+                            QDLogger.d(v +",currentEditKey="+currentEditKey);
+                            if(currentEditKey==0||currentEditKey==v.getId()){
+                                waitHideKeyboard();
+                            }
                         }
                     }
                 });
@@ -169,75 +177,23 @@ public class QDKeyboard {
         }
     }
 
-    private Runnable hideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            View v = ((Activity) getActivityFromView( mEditText)).getCurrentFocus();
-            //v=((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findFocus();
-            //QDLogger.d(v ==null?"null":v.toString()+ v.getId());
-            if (v != null) {
-                if (!editTextList.contains(v)) {
-                    hideKeyboard();
-                }
-            }
-        }
-    };
-
     /**
      * 延迟隐藏
      *
      * @return
      */
     private void waitHideKeyboard() {
-        mHandler.removeCallbacks(hideRunnable);
-        mHandler.postAtTime(hideRunnable, 50);
+        View v = ((Activity) getActivityFromView( mEditText)).getCurrentFocus();
+        //v=((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findFocus();
+        QDLogger.d(v ==null?"null":v.toString()+ v.getId());
+        if (v == null ||!editTextList.contains(v)) {
+            hideKeyboard();
+        }
     }
 
-    private Handler mHandler = new Handler();
     private boolean isOpened = false;
     private boolean isClosed = true;
-    private int duration = 300;
-    ValueAnimator animator;
-    float keyContainerHeight = -1;
-
-    public void startAnimation() {
-        switchKeyboardByInputType();
-        final float h1 = isOpening ? keyContainer.getHeight() : 0;
-        final float h2 = isOpening ? keyContainerHeight : keyContainer.getHeight();
-        animator = ValueAnimator.ofFloat(h1, h2);
-        long d = (long) (duration * (isOpening ? (keyContainerHeight - keyContainer.getHeight()) : keyContainer.getHeight()) / keyContainerHeight);
-        animator.setDuration(d);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = keyContainer.getLayoutParams();
-                layoutParams.height = (int) value;
-                keyContainer.setLayoutParams(layoutParams);
-                QDLogger.i("value=" + value);
-
-                keyContainer.setVisibility(View.VISIBLE);
-                if (isOpening && value >= h2) {
-                    QDLogger.i("已开启");
-                    isOpening = false;
-                    isOpened = true;
-                    isClosed = false;
-                    isClosing = false;
-                } else if (isClosing && value <= h1) {
-                    QDLogger.i("已隐藏");
-                    keyContainer.setVisibility(View.GONE);
-                    isClosing = false;
-                    isClosed = true;
-                    isOpened = false;
-                    isOpening = false;
-                }
-            }
-        });
-        //animator.setRepeatMode(ValueAnimator.REVERSE);
-        //animator.setRepeatCount(ValueAnimator.INFINITE);//accelerate_decelerate_interpolator
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.start();
-    }
+   // float keyContainerHeight = -1;
 
     /**
      * 根据输入类型锁定对应的键盘
@@ -291,7 +247,7 @@ public class QDKeyboard {
         keyboardView.setOnKeyboardActionListener(listener);
         keyboardView.setSoundEffectsEnabled(true);
         keyboardView.playSoundEffect(SoundEffectConstants.CLICK);//按键音效
-        keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        /*keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 keyContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -306,7 +262,7 @@ public class QDKeyboard {
                     showKeyboard();
                 }
             }
-        });
+        });*/
 
         //ImageView iv_keyboardDone = keyContainer.findViewById(R.id.iv_keyboardDone);
         Drawable hideDrawable = mContext.getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
@@ -324,6 +280,7 @@ public class QDKeyboard {
         qdTipPopup = new QDPopup(keyContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         qdTipPopup.setFocusable(false);
         qdTipPopup.setTouchable(true);
+        qdTipPopup.setAnimationStyle(R.style.keybored_anim);
         qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -490,28 +447,22 @@ public class QDKeyboard {
 
     public void hideKeyboard() {
         qdTipPopup.dismiss();
-        /*if (isOpened || isOpening) {
-            isClosing = true;
-            isOpening = false;
-            animator.reverse();
-        }*/
     }
 
     View contentView;
     View mDecorView;
-
     private void showKeyboard() {
         //qdTipPopup.showAsDropDown(mEditText,0,0,Gravity.BOTTOM);
         switchKeyboardByInputType();
         if (qdTipPopup.isShowing()) {
             return;
         }
-        contentView = ((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findViewById(android.R.id.content);
+        /*contentView = ((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findViewById(android.R.id.content);
         mDecorView = (View) contentView.getParent();
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
-        layoutParams.bottomMargin = getEditorBottomY();
-        layoutParams.topMargin = -getEditorBottomY();
-        mDecorView.setLayoutParams(layoutParams);
+        //layoutParams.bottomMargin = getEditorBottomY();
+        //layoutParams.topMargin = -getEditorBottomY();
+        mDecorView.setLayoutParams(layoutParams);*/
         IBinder iBinder = mEditText.getWindowToken();
         if (iBinder != null && !((Activity) getActivityFromView( mEditText)).isFinishing()) {
             if (!((Activity) getActivityFromView( mEditText)).isFinishing()) {
@@ -536,14 +487,14 @@ public class QDKeyboard {
      *
      * @return
      */
-    private int getEditorBottomY() {
+    /*private int getEditorBottomY() {
         int[] location = new int[2];
         mEditText.getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
         int d = DisplayUtil.getScreenHeight(getActivityFromView( mEditText)) - y - mEditText.getHeight();
         return d > keyContainerHeight ? 0 : (int) (keyContainerHeight - d);
-    }
+    }*/
 
     private boolean isLowCaseLetter(String str) {
         String letters = "abcdefghijklmnopqrstuvwxyz";
@@ -657,8 +608,17 @@ public class QDKeyboard {
 
         }
     }
+    public void dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                waitHideKeyboard();
+                break;
+            default:
+                break;
+        }
+    }
 
-    public void dispatchTouchEvent(MotionEvent me) {
+   // public void dispatchTouchEvent(MotionEvent me) {
         //QDLogger.i("me.getAction()=" + me.getAction());
        /* if(keyContainer==null||keyContainer.getHeight()==0){
             return;
@@ -682,7 +642,7 @@ public class QDKeyboard {
                 }
             }
         }*/
-    }
+   // }
 
 
  /*   private boolean isKeyboard(View v) {

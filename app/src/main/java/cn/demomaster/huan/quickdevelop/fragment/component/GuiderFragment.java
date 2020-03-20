@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
@@ -25,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "OperatGuid", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "OperatGuid", preViewClass = TextView.class, resType = ResType.Custome)
 public class GuiderFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
@@ -204,8 +205,9 @@ public class GuiderFragment extends QDBaseFragment {
     }
 
     @Override
-    public boolean onBackPressed() {
+    public void onDestroy() {
+        super.onDestroy();
         GuiderHelper.getInstance().destory();
-        return super.onBackPressed();
     }
+
 }

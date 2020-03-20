@@ -172,16 +172,15 @@ public class PermissionManager2 {
     //特殊权限弹窗后进入设置页面处理
     public static void showPermissionSettingDialog(final Context context, String permission, PermissionManager.OnCheckPermissionListener onCheckPermissionListener) {
 
-        mContext = context.getApplicationContext();
         switch (permission) {
             case Manifest.permission.INSTALL_PACKAGES:
                 //弹框提示用户手动打开
-                showAlert(mContext, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
+                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //此方法需要API>=26才能使用
-                        startInstallPermissionSettingActivity( mContext);
+                        startInstallPermissionSettingActivity(context);
                     }
                 });
                 break;
@@ -213,7 +212,7 @@ public class PermissionManager2 {
                 Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + context.getPackageName()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
+                context.startActivity(intent);
                 break;
         }
     }
@@ -521,15 +520,13 @@ public class PermissionManager2 {
         }
     }
 
-    private static Context mContext;
-
-    public static void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public static void onActivityResult(Context context,int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case REQUEST_PERMISS_SPECIAL_CODE:
                 PermissionManager.OnCheckPermissionListener listener = requestMap.get(REQUEST_PERMISS_SPECIAL_CODE);
                 if (listener != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (Settings.canDrawOverlays(mContext)) {
+                        if (Settings.canDrawOverlays(context)) {
                             listener.onPassed();
                         } else {
                             listener.onNoPassed();

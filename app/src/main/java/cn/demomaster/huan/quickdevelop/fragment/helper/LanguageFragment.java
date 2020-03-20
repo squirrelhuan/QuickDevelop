@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,7 +22,6 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguage;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
@@ -30,7 +30,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "Language", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "Language", preViewClass = TextView.class, resType = ResType.Custome)
 public class LanguageFragment extends QDBaseFragment {
 
     @Override

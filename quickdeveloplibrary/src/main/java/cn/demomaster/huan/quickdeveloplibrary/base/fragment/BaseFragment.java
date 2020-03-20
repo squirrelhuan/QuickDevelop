@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
 import android.app.Activity;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;

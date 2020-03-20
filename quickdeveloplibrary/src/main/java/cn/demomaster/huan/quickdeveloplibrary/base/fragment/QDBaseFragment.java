@@ -20,8 +20,6 @@ import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -36,9 +34,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     public AppCompatActivity mContext;
     public Bundle mBundle;
     private ActionBarInterface actionBarLayout;
-
     private int backgroundColor = Color.WHITE;
-
     public int getBackgroundColor() {
         return backgroundColor;
     }
@@ -50,7 +46,7 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
 
     public ActionBarInterface getActionBarLayout(View view) {
         if (actionBarLayout == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(new WeakReference<AppCompatActivity>(mContext)).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
+            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
         }
         return actionBarLayout;
@@ -67,14 +63,13 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
         mContext = (AppCompatActivity) this.getContext();
         mBundle = getArguments();
         super.onCreate(savedInstanceState);
-        StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
+        StatusBarUtil.transparencyBar(new WeakReference<>(mContext));
         initHelper();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mContext = (AppCompatActivity) this.getContext();
         if (mView == null) {
             mView = getContentView(inflater);
         }
@@ -90,14 +85,14 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
     }
 
     @Override
-    public boolean onBackPressed() {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;
     }
 
-    @Override
+   /* @Override
     public void back() {
         mContext.onBackPressed();
-    }
+    }*/
 
     //获取自定义导航
     public ActionBarInterface getActionBarLayout() {

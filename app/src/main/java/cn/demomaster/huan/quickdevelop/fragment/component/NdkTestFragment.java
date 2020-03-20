@@ -29,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "NdkTestFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "NdkTestFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class NdkTestFragment extends QDBaseFragment {
 
     private ServiceToken mToken;

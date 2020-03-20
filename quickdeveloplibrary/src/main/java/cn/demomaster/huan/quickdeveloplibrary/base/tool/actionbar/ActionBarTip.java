@@ -16,13 +16,15 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityRoot.TAG;
 import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.COMPLETE;
 import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.ERROR;
 import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.LOADING;
@@ -94,7 +96,7 @@ public class ActionBarTip extends FrameLayout {
                                 actionBarState.getOnLoadingStateListener().loading();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                QDLogger.e(TAG,"异常/耗时操作，不能直接处理UI");
+                                QDLogger.e("异常/耗时操作，不能直接处理UI");
                             }
                         }
                     });
@@ -216,8 +218,8 @@ public class ActionBarTip extends FrameLayout {
                         if (top_c > topMin && top_c < topMax) {
                             layoutParams_tip.topMargin = top_c;
                         }
-                        QDLogger.i(TAG, "topMax=" + topMax);
-                        QDLogger.i(TAG, "topMin=" + topMin);
+                        QDLogger.i( "topMax=" + topMax);
+                        QDLogger.i( "topMin=" + topMin);
                         setLayoutParams(layoutParams_tip);
                         break;
                     case MotionEvent.ACTION_CANCEL:
@@ -321,17 +323,26 @@ public class ActionBarTip extends FrameLayout {
      * 3.定时关闭
      * 4.收到更新消息
      */
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
+    Handler handler = new QDHandler();
+    private MyRunnable myRunnable = new MyRunnable(this);
+    public static class MyRunnable implements Runnable{
+        WeakReference<ActionBarTip> actionBarTipWeakReference;
+        public MyRunnable(ActionBarTip actionBarTip) {
+            actionBarTipWeakReference = new WeakReference<>(actionBarTip);
+        }
+
         @Override
         public void run() {
-            if (stateType == ERROR || stateType == LOADING) {
+            if(actionBarTipWeakReference!=null&&actionBarTipWeakReference.get()!=null) {
+                if (actionBarTipWeakReference.get().stateType == ERROR || actionBarTipWeakReference.get().stateType == LOADING) {
 
-            } else {
-                hide();
+                } else {
+                    actionBarTipWeakReference.get().hide();
+                }
             }
         }
-    };
+    }
+
 
     public void showDelayed() {
         showDelayed(5000);
@@ -342,8 +353,8 @@ public class ActionBarTip extends FrameLayout {
     public void showDelayed(int time) {
         delayedTime = time;
         startAnimation();
-        handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable, delayedTime);
+        handler.removeCallbacks(myRunnable);
+        handler.postDelayed(myRunnable, delayedTime);
     }
 
     public void hideDelayed() {
@@ -352,8 +363,8 @@ public class ActionBarTip extends FrameLayout {
 
     public void hideDelayed(int time) {
         delayedTime = time;
-        handler.removeCallbacks(runnable);
-        handler.postDelayed(runnable, delayedTime);
+        handler.removeCallbacks(myRunnable);
+        handler.postDelayed(myRunnable, delayedTime);
     }
 
     private LoadStateType stateType = LoadStateType.COMPLETE;
@@ -427,7 +438,8 @@ public class ActionBarTip extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if(animator!=null) {
             animator.cancel();
+        }
     }
 }

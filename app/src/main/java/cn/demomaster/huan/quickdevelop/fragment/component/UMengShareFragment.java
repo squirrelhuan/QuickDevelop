@@ -6,18 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.TextView;
+/*
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SHARE_MEDIA;*/
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -26,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 
-@ActivityPager(name = "UMengShareFragment",preViewClass = StateView.class,resType = ResType.Custome)
+@ActivityPager(name = "UMengShareFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class UMengShareFragment extends QDBaseFragment {
     //Components
     ViewGroup mView;
@@ -41,7 +40,7 @@ public class UMengShareFragment extends QDBaseFragment {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_umengshare, null);
         }
 
-        final UMShareListener umShareListener = new UMShareListener() {
+        /*final UMShareListener umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 
@@ -83,7 +82,7 @@ public class UMengShareFragment extends QDBaseFragment {
                         .setCallback(umShareListener)//回调监听器
                         .share();
             }
-        });
+        });*/
 
         return mView;
     }

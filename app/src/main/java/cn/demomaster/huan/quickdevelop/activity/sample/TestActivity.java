@@ -9,16 +9,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.QDBaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "ActionBar", preViewClass = ToggleButton.class, resType = ResType.Custome)
-public class TestActivity extends QDBaseActivity implements View.OnClickListener {
+@ActivityPager(name = "ActionBar", preViewClass = TextView.class, resType = ResType.Custome)
+public class TestActivity extends QDActivity implements View.OnClickListener {
 
     private CheckBox cb_use_background;
     private RadioGroup rg_action, rg_action_color;

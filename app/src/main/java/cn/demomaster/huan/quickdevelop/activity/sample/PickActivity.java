@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.activity.sample;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.BaseActivityParent;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
@@ -21,8 +22,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "Pick",preViewClass = ToggleButton.class,resType = ResType.Custome)
-public class PickActivity extends BaseActivityParent {
+@ActivityPager(name = "Pick",preViewClass = TextView.class,resType = ResType.Custome)
+public class PickActivity extends QDActivity {
 
 
     //    private ArrayList<ProvinceModel> mProvinceList = null; // 省份列表
