@@ -94,7 +94,6 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
         RectF rectF = new RectF(0, 0, getWidth(), getHeight());
         canvas.drawRoundRect(rectF, 5, 5, mPaint);
 
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             RectF rectF2 = null;
             float letterSpacing = getLetterSpacing();
