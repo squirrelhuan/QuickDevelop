@@ -23,7 +23,12 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  * description：
  */
 public class QDLanguageUtil {
-    public static void setLanguageLocal(Activity context, Locale locale) {
+    /**
+     * activity 和application 是有区别的
+     * @param context
+     * @param locale
+     */
+    public static void setLanguageLocal(Context context, Locale locale) {
         QDLogger.e("getLanguage="+locale.getLanguage());
 
         //设置语言类型
@@ -46,9 +51,14 @@ public class QDLanguageUtil {
         //setLanguageLocal(context,locale.toString());
     }
     public static String System_Language_Setting ="System_Language_Setting";
-    public static void setLanguageLocal(Activity context, String language) {
+    public static void setLanguageLocalForActivity(Activity context, String language) {
         SharedPreferencesHelper.getInstance().putString(System_Language_Setting, language);
         setLanguageLocal(context,new Locale(language));
+    }
+    public static void setLanguageLocalForApplication(Activity context, String language) {
+        SharedPreferencesHelper.getInstance().putString(System_Language_Setting, language);
+        setLanguageLocal(context,new Locale(language));
+        setLanguageLocal(context.getApplicationContext(),new Locale(language));
     }
 
   /*  public static void setLanguageLocal(Context context, String language) {

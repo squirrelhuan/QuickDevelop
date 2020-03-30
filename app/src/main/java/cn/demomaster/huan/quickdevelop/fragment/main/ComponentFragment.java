@@ -20,7 +20,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.TestActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
@@ -30,6 +30,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonAct
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.FramelayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragment;
@@ -40,6 +41,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.TimeDomainPlotFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
@@ -86,6 +88,9 @@ public class ComponentFragment extends QDBaseFragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
+
+        classList.add(FramelayoutFragment.class);
+        classList.add(WheelImageFragment.class);
         classList.add(ToggleButtonActivity.class);
         classList.add(TimeDomainPlotFragment.class);
         classList.add(CenterHorizontalActivity.class);
@@ -93,7 +98,7 @@ public class ComponentFragment extends QDBaseFragment {
         classList.add(PickActivity.class);
         classList.add(TabMenuActivity.class);
         classList.add(PictureSelectActivity.class);
-        classList.add(TestActivity.class);
+        classList.add(ActionBarActivity.class);
         classList.add(RatingBarActivity.class);
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);
@@ -110,6 +115,7 @@ public class ComponentFragment extends QDBaseFragment {
         classList.add(QDTipPopupFragment.class);
         classList.add(StackSlidingLayoutFragment.class);
         classList.add(MainActivity.class);
+
         componentAdapter.updateList(classList);
         //设置Adapter
         recyclerView.setAdapter(componentAdapter);

@@ -102,7 +102,7 @@
         <activity android:name=".activity.sample.PictureSelectActivity" />
         <activity android:name=".activity.sample.component.LoadingActivity" />
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
-        <activity android:name=".activity.sample.TestActivity" />
+        <activity android:name=".activity.sample.ActionBarActivity" />
         <activity android:name=".fragment.helper.location.LocationActivity" /> <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider" -->
         <provider
             android:name="androidx.core.content.FileProvider"

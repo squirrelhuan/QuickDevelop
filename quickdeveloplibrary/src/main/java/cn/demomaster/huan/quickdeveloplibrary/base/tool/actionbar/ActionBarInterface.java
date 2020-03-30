@@ -1,9 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
-import android.graphics.Bitmap;
-import android.view.KeyEvent;
 import android.view.View;
-
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 public interface ActionBarInterface {
@@ -28,28 +25,4 @@ public interface ActionBarInterface {
     void setHasContainBackground(boolean isChecked);
 
     void onClickBack();
-
-    /**
-     * 导航栏样式三种
-     */
-   /* public static enum ACTIONBAR_TYPE {
-        NO_STATUS,
-        //无导航栏
-        NO_ACTION_BAR,
-        //无导航栏并且内容可填充到状态栏
-        NO_ACTION_BAR_NO_STATUS,
-        //有导航栏
-        NORMAL,
-        //层叠
-        ACTION_STACK,
-        //层叠并且内容可填充到状态栏
-        ACTION_STACK_NO_STATUS,
-        //透明导航栏
-        ACTION_TRANSPARENT
-    }*/
-
-
-  /*  public static enum  ContentType{
-        ActivityModel,FragmentModel
-    }*/
 }

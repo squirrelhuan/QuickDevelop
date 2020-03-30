@@ -19,7 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 @ActivityPager(name = "ActionBar", preViewClass = TextView.class, resType = ResType.Custome)
-public class TestActivity extends QDActivity implements View.OnClickListener {
+public class ActionBarActivity extends QDActivity implements View.OnClickListener {
 
     private CheckBox cb_use_background;
     private RadioGroup rg_action, rg_action_color;

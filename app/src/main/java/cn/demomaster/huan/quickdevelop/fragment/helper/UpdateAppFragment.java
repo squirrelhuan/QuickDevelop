@@ -45,6 +45,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -207,7 +208,7 @@ public class UpdateAppFragment extends QDBaseFragment {
                             Version version = JSON.parseObject(JSON.toJSONString(jsonObject), Version.class);
                             int ver_code = version.getVersionCode();
                             String ver_name = version.getVersionName();
-                            if (version != null && ver_code > getVersionCode(context)) {
+                            if (version != null && ver_code > QDAppInfoUtil.getVersionCode(context)) {
                                 showUpdateAppDialog(context, version);
                                 //Toast.makeText(context, "当前版本：" + getVersionName(context) + "最新版本：" + ver_name, Toast.LENGTH_SHORT).show();
                             } else {
@@ -344,19 +345,6 @@ public class UpdateAppFragment extends QDBaseFragment {
         });
     }
 
-    // 获取本地的版本号
-    private static int getVersionCode(Context context) {
-        int versionCode = -1;
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
-            versionCode = packageInfo.versionCode;
-            return versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionCode;
-    }
+
 
 }
