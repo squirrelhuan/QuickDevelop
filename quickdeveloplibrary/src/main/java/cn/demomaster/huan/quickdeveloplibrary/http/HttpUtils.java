@@ -45,7 +45,6 @@ public class HttpUtils {
             readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).
             writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).build();
 
-    private static HttpUtils httpUtils;
     private static Retrofit retrofit;
     private static Object retrofitInterface;
     /*private synchronized static Object getRetrofit() {
@@ -113,5 +112,9 @@ public class HttpUtils {
             instance = new HttpUtils();
         }
         return instance;
+    }
+
+    private void HttpUtils(){
+
     }
 }

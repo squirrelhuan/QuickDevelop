@@ -257,11 +257,21 @@ public class DateTimeUtil {
         return ca.getTimeInMillis();
     }
 
-
-
-    public static MyDate getToday(){
+    /**
+     * 获取当前日期
+     * @return
+     */
+    public static MyDate getToday() {
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
+        return getToday(timeZone);
+    }
+    /**
+     * 获取当前日期
+     * @return
+     */
+    public static MyDate getToday(TimeZone timeZone){
         Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        cal.setTimeZone(timeZone);
 
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
@@ -283,7 +293,6 @@ public class DateTimeUtil {
     public static String format2LenStr(int num) {
         return num < 10 ? "0" + num : String.valueOf(num);
     }
-
 
     public static class MyDate{
         private int year;
@@ -362,6 +371,5 @@ public class DateTimeUtil {
             this.second = second;
         }
     }
-
 
 }

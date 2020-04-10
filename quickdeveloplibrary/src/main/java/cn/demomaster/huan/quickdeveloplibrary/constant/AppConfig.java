@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.constant;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 
@@ -13,6 +12,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
+ * app xml配置信息
  * @author squirrel桓
  * @date 2018/12/10.
  * description：
@@ -39,7 +39,6 @@ public class AppConfig {
     }
 
     private AppConfig() {
-
        /* String conf = FileUtil.getFromAssets(mContext, "project.conf");
         Map<String,Object> map =new HashMap<>();
         map.put("isPatient",true);
@@ -56,9 +55,9 @@ public class AppConfig {
         return instance;
     }
 
-    public boolean isPatient() {
+    /*public boolean isPatient() {
         return (boolean) configMap.get("isPatient");
-    }
+    }*/
 
     public  Class getClassFromClassMap(String classNameKey) {
         if(configMap==null){

@@ -26,11 +26,11 @@
                             android:layout_height="wrap_content"
                             android:text="删除文件"/>
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                        <!--<cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                             android:id="@+id/btn_delete"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="删除文件"/>
+                            android:text="删除文件"/>-->
 
                         <TextView
                             android:id="@+id/tv_count"

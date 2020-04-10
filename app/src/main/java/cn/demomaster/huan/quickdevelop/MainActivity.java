@@ -36,8 +36,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
@@ -46,6 +48,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil.getActionbarDefaultHeight;
 
 //import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 
@@ -78,6 +82,8 @@ public class MainActivity extends QDActivity implements View.OnClickListener {
         btn_db.setOnClickListener(this);
         btn_scan = findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
+
+        QdToast.show(mContext, DisplayUtil.getActionBarHeight(mContext)+"");
 
         //GuiderHelper.getInstance().startGuider(mContext,btn_db,"DBGUIDER");
         getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {

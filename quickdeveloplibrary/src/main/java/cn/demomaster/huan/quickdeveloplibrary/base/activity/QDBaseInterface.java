@@ -5,6 +5,7 @@ package cn.demomaster.huan.quickdeveloplibrary.base.activity;
  * @date 2018/12/7.
  * description：
  */
-public interface QDActivityInterface extends QDBaseInterface {
-    void onClickBack();
+public interface QDBaseInterface {
+    //是否使用自定义导航栏
+    boolean isUseActionBarLayout();
 }

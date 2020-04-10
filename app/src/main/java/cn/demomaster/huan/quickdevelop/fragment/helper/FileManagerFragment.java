@@ -1,13 +1,16 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +25,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -30,6 +36,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 
+import static androidx.core.content.ContextCompat.getExternalFilesDirs;
 import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getFileCreatTime;
 
 
@@ -38,7 +45,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getFileCreatT
  * 2018/8/25
  */
 
-@ActivityPager(name = "FileManager",preViewClass = TextView.class,resType = ResType.Custome)
+@ActivityPager(name = "FileManager", preViewClass = TextView.class, resType = ResType.Custome)
 public class FileManagerFragment extends QDBaseFragment {
 
     @Override
@@ -56,12 +63,13 @@ public class FileManagerFragment extends QDBaseFragment {
     @BindView(R.id.tv_count)
     TextView tv_count;
     View mView;
+
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_filemanager, null);
         }
-        ButterKnife.bind(this,mView);
+        ButterKnife.bind(this, mView);
         return (ViewGroup) mView;
     }
 
@@ -75,9 +83,9 @@ public class FileManagerFragment extends QDBaseFragment {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String rootPath = Environment.getExternalStorageDirectory().getPath() ;
+                        String rootPath = Environment.getExternalStorageDirectory().getPath();
                         List<File> files = FileUtil.getEmptyFiles(rootPath);
-                        for (File f: files){
+                        for (File f : files) {
                             QDLogger.d(f);
                         }
                     }
@@ -89,38 +97,84 @@ public class FileManagerFragment extends QDBaseFragment {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QDActionDialog  qdActionDialog = new QDActionDialog.Builder(mContext).setContentView(new LoadingCircleView(mContext)).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage("删除中...").create();
-                qdActionDialog.show();
-                btn_delete.setEnabled(false);
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String rootPath = Environment.getExternalStorageDirectory().getPath() ;
-                        deleteEmptyFiles(rootPath);
+                count = 0;
+                PermissionManager.chekPermission(mContext, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionManager.OnCheckPermissionListener() {
 
-                        btn_delete.setEnabled(true);
-                        btn_delete.setText("删除文件");
-                        qdActionDialog.dismiss();
+                    @Override
+                    public void onPassed() {
+                        Toast.makeText(mContext, "通过", Toast.LENGTH_LONG).show();
+                        QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentView(new LoadingCircleView(mContext)).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage("删除中...").create();
+                        qdActionDialog.show();
+                        btn_delete.setEnabled(false);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String rootPath = Environment.getExternalStorageDirectory().getPath();
+                               /* File file = new File("/");
+                                if(file!=null){
+                                    deleteEmptyFiles(file.getAbsolutePath());
+                                }else {
+                                    deleteEmptyFiles(rootPath);
+                                }*/
+
+                                //deleteEmptyFiles(rootPath);
+                                deleteEmptyFiles(FileUtil.getStoragePath(mContext,true));
+
+                                btn_delete.setEnabled(true);
+                                btn_delete.setText("删除文件");
+                                qdActionDialog.dismiss();
+                            }
+                        });
+                        thread.run();
+                    }
+
+                    @Override
+                    public void onNoPassed() {
+                        Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });
-                thread.run();
+
             }
         });
 
-        QDLogger.i("getExternalCacheDir="+ getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getFilesDir="+getContext().getFilesDir().getAbsolutePath());
-        QDLogger.i("getCacheDir="+getContext().getCacheDir().getAbsolutePath());
-        QDLogger.i("getExternalStorageDirectory="+android.os.Environment.getExternalStorageDirectory().getAbsolutePath());
-       // QDLogger.i("getExternalStoragePublicDirectory="+android.os.Environment.getExternalStoragePublicDirectory().getAbsolutePath());
-       // QDLogger.i("getExternalFilesDir="+getContext().getExternalFilesDir().getAbsolutePath());
-        QDLogger.i("getExternalStorageDirectory="+getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getExternalCacheDir="+getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getRootDirectory="+android.os.Environment.getRootDirectory().getAbsolutePath());
+        List<String> sdcards = FileUtil.getExtSDCardPathList();
+        if(sdcards!=null){
+            for(String sdcard:sdcards) {
+                QDLogger.d("sdcards:"+sdcard);
+            }
+        }
 
-        String path = Environment.getExternalStorageDirectory() +File.separator+ "tsetfile.txt";
+        File[] files;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            files = getExternalFilesDirs(mContext,Environment.MEDIA_MOUNTED);
+            for(File file:files){
+                QDLogger.e("main", "得到的全部外存：" +file.getAbsolutePath());
+
+
+//便历所有外部存储
+            }
+        }
+
+
+        QDLogger.d("StoragePath:", android.os.Environment.getExternalStorageDirectory().getPath());
+        QDLogger.d("StoragePath:", FileUtil.getStoragePath(mContext,true));
+        QDLogger.d("getExternalStorageState:", Environment.getExternalStorageState());
+        QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getFilesDir=" + getContext().getFilesDir().getAbsolutePath());
+        QDLogger.i("getCacheDir=" + getContext().getCacheDir().getAbsolutePath());
+        QDLogger.i("getExternalStorageDirectory=" + android.os.Environment.getExternalStorageDirectory().getAbsolutePath());
+        // QDLogger.i("getExternalStoragePublicDirectory="+android.os.Environment.getExternalStoragePublicDirectory().getAbsolutePath());
+        // QDLogger.i("getExternalFilesDir="+getContext().getExternalFilesDir().getAbsolutePath());
+        QDLogger.i("getExternalStorageDirectory=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.i("getRootDirectory=" + android.os.Environment.getRootDirectory().getAbsolutePath());
+
+        String path = Environment.getExternalStorageDirectory() + File.separator + "tsetfile.txt";
         QDLogger.d(path);
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -132,40 +186,45 @@ public class FileManagerFragment extends QDBaseFragment {
         getFileCreatTime(mContext, file, new FileUtil.OnSearchListener() {
             @Override
             public void onResult(QDFile qdFile) {
-                if(qdFile!=null){
+                if (qdFile != null) {
                     //Date date1 = new Date(System.currentTimeMillis());
                     Date date = new Date(qdFile.getModifyTime());
-                    QDLogger.e("-------------------------"+simpleDateFormat.format(date));
+                    QDLogger.e("-------------------------" + simpleDateFormat.format(date));
                 }
             }
         });
     }
 
-    private int count ;
+    private int count;
+
     private void deleteEmptyFiles(String rootPath) {
         //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);
+        if(file==null){
+            return;
+        }
         if (file.isDirectory()) {
-            QDLogger.d("正在读取:"+file.getPath());
-            if (file.listFiles().length == 0) {
-                if(file.isDirectory()&&file.listFiles().length<1){
-                    count+=1;
-                    ((Activity) getContext()).runOnUiThread(new Runnable() {
+                if (file.listFiles() == null) {
+                    QDLogger.e("文件不存在:" + file.getPath());
+                    return;
+                }
+                if(file.listFiles().length == 0){
+                    count += 1;
+                    QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv_current.setText("正在删除第"+count+"空文件夹:"+file.getPath());
+                            tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath());
                         }
                     });
+                    QDLogger.e("删除第(" + count +")空文件夹["+(FileUtil.delete(file.getPath())?"成功":"失败")+"]:" + file.getPath());
 
-                    QDLogger.d("删除空文件夹:"+file.getPath());
-                    FileUtil.delete(file.getPath());
+                    return;
                 }
-            } else {
+                QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + file.listFiles().length + ")");
                 for (File file1 : file.listFiles()) {
                     deleteEmptyFiles(file1.getPath());
                 }
             }
-        }
     }
 
     @Override

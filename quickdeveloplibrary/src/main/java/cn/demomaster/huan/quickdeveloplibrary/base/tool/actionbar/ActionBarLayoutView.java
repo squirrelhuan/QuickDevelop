@@ -23,8 +23,7 @@ import androidx.fragment.app.Fragment;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivityInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.BaseFragmentActivityInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragmentInterface;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
@@ -141,8 +140,8 @@ public class ActionBarLayoutView extends FrameLayout implements ActionBarInterfa
         long now = SystemClock.uptimeMillis();
         KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
         if (contextType == ActivityContentType.FragmentModel) {
-            if (fragmentWeakReference.get() instanceof BaseFragmentActivityInterface) {
-                boolean ret = ((BaseFragmentActivityInterface) fragmentWeakReference.get()).onKeyDown(eventCode,down);
+            if (fragmentWeakReference.get() instanceof QDBaseFragmentInterface) {
+                boolean ret = ((QDBaseFragmentInterface) fragmentWeakReference.get()).onKeyDown(eventCode,down);
                 if (ret) {
                     QDLogger.d("fragment 消费了返回事件");
                 }

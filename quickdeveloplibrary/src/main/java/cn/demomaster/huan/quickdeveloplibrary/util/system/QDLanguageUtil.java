@@ -29,7 +29,7 @@ public class QDLanguageUtil {
      * @param locale
      */
     public static void setLanguageLocal(Context context, Locale locale) {
-        QDLogger.e("getLanguage="+locale.getLanguage());
+        QDLogger.d("当前语言类型："+locale.getLanguage());
 
         //设置语言类型
         Resources resources = context.getResources();
@@ -47,7 +47,7 @@ public class QDLanguageUtil {
         }else{
             resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         }
-        QDLogger.d("locale.toString() ="+getLanguageLocal(context).getLanguage());
+        QDLogger.d("修改后语言类型："+getLanguageLocal(context).getLanguage());
         //setLanguageLocal(context,locale.toString());
     }
     public static String System_Language_Setting ="System_Language_Setting";

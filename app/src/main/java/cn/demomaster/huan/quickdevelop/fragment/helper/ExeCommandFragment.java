@@ -2,14 +2,21 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +28,8 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInter
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.QDEditView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
@@ -42,8 +51,6 @@ public class ExeCommandFragment extends QDBaseFragment {
     }
 
     //Components
-    @BindView(R.id.btn_exe_01)
-    QDButton btn_exe_01;
     @BindView(R.id.btn_exe_02)
     QDButton btn_exe_02;
     View mView;
@@ -56,6 +63,8 @@ public class ExeCommandFragment extends QDBaseFragment {
 
     @BindView(R.id.btn_exe_03)
     QDButton btn_exe_03;
+    @BindView(R.id.btn_send)
+    QDButton btn_send;
 
 
     //@BindView(R.id.ll_console)
@@ -65,9 +74,20 @@ public class ExeCommandFragment extends QDBaseFragment {
 
     @BindView(R.id.et_console)
     EditText et_console;
-
+/*
     @BindView(R.id.qet_console)
-    QDEditView qet_console;
+    QDEditView qet_console;*/
+
+    @BindView(R.id.scroll_01)
+    ScrollView scroll_01;
+    @BindView(R.id.tv_console)
+    TextView tv_console;
+
+    @BindView(R.id.fab_clear)
+    FloatingActionButton fab_clear;
+
+    @BindView(R.id.tv_current_path)
+    TextView tv_current_path;
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -82,10 +102,34 @@ public class ExeCommandFragment extends QDBaseFragment {
     public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("command");
 
-        btn_exe_01.setOnClickListener(new View.OnClickListener() {
+        btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exeCommand(((TextView) v).getText().toString());
+                send();
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            et_console.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    //当actionId == XX_SEND 或者 XX_DONE时都触发
+                    //或者event.getKeyCode == ENTER 且 event.getAction == ACTION_DOWN时也触发
+                    //注意，这是一定要判断event != null。因为在某些输入法上会返回null。
+                    if (actionId == EditorInfo.IME_ACTION_SEND
+                            || actionId == EditorInfo.IME_ACTION_DONE
+                            || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                        //处理事件
+                        send();
+                    }
+                    return false;
+                }
+            });
+        }
+        fab_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_console.setText("");
             }
         });
         btn_exe_02.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +137,7 @@ public class ExeCommandFragment extends QDBaseFragment {
             public void onClick(View v) {
                 String str = "ps |grep " + getActivity().getPackageName();
                 QDLogger.i(str);
-                exeCommand(str);
+                //exeCommand(str);
             }
         });
 
@@ -102,7 +146,7 @@ public class ExeCommandFragment extends QDBaseFragment {
             public void onClick(View v) {
                 String str = "adb shell settings put global policy_control immersive.full=*";
                 QDLogger.i(str);
-                exeCommand(str);
+                //exeCommand(str);
             }
         });
 
@@ -113,14 +157,8 @@ public class ExeCommandFragment extends QDBaseFragment {
                 et_console.setText("");
             }
         });
-       /* tv_console.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });*/
 
-        TextWatcher textWatcher2 = new TextWatcher() {
+        /*TextWatcher textWatcher2 = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -129,18 +167,18 @@ public class ExeCommandFragment extends QDBaseFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.e("MainActivity", "onTextChanged: "+s);
-               /* if (!TextUtils.isEmpty(et_console.getText().toString())&&s.toString().endsWith("\n")) {
+               *//* if (!TextUtils.isEmpty(et_console.getText().toString())&&s.toString().endsWith("\n")) {
                     String[] strings = et_console.getText().toString().split("\n");
                     exeCommand(strings[strings.length-1]);
-                }*/
+                }*//*
                 String str=s.toString();
                 if (str.indexOf("\r")>=0 || str.indexOf("\n")>=0){//发现输入回车符或换行符
-                    /*et_console.setText(str.replace("\r","").replace("\n",""));//去掉回车符和换行符
+                    *//*et_console.setText(str.replace("\r","").replace("\n",""));//去掉回车符和换行符
                     //et_console.requestFocus();//让editText2获取焦点
-                    et_console.setSelection(et_console.getText().length());//将光标移动到文本末尾*/
+                    et_console.setSelection(et_console.getText().length());//将光标移动到文本末尾*//*
                     Log.e("MainActivity", "发现输入回车符或换行符 ");
                     String[] strings = str.split("\n");
-                    exeCommand(strings[strings.length-1]);
+                    //exeCommand(strings[strings.length-1]);
                 }
             }
 
@@ -150,7 +188,7 @@ public class ExeCommandFragment extends QDBaseFragment {
 
             }
         };
-        et_console.addTextChangedListener(textWatcher2);
+        et_console.addTextChangedListener(textWatcher2);*/
 
         /*et_console.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -167,7 +205,7 @@ public class ExeCommandFragment extends QDBaseFragment {
             }
         });*/
 
-        QDRuntimeHelper.getInstance().addReceiver(new QDRuntimeHelper.RuntimeReceiver() {
+        /*QDRuntimeHelper.getInstance().addReceiver(new QDRuntimeHelper.RuntimeReceiver() {
             @Override
             public void onReceive(String data) {
                 System.out.println("data="+data);
@@ -181,33 +219,33 @@ public class ExeCommandFragment extends QDBaseFragment {
                     }
                 });
             }
-        });
+        });*/
 
-        qet_console.getText();
         //getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
     }
 
-    public static String content;
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
-    }
-
-    private void exeCommand(String command) {
-        QDRuntimeHelper.getInstance().exeCommand(command);
-        /*Runtime runtime = Runtime.getRuntime();
-        try {
-            Process proc = runtime.exec(command);
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                //System.out.println(line);
-                et_console.setText(et_console.getText()+"\n" + line);
+    private void send() {
+        if(!TextUtils.isEmpty(et_console.getText())&&et_console.getText().toString().contains("clear")){
+            et_console.setText("");
+            tv_console.setText("");
+            return;
+        }
+        ADBHelper.getInstance().execute(et_console.getText().toString(), new ADBHelper.OnReceiveListener() {
+            @Override
+            public void onReceive(ProcessResult result) {
+                if(result.getCode()==0) {
+                    tv_console.append(result.getResult());
+                }else {
+                    tv_console.append(result.getError());
+                }
+                et_console.setText("");
+                scroll_01.scrollTo(0,tv_console.getHeight());
+                tv_current_path.setText(">_"+ADBHelper.getInstance().currentPath);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        });
     }
 
+    public static String content;
     @Override
     public void onDestroy() {
         super.onDestroy();

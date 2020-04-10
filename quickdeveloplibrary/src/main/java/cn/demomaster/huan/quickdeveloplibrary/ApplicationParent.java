@@ -1,25 +1,31 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
 
 //import com.didichuxing.doraemonkit.DoraemonKit;
 
+import androidx.annotation.Nullable;
+
 import com.tencent.bugly.Bugly;
 
+import java.util.List;
+
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
-import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
+import cn.demomaster.huan.quickdeveloplibrary.db.DbHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.QDActivityLifecycleCallbacks;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
@@ -28,7 +34,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isA
 
 public class ApplicationParent extends Application {
 
-    //public static String TAG = "CGQ";
+    public static String QDTAG = "[qd]";
     private static ApplicationParent instance = null;
     public static ApplicationParent getInstance() {
         return instance;
@@ -38,6 +44,16 @@ public class ApplicationParent extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        QDLogger.i(QDTAG,"包名："+getPackageName());
+        QDLogger.i(QDTAG,"myPid="+android.os.Process.myPid());
+        ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
+        // other process will create app instance.
+        if (TextUtils.isEmpty(processInfo.processName)||!getPackageName().equals(processInfo.processName)) {
+            QDLogger.e(QDTAG,getPackageName()+"进程["+android.os.Process.myPid()+"]已存在无需重复初始化");
+            return;
+        }
+
         QDLogger.setApplicationContext(this);
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
@@ -74,6 +90,7 @@ public class ApplicationParent extends Application {
         //MultiDex.install(base);
     }
 
+
     /**
      * 初始化友盟分享
      *
@@ -99,7 +116,7 @@ public class ApplicationParent extends Application {
         //PlatformConfig.setYnote("9c82bf470cba7bd2f1819b0ee26f86c6ce670e9b");
     }
 
-    public CBHelper dbHelper;
+    public DbHelper dbHelper;
     public SQLiteDatabase db;
 
     /**
@@ -107,7 +124,7 @@ public class ApplicationParent extends Application {
      * @param dbpath
      */
     private void initDB(String dbpath) {
-        dbHelper = new CBHelper(this, dbpath, null, 1);
+        dbHelper = new DbHelper(this, dbpath, null, 1);
         //得到一个可读的SQLiteDatabase对象
         db = dbHelper.getReadableDatabase();
     }
@@ -119,13 +136,11 @@ public class ApplicationParent extends Application {
     public String getBugglyAppID(){
         return "7d6d33c554";
     }
-    public ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new QDActivityLifecycleCallbacks();
     /**
      * 处理异常捕获
      */
     public void initCrash() {
         QDLogger.i("initCrash");
-        registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
         //CrashReport.initCrashReport(getApplicationContext(), getBugglyAppID(), false);
         Bugly.init(getApplicationContext(), getBugglyAppID(), false);
         if (BuildConfig.DEBUG) {

@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -44,8 +43,8 @@ public class FragmentActivityHelper {
         if (getFragmentManager().getBackStackEntryCount() > 1) {
                 if (getFragments().size() > 1) {
                     Fragment fragment = getFragments().get(getFragments().size() - 1);
-                    if (fragment instanceof BaseFragmentActivityInterface) {
-                        boolean ret = ((BaseFragmentActivityInterface) fragment).onKeyDown(keyCode,event);
+                    if (fragment instanceof QDBaseFragmentInterface) {
+                        boolean ret = ((QDBaseFragmentInterface) fragment).onKeyDown(keyCode,event);
                         return ret;
                     }
                 }

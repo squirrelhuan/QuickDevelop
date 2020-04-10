@@ -44,7 +44,7 @@ public class SharedPreferencesHelper {
     }
 
     public SharedPreferencesHelper(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
     }
 

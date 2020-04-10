@@ -138,6 +138,8 @@ public class QDLogger {
 
     public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
     public static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
+    public static SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss:SSS", Locale.CHINA);// HH:mm:ss
+
    /* static Locale mLocale = Locale.CHINA;
     public static void setLocale(Locale locale) {
         mLocale = locale;
@@ -219,7 +221,7 @@ public class QDLogger {
                     dir.mkdir();
                 }
                 if (canWriteAble) {
-                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat.format(date) + " " + applicationContext.getPackageName() + "-" + "[" + Tag + "]" + message + "\n", true);
+                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat3.format(date) + " " + applicationContext.getPackageName() + " " + Tag +" "+ message + "\n", true);
                 }
             } else {
                 System.out.println(message);

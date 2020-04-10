@@ -6,7 +6,6 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,17 +20,19 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  * @date 2018/11/19.
  * description：
  */
-public class CBHelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
     private Context mContext;
+    public SQLiteDatabase db;
+
     //必须要有构造函数
-    public CBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
         this.DATABASE_NAME = name;
         initLocalDB();//初始化本地的db文件
     }
 
-    public CBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
 
@@ -55,7 +56,6 @@ public class CBHelper extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "yidao.db";
     private static final int DATABASE_VERSION = 1;
     private static final String SP_KEY_DB_VER = "db_ver";
-    private SQLiteDatabase db;
     private void initLocalDB() {
         if (databaseExists()) {
             SharedPreferences prefs = PreferenceManager
@@ -130,5 +130,9 @@ public class CBHelper extends SQLiteOpenHelper {
         }
     }
 
-
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        db = super.getReadableDatabase();
+        return db;
+    }
 }

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
@@ -23,6 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
+import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocalForActivity;
 
 
 /**
@@ -58,6 +61,8 @@ public class LanguageFragment extends QDBaseFragment {
 
         final String[] cities = {getString(R.string.lan_chinese), getString(R.string.lan_en), getString(R.string.lan_ja), getString(R.string.lan_de)};
         final String[] locals = {"zh_CN", "en", "ja", "de"};
+        //final String[] locals = {Locale.CHINA.getLanguage(),Locale.ENGLISH.getLanguage(),Locale.JAPAN.getLanguage(), Locale.KOREA.getLanguage()};
+
         btn_error_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +72,7 @@ public class LanguageFragment extends QDBaseFragment {
                 builder.setItems(cities, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setLanguageLocal(mContext, locals[which]);
+                        setLanguageLocalForActivity(mContext, locals[which]);
                         //changeAppLanguage(mContext);
                         EventBus.getDefault().post(EVENT_REFRESH_LANGUAGE);
                     }

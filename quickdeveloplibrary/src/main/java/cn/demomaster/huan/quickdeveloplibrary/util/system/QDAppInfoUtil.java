@@ -41,9 +41,8 @@ public class QDAppInfoUtil {
             PackageInfo packageInfo = packageManager.getPackageInfo(
                     packageName, 0);
             if(packageInfo!=null) {
-                versionCode = packageInfo.versionCode;
+                return packageInfo.versionCode;
             }
-            return versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.bumptech.glide.Glide;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
@@ -93,6 +97,9 @@ public class MainFragment extends QDBaseFragment {
         // Tabs
         initScrollableTabs(rootView, mViewPager);
         init();
+        /*ImageView iv_store_pic = rootView.findViewById(R.id.iv_store_pic);
+        Glide.with(mContext).load("https://baekteoriappimg.s3.ap-northeast-2.amazonaws.com/charge/158633285847768584298").into(iv_store_pic);
+        iv_store_pic.setVisibility(View.VISIBLE);*/
     }
 
     private void init() {

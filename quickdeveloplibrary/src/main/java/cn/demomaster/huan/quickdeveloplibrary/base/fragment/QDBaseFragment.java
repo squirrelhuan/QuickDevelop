@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
-import android.app.Activity;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -29,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 /**
  * Created by Squirrel桓 on 2019/1/3.
  */
-public abstract class QDBaseFragment extends Fragment implements BaseFragmentActivityInterface {
+public abstract class QDBaseFragment extends Fragment implements QDBaseFragmentInterface {
 
     public AppCompatActivity mContext;
     public Bundle mBundle;
@@ -44,7 +43,15 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
         return headlayoutResID;
     }
 
+    /**
+     * 获取自定义导航佈局
+     * @param view
+     * @return
+     */
     public ActionBarInterface getActionBarLayout(View view) {
+        if (!isUseActionBarLayout()) {
+            return null;
+        }
         if (actionBarLayout == null) {
             ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setFragment(this).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
@@ -151,4 +158,9 @@ public abstract class QDBaseFragment extends Fragment implements BaseFragmentAct
         }
         return optionsMenubuilder;
     }
+
+   /* @Override
+    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+
+    }*/
 }

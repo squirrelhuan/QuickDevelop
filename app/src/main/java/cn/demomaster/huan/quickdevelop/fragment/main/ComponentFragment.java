@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.component.SlidingPanelLayoutActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
@@ -89,6 +90,7 @@ public class ComponentFragment extends QDBaseFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
 
+        classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
         classList.add(WheelImageFragment.class);
         classList.add(ToggleButtonActivity.class);

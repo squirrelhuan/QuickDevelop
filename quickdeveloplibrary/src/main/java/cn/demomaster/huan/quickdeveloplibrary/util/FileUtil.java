@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -16,6 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -127,31 +130,34 @@ public class FileUtil {
      */
     public static boolean delete(String delFile) {
         File file = new File(delFile);
-        if (!file.exists()) {
+        if (file == null || !file.exists()) {
             return false;
         } else {
-            if (file.isFile())
-                return deleteSingleFile(delFile);
-            else
-                return deleteDirectory(delFile);
+            if (file.isFile()) {
+                return deleteSingleFile(file.getAbsolutePath());
+            } else {
+                return deleteDirectory(file.getAbsolutePath());
+            }
         }
     }
 
     /**
      * 删除单个文件
      *
-     * @param filePath$Name 要删除的文件的文件名
+     * @param filePath 要删除的文件的文件名
      * @return 单个文件删除成功返回true，否则返回false
      */
-    private static boolean deleteSingleFile(String filePath$Name) {
-        File file = new File(filePath$Name);
+    private static boolean deleteSingleFile(String filePath) {
+        File file = new File(filePath);
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
                 //Log.e("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
                 return true;
             } else {
-                return false;
+                File tmp = new File("tmp123");
+                file.renameTo(tmp);
+                return tmp.delete();
             }
         } else {
             return false;
@@ -413,4 +419,112 @@ public class FileUtil {
     public static interface OnSearchListener {
         void onResult(QDFile qdFile);
     }
+
+
+    /**
+     * 通过反射调用获取内置存储和外置sd卡根路径(通用)
+     *
+     * @param mContext    上下文
+     * @param is_removale 是否可移除，false返回内部存储路径，true返回外置SD卡路径
+     * @return
+     */
+    public static String getStoragePath(Context mContext, boolean is_removale) {
+        String path = "";
+        //使用getSystemService(String)检索一个StorageManager用于访问系统存储功能。
+        StorageManager mStorageManager = (StorageManager) mContext.getSystemService(Context.STORAGE_SERVICE);
+        Class<?> storageVolumeClazz = null;
+        try {
+            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
+            Method getPath = storageVolumeClazz.getMethod("getPath");
+            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
+            Object result = getVolumeList.invoke(mStorageManager);
+
+            for (int i = 0; i < Array.getLength(result); i++) {
+                Object storageVolumeElement = Array.get(result, i);
+                path = (String) getPath.invoke(storageVolumeElement);
+                QDLogger.e("getStoragePath---"+path);
+                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
+                if (is_removale == removable) {
+                    //return path;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
+        /**
+         * 获取内置SD卡路径
+         *
+         * @return
+         */
+        public static String getInnerSDCardPath() {
+            return Environment.getExternalStorageDirectory().getPath();
+        }
+
+        /**
+         * 获取存储路径
+         * @return 所有可用于存储的不同的卡的位置，用一个List来保存
+         */
+        public static List<String> getExtSDCardPathList() {
+            List<String> paths = new ArrayList<String>();
+            String extFileStatus = Environment.getExternalStorageState();
+            File extFile = Environment.getExternalStorageDirectory();
+            //首先判断一下外置SD卡的状态，处于挂载状态才能获取的到
+            if (extFileStatus.equals(Environment.MEDIA_MOUNTED) && extFile.exists() && extFile.isDirectory() && extFile.canWrite()) {
+                //外置SD卡的路径
+                paths.add(extFile.getAbsolutePath());
+            }
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                Process process = runtime.exec("mount");
+                InputStream is = process.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String line = null;
+                int mountPathIndex = 1;
+                while ((line = br.readLine()) != null) {
+                    // format of sdcard file system: vfat/fuse
+                    if ((!line.contains("fat") && !line.contains("fuse") && !line
+                            .contains("storage"))
+                            || line.contains("secure")
+                            || line.contains("asec")
+                            || line.contains("firmware")
+                            || line.contains("shell")
+                            || line.contains("obb")
+                            || line.contains("legacy") || line.contains("data")) {
+                        continue;
+                    }
+                    String[] parts = line.split(" ");
+                    int length = parts.length;
+                    if (mountPathIndex >= length) {
+                        continue;
+                    }
+                    String mountPath = parts[mountPathIndex];
+                    if (!mountPath.contains("/") || mountPath.contains("data")
+                            || mountPath.contains("Data")) {
+                        continue;
+                    }
+                    File mountRoot = new File(mountPath);
+                    if (!mountRoot.exists() || !mountRoot.isDirectory()
+                            || !mountRoot.canWrite()) {
+                        continue;
+                    }
+                    boolean equalsToPrimarySD = mountPath.equals(extFile
+                            .getAbsolutePath());
+                    if (equalsToPrimarySD) {
+                        continue;
+                    }
+                    //扩展存储卡即TF卡或者SD卡路径
+                    paths.add(mountPath);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return paths;
+        }
+
+
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import cn.demomaster.huan.quickdeveloplibrary.db.CBHelper;
-
 /**
  * @author squirrel桓
  * @date 2018/11/19.
@@ -16,7 +14,7 @@ public class DbHelper {
 
     void create() {
         //创建StuDBHelper对象
-        CBHelper dbHelper = new CBHelper(context, "stu_db", null, 1);
+        cn.demomaster.huan.quickdeveloplibrary.db.DbHelper dbHelper = new cn.demomaster.huan.quickdeveloplibrary.db.DbHelper(context, "stu_db", null, 1);
         //得到一个可读的SQLiteDatabase对象
         SQLiteDatabase db = dbHelper.getReadableDatabase();
     }

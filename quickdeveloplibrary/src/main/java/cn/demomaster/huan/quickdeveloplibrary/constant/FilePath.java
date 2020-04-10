@@ -8,7 +8,6 @@ import android.os.Environment;
 
 public class FilePath {
 
-
     public final static String BASE_FILE_PATH = Environment.getExternalStorageDirectory() + "/geneg";
 
     public final static String APP_PATH_CACHE_DIR = BASE_FILE_PATH + "/cache";

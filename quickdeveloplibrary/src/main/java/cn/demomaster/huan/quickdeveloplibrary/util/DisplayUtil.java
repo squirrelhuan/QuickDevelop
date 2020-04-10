@@ -1,7 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
@@ -12,14 +14,13 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  */
 public class DisplayUtil {
 
-    static int statusBar_Height = 0;
+    static int statusBar_Height = -1;
     /**
      * 获取状态栏高度
-     *
      * @return
      */
     public static int getStatusBarHeight(Context context) {
-        if (statusBar_Height != 0) {
+        if (statusBar_Height != -1) {
             return statusBar_Height;
         }
         int result = 0;
@@ -32,6 +33,39 @@ public class DisplayUtil {
         }
         return result;
     }
+
+    /**
+     * 获取标题栏高度
+     * @param context
+     * @return
+     */
+    public static int getActionbarDefaultHeight(Context context) {
+        if (statusBar_Height != -1) {
+            return statusBar_Height;
+        }
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("actionbar_default_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        if (result == 0) {
+            return (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
+        }
+        return result;
+    }
+    static int actionBarHeight = -1;
+    public static int getActionBarHeight(Context context) {
+        final TypedValue tv = new TypedValue();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+            }
+        } else if (context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+        }
+        return actionBarHeight;
+    }
+
 
     /* dp转换成px
      */

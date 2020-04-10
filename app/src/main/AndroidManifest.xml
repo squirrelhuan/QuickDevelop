@@ -90,6 +90,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.sample.component.SlidingPanelLayoutActivity" />
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
         <activity android:name=".activity.sample.PickActivity" />

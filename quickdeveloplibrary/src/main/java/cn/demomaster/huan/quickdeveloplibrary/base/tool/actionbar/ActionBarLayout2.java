@@ -6,10 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -557,6 +554,11 @@ public class ActionBarLayout2 implements ActionBarInterface{
         themeColors[0] = lightColor;
         themeColors[1] = dartColor;
         setActionBarColorType(themeColorType == 1);
+    }
+
+    @Override
+    public View getRootView() {
+        return rootLayout;
     }
 
     private void setActionBarColorType(boolean isDart) {

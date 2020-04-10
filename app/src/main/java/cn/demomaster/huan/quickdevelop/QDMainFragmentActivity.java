@@ -10,6 +10,10 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 
 /**
  *
@@ -42,7 +46,27 @@ public class QDMainFragmentActivity extends QDActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
         System.out.println("当前时间：" + simpleDateFormat.format(date));*/
 
+        /*QDRuntimeHelper.getInstance().exeCommand("pwd");
+        QDRuntimeHelper.getInstance().exeCommand("cd /");
+        QDRuntimeHelper.getInstance().exeCommand("ls", new QDRuntimeHelper.CallBack() {
+            @Override
+            public void onReceive(String data) {
+                QDLogger.d("cdata="+data);
+            }
+        });*/
+        ADBHelper adbHelper = ADBHelper.getInstance();
+        adbHelper.execute("pwd");
+        adbHelper.execute("ls");
+        adbHelper.execute("cd /proc");
+        adbHelper.execute("ls", new ADBHelper.OnReceiveListener() {
+            @Override
+            public void onReceive(ProcessResult result) {
+                if(result.getCode()==0){
+                    QDLogger.d("result="+result.getResult());
+                }else {
+                    QDLogger.e("result="+result.getCode()+","+result.getError());
+                }
+            }
+        });
     }
-
-
 }

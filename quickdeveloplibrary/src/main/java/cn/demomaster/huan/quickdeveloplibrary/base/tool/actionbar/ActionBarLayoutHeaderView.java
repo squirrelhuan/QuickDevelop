@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NORMAL;
+import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_ACTION_BAR;
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.NO_STATUS;
 
 
@@ -74,6 +76,10 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
         initView();
     }
 
+    /**
+     * 获取状态栏高度
+     * @return
+     */
     public int getStatusBar_Height() {
         return (actionbarType == NO_STATUS) ? 0 : statusBar_Height;
     }
@@ -110,7 +116,7 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
             case NO_STATUS:
                 return paddingTop_old;
             case NO_ACTION_BAR:
-                return 0;
+                return statusBar_Height;
             case ACTION_TRANSPARENT:
                 return paddingTop_old + statusBar_Height;
             case ACTION_STACK_NO_STATUS:
@@ -122,10 +128,10 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     }
 
     private LayoutInflater mInflater;
-
     private void initView() {
         //记录状态栏高度
         statusBar_Height = DisplayUtil.getStatusBarHeight(getContext());
+        actionBar_Height = DisplayUtil.getActionBarHeight(getContext());
         mInflater = LayoutInflater.from(getContext());
         removeAllViews();
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -171,6 +177,9 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
 
     private void initOnClickListener() {
         it_actionbar_title = findViewById(R.id.it_actionbar_common_title);
+        /*ViewGroup.LayoutParams layoutParams = it_actionbar_title.getLayoutParams();
+        layoutParams.height = actionBar_Height;
+        it_actionbar_title.setLayoutParams(layoutParams);*/
         if (getContext() instanceof AppCompatActivity && ((AppCompatActivity) getContext()).getTitle() != null) {
             setTitle(((AppCompatActivity) getContext()).getTitle().toString());
         }
@@ -199,16 +208,47 @@ public class ActionBarLayoutHeaderView extends FrameLayout {
     }
 
     private ACTIONBAR_TYPE actionbarType = NORMAL;
-    private boolean loadFinished;
-
+    private boolean loadFinished;//加载完成
+    ViewGroup.LayoutParams layoutParamsOld;
     public void setActionbarType(ACTIONBAR_TYPE actionbarType) {
+        /*if(layoutParamsOld==null){
+            layoutParamsOld = getLayoutParams();
+        }
+        if(this.actionbarType!=NO_ACTION_BAR&&actionbarType==NO_ACTION_BAR){
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = statusBar_Height;
+            setPadding(getPaddingLeft(),statusBar_Height,getPaddingRight(),getPaddingBottom());
+            setLayoutParams(layoutParams);
+        }else if(this.actionbarType==NO_ACTION_BAR&&actionbarType!=NO_ACTION_BAR){
+                ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                if (layoutParamsOld.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                    layoutParams.height = statusBar_Height + actionBar_Height;
+                    setPadding(getPaddingLeft(), 0, getPaddingRight(), getPaddingBottom());
+                } else {
+                    layoutParams.height = layoutParamsOld.height;
+                }
+                setLayoutParams(layoutParams);
+        }*/
+
         this.actionbarType = actionbarType;
+
         if (loadFinished) {
             initActionBarType();
         }
     }
 
     public void initActionBarType() {
+        /*if(layoutParamsOld==null){
+            layoutParamsOld = getLayoutParams();
+        }
+        if(actionbarType!=NO_ACTION_BAR){
+                *//*ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                setLayoutParams(layoutParams);*//*
+                setLayoutParams(layoutParamsOld);
+                setPadding(getPaddingLeft(),0,getPaddingRight(),getPaddingBottom());
+        }*/
+
         switch (actionbarType) {
             case NORMAL:
                 setVisibility(VISIBLE);

@@ -10,6 +10,7 @@ public interface ActionBarInterface {
     void setLeftOnClickListener(View.OnClickListener leftOnClickListener);
     void setRightOnClickListener(View.OnClickListener rightOnClickListener);
     void setActionBarThemeColors(int lightColor,int darkColor);
+    View getRootView();
      ActionBarTip getActionBarTip();
     void setHeaderBackgroundColor(int blue);
     void setActionBarType(ACTIONBAR_TYPE noActionBarNoStatus);

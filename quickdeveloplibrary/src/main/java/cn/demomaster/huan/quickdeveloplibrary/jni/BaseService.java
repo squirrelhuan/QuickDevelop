@@ -24,9 +24,10 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.i( "BaseService onCreate" + index);
-        if(baseBinder==null)
-        baseBinder = new BaseBinder(this);
+        QDLogger.i( "BaseService onCreate " + index);
+        if(baseBinder==null) {
+            baseBinder = new BaseBinder(this);
+        }
        /* String packageName = getApplicationContext().getPackageName();
         String serviceName = this.getClass().getName();
         Log.i(TAG, "packageName=" + packageName+",serviceName="+serviceName);
@@ -61,12 +62,11 @@ public class BaseService extends Service {
                 index++;
             }
         }, 0, 5000);*/
-
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        QDLogger.i( "BaseService onStartCommand" + index);
+        QDLogger.i( "BaseService onStartCommand " + index);
 
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
@@ -111,8 +111,9 @@ public class BaseService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         //QdToast.show(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
-        if(baseBinder==null)
-        baseBinder=new BaseBinder(this);
+        if(baseBinder==null) {
+            baseBinder = new BaseBinder(this);
+        }
         QDLogger.i( "BaseService onBind" + index);
         return baseBinder;
     }
