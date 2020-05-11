@@ -132,8 +132,8 @@ public class ApplicationParent extends Application {
      * 处理异常捕获
      */
     public void initCrash() {
-        QDLogger.i("初始化异常捕获");
         if (BuildConfig.DEBUG) {
+            QDLogger.i("初始化异常捕获");
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
             if (errorReportActivity == null) {
                 QDLogger.e("未定义错误异常捕获页面");
