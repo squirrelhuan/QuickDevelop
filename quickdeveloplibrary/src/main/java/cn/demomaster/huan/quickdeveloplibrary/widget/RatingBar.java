@@ -282,7 +282,6 @@ public class RatingBar extends View {
     }
 
     private boolean canTouch;//是否可触摸改变进度
-
     public void setCanTouch(boolean canTouch) {
         this.canTouch = canTouch;
     }

@@ -53,6 +53,9 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
+        <activity android:name=".activity.Main3Activity">
+        </activity>
+
         <!--<activity
             android:name=".activity.sample.Main2Activity"
             android:label="@string/title_activity_main2"
@@ -77,19 +80,15 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AuMPh0zN8c1tUwRPGY37pmblqEunsjAO" /> <!-- http://lbsyun.baidu.com/apiconsole/key -->
         <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity -->
-
-<activity
+        <activity
             android:name=".QDMainFragmentActivity"
-            android:process=":main"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"><!--android:process=":main"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.sample.component.SlidingPanelLayoutActivity" />
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
@@ -103,8 +102,7 @@
         <activity android:name=".activity.sample.PictureSelectActivity" />
         <activity android:name=".activity.sample.component.LoadingActivity" />
         <activity android:name=".activity.sample.CenterHorizontalActivity" />
-        <activity android:name=".activity.sample.ActionBarActivity" />
-        <activity android:name=".fragment.helper.location.LocationActivity" /> <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider" -->
+        <activity android:name=".activity.sample.ActionBarActivity" /> <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -115,18 +113,6 @@
                 android:resource="@xml/file_provider_path" />
         </provider>
 
-        <activity
-            android:name=".MainActivity"
-            android:icon="@mipmap/ic_launcher_round"
-            android:launchMode="singleInstance"
-            android:process=":second">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".activity.sample.component.ToggleButtonActivity"
             android:label="tooglebutton" />
@@ -176,6 +162,14 @@
         </receiver>
 
         <service android:name=".service.UploadFilesIntentService" />
+
+        <!--AIDL服务端-->
+        <service android:name=".aidl.StudentService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.demomaster.huan.quickdevelop.aidl.StudentService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
@@ -47,7 +48,8 @@ public class ActionBarTipActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_bar_tip);
-        ButterKnife.bind(this);
+        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+
         btn_emui_halo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

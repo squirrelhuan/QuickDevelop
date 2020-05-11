@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.Application;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 
+@ActivityPager(name = "sqlite",preViewClass = TextView.class,resType = ResType.Resource)
 public class CsqliteActivity extends QDActivity {
 
 

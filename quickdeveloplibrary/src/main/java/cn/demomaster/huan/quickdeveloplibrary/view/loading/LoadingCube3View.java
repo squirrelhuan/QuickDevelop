@@ -60,7 +60,7 @@ public class LoadingCube3View extends View {
 
     private void drawView(Canvas canvas) {
 
-        QDLogger.e("progress=" + progress + "");
+        //QDLogger.e("progress=" + progress + "");
         canvas.rotate((progress / 360) * 90 + 45 + (index) * 90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
         //canvas.drawColor(Color.BLACK);
         Paint mPaint = new Paint();

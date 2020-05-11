@@ -9,16 +9,17 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.QDActivityLifecycleCallbacks;
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleRecorder;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -37,11 +38,70 @@ public class QDActivityManager {
     private QDActivityManager() {
     }
 
+    Application.ActivityLifecycleCallbacks activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            QDActivityManager.getInstance().pushActivity(activity);
+            record(LifecycleType.onActivityCreated, activity);
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            record(LifecycleType.onActivityStarted, activity);
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+            QDActivityManager.getInstance().onActivityResumed(activity);
+            record(LifecycleType.onActivityResumed, activity);
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+            QDActivityManager.getInstance().onActivityPaused(activity);
+
+            record(LifecycleType.onActivityPaused, activity);
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+            QDActivityManager.getInstance().onActivityStopped(activity);
+
+            record(LifecycleType.onActivityStopped, activity);
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            record(LifecycleType.onActivitySaveInstanceState, activity);
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            QDActivityManager.getInstance().removeActivityFormStack(activity);
+
+            record(LifecycleType.onActivityDestroyed, activity);
+        }
+
+        private void record(LifecycleType lifecycleType, Activity activity) {
+            QDLogger.d(TAG.ACTIVITY, lifecycleType+" ==> [" + activity + "]");
+            LifecycleRecorder.record(lifecycleType, activity);
+        }
+    };
+
     //必须要在application里初始化
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public QDActivityManager init(Context context) {
-        getInstance().context = context.getApplicationContext();
-        //注冊activity监听器
-        QDActivityLifecycleCallbacks.getInstance().init((Application) context);
+        this.context = context.getApplicationContext();
+            //注冊activity监听器
+            try {
+                //注册
+                ((Application) this.context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ((Application) this.context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         return instance;
     }
 
@@ -54,6 +114,7 @@ public class QDActivityManager {
 
     /**
      * 添加activity到棧中
+     *
      * @param activity
      */
     public void pushActivity(Activity activity) {
@@ -395,17 +456,18 @@ public class QDActivityManager {
 
     /**
      * 判断应用是否在前台运行
+     *
      * @param context
      * @return
      */
     public boolean isRunningOnForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-        if(activityManager.getRunningTasks(1)!=null||activityManager.getRunningTasks(1).size()==1) {
+        if (activityManager.getRunningTasks(1) != null || activityManager.getRunningTasks(1).size() == 1) {
             ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
             String currentPackageName = componentName.getPackageName();
-            QDLogger.i("currentPackageName=" + currentPackageName + ",mypid=" + android.os.Process.myPid());
+            //QDLogger.i("currentPackageName=" + currentPackageName + ",mypid=" + android.os.Process.myPid());
             if (!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(context.getPackageName())) {
-                QDLogger.i("APP在前台运行,context.pid=" + android.os.Process.myPid());
+                // QDLogger.i("APP在前台运行,context.pid=" + android.os.Process.myPid());
                 return true;
             }
         }
@@ -429,7 +491,7 @@ public class QDActivityManager {
         if (context != null) {
             ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningAppProcessInfo> processes = activityManager.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo: processes) {
+            for (ActivityManager.RunningAppProcessInfo processInfo : processes) {
                 if (processInfo.processName.equals(context.getPackageName())) {
                     if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                         return true;
@@ -455,14 +517,6 @@ public class QDActivityManager {
         onStateChanged(activity, false);
     }
 
-    public void addOnActivityChangedListener(Application.ActivityLifecycleCallbacks callback) {
-        QDActivityLifecycleCallbacks.getInstance().registerActivityLifecycleCallback(callback);
-    }
-
-    public void removeOnActivityChangedListener(Application.ActivityLifecycleCallbacks callback) {
-        QDActivityLifecycleCallbacks.getInstance().unregisterActivityLifecycleCallback(callback);
-    }
-
     public static interface OnAppRunStateChangedListenner {
         void onForeground();//前台显示
 
@@ -476,7 +530,6 @@ public class QDActivityManager {
 
     /**
      * 杀死其他正在运行的程序
-     *
      * @param context
      */
     public static void killOthers(Context context, String pkgName) {
@@ -491,7 +544,7 @@ public class QDActivityManager {
                     ApplicationInfo applicationInfo = pManager.getPackageInfo(packName, 0).applicationInfo;
                     if (!pkgName.equals(packName) && filterApp(applicationInfo)) {
                         forceStopPackage(context, packName);
-                        System.out.println(packName + "JJJJJJ");
+                        System.out.println(packName + " has been killed");
                     }
                 }
             } catch (Exception e) {
@@ -564,7 +617,7 @@ public class QDActivityManager {
             backToActivity(context, targetActivityClass);
             Activity activity = QDActivityManager.getInstance().getCurrentActivity();
             //若没有找到运行的task，用户结束了task或被系统释放，则重新启动mainactivity
-            if (!activity.getClass().getName().equals(targetActivityClass.getName())) {
+            if (activity == null || !activity.getClass().getName().equals(targetActivityClass.getName())) {
                 Intent resultIntent = new Intent(context, targetActivityClass);
                 resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 context.startActivity(resultIntent);

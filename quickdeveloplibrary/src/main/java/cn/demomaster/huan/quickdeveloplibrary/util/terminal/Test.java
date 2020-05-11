@@ -3,6 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.util.terminal;
 
 import java.io.*;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 public class Test {
     public static final int SUCCESS = 0;            // 表示程序执行成功
 
@@ -26,7 +28,7 @@ public class Test {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }
@@ -61,10 +63,10 @@ public class Test {
             process.destroy();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -90,13 +92,12 @@ public class Test {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
-
             try {
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

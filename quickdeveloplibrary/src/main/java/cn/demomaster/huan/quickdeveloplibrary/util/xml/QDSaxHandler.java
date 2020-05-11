@@ -69,10 +69,8 @@ public class QDSaxHandler<T> extends DefaultHandler {
                     targetInstance = addField2(targetInstance, attName, attValueString);
                     // QDLogger.i(" " + attName + "=" + attValueString);
                 }*/
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                QDLogger.e(e);
             }
             elements.add(targetInstance);
         } else {
@@ -130,7 +128,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                     try {
                         field.set(parentElement, elementName);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                 }
                 if (field.getType() == java.util.List.class) {//属性:list
@@ -160,7 +158,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                            // QDLogger.d(JSON.toJSON(list));
                             field.set(parentElement, list);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            QDLogger.e(e);
                         }
                     }
                 }
@@ -193,7 +191,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                     try {
                         field.set(parentElement, elementName);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                 }
                 if (field.getType() == java.util.List.class) {//属性:list
@@ -223,7 +221,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                             // QDLogger.d(JSON.toJSON(list));
                             field.set(parentElement, list);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            QDLogger.e(e);
                         }
                     }
                 }
@@ -275,7 +273,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                 try {
                     field.set(targetObj, value);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
             // QDLogger.i(field.getName());
@@ -299,7 +297,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                 try {
                     field.set(targetObj, value);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
            // QDLogger.i(field.getName());

@@ -102,7 +102,7 @@ public class QDActionDialogActivity extends QDActivity {
                     case 8:
                         TextView textView = new TextView(mContext);
                         textView.setText(listItems[position]);
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setBackgroundRadius(50).setContentView(textView).setmCancelable(false).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setBackgroundRadius(50).setContentView(textView).setCancelable(true).create();
                         break;
                     case 9:
                         //TextView textView = new TextView(mContext);
@@ -112,10 +112,10 @@ public class QDActionDialogActivity extends QDActivity {
                         emoticonView.setStateType(LoadStateType.COMPLETE);
                         break;
                     case 10:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setmCancelable(false).setBackgroundRadius(50).setTopViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setCancelable(true).setBackgroundRadius(50).setTopViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
                         break;
                     case 11:
-                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setmCancelable(false).setBackgroundRadius(50).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
+                        qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setCancelable(true).setBackgroundRadius(50).setLeftViewClass(LoadingCircleView.class).setMessage(listItems[position]).setDelayMillis(5000).create();
                         break;
                     case 12:
                         qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundColor(0x33ff0600).setBackgroundRadius(50).setTopViewClass(LoadingCircleView.class).setDelayMillis(5000).create();

@@ -43,11 +43,11 @@ public class ImageUitl {
             } catch (FileNotFoundException e) {
                 photoFile.delete();
                 localPath = null;
-                e.printStackTrace();
+                QDLogger.e(e);
             } catch (IOException e) {
                 photoFile.delete();
                 localPath = null;
-                e.printStackTrace();
+                QDLogger.e(e);
             } finally {
                 try {
                     if (fileOutputStream != null) {
@@ -55,7 +55,7 @@ public class ImageUitl {
                         fileOutputStream = null;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
         }

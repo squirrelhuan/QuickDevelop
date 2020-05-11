@@ -56,13 +56,13 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     public static String TAG = "CGQ";
     public AppCompatActivity mContext;
     public Bundle mBundle = null;
-    private ActionBarInterface actionBarLayout;
+    private ActionBarLayoutView actionBarLayout;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }
 
-    public ActionBarInterface getActionBarLayout(View view) {
+    public ActionBarLayoutView getActionBarLayout(View view) {
         if (actionBarLayout == null) {
             ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(getHeadlayoutResID());
             actionBarLayout = builder.creat();
@@ -70,7 +70,11 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         return actionBarLayout;
     }
 
-    public ActionBarInterface getActionBarLayout() {
+    /**
+     *
+     * @return ActionBarInterface
+     */
+    public ActionBarLayoutView getActionBarLayout() {
         return actionBarLayout;
     }
 

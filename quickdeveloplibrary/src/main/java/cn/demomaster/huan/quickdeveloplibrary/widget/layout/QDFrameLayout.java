@@ -154,7 +154,7 @@ public class QDFrameLayout extends android.widget.FrameLayout {
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        QDLogger.d("addView:" + index);
+        //QDLogger.d("addView:" + index);
         super.addView(child, index, params);
     }
 

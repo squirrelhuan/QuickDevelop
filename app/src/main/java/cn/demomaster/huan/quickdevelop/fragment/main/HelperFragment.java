@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DownloadFragment;
@@ -26,9 +27,11 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard2Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard3Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.LmSensorFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.QDTerminalFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.ScreenShotFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.SettingFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.SocketFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.TrafficFragment;
@@ -76,6 +79,11 @@ public class HelperFragment extends QDBaseFragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
+
+
+        classList.add(CsqliteActivity.class);
+        classList.add(LmSensorFragment.class);
+        classList.add(ScreenShotFragment.class);
         classList.add(ErrorTestFragment.class);
         classList.add(FileManagerFragment.class);
         classList.add(LanguageFragment.class);

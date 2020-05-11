@@ -1,21 +1,14 @@
 package cn.demomaster.huan.quickdevelop.service;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Process;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.demomaster.huan.quickdevelop.MainActivity;
 import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;

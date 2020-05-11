@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 
 import java.util.Set;
 
+import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
+
 /**
  * Created by Squirrel桓 on 2018/9/9.
  */
@@ -44,8 +46,16 @@ public class SharedPreferencesHelper {
     }
 
     public SharedPreferencesHelper(Context context) {
+        if(context==null){
+            try {
+                throw new QDException("SharedPreferencesHelper 创建失败，context为空");
+            } catch (QDException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         this.context = context.getApplicationContext();
-        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences( this.context);
     }
 
     public void putBoolean(String key, boolean value) {

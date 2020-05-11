@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 
@@ -160,9 +161,12 @@ public class QDLogger {
     static String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static void Log(Context context, int logType, String tag, Object obj, Throwable tr) {
+        if(obj instanceof Exception&& BuildConfig.DEBUG) {
+            ((Exception) obj).printStackTrace();
+        }
+
         message = (context == null ? (obj == null ? "NULL" : obj.toString()) : (context.getClass().getName() + ":"));
         Tag = tag;
-        try {
             switch (logType) {
                 case Log.VERBOSE:// = 2;
                     Log.v(Tag, message);
@@ -181,9 +185,6 @@ public class QDLogger {
                     Log.e(Tag, message);
                     break;
             }
-        } catch (Exception e) {
-            System.out.println(message);
-        }
 
         if (applicationContext == null && context != null) {
             applicationContext = context.getApplicationContext();
@@ -221,16 +222,25 @@ public class QDLogger {
                     dir.mkdir();
                 }
                 if (canWriteAble) {
-                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat3.format(date) + " " + applicationContext.getPackageName() + " " + Tag +" "+ message + "\n", true);
+                    String pk = "";
+                    if(TextUtils.isEmpty(packageName)||(!TextUtils.isEmpty(packageName)&&!packageName.equals(applicationContext.getPackageName()))){
+                        packageName = applicationContext.getPackageName();
+                        pk = packageName;
+                    }
+                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat3.format(date) + " " + pk + " " + Tag +" "+ message + "\n", true);
                 }
             } else {
                 System.out.println(message);
-                Log.e("qdlog error", "本地日志写入失败，请打开存储权限");
+                if(!firstError) {
+                    firstError = true;
+                    Log.e(TAG, "本地日志写入失败，请打开存储权限");
+                }
                 // throw new IllegalArgumentException("log 打印失败，请打开存储权限");
             }
         }
     }
-
+    public static String packageName;
+    public static boolean firstError;
     public static boolean canWriteAble = true;//是否可以读写日志
     public static void setCanWriteAble(boolean mcanWriteAble) {
         canWriteAble = mcanWriteAble;

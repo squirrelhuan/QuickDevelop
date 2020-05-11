@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                    android:id="@+id/btn_shot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="截图"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/tv_size"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="原图大小" />
+
+                                <TextView
+                                    android:id="@+id/tv_size2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:text="压缩后大小" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/tv_scale"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="尺寸压缩" />
+
+                                <SeekBar
+                                    android:id="@+id/sb_scale"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/tv_quality"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="质量压缩" />
+
+                                <SeekBar
+                                    android:id="@+id/sb_quality"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                        </LinearLayout>
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_prev"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </LinearLayout>
+
+</RelativeLayout>

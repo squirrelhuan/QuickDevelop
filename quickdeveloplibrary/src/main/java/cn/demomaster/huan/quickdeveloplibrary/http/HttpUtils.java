@@ -14,7 +14,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+/**
+ * http工具类
+ */
 public class HttpUtils {
 
     private static HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
@@ -104,6 +106,26 @@ public class HttpUtils {
         }
         retrofitInterface = retrofit.create(targetClazz);
         return (T) retrofitInterface;
+    }
+
+    /**
+     * 使用了String 转换器，将以文本的方式输出
+     * @param targetClazz
+     * @param baseUrl
+     * @param <T>
+     * @return
+     */
+    public synchronized <T> T createRetrofit(Class<T> targetClazz,String baseUrl) {
+        HttpUtils.baseUrl = baseUrl;
+        clazz = targetClazz;
+        //初始化retrofit的配置
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(client)
+                    .addConverterFactory(new ToStringConverterFactory())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        return (T) retrofit.create(targetClazz);
     }
 
     private static HttpUtils instance;

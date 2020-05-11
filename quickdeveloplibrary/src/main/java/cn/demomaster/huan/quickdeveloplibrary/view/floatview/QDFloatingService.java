@@ -214,7 +214,6 @@ public abstract class QDFloatingService extends Service {
     }
 
     private static PopupWindow.OnDismissListener onDismissListener;
-
     public static void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
         onDismissListener = onDismissListener;
     }

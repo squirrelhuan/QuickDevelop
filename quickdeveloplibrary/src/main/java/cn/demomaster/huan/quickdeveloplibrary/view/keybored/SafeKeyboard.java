@@ -391,6 +391,7 @@ public class SafeKeyboard {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                QDLogger.e(e==null?"e=null":e.toString());
             }
         }
 
@@ -601,8 +602,10 @@ public class SafeKeyboard {
             } catch (NoSuchMethodException e) {
                 edit.setInputType(0);
                 e.printStackTrace();
+                QDLogger.e(e==null?"e=null":e.toString());
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
                 e.printStackTrace();
+                QDLogger.e(e==null?"e=null":e.toString());
             }
         }
     }

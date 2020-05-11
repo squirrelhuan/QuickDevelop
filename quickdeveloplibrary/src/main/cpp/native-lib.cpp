@@ -60,7 +60,7 @@ void child_listen_msg() {
                 strcat (str,serviceName);
 
                 LOGE("apk 开启服务 %s" , str);
-                //"cn.demomaster.huan.quickdevelop/cn.demomaster.huan.quickdeveloplibrary.jni.ProcessService"
+                //"cn.demomaster.huan.cn.demomaster.huan.quickdevelop/cn.demomaster.huan.quickdeveloplibrary.jni.ProcessService"
                 //开启服务
                 execl("am", "am", "startservice", "--user", userId,
                       str , NULL);

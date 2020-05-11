@@ -59,7 +59,7 @@ public class QMUILangHelper {
             try {
                 c.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

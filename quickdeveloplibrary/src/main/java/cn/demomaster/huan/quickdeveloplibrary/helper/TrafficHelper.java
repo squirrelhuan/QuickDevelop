@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 import static android.content.Context.NETWORK_STATS_SERVICE;
 
 public class TrafficHelper {
@@ -74,7 +76,7 @@ public class TrafficHelper {
             Log.e(LOG_TAG, "FileNotFoundException: " + e.getMessage());
             rcvTraffic = UNSUPPORTED;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException: " + e.getMessage());
+            Log.e(LOG_TAG, "IOException: " + e.toString());
             e.printStackTrace();
         } finally {
             try {
@@ -108,7 +110,7 @@ public class TrafficHelper {
             Log.e(LOG_TAG, "FileNotFoundException: " + e.getMessage());
             sndTraffic = UNSUPPORTED;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException: " + e.getMessage());
+            Log.e(LOG_TAG, "IOException: " + e.toString());
             e.printStackTrace();
         } finally {
             try {
@@ -201,6 +203,7 @@ public class TrafficHelper {
             return ai.uid;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         }
         return -1;
     }

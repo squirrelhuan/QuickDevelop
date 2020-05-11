@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.camera.idcard;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
@@ -11,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * Created by gxj on 2018/2/8.
@@ -37,25 +40,35 @@ public class FileUtil {
         return storagePath;
     }
 
+    public static Bitmap getBitmapFromPath(String filePath) {
+        return BitmapFactory.decodeFile(filePath);
+    }
+
     /**
      * 保存Bitmap到sdcard
-     *
      * @param b 得到的图片
      */
-    public static void saveBitmap(Bitmap b) {
+    public static String saveBitmap(Bitmap b) {
         String path = initPath();
         long dataTake = System.currentTimeMillis();
         imgPath = path + "/" + dataTake + ".jpg";
+        return saveBitmap(b,imgPath);
+    }
+
+    public static String saveBitmap(Bitmap b,String imgPath) {
         try {
             FileOutputStream fout = new FileOutputStream(imgPath);
             BufferedOutputStream bos = new BufferedOutputStream(fout);
-            b.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, bos);//代表压缩(100-100)%
             bos.flush();
             bos.close();
+            File file = new File(imgPath);
+            QDLogger.d("save success path:"+imgPath+",size:"+file.length());
+            return imgPath;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -64,8 +77,6 @@ public class FileUtil {
     public static String getImgPath() {
         return imgPath;
     }
-
-
 
     public static String getFromAssets(Context context , String fileName) {
         InputStream is;

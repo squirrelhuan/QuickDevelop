@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +37,11 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
@@ -235,6 +239,26 @@ public class UpdateAppFragment extends QDBaseFragment {
                     }
                 });
 
+    }
+
+    private UpdatePopDialog updatePopDialog;
+    public void showDialog(){
+        SharedPreferencesHelper.init(getContext());
+        String conf = FileUtil.getFromAssets(mContext, "config/update.his");
+        if (conf != null) {
+            List<Version> versions = JSON.parseArray(conf,Version.class);
+            final Version version =  versions.get(versions.size()-1);
+            updatePopDialog = new UpdatePopDialog(mContext, versions.get(versions.size()-1).getDescription());
+            updatePopDialog.setOnCloseListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferencesHelper.getInstance().putBoolean(version.getVersionCode()+"",false);
+                }
+            });
+            if(SharedPreferencesHelper.getInstance().getBoolean(version.getVersionCode()+"",true)){
+                updatePopDialog.show();
+            }
+        }
     }
 
     //app更新弹窗

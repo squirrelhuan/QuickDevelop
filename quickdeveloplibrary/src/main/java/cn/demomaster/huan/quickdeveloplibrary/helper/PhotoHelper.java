@@ -24,6 +24,7 @@ import java.util.Map;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 
 /**
@@ -161,7 +162,7 @@ public class PhotoHelper {
             try {
                 file_Uri.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 

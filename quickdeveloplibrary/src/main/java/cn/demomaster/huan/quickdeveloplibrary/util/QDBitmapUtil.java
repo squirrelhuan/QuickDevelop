@@ -10,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.os.Build;
 
 import com.bumptech.glide.load.engine.Resource;
 /*
@@ -75,21 +76,51 @@ public class QDBitmapUtil {
         return bitmap;
     }
 
-    public static   Bitmap zoomImage(Bitmap bgimage, double newWidth,
-                             double newHeight) {
+    /**
+     * Matrix 缩放宽高
+     * @param srcBitmap 源图
+     * @param newWidth 目标宽度
+     * @param newHeight 目标高度
+     * @return
+     */
+    public static Bitmap zoomImage(Bitmap srcBitmap, double targetwidth,double targetheight) {
         // 获取这个图片的宽和高
-        float width = bgimage.getWidth();
-        float height = bgimage.getHeight();
+        float width = srcBitmap.getWidth();
+        float height = srcBitmap.getHeight();
         // 创建操作图片用的matrix对象
         Matrix matrix = new Matrix();
         // 计算宽高缩放率
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
+        float scaleWidth = ((float) targetwidth) / width;
+        float scaleHeight = ((float) targetheight) / height;
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
+        Bitmap bitmap = Bitmap.createBitmap(srcBitmap, 0, 0, (int) width,
                 (int) height, matrix, true);
         return bitmap;
     }
 
+    /**
+     * 采样率压缩
+     * 采样率压缩其原理其实也是缩放bitamp的尺寸，通过调节其inSampleSize参数，比如调节为2，宽高会为原来的1/2，内存变回原来的1/4.
+     */
+    private void compressSampling(float scal,Bitmap bitmap) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+        //mSrcBitmap = BitmapFactory.decodeResource(bitmap,  options);
+    }
+
+
+    /**
+     * 得到bitmap的大小
+     */
+    public static int getBitmapSize(Bitmap bitmap) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
+            return bitmap.getAllocationByteCount();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {//API 12
+            return bitmap.getByteCount();
+        }
+        // 在低版本中用一行的字节x高度
+        return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
+    }
 }

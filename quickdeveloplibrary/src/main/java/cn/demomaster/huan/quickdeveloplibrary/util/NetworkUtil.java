@@ -13,6 +13,11 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 public class NetworkUtil {
+    /**
+     * 检查网络是否可用
+     * @param context
+     * @return
+     */
     public static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context
@@ -22,21 +27,6 @@ public class NetworkUtil {
                 return mNetworkInfo.isAvailable();
             }
         }
-        return false;
-    }
-
-    /**
-     * 检查网络是否可用
-     *
-     * @param paramContext
-     * @return
-     */
-    public static boolean checkEnable(Context paramContext) {
-        boolean i = false;
-        NetworkInfo localNetworkInfo = ((ConnectivityManager) paramContext
-                .getSystemService("connectivity")).getActiveNetworkInfo();
-        if ((localNetworkInfo != null) && (localNetworkInfo.isAvailable()))
-            return true;
         return false;
     }
 
@@ -88,7 +78,7 @@ public class NetworkUtil {
                 }
             }
         } catch (SocketException ex) {
-            Log.e("WifiPreference IpAddress", ex.toString());
+            Log.e("getLocalIpAddress", ex.toString());
         }
         return null;
     }

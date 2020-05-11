@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import cn.demomaster.huan.quickdevelop.MainActivity;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
@@ -116,7 +116,6 @@ public class ComponentFragment extends QDBaseFragment {
         classList.add(PushCardFragment.class);
         classList.add(QDTipPopupFragment.class);
         classList.add(StackSlidingLayoutFragment.class);
-        classList.add(MainActivity.class);
 
         componentAdapter.updateList(classList);
         //设置Adapter

@@ -46,7 +46,7 @@ public class NetworkStatsHelper {
                     QDLogger.d("bucket="+i+","+bucket.getTxBytes() + bucket.getRxBytes());
                 }
             } catch (RemoteException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
                 return -1;
             }
         }
@@ -146,7 +146,7 @@ public class NetworkStatsHelper {
             PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA);
             uid = packageInfo.applicationInfo.uid;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return uid;
     }

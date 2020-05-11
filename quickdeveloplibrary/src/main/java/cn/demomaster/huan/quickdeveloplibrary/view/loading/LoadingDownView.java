@@ -41,7 +41,7 @@ public class LoadingDownView extends View {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingDownView);
         color = ta.getColor(R.styleable.LoadingDownView_color, Color.parseColor("#87CEFF"));
         ta.recycle();  //注意回收
-        QDLogger.v("color = "+color);
+        //QDLogger.v("color = "+color);
     }
 
     private int center_x, center_y, mwidth, width, height;

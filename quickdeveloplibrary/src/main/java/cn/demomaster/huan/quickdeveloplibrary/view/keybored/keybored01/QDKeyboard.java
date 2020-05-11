@@ -381,7 +381,7 @@ public class QDKeyboard {
                     editable.replace(start, end, Character.toString((char) primaryCode));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 
@@ -537,9 +537,9 @@ public class QDKeyboard {
                 setShowSoftInputOnFocus.invoke(edit, Boolean.FALSE);
             } catch (NoSuchMethodException e) {
                 edit.setInputType(0);
-                e.printStackTrace();
+                QDLogger.e(e);
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

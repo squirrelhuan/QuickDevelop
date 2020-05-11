@@ -66,7 +66,6 @@ public class FloatingFragment extends QDBaseFragment {
             @Override
             public void onClick(View v) {
                 PermissionManager2.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
-
                     @Override
                     public void onPassed() {
                         Toast.makeText(getContext(),"开启",Toast.LENGTH_SHORT).show();

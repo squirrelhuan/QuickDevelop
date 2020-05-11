@@ -77,7 +77,7 @@ public class QDActionDialog extends Dialog {
         imageWidth = builder.imageWidth;
         contentView = builder.contentView;
         contentViewLayoutID = builder.contentViewLayoutID;
-        mCancelable = builder.mCancelable;
+        mCancelable = builder.cancelable;
         padding = builder.padding;
         animationStyleID =builder.animationStyleID;
         init();
@@ -316,7 +316,7 @@ public class QDActionDialog extends Dialog {
         private int imageWidth;
         private View contentView;
         private int contentViewLayoutID;
-        private boolean mCancelable = true;
+        private boolean cancelable = true;
         private int padding = 15;
         private int animationStyleID = -1;
         // private int animationStyleID = R.style.qd_dialog_animation_center_scale;
@@ -340,8 +340,8 @@ public class QDActionDialog extends Dialog {
             return this;
         }
 
-        public Builder setmCancelable(boolean mCancelable) {
-            this.mCancelable = mCancelable;
+        public Builder setCancelable(boolean cancelable) {
+            this.cancelable = cancelable;
             return this;
         }
 

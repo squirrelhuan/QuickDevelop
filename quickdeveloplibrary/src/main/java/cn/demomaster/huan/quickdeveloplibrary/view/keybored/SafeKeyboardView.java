@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -63,7 +64,7 @@ public class SafeKeyboardView extends KeyboardView {
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -115,7 +116,7 @@ public class SafeKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         labelTextSize = (int) field.get(this);
                     } catch (NoSuchFieldException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -126,7 +127,7 @@ public class SafeKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         keyTextSize = (int) field.get(this);
                     } catch (NoSuchFieldException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -166,7 +167,7 @@ public class SafeKeyboardView extends KeyboardView {
                 setIconSize(canvas, key, iconSizeWidth, iconSizeHeight);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 

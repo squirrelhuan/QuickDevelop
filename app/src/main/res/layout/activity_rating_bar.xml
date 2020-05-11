@@ -15,8 +15,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:orientation="vertical"
         android:gravity="center">
-
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="35" />
         <cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"

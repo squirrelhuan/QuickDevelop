@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -66,6 +67,7 @@ public class QDKeyboardView extends KeyboardView {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         }
     }
 
@@ -128,8 +130,9 @@ public class QDKeyboardView extends KeyboardView {
                         field = KeyboardView.class.getDeclaredField(getContext().getString(R.string.mLabelTextSize));
                         field.setAccessible(true);
                         labelTextSize = (int) field.get(this);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
+                        QDLogger.e(e==null?"e=null":e.toString());
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -139,8 +142,9 @@ public class QDKeyboardView extends KeyboardView {
                         field = KeyboardView.class.getDeclaredField(getContext().getString(R.string.mLabelTextSize));
                         field.setAccessible(true);
                         keyTextSize = (int) field.get(this);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
+                        QDLogger.e(e==null?"e=null":e.toString());
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -180,6 +184,7 @@ public class QDKeyboardView extends KeyboardView {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         }
     }
 

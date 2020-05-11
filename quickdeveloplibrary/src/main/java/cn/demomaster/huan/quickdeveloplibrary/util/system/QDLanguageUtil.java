@@ -119,7 +119,7 @@ public class QDLanguageUtil {
         }
     }
 
-    /**
+    /** 获取单个页面语言类型
      * 注意 用applicationcontext获得的是系统语言，用activity 获取的是当前应用语言
      * @param context
      * @return
@@ -129,8 +129,16 @@ public class QDLanguageUtil {
     }
 
     /**
+     * 获取app全局语言类型
+     * @param context
+     * @return
+     */
+    public static Locale getLanguageLocalForApplication(Context context) {
+        return getLanguageLocal(context.getApplicationContext());
+    }
+
+    /**
      * 切换语言并且立马应用
-     *
      * @param context
      */
     public static void changeAppLanguageAndRefreshUI(Activity context,Locale locale) {

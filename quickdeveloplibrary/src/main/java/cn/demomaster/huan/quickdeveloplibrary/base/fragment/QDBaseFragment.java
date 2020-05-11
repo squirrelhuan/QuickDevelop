@@ -23,6 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayou
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 
 /**
@@ -130,7 +131,7 @@ public abstract class QDBaseFragment extends Fragment implements QDBaseFragmentI
             try {
                 //mContext.registerReceiver(netWorkChangReceiver, filter);
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

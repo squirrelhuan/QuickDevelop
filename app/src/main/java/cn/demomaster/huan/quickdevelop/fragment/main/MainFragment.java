@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
@@ -160,17 +162,28 @@ public class MainFragment extends QDBaseFragment {
                     case 0:
                         break;
                     case 1:
-                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                        photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
-                                /*setImageToView(data);*/
+                                QdToast.show(mContext,path+"");
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                QdToast.show(mContext,"error:"+error);
+                            }
+                        });
+                       /* photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                            @Override
+                            public void onSuccess(Intent data, String path) {
+                                *//*setImageToView(data);*//*
                             }
 
                             @Override
                             public void onFailure(String error) {
 
                             }
-                        });
+                        });*/
                         break;
                     case 2:
                         ScreenShotUitl.shot((Activity) mContext);

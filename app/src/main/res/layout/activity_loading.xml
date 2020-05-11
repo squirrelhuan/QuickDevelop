@@ -69,5 +69,13 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"/>
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.AbouchementView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"/>
     </LinearLayout>
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.BarcodeStateView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"/>
 </LinearLayout>

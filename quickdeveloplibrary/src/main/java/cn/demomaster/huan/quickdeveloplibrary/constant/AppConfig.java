@@ -78,13 +78,13 @@ public class AppConfig {
     }
 
     public Map<String, Object> getConfigMap() {
-        if(configMap==null){
+       /* if(configMap==null){
             try {
                 throw new QDException("请先初始化配置cofig");
             } catch (QDException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         return configMap;
     }
 

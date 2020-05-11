@@ -15,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 /**
  * @author squirrel桓
  * @date 2019/3/19.
@@ -66,10 +68,13 @@ public class QDSaxXml {
             xr.parse(is2);
         } catch (SAXException e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         } catch (IOException e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
+            QDLogger.e(e==null?"e=null":e.toString());
         }
     }
 

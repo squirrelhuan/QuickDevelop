@@ -76,12 +76,12 @@ public class ADBHelper {
                 out.println(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }
@@ -128,7 +128,7 @@ public class ADBHelper {
             try {
                 file.mkdirs();
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
         new Thread(runnable).start();
@@ -223,7 +223,7 @@ public class ADBHelper {
                 processResult.setError("" + "[" + cmd + "],Cause:" + e.getCause() + ",Message:" + e.getMessage());
                 onReceiveListener.onReceive(processResult);
             }
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -293,12 +293,12 @@ public class ADBHelper {
                 out.println(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
         return new String(stringBuffer);

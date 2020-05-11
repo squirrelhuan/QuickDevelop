@@ -64,7 +64,6 @@ public class SoundHelper {
 
     /**
      * 添加音頻
-     *
      * @param resId
      */
     public void addSound(int resId) {

@@ -5,26 +5,40 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+import java.util.List;
+
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 public class QDAppInfoUtil {
 
-    public static String getVersionName(Context context) {
+    /**
+     * 根据包名获取版本信息
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static PackageInfo getPackageInfoByPackageName(Context context, String packageName) {
         if (context == null) return null;
-        return getVersionName(context,context.getPackageName());
+        PackageManager pm = context.getPackageManager();
+        try {
+            return pm.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            QDLogger.e(e);
+        }
+        return null;
+    }
+
+    public static String getVersionName(Context context) {
+        return getVersionName(context, context.getPackageName());
     }
 
     public static String getVersionName(Context context, String packageName) {
-        String ver_data = null;
-        PackageManager pm = context.getPackageManager();
-        PackageInfo pi = null;
-        try {
-            pi = pm.getPackageInfo(packageName, 0);
-            if(pi!=null) {
-                ver_data = pi.versionName;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        PackageInfo pi = getPackageInfoByPackageName(context, packageName);
+        if (pi != null) {
+            return pi.versionName;
         }
-        return ver_data;
+        return null;
     }
 
     // 获取本地的版本号
@@ -35,17 +49,33 @@ public class QDAppInfoUtil {
 
     // 获取本地的版本号
     public static int getVersionCode(Context context, String packageName) {
-        int versionCode = -1;
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    packageName, 0);
-            if(packageInfo!=null) {
-                return packageInfo.versionCode;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        PackageInfo packageInfo = getPackageInfoByPackageName(context, packageName);
+        if (packageInfo != null) {
+            return packageInfo.versionCode;
         }
-        return versionCode;
+        return -1;
     }
+
+    /**
+     * 根据包名判断应用是否已经安装
+     * @param context
+     * @param pkgName
+     * @return
+     */
+    public static boolean checkAppInstalled(Context context, String pkgName) {
+        if (TextUtils.isEmpty(pkgName)) {
+            return false;
+        }
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> info = packageManager.getInstalledPackages(0);
+        if (info == null || info.isEmpty())
+            return false;
+        for (int i = 0; i < info.size(); i++) {
+            if (pkgName.equals(info.get(i).packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

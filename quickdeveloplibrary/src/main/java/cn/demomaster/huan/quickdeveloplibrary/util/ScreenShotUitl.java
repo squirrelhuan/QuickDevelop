@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import androidx.core.app.ActivityCompat;
 import android.view.Display;
@@ -30,6 +32,7 @@ import java.io.FileOutputStream;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
+import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 
 /**
  * Created by Squirrel桓 on 2018/10/29.
@@ -39,7 +42,6 @@ public class ScreenShotUitl {
     public static View getContentView(Activity context){
         return context.findViewById(android.R.id.content);
     }
-
     public static void shot(final Activity context) {
         View anchor = getContentView(context);
         shot(context,anchor);
@@ -72,7 +74,7 @@ public class ScreenShotUitl {
         try {
             //////////iv_code.setImageBitmap(BarcodeUtil.createCode(codeStr,bitmap_app));
         }catch (Exception e){
-            e.printStackTrace();
+            QDLogger.e(e);
         }
 
         final View ll_content = contentView.findViewById(R.id.ll_content);
@@ -183,13 +185,54 @@ public class ScreenShotUitl {
      * @param view
      * @return
      */
-    public static Bitmap getCacheBitmapFromView(View view) {
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, view.getMeasuredWidth(), view.getMeasuredHeight() - view.getPaddingBottom());
-        view.setDrawingCacheEnabled(false);
-        view.destroyDrawingCache();
-        return bitmap;
+    public static Bitmap getCacheBitmapFromView(View v) {
+        try {
+           /* view.setDrawingCacheEnabled(true);
+            view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
+            bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, view.getMeasuredWidth(), view.getMeasuredHeight() - view.getPaddingBottom());
+            view.setDrawingCacheEnabled(false);
+            view.destroyDrawingCache();*/
+            if (null == v) {
+                return null;
+            }
+            v.setDrawingCacheEnabled(true);
+            v.buildDrawingCache();
+            if (Build.VERSION.SDK_INT >= 11) {
+                v.measure(View.MeasureSpec.makeMeasureSpec(v.getWidth(),
+                        View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(
+                        v.getHeight(), View.MeasureSpec.EXACTLY));
+                v.layout((int) v.getX(), (int) v.getY(),
+                        (int) v.getX() + v.getMeasuredWidth(),
+                        (int) v.getY() + v.getMeasuredHeight());
+            } else {
+                v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+            }
+            Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+
+            v.setDrawingCacheEnabled(false);
+            v.destroyDrawingCache();
+            return b;
+        }catch (Exception e){
+            QDLogger.e(e);
+        }
+        return null;
+    }
+
+    public static Bitmap getCacheBitmapFromView2(View view) {
+        Bitmap drawingCache = null;
+        try {
+            drawingCache = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(drawingCache);
+            c.drawColor(Color.WHITE);
+            /** 如果不设置canvas画布为白色，则生成透明 */
+            view.layout(0, 0, view.getWidth(), view.getHeight());
+            view.draw(c);
+        }catch (Exception e){
+            QDLogger.e(e);
+        }
+        return drawingCache;
     }
 
     public static Bitmap getCacheBitmapFromViewTop(View view,int height){
@@ -247,7 +290,7 @@ public class ScreenShotUitl {
             String imageUri = insertImageToSystem(activity, path, "口袋基因", "欢迎来到基因世界");
             uri = Uri.parse(imageUri);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return uri;
     }
@@ -266,7 +309,7 @@ public class ScreenShotUitl {
         try {
             url = MediaStore.Images.Media.insertImage(context.getContentResolver(), imagePath, picName, picDesc);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return url;
     }

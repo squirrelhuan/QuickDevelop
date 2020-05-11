@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.bugly.crashreport.CrashReport;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
@@ -39,8 +37,6 @@ public class ErrorTestFragment extends QDBaseFragment {
     //Components
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
-    @BindView(R.id.btn_error_buggly)
-    QDButton btn_error_buggly;
 
     @BindView(R.id.btn_double_click)
     QDButton btn_double_click;
@@ -66,12 +62,6 @@ public class ErrorTestFragment extends QDBaseFragment {
                 int a =0;
                 int b = 1;
                 int c = b/a;
-            }
-        });
-        btn_error_buggly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CrashReport.testJavaCrash();
             }
         });
 

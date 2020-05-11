@@ -360,7 +360,7 @@ public class QMUIDisplayHelper {
                 return context.getResources().getDimensionPixelSize(x);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return 0;
     }
@@ -575,7 +575,7 @@ public class QMUIDisplayHelper {
             hasNavBarMethod.setAccessible(true);
             haveNav = (Boolean) hasNavBarMethod.invoke(iWindowManager);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return haveNav;
     }

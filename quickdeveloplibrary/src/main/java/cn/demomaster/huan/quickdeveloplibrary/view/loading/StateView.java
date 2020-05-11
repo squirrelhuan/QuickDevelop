@@ -36,6 +36,7 @@ public class StateView extends ImageTextView {
         super(context, attrs, defStyleAttr);
         init();
     }
+
     ValueAnimator.AnimatorUpdateListener animatorUpdateListener= new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
@@ -58,11 +59,9 @@ public class StateView extends ImageTextView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         width = w;
         height = h;
         center_x = width / 2;
-
     }
 
     @Override
@@ -279,7 +278,6 @@ public class StateView extends ImageTextView {
             animator.reverse();
         }
     }
-    ValueAnimator.AnimatorUpdateListener animatorUpdateListener3;
     //隐藏后显示
     public void hideAndShow(final LoadStateType stateType1) {
         if (animator != null) {
@@ -290,21 +288,18 @@ public class StateView extends ImageTextView {
             //animator.setFloatValues(0, progress);
             animator.setRepeatCount(0);
             animator.setDuration((int) (duration * progress));
-            if(animatorUpdateListener3==null){
-                animatorUpdateListener3 = new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        progress = (float) animation.getAnimatedValue();
-                        if (progress == 0) {
-                            stateType = stateType1;
-                            show();
-                        } else {
-                            invalidate();
-                        }
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    progress = (float) animation.getAnimatedValue();
+                    if (progress == 0) {
+                        stateType = stateType1;
+                        show();
+                    } else {
+                        invalidate();
                     }
-                };
-            }
-            animator.addUpdateListener(animatorUpdateListener3);
+                }
+            });
             animator.reverse();
         }
     }
@@ -384,9 +379,6 @@ public class StateView extends ImageTextView {
         }
         if(animatorUpdateListener2!=null){
             animatorUpdateListener2=null;
-        }
-        if(animatorUpdateListener3!=null){
-            animatorUpdateListener3=null;
         }
         if(animator!=null){
             animator.cancel();

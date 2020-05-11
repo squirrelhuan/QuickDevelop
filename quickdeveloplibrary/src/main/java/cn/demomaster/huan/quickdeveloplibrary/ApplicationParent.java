@@ -14,8 +14,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.tencent.bugly.Bugly;
-
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
@@ -45,8 +43,14 @@ public class ApplicationParent extends Application {
         super.onCreate();
         instance = this;
 
+        QDLogger.setApplicationContext(this);
         QDLogger.i(QDTAG,"包名："+getPackageName());
         QDLogger.i(QDTAG,"myPid="+android.os.Process.myPid());
+
+        //初始化全局SharedPreferences
+        SharedPreferencesHelper.init(this);
+        QDActivityManager.getInstance().init(this);
+
         ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
         // other process will create app instance.
         if (TextUtils.isEmpty(processInfo.processName)||!getPackageName().equals(processInfo.processName)) {
@@ -54,12 +58,7 @@ public class ApplicationParent extends Application {
             return;
         }
 
-        QDLogger.setApplicationContext(this);
-        //初始化全局SharedPreferences
-        SharedPreferencesHelper.init(this);
-        QDActivityManager.getInstance().init(this);
         NotifycationHelper.getInstance().init(this);
-
         AppConfig.getInstance().init(this, "config/project.conf");
         if (AppConfig.getInstance().getConfigMap().containsKey("dbpath")) {
             String dbpath = (String) AppConfig.getInstance().getConfigMap().get("dbpath");
@@ -130,19 +129,10 @@ public class ApplicationParent extends Application {
     }
 
     /**
-     * 设置buggly appID
-     * @return
-     */
-    public String getBugglyAppID(){
-        return "7d6d33c554";
-    }
-    /**
      * 处理异常捕获
      */
     public void initCrash() {
-        QDLogger.i("initCrash");
-        //CrashReport.initCrashReport(getApplicationContext(), getBugglyAppID(), false);
-        Bugly.init(getApplicationContext(), getBugglyAppID(), false);
+        QDLogger.i("初始化异常捕获");
         if (BuildConfig.DEBUG) {
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
             if (errorReportActivity == null) {

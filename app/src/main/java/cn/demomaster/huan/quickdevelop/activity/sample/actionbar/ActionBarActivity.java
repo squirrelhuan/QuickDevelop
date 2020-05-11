@@ -167,16 +167,6 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this, "黄色主题");
                 break;
-            case R.id.btn_change_bg:
-               /* if (position == 0) {
-                    ll_layout.setBackgroundResource(R.mipmap.meizi);
-                    position = 1;
-                } else {
-                    ll_layout.setBackgroundResource(R.mipmap.gudaimeizi);
-                    position = 0;
-                }
-                getActionBarLayout().changeChildView(ll_layout);*/
-                break;
         }
     }
 
