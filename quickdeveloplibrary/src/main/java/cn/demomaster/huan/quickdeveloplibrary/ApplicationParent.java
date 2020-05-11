@@ -140,7 +140,6 @@ public class ApplicationParent extends Application {
                 return;
             }
             Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this, errorReportActivity));
-            StateObserver stateObserver = new StateObserver(PreferenceManager.getDefaultSharedPreferences(this));
         }
     }
 
