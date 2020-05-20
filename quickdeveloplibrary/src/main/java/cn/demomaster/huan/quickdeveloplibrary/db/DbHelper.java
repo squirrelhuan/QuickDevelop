@@ -2,10 +2,12 @@ package cn.demomaster.huan.quickdeveloplibrary.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,7 +52,10 @@ public class DbHelper extends SQLiteOpenHelper {
     //当更新数据库的时候执行该方法
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //输出更新数据库的日志信息
-        QDLogger.i(TAG, "update Database------------->");
+        QDLogger.i(TAG, "update Database------------->oldVersion="+oldVersion+",newVersion="+newVersion);
+        if(oldVersion<2){//添加vanTr字段用于无卡退还
+            db.execSQL("ALTER TABLE pay_record ADD COLUMN vanTr TEXT");
+        }
     }
 
     private static String DATABASE_NAME = "yidao.db";
@@ -134,5 +139,34 @@ public class DbHelper extends SQLiteOpenHelper {
     public SQLiteDatabase getReadableDatabase() {
         db = super.getReadableDatabase();
         return db;
+    }
+
+
+
+    /**
+     * 检查某表列是否存在
+     * @param db
+     * @param tableName 表名
+     * @param columnName 列名
+     * @return
+     */
+    public static boolean checkColumnExist(SQLiteDatabase db, String tableName
+            , String columnName) {
+        boolean result = false ;
+        Cursor cursor = null ;
+        try{
+            //查询一行
+            cursor = db.rawQuery( "SELECT * FROM " + tableName + " LIMIT 0"
+                    , null );
+            result = cursor != null && cursor.getColumnIndex(columnName) != -1 ;
+        }catch (Exception e){
+            Log.e(TAG,"checkColumnExists1..." + e.getMessage()) ;
+        }finally{
+            if(null != cursor && !cursor.isClosed()){
+                cursor.close() ;
+            }
+        }
+
+        return result ;
     }
 }

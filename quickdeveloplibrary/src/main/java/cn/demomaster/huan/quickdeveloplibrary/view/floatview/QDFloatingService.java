@@ -18,6 +18,8 @@ import android.widget.PopupWindow;
 
 import java.sql.DatabaseMetaData;
 
+import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
+
 /**
  * 悬浮按钮
  * Created
@@ -210,6 +212,7 @@ public abstract class QDFloatingService extends Service {
             if (onDismissListener != null) {
                 onDismissListener.onDismiss();
             }
+            QDAccessibilityService.setOnAccessibilityEventListener(null);
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.helper.AccessibilityServiceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DragViewFragment;
@@ -105,6 +106,7 @@ public class HelperFragment extends QDBaseFragment {
         classList.add(TrafficFragment.class);
         classList.add(HttpFragment.class);
         classList.add(SettingFragment.class);
+        classList.add(AccessibilityServiceFragment.class);
 
         //classList.add(QDTerminalFragment.class);
 

@@ -36,6 +36,7 @@ public class QDActionDialog extends Dialog {
     private Context context;
     private String message;
     private int messageTextSize = 16;
+    private int messageTextColor = Color.WHITE;
     private float dimAmount = .0f;
     private int backgroundColor = Color.TRANSPARENT;
     private int contentbackgroundColor = Color.WHITE;
@@ -61,6 +62,7 @@ public class QDActionDialog extends Dialog {
         this.context = builder.context;
         message = builder.message;
         messageTextSize = builder.messageTextSize;
+        messageTextColor  = builder.messageTextColor;
         dimAmount = builder.dimAmount;
         backgroundColor = builder.backgroundColor;
         contentbackgroundColor = builder.contentbackgroundColor;
@@ -255,7 +257,7 @@ public class QDActionDialog extends Dialog {
             TextView textView = new TextView(context);
             textView.setText(message);
             textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(Color.WHITE);
+            textView.setTextColor(messageTextColor);
             textView.setTextSize(messageTextSize);
             textView.setSingleLine(true);
             textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -300,6 +302,7 @@ public class QDActionDialog extends Dialog {
         private Context context;
         private String message;
         private int messageTextSize = 16;
+        private  int messageTextColor = Color.WHITE;
         private float dimAmount = .0f;
         private int backgroundColor = Color.TRANSPARENT;
         private int contentbackgroundColor = Color.WHITE;
@@ -332,6 +335,11 @@ public class QDActionDialog extends Dialog {
 
         public Builder setMessage(String message) {
             this.message = message;
+            return this;
+        }
+
+        public Builder setMessageTextColor(int messageTextColor) {
+            this.messageTextColor = messageTextColor;
             return this;
         }
 

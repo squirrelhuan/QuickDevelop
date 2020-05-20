@@ -50,7 +50,6 @@ public class DownloadChangeObserver extends ContentObserver {
     private Runnable downloadProgressRunnable = new Runnable() {
         @Override
         public void run() {
-            QDLogger.i("下载进度");
             try {
                 if (downloadTaskMap.size() > 0) {
                     QDLogger.i("下载进度" + downloadTaskMap.size());
@@ -73,7 +72,7 @@ public class DownloadChangeObserver extends ContentObserver {
                     downLoadHandler.removeCallbacks(downloadProgressRunnable);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     };

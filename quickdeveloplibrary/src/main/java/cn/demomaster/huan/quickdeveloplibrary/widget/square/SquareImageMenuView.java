@@ -93,7 +93,7 @@ public class SquareImageMenuView extends View {
             return;
         }
         //QDLogger.i("init.......");
-        QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
+        //QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
         setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,15 +122,19 @@ public class SquareImageMenuView extends View {
         }));
     }
 
+    /**
+     * 执行动作
+     * @param type
+     */
     public void doAction(int type) {
-        if (type == 0 && !isAccessibilityServiceRunning(QDAccessibilityService.class.getName())) {
+        if (type == 0 && !QDAccessibilityService.isAccessibilityServiceRunning(getContext(),QDAccessibilityService.class.getName())) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             getContext().startActivity(intent);
             return;
         }
-        if (!isAccessibilityServiceRunning(QDAccessibilityService.class.getName())) {
+        if (!QDAccessibilityService.isAccessibilityServiceRunning(getContext(),QDAccessibilityService.class.getName())) {
             //跳转系统自带界面 辅助功能界面
             Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -139,7 +143,7 @@ public class SquareImageMenuView extends View {
         }
         if (!QDAccessibilityService.isStart()) {
             Log.i(TAG, "isStart.........");
-            QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
+            //QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
             //getContext().startService(new Intent(getContext(), QDAccessibilityService.class));
 
             AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
@@ -161,35 +165,6 @@ public class SquareImageMenuView extends View {
                 QDAccessibilityService.recentApps(QDAccessibilityService.getService(), AccessibilityService.GLOBAL_ACTION_BACK);
                 break;
         }
-    }
-
-    /**
-     * 判断是否存在置顶的无障碍服务
-     * @param name
-     * @return
-     */
-    public boolean isAccessibilityServiceRunning(String name) {
-        AccessibilityManager am = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> enableServices
-                = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
-        int accessibilityEnabled = 0;
-        try {
-            accessibilityEnabled = Settings.Secure.getInt(getContext().getApplicationContext().getContentResolver(),
-                    Settings.Secure.ACCESSIBILITY_ENABLED);
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (accessibilityEnabled == 1) {
-            for (AccessibilityServiceInfo enableService : enableServices) {
-                Log.i(TAG, "installService.id-->" + enableService.getId());
-                Log.i(TAG, "name.id-->" + name);
-                if (enableService.getId().toString().endsWith(name)) {
-                    Log.i(TAG, "ACCESSIBILITY_ENABLED endsWith.....");
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void onback() {

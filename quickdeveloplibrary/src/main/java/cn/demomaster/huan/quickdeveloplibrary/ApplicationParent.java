@@ -123,7 +123,7 @@ public class ApplicationParent extends Application {
      * @param dbpath
      */
     private void initDB(String dbpath) {
-        dbHelper = new DbHelper(this, dbpath, null, 1);
+        dbHelper = new DbHelper(this, dbpath, null, 2);
         //得到一个可读的SQLiteDatabase对象
         db = dbHelper.getReadableDatabase();
     }

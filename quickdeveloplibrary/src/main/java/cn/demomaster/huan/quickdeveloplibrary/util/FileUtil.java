@@ -104,7 +104,6 @@ public class FileUtil {
         String text = "";
         try {
             is = context.getResources().getAssets().open(fileName);
-
             int size = is.available();
 
             // Read the entire asset into a local byte buffer.
@@ -398,7 +397,7 @@ public class FileUtil {
             if (!file.exists()) {
                 //创建目录之后再创建文件
                 createDir(file.getParentFile().getAbsolutePath());
-                System.out.println("----- 创建文件" + file.getAbsolutePath());
+                System.out.println("创建文件:" + file.getAbsolutePath());
                 if (file.getParentFile().exists()) {
                     file.createNewFile();
                 }
@@ -411,7 +410,7 @@ public class FileUtil {
 
     public static String createDir(String dirPath) {
         File file = new File(dirPath);
-        System.out.println("----- 创建文件夹" + file.getAbsolutePath());
+        System.out.println("创建文件夹:" + file.getAbsolutePath());
         file.mkdirs();
         return dirPath;
     }

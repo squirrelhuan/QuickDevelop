@@ -2,12 +2,13 @@
 <accessibility-service
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
-    android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
+    android:accessibilityFeedbackType="feedbackAllMask|feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagReportViewIds|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
     android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
     android:notificationTimeout="100"
     android:description="@string/accessibility"
-    android:packageNames="com.android.packageinstaller"
     />
+    <!--|typeWindowContentChanged|typeWindowsChanged-->
+    <!--android:packageNames="com.android.packageinstaller"-->
     <!--android:description="为了保证app正常运行，请开启辅助功能"-->
