@@ -119,4 +119,10 @@
         <attr name="umanoScrollInterpolator" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="PushCardLayout">
+        <attr name="nest_scroll_header_view" format="reference" />
+        <attr name="nest_scroll_footer_view" format="reference" />
+        <attr name="nest_scroll_content" format="reference" />
+    </declare-styleable>
+
 </resources>

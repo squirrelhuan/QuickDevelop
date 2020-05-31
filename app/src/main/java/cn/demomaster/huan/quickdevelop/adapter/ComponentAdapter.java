@@ -24,8 +24,9 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
@@ -104,9 +105,9 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             View view = (View) constructor.newInstance(parameters);
 
                             //view.setBackgroundColor(context.getResources().getColor(R.color.yellow));
-                            int w = DisplayUtil.dp2px(context, 60);
+                            int w = DisplayUtil.dp2px(context, context.getResources().getDimensionPixelSize(R.dimen.dp_60));
                             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(w, w);
-                            int m = DisplayUtil.dp2px(context, 5);
+                            int m = DisplayUtil.dp2px(context, context.getResources().getDimensionPixelSize(R.dimen.dp_5));
                             layoutParams.setMargins(m, m, m, m);
                             view.setLayoutParams(layoutParams);
                             //view.setOnClickListener(null);
@@ -120,12 +121,13 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                                 try {
                                     Class c = clazz.getClass();
                                     if (Fragment.class.isAssignableFrom(clazz)) {
-                                        ((QDActivity) context).getFragmentActivityHelper().startFragment((AppCompatActivity) context, (Fragment) clazz.newInstance());
+                                        ((QDActivity) context).getFragmentHelper().startFragment((AppCompatActivity) context, (QDFragment) clazz.newInstance());
                                     } else if (Activity.class.isAssignableFrom(clazz)) {
                                         ((QDActivity) context).startActivity(clazz);
                                     }
                                 } catch (Exception e) {
-                                    throw new IllegalArgumentException("activityClass must be extends activity!" + e.getMessage());
+                                    e.printStackTrace();
+                                    QDLogger.e("activityClass must be extends activity!" + e.getMessage());
                                 }
                             }
                         });
@@ -141,8 +143,6 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                 }
                 System.out.println(a);
             }
-
-
         }
     }
 

@@ -26,4 +26,8 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST(URLConstant.URL_BASE)
     Observable<Object> getPostRequest();
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST(URLConstant.URL_BASE)
+    Observable<Object> getUserInfo(@Body RequestBody body);
 }

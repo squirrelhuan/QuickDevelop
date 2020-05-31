@@ -17,33 +17,33 @@
             android:id="@+id/container_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:padding="@dimen/dp_3">
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/dp_18"
                 android:background="@null"
                 android:text="cancel"
                 android:textColor="#999999"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/sp_10"/>
 
             <Button
                 android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/dp_18"
                 android:layout_alignParentRight="true"
                 android:background="@null"
                 android:text="confirm"
                 android:textColor="#303F9F"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/sp_10"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="@dimen/dp_108"
             android:background="@color/white"
-            android:padding="3dp">
+            android:padding="@dimen/dp_2">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
 
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_year"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:textSize="25sp"
@@ -60,43 +60,43 @@
 
                 <TextView
                     android:id="@+id/tv_sign_year"
-                    android:layout_width="40dp"
+                    android:layout_width="@dimen/dp_24"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sp_11"
                     android:textColor="#11DDAF"
                     android:text="@string/year"/>
 
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_month"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
+                    android:layout_marginLeft="@dimen/dp_0_5"
                     android:layout_weight="1"
                     app:textSize="25sp"
                     app:canLoop="false"/>
                 <TextView
                     android:id="@+id/tv_sign_month"
-                    android:layout_width="40dp"
+                    android:layout_width="@dimen/dp_24"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sp_11"
                     android:textColor="#11DDAF"
                     android:text="@string/month"/>
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_day"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
+                    android:layout_marginLeft="@dimen/dp_0_5"
                     android:layout_weight="1"
                     app:textSize="25sp"
                     app:canLoop="false"/>
                 <TextView
                     android:id="@+id/tv_sign_day"
-                    android:layout_width="40dp"
+                    android:layout_width="@dimen/dp_24"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sp_11"
                     android:textColor="#11DDAF"
                     android:text="@string/day"/>
 

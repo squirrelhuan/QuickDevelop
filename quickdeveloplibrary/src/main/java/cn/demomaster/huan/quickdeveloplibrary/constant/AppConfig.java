@@ -7,8 +7,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
-import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
@@ -29,7 +28,7 @@ public class AppConfig {
         mContext = context.getApplicationContext();
         configPath = pathName;
 
-        String conf = FileUtil.getFromAssets(mContext, configPath);
+        String conf = QDFileUtil.getFromAssets(mContext, configPath);
         if(TextUtils.isEmpty(conf)){
             QDLogger.e("未找到指定配置文件/或为空 ，路径："+configPath);
             throw new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径："+configPath);

@@ -7,10 +7,10 @@
     <!-- android:background="@drawable/panel_menu_main_bg"-->
 
     <RelativeLayout
-        android:layout_width="240dp"
-        android:layout_height="300dp"
+        android:layout_width="@dimen/dp_144"
+        android:layout_height="@dimen/dp_180"
         android:layout_gravity="center"
-        android:layout_margin="50dp">
+        android:layout_margin="@dimen/dp_30">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,14 +26,14 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/dp_0"
                 android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
+                    android:padding="@dimen/dp_6"
                     android:textColor="@color/black" />
 
            </ScrollView>
@@ -41,16 +41,16 @@
                     android:id="@+id/tv_update"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="@dimen/dp_12"
+                    android:layout_marginRight="@dimen/dp_12"
+                    android:layout_marginBottom="@dimen/dp_12"
                     android:background="@drawable/btn_green_small"
                     android:gravity="center"
                     android:layout_alignParentBottom="true"
-                    android:padding="6dp"
+                    android:padding="@dimen/dp_4"
                     android:text="立即更新"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/sp_12"/>
         </LinearLayout>
 
 

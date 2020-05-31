@@ -3,15 +3,15 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="@dimen/dp_6"
     android:background="@color/transparent"
     android:gravity="center_horizontal">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView
-        android:layout_width="120dp"
-        android:layout_height="90dp"/>
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_54"/>
     <!--<cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
-        android:layout_width="120dp"
+        android:layout_width="@dimen/dp_72"
         android:layout_height="90dp"/>-->
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
         android:textSize="14sp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="@dimen/dp_4"
         android:singleLine="true"
         android:textColor="@color/white"/>
 

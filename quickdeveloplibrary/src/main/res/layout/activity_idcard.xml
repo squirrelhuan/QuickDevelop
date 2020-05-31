@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/main_image"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="1"
         android:scaleType="fitCenter"
         android:background="@color/yellow"/>
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="@dimen/dp_5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,26 +24,26 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_29"
+                android:layout_margin="@dimen/dp_5"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:onClick="frontIdCard"
                 android:text="身份证正面"
                 android:textColor="#555"
-                android:textSize="16dp" />
+                android:textSize="@dimen/dp_9" />
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_29"
+                android:layout_margin="@dimen/dp_5"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:onClick="backIdCard"
                 android:text="身份证反面"
                 android:textColor="#555"
-                android:textSize="16dp" />
+                android:textSize="@dimen/dp_9" />
 
         </LinearLayout>
 

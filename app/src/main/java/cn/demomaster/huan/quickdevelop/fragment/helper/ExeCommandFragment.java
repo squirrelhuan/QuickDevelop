@@ -1,12 +1,8 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +19,12 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.QDEditView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
 /**
@@ -43,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  */
 
 @ActivityPager(name = "ExeCommand", preViewClass = TextView.class, resType = ResType.Custome)
-public class ExeCommandFragment extends QDBaseFragment {
+public class ExeCommandFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -99,7 +89,7 @@ public class ExeCommandFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("command");
 
         btn_send.setOnClickListener(new View.OnClickListener() {

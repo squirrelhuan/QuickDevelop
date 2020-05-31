@@ -80,7 +80,7 @@ dependencies {
     //api 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     //api 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-   // api 'com.tencent.bugly:nativecrashreport:latest.release'
+    // api 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     api 'com.google.code.gson:gson:2.8.6'
     // fastjson
@@ -95,7 +95,9 @@ dependencies {
     api 'com.readystatesoftware.systembartint:systembartint:1.0.4'
     //implementation 'com.google.zxing:core:3.3.0'     //谷歌的zxing库
     /*添加依赖*/
-    api 'com.github.yuzhiqiang1993:zxing:2.2.5'
+    //implementation 'com.github.yuzhiqiang1993:zxing:2.2.5'
+    //api project(path: ':qdzxinglibrary')
+    api 'com.github.squirrelhuan:QdZxing:0.1.5'
     //Glide
     api 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -107,7 +109,7 @@ dependencies {
     //滴滴出行
     //debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:1.1.5'
     //releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'
-   /* implementation files('libs/umeng-common-2.0.2.jar')
+    /* implementation files('libs/umeng-common-2.0.2.jar')
     implementation files('libs/umeng-share-core-6.9.4.jar')
     implementation files('libs/umeng-share-QQ-simplify-6.9.4.jar')
     implementation files('libs/umeng-share-sina-simplify-6.9.4.jar')

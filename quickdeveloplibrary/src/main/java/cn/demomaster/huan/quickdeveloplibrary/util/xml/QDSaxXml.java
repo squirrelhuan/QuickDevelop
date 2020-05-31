@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
@@ -67,17 +68,11 @@ public class QDSaxXml {
             InputSource is2 = new InputSource(is);
             xr.parse(is2);
         } catch (SAXException e) {
-            e.printStackTrace();
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e);
         } catch (IOException e) {
-            e.printStackTrace();
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e);
         }
     }
-
-
-
 }

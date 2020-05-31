@@ -1,39 +1,49 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParent2;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.ListViewCompat;
+
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.OverScroller;
+
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
 
 
 /**
  * @author:Squirrel桓
  * @time:2018/8/28
  */
-public class PushCardLayout extends FrameLayout implements NestedScrollingParent,
-        NestedScrollingChild {
+public class PushCardLayout extends FrameLayout implements NestedScrollingParent2 {
 
     private StateType cardState = StateType.idle;
+
 
     public enum StateType {
         idle,//空闲
@@ -45,19 +55,33 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     public void setCardState(StateType cardState) {
         this.cardState = cardState;
-        Log.i("cardState", "this.cardState=" + cardState);
+        //Log.i("cardState", "this.cardState=" + cardState);
     }
 
     private int mTouchSlop;// 系统默认的最小滚动距离
-    private final NestedScrollingParentHelper mNestedScrollingParentHelper;
-    private final NestedScrollingChildHelper mNestedScrollingChildHelper;
+    //private final NestedScrollingChildHelper mNestedScrollingChildHelper;
+    private VelocityTracker mVelocityTracker;
+
+    /**
+     * 初始化速度计算器
+     */
+    private void initVelocityTracker() {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+    }
+
+    private void recycleVelocityTracker() {
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
 
     //滚动内容区
     private View contentLayout;
     //底部布局，顶部布局
-    private LinearLayout bottomLayout, topLayout;
-    private View topLayoutView;
-    private View bottomLayoutView;
+    private LinearLayout footerLayout, headerLayout;
 
     //数据加载监听
     private PushCardDatalistener dataListener;
@@ -72,46 +96,57 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         this.animationListener = animationListener;
     }
 
-    public View getTopLayoutView() {
-        return topLayoutView;
-    }
-
     /**
      * 设置顶部view
      *
-     * @param topLayoutView
+     * @param headerLayoutView
      */
-    public void setTopLayoutView(View topLayoutView) {
-        topLayout.removeAllViews();
-        topLayout.addView(topLayoutView);
-        this.topLayoutView = topLayoutView;
+    public void addHeaderView(View headerLayoutView) {
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        addHeaderView(headerLayoutView, layoutParams);
     }
 
-    public View getBottomLayoutView() {
-        return bottomLayoutView;
+    public void addHeaderView(View headerLayoutView, LayoutParams layoutParams) {
+        headerLayout.removeAllViews();
+        headerLayout.addView(headerLayoutView, layoutParams);
     }
+
 
     /**
      * 设置底部view
      *
-     * @param bottomLayoutView
+     * @param footerLayoutView
      */
-    public void setBottomLayoutView(View bottomLayoutView) {
-        bottomLayout.removeAllViews();
-        bottomLayout.addView(bottomLayoutView);
-        this.bottomLayoutView = bottomLayoutView;
+    public void addFooterView(View footerLayoutView) {
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        addFooterView(footerLayoutView, layoutParams);
     }
+
+    public void addFooterView(View footerLayoutView, LayoutParams layoutParams) {
+        footerLayout.removeAllViews();
+        footerLayout.addView(footerLayoutView, layoutParams);
+    }
+
+    private OverScroller mScroller;
+    private int mMaximumVelocity, mMinimumVelocity;//最大最小速度
+    private NestedScrollingParentHelper mParentHelper;
 
     public PushCardLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
-        mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
-        setNestedScrollingEnabled(true);
+
+        ViewConfiguration config = ViewConfiguration.get(context);
+        mTouchSlop = config.getScaledTouchSlop();//距离，表示滑动的时候，手的移动要大于这个距离才开始移动控件。
+        mMaximumVelocity = config.getScaledMaximumFlingVelocity();
+        mMinimumVelocity = config.getScaledMinimumFlingVelocity();
+        mParentHelper = new NestedScrollingParentHelper(this);
+
+        mScroller = new OverScroller(context);
         initView(context, attrs);
     }
 
-    private int mMediumAnimationDuration;//动画时长
     private final DecelerateInterpolator mDecelerateInterpolator;
     private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
     private static final int[] LAYOUT_ATTRS = new int[]{
@@ -119,34 +154,32 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
     };
 
     private void initView(Context context, AttributeSet attrs) {
-        final DisplayMetrics metrics = getResources().getDisplayMetrics();//分辨率
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();//距离，表示滑动的时候，手的移动要大于这个距离才开始移动控件。
-
-        mMediumAnimationDuration = getResources().getInteger(
-                android.R.integer.config_mediumAnimTime);//动画时长
 
         setWillNotDraw(false);//ViewGroup默认情况下，出于性能考虑，会被设置成WILL_NOT_DROW，这样，ondraw就不会被执行了。
         //调用setWillNotDraw（false），去掉其WILL_NOT_DRAW flag。就可以重写ondraw()
 
-        creatTopLayout(context);
-        creatBottomLayout(context);
-        /****** (START)  测试添加 可删除   ***********/
-        /*ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(R.mipmap.quickdevelop_ic_launcher_round);
-        setTopLayoutView(imageView);
-        ImageView imageView2 = new ImageView(getContext());
-        imageView2.setImageResource(R.mipmap.quickdevelop_ic_launcher_round);
-        setBottomLayoutView(imageView2);*/
-        /******  (END) 测试添加 可删除   ***********/
 
         setChildrenDrawingOrderEnabled(true);//设置子view按照顺序绘制
-        mSpinnerOffsetEnd = bottomLayoutHeight / 2;
-        mTotalDragDistance = mSpinnerOffsetEnd;
 
-        final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
-        setEnabled(a.getBoolean(0, true));
-        a.recycle();
+        if (attrs != null) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PushCardLayout);
+            mHeaderViewId = a.getResourceId(R.styleable.PushCardLayout_nest_scroll_header_view, -1);
+            mFooterViewId = a.getResourceId(R.styleable.PushCardLayout_nest_scroll_footer_view, -1);
+            mContentViewId = a.getResourceId(R.styleable.PushCardLayout_nest_scroll_content, -1);
+            a.recycle();
+        }
+        creatheaderLayout(context);
+        creatfooterLayout(context);
+
+        int w = (int) getResources().getDimension(R.dimen.dp_50);
+        addHeaderView(new LoadingTengxuntvView(context), new LayoutParams(w, w));
+        addFooterView(new LoadingTengxuntvView(context), new LayoutParams(w, w));
+
     }
+
+    int mHeaderViewId = -1;
+    int mFooterViewId = -1;
+    int mContentViewId = -1;
 
     /**
      * 初始化顶部布局
@@ -154,19 +187,20 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      *
      * @param context
      */
-    private int bottomLayoutHeight = (int) (100 * getResources().getDisplayMetrics().density);
+    private int footerHeight = (int) (100 * getResources().getDisplayMetrics().density);
 
-    public int getBottomLayoutHeight() {
-        return bottomLayoutHeight;
+    public int getfooterHeight() {
+        return footerHeight;
     }
 
-    private void creatBottomLayout(Context context) {
-        bottomLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, bottomLayoutHeight);
-        layoutParams.gravity = Gravity.CENTER;
-        bottomLayout.setLayoutParams(layoutParams);
-        bottomLayout.setGravity(Gravity.CENTER);
-        addView(bottomLayout);
+    private void creatfooterLayout(Context context) {
+        if (mFooterViewId != -1) {
+            footerLayout = findViewById(mFooterViewId);
+        }
+        footerLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, footerHeight);
+        footerLayout.setGravity(Gravity.CENTER);
+        addView(footerLayout, layoutParams);
     }
 
     /**
@@ -174,19 +208,21 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      *
      * @param context
      */
-    private int topLayoutHeight = (int) (100 * getResources().getDisplayMetrics().density);
+    private int headerHeight = (int) (100 * getResources().getDisplayMetrics().density);
 
-    private void creatTopLayout(Context context) {
-        topLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, topLayoutHeight);
-        layoutParams.gravity = Gravity.CENTER;
-        topLayout.setLayoutParams(layoutParams);
-        topLayout.setGravity(Gravity.CENTER);
-        addView(topLayout);
+    private void creatheaderLayout(Context context) {
+        if (headerLayout == null) {
+            if (mHeaderViewId != -1) {
+                headerLayout = findViewById(mHeaderViewId);
+                return;
+            }
+
+            headerLayout = new LinearLayout(context);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, headerHeight);
+            headerLayout.setGravity(Gravity.CENTER);
+            addView(headerLayout, layoutParams);
+        }
     }
-
-    private int topLayoutOffsetTop = 0;//header距离顶部的距离
-    private int bottomLayoutOffsetTop = 0;//footer距离顶部的距离
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -208,32 +244,29 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         final int childHeight = height - getPaddingTop() - getPaddingBottom();
         child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
 
-        final DisplayMetrics metrics = getResources().getDisplayMetrics();//分辨率
-        int topLayoutWidth = topLayout.getMeasuredWidth();
-        topLayoutHeight = topLayout.getMeasuredHeight();
-        topLayoutOffsetTop = -topLayoutHeight;
-        topLayout.layout((width / 2 - topLayoutWidth / 2), -topLayoutHeight,
-                (width / 2 + topLayoutWidth / 2), 0);
+        int headerLayoutWidth = headerLayout.getMeasuredWidth();
+        headerHeight = headerLayout.getMeasuredHeight();
+        headerLayout.layout((width / 2 - headerLayoutWidth / 2), -headerHeight,
+                (width / 2 + headerLayoutWidth / 2), 0);
 
-        int bottomLayoutWidth = bottomLayout.getMeasuredWidth();
-        bottomLayoutHeight = bottomLayout.getMeasuredHeight();
-        bottomLayoutOffsetTop = height;
-        bottomLayout.layout((width / 2 - bottomLayoutWidth / 2), height,
-                (width / 2 + bottomLayoutWidth / 2), height + bottomLayoutHeight);
+        int footerLayoutWidth = footerLayout.getMeasuredWidth();
+        footerHeight = footerLayout.getMeasuredHeight();
+        footerLayout.layout((width / 2 - footerLayoutWidth / 2), height,
+                (width / 2 + footerLayoutWidth / 2), height + footerHeight);
 
         //初始化默认状态
-        if (contentLayout != null && defaultState != DefaultStateType.normal) {
+        if (contentLayout != null) {
             if (defaultState == DefaultStateType.top) {
                 setCardState(StateType.isToping);
-                showTopLayout();
+                resetAnimation(headerLayout, true);
             }
             if (defaultState == DefaultStateType.bottom) {
                 setCardState(StateType.isBottoming);
-                showTopLayout();
+                resetAnimation(footerLayout, true);
             }
         }
 
-       Log.i("getMeasuredHeight","初始topLayout 高度:"+topLayout.getMeasuredHeight()+",topLayoutView 高度:"+topLayoutView.getMeasuredHeight()) ;
+        Log.i("getMeasuredHeight", "初始headerLayout 高度:" + headerLayout.getMeasuredHeight() + ",headerLayoutView 高度:" + headerLayout.getMeasuredHeight());
     }
 
     @Override
@@ -249,20 +282,26 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
                 MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
                 getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
-        topLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((int) topLayoutHeight, MeasureSpec.EXACTLY));
+        headerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec((int) headerHeight, MeasureSpec.EXACTLY));
 
-        bottomLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((int) bottomLayoutHeight, MeasureSpec.EXACTLY));
+        footerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec((int) footerHeight, MeasureSpec.EXACTLY));
     }
 
     /**
      * 确认目标view
      */
     private void ensureTarget() {
+        if (mContentViewId != -1) {
+            contentLayout = findViewById(mContentViewId);
+            if (contentLayout != null) {
+                return;
+            }
+        }
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (!child.equals(topLayout) && !child.equals(bottomLayout)) {
+            if (!child.equals(headerLayout) && !child.equals(footerLayout)) {
                 contentLayout = child;
                 break;
             }
@@ -285,13 +324,13 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ensureTarget();
         boolean handled = false;
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            Log.i("CGQ", "不拦截子view滚动");
-        }
-        if (isEnabled() && (!canChildScrollUp() || !canChildScrollDown())
-                && !mRefreshing && !mNestedScrollInProgress) {
+        if (isEnabled() && (!canChildScrollUp() || !canChildScrollDown())) {
             handled = onTouchEvent(ev);
             //Log.i("CGQ", "事件分发");
+        }
+        if (contentLayout.getTop() != 0) {
+            Log.i("CGQ", "拦截触摸事件");
+            return true;
         }
 
         //父控件消费，子空间就不执行了。父控件不消费，再交给子空间处理
@@ -301,130 +340,161 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
     }
 
     private float mInitialDownY;//初始按下Y轴坐标
+    private float mMoveY;//初始按下Y轴坐标
+
+    boolean touchForceClose;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!canRefresh) {
             return false;
         }
+        initVelocityTracker();
+        mVelocityTracker.addMovement(event);
 
         int action = event.getAction();
         boolean handled = false;//是否消费
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mInitialDownY = event.getY();// 移动的起点
-                break;
+                mMoveY = event.getY();
+                return (contentLayout.getTop() != 0);
             case MotionEvent.ACTION_MOVE:
+                touchForceClose = false;
                 float offset_c = (event.getY() - mInitialDownY);//当前滑动间距
+                float dy = event.getY() - mMoveY;
+                mMoveY = event.getY();
                 if (Math.abs(offset_c) < mTouchSlop) {
-                    Log.i("CGQ", "未达到滚动最小值");
+                    //Log.i("CGQ", "未达到滚动最小值");
                     return false;
                 }
-                if (offset_c > 0) {//下滑手势
-                    if (cardState == StateType.isBottomed) {//已经是下滑到底状态
-                        finishSpinner();
-                    } else {//不是下滑到底状态
-                        if (canChildScrollUp()) {
-                            Log.i("CGQ", "下滑");
-                        } else {
-                            Log.i("CGQ", "下滑并触发");
-                            handled = true;
-                            final float overscrollTop = offset_c * DRAG_RATE;
-                            //下滑并触发
-                            moveSpinner(overscrollTop);
-                        }
+                if (contentLayout.getTop() != 0) {
+                    float overscrollTop = DRAG_RATE * dy;
+                    handled = true;
+                    Log.i("CGQ", "整体是" + (offset_c > 0 ? "下滑" : "上滑") + "手势,局部" + (dy > 0 ? "下滑" : "上滑"));
+                    if (contentLayout.getTop() > 0 && offset_c < 0) {
+                        touchForceClose = true;
+                    } else if (contentLayout.getTop() < 0 && offset_c > 0) {
+                        touchForceClose = true;
                     }
-                } else {//上拉手势
-                    if (cardState == StateType.isToped) {//已经是上拉到顶状态
-                        finishSpinner();
-                    } else {
-                        if (canChildScrollDown()) {
-                            Log.i("CGQ", "上滑");
-                        } else {
-                            Log.i("CGQ", "上滑并触发");
-                            handled = true;
-                            final float overscrollTop = offset_c * DRAG_RATE;
-                            //下拉显示头部
-                            moveSpinner(overscrollTop);
-                        }
-                    }
+                    scrollCardLayout((int) overscrollTop);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                finishSpinner();
+                mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                int velocityY = (int) mVelocityTracker.getYVelocity();
+                Log.i("CGQ", "ACTION_UP velocityY：" + velocityY + ",mMinimumVelocity=" + mMinimumVelocity);
+                if (Math.abs(velocityY) > mMinimumVelocity) {
+                    finishSpinner(touchForceClose);
+                    // fling(-velocityY);
+                }
+                //ViewCompat.stopNestedScroll(contentLayout, ViewCompat.TYPE_TOUCH);
+                recycleVelocityTracker();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                finishSpinner();
+                Log.i("CGQ", "ACTION_CANCEL ");
+                recycleVelocityTracker();
+                finishSpinner(touchForceClose);
                 break;
         }
         Log.i("CGQ", "消耗触摸事件：" + handled);
-        return handled;
+
+        return super.onTouchEvent(event);
+        // return  handled;
+    }
+
+    public void fling(int velocityY) {
+        Log.i("CGQ", "惯性滚动 velocityY=" + velocityY);
+        // 第三步-二小步，fling调整最大Y偏移，以便把fling传递给nestedScrollingChild。
+        mScroller.fling(0, contentLayout.getTop(), 0, velocityY, 0, 0, 0, Integer.MAX_VALUE);
+        invalidate();
+    }
+
+    /**
+     * @param offset 偏移量
+     * @return
+     */
+    private int scrollCardLayout(int offset) {
+        Log.i("CGQ1", "scrollCardLayout=" + offset);
+        if (contentLayout.getTop() < 0) {
+            setCardState(StateType.isBottoming);
+        } else {
+            setCardState(StateType.isToping);
+        }
+        if (animationListener != null) {
+            animationListener.onRuning(getTop() > 0, (float) contentLayout.getTop() / (contentLayout.getTop() > 0 ? headerHeight : footerHeight));
+        }
+        //Log.i("getMeasuredHeight","headerLayout 高度:"+headerLayout.getMeasuredHeight()+",headerLayoutView 高度:"+headerLayout.getMeasuredHeight()) ;
+        offset = (int) (DRAG_RATE * offset);
+        if (contentLayout != null) {
+            int top = contentLayout.getTop();
+            if (offset < 0) {//向上移动
+                offset = Math.max((-footerHeight - top), offset);
+            }
+            if (offset > 0) {//向下移动
+                offset = Math.min((headerHeight - top), offset);
+            }
+
+            ViewCompat.offsetTopAndBottom(contentLayout, offset);//正数向下移动，负数向上移动
+            //headerLayout.bringToFront();
+            ViewCompat.offsetTopAndBottom(headerLayout, top - headerHeight - headerLayout.getTop());
+            ViewCompat.offsetTopAndBottom(footerLayout, top + getHeight() - footerLayout.getTop());
+            if (contentLayout.getTop() == 0) {
+                headerLayout.setVisibility(INVISIBLE);
+                footerLayout.setVisibility(INVISIBLE);
+            } else if (contentLayout.getTop() > 0) {
+                headerLayout.setVisibility(VISIBLE);
+                footerLayout.setVisibility(INVISIBLE);
+            } else if (contentLayout.getTop() < 0) {
+                headerLayout.setVisibility(INVISIBLE);
+                footerLayout.setVisibility(VISIBLE);
+            }
+        }
+        //Log.i("scrollCardLayout", "contentLayout top:" + contentLayout.getTop());
+        return offset;
     }
 
     /**
      * @param offset 偏移量
      */
-    private void scrollCardLayout(int offset) {
-        Log.i("getMeasuredHeight","topLayout 高度:"+topLayout.getMeasuredHeight()+",topLayoutView 高度:"+topLayoutView.getMeasuredHeight()) ;
+    private void scrollCardLayoutTo(int offset) {
+        //Log.i("getMeasuredHeight","headerLayout 高度:"+headerLayout.getMeasuredHeight()+",headerLayoutView 高度:"+headerLayout.getMeasuredHeight()) ;
         if (contentLayout != null) {
-            ViewCompat.offsetTopAndBottom(contentLayout, offset);//正数向下移动，负数向上移动
-            //topLayout.bringToFront();
-            ViewCompat.offsetTopAndBottom(topLayout, offset);
-            ViewCompat.offsetTopAndBottom(bottomLayout, offset);
-            mContenViewOffsetTop = contentLayout.getTop();
+            int top = contentLayout.getTop();
+            if (offset > headerHeight) {
+                offset = headerHeight;
+            }
+            if (offset < -footerHeight) {
+                offset = -footerHeight;
+            }
+            ViewCompat.offsetTopAndBottom(contentLayout, offset - top);//正数向下移动，负数向上移动
+            //headerLayout.bringToFront();
+            ViewCompat.offsetTopAndBottom(headerLayout, top - headerHeight - headerLayout.getTop());
+            ViewCompat.offsetTopAndBottom(footerLayout, top + getHeight() - footerLayout.getTop());
+
+            if (contentLayout.getTop() == 0) {
+                headerLayout.setVisibility(INVISIBLE);
+                footerLayout.setVisibility(INVISIBLE);
+            } else if (contentLayout.getTop() > 0) {
+                headerLayout.setVisibility(VISIBLE);
+                footerLayout.setVisibility(INVISIBLE);
+            } else if (contentLayout.getTop() < 0) {
+                headerLayout.setVisibility(INVISIBLE);
+                footerLayout.setVisibility(VISIBLE);
+            }
         }
+        Log.i("scrollCardLayout", "contentLayout top to:" + contentLayout.getTop());
     }
 
     //private float mInitialMotionY;
     private static final float DRAG_RATE = .5f;//拖拽率阻尼系数
 
-    private float mTotalDragDistance = -1;
-    int mSpinnerOffsetEnd;
-    protected int mOriginalOffsetTop;
-    int mContenViewOffsetTop;
-
-    /**
-     * @param overscrollTop
-     * @param
-     */
-    private void moveSpinner(float overscrollTop) {
-        boolean isTop = false;//向上
-        int targetY2 = 0;
-        if (overscrollTop < 0) {
-            isTop = true;
-            overscrollTop = -overscrollTop;
-            setCardState(StateType.isBottoming);
-        } else {
-            setCardState(StateType.isToping);
-        }
-        //Log.i("CGQ", "moveSpinner = " + overscrollTop);
-        float originalDragPercent = overscrollTop / mTotalDragDistance;
-
-        float dragPercent = Math.min(1f, Math.abs(originalDragPercent));
-        float extraOS = Math.abs(overscrollTop) - mTotalDragDistance;
-        float slingshotDist = mUsingCustomStart ? mSpinnerOffsetEnd - mOriginalOffsetTop
-                : mSpinnerOffsetEnd;
-        float tensionSlingshotPercent = Math.max(0, Math.min(extraOS, slingshotDist * 2)
-                / slingshotDist);
-        float tensionPercent = (float) ((tensionSlingshotPercent / 4) - Math.pow(
-                (tensionSlingshotPercent / 4), 2)) * 2f;
-        float extraMove = (slingshotDist) * tensionPercent * 2;
-        targetY2 = (int) ((slingshotDist * dragPercent) + extraMove);
-
-        int h = !isTop ? (targetY2 - mContenViewOffsetTop) : (-targetY2 - mContenViewOffsetTop);
-
-        if (animationListener != null) {
-            animationListener.onRuning(cardState == StateType.isToping ? topLayoutView : bottomLayoutView, cardState == StateType.isToping, (float) Math.abs(contentLayout.getTop()) / bottomLayoutHeight);
-        }
-        Log.i("CGQ", "slingshotDist=" + slingshotDist + ",h=" + h);
-        scrollCardLayout(h);
-    }
 
     /**
      * 恢复
      */
-    public void setCancel() {
-        finishSpinner();
+    public void cancel() {
+        finishSpinner(true);
     }
 
     //是否可以上拉下拉滑动
@@ -439,54 +509,39 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         this.canRefresh = canRefresh;
     }
 
-    public void dismiss() {
-        finishSpinner();
-    }
+    ValueAnimator animator;
 
     /**
-     * 恢复动画
+     * 根据当前状态处理未结束的事件
+     *
+     * @param forceClose 强制恢复到初始状态
      */
-    private void finishSpinner() {
+    private void finishSpinner(boolean forceClose) {
+        if (animator != null) {
+            animator.cancel();
+        }
         if (contentLayout == null) {
             return;
         }
-        //处理是否触发刷新或者加载更多//(默认拉到三分之二就触发加载)
-        if (Math.abs(contentLayout.getTop()) > bottomLayoutHeight / 3 * 2 && (cardState == StateType.isToping || cardState == StateType.isBottoming)) {//拉到2/3以上则触发
-            //填充动画（自动下拉到最大高度）
-            Log.i("CGQ1", "填充动画=" );
-            showTopLayout();
-        } else if (cardState == StateType.isBottomed || cardState == StateType.isToped) {
-            setCardState(cardState == StateType.isBottomed ? StateType.isBottoming : StateType.isToping);
-            scrollCardLayout(-contentLayout.getTop());
-        } else if (cardState == StateType.isBottoming || cardState == StateType.isToping) {
+        if (forceClose) {
             //回滚动画
-            Log.i("CGQ1", "回滚动画=" );
-            ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-            animator.setDuration(200);
-            animator.setInterpolator(mDecelerateInterpolator);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float animatedValue = (float) animation.getAnimatedValue();
-                    scrollCardLayout((int) (-contentLayout.getTop() * animatedValue));
-                    View view = ((cardState == StateType.isToping|| cardState==StateType.isToped)) ? topLayoutView : bottomLayoutView;
-                    if (animatedValue == 0) {//动画开始
-                        if (animationListener != null) {
-                            animationListener.onStart(view);
-                        }
-                    } else if (animatedValue == 1f) {//动画结束
-                        mTotalUnconsumed = 0;
-                        setCardState(StateType.idle);
-                        if (animationListener != null) {
-                            animationListener.onEnd(view);
-                        }
-                    } else {//动画进行中
-                        if (animationListener != null)
-                            animationListener.onRuning(view, cardState == StateType.isToping, animatedValue);
-                    }
-                }
-            });
-            animator.start();
+            Log.i("CGQ1", "强制回滚动画1");
+            resetAnimation(null, false);
+        } else {
+            //处理是否触发刷新或者加载更多//(默认拉到三分之二就触发加载)
+            if (Math.abs(contentLayout.getTop()) > footerHeight / 3 * 2 && (cardState == StateType.isToping || cardState == StateType.isBottoming)) {//拉到2/3以上则触发
+                //填充动画（自动下拉到最大高度）
+                Log.i("CGQ1", "展开动画1");
+                resetAnimation((cardState == StateType.isToping || cardState == StateType.isToped) ? headerLayout : footerLayout, true);
+            } else if (cardState == StateType.isBottomed || cardState == StateType.isToped) {
+                Log.i("CGQ1", "展开动画1" + cardState);
+                setCardState(cardState == StateType.isBottomed ? StateType.isBottoming : StateType.isToping);
+                scrollCardLayout(-contentLayout.getTop());
+            } else if (cardState == StateType.isBottoming || cardState == StateType.isToping) {
+                //回滚动画
+                Log.i("CGQ1", "回滚动画1");
+                resetAnimation(null, false);
+            }
         }
     }
 
@@ -500,249 +555,131 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         this.defaultState = defaultState;
     }
 
-    private void showTopLayout() {
-        Log.i("CGQ1", "zhankai动画=" );
-        float startValue = Math.abs(contentLayout.getTop()) / (float) bottomLayoutHeight;
-        ValueAnimator animator = ValueAnimator.ofFloat(startValue, 1);
-        animator.setDuration((int) (200 * (1 - startValue)));
-        animator.setInterpolator(mDecelerateInterpolator);
+    /**
+     * 重置动画状态
+     * @param view
+     * @param isOpen true 展开动画 false 关闭动画
+     */
+    private void resetAnimation(View view, boolean isOpen) {
+        Log.i("CGQ1", isOpen ? "展开动画" : "关闭动画");
+        int startValue = 0;
+        int endValue = 0;
+        if (isOpen) {
+            startValue = contentLayout.getTop();
+            endValue = (view == headerLayout) ? headerHeight : -footerHeight;
+        } else {
+            startValue = contentLayout.getTop();
+            endValue = 0;
+        }
+        boolean isUpper = endValue > startValue;
+        final int start = startValue;
+        final int end = endValue;
+        if (start == end) {
+            return;
+        }
+        animator = ValueAnimator.ofInt(startValue, endValue);
+        int duration =50+150 *((view == headerLayout)?(Math.abs(end-start))/headerHeight:(Math.abs(end-start)/footerHeight));
+
+        animator.setDuration(duration).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-                //(cardState==LoadStateType.isToping?1:-1)
-                scrollCardLayout((int) ((((cardState == StateType.isToping|| cardState==StateType.isToped) ? 1 : -1) * bottomLayoutHeight - contentLayout.getTop()) * animatedValue));
-                if (animationListener == null){
-                    return;
+                int value = (int) animation.getAnimatedValue();
+                scrollCardLayoutTo(value);
+                if (animationListener != null) {
+                    animationListener.onRuning(isUpper, (value - start) / (start - end));
                 }
-                if (animatedValue == 0) {//动画开始
-                    animationListener.onStart((cardState == StateType.isToping|| cardState==StateType.isToped)? topLayoutView : bottomLayoutView);
-                } else if (animatedValue == 1f) {//动画结束
-                    defaultState = DefaultStateType.normal;
-                    animationListener.onEnd((cardState == StateType.isToping|| cardState==StateType.isToped)? topLayoutView : bottomLayoutView);
-                    if (cardState == StateType.isToping) {//上拉处理
-                        setCardState(StateType.isToped);
-                        if (dataListener != null)
-                            dataListener.onRefreshData();
-                    }
-                    if (cardState == StateType.isBottoming) {//下拉处理
-                        setCardState(StateType.isBottomed);
-                        if (dataListener != null)
-                            dataListener.onLoadMoreData();
-                    }
-                } else {//动画进行中
-                    animationListener.onRuning((cardState == StateType.isToping|| cardState==StateType.isToped)? topLayoutView : bottomLayoutView, cardState == StateType.isToping, animatedValue);
+                // postInvalidate();
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (contentLayout.getTop() == headerHeight) {//上拉处理
+                    setCardState(StateType.isToped);
+                    if (dataListener != null)
+                        dataListener.onRefreshData();
+                }
+                if (contentLayout.getTop() == -footerHeight) {//下拉处理
+                    setCardState(StateType.isBottomed);
+                    if (dataListener != null)
+                        dataListener.onLoadMoreData();
                 }
             }
         });
-        animator.start();
     }
 
-    // NestedScrollingParent
-    private float mTotalUnconsumed;//所有未消耗的长度
-    private boolean mNestedScrollInProgress;
-    private final int[] mParentScrollConsumed = new int[2];
-    private final int[] mParentOffsetInWindow = new int[2];
-    // Whether the client has set a custom starting position;
-    boolean mUsingCustomStart;
-    //private boolean mReturningToStart;
-    boolean mRefreshing = false;
-    private OnChildScrollUpCallback mChildScrollUpCallback;
-
+    ///22222222222222222222222222222222222222222
     @Override
-    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return isEnabled() && !mRefreshing
-                && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes, int type) {
+        QDLogger.d("Start Nested Scroll " + (type==ViewCompat.TYPE_TOUCH?"触摸滑动开始":"惯性滑动开始"));
+        return true;
+    }
+     boolean isfling;
+    @Override
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int axes, int type) {
+        isfling =type ==ViewCompat.TYPE_NON_TOUCH;
+        QDLogger.d("accept Start Nested Scroll " + type+",isfling="+isfling);
+        mParentHelper.onNestedScrollAccepted(child, target, axes, type);
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int axes) {
-        // Reset the counter of how much leftover scroll needs to be consumed.
-        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
-        // Dispatch up to the nested parent
-        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
-        mTotalUnconsumed = 0;
-        //mNestedScrollInProgress = true;
-    }
+    public void onStopNestedScroll(@NonNull View target, int type) {
+        QDLogger.d("onStopNestedScroll " + (type==ViewCompat.TYPE_TOUCH?"触摸滑动结束":"惯性滑动结束"));
+        mParentHelper.onStopNestedScroll(target);
 
-    @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        // If we are in the middle of consuming, a scroll, then we want to move the spinner back up
-        // before allowing the list to scroll
-        if (dy > 0 && mTotalUnconsumed > 0) {
-            if (dy > mTotalUnconsumed) {
-                consumed[1] = dy - (int) mTotalUnconsumed;
-                mTotalUnconsumed = 0;
-            } else {
-                mTotalUnconsumed -= dy;
-                consumed[1] = dy;
+        if (type == ViewCompat.TYPE_TOUCH) {
+            if (contentLayout.getTop() != 0&&!isfling) {
+                finishSpinner(false);
             }
-            moveSpinner(mTotalUnconsumed);
-        }
-
-        // If a client layout is using a custom start position for the circle
-        // view, they mean to hide it again before scrolling the child view
-        // If we get back to mTotalUnconsumed == 0 and there is more to go, hide
-        // the circle so it isn't exposed if its blocking content is moved
-        if (mUsingCustomStart && dy > 0 && mTotalUnconsumed == 0
-                && Math.abs(dy - consumed[1]) > 0) {
-            //mCircleView.setVisibility(View.GONE);
-        }
-
-        // Now let our nested parent consume the leftovers
-        final int[] parentConsumed = mParentScrollConsumed;
-        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
-            consumed[0] += parentConsumed[0];
-            consumed[1] += parentConsumed[1];
+        }else if (type == ViewCompat.TYPE_NON_TOUCH) {
+            if (contentLayout.getTop() != 0) {
+                finishSpinner(false);
+            }
         }
     }
 
-
     @Override
-    public int getNestedScrollAxes() {
-        return mNestedScrollingParentHelper.getNestedScrollAxes();
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        QDLogger.d("onNestedScroll " + (type==ViewCompat.TYPE_TOUCH?"触摸滑动":"惯性滑动"));
     }
 
     @Override
-    public void onStopNestedScroll(View target) {
-        mNestedScrollingParentHelper.onStopNestedScroll(target);
-        mNestedScrollInProgress = false;
-        // Finish the spinner for nested scrolling if we ever consumed any
-        // unconsumed nested scroll
-        if (mTotalUnconsumed > 0) {
-            finishSpinner();
-            mTotalUnconsumed = 0;
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        if (type == ViewCompat.TYPE_TOUCH) {//手指触发的滑动
+            QDLogger.e("onNestedPreScroll dy=" + dy + ",getTop()=" + contentLayout.getTop()+",canChildScrollUp()="+canChildScrollUp());
+            if (dy < 0&&!canChildScrollUp()) {
+                //下滑
+                int y = scrollCardLayout(-dy);
+                consumed[1] = -Math.abs(y);
+                QDLogger.e("onNestedPreScroll 下滑=" + y + ",dy=" + dy +  ",consumed=" + consumed[1]);
+            } else if (dy > 0&&!canChildScrollDown()) {
+                //上滑
+                int y = scrollCardLayout(-dy);
+                consumed[1] = Math.abs(y);
+                QDLogger.e("onNestedPreScroll 上滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
+            }
+        }else if (type == ViewCompat.TYPE_NON_TOUCH) {//惯性滑动
+            QDLogger.e("onNestedPreScroll dy=" + dy + ",getTop()=" + contentLayout.getTop()+",canChildScrollUp()="+canChildScrollUp());
+            if (dy < 0&&!canChildScrollUp()) {
+                //下滑
+                int y = scrollCardLayout((int) (-dy*.1f));
+                consumed[1] = -Math.abs(y);
+                QDLogger.e("onNestedPreScroll 惯性下滑=" + y + ",dy=" + dy +  ",consumed=" + consumed[1]);
+            } else if (dy > 0&&!canChildScrollDown()) {
+                //上滑
+                int y = scrollCardLayout((int) (-dy*.1f));
+                consumed[1] = Math.abs(y);
+                QDLogger.e("onNestedPreScroll 惯性上滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
+            }
         }
-        // Dispatch up our nested parent
-        stopNestedScroll();
-    }
-
-
-    @Override
-    public void onNestedScroll(final View target, final int dxConsumed, final int dyConsumed,
-                               final int dxUnconsumed, final int dyUnconsumed) {
-        // Dispatch up to the nested parent first
-        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
-                mParentOffsetInWindow);
-
-        // This is a bit of a hack. Nested scrolling works from the bottom up, and as we are
-        // sometimes between two nested scrolling views, we need a way to be able to know when any
-        // nested scrolling parent has stopped handling events. We do that by using the
-        // 'offset in window 'functionality to see if we have been moved from the event.
-        // This is a decent indication of whether we should take over the event stream or not.
-        final int dy = dyUnconsumed + mParentOffsetInWindow[1];
-        if (dy < 0 && !canChildScrollUp()) {
-            mTotalUnconsumed += Math.abs(dy);
-            moveSpinner(mTotalUnconsumed);
-        }
-    }
-
-    // NestedScrollingChild
-
-    /**
-     * 启用或者禁止嵌套滑动
-     */
-    @Override
-    public void setNestedScrollingEnabled(boolean enabled) {
-        mNestedScrollingChildHelper.setNestedScrollingEnabled(enabled);
-    }
-
-    /**
-     * 用于判断嵌套滑动是否被启用
-     */
-    @Override
-    public boolean isNestedScrollingEnabled() {
-        return mNestedScrollingChildHelper.isNestedScrollingEnabled();
-    }
-
-    /**
-     * 开始嵌套滑动,参数为滑动方向,参数有如下几个
-     * <p>
-     * 没有滑动方向
-     * public static final int SCROLL_AXIS_NONE = 0;
-     * <p>
-     * 横向滑动
-     * public static final int SCROLL_AXIS_HORIZONTAL = 1 << 0;
-     * <p>
-     * 纵向滑动
-     * public static final int SCROLL_AXIS_VERTICAL = 1 << 1;
-     * <p>
-     * 其返回值代表父View是否接受嵌套滑动,如果不接受返回false,后续的嵌套滑动都将失效
-     */
-    @Override
-    public boolean startNestedScroll(int axes) {
-        return mNestedScrollingChildHelper.startNestedScroll(axes);
-    }
-
-    @Override
-    public void stopNestedScroll() {
-        mNestedScrollingChildHelper.stopNestedScroll();
-    }
-
-    /**
-     * 是否有实现了NestedScrollingParent的父View
-     * 如果父View没有实现接口,此方法返回false,且所有嵌套滑动无效
-     */
-    @Override
-    public boolean hasNestedScrollingParent() {
-        return mNestedScrollingChildHelper.hasNestedScrollingParent();
-    }
-
-    /**
-     * 分发嵌套滑动事件,在子View滑动处理完之后调用
-     */
-    @Override
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-                                        int dyUnconsumed, int[] offsetInWindow) {
-        return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed,
-                dxUnconsumed, dyUnconsumed, offsetInWindow);
-    }
-
-    /**
-     * 分发预嵌套滑动事件,在子View滑动处理之前调用
-     */
-    @Override
-    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed,
-                                           int[] offsetInWindow) {
-        return mNestedScrollingChildHelper.dispatchNestedPreScroll(
-                dx, dy, consumed, offsetInWindow);
-    }
-
-    /**
-     * 分发嵌套滑动的惯性滑动处理,返回值表示是否处理
-     */
-    @Override
-    public boolean onNestedPreFling(View target, float velocityX,
-                                    float velocityY) {
-        return dispatchNestedPreFling(velocityX, velocityY);
-    }
-
-    @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY,
-                                 boolean consumed) {
-        return dispatchNestedFling(velocityX, velocityY, consumed);
-    }
-
-    /**
-     * 分发嵌套滑动的惯性滑动处理,返回值表示是否处理
-     */
-    @Override
-    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
-        return mNestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
-    }
-
-    /**
-     * 分发嵌套滑动的惯性滑动预处理,返回值表示是否处理,在子View处理之前调用
-     */
-    @Override
-    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
-        return mNestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
 
     //判断是否可以下拉
     public boolean canChildScrollUp() {
-        if (mChildScrollUpCallback != null) {
-            return mChildScrollUpCallback.canChildScrollUp(this, contentLayout);
+        if (contentLayout == null) {
+            return false;
         }
         if (contentLayout instanceof ListView) {
             return ListViewCompat.canScrollList((ListView) contentLayout, -1);
@@ -768,36 +705,6 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         }
     }
 
-    public void setOnChildScrollUpCallback(@Nullable OnChildScrollUpCallback callback) {
-        mChildScrollUpCallback = callback;
-    }
-
-    /**
-     * Classes that wish to override {@link PushCardLayout#canChildScrollUp()} method
-     * behavior should implement this interface.
-     */
-    public interface OnChildScrollUpCallback {
-        /**
-         * Callback that will be called when {@link PushCardLayout#canChildScrollUp()} method
-         * is called to allow the implementer to override its behavior.
-         *
-         * @param parent SwipeRefreshLayout that this callback is overriding.
-         * @param child  The child view of SwipeRefreshLayout.
-         * @return Whether it is possible for the child view of parent layout to scroll up.
-         */
-        boolean canChildScrollUp(@NonNull PushCardLayout parent, @Nullable View child);
-
-        /**
-         * Callback that will be called when {@link PushCardLayout#canChildScrollDown()} method
-         * is called to allow the implementer to override its behavior.
-         *
-         * @param parent SwipeRefreshLayout that this callback is overriding.
-         * @param child  The child view of SwipeRefreshLayout.
-         * @return Whether it is possible for the child view of parent layout to scroll down.
-         */
-        boolean canChildScrollDown(@NonNull PushCardLayout parent, @Nullable View child);
-    }
-
     /**
      * 数据监听器
      */
@@ -817,24 +724,13 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      * 动画监听器
      */
     public interface PushCardAnimationListener {
-        /**
-         * 开始初始化操作
-         */
-        void onStart(View targetView);
 
         /**
          * 0-1属性动画，下拉百分比动画
          *
-         * @param targetView 目标view(头部或者底部)
-         * @param isUpper    //判断头部动画还是底部动画
-         * @param value      动画百分比
+         * @param isUpper //判断头部动画还是底部动画
+         * @param value   动画百分比
          */
-        void onRuning(View targetView, boolean isUpper, float value);
-
-        /**
-         * 动画结束
-         */
-        void onEnd(View targetView);
+        void onRuning(boolean isUpper, float value);
     }
-
 }

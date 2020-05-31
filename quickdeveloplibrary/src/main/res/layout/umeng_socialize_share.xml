@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/umeng_socialize_share_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/dp_32"
         android:background="#0086DC">
 
         <TextView
@@ -19,20 +19,20 @@
             android:layout_centerInParent="true"
             android:text=""
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="@dimen/sp_11" />
 
         <RelativeLayout
             android:id="@+id/umeng_back"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/dp_30"
             android:layout_height="match_parent"
             android:onClick="onCancel"
             android:visibility="visible">
 
             <ImageButton
-                android:layout_width="12dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/dp_7"
+                android:layout_height="@dimen/dp_12"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="@dimen/dp_9"
                 android:background="@drawable/umeng_socialize_back_icon"
                 android:clickable="false"
                 android:scaleType="center" />
@@ -45,8 +45,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:paddingLeft="@dimen/dp_9"
+            android:paddingRight="@dimen/dp_9"
             android:text="分享"
             android:textColor="#ffffff"
             android:textSize="15sp" />
@@ -55,17 +55,17 @@
     <EditText
         android:id="@+id/umeng_socialize_share_edittext"
         android:layout_width="fill_parent"
-        android:layout_height="180dp"
+        android:layout_height="@dimen/dp_108"
         android:layout_below="@id/umeng_socialize_share_titlebar"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="8dp"
+        android:paddingLeft="@dimen/dp_9"
+        android:paddingRight="@dimen/dp_9"
+        android:paddingTop="@dimen/dp_5"
         android:background="#ffffff"
         android:bufferType="spannable"
         android:gravity="top"
         android:hint="编辑分享内容"
-        android:lineSpacingExtra="3dp"
-        android:paddingBottom="10dp"
+        android:lineSpacingExtra="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_6"
         android:textColor="#000000"
         android:textSize="15sp" />
 
@@ -76,8 +76,8 @@
         android:layout_alignRight="@id/umeng_socialize_share_edittext"
         android:background="#ffffff"
         android:layout_below="@id/umeng_socialize_share_edittext"
-        android:paddingBottom="10dp"
-        android:paddingRight="15dp"
+        android:paddingBottom="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_9"
         android:gravity="right"
         android:singleLine="true"
         android:textColor="#98999B"
@@ -88,33 +88,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/umeng_socialize_share_word_num"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/dp_9"
+        android:layout_marginRight="@dimen/dp_9"
         android:background="#F2F5F6"
         android:visibility="gone">
         <RelativeLayout
-            android:layout_width="62dp"
-            android:layout_height="62dp"
+            android:layout_width="@dimen/dp_37"
+            android:layout_height="@dimen/dp_37"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="@dimen/dp_9"
+            android:layout_marginLeft="@dimen/dp_9"
             android:id="@+id/umeng_image_edge"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/dp_9"
            android:background="@drawable/umeng_socialize_edit_bg"
             >
         <ImageView
             android:id="@+id/umeng_share_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_36"
            android:layout_centerInParent="true"
             android:src="#2c3035" />
         </RelativeLayout>
     <TextView
-        android:layout_width="280dp"
+        android:layout_width="@dimen/dp_168"
         android:id="@+id/umeng_web_title"
         android:layout_toRightOf="@id/umeng_image_edge"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_12"
         android:textColor="#575A5C"
         android:singleLine="true"
         android:textSize="14sp"
@@ -123,12 +123,12 @@
 
     <ImageView
         android:id="@+id/umeng_del"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
         android:layout_alignRight="@id/umeng_image_edge"
         android:layout_alignTop="@id/umeng_image_edge"
-        android:layout_marginRight="-10dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginRight="@dimen/dp_m_5"
+        android:layout_marginTop="@dimen/dp_m_5"
         android:background="@drawable/umeng_socialize_delete" />
 
 

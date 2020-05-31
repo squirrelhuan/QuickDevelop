@@ -36,6 +36,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textView.setText(lists.get(position));
+        holder.textView.setTextSize(60);
     }
 
     @Override

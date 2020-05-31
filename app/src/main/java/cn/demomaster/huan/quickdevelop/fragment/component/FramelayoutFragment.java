@@ -6,15 +6,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 
 
 /**
@@ -23,7 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
  */
 
 @ActivityPager(name = "Framelayout", preViewClass = TextView.class, resType = ResType.Custome)
-public class FramelayoutFragment extends QDBaseFragment {
+public class FramelayoutFragment extends QDFragment {
     //Components
     ViewGroup mView;
     @Override
@@ -48,7 +46,7 @@ public class FramelayoutFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 

@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +9,16 @@ import android.widget.Button;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
-public class RouterFragment extends QDBaseFragment {
+public class RouterFragment extends QDFragment {
     //Components
     ViewGroup mView;
 
@@ -31,7 +32,7 @@ public class RouterFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayout.setTitle(titles[i]+"sss");
         actionBarLayout.setHeaderBackgroundColor(colors[i]);
@@ -63,10 +64,29 @@ public class RouterFragment extends QDBaseFragment {
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void opentFragment() {
-        ((QDActivity)getContext()).getFragmentActivityHelper().startFragment(mContext,new RouterFragment());
+        ((QDActivity)getContext()).getFragmentHelper().startFragment(mContext,new RouterFragment());
     }
 
     private void startFragment(){
-        ((QDActivity)getContext()).getFragmentActivityHelper().startFragment(mContext,new GuiderFragment());
+        ((QDActivity)getContext()).getFragmentHelper().startFragment(mContext,new GuiderFragment());
     }
+
+
+    //记录用户首次点击返回键的时间
+    private long firstClickTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(isRootFragment()){
+            if (System.currentTimeMillis() - firstClickTime > 2000) {
+                QdToast.show(mContext, "再点击退出 activity");
+                firstClickTime = System.currentTimeMillis();
+            }else {
+                getActivity().finish();
+            }
+            return true;
+        }
+       // QdToast.show(mContext, "onKeyDown isRootFragment="+isRootFragment());
+        return super.onKeyDown(keyCode,event);
+    }
+
 }

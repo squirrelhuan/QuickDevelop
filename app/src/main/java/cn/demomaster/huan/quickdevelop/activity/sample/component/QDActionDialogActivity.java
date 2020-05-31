@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.activity.sample.component;
 import android.app.Activity;
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +38,7 @@ public class QDActionDialogActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdaction_dialog);
-
+        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
         getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +68,6 @@ public class QDActionDialogActivity extends QDActivity {
         List<String> data = new ArrayList<>();
 
         Collections.addAll(data, listItems);
-
         mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, data));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

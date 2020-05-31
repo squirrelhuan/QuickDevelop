@@ -11,7 +11,7 @@
         android:id="@+id/recy_picture_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="@dimen/dp_30"
         android:overScrollMode="never" />
 
     <RelativeLayout
@@ -26,20 +26,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="@dimen/dp_30"
             android:background="@android:color/white"
             android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
+            android:fadingEdgeLength="@dimen/dp_0"
             android:overScrollMode="never"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
+            android:paddingTop="@dimen/dp_2"
+            android:paddingBottom="@dimen/dp_2"
             android:scrollbars="vertical"
             android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dp_30"
         android:layout_alignParentBottom="true"
         android:background="@color/black">
 
@@ -48,11 +48,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="@dimen/dp_12"
+            android:paddingRight="@dimen/dp_24"
             android:text="@string/image"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="@dimen/dp_11" />
 
         <TextView
             android:id="@+id/tv_preview"
@@ -60,11 +60,11 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
-            android:paddingLeft="40dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="@dimen/dp_24"
+            android:paddingRight="@dimen/dp_12"
             android:text="@string/preview"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="@dimen/dp_11" />
     </RelativeLayout>
 
 

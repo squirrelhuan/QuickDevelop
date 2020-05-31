@@ -13,12 +13,10 @@ import java.lang.ref.WeakReference;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
@@ -27,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "OperatGuid", preViewClass = TextView.class, resType = ResType.Custome)
-public class GuiderFragment extends QDBaseFragment {
+public class GuiderFragment extends QDFragment {
     //Components
     ViewGroup mView;
     @Override
@@ -149,11 +147,11 @@ public class GuiderFragment extends QDBaseFragment {
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
+    /*public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayoutOld.setTitle(titles[i] + "---------ASDFGGHHJ");
         actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
-    }
+    }*/
 
     String tips[] = {"点击按钮关闭引导！", "点击提示框关闭引导", "这里是文本说明区域，点击任意位置关闭提示", "椭圆提示框", "这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
 
@@ -167,7 +165,7 @@ public class GuiderFragment extends QDBaseFragment {
         guiderModel.setLineWidth(2);
         //guiderModel.setTextColor(Color.GREEN);
         guiderModel.setTextSize(36);
-        guiderModel.setImgResourceId(R.mipmap.ic_launcher2);
+        guiderModel.setImgResourceId(R.mipmap.ic_launcher);
         //guiderModel.setTextBackgroundColor(Color.YELLOW);
         GuiderHelper.getInstance().setGuiderModel(guiderModel);
         GuiderHelper.getInstance().add(guiderModel);
@@ -201,7 +199,7 @@ public class GuiderFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
     }
 
     @Override

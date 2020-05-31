@@ -18,12 +18,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,7 +30,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
-import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadUtil.checkDownloadManagerEnable;
 
 /**
  * 文件下载帮助类

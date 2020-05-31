@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabRadioGroup;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 @ActivityPager(name = "TabMenu", preViewClass = TextView.class, resType = ResType.Custome)
@@ -163,6 +164,7 @@ public class TabMenuActivity extends QDActivity {
             this.addView(view);
         }
     }
+
 
 
 }

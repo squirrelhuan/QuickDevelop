@@ -118,23 +118,29 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
         switch (view.getId()) {
 
             case R.id.btn_ac_01:
+                btn_ac_01.setText(ACTIONBAR_TYPE.NORMAL+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
+                btn_ac_02.setText(ACTIONBAR_TYPE.NO_ACTION_BAR+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
+                btn_ac_03.setText(ACTIONBAR_TYPE.ACTION_STACK+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
+                btn_ac_04.setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
+                btn_ac_05.setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
+                btn_ac_06.setText(ACTIONBAR_TYPE.ACTION_TRANSPARENT+"");
                 getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:

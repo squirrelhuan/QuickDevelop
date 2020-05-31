@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
-    tools:context=".activity.sample.TabMenuActivity"
     android:orientation="vertical">
 
     <cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout
@@ -13,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:padding="5dp"
-        android:background="@color/white">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="0dp"
+        android:background="@drawable/btn_green_bg01">
 
     </cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout>
 

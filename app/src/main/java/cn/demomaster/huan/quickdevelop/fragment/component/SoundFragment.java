@@ -12,10 +12,9 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
@@ -24,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "SoundFragment", preViewClass = TextView.class, resType = ResType.Custome)
-public class SoundFragment extends QDBaseFragment {
+public class SoundFragment extends QDFragment {
     //Components
     ViewGroup mView;
     @Override
@@ -78,7 +77,7 @@ public class SoundFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 

@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,10 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent;
 
@@ -29,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent
  */
 
 @ActivityPager(name = "NestedScrollView", preViewClass = TextView.class, resType = ResType.Custome)
-public class NestedScrollViewFragment extends QDBaseFragment {
+public class NestedScrollViewFragment extends QDFragment {
 
     //Components
     ViewGroup mView;
@@ -95,7 +93,7 @@ public class NestedScrollViewFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 

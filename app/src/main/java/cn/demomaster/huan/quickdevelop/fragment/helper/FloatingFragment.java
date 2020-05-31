@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.content.Intent;
 import android.graphics.Color;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +15,12 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingService;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
@@ -32,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "Floating", preViewClass = TextView.class, resType = ResType.Custome)
-public class FloatingFragment extends QDBaseFragment {
+public class FloatingFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -56,7 +53,7 @@ public class FloatingFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         if(!FloatingService.isShowing()){
             btn_floating_01.setText("打开悬浮");
         }else {

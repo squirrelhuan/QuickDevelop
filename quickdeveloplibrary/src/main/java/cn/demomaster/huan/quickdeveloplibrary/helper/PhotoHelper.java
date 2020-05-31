@@ -11,9 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import com.yzq.zxinglibrary.android.CaptureActivity;
-import com.yzq.zxinglibrary.common.Constant;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -24,8 +21,10 @@ import java.util.Map;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
+import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_CONTENT;
 
 /**
  * 图片采集类
@@ -214,7 +213,7 @@ public class PhotoHelper {
     }
 
     private void scanQrcode(int resultCodeTakePhoto) {
-        Intent intent = new Intent(contextWeakReference.get(), CaptureActivity.class);
+        Intent intent = new Intent(contextWeakReference.get(), MyCaptureActivity.class);
         /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
          * 不传的话  默认都为默认不震动  其他都为true
@@ -323,8 +322,8 @@ public class PhotoHelper {
             if (onTakePhotoResult != null) {
                 if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
                     path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
-                } else if (data.getExtras() != null && data.getExtras().containsKey(Constant.CODED_CONTENT)) {
-                    path = data.getStringExtra(Constant.CODED_CONTENT);
+                } else if (data.getExtras() != null && data.getExtras().containsKey(CODED_CONTENT)) {
+                    path = data.getStringExtra(CODED_CONTENT);
                 } else if (data.getData() != null) {
                     path = data.getData().toString();
                 }

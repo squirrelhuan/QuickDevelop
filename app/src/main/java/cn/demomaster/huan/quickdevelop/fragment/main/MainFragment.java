@@ -8,8 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,28 +18,26 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
-
 /**
  * Squirrel桓
  * 2018/8/25
  */
-public class MainFragment extends QDBaseFragment {
+public class MainFragment extends QDFragment {
     //Components
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -72,22 +68,18 @@ public class MainFragment extends QDBaseFragment {
     }*/
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-       // return super.onKeyDown(keyCode, event);
-        return true;//屏蔽返回键
-    }
-
-    @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setFullScreen(true);
         actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        actionBarLayout.getLeftView().setVisibility(View.GONE);
 
         List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
         list.add(HelperFragment.class);
         list.add(DesignPatternFragment.class);
-        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getActivity().getSupportFragmentManager(), list);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(fragmentManager, list);
         // Initiate ViewPager
         ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
         //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
@@ -144,7 +136,7 @@ public class MainFragment extends QDBaseFragment {
         getOptionsMenuBuilder().setMenus(menus)
                 .setAlpha(.6f)
                 .setUsePadding(true)
-                .setBackgroundColor(Color.RED)
+                .setBackgroundColor(getResources().getColor(R.color.blueviolet))
                 .setBackgroundRadius(20)
                 .setTextColor(Color.WHITE)
                 .setTextSize(16)
@@ -160,6 +152,7 @@ public class MainFragment extends QDBaseFragment {
             public void onItemClick(int position, View view) {
                 switch (position) {
                     case 0:
+                        optionsMenu.dismiss();
                         break;
                     case 1:
                         photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
@@ -173,6 +166,7 @@ public class MainFragment extends QDBaseFragment {
                                 QdToast.show(mContext,"error:"+error);
                             }
                         });
+                        optionsMenu.dismiss();
                        /* photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
@@ -187,6 +181,7 @@ public class MainFragment extends QDBaseFragment {
                         break;
                     case 2:
                         ScreenShotUitl.shot((Activity) mContext);
+                        optionsMenu.dismiss();
                         break;
                 }
             }
@@ -256,4 +251,26 @@ public class MainFragment extends QDBaseFragment {
             return PagerAdapter.POSITION_NONE;
         }
     }
+
+
+
+    //记录用户首次点击返回键的时间
+    private long firstClickTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        QDLogger.e(mContext, "main onKeyDown "+isRootFragment());
+        if(isRootFragment()){
+            if (System.currentTimeMillis() - firstClickTime > 2000) {
+                QdToast.show(mContext, "再点击退出app");
+                firstClickTime = System.currentTimeMillis();
+            }else {
+                getActivity().finish();
+            }
+            return true;
+        }
+         QdToast.show(mContext, "onKeyDown isRootFragment="+isRootFragment());
+        return super.onKeyDown(keyCode,event);
+    }
+
+
 }

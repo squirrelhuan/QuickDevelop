@@ -6,8 +6,6 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model;
 
 import android.text.TextUtils;
 
-import com.google.zxing.common.StringUtils;
-
 import java.util.ArrayList;
 
 /**

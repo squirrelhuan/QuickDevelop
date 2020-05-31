@@ -1,16 +1,16 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDRuntimeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
@@ -25,10 +25,9 @@ public class QDMainFragmentActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
         if (savedInstanceState == null) {
-            QDBaseFragment fragment = new MainFragment();
-            getFragmentActivityHelper().startFragment(mContext, fragment);
+            QDFragment fragment = new MainFragment();
+            startFragment(mContext, fragment);
         }
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         getActionBarLayout().setHeaderBackgroundColor(Color.GRAY);
         //actionBarLayoutView.setHeaderBackgroundColor();
         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
@@ -68,5 +67,10 @@ public class QDMainFragmentActivity extends QDActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -8,13 +8,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -24,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "DragView",preViewClass = TextView.class,resType = ResType.Custome)
-public class DragViewFragment extends QDBaseFragment {
+public class DragViewFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -47,7 +45,7 @@ public class DragViewFragment extends QDBaseFragment {
     }
     private TextView mFirstOne;
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("异常捕获");
         mFirstOne =  rootView.findViewById(R.id.tv_first_one);
         mFirstOne.setOnClickListener(new View.OnClickListener() {

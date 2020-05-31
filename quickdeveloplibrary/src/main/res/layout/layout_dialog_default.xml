@@ -4,9 +4,9 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minHeight="150dp"
-    android:minWidth="220dp"
-    android:padding="10dp"
+    android:minHeight="@dimen/dp_90"
+    android:minWidth="@dimen/dp_132"
+    android:padding="@dimen/dp_6"
     android:background="@color/transparent_light_cc"
     android:gravity="center_horizontal">
 

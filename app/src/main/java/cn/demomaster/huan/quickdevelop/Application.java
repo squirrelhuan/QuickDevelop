@@ -54,8 +54,6 @@ public class Application extends ApplicationParent {
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
-
-
     }
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
@@ -76,7 +74,6 @@ public class Application extends ApplicationParent {
             }
 
             Log.d("getSerialPort",path+":"+baudrate);
-
             /* Open the serial port */
             mSerialPort = new SerialPort(new File(path), baudrate, 0);
         }

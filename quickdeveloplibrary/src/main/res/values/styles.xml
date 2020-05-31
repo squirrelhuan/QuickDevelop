@@ -78,11 +78,11 @@
     <style name="QDButtonStyle" parent="android:Widget.Holo.Light.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">18dp</item>
-        <item name="android:paddingRight">18dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:layout_margin">15dp</item>
+        <item name="android:paddingLeft">@dimen/dp_11</item>
+        <item name="android:paddingRight">@dimen/dp_11</item>
+        <item name="android:paddingTop">@dimen/dp_6</item>
+        <item name="android:paddingBottom">@dimen/dp_6</item>
+        <item name="android:layout_margin">@dimen/dp_9</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:singleLine">true</item>
@@ -93,6 +93,7 @@
         <item name="qd_borderWidth">@dimen/qd_btn_border_width</item>
         <item name="qd_borderColor">@color/qd_btn_bg</item>
         <item name="qd_radius">5dp</item>
+        <!--<item name="android:textColor">@color/qd_button_textcolor</item>-->
         <item name="android:textColor">?attr/qd_btn_text_color</item>
         <item name="android:textSize">@dimen/quickdev_middle_text_size</item>
     </style>
@@ -103,11 +104,11 @@
         <item name="qd_btn_border_width">@dimen/qd_btn_border_width</item>
         <item name="qd_btn_bg_color">@color/qd_btn_bg</item>
         <item name="qd_btn_border_color">@color/qd_btn_bg</item>
-        <item name="qd_btn_text_color">@color/black</item>
+        <item name="qd_btn_text_color">@color/qd_button_textcolor</item>
 
         <item name="QDButtonStyle">@style/QDButtonStyle</item>
 
-        <item name="pointPadding">5dp</item>
+        <item name="pointPadding">@dimen/dp_3</item>
 
     </style>
 
@@ -126,6 +127,11 @@
         <item name="android:windowExitAnimation">@anim/qd_dialog_animation_center_scale_exit</item>
     </style>
 
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <declare-styleable name="LoadingDownView">
         <attr name="color" format="color" />
     </declare-styleable>
@@ -133,6 +139,23 @@
     <style name="keybored_anim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/keybored_show</item>
         <item name="android:windowExitAnimation">@anim/keybored_hide</item>
+    </style>
+
+
+   <!-- ************************************************** -->
+
+    <style name="quick_actionbar_common">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/qd_tab_textcolor</item>
+        <item name="android:paddingLeft">@dimen/dp_4</item>
+        <item name="android:paddingRight">@dimen/dp_4</item>
+
+        <!--<item name="android:paddingTop">@android:dimen/status_bar_height</item>-->
+    </style>
+
+    <style name="quick_actionbar_common_weight">
+        <item name="android:textColor">@color/qd_actionbar_textcolor</item>
+        <item name="android:tint">@color/qd_actionbar_textcolor</item>
     </style>
 
 </resources>

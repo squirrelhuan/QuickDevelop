@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * @author squirrel桓
@@ -125,7 +126,15 @@ public class SoundHelper {
 
     //根据资源id播放音频
     public void playByResID(int id) {
-        soundPool.play(getIndexByResID(id), 1, 1, 0, 0, 1);
+        if(soundPool!=null) {
+            try {
+                soundPool.play(getIndexByResID(id), 1, 1, 0, 0, 1);
+            }catch (Exception e){
+                QDLogger.e("未找到音频文件:"+e.toString());
+            }
+        }else {
+            QDLogger.e("未找到音频文件");
+        }
     }
 
     /**

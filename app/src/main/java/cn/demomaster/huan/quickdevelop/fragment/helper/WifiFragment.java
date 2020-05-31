@@ -2,24 +2,20 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,14 +31,13 @@ import cn.demomaster.huan.quickdevelop.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 
@@ -61,7 +56,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  */
 
 @ActivityPager(name = "wifi", preViewClass = TextView.class, resType = ResType.Custome)
-public class WifiFragment extends QDBaseFragment {
+public class WifiFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -90,7 +85,7 @@ public class WifiFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
 
         WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);

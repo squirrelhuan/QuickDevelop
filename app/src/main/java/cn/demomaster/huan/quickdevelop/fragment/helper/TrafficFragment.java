@@ -14,11 +14,10 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.service.TrafficFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -29,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "Traffic", preViewClass = TextView.class, resType = ResType.Custome)
-public class TrafficFragment extends QDBaseFragment {
+public class TrafficFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -54,7 +53,7 @@ public class TrafficFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("socket");
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override

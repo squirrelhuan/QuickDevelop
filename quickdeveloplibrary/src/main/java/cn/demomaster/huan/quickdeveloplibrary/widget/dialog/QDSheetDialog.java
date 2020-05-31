@@ -35,28 +35,25 @@ import static android.view.View.OVER_SCROLL_NEVER;
  * @date 2019/1/7.
  * description：
  */
-public class QDSheetDialog extends Dialog {
+public class QDSheetDialog extends QDDialog2 {
     private List<String> data;
-    private Context context;
     private int columnCount = 1;
     private ShowType showType = ShowType.List;
     private int heightLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
     private int widthLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
     private OnDialogActionListener onDialogActionListener;
-    private int gravity = Gravity.CENTER;
-    private int backgroundColor = Color.WHITE;
-    private float[] backgroundRadius = new float[8];
+    private int gravity;
+    private int boxColor;
     public QDSheetDialog(Context context, Builder builder) {
         super(context);
         data = builder.data;
-        this.context = builder.context;
         columnCount = builder.columnCount;
         showType = builder.showType;
         heightLayoutType = builder.heightLayoutType;
         widthLayoutType = builder.widthLayoutType;
         onDialogActionListener = builder.onDialogActionListener;
         gravity = builder.gravity;
-        backgroundColor = builder.backgroundColor;
+        boxColor = builder.boxColor;
         backgroundRadius = builder.backgroundRadius;
         init();
     }
@@ -72,52 +69,21 @@ public class QDSheetDialog extends Dialog {
     }
 
     private void init() {
-
-        if (widthLayoutType == ViewGroup.LayoutParams.MATCH_PARENT) {
-            getWindow().getDecorView().setPadding(0, 0, 0, 0);
-        }
-        // 在底部，宽度撑满
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.height = heightLayoutType;
-        params.width = widthLayoutType;
-        params.gravity =  Gravity.CENTER;
-
-       /* int screenWidth = QMUIDisplayHelper.getScreenWidth(getContext());
-        int screenHeight = QMUIDisplayHelper.getScreenHeight(getContext());
-        params.width = screenWidth < screenHeight ? screenWidth : screenHeight;*/
-
-       // int gravity = gravity;
-        //getWindow().setWindowAnimations(R.style.FadeInPopWin);  //添加动画
-        getWindow().setWindowAnimations(-1);  //添加动画
-       /* if (MenuBuilder.class.isAssignableFrom(builder.getClass())) {//菜单类型弹窗
-
-        } else {
-
-        }*/
-
-        getWindow().setAttributes(params);
-        getWindow().setGravity(gravity);
         setCanceledOnTouchOutside(true);
-
-
+        setCancelable(true);
         initData();
-
+        //setCanSliding(false);
     }
 
-    private LinearLayout contentLinearView;
+    @Override
+    public boolean isHasPadding() {
+        return true;
+    }
 
     private void initData() {
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        int p = DisplayUtil.dip2px(getContext(), 15);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentLinearView = new LinearLayout(context);
-        contentLinearView.setOrientation(LinearLayout.VERTICAL);
-
-        //新建一个Drawable对象
-        QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
-        drawable_bg.setCornerRadii(backgroundRadius);
-        drawable_bg.setBackGroundColor(backgroundColor);
-        contentLinearView.setBackground(drawable_bg);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity =gravity;
+        setBackgroundColor(backgroundColor);
 
         RecyclerView recyclerView = new RecyclerView(getContext());
         recyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
@@ -141,10 +107,10 @@ public class QDSheetDialog extends Dialog {
         });
 
         recyclerView.setAdapter(adapter);
-        contentLinearView.addView(recyclerView);
-        ViewGroup layout = new RelativeLayout(getContext());
-        layout.addView(contentLinearView, layoutParams);
-        setContentView(layout, layoutParams);
+        recyclerView.setBackgroundColor(boxColor);
+        RelativeLayout relativeLayout = new RelativeLayout(getContext());
+        relativeLayout.addView(recyclerView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setContentView(relativeLayout, layoutParams);
     }
 
     public static enum ShowType {
@@ -160,7 +126,7 @@ public class QDSheetDialog extends Dialog {
         private int widthLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
         private OnDialogActionListener onDialogActionListener;
         private int gravity = Gravity.CENTER;
-        private int backgroundColor = Color.WHITE;
+        private int boxColor = Color.WHITE;
         private float[] backgroundRadius = new float[8];
 
         public Builder(Context context) {
@@ -192,8 +158,8 @@ public class QDSheetDialog extends Dialog {
             return this;
         }
 
-        public Builder setBackgroundColor(int backgroundColor) {
-            this.backgroundColor = backgroundColor;
+        public Builder setBoxColor(int backgroundColor) {
+            this.boxColor = backgroundColor;
             return this;
         }
 
@@ -232,27 +198,22 @@ public class QDSheetDialog extends Dialog {
         public QDSheetDialog create() {
             return new QDSheetDialog(context, this);
         }
-
     }
 
     /**
      * 菜单弹窗构建器
      */
     public static class MenuBuilder extends Builder {
-
         public MenuBuilder(Context context) {
             super(context);
         }
-
     }
 
     public static interface OnDialogActionListener {
           void onItemClick(QDSheetDialog dialog, int position, List<String> data);
     }
 
-
     public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
-
         private List data;
         private Context context;
         private TabMenuAdapter.OnItemClickListener onItemClickListener;
@@ -313,13 +274,10 @@ public class QDSheetDialog extends Dialog {
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 ((ViewGroup) itemView).addView(textView, layoutParams);
             }
-
             public void onbind(int position){
                 textView.setText(data.get(position)+"");
             }
         }
-
     }
-
 
 }

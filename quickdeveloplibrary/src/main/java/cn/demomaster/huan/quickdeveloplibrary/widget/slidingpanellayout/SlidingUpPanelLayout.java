@@ -782,6 +782,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
         mMainView = getChildAt(0);
         mSlideableView = getChildAt(1);
+        setPanelMaginTop(panelMarginTop);
         if (mDragView == null) {
             setDragView(mSlideableView);
         }
@@ -1245,7 +1246,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
             result = super.drawChild(canvas, child, drawingTime);
 
-            if (mCoveredFadeColor != 0 && mSlideOffset > 0) {
+            if (mCoveredFadeColor != 0 && mSlideOffset > 0&&showBackground) {
                 final int baseAlpha = (mCoveredFadeColor & 0xff000000) >>> 24;
                 final int imag = (int) (baseAlpha * mSlideOffset);
                 final int color = imag << 24 | (mCoveredFadeColor & 0xffffff);
@@ -1259,6 +1260,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
         canvas.restoreToCount(save);
 
         return result;
+    }
+
+    boolean showBackground = true;
+    public void setShowBackground(boolean showBackground) {
+        this.showBackground = showBackground;
     }
 
     /**
@@ -1516,6 +1522,17 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 this.weight = ta.getFloat(0, 0);
                 ta.recycle();
             }
+        }
+    }
+
+    int panelMarginTop;
+    //SLIDING
+    public void setPanelMaginTop(int marginTop){
+        panelMarginTop = marginTop;
+        if(mSlideableView!=null){
+            LayoutParams layoutParams = (LayoutParams) mSlideableView.getLayoutParams();
+            layoutParams.topMargin = panelMarginTop;
+            mSlideableView.setLayoutParams(layoutParams);
         }
     }
 }

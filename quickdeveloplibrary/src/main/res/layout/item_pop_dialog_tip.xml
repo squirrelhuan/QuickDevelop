@@ -7,10 +7,10 @@
     <!-- android:background="@drawable/panel_menu_main_bg"-->
 
     <RelativeLayout
-        android:layout_width="240dp"
-        android:layout_height="340dp"
+        android:layout_width="@dimen/dp_144"
+        android:layout_height="@dimen/dp_204"
         android:layout_gravity="center"
-        android:layout_margin="50dp">
+        android:layout_margin="@dimen/dp_30">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,26 +27,26 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="@dimen/dp_36"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:padding="@dimen/dp_6"
                 android:textColor="@color/black" />
         </LinearLayout>
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/btn_close"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="right"
             android:gravity="center"
-            android:minHeight="0dp"
-            android:padding="8dp"
+            android:minHeight="@dimen/dp_0"
+            android:padding="@dimen/dp_5"
             android:src="@mipmap/ic_close_circle"
             android:text="关闭"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_10" />
     </RelativeLayout>
 
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical">
+                     <Button
+                         android:id="@+id/btn_play1"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="20dp"
+                         android:text="普通 button"/>
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                         android:id="@+id/btn_play2"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="20dp"
+                         app:qd_isRadiusAdjustBounds="false"
+                         app:qd_btn_internal_width="20dp"
+                         android:textColor="@color/qd_button_textcolor"
+                         android:text="普通 QdButtun"/>
+
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="20dp"
+                         app:qd_backgroundColor="@color/qd_btn_test_textcolor"
+                         android:textColor="@color/qd_actionbar_textcolor"
+                         android:text="自定义背景色"/>
+
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="20dp"
+                         app:qd_borderColor="@color/red"
+                         android:textColor="@color/red"
+                         android:text="边框颜色"/>
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         app:qd_borderColor="@color/colorPrimary"
+                         android:layout_margin="20dp"
+                         app:qd_borderWidth="5dp"
+                         android:text="边框粗细"/>
+
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="20dp"
+                         app:qd_radius="20dp"
+                         app:qd_borderColor="@color/colorPrimary"
+                         android:text="指定圆角"/>
+
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:gravity="center">
+                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:qd_radius="5dp"
+                                app:qd_radiusTopLeft="20dp"
+                                app:qd_borderColor="@color/colorPrimary"
+                                android:text="左上角圆角"/>
+                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:qd_radiusTopRight="20dp"
+                                app:qd_borderColor="@color/colorPrimary"
+                                android:text="右上角圆角"/>
+                     </LinearLayout>
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:gravity="center">
+                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:qd_radiusBottomLeft="20dp"
+                                app:qd_borderColor="@color/colorPrimary"
+                                android:text="左下角圆角"/>
+                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:qd_radiusBottomRight="20dp"
+                                app:qd_borderColor="@color/colorPrimary"
+                                android:text="右下角圆角"/>
+                     </LinearLayout>
+
+              </LinearLayout>
+       </ScrollView>
+
+
+
+</LinearLayout>

@@ -23,13 +23,13 @@ public class BaseFragmentActivity extends QDActivity {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_base_fragment);
-        View view = new FrameLayout(this);
-        view.setId(getContentViewId());
-        setContentView(view);
+       /* View view = new FrameLayout(this);
+        view.setId(getContentViewId());*/
+        setContentView(null);
         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         QDLogger.i("BaseFragmentActivity onCreate");
         RouterFragment f1 = new RouterFragment();
-        getFragmentActivityHelper().startFragment(this,f1);
+        startFragment(this,f1);
         //开启事务，fragment的控制是由事务来实现的
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //第一种方式（add），初始化fragment并添加到事务中，如果为null就new一个

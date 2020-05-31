@@ -12,16 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.service.MessageService;
 import cn.demomaster.huan.quickdevelop.service.SimpleService;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
@@ -30,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "NdkTestFragment",preViewClass = TextView.class,resType = ResType.Custome)
-public class NdkTestFragment extends QDBaseFragment {
+public class NdkTestFragment extends QDFragment {
 
     private ServiceToken mToken;
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -87,7 +85,7 @@ public class NdkTestFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 

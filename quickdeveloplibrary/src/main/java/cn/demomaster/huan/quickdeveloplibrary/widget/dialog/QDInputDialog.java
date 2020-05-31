@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 /**
  * Created by Squirrel桓 on 2019/1/6.
  */
-public class QDInputDialog extends Dialog {
+public class QDInputDialog extends AppCompatDialog {
 
    // private Builder builder;
    public int actionButtonPadding;

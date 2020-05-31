@@ -19,6 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
@@ -142,7 +143,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                     @Override
                     public void onSuccess(Intent data, String path) {
                         QDLogger.e(path);
-                       String relPath = cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.getRealPathFromURI(mContext,data.getData());
+                        String relPath = QDFileUtil.getRealPathFromURI(mContext,data.getData());
                         QDLogger.e(relPath);
                         //setImageToView(data);
                         //拍照完成，返回对应图片路径
@@ -193,7 +194,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                                     (int) (width * bitmap.getWidth()),
                                     (int) (height * bitmap.getHeight()));
 
-                            FileUtil.saveBitmap(resBitmap);
+                            String path = QDFileUtil.saveBitmap(resBitmap);
 
                             if (!bitmap.isRecycled()) {
                                 bitmap.recycle();
@@ -203,7 +204,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                             }
                             //拍照完成，返回对应图片路径
                             Intent intent = new Intent();
-                            intent.putExtra(PHOTOHELPER_RESULT_PATH, FileUtil.getImgPath());
+                            intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
                             setResult(result, intent);
                             finish();
                         }
@@ -279,13 +280,13 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                 @Override
                 public void run() {
                     if (bitmap != null) {
-                        FileUtil.saveBitmap(bitmap);
+                        String path = QDFileUtil.saveBitmap(bitmap);
                         if (!bitmap.isRecycled()) {
                             bitmap.recycle();
                         }
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
-                        intent.putExtra(PHOTOHELPER_RESULT_PATH, FileUtil.getImgPath());
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
                         setResult(result, intent);
                         finish();
                     }

@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#f0f"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:text="上面的图片会被隐藏，而这个文字不会被隐藏" />
 
         </cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView>

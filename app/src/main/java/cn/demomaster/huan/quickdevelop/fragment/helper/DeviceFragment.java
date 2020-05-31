@@ -25,13 +25,12 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
@@ -40,7 +39,6 @@ import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
 /**
@@ -49,7 +47,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  */
 
 @ActivityPager(name = "DeviceHelper", preViewClass = TextView.class, resType = ResType.Custome)
-public class DeviceFragment extends QDBaseFragment {
+public class DeviceFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -87,7 +85,7 @@ public class DeviceFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         //媒体音量
         tv_MusicVolume.setText("媒体" + QDDeviceHelper.getMusicVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getMusicVolumeMax(getContext()));

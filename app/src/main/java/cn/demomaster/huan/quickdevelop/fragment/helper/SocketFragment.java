@@ -11,13 +11,11 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -27,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "Socket",preViewClass = TextView.class,resType = ResType.Custome)
-public class SocketFragment extends QDBaseFragment {
+public class SocketFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -51,7 +49,7 @@ public class SocketFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("socket");
         btn_send_connect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,10 +77,10 @@ public class SocketFragment extends QDBaseFragment {
         //QDTcpClient.setStateListener();
     }
 
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
+   /* public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayoutOld.setTitle("audio play");
         actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
-    }
+    }*/
 }

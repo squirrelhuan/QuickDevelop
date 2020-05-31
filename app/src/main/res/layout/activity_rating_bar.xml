@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
-    tools:context=".activity.sample.component.ToggleButtonActivity">
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +53,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
         android:id="@+id/tooglebutton"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="30dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +61,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
         android:id="@+id/tooglebutton_datatype"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="30dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +70,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
         android:id="@+id/tooglebutton_customdrable"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="30dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +78,7 @@
     <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
         android:id="@+id/tooglebutton_minValue"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="30dp"/>
 
     </LinearLayout>
 

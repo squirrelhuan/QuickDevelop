@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 /**
  * Created by Squirrel桓 on 2019/1/6.
  */
-public class QDDialog extends Dialog {
+public class QDDialog extends QDDialog2 {
 
    // private Builder builder;
    public int actionButtonPadding;
@@ -109,7 +110,8 @@ public class QDDialog extends Dialog {
     private void init() {
         getWindow().setWindowAnimations(animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
         contentLinearView = new LinearLayout(context);
         contentLinearView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
@@ -242,6 +244,11 @@ public class QDDialog extends Dialog {
 
     private void addBodyTextView(LinearLayout viewGroup, String title, int color, int textSize) {
         addTextView(viewGroup, title, color, textSize);
+    }
+
+    @Override
+    public boolean isHasPadding() {
+        return true;
     }
 
     private void addTextView(LinearLayout viewGroup, String title, int color, int textSize) {

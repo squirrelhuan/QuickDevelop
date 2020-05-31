@@ -66,24 +66,32 @@ public class QDBitmapUtil {
     }
 
     public static Bitmap drawable2Bitmap(Context context, int resId) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inScaled = false;         //设置这个属性防止因为不同的dpi文件夹导致缩放
-        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Resources resources = context.getResources();
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, resId, opt).copy(Bitmap.Config.ARGB_8888, true);
-        bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
-        //bitmap.recycle();
-        return bitmap;
+        try {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inScaled = false;         //设置这个属性防止因为不同的dpi文件夹导致缩放
+            opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, opt).copy(Bitmap.Config.ARGB_8888, true);
+            if (bitmap == null) {
+                return null;
+            }
+            bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
+            //bitmap.recycle();
+            return bitmap;
+        } catch (Exception e) {
+            QDLogger.e(e);
+            return null;
+        }
     }
 
     /**
      * Matrix 缩放宽高
-     * @param srcBitmap 源图
-     * @param newWidth 目标宽度
-     * @param newHeight 目标高度
+     *
+     * @param srcBitmap    源图
+     * @param targetwidth  目标宽度
+     * @param targetheight 目标高度
      * @return
      */
-    public static Bitmap zoomImage(Bitmap srcBitmap, double targetwidth,double targetheight) {
+    public static Bitmap zoomImage(Bitmap srcBitmap, double targetwidth, double targetheight) {
         // 获取这个图片的宽和高
         float width = srcBitmap.getWidth();
         float height = srcBitmap.getHeight();
@@ -103,7 +111,7 @@ public class QDBitmapUtil {
      * 采样率压缩
      * 采样率压缩其原理其实也是缩放bitamp的尺寸，通过调节其inSampleSize参数，比如调节为2，宽高会为原来的1/2，内存变回原来的1/4.
      */
-    private void compressSampling(float scal,Bitmap bitmap) {
+    private void compressSampling(float scal, Bitmap bitmap) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 2;
         //mSrcBitmap = BitmapFactory.decodeResource(bitmap,  options);

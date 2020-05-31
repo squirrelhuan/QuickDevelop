@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_margin="@dimen/dp_0_5"
     android:orientation="vertical">
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView
@@ -27,9 +27,9 @@
         android:layout_gravity="right"
         android:gravity="center"
         android:textColor="@color/white"
-        android:minHeight="32dp"
-        android:minWidth="32dp"
+        android:minHeight="@dimen/dp_19"
+        android:minWidth="@dimen/dp_19"
         android:textSize="14sp"
         android:text=""
-        android:padding="5dp"/>
+        android:padding="@dimen/dp_3"/>
 </FrameLayout>

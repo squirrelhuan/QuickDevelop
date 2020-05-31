@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,9 +33,9 @@ import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentActivityHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayoutView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentHelper;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
@@ -56,16 +55,17 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     public static String TAG = "CGQ";
     public AppCompatActivity mContext;
     public Bundle mBundle = null;
-    private ActionBarLayoutView actionBarLayout;
+    private ActionBar actionBarLayout;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
     public int getHeadlayoutResID() {
         return headlayoutResID;
     }
 
-    public ActionBarLayoutView getActionBarLayout(View view) {
+    public ActionBar getActionBarLayout(View view) {
         if (actionBarLayout == null) {
-            ActionBarLayoutView.Builder builder = new ActionBarLayoutView.Builder(mContext).setContentView(view).setHeaderResId(getHeadlayoutResID());
-            actionBarLayout = builder.creat();
+            actionBarLayout = new ActionBar(this);
+            actionBarLayout.setHeaderResId(getHeadlayoutResID());
+            actionBarLayout.setContentView(view);
         }
         return actionBarLayout;
     }
@@ -74,7 +74,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
      *
      * @return ActionBarInterface
      */
-    public ActionBarLayoutView getActionBarLayout() {
+    public ActionBar getActionBarLayout() {
         return actionBarLayout;
     }
 
@@ -92,7 +92,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
             actionBarLayout = getActionBarLayout(view);
-            super.setContentView(actionBarLayout.generateView());
+            super.setContentView(actionBarLayout);
         } else {
             super.setContentView(view);
         }
@@ -100,10 +100,10 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         ButterKnife.bind(this);
     }
 
-    public LayoutInflater mInflater;
+    //public LayoutInflater mInflater;
     private void initQDContentView(int layoutResID) {
-        mInflater = LayoutInflater.from(this);
-        View view = mInflater.inflate(layoutResID, null);
+       // mInflater = LayoutInflater.from(this);
+        View view = getLayoutInflater().inflate(layoutResID, null);
         initQDContentView(view);
     }
 
@@ -121,16 +121,16 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         //changeAppLanguage(this);
     }
 
-   private FragmentActivityHelper fragmentActivityHelper;
-    public FragmentActivityHelper getFragmentActivityHelper() {
-        if(fragmentActivityHelper==null){
-            fragmentActivityHelper = new FragmentActivityHelper(mContext);
+   private FragmentHelper fragmentHelper;
+    public FragmentHelper getFragmentHelper() {
+        if(fragmentHelper==null){
+            fragmentHelper = new FragmentHelper(mContext);
         }
-        return fragmentActivityHelper;
+        return fragmentHelper;
     }
 
-    public void startFragment(AppCompatActivity activity, Fragment fragment) {
-        getFragmentActivityHelper().startFragment(activity, fragment);
+    public void startFragment(AppCompatActivity activity, QDFragment fragment) {
+        getFragmentHelper().startFragment(activity, fragment);
     }
 
     public void startActivity(Class<?> clazz) {
@@ -176,13 +176,10 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         QDLogger.d("getAction=" + keyCode + ",event=" + event);
-        if (fragmentActivityHelper !=null) {//未被fragment消费
-            if(!fragmentActivityHelper.onKeyDown(keyCode,event)) {
-                onBackPressed();
-                return true;
-                //return super.onKeyDown(keyCode, event);
+        if (fragmentHelper !=null) {
+            if(!fragmentHelper.onKeyDown(mContext,keyCode,event)) {
+                return super.onKeyDown(keyCode, event);
             }else {
-                finish();
                 return true;
             }
         } else {
@@ -278,12 +275,13 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             if(mBundle!=null){
                 mBundle=null;
             }
+            if(fragmentHelper!=null){
+                fragmentHelper.onDestroy();
+                fragmentHelper = null;
+            }
             if(netWorkChangReceiver!=null) {
                 netWorkChangReceiver.setOnNetStateChangedListener(null);
                 unregisterReceiver(netWorkChangReceiver);
-            }
-            if(fragmentActivityHelper!=null){
-                fragmentActivityHelper.onDestroy();
             }
             EventBus.getDefault().unregister(this);
         } catch (Exception e) {
@@ -378,5 +376,12 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         QDLogger.d(requestCode+permissions.toString()+grantResults.toString());
         PermissionManager2.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public PhotoHelper getPhotoHelper() {
+        if (photoHelper == null) {
+            photoHelper = new PhotoHelper(mContext);
+        }
+        return photoHelper;
     }
 }

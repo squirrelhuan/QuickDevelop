@@ -3,6 +3,9 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
@@ -56,13 +60,15 @@ public class QDActionDialog extends Dialog {
     private boolean mCancelable = true;
     private int padding = 15;
     private int animationStyleID = -1;
+
     public QDActionDialog(Context context, Builder builder) {
-        super(context);
+        //设置全屏将会覆盖状态栏
+        super(context,builder.styleId);
         gravity = builder.gravity;
         this.context = builder.context;
         message = builder.message;
         messageTextSize = builder.messageTextSize;
-        messageTextColor  = builder.messageTextColor;
+        messageTextColor = builder.messageTextColor;
         dimAmount = builder.dimAmount;
         backgroundColor = builder.backgroundColor;
         contentbackgroundColor = builder.contentbackgroundColor;
@@ -81,7 +87,7 @@ public class QDActionDialog extends Dialog {
         contentViewLayoutID = builder.contentViewLayoutID;
         mCancelable = builder.cancelable;
         padding = builder.padding;
-        animationStyleID =builder.animationStyleID;
+        animationStyleID = builder.animationStyleID;
         init();
     }
 
@@ -107,13 +113,14 @@ public class QDActionDialog extends Dialog {
             win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
             win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
         // 在底部，宽度撑满
         WindowManager.LayoutParams params = win.getAttributes();
         params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = gravity;
         win.setAttributes(params);
-        //getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         //新建一个Drawable对象
         QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
@@ -128,7 +135,6 @@ public class QDActionDialog extends Dialog {
 
         contentLinearView = new LinearLayout(context);
         contentLinearView.setOrientation(LinearLayout.VERTICAL);
-       // delayMillis = delayMillis;
 
         //新建一个Drawable对象
         QDividerDrawable drawable_content_bg = new QDividerDrawable(DividerGravity.NONE);
@@ -136,12 +142,10 @@ public class QDActionDialog extends Dialog {
         drawable_content_bg.setBackGroundColor(contentbackgroundColor);
         contentLinearView.setBackground(drawable_content_bg);
 
-        WindowManager.LayoutParams lp = win.getAttributes();
         contentLinearView.setGravity(Gravity.CENTER);
         int w = QMUIDisplayHelper.getScreenWidth(context) / 3;
         contentLinearView.setMinimumHeight(w / 2);
         contentLinearView.setMinimumWidth(w);
-        int w2 = QMUIDisplayHelper.getScreenWidth(context) / 2;
         int l = w / 3 * 2;
         if (stateType == QDActionStateType.COMPLETE) {
             contentLinearView.setOrientation(LinearLayout.VERTICAL);
@@ -279,7 +283,29 @@ public class QDActionDialog extends Dialog {
                 }
             });
         }
-        setContentView(layout, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+
+
+
+       /* Window window = getWindow();
+        View decorView = window.getDecorView();
+        //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
+        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        decorView.setSystemUiVisibility(option);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(backgroundColor);
+        }
+        //设置导航栏颜
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setNavigationBarColor(backgroundColor);
+        }
+        //内容扩展到导航栏
+        window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);*/
     }
 
     //private int delayMillis = 1500;
@@ -297,12 +323,25 @@ public class QDActionDialog extends Dialog {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        this.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+    }
+
     public static class Builder {
+        public int styleId = R.style.Dialog_Fullscreen;
         public int gravity = Gravity.CENTER;
         private Context context;
         private String message;
         private int messageTextSize = 16;
-        private  int messageTextColor = Color.WHITE;
+        private int messageTextColor = Color.WHITE;
         private float dimAmount = .0f;
         private int backgroundColor = Color.TRANSPARENT;
         private int contentbackgroundColor = Color.WHITE;

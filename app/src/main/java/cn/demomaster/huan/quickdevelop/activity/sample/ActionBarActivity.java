@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,24 +39,31 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_01:
+                        ((RadioButton) findViewById(R.id.rb_01)).setText(ACTIONBAR_TYPE.NORMAL+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
                         break;
                     case R.id.rb_02:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
                         break;
                     case R.id.rb_03:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                         break;
                     case R.id.rb_04:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
                         break;
                     case R.id.rb_05:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                         break;
                     case R.id.rb_06:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_TRANSPARENT+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                         break;
                     case R.id.rb_07:
+                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_STATUS+"");
                         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_STATUS);
                         break;
                 }

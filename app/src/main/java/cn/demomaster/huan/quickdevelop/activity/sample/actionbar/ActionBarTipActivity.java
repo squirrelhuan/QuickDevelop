@@ -48,7 +48,9 @@ public class ActionBarTipActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_bar_tip);
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        //getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+
+        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
 
         btn_emui_halo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +89,7 @@ public class ActionBarTipActivity extends QDActivity {
             }
         });
 
-        getActionBarLayout().setHeaderBackgroundColor(Color.TRANSPARENT);
+       // getActionBarLayout().setHeaderBackgroundColor(Color.TRANSPARENT);
         getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {

@@ -7,16 +7,16 @@
 
     <com.umeng.socialize.shareboard.SocializeImageView
         android:id="@+id/socialize_image_view"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="5dp"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:padding="@dimen/dp_3"
         android:src="@drawable/umeng_socialize_menu_default" />
 
     <TextView
         android:id="@+id/socialize_text_view"
         android:layout_width="63dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="@dimen/dp_4"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="未知"

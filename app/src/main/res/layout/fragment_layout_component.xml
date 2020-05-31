@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-
+    <cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout
+        android:id="@+id/pcl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutAnimation="@anim/layout_animation_fall_down"
         android:overScrollMode="never"/>
-
+    </cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout>
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -23,12 +20,8 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -39,7 +32,7 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 @ActivityPager(name = "LmSensor",preViewClass = TextView.class,resType = ResType.Custome)
-public class LmSensorFragment extends QDBaseFragment implements SensorEventListener {
+public class LmSensorFragment extends QDFragment implements SensorEventListener {
 
     @BindView(R.id.btn_start)
     Button btn_start;
@@ -70,7 +63,7 @@ public class LmSensorFragment extends QDBaseFragment implements SensorEventListe
     }
     Bitmap bitmap;
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setTitle("截图");
         getActionBarLayout().setHeaderBackgroundColor(Color.RED);
 
@@ -147,4 +140,11 @@ public class LmSensorFragment extends QDBaseFragment implements SensorEventListe
         //这个函数用来记录计算后的屏幕坐标，可以用到不同的场景
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(LmSensorManager!=null) {
+            LmSensorManager.unregisterListener(this);
+        }
+    }
 }

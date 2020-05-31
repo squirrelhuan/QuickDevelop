@@ -73,7 +73,7 @@ public class Saleng extends View {
     private void drawBackground(Canvas canvas) {
         paddingTop=(int)(paddingTopAbs*(1-percent));
         //float height = this.height<dp2px(context,100)?dp2px(context,100):this.height;
-        Log.i("getMeasuredHeight","Saleng 高度:"+height) ;
+        //Log.i("getMeasuredHeight","Saleng 高度:"+height) ;
         //绘制圆
         Paint p = new Paint();
         //p.setColor(0x77000000);
@@ -234,5 +234,10 @@ public class Saleng extends View {
     private int dp2px(Context context, float dp) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
     }
 }

@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/keyboardHeader"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/dp_24"
         android:background="@color/keyboardBackColor">
         <!--&lt;!&ndash;android:layout_height="@dimen/keyboard_tip_height"&ndash;&gt;-->
 
@@ -34,20 +34,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="@dimen/dp_2"
                 android:text="@string/safe_keyboard"
                 android:textColor="@color/lightGray"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_10" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_keyboardDone"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_24"
+            android:paddingLeft="@dimen/dp_9"
+            android:paddingRight="@dimen/dp_9"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_6"
             android:layout_gravity="right"
             android:background="@drawable/bg_keyboard_done"
             android:contentDescription="@null"
@@ -62,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/keyboardBackColor"
-        android:paddingTop="3dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_3">
 
         <cn.demomaster.huan.quickdeveloplibrary.view.keybored.QDKeyboardView
             android:id="@+id/safeKeyboardLetter"
@@ -74,9 +74,9 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:keyBackground="@drawable/keyboard_press_bg"
-            android:keyPreviewHeight="60dp"
+            android:keyPreviewHeight="@dimen/dp_36"
             android:keyPreviewLayout="@layout/keyboard_preview_layout"
-            android:keyPreviewOffset="0dp"
+            android:keyPreviewOffset="@dimen/dp_0"
             android:keyTextColor="@color/white" />
 
     </FrameLayout>

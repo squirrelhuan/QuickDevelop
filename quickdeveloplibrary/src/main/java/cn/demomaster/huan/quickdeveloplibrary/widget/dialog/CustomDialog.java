@@ -65,8 +65,6 @@ public class CustomDialog extends Dialog {
             this.contentView = view;
         }
 
-
-
         public Builder setContentView(View v) {
             this.contentView = v;
             return this;

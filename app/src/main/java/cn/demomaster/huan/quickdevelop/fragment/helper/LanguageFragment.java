@@ -10,21 +10,16 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocalForActivity;
 
 
@@ -34,7 +29,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  */
 
 @ActivityPager(name = "Language", preViewClass = TextView.class, resType = ResType.Custome)
-public class LanguageFragment extends QDBaseFragment {
+public class LanguageFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -56,7 +51,7 @@ public class LanguageFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle(getString(R.string.select_language));
 
         final String[] cities = {getString(R.string.lan_chinese), getString(R.string.lan_en), getString(R.string.lan_ja), getString(R.string.lan_de)};
@@ -83,10 +78,10 @@ public class LanguageFragment extends QDBaseFragment {
     }
 
 
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
+  /*  public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayoutOld.setTitle("audio play");
         actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
-    }
+    }*/
 }

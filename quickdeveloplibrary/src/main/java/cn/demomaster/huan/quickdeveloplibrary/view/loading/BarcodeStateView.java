@@ -47,16 +47,6 @@ public class BarcodeStateView extends View {
         //init();
     }
 
-    private void init() {
-    }
-
-    /**
-     * 生成外围点
-     * @param degrees
-     * @param r
-     * @param refrenceMode 贝塞尔曲线的中间参考点
-     */
-
     private int centerX, centerY, width, height;
 
     @Override
@@ -67,7 +57,6 @@ public class BarcodeStateView extends View {
         height = h;
         centerX = width / 2;
         centerY = height/2;
-        init();
     }
 
     @Override
@@ -89,7 +78,6 @@ public class BarcodeStateView extends View {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         //canvas.drawColor(Color.YELLOW);
-
 
         int padding = DisplayUtil.dip2px(getContext(),5);
         int radius1 = DisplayUtil.dip2px(getContext(),10);
@@ -156,7 +144,7 @@ public class BarcodeStateView extends View {
 
             @Override
             public void onEndOpen(Object value) {
-                init();
+
             }
 
             @Override
@@ -168,7 +156,7 @@ public class BarcodeStateView extends View {
             public void onClosing(Object value) {
                 if (getVisibility() == VISIBLE) {
                     progress = Float.valueOf((int) value);
-                    QDLogger.d( "progress=" + progress+",value="+value);
+                    //QDLogger.d( "progress=" + progress+",value="+value);
                     invalidate();
                 }
             }

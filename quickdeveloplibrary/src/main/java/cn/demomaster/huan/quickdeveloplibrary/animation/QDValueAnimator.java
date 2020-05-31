@@ -208,7 +208,7 @@ public class QDValueAnimator extends ValueAnimator {
                 onStartOpen(startValue);
             }else {
                 animationState = AnimationState.isOpening;
-                QDLogger.i("onOpening:" + value);
+                //QDLogger.i("onOpening:" + value);
                 animationListener.onOpening(value);
             }
         }
@@ -243,7 +243,7 @@ public class QDValueAnimator extends ValueAnimator {
             onStartClose(value);
         }else if (animationListener != null) {
             animationState = AnimationState.isColosing;
-            QDLogger.i("onClosing:" + value);
+            //QDLogger.i("onClosing:" + value);
             animationListener.onClosing(value);
         }
     }
@@ -256,6 +256,9 @@ public class QDValueAnimator extends ValueAnimator {
             }
             QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
             animationListener.onEndClose(startValue);
+            /*if(getRepeatCount()==-1||getRepeatCount()<currentIndex){
+                animationListener.onStartClose(endValue);
+            }*/
         }
     }
 

@@ -3,14 +3,10 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.view.Gravity;
@@ -35,29 +31,23 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
-import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
-import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager.startInstallPermissionSettingActivity;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.TAG;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.e;
@@ -69,7 +59,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.e;
  */
 
 @ActivityPager(name = "Update App", preViewClass = TextView.class, resType = ResType.Custome)
-public class UpdateAppFragment extends QDBaseFragment {
+public class UpdateAppFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -102,7 +92,7 @@ public class UpdateAppFragment extends QDBaseFragment {
     int type = 0;
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("文件下载");
         btn_update_app.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,13 +228,12 @@ public class UpdateAppFragment extends QDBaseFragment {
                         QDLogger.i(TAG, "onComplete: ");
                     }
                 });
-
     }
 
     private UpdatePopDialog updatePopDialog;
     public void showDialog(){
         SharedPreferencesHelper.init(getContext());
-        String conf = FileUtil.getFromAssets(mContext, "config/update.his");
+        String conf = QDFileUtil.getFromAssets(mContext, "config/update.his");
         if (conf != null) {
             List<Version> versions = JSON.parseArray(conf,Version.class);
             final Version version =  versions.get(versions.size()-1);

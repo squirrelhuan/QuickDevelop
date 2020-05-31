@@ -31,7 +31,6 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LmSensorFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
-import cn.demomaster.huan.quickdevelop.fragment.helper.QDTerminalFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ScreenShotFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.SettingFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.SocketFragment;
@@ -40,9 +39,9 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.UpdateAppFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.WifiFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -53,7 +52,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class HelperFragment extends QDBaseFragment {
+public class HelperFragment extends QDFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
@@ -68,7 +67,7 @@ public class HelperFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         //actionBarLayout.getLeftView().setVisibility(View.GONE);
         actionBarLayout.setHeaderBackgroundColor(Color.RED);

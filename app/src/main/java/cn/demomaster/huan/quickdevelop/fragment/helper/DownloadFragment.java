@@ -19,13 +19,12 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -46,7 +45,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  * 2018/8/25 QDTerminal
  */
 @ActivityPager(name = "Downloader", preViewClass = TextView.class, resType = ResType.Custome)
-public class DownloadFragment extends QDBaseFragment {
+public class DownloadFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -74,7 +73,7 @@ public class DownloadFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("文件下载");
         btn_download_01.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,6 +235,7 @@ public class DownloadFragment extends QDBaseFragment {
                         fileName = cursor.getString(fileNameIdx);
                     }
                 }
+
                 QDLogger.e(fileName + ",state=" + task_status);
                 QDLogger.e(fileName + ",STATUS_PENDING=" + STATUS_PENDING);
                 QDLogger.e(fileName + ",STATUS_FAILED=" + STATUS_FAILED);

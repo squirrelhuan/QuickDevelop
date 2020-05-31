@@ -4,12 +4,12 @@
     android:id="@+id/cl_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="50dp"
-    android:minWidth="50dp">
+    android:minHeight="@dimen/dp_30"
+    android:minWidth="@dimen/dp_30">
     <cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView
         android:id="@+id/ib_menu_01"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,14 +26,14 @@
         app:layout_constraintRight_toRightOf="parent"/>
     <ImageView
         android:id="@+id/ib_menu_02"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
         app:layout_constraintTop_toBottomOf="@+id/ib_menu_01"
         app:layout_constraintRight_toLeftOf="@id/ib_menu_01"/>
     <ImageView
         android:id="@+id/ib_menu_03"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
         app:layout_constraintTop_toBottomOf="@+id/ib_menu_01"
         app:layout_constraintLeft_toRightOf="@id/ib_menu_01"/>
     </RelativeLayout>-->

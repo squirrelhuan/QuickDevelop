@@ -26,16 +26,18 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
 @ActivityPager(name = "QDialog",preViewClass = TextView.class,resType = ResType.Custome)
 public class QDialogActivity extends QDActivity {
 
-    private int backgroundRadio=50;
+    private int backgroundRadio=20;
     private ListView mListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +108,10 @@ public class QDialogActivity extends QDActivity {
 
                         break;
                     case 10://单选菜单类型对话框
-
+                        showMulMenuDialog1();
                         break;
-
                     case 11://多选菜单类型对话框
-
+                        showMulMenuDialog();
                         break;
                     case 12://多选菜单类型对话框(item 数量很多)
 
@@ -204,9 +205,9 @@ public class QDialogActivity extends QDActivity {
     }
     private void showMessageWithButton(int gravity) {
         new QDDialog.Builder(mContext)
-                .setMessage("确定要发送吗？").setMinHeight_body(500).setGravity_body(Gravity.CENTER).setText_size_body(20)
-                .setWidth(200).setText_color_body(Color.BLUE).addAction("确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setText_size_foot(20).setPadding_foot(30).setActionButtonPadding(30).setText_color_foot(Color.GREEN).setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
+                .setMessage("确定要发送吗？").setMinHeight_body(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_300))).setGravity_body(Gravity.CENTER).setText_size_body(20)
+                .setWidth(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_120))).setText_color_body(Color.BLUE).addAction("确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setText_size_foot(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_12))).setPadding_foot(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_18))).setActionButtonPadding(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_18))).setText_color_foot(Color.GREEN).setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
     }
 
     private void showMessageWithButton2(int gravity) {
@@ -221,7 +222,6 @@ public class QDialogActivity extends QDActivity {
         }).addAction("取消").setGravity_foot(gravity).create().show();
     }
 
-
     private void showMenuDialog() {
         String[] menus ={"item1","item2","item3"};
         new QDSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
@@ -232,5 +232,24 @@ public class QDialogActivity extends QDActivity {
             }
         }).create().show();
     }
-
+    private void showMulMenuDialog1() {
+        String[] menus ={"item1","item2","234"};
+        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
+            @Override
+            public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
+                dialog.dismiss();
+                PopToastUtil.ShowToast(mContext,data.get(position));
+            }
+        }).create().show();
+    }
+    private void showMulMenuDialog() {
+        String[] menus ={"item1","item2","234","6565","656456","56656","8888","item2","item3","item2","item3","item2","item3","item2","item3","item2","234","6565","656456","56656","8888","item2",};
+        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
+            @Override
+            public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
+                dialog.dismiss();
+                PopToastUtil.ShowToast(mContext,data.get(position));
+            }
+        }).create().show();
+    }
 }

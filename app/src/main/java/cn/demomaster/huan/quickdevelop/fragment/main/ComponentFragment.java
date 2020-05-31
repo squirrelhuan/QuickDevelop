@@ -38,14 +38,15 @@ import cn.demomaster.huan.quickdevelop.fragment.component.NestedScrollViewFragme
 import cn.demomaster.huan.quickdevelop.fragment.component.PopUpFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.QdButtonFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.TimeDomainPlotFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -56,11 +57,11 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class ComponentFragment extends QDBaseFragment {
+public class ComponentFragment extends QDFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
-
+    
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
         return (ViewGroup) inflater.inflate(R.layout.fragment_layout_component, null);
@@ -77,7 +78,7 @@ public class ComponentFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         /*actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 //        actionBarLayout.getLeftView().setVisibility(View.GONE);
         actionBarLayout.setBackGroundColor(Color.RED);*/
@@ -90,6 +91,8 @@ public class ComponentFragment extends QDBaseFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
 
+
+        classList.add(QdButtonFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
         classList.add(WheelImageFragment.class);

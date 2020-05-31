@@ -2,8 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.lifecycle;
 
 import android.app.Activity;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 
 public class LifecycleRecorder {
     public static void record(LifecycleType lifecycleType, Activity activity) {
@@ -14,7 +13,7 @@ public class LifecycleRecorder {
     public static void addRecord(Activity activity, LifecycleBean lifecycleBean){
        // QDLogger.i(activity.getFilesDir().getAbsolutePath()+"/LifecycleRecorder.txt");
         if(isRecord){
-            FileUtil.writeFileSdcardFile(activity.getFilesDir().getAbsolutePath()+"/LifecycleRecorder.txt",lifecycleBean.toString()+"\n",true);
+            QDFileUtil.writeFileSdcardFile(activity.getFilesDir().getAbsolutePath()+"/LifecycleRecorder.txt",lifecycleBean.toString()+"\n",true);
         }
     }
 
@@ -22,7 +21,7 @@ public class LifecycleRecorder {
 
     public static void startRecord(Activity activity){
         isRecord = true;
-        FileUtil.writeFileSdcardFile(activity.getFilesDir().getAbsolutePath()+"/LifecycleRecorder.txt","",false);
+        QDFileUtil.writeFileSdcardFile(activity.getFilesDir().getAbsolutePath()+"/LifecycleRecorder.txt","",false);
     }
 
     public static void stopRecord(){

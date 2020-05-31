@@ -75,9 +75,9 @@ public class ZipFileUtil {
         }
         if (targetFile.exists()) {
             QDLogger.e("压缩目标文件已存在--删除");
-            FileUtil.delete(targetFile.getAbsolutePath());
+            QDFileUtil.delete(targetFile.getAbsolutePath());
         }
-        FileUtil.createFile(targetFile);
+        QDFileUtil.createFile(targetFile);
         try {
             ZipOutputStream zipOutputStream = new ZipOutputStream(new CheckedOutputStream(new FileOutputStream(targetFile), new CRC32()));
             zip(zipOutputStream, sourceFile.getName(), sourceFile);

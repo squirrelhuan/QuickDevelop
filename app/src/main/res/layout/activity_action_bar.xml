@@ -8,9 +8,7 @@
     android:paddingRight="10dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:id="@+id/ll_root"
-    android:background="@mipmap/quickdevelop_ic_launcher_round"
-    tools:context=".activity.sample.actionbar.ActionBarActivity">
+    android:id="@+id/ll_root">
 
     <LinearLayout
         android:layout_width="match_parent"

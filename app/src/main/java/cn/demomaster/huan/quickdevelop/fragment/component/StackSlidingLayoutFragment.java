@@ -15,10 +15,8 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.ComponentAdapter;
 
 /**
@@ -27,15 +25,10 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.Componen
  */
 
 @ActivityPager(name = "StackSliding", preViewClass = TextView.class, resType = ResType.Custome)
-public class StackSlidingLayoutFragment extends QDBaseFragment {
+public class StackSlidingLayoutFragment extends QDFragment {
 
     //Components
     ViewGroup mView;
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @Override
     public ViewGroup getContentView(LayoutInflater inflater) {
@@ -45,16 +38,15 @@ public class StackSlidingLayoutFragment extends QDBaseFragment {
         return mView;
     }
 
-
     private RecyclerView recyclerView_A, recyclerView_B, recyclerView_C, recyclerView_D, recyclerView_E;
     private TextView header_A, header_B, header_C, header_D, header_E;
     private ComponentAdapter adapter_A, adapter_B, adapter_C, adapter_D, adapter_E;
     private List<String> items_A, items_B, items_C, items_D, items_E;
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
-        actionBarLayout.setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
-        actionBarLayout.setHeaderBackgroundColor(Color.TRANSPARENT);
+    public void initView(View rootView, ActionBar actionBarLayout) {
+       // actionBarLayout.setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+       // actionBarLayout.setHeaderBackgroundColor(Color.WHITE);
 
         //A
         recyclerView_A = rootView.findViewById(R.id.list_A);

@@ -15,10 +15,10 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.FileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "ScreenShot", preViewClass = TextView.class, resType = ResType.Custome)
-public class ScreenShotFragment extends QDBaseFragment {
+public class ScreenShotFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -67,14 +67,14 @@ public class ScreenShotFragment extends QDBaseFragment {
     Bitmap bitmap;
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setTitle("截图");
         getActionBarLayout().setHeaderBackgroundColor(Color.RED);
         btn_shot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bitmap = ScreenShotUitl.shotActivityNoBar((Activity) v.getContext());
-                FileUtil.saveBitmap(bitmap);
+                QDFileUtil.saveBitmap(bitmap);
                 iv_prev.setImageBitmap(bitmap);
                 tv_size.setText("原图大小:" + QDBitmapUtil.getBitmapSize(bitmap) / 1024 / 8 + "kb");
             }

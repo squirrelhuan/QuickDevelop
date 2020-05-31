@@ -8,14 +8,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/folder_bg"
-        android:layout_margin="10dp"
-        android:paddingRight="3dp"
-        android:paddingBottom="3dp">
+        android:layout_margin="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_2">
 
         <ImageView
             android:id="@+id/iv_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
             android:background="@android:color/white"
             android:scaleType="centerCrop" />
 
@@ -27,15 +27,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="@dimen/dp_9"
         android:src="@drawable/ic_check_circle_black_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="@dimen/dp_3"
+        android:layout_marginRight="@dimen/dp_3"
         android:layout_toLeftOf="@+id/iv_select"
         android:layout_toRightOf="@+id/fl_folder"
         android:orientation="vertical">
@@ -46,13 +46,13 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_10" />
 
         <TextView
             android:id="@+id/tv_folder_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/dp_2"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
@@ -63,8 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/fl_folder"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_6"
         android:background="@android:color/darker_gray" />
 
 </RelativeLayout>

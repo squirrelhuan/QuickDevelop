@@ -14,9 +14,8 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.LinePoint;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotView;
 
@@ -28,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotVie
  */
 
 @ActivityPager(name = "TimeDomainPlot",preViewClass = TextView.class,resType = ResType.Custome)
-public class TimeDomainPlotFragment extends QDBaseFragment {
+public class TimeDomainPlotFragment extends QDFragment {
     //Components
     ViewGroup mView;
 
@@ -51,7 +50,7 @@ public class TimeDomainPlotFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         TimeDomainPlotView timeDomainPlotView = rootView.findViewById(R.id.timeDomainPlotView);
         List<LinePoint> linePoints = new ArrayList<>();
         for(int i =0;i<50000;i++){

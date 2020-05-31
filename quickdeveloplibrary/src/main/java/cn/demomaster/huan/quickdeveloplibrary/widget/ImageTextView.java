@@ -34,7 +34,6 @@ public class ImageTextView extends AppCompatImageView {
 
     public int textColor = -1;
     public int textSize = -1;
-
     public void setTextColor(int textColor) {
         this.textColor = textColor;
         postInvalidate();

@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.DesignListAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.util.FileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -30,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class DesignPatternFragment extends QDBaseFragment {
+public class DesignPatternFragment extends QDFragment {
 
     private RecyclerView recyclerView;
     private DesignListAdapter designListAdapter;
@@ -47,7 +47,7 @@ public class DesignPatternFragment extends QDBaseFragment {
     private String linksPath = "designHtmls.json";
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         actionBarLayout.getLeftView().setVisibility(View.GONE);
         actionBarLayout.setHeaderBackgroundColor(Color.RED);
@@ -58,7 +58,7 @@ public class DesignPatternFragment extends QDBaseFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         designListAdapter = new DesignListAdapter(getContext());
-        String data_str = FileUtil.getFromAssets(mContext, linksPath);
+        String data_str = QDFileUtil.getFromAssets(mContext, linksPath);
         List<String> data = JSON.parseArray(data_str, String.class);
         designListAdapter.updateList(data);
         //设置Adapter

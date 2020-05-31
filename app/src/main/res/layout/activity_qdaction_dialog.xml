@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".activity.sample.component.QDialogActivity">
+    android:orientation="vertical">
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="0dp"
-        android:fitsSystemWindows="true"/>
+        android:dividerHeight="0dp"/>
+    <!--android:fitsSystemWindows="true"-->
 
 </LinearLayout>

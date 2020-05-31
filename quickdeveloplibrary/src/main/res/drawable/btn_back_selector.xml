@@ -2,19 +2,19 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape>
-            <corners android:radius="3dp"/>
+            <corners android:radius="@dimen/dp_2"/>
             <solid android:color="#751a1d1d" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape>
-            <corners android:radius="3dp"/>
+            <corners android:radius="@dimen/dp_2"/>
             <solid android:color="#751a1d1d" />
         </shape>
     </item>
     <item android:state_pressed="false">
         <shape>
-            <corners android:radius="3dp"/>
+            <corners android:radius="@dimen/dp_2"/>
             <solid android:color="#00000000" />
         </shape>
     </item>

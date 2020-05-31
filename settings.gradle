@@ -1,2 +1,4 @@
 include ':quickdeveloplibrary', ':app'
+//,':qdzxinglibrary'
 project(':app').projectDir = new File('app')
+//project (':qdzxinglibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QdZxing\\qdzxinglibrary')

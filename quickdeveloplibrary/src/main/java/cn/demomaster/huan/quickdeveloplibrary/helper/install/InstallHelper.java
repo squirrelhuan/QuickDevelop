@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.install;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,12 +14,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,8 +28,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URI;
-import java.nio.file.Files;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -46,7 +39,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
-import static cn.demomaster.huan.quickdeveloplibrary.util.FileUtil.uriToFile;
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.uriToFile;
 
 public class InstallHelper {
 

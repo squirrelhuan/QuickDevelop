@@ -11,8 +11,8 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
@@ -21,7 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  * 2018/8/25
  */
 @ActivityPager(name = "WebViewFragment",preViewClass = StateView.class,resType = ResType.Custome)
-public class WebViewFragment extends QDBaseFragment {
+public class WebViewFragment extends QDFragment {
 
     @BindView(R.id.webView)
     WebView webView;
@@ -37,7 +37,7 @@ public class WebViewFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         actionBarLayout.setTitle("web");
 
         Bundle bundle = getArguments();

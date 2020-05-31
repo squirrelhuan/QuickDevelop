@@ -89,7 +89,7 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * Sets the {@link android.graphics.drawable.Drawable} for this divider.
+     * Sets the {@link Drawable} for this divider.
      *
      * @param drawable Drawable that should be used as a divider.
      */

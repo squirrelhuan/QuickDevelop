@@ -37,8 +37,8 @@ public class SlidingPanelLayoutActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding_panel_layout);
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
-        getActionBarLayout().getRootView().setBackgroundColor(Color.RED);
+        //getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
+        //getActionBarLayout().getRootView().setBackgroundColor(Color.RED);
 
         ListView lv = (ListView) findViewById(R.id.list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,7 +88,7 @@ public class SlidingPanelLayoutActivity extends QDActivity {
         });
 
         TextView t = (TextView) findViewById(R.id.name);
-        t.setText(Html.fromHtml("hello"));
+        t.setText(Html.fromHtml("上拉"));
         Button f = (Button) findViewById(R.id.follow);
         f.setText(Html.fromHtml("follow"));
         f.setMovementMethod(LinkMovementMethod.getInstance());
@@ -100,7 +100,6 @@ public class SlidingPanelLayoutActivity extends QDActivity {
                 startActivity(i);
             }
         });
-
     }
 
     @Override

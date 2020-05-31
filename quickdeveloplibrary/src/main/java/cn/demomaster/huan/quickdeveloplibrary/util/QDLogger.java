@@ -1,13 +1,10 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -19,13 +16,11 @@ import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
-import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
-
 public class QDLogger {
     public static boolean enable = true;//是否启用
     public static String TAG = "QDLogger";
     private static Context applicationContext;
+
     public static void setApplicationContext(Context context) {
         applicationContext = context.getApplicationContext();
     }
@@ -33,6 +28,7 @@ public class QDLogger {
     public static void setEnable(boolean enable) {
         QDLogger.enable = enable;
     }
+
     public static void setTAG(String tag) {
         TAG = tag;
     }
@@ -160,31 +156,32 @@ public class QDLogger {
 
     static String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private static void Log(Context context, int logType, String tag, Object obj, Throwable tr) {
-        if(obj instanceof Exception&& BuildConfig.DEBUG) {
+        if (obj instanceof Exception && BuildConfig.DEBUG) {
             ((Exception) obj).printStackTrace();
         }
 
         message = (context == null ? (obj == null ? "NULL" : obj.toString()) : (context.getClass().getName() + ":"));
         Tag = tag;
-            switch (logType) {
-                case Log.VERBOSE:// = 2;
-                    Log.v(Tag, message);
-                    break;
-                case Log.INFO://INFO = 4;
-                    Log.i(Tag, message);
-                    break;
-                case Log.WARN:// = 5;
-                    Log.w(Tag, message);
-                    break;
-                case Log.DEBUG://= 3;
-                    Log.d(Tag, message);
-                    break;
-                case Log.ERROR://= 6;
-                    message = tr == null ? message : message + tr.getMessage() + tr.getCause();
-                    Log.e(Tag, message);
-                    break;
-            }
+        switch (logType) {
+            case Log.VERBOSE:// = 2;
+                Log.v(Tag, message);
+                break;
+            case Log.INFO://INFO = 4;
+                Log.i(Tag, message);
+                break;
+            case Log.WARN:// = 5;
+                Log.w(Tag, message);
+                break;
+            case Log.DEBUG://= 3;
+                Log.d(Tag, message);
+                break;
+            case Log.ERROR://= 6;
+                message = tr == null ? message : message + tr.getMessage() + tr.getCause();
+                Log.e(Tag, message);
+                break;
+        }
 
         if (applicationContext == null && context != null) {
             applicationContext = context.getApplicationContext();
@@ -202,36 +199,21 @@ public class QDLogger {
             if (useful) {
                 Date date = new Date(System.currentTimeMillis());
                 String LogFilePath = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
-                String fileName = AppConfig.getInstance().getConfigMap().get("LogFilePath").toString();
-                if (!fileName.startsWith(File.separator)) {
-                    fileName = File.separator + fileName;
+                if (!LogFilePath.startsWith(File.separator)) {
+                    LogFilePath = File.separator + LogFilePath;
                 }
-                if (!fileName.contains(".")) {
-                    fileName = fileName + File.separator + simpleDateFormat2.format(date) + ".txt";
-                }
+                LogFilePath = LogFilePath + File.separator + simpleDateFormat2.format(date) + ".txt";
 
-                String path = Environment.getExternalStorageDirectory() + "";
-                if (TextUtils.isEmpty(path)) {
-                    path = applicationContext.getFilesDir().getAbsolutePath();
-                    System.out.println("外置内存卡不存在,log存储路径已改为：" + path);
-                } else {
-                    //System.out.println("外置内存卡存在");
-                }
-                File dir = new File(path + (LogFilePath.startsWith(File.separator) ? LogFilePath : File.separator + LogFilePath));
-                if (!dir.exists()) {
-                    dir.mkdir();
-                }
+
                 if (canWriteAble) {
-                    String pk = "";
-                    if(TextUtils.isEmpty(packageName)||(!TextUtils.isEmpty(packageName)&&!packageName.equals(applicationContext.getPackageName()))){
-                        packageName = applicationContext.getPackageName();
-                        pk = packageName;
-                    }
-                    FileUtil.writeFileSdcardFile(path + File.separator + fileName, simpleDateFormat3.format(date) + " " + pk + " " + Tag +" "+ message + "\n", true);
+                    packageName = applicationContext.getPackageName();
+                    File file = new File(Environment.getExternalStorageDirectory(), LogFilePath);
+                    QDFileUtil.createFile(file);
+                    QDFileUtil.writeFileSdcardFile(file, simpleDateFormat3.format(date) + " " + packageName + " " + Tag + " " + message + "\n", true);
                 }
             } else {
                 System.out.println(message);
-                if(!firstError) {
+                if (!firstError) {
                     firstError = true;
                     Log.e(TAG, "本地日志写入失败，请打开存储权限");
                 }
@@ -239,9 +221,11 @@ public class QDLogger {
             }
         }
     }
+
     public static String packageName;
     public static boolean firstError;
     public static boolean canWriteAble = true;//是否可以读写日志
+
     public static void setCanWriteAble(boolean mcanWriteAble) {
         canWriteAble = mcanWriteAble;
         if (!mcanWriteAble) {

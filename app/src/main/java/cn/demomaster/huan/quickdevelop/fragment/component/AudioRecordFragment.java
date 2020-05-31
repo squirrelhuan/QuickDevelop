@@ -13,11 +13,9 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 
 /**
@@ -27,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 
 @ActivityPager(name = "AudioRecordFragment",preViewClass = TextView.class,resType = ResType.Custome)
-public class AudioRecordFragment extends QDBaseFragment {
+public class AudioRecordFragment extends QDFragment {
     //Components
     ViewGroup mView;
 
@@ -73,18 +71,18 @@ public class AudioRecordFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-
+/*
     public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayoutOld.setTitle(titles[i]+"---------ASDFGGHHJ");
         actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
-    }
+    }*/
 
     AudioRecordHelper audioRecordHelper;
     private String path = Environment.getExternalStorageDirectory() + "/buku/audio/record.mp3";;

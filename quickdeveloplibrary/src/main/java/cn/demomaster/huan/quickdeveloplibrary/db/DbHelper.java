@@ -27,8 +27,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public SQLiteDatabase db;
 
     //必须要有构造函数
-    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version,DbHelperInterface dbHelperInterface) {
         super(context, name, factory, version);
+        this.dbHelperInterface = dbHelperInterface;
         this.mContext = context.getApplicationContext();
         this.DATABASE_NAME = name;
         initLocalDB();//初始化本地的db文件
@@ -38,23 +39,23 @@ public class DbHelper extends SQLiteOpenHelper {
         super(context, name, factory, version, errorHandler);
     }
 
-    private static final String TAG = "TestSQLite";
+    private static final String TAG = "TagSQLite";
 
     //当第一次创建数据库的时候，调用该方法
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table stu_table(id int,sname varchar(20),sage int,ssex varchar(10))";
+       // String sql = "create table stu_table(id int,sname varchar(20),sage int,ssex varchar(10))";
         //输出创建数据库的日志信息
-        QDLogger.i(TAG, "create Database------------->");
+       // QDLogger.i(TAG, "create Database------------->");
         //execSQL函数用于执行SQL语句
-        db.execSQL(sql);
+       // db.execSQL(sql);
     }
 
     //当更新数据库的时候执行该方法
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //输出更新数据库的日志信息
         QDLogger.i(TAG, "update Database------------->oldVersion="+oldVersion+",newVersion="+newVersion);
-        if(oldVersion<2){//添加vanTr字段用于无卡退还
-            db.execSQL("ALTER TABLE pay_record ADD COLUMN vanTr TEXT");
+        if(dbHelperInterface!=null){
+            dbHelperInterface.onUpgrade(db,oldVersion,newVersion);
         }
     }
 
@@ -141,8 +142,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return db;
     }
 
-
-
     /**
      * 检查某表列是否存在
      * @param db
@@ -168,5 +167,14 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         return result ;
+    }
+
+    DbHelperInterface dbHelperInterface;
+    public void setDbHelperInterface(DbHelperInterface dbHelperInterface) {
+        this.dbHelperInterface = dbHelperInterface;
+    }
+
+    public static interface DbHelperInterface {
+        void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
     }
 }

@@ -30,7 +30,8 @@ import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isApkInDebug;
 
-public class ApplicationParent extends Application {
+public class ApplicationParent extends Application implements
+        DbHelper.DbHelperInterface {
 
     public static String QDTAG = "[qd]";
     private static ApplicationParent instance = null;
@@ -44,8 +45,7 @@ public class ApplicationParent extends Application {
         instance = this;
 
         QDLogger.setApplicationContext(this);
-        QDLogger.i(QDTAG,"包名："+getPackageName());
-        QDLogger.i(QDTAG,"myPid="+android.os.Process.myPid());
+        QDLogger.i(QDTAG,"包名："+getPackageName()+",myPid="+android.os.Process.myPid());
 
         //初始化全局SharedPreferences
         SharedPreferencesHelper.init(this);
@@ -92,7 +92,6 @@ public class ApplicationParent extends Application {
 
     /**
      * 初始化友盟分享
-     *
      * @param appkey
      */
     public void initUmengShare(String appkey) {
@@ -123,7 +122,7 @@ public class ApplicationParent extends Application {
      * @param dbpath
      */
     private void initDB(String dbpath) {
-        dbHelper = new DbHelper(this, dbpath, null, 2);
+        dbHelper = new DbHelper(this, dbpath, null, 2,this);
         //得到一个可读的SQLiteDatabase对象
         db = dbHelper.getReadableDatabase();
     }
@@ -141,6 +140,11 @@ public class ApplicationParent extends Application {
             }
             Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this, errorReportActivity));
         }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 
 }

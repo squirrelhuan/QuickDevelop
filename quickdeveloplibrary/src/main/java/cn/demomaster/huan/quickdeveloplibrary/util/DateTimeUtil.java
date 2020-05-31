@@ -1,7 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
+import android.content.Context;
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +19,74 @@ import java.util.TimeZone;
  */
 public class DateTimeUtil {
 
+    public static String getDuration(long startTime, long currentTimeMillis) {
+        return formatDayTime((currentTimeMillis-startTime)/1000);
+    }
+    /**
+     * 将秒转化为 HH:mm:ss 的格式
+     *
+     * @param time 秒
+     * @return
+     */
+    public static String formatDayTime(long time) {
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+        //String dd = decimalFormat.format(time / 3600/24);
+        String hh = decimalFormat.format(time / 3600);
+        String mm = decimalFormat.format(time % 3600 / 60);
+        String ss = decimalFormat.format(time % 60);
+        return hh + ":" + mm + ":" + ss;
+    }
+    public static String formatDayTime1(long time) {
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+        //String dd = decimalFormat.format(time / 3600/24);
+        String timeStr = "";
+        if(time>3600){
+            String hh = decimalFormat.format(time / 3600);
+            timeStr += hh +"小时";
+        }
+        if(time>3600/60){
+            String mm = decimalFormat.format(time % 3600 / 60);
+            timeStr += mm +"分钟";
+        }
+        String ss = decimalFormat.format(time % 60);
+        timeStr += ss +"秒";
+        return timeStr;
+    }
 
+    /**
+     * 将秒转化为 HH:mm:ss 的格式
+     *
+     * @param time 秒
+     * @return
+     */
+    public static String formatDayTime2(long time) {
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+        //String dd = decimalFormat.format(time / 3600/24);
+        String hh = decimalFormat.format(time / 3600);
+        String mm = decimalFormat.format(time % 3600 / 60);
+        String ss = decimalFormat.format(time % 60);
+        return hh + ":" + mm + ":" + ss;
+    }
+    public static String formatTime(Context context,long time,String formatStrs) {
+        int day = (int) (time / 86400);
+        int hour = (int) (time % 86400 / 3600);
+        int minute = (int) (time % 86400 % 3600 / 60);
+        int second = (int) (time % 86400 % 3600 % 60);
+        StringBuffer stringBuffer = new StringBuffer();
+        if (day > 0) {
+            stringBuffer.append(day );
+        }
+        if (day > 0 || hour > 0) {
+            stringBuffer.append(hour );
+        }
+        if (day > 0 || hour > 0 || minute > 0) {
+            stringBuffer.append(minute );
+        }
+        if (day > 0 || hour > 0 || minute > 0 || second > 0) {
+            stringBuffer.append(second );
+        }
+        return stringBuffer.toString();
+    }
 
 
     /**
@@ -371,5 +440,7 @@ public class DateTimeUtil {
             this.second = second;
         }
     }
+
+
 
 }

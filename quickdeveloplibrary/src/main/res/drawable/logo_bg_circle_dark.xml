@@ -19,7 +19,7 @@
     <!--dashGap 虚线中空格的长度-->
     <!--dashWidth 虚线中实线的长度-->
     <stroke
-        android:width="0dp"
+        android:width="@dimen/dp_0"
         android:color="@color/black"
         android:dashGap="0dip"
         android:dashWidth="0dip"/>

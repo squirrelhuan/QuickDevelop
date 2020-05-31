@@ -11,9 +11,8 @@ import android.widget.TextView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 
@@ -24,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
  */
 
 @ActivityPager(name = "PopUp",preViewClass = TextView.class,resType = ResType.Custome)
-public class PopUpFragment extends QDBaseFragment {
+public class PopUpFragment extends QDFragment {
     //Components
     ViewGroup mView;
 
@@ -37,7 +36,7 @@ public class PopUpFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayout) {
+    public void initView(View rootView, ActionBar actionBarLayout) {
         //actionBarLayout.setHeaderBackgroundColor(colors[i]);
         QDButton btn_01 = rootView.findViewById(R.id.btn_01);
         btn_01.setOnClickListener(new View.OnClickListener() {

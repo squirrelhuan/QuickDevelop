@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
@@ -8,7 +9,8 @@
         android:id="@+id/tv_tab_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:background="@drawable/btn_green_small"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:text="123"
         android:gravity="center"/>
 </LinearLayout>

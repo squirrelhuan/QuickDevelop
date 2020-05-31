@@ -13,15 +13,11 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDBaseFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarInterface;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarLayout2;
+import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocal;
 
 
 /**
@@ -31,7 +27,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  */
 
 @ActivityPager(name = "Permition", preViewClass = TextView.class, resType = ResType.Custome)
-public class PermitionFragment extends QDBaseFragment {
+public class PermitionFragment extends QDFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -55,7 +51,7 @@ public class PermitionFragment extends QDBaseFragment {
     }
 
     @Override
-    public void initView(View rootView, ActionBarInterface actionBarLayoutOld) {
+    public void initView(View rootView, ActionBar actionBarLayoutOld) {
         actionBarLayoutOld.setTitle("动态权限");
         btn_write_external_storage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +94,10 @@ public class PermitionFragment extends QDBaseFragment {
     }
 
 
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
+    /*public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
         int i = (int) (Math.random() * 10 % 4);
         actionBarLayoutOld.setTitle("audio play");
         actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
-    }
+    }*/
 }

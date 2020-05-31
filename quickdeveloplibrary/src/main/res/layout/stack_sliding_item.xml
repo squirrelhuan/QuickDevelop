@@ -9,14 +9,14 @@
         android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
+        android:padding="@dimen/dp_4"
         android:orientation="horizontal"
         android:background="@color/transparent_dark_cc">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="5dp"
+            android:layout_width="@dimen/dp_21"
+            android:layout_height="@dimen/dp_21"
+            android:padding="@dimen/dp_3"
             android:src="@mipmap/quickdevelop_ic_launcher" />
 
         <TextView
@@ -26,10 +26,10 @@
             android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
             android:background="@color/transparent_light_77"
-            android:paddingLeft="15dp"
+            android:paddingLeft="@dimen/dp_9"
             android:text="T"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="@dimen/dp_11" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

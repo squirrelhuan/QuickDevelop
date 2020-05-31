@@ -280,14 +280,20 @@ public class GuiderView extends View {
 
     /**
      * 绘制
+     *
      * @param canvas
      */
     private void drawBitmap(Canvas canvas) {
-        if(guiderModel.getImgResourceId()==-1||guiderModel.getImgResourceId()==0){
+        if (guiderModel.getImgResourceId() == -1 || guiderModel.getImgResourceId() == 0) {
             return;
         }
-        Bitmap backbitmap = null;
-        backbitmap = QDBitmapUtil.drawable2Bitmap(getActivityFromView(this) , guiderModel.getImgResourceId());
+        Bitmap backbitmap = null;//getActivityFromView(this)
+        backbitmap = QDBitmapUtil.drawable2Bitmap(getContext(), guiderModel.getImgResourceId());
+
+        if (backbitmap == null) {
+            return;
+        }
+
         int w = 0;
         int h = 0;
         if (guiderModel.getImgWidth() == -1 && guiderModel.getImgHeight() == -1) {
@@ -307,6 +313,7 @@ public class GuiderView extends View {
         }
         canvas.drawBitmap(backbitmap, rectF_view.toLeft, rectF_view.toTop, new Paint());
         backbitmap.recycle();
+
     }
 
     /**

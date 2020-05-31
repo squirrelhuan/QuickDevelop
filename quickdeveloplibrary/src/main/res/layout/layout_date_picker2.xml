@@ -14,7 +14,7 @@
 
         <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2
             android:id="@+id/loop_view2"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/dp_120"
             android:layout_height="wrap_content"
             android:layout_below="@+id/loop_view"
             app:canLoop="true"
@@ -22,7 +22,7 @@
             app:drawItemCount="5"
             app:initPosition="3"
             app:lineColor="@color/white"
-            app:textSize="16sp"
+            app:textSize="@dimen/sp_10"
             app:topBottomTextColor="@color/white"/>
     </LinearLayout>
 
