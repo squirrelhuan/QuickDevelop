@@ -85,7 +85,6 @@ public class QMUIViewHelper {
 
     /**
      * 扩展点击区域的范围
-     *
      * @param view       需要扩展的元素，此元素必需要有父级元素
      * @param expendSize 需要扩展的尺寸（以sp为单位的）
      */
@@ -119,9 +118,10 @@ public class QMUIViewHelper {
     }
 
     public static void setBackgroundKeepingPadding(View view, Drawable drawable) {
-        int[] padding = new int[]{view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom()};
         setBackground(view, drawable);
-        view.setPadding(padding[0], padding[1], padding[2], padding[3]);
+        /*int[] padding = new int[]{view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom()};
+        setBackground(view, drawable);
+        view.setPadding(padding[0], padding[1], padding[2], padding[3]);*/
     }
 
     @SuppressWarnings("deprecation")
@@ -148,7 +148,6 @@ public class QMUIViewHelper {
 
     /**
      * 对 View 做背景色变化的动作
-     *
      * @param v            做背景色变化的View
      * @param bgColor      背景色
      * @param alphaArray   背景色变化的alpha数组，如 int[]{255,0} 表示从纯色变化到透明

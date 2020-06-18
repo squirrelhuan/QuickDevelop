@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.IDCardActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.helper.AccessibilityServiceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
@@ -81,6 +82,7 @@ public class HelperFragment extends QDFragment {
         List<Class> classList = new ArrayList<>();
 
 
+        classList.add(IDCardActivity.class);
         classList.add(CsqliteActivity.class);
         classList.add(LmSensorFragment.class);
         classList.add(ScreenShotFragment.class);

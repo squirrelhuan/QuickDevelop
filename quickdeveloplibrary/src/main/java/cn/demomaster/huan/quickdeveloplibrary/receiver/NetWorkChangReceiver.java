@@ -55,14 +55,14 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
             //QDLogger.i("CGQ", "ko_network_connection_is_successful");
             if(netState!=1&&onNetStateChangedListener!=null){
                 netState=1;
-                QDLogger.i("CGQ", "网络状态发生改变，已连接");
+                QDLogger.i("CGQ", "网络信号状态发生改变，已连接");
                 onNetStateChangedListener.onConnected(activeInfo);
             }
         } else { //网络断开
-            Log.i("CGQ", "网络断开");
+            //Log.i("CGQ", "网络信号断开");
             if(netState!=0&&onNetStateChangedListener!=null){
                 netState=0;
-                QDLogger.i("CGQ", "网络状态发生改变，已断开");
+                QDLogger.i("CGQ", "网络信号状态发生改变，已断开");
                 onNetStateChangedListener.onDisConnected();
             }
         }

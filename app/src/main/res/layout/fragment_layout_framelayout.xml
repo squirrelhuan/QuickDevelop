@@ -6,24 +6,115 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-       <cn.demomaster.huan.quickdeveloplibrary.widget.layout.QDFrameLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
+    <cn.demomaster.huan.quickdeveloplibrary.widget.layout.QDFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200">
 
-              <View
-                  android:layout_width="match_parent"
-                  android:layout_height="100dp"
-                  android:tag="1"
-                  android:background="@color/yellow"/>
-              <View
-                  android:layout_width="200dp"
-                  android:layout_height="200dp"
-                  android:background="@color/green"/>
-              <View
-                  android:layout_width="100dp"
-                  android:layout_height="100dp"
-                  android:background="@color/red"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/yellow"
+            android:tag="1" />
 
-       </cn.demomaster.huan.quickdeveloplibrary.widget.layout.QDFrameLayout>
+        <View
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@color/green" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/red" />
+
+    </cn.demomaster.huan.quickdeveloplibrary.widget.layout.QDFrameLayout>
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout
+        android:id="@+id/vl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="我是伸缩布局内的子view"
+            android:padding="@dimen/dp_10"
+            android:gravity="center"
+            android:background="#FF82AB"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20"/>
+
+    </cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:gravity="center"
+        android:orientation="horizontal">
+    <RadioGroup
+        android:id="@+id/rg_positon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btn_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="上" />
+
+
+        <RadioButton
+            android:id="@+id/btn_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="下" />
+
+        <RadioButton
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="左" />
+
+        <RadioButton
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="右" />
+    </RadioGroup>
+
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:padding="@dimen/dp_15"
+            android:text="显示" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
 
 </LinearLayout>

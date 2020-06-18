@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,9 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -169,10 +166,14 @@ public class ActionLayout extends FrameLayout {
             it_actionbar_common_right.setOnClickListener(rightOnClickListener);
     }
 
-    public void setTitle(String title) {
+    public void setTitle(CharSequence title) {
         if (it_actionbar_title != null) {
-            it_actionbar_title.setText(title);
+            it_actionbar_title.setText(title==null?"":title.toString());
         }
+    }
+
+    public View getTitleView(){
+        return findViewById(R.id.it_actionbar_common_title);
     }
 
     @Override

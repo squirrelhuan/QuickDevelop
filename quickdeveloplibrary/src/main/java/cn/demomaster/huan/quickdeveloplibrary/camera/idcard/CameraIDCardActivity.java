@@ -1,9 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.camera.idcard;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CameraCropView;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.view.CustomCameraPreview;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
@@ -48,6 +51,18 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     private int type;
     private int result;
 
+    private OptionsMenu optionsMenu;
+    private OptionsMenu.Builder optionsMenubuilder;
+    //获取自定义菜单
+    public OptionsMenu.Builder getOptionsMenuBuilder() {
+        if (optionsMenubuilder == null) {
+            optionsMenubuilder = new OptionsMenu.Builder(mContext);
+        }
+        return optionsMenubuilder;
+    }
+
+
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +79,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOptionsMenu().show();
+                optionsMenu.show();
             }
         });
         getActionBarLayout().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
@@ -121,11 +136,32 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
             menu.setPosition(i);
             menus.add(menu);
         }
-        getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
-        getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
+        if (optionsMenubuilder == null) {
+            optionsMenubuilder = getOptionsMenuBuilder().setMenus(menus)
+                    .setAlpha(.6f)
+                    .setUsePadding(true)
+                    .setBackgroundColor(getResources().getColor(R.color.colorPrimary))
+                    .setBackgroundRadius(20)
+                    .setTextColor(Color.WHITE)
+                    .setTextSize(16)
+                    .setPadding(0)
+                    .setWithArrow(true)
+                    .setArrowHeight(30)
+                    .setArrowWidth(30)
+                    .setGravity(GuiderView.Gravity.BOTTOM)
+                    .setDividerColor(getResources().getColor(R.color.transparent))
+                    .setAnchor(getActionBarLayout().getRightView());
+        }
+
+        if (optionsMenu == null) {
+            optionsMenu = new OptionsMenu(optionsMenubuilder);
+        }
+        optionsMenu.setMenus(menus);
+        optionsMenu.setAnchor(getActionBarLayout().getRightView());
+        optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
+                optionsMenu.dismiss();
                 //选取图片并截取
                 /*photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
                     @Override
@@ -139,7 +175,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                     }
                 });*/
                 //只选取图片不截取
-                photoHelper.selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
                         QDLogger.e(path);
@@ -215,19 +251,15 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         });
     }
 
-
     private static final int GALLERY_Photo_REQUEST_CODE = 300;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int CROP_SMALL_PICTURE = 5;
     private Uri fileUri;
 
-
-
     //获取返回结果
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getOptionsMenu().dismiss();
         Log.d(TAG, "onActivityResult: requestCode: " + requestCode + ", resultCode: " + requestCode + ", data: " + data + ",resultCode:" + resultCode);
         switch (requestCode) {
             //如果是拍照
@@ -318,4 +350,9 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         intent.putExtra("return-data", true);
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }*/
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -158,7 +158,7 @@ public class QDActionDialogActivity extends QDActivity {
                         showSheetMenu();
                         break;
                     case 1:
-                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                        getPhotoHelper().selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 /*setImageToView(data);*/

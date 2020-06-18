@@ -115,7 +115,8 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
         }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.getBackStackEntryCount() > 0) {
-            transaction.setCustomAnimations(R.anim.translate_from_right_to_left_enter, R.anim.translate_from_right_to_left_out, R.anim.translate_from_left_to_right_enter, R.anim.translate_from_left_to_right_out);
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                    R.anim.slide_in_left, R.anim.slide_out_right);
         }
         transaction.add(R.id.qd_fragment_content_view, fragment, fragment.getClass().getSimpleName())
                 .addToBackStack(fragment.getClass().getSimpleName())

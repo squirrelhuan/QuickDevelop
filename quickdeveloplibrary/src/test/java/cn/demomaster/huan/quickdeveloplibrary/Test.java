@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 
@@ -27,6 +28,16 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.StringUtil.hexStr2Str;
  */
 public class Test {
 
+
+    public static String numToHex8(int b) {
+        return String.format("%02x", b);//2表示需要两个16进制数
+    }
+
+    @org.junit.Test
+    public void TextHex(){
+        String a = numToHex8(10);
+        System.out.println("a="+a.toUpperCase());
+    }
 
     private List<Character> list;
     private List<String> aaa;

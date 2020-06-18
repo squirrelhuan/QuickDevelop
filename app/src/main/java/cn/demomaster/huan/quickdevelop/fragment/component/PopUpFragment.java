@@ -37,7 +37,6 @@ public class PopUpFragment extends QDFragment {
 
     @Override
     public void initView(View rootView, ActionBar actionBarLayout) {
-        //actionBarLayout.setHeaderBackgroundColor(colors[i]);
         QDButton btn_01 = rootView.findViewById(R.id.btn_01);
         btn_01.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +57,6 @@ public class PopUpFragment extends QDFragment {
         pop.setFocusable(true);
         pop.setOutsideTouchable(true);
         pop.setContentView(view);
-
-        Button btn_camera = (Button) view
-                .findViewById(R.id.item_popupwindows_camera);
 
         pop.showAtLocation(view, Gravity.BOTTOM, 0, 0);
         /*startAnimation(AnimationUtils.loadAnimation(getThemeActivity(),

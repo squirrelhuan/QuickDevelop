@@ -17,7 +17,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical"
-        android:src="@drawable/ic_arrow_back_black_24dp" />
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
         android:id="@+id/it_actionbar_common_title"
@@ -45,6 +45,6 @@
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical"
-        android:src="@drawable/ic_more_vert_black_24dp"/>
+        app:srcCompat="@drawable/ic_more_vert_black_24dp"/>
 
 </FrameLayout>

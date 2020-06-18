@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 
 public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     private static final int DEFAULT_MIN_YEAR = 1900;
@@ -70,7 +71,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
     List<String> yearList = new ArrayList();
     List<String> monthList = new ArrayList();
     List<String> dayList = new ArrayList();
-    private DatePickerPopWin.OnDatePickedListener mListener;
+    private DatePickerListener.OnDateSelectListener mListener;
 
     private WindowManager mWindowManager;
     public DatePickerPopWin(DatePickerPopWin.Builder builder) {
@@ -129,7 +130,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
 
     private void initView() {
         this.contentView = LayoutInflater.from(this.mContext).inflate(this.showDayMonthYear ? R.layout.layout_date_picker_inverted : R.layout.layout_date_picker, (ViewGroup)null);
-       this.contentView.setLayoutParams(mWindowParams);
+        this.contentView.setLayoutParams(mWindowParams);
         this.cancelBtn = (Button)this.contentView.findViewById(R.id.btn_cancel);
         this.cancelBtn.setTextColor(this.colorCancel);
         this.cancelBtn.setTextSize((float)this.btnTextsize);
@@ -191,12 +192,11 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
             this.tv_sign_day.setText(this.text_sign_day);
         }
 
-
-
         this.setTouchable(true);
         this.setFocusable(true);
         this.setBackgroundDrawable(new BitmapDrawable());
         this.setAnimationStyle(R.style.FadeInPopWin);
+        contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         this.setContentView(this.contentView);
         this.setWidth(-1);
         this.setHeight(-1);
@@ -207,11 +207,11 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
 
         int j;
         for(j = 0; j < yearCount; ++j) {
-            this.yearList.add(format2LenStr(this.minYear + j));
+            this.yearList.add(StringUtil.formatNumberToStr(this.minYear + j,2));
         }
 
         for(j = 0; j < 12; ++j) {
-            this.monthList.add(format2LenStr(j + 1));
+            this.monthList.add(StringUtil.formatNumberToStr(j + 1,2));
         }
 
         this.yearLoopView.setDataList((ArrayList)this.yearList);
@@ -228,7 +228,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         int dayMaxInMonth = calendar.getActualMaximum(5);
 
         for(int i = 0; i < dayMaxInMonth; ++i) {
-            this.dayList.add(format2LenStr(i + 1));
+            this.dayList.add(StringUtil.formatNumberToStr(i + 1,2));
         }
 
         this.dayLoopView.setDataList((ArrayList)this.dayList);
@@ -246,23 +246,21 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
                 this.dayPos = calendar.get(5) - 1;
             }
         }
-
     }
 
     public void showPopWin(Activity activity) {
         if (null != activity) {
             TranslateAnimation trans = new TranslateAnimation(1, 0.0F, 1, 0.0F, 1, 1.0F, 1, 0.0F);
             this.showAtLocation(activity.getWindow().getDecorView(), 0, 0, 0);
-            trans.setDuration(400L);
+            trans.setDuration(300L);
             trans.setInterpolator(new AccelerateDecelerateInterpolator());
             this.pickerContainerV.startAnimation(trans);
         }
-
     }
 
     public void dismissPopWin() {
         TranslateAnimation trans = new TranslateAnimation(1, 0.0F, 1, 0.0F, 1, 0.0F, 1, 1.0F);
-        trans.setDuration(400L);
+        trans.setDuration(300L);
         trans.setInterpolator(new AccelerateInterpolator());
         trans.setAnimationListener(new AnimationListener() {
             public void onAnimationStart(Animation animation) {
@@ -285,13 +283,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
                     int year = this.minYear + this.yearPos;
                     int month = this.monthPos + 1;
                     int day = this.dayPos + 1;
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(String.valueOf(year));
-                    sb.append("-");
-                    sb.append(format2LenStr(month));
-                    sb.append("-");
-                    sb.append(format2LenStr(day));
-                    this.mListener.onDatePickCompleted(year, month, day, sb.toString());
+                    this.mListener.onDateSelect(year, month, day, 0,0,0);
                 }
 
                 this.dismissPopWin();
@@ -318,22 +310,9 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         return dd.format(new Date());
     }
 
-    public static String format2LenStr(int num) {
-        return num < 10 ? "0" + num : String.valueOf(num);
-    }
-
-    public static int spToPx(Context context, int spValue) {
-        float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int)((float)spValue * fontScale + 0.5F);
-    }
-
-    public interface OnDatePickedListener {
-        void onDatePickCompleted(int var1, int var2, int var3, String var4);
-    }
-
     public static class Builder {
         private Context context;
-        private DatePickerPopWin.OnDatePickedListener listener;
+        private DatePickerListener.OnDateSelectListener listener;
         private boolean showDayMonthYear = false;
         private int minYear = 1900;
         private int maxYear = Calendar.getInstance().get(1) + 1;
@@ -353,7 +332,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
         private int btnTextSize = 16;
         private int viewTextSize = 25;
 
-        public Builder(Context context, DatePickerPopWin.OnDatePickedListener listener) {
+        public Builder(Context context, DatePickerListener.OnDateSelectListener listener) {
             this.context = context;
             this.listener = listener;
         }

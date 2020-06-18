@@ -3,14 +3,22 @@ package cn.demomaster.huan.quickdevelop;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
@@ -34,7 +42,6 @@ public class QDMainFragmentActivity extends QDActivity {
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
-        initHelper();
 
         //设置系统时间需要系统权限
        /* long time = 1243567568;
@@ -67,10 +74,35 @@ public class QDMainFragmentActivity extends QDActivity {
                 }
             }
         });
+
+        CharSequence str = ClipboardUtil.getClip(mContext);
+        if(!TextUtils.isEmpty(str)) {
+            QdToast.show(mContext, str.toString());
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);//屏蔽转入转出动画
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+
 }

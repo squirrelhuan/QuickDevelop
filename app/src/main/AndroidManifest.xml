@@ -7,6 +7,7 @@
         android:name="android.permission.ACCESS_MOCK_LOCATION"
         tools:ignore="MockLocation,ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- android 9.0上使用前台服务，需要添加权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,7 +15,7 @@
     <uses-feature android:name="android.hardware.camera2" />
     <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> -->
@@ -89,13 +90,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.sample.component.SlidingPanelLayoutActivity" />
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".activity.sample.RecycleActivity" />
         <activity android:name=".activity.sample.PickActivity" />
         <activity android:name=".activity.sample.IDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" />
-        <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.IDCardActivity" /> <!-- android:screenOrientation="landscape" -->
+        <!-- android:screenOrientation="landscape" -->
         <activity android:name=".activity.sample.CsqliteActivity" />
         <activity android:name=".activity.sample.component.QDialogActivity" />
         <activity android:name=".activity.sample.TabMenuActivity" />
@@ -170,6 +172,18 @@
                 <action android:name="cn.demomaster.huan.quickdevelop.aidl.StudentService"/>
             </intent-filter>
         </service>
+
+        <!--蓝牙监听-->
+        <receiver android:name=".receiver.BlueToothReceiver">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
+                <action android:name="android.bluetooth.device.action.ACTION_BOND_STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED"></action>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"></action>
+                <action android:name="android.bluetooth.device.action.FOUND"></action>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

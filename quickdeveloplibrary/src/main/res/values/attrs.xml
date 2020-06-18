@@ -123,6 +123,34 @@
         <attr name="nest_scroll_header_view" format="reference" />
         <attr name="nest_scroll_footer_view" format="reference" />
         <attr name="nest_scroll_content" format="reference" />
+
+        <attr name="scroll_model" format="enum">
+            <enum name="no_scroll" value="-1" />
+            <enum name="only_scroll" value="0" />
+            <enum name="TopAndBottom" value="1" />
+            <enum name="Top" value="2" />
+            <enum name="Bottom" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="VisibleLayout">
+        <attr name="hide_with_child" format="boolean"/>
+        <attr name="start_from" format="enum">
+            <enum name="none" value="-1" />
+            <enum name="left" value="3" />
+            <enum name="top" value="48" />
+            <enum name="right" value="5" />
+            <enum name="bottom" value="80" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="circle_background_padding" format="dimension"/>
+        <attr name="circle_background_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="LoadingView">
+        <attr name="drawColor" format="color"/>
     </declare-styleable>
 
 </resources>

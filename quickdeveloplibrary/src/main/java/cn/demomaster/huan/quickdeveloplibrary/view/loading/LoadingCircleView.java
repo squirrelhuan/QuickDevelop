@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,14 +26,25 @@ public class LoadingCircleView extends View {
 
     public LoadingCircleView(Context context) {
         super(context);
+        init(null);
     }
 
     public LoadingCircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(attrs);
     }
 
     public LoadingCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(attrs);
+    }
+
+    private void init(AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LoadingView);
+            pointColor = a.getColor(R.styleable.LoadingView_drawColor, pointColor);
+            a.recycle();
+        }
     }
 
     private int center_x, center_y, mwidth, width, height;
@@ -57,11 +69,18 @@ public class LoadingCircleView extends View {
         }
     }
 
+    private int pointColor = getResources().getColor(R.color.colorPrimary);
+
+    public void setPointColor(int pointColor) {
+        this.pointColor = pointColor;
+        postInvalidate();
+    }
+
     private int pointCount =4;
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        mPaint.setColor(pointColor);
 
         //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
         int a = width / 2;
@@ -123,7 +142,8 @@ public class LoadingCircleView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if(animator!=null) {
             animator.cancel();
+        }
     }
 }

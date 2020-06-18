@@ -16,6 +16,16 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+
+    public static String numToHex8(int b) {
+        return String.format("%02x", b);//2表示需要两个16进制数
+    }
+
+    @Test
+    public static void TextHex(){
+        String a = numToHex8(10);
+        System.out.println("a="+a.toUpperCase());
+    }
     @Test
     public void useAppContext() {
         // Context of the app under test.

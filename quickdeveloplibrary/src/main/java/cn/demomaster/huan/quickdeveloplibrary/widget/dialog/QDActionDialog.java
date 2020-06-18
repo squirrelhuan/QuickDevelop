@@ -254,6 +254,8 @@ public class QDActionDialog extends Dialog {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
                 contentLinearView.addView(view, layoutParams1);
+                contentLinearView.setBackgroundColor(Color.TRANSPARENT);
+                padding = 0;
             }
 
         }

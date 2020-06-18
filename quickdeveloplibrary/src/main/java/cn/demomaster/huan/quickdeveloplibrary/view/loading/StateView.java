@@ -12,6 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
@@ -20,7 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
  * @date 2018/11/8.
  * description：加载动画
  */
-public class StateView extends ImageTextView {
+public class StateView extends ImageTextView implements OnReleaseListener {
 
     public StateView(Context context) {
         super(context);
@@ -374,6 +375,11 @@ public class StateView extends ImageTextView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        onRelease();
+    }
+
+    @Override
+    public void onRelease() {
         if(animatorUpdateListener!=null){
             animatorUpdateListener=null;
         }

@@ -48,7 +48,7 @@ public class QMUIDeviceHelper {
                 fileInputStream = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
                 properties.load(fileInputStream);
             } catch (Exception e) {
-                QMUILog.printErrStackTrace(TAG, e, "read file error");
+                QDLogger.e(e.toString()+ "read file error");
             } finally {
                 QMUILangHelper.close(fileInputStream);
             }
@@ -63,7 +63,7 @@ public class QMUIDeviceHelper {
             //flyme
             sFlymeVersionName = getLowerCaseName(properties, getMethod, KEY_FLYME_VERSION_NAME);
         } catch (Exception e) {
-            QMUILog.printErrStackTrace(TAG, e, "read SystemProperties error");
+            QDLogger.e(e.toString()+ "read SystemProperties error");
         }
     }
 

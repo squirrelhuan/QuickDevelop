@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -298,14 +299,17 @@ public class QDTipPopup extends QDPopup {
         public int textSize = 14;
         public int padding;
         public int animationStyleID = -1;
-        private WeakReference<Context> contextWeakReference;
+        public WeakReference<Context> contextWeakReference;
         private String message;
-        private int backgroundColor = Color.BLACK;
-        private float[] backgroundRadius = new float[8];
+        public int backgroundColor = Color.BLACK;
+        public float[] backgroundRadius = new float[8];
         private Direction direction;
         private boolean withArrow = true;
         private int arrowWidth ;
         private int arrowHeight;
+
+        public GuiderView.Gravity gravity = GuiderView.Gravity.TOP;
+
 
         public Builder(Context context) {
             this.contextWeakReference = new WeakReference<>(context);
@@ -324,7 +328,11 @@ public class QDTipPopup extends QDPopup {
             this.backgroundColor = backgroundColor;
             return this;
         }
+
         public Builder setBackgroundRadius(float backgroundRadiu) {
+            if(backgroundRadius==null){
+                return this;
+            }
             for (int i = 0; i < backgroundRadius.length; i++) {
                 this.backgroundRadius[i] = backgroundRadiu;
             }
@@ -371,11 +379,10 @@ public class QDTipPopup extends QDPopup {
             return this;
         }
 
-       /* private GuiderView.Gravity gravity;
         public Builder setGravity(GuiderView.Gravity gravity) {
             this.gravity = gravity;
             return this;
-        }*/
+        }
 
         public void setDirection(Direction direction) {
             this.direction = direction;

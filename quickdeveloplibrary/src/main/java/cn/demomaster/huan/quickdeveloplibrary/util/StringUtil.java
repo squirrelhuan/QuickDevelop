@@ -234,7 +234,6 @@ public class StringUtil {
 
     /**
      * unicode的String转换成String的字符串
-     *
      * @param String hex 16进制值字符串 （一个unicode为2byte）
      * @return String 全角字符串
      */
@@ -256,4 +255,20 @@ public class StringUtil {
         return str.toString();
     }
 
+
+    /**
+     * 数字转指定位数的string
+     * @param num 要转的数字
+     * @param length 目标长度
+     * @return
+     */
+    public static String formatNumberToStr(int num,int length) {
+        String a = String.valueOf(num);
+        int count = length - a.length();
+        String r = null;
+        for(int i=0;i<count;i++){
+            r = (r==null?"":r)+"0";
+        }
+        return (r==null?"":r)+a;
+    }
 }

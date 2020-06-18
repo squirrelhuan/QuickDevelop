@@ -152,7 +152,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
                 if (position == 0) {
-                    ((QDActivity) context).photoHelper.takePhoto(new PhotoHelper.OnTakePhotoResult() {
+                    ((QDActivity) context).getPhotoHelper().takePhoto(new PhotoHelper.OnTakePhotoResult() {
                         @Override
                         public void onSuccess(Intent data, String path) {
                             Bundle extras = data.getExtras();
@@ -173,7 +173,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                         }
                     });
                 } else {//从相册选择
-                    ((QDActivity) context).photoHelper.selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                    ((QDActivity) context).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
                         @Override
                         public void onSuccess(Intent data, ArrayList<Image> images) {
                             imageList.addAll(images);

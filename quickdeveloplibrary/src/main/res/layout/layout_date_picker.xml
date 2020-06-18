@@ -1,107 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#33000000">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000">
 
     <LinearLayout
         android:id="@+id/container_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <RelativeLayout
-            android:id="@+id/container_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_3">
+            android:padding="@dimen/dp_5">
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_18"
+                android:layout_height="@dimen/dp_24"
                 android:background="@null"
                 android:text="cancel"
                 android:textColor="#999999"
-                android:textSize="@dimen/sp_10"/>
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_18"
+                android:layout_height="@dimen/dp_24"
                 android:layout_alignParentRight="true"
                 android:background="@null"
                 android:text="confirm"
                 android:textColor="#303F9F"
-                android:textSize="@dimen/sp_10"/>
+                android:textSize="@dimen/sp_12" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_108"
-            android:background="@color/white"
+            android:layout_height="@dimen/dp_160"
+            android:orientation="horizontal"
             android:padding="@dimen/dp_2">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
+                android:id="@+id/picker_year"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:canLoop="false"
+                app:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/tv_sign_year"
+                android:layout_width="@dimen/dp_24"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="@string/year"
+                android:textColor="#11DDAF"
+                android:textSize="@dimen/sp_12" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
-                    android:id="@+id/picker_year"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:textSize="25sp"
-                    app:canLoop="false"/>
+            <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
+                android:id="@+id/picker_month"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_0"
+                android:layout_weight="1"
+                app:canLoop="false"
+                app:textSize="25sp" />
 
-                <TextView
-                    android:id="@+id/tv_sign_year"
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp_11"
-                    android:textColor="#11DDAF"
-                    android:text="@string/year"/>
+            <TextView
+                android:id="@+id/tv_sign_month"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/month"
+                android:textColor="#11DDAF"
+                android:textSize="@dimen/sp_12" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
-                    android:id="@+id/picker_month"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_0_5"
-                    android:layout_weight="1"
-                    app:textSize="25sp"
-                    app:canLoop="false"/>
-                <TextView
-                    android:id="@+id/tv_sign_month"
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp_11"
-                    android:textColor="#11DDAF"
-                    android:text="@string/month"/>
-                <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
-                    android:id="@+id/picker_day"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_0_5"
-                    android:layout_weight="1"
-                    app:textSize="25sp"
-                    app:canLoop="false"/>
-                <TextView
-                    android:id="@+id/tv_sign_day"
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp_11"
-                    android:textColor="#11DDAF"
-                    android:text="@string/day"/>
+            <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
+                android:id="@+id/picker_day"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:canLoop="false"
+                app:textSize="25sp" />
 
-            </LinearLayout>
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_sign_day"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/day"
+                android:textColor="#11DDAF"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

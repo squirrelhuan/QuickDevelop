@@ -75,7 +75,6 @@ public class StateObserver {
         }
     }
 
-
     private <T> void unregister(String key, OnStateChangedListener<T> stateChangedListener) {
         synchronized (mKeyStateListenersMap) {
             List<OnStateChangedListener> listeners = mKeyStateListenersMap.get(key);

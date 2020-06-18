@@ -2,12 +2,13 @@ package cn.demomaster.huan.quickdevelop.activity.sample;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SmsCodeHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDTimer;
 import cn.demomaster.huan.quickdeveloplibrary.util.StringVerifyUtil;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -19,42 +20,28 @@ public class RegisterActivity extends AppCompatActivity {
 
         initView();
     }
-    SmsCodeHelper smsCodeHelper;
+    QDTimer qdTimer;
     private void initView() {
         final EditText et_phone = findViewById(R.id.et_phone);
         final Button btn_get_smscode = findViewById(R.id.btn_get_smscode);
-
-         SmsCodeHelper.Builder builder = new SmsCodeHelper.Builder(et_phone.getText().toString(), btn_get_smscode, new SmsCodeHelper.OnSmsCodeListener() {
+        qdTimer = new QDTimer(60,new QDTimer.OnTimerListener() {
             @Override
             public void onTimeChange(long time) {
                 btn_get_smscode.setText("剩余"+time);
             }
-
+        });
+        btn_get_smscode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNextHttpGet() {
+            public void onClick(View v) {
                 Boolean b = StringVerifyUtil.validateMobilePhone(et_phone.getText().toString());
                 if(b){
                     Toast.makeText(RegisterActivity.this,"net获取验证码...",Toast.LENGTH_LONG).show();
-                    smsCodeHelper.onReceiveSmsCodeSuccess("模拟获取成功");
+                    qdTimer.stop();
 
                 }else {
                     Toast.makeText(RegisterActivity.this,"手机号格式有误",Toast.LENGTH_LONG).show();
                 }
-                return b;
-            }
-
-            @Override
-            public void onReceiveSuccess(String tip) {
-                Toast.makeText(RegisterActivity.this,"success："+tip,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onReceiveFailure(String error) {
-                //Log.i(TAG,"fail："+error);
-                //Toast.makeText(RegisterActivity.this,"fail："+error,Toast.LENGTH_LONG).show();
             }
         });
-        smsCodeHelper = builder.create();
-        smsCodeHelper.start();
     }
 }

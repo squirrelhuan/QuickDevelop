@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -86,12 +88,6 @@ public class ActionBar extends FrameLayout {
     private void addViewLayout() {
         LayoutParams layoutParams01 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(contentLayout, layoutParams01);
-        // activity提示layout
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            actionBarTip = new ActionBarTip(getContext());
-            LayoutParams layoutParams_tip = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            addView(actionBarTip, layoutParams_tip);
-        }
 
         LayoutParams layoutParams02 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(actionLayout, layoutParams02);
@@ -124,13 +120,46 @@ public class ActionBar extends FrameLayout {
         addHeadView(headlayoutResID);
     }
 
+    /**
+     * 设置导航栏背景色
+     * @param color
+     */
     public void setHeaderBackgroundColor(int color) {
-        actionLayout.setBackgroundColor(color);
+        //actionLayout.setBackgroundColor(color);
         //statusLayout.setBackgroundColor(transparent);
+        actionLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                setColorWithAnimation(actionLayout,color);
+            }
+        });
+    }
+
+    private void setColorWithAnimation(final View view, final int colorTo) {
+
+        int x = view.getLeft();
+        int y = view.getBottom();
+
+        //findViewById(R.id.appBarContainer).setBackgroundColor(mCurrentColor);
+        view.setBackgroundColor(colorTo);
+
+        int startRadius = 0;
+        int endRadius = (int) Math.hypot(view.getWidth(), view.getHeight());
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Animator anim = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, endRadius);
+            anim.setDuration(500);
+            anim.start();
+        }
+
     }
 
     ACTIONBAR_TYPE actionbarType = NORMAL;
 
+    /**
+     * 设置导航栏样式
+     * @param actionbarType
+     */
     public void setActionBarType(ACTIONBAR_TYPE actionbarType) {
         this.actionbarType = actionbarType;
         switchActivonBarType();
@@ -266,12 +295,13 @@ public class ActionBar extends FrameLayout {
                     if (child instanceof ActionLayout) {
                         child.layout(childLeft, childTop, childLeft + width, childTop + height);
                         actionHeight = ((ActionLayout) child).hasStatusBar ? child.getHeight() - statusHeight : child.getHeight();
-                        if (actionBarTip != null)
+                        if (actionBarTip != null) {
                             actionBarTip.setActionBarHeight(statusHeight + actionHeight);
+                        }
                         if (hasActionLayoutChanged) {
                             hasActionLayoutChanged = false;
                             switchActivonBarType();
-                            Log.e("CGQ", "actionHeight=" + actionHeight);
+                            //Log.e("CGQ", "actionHeight=" + actionHeight);
                         }
                     } else if (child.getId() == contentLayout.getId() && hasActionLayoutChanged) {
                         int ctop = childTop;
@@ -292,7 +322,7 @@ public class ActionBar extends FrameLayout {
     public void setStateBarColorAuto(boolean b) {
     }
 
-    public void setTitle(String title) {
+    public void setTitle(CharSequence title) {
         actionLayout.setTitle(title);
     }
 
@@ -314,6 +344,7 @@ public class ActionBar extends FrameLayout {
     private ActionBarTip actionBarTip;
 
     // activity提示layout
+    //调整为动态加载
     public ActionBarTip getActionBarTip() {
         if (actionBarTip == null) {
             actionBarTip = new ActionBarTip(getContext());
@@ -430,5 +461,12 @@ public class ActionBar extends FrameLayout {
         if (actionBarTip != null) {
             actionBarTip.onDestroy();
         }
+    }
+
+    public void hideTitle() {
+       View view = actionLayout.getTitleView();
+       if(view!=null){
+           view.setVisibility(GONE);
+       }
     }
 }

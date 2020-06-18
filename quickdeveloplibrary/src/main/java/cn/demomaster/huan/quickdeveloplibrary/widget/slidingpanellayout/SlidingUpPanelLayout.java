@@ -1232,6 +1232,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (mSlideableView != null && mSlideableView != child) { // if main view
             // Clip against the slider; no sense drawing what will immediately be covered,
             // Unless the panel is set to overlay content
+            //绘制边界阴影
             canvas.getClipBounds(mTmpRect);
             if (!mOverlayContent) {
                 if (mIsSlidingUp) {
@@ -1262,6 +1263,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         return result;
     }
 
+    //是否显示灰色蒙版
     boolean showBackground = true;
     public void setShowBackground(boolean showBackground) {
         this.showBackground = showBackground;
@@ -1305,23 +1307,37 @@ public class SlidingUpPanelLayout extends ViewGroup {
     public void draw(Canvas c) {
         super.draw(c);
 
-        // draw the shadow
-        if (mShadowDrawable != null && mSlideableView != null) {
-            final int right = mSlideableView.getRight();
-            final int top;
-            final int bottom;
-            if (mIsSlidingUp) {
-                top = mSlideableView.getTop() - mShadowHeight;
-                bottom = mSlideableView.getTop();
-            } else {
-                top = mSlideableView.getBottom();
-                bottom = mSlideableView.getBottom() + mShadowHeight;
+        if(drawShadow) {
+            // draw the shadow
+            if (mShadowDrawable != null && mSlideableView != null) {
+                final int right = mSlideableView.getRight();
+                final int top;
+                final int bottom;
+                if (mIsSlidingUp) {
+                    top = mSlideableView.getTop() - mShadowHeight;
+                    bottom = mSlideableView.getTop();
+                } else {
+                    top = mSlideableView.getBottom();
+                    bottom = mSlideableView.getBottom() + mShadowHeight;
+                }
+                final int left = mSlideableView.getLeft();
+                mShadowDrawable.setBounds(left, top, right, bottom);
+                mShadowDrawable.draw(c);
             }
-            final int left = mSlideableView.getLeft();
-            mShadowDrawable.setBounds(left, top, right, bottom);
-            mShadowDrawable.draw(c);
         }
     }
+
+    //是否显示边界线
+    boolean drawShadow = false;
+
+    /**
+     * 是否显示边界线
+     * @param drawShadow
+     */
+    public void setDrawShadow(boolean drawShadow) {
+        this.drawShadow = drawShadow;
+    }
+
 
     /**
      * Tests scrollability within child views of v given a delta of dx.

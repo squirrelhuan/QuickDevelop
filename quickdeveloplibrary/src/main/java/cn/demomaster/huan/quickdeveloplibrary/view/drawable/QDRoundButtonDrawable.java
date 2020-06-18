@@ -113,7 +113,7 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
                 || super.isStateful();
     }
 
-    int padding_internal =10;
+    int padding_internal =10;//内部边距，但是看起来效果更像margin
     @Override
     protected void onBoundsChange(Rect r) {
 

@@ -3,7 +3,9 @@ package cn.demomaster.huan.quickdeveloplibrary.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdzxinglibrary.CodeCreator;
 import cn.demomaster.qdzxinglibrary.ScanHelper;
 import cn.demomaster.qdzxinglibrary.ScanSurfaceView;
@@ -84,10 +87,10 @@ public class MyCaptureActivity extends QDActivity {
         iv_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                photoHelper.selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
-                        setImageToView(data);
+                        setImageToView(path,data);
                     }
 
                     @Override
@@ -104,26 +107,42 @@ public class MyCaptureActivity extends QDActivity {
         }
     }
 
-    protected void setImageToView(final Intent data) {
+    protected void setImageToView(String path, final Intent data) {
         //showProgress("正在处理图片...", false);
         Bundle extras = data.getExtras();
+        Bitmap bitmap;
+        Result result = null;
         if (extras != null) {
-            final Bitmap bitmap = extras.getParcelable("data");
-            Result result = CodeCreator.readQRcode(bitmap);
-            if(result==null){
-                QdToast.show(mContext,"fail");
+             bitmap = extras.getParcelable("data");
+            if (bitmap == null) {
+                Uri uri = data.getData();
+                String filePath = QDFileUtil.getFilePathByUri(this, uri);
+                bitmap = QDFileUtil.getBitmapFromPath(filePath);
+            }
+            if (bitmap == null) {
+                QdToast.show(mContext, "fail");
                 return;
             }
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString(CODED_CONTENT, result.toString());
-            intent.putExtras(bundle);
-            intent.putExtra(CODED_CONTENT, result.toString());
-            //setResult(PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE, intent);
-            setResult(RESULT_OK, intent);
-            finish();
-            //Toast.makeText(mContext,"qr="+result.toString(),Toast.LENGTH_LONG).show();
+            result = CodeCreator.readQRcode(this,bitmap);
+        } else {
+            if (!TextUtils.isEmpty(path)) {
+                String filePath = QDFileUtil.getFilePathByUri(this, Uri.parse(path));
+                bitmap = QDFileUtil.getBitmapFromPath(filePath);
+                result = CodeCreator.readQRcode(this,bitmap);
+            }
         }
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        String cordStr =  "error null";
+        if(result!=null){
+            cordStr =  result.toString();
+        }
+        bundle.putString(CODED_CONTENT, cordStr);
+        intent.putExtras(bundle);
+        intent.putExtra(CODED_CONTENT, cordStr);
+        //setResult(PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE, intent);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

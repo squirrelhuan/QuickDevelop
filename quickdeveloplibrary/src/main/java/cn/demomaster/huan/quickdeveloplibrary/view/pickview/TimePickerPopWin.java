@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 
 /**
  * @author squirrel桓
@@ -63,7 +64,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
     List<String> hourList = new ArrayList();
     List<String> minList = new ArrayList();
     List<String> meridianList = new ArrayList();
-    private TimePickerPopWin.OnTimePickListener mListener;
+    private DatePickerListener.OnDateSelectListener mListener;
 
     public TimePickerPopWin(TimePickerPopWin.Builder builder) {
         this.textCancel = builder.textCancel;
@@ -178,11 +179,11 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
 
         int j;
         for (j = 1; j <= 12; ++j) {
-            this.hourList.add(format2LenStr(j));
+            this.hourList.add(StringUtil.formatNumberToStr(j,2));
         }
 
         for (j = 0; j < 60; ++j) {
-            this.minList.add(format2LenStr(j));
+            this.minList.add(StringUtil.formatNumberToStr(j,2));
         }
 
         this.meridianList.add("AM");
@@ -199,13 +200,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         if (v != this.contentView && v != this.cancelBtn) {
             if (v == this.confirmBtn) {
                 if (null != this.mListener) {
-                    String amPm = (String) this.meridianList.get(this.meridianPos);
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(String.valueOf(this.hourList.get(this.hourPos)));
-                    sb.append(":");
-                    sb.append(String.valueOf(this.minList.get(this.minutePos)));
-                    sb.append(amPm);
-                    this.mListener.onTimePickCompleted(this.hourPos + 1, this.minutePos, amPm, sb.toString());
+                    this.mListener.onDateSelect(0,0,0,this.hourPos + 1+(this.meridianPos==0?0:12), this.minutePos, 0);
                 }
 
                 this.dismissPopWin();
@@ -224,7 +219,6 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
             trans.setInterpolator(new AccelerateDecelerateInterpolator());
             this.pickerContainerV.startAnimation(trans);
         }
-
     }
 
     public void dismissPopWin() {
@@ -245,17 +239,9 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         this.pickerContainerV.startAnimation(trans);
     }
 
-    public static String format2LenStr(int num) {
-        return num < 10 ? "0" + num : String.valueOf(num);
-    }
-
-    public interface OnTimePickListener {
-        void onTimePickCompleted(int var1, int var2, String var3, String var4);
-    }
-
     public static class Builder {
         private Context context;
-        private TimePickerPopWin.OnTimePickListener listener;
+        private DatePickerListener.OnDateSelectListener listener;
         private String textCancel;
         private String textConfirm;
         private String text_sign_year = "时";
@@ -271,7 +257,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         private int btnTextSize = 16;
         private int viewTextSize = 25;
 
-        public Builder(Context context, TimePickerPopWin.OnTimePickListener listener) {
+        public Builder(Context context, DatePickerListener.OnDateSelectListener listener) {
             this.context = context;
             this.listener = listener;
             textCancel = context.getResources().getString(R.string.Cancel);

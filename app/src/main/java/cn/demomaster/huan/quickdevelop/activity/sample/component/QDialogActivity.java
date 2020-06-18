@@ -165,7 +165,7 @@ public class QDialogActivity extends QDActivity {
                         showSheetMenu();
                         break;
                     case 1:
-                        photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                        getPhotoHelper().selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 /*setImageToView(data);*/
@@ -205,9 +205,19 @@ public class QDialogActivity extends QDActivity {
     }
     private void showMessageWithButton(int gravity) {
         new QDDialog.Builder(mContext)
-                .setMessage("确定要发送吗？").setMinHeight_body(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_300))).setGravity_body(Gravity.CENTER).setText_size_body(20)
-                .setWidth(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_120))).setText_color_body(Color.BLUE).addAction("确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setText_size_foot(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_12))).setPadding_foot(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_18))).setActionButtonPadding(DisplayUtil.dip2px(mContext,getResources().getDimension(R.dimen.dp_18))).setText_color_foot(Color.GREEN).setLineColor(Color.RED).setBackgroundRadius(backgroundRadio).setGravity_foot(gravity).create().show();
+                .setMessage("确定要发送吗？")
+                //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
+                //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
+                //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
+                .setText_color_body(Color.BLUE)
+                .addAction("确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
+                //.setPadding_foot((int) getResources().getDimension(R.dimen.sp_6))
+                //.setActionButtonPadding((int) getResources().getDimension(R.dimen.sp_6))
+                .setText_color_foot(Color.GREEN)
+                .setLineColor(Color.RED)
+                .setBackgroundRadius(backgroundRadio)
+                .setGravity_foot(gravity).create().show();
     }
 
     private void showMessageWithButton2(int gravity) {

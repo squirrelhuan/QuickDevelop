@@ -21,10 +21,10 @@ import cn.demomaster.huan.quickdeveloplibrary.db.DbHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.StateObserver;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 
@@ -44,6 +44,7 @@ public class ApplicationParent extends Application implements
         super.onCreate();
         instance = this;
 
+        QdToast.setContext(this);
         QDLogger.setApplicationContext(this);
         QDLogger.i(QDTAG,"包名："+getPackageName()+",myPid="+android.os.Process.myPid());
 
@@ -122,7 +123,7 @@ public class ApplicationParent extends Application implements
      * @param dbpath
      */
     private void initDB(String dbpath) {
-        dbHelper = new DbHelper(this, dbpath, null, 2,this);
+        dbHelper = new DbHelper(this, dbpath, null, 7,this);
         //得到一个可读的SQLiteDatabase对象
         db = dbHelper.getReadableDatabase();
     }

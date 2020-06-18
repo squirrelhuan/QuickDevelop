@@ -22,7 +22,6 @@ public class BaseFragmentActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_base_fragment);
        /* View view = new FrameLayout(this);
         view.setId(getContentViewId());*/
         setContentView(null);

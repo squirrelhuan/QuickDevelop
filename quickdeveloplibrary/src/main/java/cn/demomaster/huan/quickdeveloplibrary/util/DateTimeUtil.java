@@ -359,10 +359,6 @@ public class DateTimeUtil {
         return  myDate;
     }
 
-    public static String format2LenStr(int num) {
-        return num < 10 ? "0" + num : String.valueOf(num);
-    }
-
     public static class MyDate{
         private int year;
         private int month;
@@ -381,13 +377,13 @@ public class DateTimeUtil {
         }
 
         public String getYearMonthDay(){
-            return year+"-"+format2LenStr(month)+"-"+format2LenStr(day);
+            return year+"-"+StringUtil.formatNumberToStr(month,2)+"-"+StringUtil.formatNumberToStr(day,2);
         }
         public String getHourMinuteSecond(){
-            return format2LenStr(hour)+":"+format2LenStr(minute)+":"+format2LenStr(second);
+            return StringUtil.formatNumberToStr(hour,2)+":"+StringUtil.formatNumberToStr(minute,2)+":"+StringUtil.formatNumberToStr(second,2);
         }
         public String getHourMinute(){
-            return format2LenStr(hour)+":"+format2LenStr(minute);
+            return StringUtil.formatNumberToStr(hour,2)+":"+StringUtil.formatNumberToStr(minute,2);
         }
         public String getDateTimeStr(){
             return getYearMonthDay()+" "+getHourMinuteSecond();

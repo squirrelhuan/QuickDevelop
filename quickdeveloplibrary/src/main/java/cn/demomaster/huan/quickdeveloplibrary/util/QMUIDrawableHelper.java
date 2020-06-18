@@ -250,7 +250,7 @@ public class QMUIDrawableHelper {
         try {
             return AppCompatResources.getDrawable(context, resVector);
         } catch (Exception e) {
-            QMUILog.d(TAG, "Error in getVectorDrawable. resVector=" + resVector + ", resName=" + context.getResources().getResourceName(resVector) + e.getMessage());
+            QDLogger.e(e.toString()+ "Error in getVectorDrawable. resVector=" + resVector + ", resName=" + context.getResources().getResourceName(resVector) + e.getMessage());
             return null;
         }
     }

@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
@@ -42,10 +43,10 @@ public class PickActivity extends QDActivity {
         findViewById(R.id.date).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerPopWin pickerPopWin = new DatePickerPopWin.Builder(mContext, new DatePickerPopWin.OnDatePickedListener() {
+                DatePickerPopWin pickerPopWin = new DatePickerPopWin.Builder(mContext, new DatePickerListener.OnDateSelectListener() {
                     @Override
-                    public void onDatePickCompleted(int year, int month, int day, String dateDesc) {
-                        Toast.makeText(mContext, dateDesc, Toast.LENGTH_SHORT).show();
+                    public void onDateSelect(int year, int month, int day, int hour, int minute, int sencond) {
+                        Toast.makeText(mContext, year+"-"+month+"-"+day, Toast.LENGTH_SHORT).show();
                     }
                 }).textConfirm("确定") //text of confirm button
                         .textCancel("取消") //text of cancel button
@@ -67,10 +68,11 @@ public class PickActivity extends QDActivity {
         findViewById(R.id.timepick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerPopWin timePickerPopWin=new TimePickerPopWin.Builder(mContext, new TimePickerPopWin.OnTimePickListener() {
+                TimePickerPopWin timePickerPopWin=new TimePickerPopWin.Builder(mContext, new DatePickerListener.OnDateSelectListener() {
                     @Override
-                    public void onTimePickCompleted(int hour, int minute, String AM_PM, String time) {
-                        Toast.makeText(mContext, time, Toast.LENGTH_SHORT).show();
+                    public void onDateSelect(int year, int month, int day, int hour, int minute, int sencond) {
+
+                        Toast.makeText(mContext, hour+":"+minute+":"+sencond, Toast.LENGTH_SHORT).show();
                     }
                 }).textConfirm("CONFIRM")
                         .textCancel("CANCEL")
@@ -83,6 +85,7 @@ public class PickActivity extends QDActivity {
                         .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
                         .build();
                 timePickerPopWin.showPopWin(mContext);
+
             }
         });
 
@@ -90,7 +93,6 @@ public class PickActivity extends QDActivity {
         findViewById(R.id.province).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Toast.makeText(mContext, "Working on...", Toast.LENGTH_SHORT).show();
 //                if(null != mProvinceList) {
 //                    ProvincePickPopWin pickPopWin = new ProvincePickPopWin(mContext,

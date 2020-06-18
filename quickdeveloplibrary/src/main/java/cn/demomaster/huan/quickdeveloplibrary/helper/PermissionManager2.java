@@ -314,13 +314,12 @@ public class PermissionManager2 {
     }
 
     //获取普通权限是否可用
-    @TargetApi(Build.VERSION_CODES.M)
     public static boolean getPermissionStatus(Context context, String permissionName) {
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int i = ContextCompat.checkSelfPermission(context, permissionName);
+            int r = ContextCompat.checkSelfPermission(context.getApplicationContext(), permissionName);
             // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
-            return (i == PackageManager.PERMISSION_GRANTED);
+            return (r == PackageManager.PERMISSION_GRANTED);
         }
         return true;
     }
@@ -354,7 +353,7 @@ public class PermissionManager2 {
                 map.put(str, str);
             }
             List<String> list = new ArrayList(map.keySet());
-            if (list.size() > 0) {
+            if (list!=null&&list.size() > 0) {
                 String str = list.get(0);
                 //TODO 获取统一分组
                 List<String> list1 = getStringListGroup(map, str);
@@ -363,6 +362,7 @@ public class PermissionManager2 {
                     if (getPermissionStatusByName(context, str)) {//检查特殊权限
                         List<String> list3 = removePassedFromList2(list, str);
                         if (list3 == null || list3.size() == 0) {
+                            if(listener!=null)
                             listener.onPassed();
                         } else {
                             chekPermission(context, list3.toArray(new String[list3.size()]), listener);
@@ -373,6 +373,7 @@ public class PermissionManager2 {
                             public void onPassed() {
                                 List<String> list3 = removePassedFromList2(list, str);
                                 if (list3 == null || list3.size() == 0) {
+                                    if(listener!=null)
                                     listener.onPassed();
                                 } else {
                                     chekPermission(context, list3.toArray(new String[list3.size()]), listener);
@@ -393,6 +394,7 @@ public class PermissionManager2 {
                         public void onPassed() {
                             List<String> list3 = removePassedFromList(list, targest);
                             if (list3.size() == 0) {
+                                if(listener!=null)
                                 listener.onPassed();
                             } else {
                                 chekPermission(context, list3.toArray(new String[list3.size()]), listener);
@@ -401,12 +403,14 @@ public class PermissionManager2 {
 
                         @Override
                         public void onNoPassed() {
+                            if(listener!=null)
                             listener.onNoPassed();
                         }
                     });
                 }
             }
         } else {
+            if(listener!=null)
             listener.onPassed();
         }
     }
@@ -507,6 +511,7 @@ public class PermissionManager2 {
                 }
             }
             PermissionManager.OnCheckPermissionListener listener = requestMap.get(REQUEST_PERMISS_COMMON_CODE);
+            requestMap.remove(REQUEST_PERMISS_COMMON_CODE);
             if (listener != null) {
                 //如果有权限没有被允许
                 if (hasPermissionDismiss) {
@@ -516,7 +521,6 @@ public class PermissionManager2 {
                     listener.onPassed();
                 }
             }
-            requestMap.remove(REQUEST_PERMISS_COMMON_CODE);
         }
     }
 

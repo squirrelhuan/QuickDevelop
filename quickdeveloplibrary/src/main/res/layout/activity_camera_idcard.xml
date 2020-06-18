@@ -25,9 +25,9 @@
 
             <ImageView
                 android:id="@+id/camera_take"
-                android:layout_width="@dimen/dp_36"
-                android:layout_height="@dimen/dp_36"
-                android:padding="17dp"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:padding="@dimen/dp_12"
                 android:layout_margin="@dimen/dp_18"
                 android:background="@drawable/btn_camera"
                 android:src="@drawable/ic_photo_camera_black_24dp" />

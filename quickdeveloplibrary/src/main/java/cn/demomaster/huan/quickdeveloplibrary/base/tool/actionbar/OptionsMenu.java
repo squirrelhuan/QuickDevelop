@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
@@ -27,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
  * @date 2018/11/15.
  * description：
  */
-public class OptionsMenu {
+public class OptionsMenu implements OnReleaseListener {
 
     public static String TAG = "CGQ";
     private WeakReference<Context> contextWeakReference;
@@ -229,12 +230,19 @@ public class OptionsMenu {
 
     public void dismiss() {
         //popupWindow.dismiss();
-        qdTipPopup.dismiss();
+        if (qdTipPopup != null) {
+            qdTipPopup.dismiss();
+        }
     }
 
     public void show(View v) {
         setAnchor(v);
         show();
+    }
+
+    @Override
+    public void onRelease() {
+        dismiss();
     }
 
     public interface OnMenuItemClicked {

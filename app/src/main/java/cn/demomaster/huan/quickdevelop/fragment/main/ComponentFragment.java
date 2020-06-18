@@ -31,6 +31,7 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonAct
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.EmptyLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.FramelayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.NdkTestFragment;
@@ -93,6 +94,7 @@ public class ComponentFragment extends QDFragment {
 
 
         classList.add(QdButtonFragment.class);
+        classList.add(EmptyLayoutFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
         classList.add(WheelImageFragment.class);

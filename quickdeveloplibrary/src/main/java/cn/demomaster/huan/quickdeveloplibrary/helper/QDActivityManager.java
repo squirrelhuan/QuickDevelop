@@ -1,22 +1,32 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.PopupWindow;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Stack;
 
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleRecorder;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
@@ -85,23 +95,82 @@ public class QDActivityManager {
         }
 
         private void record(LifecycleType lifecycleType, Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, lifecycleType+" ==> [" + activity + "]");
+            QDLogger.d(TAG.ACTIVITY, lifecycleType + " ==> [" + activity + "]");
             LifecycleRecorder.record(lifecycleType, activity);
         }
     };
+
+    /**
+     * 页面关闭
+     * 释放一些资源
+     * @param Object
+     */
+    public static void onFinishActivityOrFragment(Object obj) {
+
+        Field[] fields = obj.getClass().getDeclaredFields();
+        QDLogger.i("acitivity属性个数：" + fields.length);
+        for (int i = 0, len = fields.length; i < len; i++) {
+            // 对于每个属性，获取属性名
+            String varName = fields[i].getName();
+            try {
+                // 获取原来的访问控制权限
+                boolean accessFlag = fields[i].isAccessible();
+                // 修改访问控制权限
+                fields[i].setAccessible(true);
+                // 获取在对象f中属性fields[i]对应的对象中的变量
+                Object o;
+                try {
+                    o = fields[i].get(obj);
+                    if (o != null) {
+                        QDLogger.d("变量：" + varName + " = " + o);
+                        if(o instanceof OnReleaseListener){
+                            QDLogger.d("释放 OnReleaseListener：" + varName);
+                            ((OnReleaseListener) o).onRelease();
+                        }else
+                        if (o instanceof Handler) {
+                            QDLogger.d("释放handler：" + varName);
+                            ((Handler) o).removeCallbacksAndMessages(null);
+                        } else if (o instanceof Dialog) {
+                            QDLogger.d("释放dialog：" + varName);
+                            ((Dialog) o).dismiss();
+                        }  else if (o instanceof PopupWindow) {
+                            QDLogger.d("释放PopupWindow：" + varName);
+                            ((PopupWindow) o).dismiss();
+                        } else if (o instanceof Bitmap) {
+                            QDLogger.d("释放Bitmap：" + varName);
+                                ((Bitmap) o).recycle();
+                        }else if (o instanceof View) {
+                            QDLogger.d("释放View：" + varName);
+                            ((View) o).clearAnimation();
+                        }else if (o instanceof Animator) {
+                            QDLogger.d("释放Animator：" + varName);
+                            ((Animator) o).cancel();
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                // 恢复访问控制权限
+                fields[i].setAccessible(accessFlag);
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     //必须要在application里初始化
     @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public QDActivityManager init(Context context) {
         this.context = context.getApplicationContext();
-            //注冊activity监听器
-            try {
-                //注册
-                ((Application) this.context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            ((Application) this.context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        //注冊activity监听器
+        try {
+            //注册
+            ((Application) this.context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ((Application) this.context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         return instance;
     }
 
@@ -530,6 +599,7 @@ public class QDActivityManager {
 
     /**
      * 杀死其他正在运行的程序
+     *
      * @param context
      */
     public static void killOthers(Context context, String pkgName) {

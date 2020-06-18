@@ -73,8 +73,5 @@ public class LoadingDialog extends Dialog {
             dialog.setContentView(contentView);
             return dialog;
         }
-
-
     }
-
 }

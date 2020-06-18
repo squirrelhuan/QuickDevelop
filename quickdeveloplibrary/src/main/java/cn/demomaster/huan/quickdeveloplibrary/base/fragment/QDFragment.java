@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
@@ -187,6 +188,7 @@ public abstract class QDFragment extends Fragment implements QDFragmentInterface
         if(actionBarLayout!=null) {
             actionBarLayout.onDestroy();
         }
+        QDActivityManager.onFinishActivityOrFragment(this);
         super.onDestroy();
     }
 }
