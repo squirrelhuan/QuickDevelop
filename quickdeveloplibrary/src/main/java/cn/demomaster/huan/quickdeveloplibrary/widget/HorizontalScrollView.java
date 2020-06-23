@@ -215,7 +215,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     @Override
     public void fling(int velocityX) {
         super.fling(velocityX);
-        Log.d("AutoCenter", "fling velocityX=" + velocityX);
+        //Log.d("AutoCenter", "fling velocityX=" + velocityX);
 
     }
 
@@ -237,7 +237,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
                 nowScrollLeft = -1;
                 getCurrentIndex();
                 if (offset_target != offset_current) {
-                    Log.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
+                    //Log.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
                 if (onSelectChangeListener != null) {
@@ -254,10 +254,10 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
-        Log.i(tag, "onOverScrolled scrollX=" + scrollX);
+        /*Log.i(tag, "onOverScrolled scrollX=" + scrollX);
         Log.i(tag, "onOverScrolled scrollY=" + scrollY);
         Log.i(tag, "onOverScrolled clampedX=" + clampedX);
-        Log.i(tag, "onOverScrolled clampedY=" + clampedY);
+        Log.i(tag, "onOverScrolled clampedY=" + clampedY);*/
         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 
 
@@ -268,14 +268,14 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     @Override
     public void computeScroll() {
         super.computeScroll();
-        Log.i(tag, "computeScroll");
+        //Log.i(tag, "computeScroll");
 
     }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        Log.i(tag, "left=" + l);
+        //Log.i(tag, "left=" + l);
 
         // 更新ScrollView的滑动时间
         nowScrollLeft = l;
@@ -285,61 +285,61 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        Log.i(tag, "onNestedScroll。。。");
+        //Log.i(tag, "onNestedScroll。。。");
     }
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int axes) {
         super.onNestedScrollAccepted(child, target, axes);
-        Log.i(tag, "onNestedScrollAccepted。。。");
+        //Log.i(tag, "onNestedScrollAccepted。。。");
     }
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.i(tag, "onStartNestedScroll。。。");
+        //Log.i(tag, "onStartNestedScroll。。。");
         return super.onStartNestedScroll(child, target, nestedScrollAxes);
     }
 
     @Override
     public void onStopNestedScroll(View child) {
         super.onStopNestedScroll(child);
-        Log.i(tag, "onStopNestedScroll。。。");
+        //Log.i(tag, "onStopNestedScroll。。。");
     }
 
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
         super.onNestedPreScroll(target, dx, dy, consumed);
-        Log.i(tag, "onNestedPreScroll。。。");
+        //Log.i(tag, "onNestedPreScroll。。。");
     }
 
     @Override
     protected int computeHorizontalScrollExtent() {
-        Log.i(tag, "computeHorizontalScrollExtent。。。" + super.computeHorizontalScrollExtent());//
+        //Log.i(tag, "computeHorizontalScrollExtent。。。" + super.computeHorizontalScrollExtent());//
         return super.computeHorizontalScrollExtent();
     }
 
     @Override
     protected int computeVerticalScrollRange() {
-        Log.i(tag, "computeVerticalScrollRange。。。" + super.computeVerticalScrollRange());//
+        //Log.i(tag, "computeVerticalScrollRange。。。" + super.computeVerticalScrollRange());//
         return super.computeVerticalScrollRange();
     }
 
     @Override
     protected int computeVerticalScrollOffset() {
-        Log.i(tag, "computeVerticalScrollOffset。。。" + super.computeVerticalScrollOffset());
+        //Log.i(tag, "computeVerticalScrollOffset。。。" + super.computeVerticalScrollOffset());
         return super.computeVerticalScrollOffset();
     }
 
     @Override
     protected int computeVerticalScrollExtent() {
-        Log.i(tag, "computeVerticalScrollExtent。。。" + super.computeVerticalScrollExtent());//
+        //Log.i(tag, "computeVerticalScrollExtent。。。" + super.computeVerticalScrollExtent());//
         return super.computeVerticalScrollExtent();
     }
 
     @Override
     protected int computeHorizontalScrollRange() {
-        Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
-        Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + QMUIDisplayHelper.getScreenWidth(getContext())));
+        //Log.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
+        //Log.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + QMUIDisplayHelper.getScreenWidth(getContext())));
         return super.computeHorizontalScrollRange() + paddingLeft_origenal + paddingLeft + paddingRight_origenal + paddingRight;
     }
 
@@ -347,7 +347,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected int computeHorizontalScrollOffset() {
-        Log.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
+        //Log.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
         return super.computeHorizontalScrollOffset() + paddingLeft_origenal + paddingLeft;
     }
 
@@ -381,7 +381,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected int computeScrollDeltaToGetChildRectOnScreen(Rect rect) {
-        Log.i(tag, "computeScrollDeltaToGetChildRectOnScreen：" + rect);
+        //Log.i(tag, "computeScrollDeltaToGetChildRectOnScreen：" + rect);
         Rect rect_temp = rect;
         rect_temp.left = rect.left - QMUIDisplayHelper.getScreenWidth(getContext()) / 2;
         return super.computeScrollDeltaToGetChildRectOnScreen(rect);
@@ -389,11 +389,11 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.i(tag, "onLayout changed：" + changed);
+        /*Log.i(tag, "onLayout changed：" + changed);
         Log.i(tag, "onLayout l：" + l);
         Log.i(tag, "onLayout t：" + t);
         Log.i(tag, "onLayout r：" + b);
-        Log.i(tag, "onLayout b：" + b);
+        Log.i(tag, "onLayout b：" + b);*/
         super.onLayout(changed, l, t, r, b);
     }
 
@@ -406,16 +406,16 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     public boolean pageScroll(int direction) {
-        Log.i(tag, "pageScroll direction= " + direction);
+        //Log.i(tag, "pageScroll direction= " + direction);
         return super.pageScroll(direction);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i(tag, "onSizeChanged w= " + w);
+       /* Log.i(tag, "onSizeChanged w= " + w);
         Log.i(tag, "onSizeChanged h= " + h);
         Log.i(tag, "onSizeChanged oldw= " + oldw);
-        Log.i(tag, "onSizeChanged oldh= " + oldh);
+        Log.i(tag, "onSizeChanged oldh= " + oldh);*/
         super.onSizeChanged(w, h, oldw, oldh);
     }
 

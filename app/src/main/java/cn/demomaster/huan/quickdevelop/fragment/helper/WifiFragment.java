@@ -206,7 +206,7 @@ public class WifiFragment extends QDFragment {
     WifiManager wifiManager;
     private void initData() {
         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
-        PermissionManager.chekPermission(mContext, permissions, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(mContext, permissions, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 scanResultList = getQDWifiList();
@@ -221,8 +221,7 @@ public class WifiFragment extends QDFragment {
             }
 
             @Override
-            public void onNoPassed() {
-                QDLogger.i("未通过");
+            public void onRefused() {QDLogger.i("未通过");
             }
         });
     }

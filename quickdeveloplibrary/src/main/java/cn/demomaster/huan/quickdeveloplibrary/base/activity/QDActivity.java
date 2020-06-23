@@ -1,18 +1,14 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,18 +18,16 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
-import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
+import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -42,7 +36,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.MessageHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
@@ -127,7 +121,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        if (getApplicationContext() != null && getApplicationContext() instanceof ApplicationParent) {
+        if (getApplicationContext() != null && getApplicationContext() instanceof QDApplication) {
             StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
         }
         //changeAppLanguage(this);
@@ -382,14 +376,14 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         if (photoHelper != null) {
             photoHelper.onActivityResult(requestCode, resultCode, data);
         }
-        PermissionManager2.onActivityResult(this, requestCode, resultCode, data);
+        PermissionManager.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         QDLogger.d(requestCode + permissions.toString() + grantResults.toString());
-        PermissionManager2.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public PhotoHelper getPhotoHelper() {

@@ -172,7 +172,7 @@ public class ActionBar extends FrameLayout {
         LayoutParams layoutParams_content = (LayoutParams) contentLayout.getLayoutParams();
         if (actionLayout != null) {
             actionHeight = actionLayout.getHeight();
-            QDLogger.d("switchActivonBarType actionHeight =" + actionHeight);
+            //QDLogger.d("switchActivonBarType actionHeight =" + actionHeight);
         }
         switch (actionbarType) {
             case NORMAL:

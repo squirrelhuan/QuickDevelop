@@ -159,7 +159,7 @@ public class TabMenuLayout extends LinearLayout {
     //初始化单个tab内容页
     private void initSingTabContent(final View tabGroup, final View tabButton, final int tabIndex) {
         if (popupWindow == null) {
-            CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder((Activity) context);
+            CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder();
             contentView = LayoutInflater.from(context).inflate(R.layout.layout_mul_menu, null, false);
             location = new int[2];
             tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标

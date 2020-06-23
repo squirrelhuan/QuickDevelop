@@ -128,7 +128,7 @@ public class CsqliteActivity extends QDActivity {
             //参数5：分组方式
             //参数6：having条件
             //参数7：排序方式
-            Cursor cursor = Application.getInstance().db.query("inner_department_category", new String[]{"id","name","code"}, "id=?", new String[]{"1"}, null, null, null);
+            Cursor cursor = Application.getInstance().getDbHelper().getReadableDatabase().query("inner_department_category", new String[]{"id","name","code"}, "id=?", new String[]{"1"}, null, null, null);
             while(cursor.moveToNext()){
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 String code = cursor.getString(cursor.getColumnIndex("code"));
@@ -173,7 +173,7 @@ public class CsqliteActivity extends QDActivity {
             String whereClauses = "id=?";
             String [] whereArgs = {String.valueOf(2)};
             //调用delete方法，删除数据
-            Application.getInstance().db.delete("inner_department_category", whereClauses, whereArgs);
+            Application.getInstance().getDbHelper().getReadableDatabase().delete("inner_department_category", whereClauses, whereArgs);
         }
     }
 }

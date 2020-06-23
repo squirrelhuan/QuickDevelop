@@ -71,7 +71,7 @@ public class EmptyLayoutFragment extends QDFragment {
     }
 
     private void showMulMenuDialog() {
-        String[] menus ={"单行提示","标题+描述","单行文字+重试按钮","标题+描述+重试按钮"};
+        String[] menus ={"单行提示","标题+描述","单行文字+重试按钮","标题+描述+重试按钮","加载动画","加载动画+加载提示","加载动画+加载提示+加载描述",};
         new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
@@ -96,6 +96,22 @@ public class EmptyLayoutFragment extends QDFragment {
                         emptylayout.hideAll();
                         emptylayout.showTitle("标题");
                         emptylayout.showMessage("单行提示");
+                        emptylayout.showRetry();
+                        break;
+                    case 4:
+                        emptylayout.hideAll();
+                        emptylayout.showLodding();
+                        break;
+                    case 5:
+                        emptylayout.hideAll();
+                        emptylayout.showLodding();
+                        emptylayout.showTitle("加载中");
+                        break;
+                    case 6:
+                        emptylayout.hideAll();
+                        emptylayout.showLodding();
+                        emptylayout.showTitle("加载中");
+                        emptylayout.showMessage("请耐心等待");
                         emptylayout.showRetry();
                         break;
                 }

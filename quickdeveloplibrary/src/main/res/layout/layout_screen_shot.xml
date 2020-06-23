@@ -3,92 +3,67 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#77000000">
+    android:background="@color/transparent_dark_55">
 
     <LinearLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_15"
-        android:layout_marginBottom="@dimen/dp_18"
-        android:layout_marginLeft="@dimen/dp_18"
-        android:layout_marginRight="@dimen/dp_18"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_60"
         android:background="@color/white"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingTop="@dimen/dp_6"
-        android:paddingBottom="@dimen/dp_6"
-        android:paddingLeft="@dimen/dp_9"
-        android:paddingRight="@dimen/dp_9"
-        android:background="#000">
 
-        <ImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="@dimen/dp_0"
-            android:layout_weight="1"
-            android:scaleType="fitStart"
-            android:layout_height="@dimen/dp_18"
-            android:src="@mipmap/quickdevelop_ic_launcher_round" />
-<!--
         <LinearLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/dp_3"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
-                android:layout_marginTop="@dimen/dp_2"
-                android:textSize="12sp"
-                android:text="口袋基因" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
-                android:textSize="10sp"
-                android:text="长按二维码，即刻解密你的基因" />
-        </LinearLayout>-->
-
-
-        <ImageView
-            android:id="@+id/iv_code"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30" />
-
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/iv_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="@dimen/dp_6"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_green_small"
-            android:padding="@dimen/dp_5"
-            android:textSize="@dimen/sp_11"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:layout_marginRight="@dimen/dp_30"
-            android:text="分 享"/>
+            android:background="#000"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_9"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_9"
+            android:paddingBottom="@dimen/dp_6">
 
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_18"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:src="@mipmap/quickdevelop_ic_launcher_round" />
+
+            <ImageView
+                android:id="@+id/iv_code"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:background="@drawable/btn_green_small"
+        android:gravity="center"
+        android:padding="@dimen/dp_5"
+        android:text="分 享"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
+
+
 </RelativeLayout>

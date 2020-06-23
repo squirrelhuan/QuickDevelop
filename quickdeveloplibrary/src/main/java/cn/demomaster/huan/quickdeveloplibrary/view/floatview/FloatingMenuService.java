@@ -3,20 +3,16 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 import android.content.Context;
 import android.graphics.PointF;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
-import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
 import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView;
 
 /**

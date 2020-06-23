@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/iv_light"
-            android:layout_width="@dimen/dp_36"
-            android:layout_height="@dimen/dp_36"
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46"
             android:layout_margin="@dimen/dp_6"
             android:padding="@dimen/dp_9"
             android:background="@drawable/btn_transparent_circle"
@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/iv_gallery"
-            android:layout_width="@dimen/dp_36"
-            android:layout_height="@dimen/dp_36"
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46"
             android:layout_margin="@dimen/dp_6"
             android:padding="@dimen/dp_9"
             android:background="@drawable/btn_transparent_circle"

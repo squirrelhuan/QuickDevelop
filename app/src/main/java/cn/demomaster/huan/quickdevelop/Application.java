@@ -4,9 +4,6 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-/*
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;*/
 
 import java.io.File;
 import java.io.IOException;
@@ -14,27 +11,27 @@ import java.security.InvalidParameterException;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
-import cn.demomaster.huan.quickdeveloplibrary.ApplicationParent;
+import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 
-import static cn.demomaster.huan.quickdeveloplibrary.util.xml.QDAppStateUtil.isApkInDebug;
+/*
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;*/
 //import com.umeng.socialize.PlatformConfig;
 
 
-public class Application extends ApplicationParent {
+public class Application extends QDApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         NotifycationHelper.getInstance().init(this);
         //SoundHelper.init(this);
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
 
-
+       // DoraemonKit.install(this);
         //初始化友盟分享
         //initUmengShare("5c79138f61f564e0380012fa");
 

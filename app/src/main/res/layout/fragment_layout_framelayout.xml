@@ -111,10 +111,23 @@
             android:text="显示" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <cn.demomaster.huan.quickdeveloplibrary.view.timeline.TimeLineView
+        android:id="@+id/time_line"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </cn.demomaster.huan.quickdeveloplibrary.view.timeline.TimeLineView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never" />
-
+    </LinearLayout>
 </LinearLayout>

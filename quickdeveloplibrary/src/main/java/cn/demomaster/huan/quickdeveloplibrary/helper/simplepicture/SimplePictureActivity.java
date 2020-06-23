@@ -32,7 +32,6 @@ public class SimplePictureActivity extends QDActivity {
 
     /**
      * 横竖屏切换处理
-     *
      * @param newConfig
      */
     @Override
@@ -90,14 +89,14 @@ public class SimplePictureActivity extends QDActivity {
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionManager.chekPermission(mContext, permission, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(mContext, permission, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 initView();
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
 
             }
         });

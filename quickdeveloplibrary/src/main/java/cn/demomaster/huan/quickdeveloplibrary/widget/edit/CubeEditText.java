@@ -117,7 +117,7 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
                 }else {
                     left = (float) (compoundPaddingLeft+textWidth-charWidth+letterSpacing*(i+0.5)*getTextSize());
                 }
-                QDLogger.i("textWidth="+textWidth+",charWidth="+charWidth+",left="+left);
+               // QDLogger.i("textWidth="+textWidth+",charWidth="+charWidth+",left="+left);
                 rectF2 = new RectF(left, compoundPaddingTop, left+charWidth, mLayout.getHeight() + compoundPaddingTop);
                 canvas.drawRoundRect(rectF2, 5, 5, mPaint);
             }

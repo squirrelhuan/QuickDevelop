@@ -18,7 +18,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingService;
 
@@ -62,7 +61,7 @@ public class FloatingFragment extends QDFragment {
         btn_floating_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionManager2.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
                         Toast.makeText(getContext(),"开启",Toast.LENGTH_SHORT).show();
@@ -75,7 +74,7 @@ public class FloatingFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
                         Toast.makeText(getContext(),"拒绝",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -94,7 +93,7 @@ public class FloatingFragment extends QDFragment {
         btn_floating_02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionManager2.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
                         Toast.makeText(getContext(),"开启",Toast.LENGTH_SHORT).show();
@@ -107,7 +106,7 @@ public class FloatingFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
                         Toast.makeText(getContext(),"拒绝",Toast.LENGTH_SHORT).show();
                     }
                 });

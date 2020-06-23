@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,9 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
+import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatView;
+import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatViewImp;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
 
@@ -69,6 +74,17 @@ public class MainFragment extends QDFragment {
 
     @Override
     public void initView(View rootView, ActionBar actionBarLayout) {
+
+        /*FloatViewImp floatView = new FloatViewImp() {
+            @Override
+            public View onCreateView(Bundle savedInstanceState) {
+                ImageView imageView = new ImageView(mContext);
+                imageView.setImageResource(R.mipmap.dk_doraemon);
+                return imageView;
+            }
+        };
+        FloatHelper.getInstance().showFloatView(mContext,floatView);*/
+
         actionBarLayout.setFullScreen(true);
         actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));

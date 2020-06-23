@@ -1,7 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -63,7 +65,7 @@ public class QDActionDialog extends Dialog {
 
     public QDActionDialog(Context context, Builder builder) {
         //设置全屏将会覆盖状态栏
-        super(context,builder.styleId);
+        super(context, builder.styleId);
         gravity = builder.gravity;
         this.context = builder.context;
         message = builder.message;
@@ -322,6 +324,29 @@ public class QDActionDialog extends Dialog {
                     dismiss();
                 }
             }, delayMillis);
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        if (isShowing()) {
+            super.dismiss();
+        }
+        if (isShowing()) {
+            Context context = ((ContextWrapper) getContext()).getBaseContext();
+            if (context instanceof Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        dismiss();
+                    }
+                } else {
+                    if (!((Activity) context).isFinishing()) {
+                        dismiss();
+                    }
+                }
+            } else {
+                dismiss();
+            }
         }
     }
 

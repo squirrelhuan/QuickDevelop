@@ -90,8 +90,6 @@ public class QDKeyboard {
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();
             editTextList.remove(editText);
-        } else {
-            QDLogger.d("contains=false");
         }
     }
 
@@ -179,7 +177,6 @@ public class QDKeyboard {
 
     /**
      * 延迟隐藏
-     *
      * @return
      */
     private void waitHideKeyboard() {

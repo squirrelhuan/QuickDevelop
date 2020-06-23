@@ -109,7 +109,7 @@ public class PhotoHelper {
 
     private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        PermissionManager.chekPermission(contextWeakReference.get(), permissions, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(contextWeakReference.get(), permissions, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 photoResultMap.put(resultCodeTakePhoto, onTakePhotoResult);
@@ -136,9 +136,9 @@ public class PhotoHelper {
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
                 if(onTakePhotoResult instanceof OnTakePhotoResult )
-                ((OnTakePhotoResult)onTakePhotoResult).onFailure("权限不足");
+                    ((OnTakePhotoResult)onTakePhotoResult).onFailure("权限不足");
             }
         });
     }

@@ -43,6 +43,7 @@ public class CircleImageView extends AppCompatImageView {
 
     int circle_background_padding;//是否对背景圆角处理
     int circle_background_color;
+
     private void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleImageView);
@@ -63,19 +64,19 @@ public class CircleImageView extends AppCompatImageView {
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
             path.addCircle(getWidth() / 2, getHeight() / 2, (float) (raduis), Path.Direction.CCW);
-            if(circle_background_color!=Color.TRANSPARENT){
+            if (circle_background_color != Color.TRANSPARENT) {
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setColor(circle_background_color);
-                canvas.drawCircle(getWidth()/2,getHeight()/2,Math.min(getWidth(),getHeight())/2,paint);
+                canvas.drawCircle(getWidth() / 2, getHeight() / 2, Math.min(getWidth(), getHeight()) / 2, paint);
             }
-                //先将canvas保存
-                canvas.save();
-                //设置为在圆形区域内绘制
-                canvas.clipPath(path);
-                //绘制Bitmap
-                //canvas.drawBitmap(targetView.mBitmap, 0, 0, paint);
-                super.onDraw(canvas); //恢复Canvas
+            //先将canvas保存
+            canvas.save();
+            //设置为在圆形区域内绘制
+            canvas.clipPath(path);
+            //绘制Bitmap
+            //canvas.drawBitmap(targetView.mBitmap, 0, 0, paint);
+            super.onDraw(canvas); //恢复Canvas
 
             canvas.restore();
         } else {

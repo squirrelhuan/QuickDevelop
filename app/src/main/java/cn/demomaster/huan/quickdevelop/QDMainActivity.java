@@ -4,21 +4,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.fragment.main.ComponentFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
-
 
 public class QDMainActivity extends QDActivity {
 
@@ -50,8 +50,6 @@ public class QDMainActivity extends QDActivity {
 
         // Tabs
         initScrollableTabs(mViewPager);
-
-
     }
 
     /**
@@ -62,7 +60,6 @@ public class QDMainActivity extends QDActivity {
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(this);
         mScrollingTabs.setScrollingTabsAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
-
     }
 
     private static class MainFragmentAdapter extends FragmentPagerAdapter {

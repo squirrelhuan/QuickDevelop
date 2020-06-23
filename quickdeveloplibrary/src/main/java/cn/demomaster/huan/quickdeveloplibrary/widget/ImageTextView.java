@@ -7,9 +7,13 @@ import android.graphics.Paint;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
+import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.AttributeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * @author squirrel桓
@@ -34,6 +38,7 @@ public class ImageTextView extends AppCompatImageView {
 
     public int textColor = -1;
     public int textSize = -1;
+
     public void setTextColor(int textColor) {
         this.textColor = textColor;
         postInvalidate();
@@ -92,7 +97,7 @@ public class ImageTextView extends AppCompatImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //QDLogger.e(TAG.TAG,"onMeasure");
         if (text != null) {
             initPaint();
             // 文字宽
@@ -100,33 +105,36 @@ public class ImageTextView extends AppCompatImageView {
             // 文字baseline在y轴方向的位置
             baseLineY = Math.abs(mPaint.ascent() + mPaint.descent()) / 2;
 
-
             int minimumWidth = getSuggestedMinimumWidth();
             int minimumHeight = getSuggestedMinimumHeight();
             int width = measureWidth(minimumWidth, widthMeasureSpec);
             int height = measureHeight(minimumHeight, heightMeasureSpec);
+            //QDLogger.e(TAG.TAG,"width="+width+",height="+height);
             setMeasuredDimension(width, height);
+        }else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+    }
+
+    @Override
+    protected int getSuggestedMinimumWidth() {
+        return (int) textWidth;//super.getSuggestedMinimumWidth();
     }
 
     private int measureWidth(int defaultWidth, int measureSpec) {
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        //Log.e("YViewWidth", "---speSize = " + specSize + "");
+        //QDLogger.e("YViewWidth", "---speSize = " + specSize + ",specMode="+specMode);
 
         switch (specMode) {
             case MeasureSpec.AT_MOST:
                 defaultWidth = (int) mPaint.measureText(text) + getPaddingLeft() + getPaddingRight();
-
-                //Log.e("YViewWidth", "---speMode = AT_MOST");
                 break;
             case MeasureSpec.EXACTLY:
-                //Log.e("YViewWidth", "---speMode = EXACTLY");
-                defaultWidth = specSize;
+                defaultWidth =specSize;// (int) mPaint.measureText(text);
                 break;
             case MeasureSpec.UNSPECIFIED:
-                //Log.e("YViewWidth", "---speMode = UNSPECIFIED");
-                defaultWidth = Math.max(defaultWidth, specSize);
+                //defaultWidth = Math.max(defaultWidth, specSize);
         }
         return defaultWidth;
     }
@@ -154,7 +162,6 @@ public class ImageTextView extends AppCompatImageView {
 //        4.leading：是上一行字符的descent到下一行的ascent之间的距离,也就是相邻行间的空白距离
 //        5.top：是指的是最高字符到baseline的值,即ascent的最大值
 //        6.bottom：是指最低字符到baseline的值,即descent的最大值
-
                 break;
         }
         return defaultHeight;
@@ -166,19 +173,26 @@ public class ImageTextView extends AppCompatImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
+        //QDLogger.e(TAG.TAG,"onSizeChanged"+"w="+w+",h="+h);
         width = w;
         height = h;
         center_x = width / 2;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
+        //QDLogger.e(TAG.TAG,"onDraw");
         super.onDraw(canvas);
         if (text != null) {
             initPaint();
             drawText(canvas);
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        //QDLogger.e(TAG.TAG,"onLayout");
     }
 
     private String text;
@@ -188,7 +202,12 @@ public class ImageTextView extends AppCompatImageView {
     public void setText(String text) {
         this.text = text;
         requestLayout();
-        postInvalidate();
+        invalidate();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
     }
 
     Paint mPaint;

@@ -16,7 +16,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -39,6 +38,9 @@ public class PermitionFragment extends QDFragment {
     QDButton btn_write_external_storage;
     @BindView(R.id.btn_write_external_storage2)
     QDButton btn_write_external_storage2;
+
+    @BindView(R.id.btn_group)
+    QDButton btn_group;
     View mView;
 
     @Override
@@ -56,9 +58,9 @@ public class PermitionFragment extends QDFragment {
         btn_write_external_storage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionManager.chekPermission(mContext, new String[]{
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionManager.OnCheckPermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionManager.PermissionListener() {
 
                     @Override
                     public void onPassed() {
@@ -66,7 +68,7 @@ public class PermitionFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
                         Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
                     }
                 });
@@ -75,9 +77,9 @@ public class PermitionFragment extends QDFragment {
         btn_write_external_storage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionManager2.getInstance().chekPermission(mContext, new String[]{
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_SETTINGS,Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.OnCheckPermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_SETTINGS,Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
 
                     @Override
                     public void onPassed() {
@@ -85,7 +87,28 @@ public class PermitionFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
+                        Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        btn_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE}, new PermissionManager.PermissionListener() {
+
+                    @Override
+                    public void onPassed() {
+                        Toast.makeText(mContext,"通过",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onRefused() {
                         Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
                     }
                 });

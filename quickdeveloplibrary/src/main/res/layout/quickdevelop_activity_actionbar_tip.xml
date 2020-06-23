@@ -10,8 +10,8 @@
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
         android:id="@+id/sv_icon"
-        android:layout_width="@dimen/sp_16"
-        android:layout_height="@dimen/sp_16"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
         android:layout_margin="@dimen/dp_6"
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"

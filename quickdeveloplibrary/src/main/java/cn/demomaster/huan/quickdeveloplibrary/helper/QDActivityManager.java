@@ -499,7 +499,6 @@ public class QDActivityManager {
     /**
      * TODO 待驗證first
      * Activity是否在前台
-     *
      * @param context
      * @return
      */
@@ -599,7 +598,6 @@ public class QDActivityManager {
 
     /**
      * 杀死其他正在运行的程序
-     *
      * @param context
      */
     public static void killOthers(Context context, String pkgName) {

@@ -130,7 +130,7 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         } else {//下拉
             QDLogger.d("下拉");
             MultiRecycleContainer downer = getDownerChild(parent);//下一个
-            QDLogger.d("获取下一个可下拉的视图:" + downer);
+            //QDLogger.d("获取下一个可下拉的视图:" + downer);
             if (downer == null) {
                 py = dy;
             } else {
@@ -607,7 +607,7 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         if (parent == null) return;
         int height = getAllChildHeight(parent);
         int width = parent.getWidth();
-        QDLogger.d("height=" + height + ",width=" + width);
+        //QDLogger.d("height=" + height + ",width=" + width);
 
         int scrollY = getFirstChild(parent).getTop();
         MultiRecycleContainer child = getCurrentChild(parent);

@@ -28,7 +28,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 @ActivityPager(name = "Serialport",preViewClass = TextView.class,resType = ResType.Custome)
 public class SerialportMain extends QDActivity {
@@ -69,7 +68,7 @@ public class SerialportMain extends QDActivity {
 
 
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionManager.chekPermission(mContext, permissions, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(mContext, permissions, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
 
@@ -77,8 +76,9 @@ public class SerialportMain extends QDActivity {
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
 
-        }});
+            }
+});
     }
 }

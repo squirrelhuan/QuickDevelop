@@ -54,7 +54,7 @@ public class PositionFragment extends QDFragment {
         btn_get_position.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PermissionManager.chekPermission(mContext, PERMISSIONS_POSITION, new PermissionManager.OnCheckPermissionListener() {
+                PermissionManager.getInstance().chekPermission(mContext, PERMISSIONS_POSITION, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
                         GPSUtils.getInstance(mContext).getLngAndLat(new GPSUtils.OnLocationResultListener() {
@@ -71,7 +71,7 @@ public class PositionFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
 
                     }
                 });

@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 
 /**
  *
@@ -40,6 +41,7 @@ public class QDMainFragmentActivity extends QDActivity {
         //actionBarLayoutView.setHeaderBackgroundColor();
         getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
         getActionBarLayout().getLeftView().setVisibility(View.GONE);
+
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
 
@@ -79,6 +81,8 @@ public class QDMainFragmentActivity extends QDActivity {
         if(!TextUtils.isEmpty(str)) {
             QdToast.show(mContext, str.toString());
         }
+
+        DebugFloatingService.showConsole(mContext);
     }
 
     @Override

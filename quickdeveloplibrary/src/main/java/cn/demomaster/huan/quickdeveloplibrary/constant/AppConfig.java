@@ -54,10 +54,6 @@ public class AppConfig {
         return instance;
     }
 
-    /*public boolean isPatient() {
-        return (boolean) configMap.get("isPatient");
-    }*/
-
     public  Class getClassFromClassMap(String classNameKey) {
         if(configMap==null){
             return null;

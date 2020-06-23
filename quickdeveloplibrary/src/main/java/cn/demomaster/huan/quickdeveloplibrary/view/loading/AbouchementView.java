@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDColorUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.modle.Baller;
 
@@ -81,7 +82,7 @@ public class AbouchementView extends View {
         }
         int x = (int) (centerX + r * Math.cos(radians));
         int y = (int) (centerY + r * Math.sin(radians));
-        QDLogger.e("degrees="+degrees+",x="+x+",y="+y+",r2="+r+",progress="+progress+",centerX="+centerX+",centerY="+centerY);
+        //QDLogger.e("degrees="+degrees+",x="+x+",y="+y+",r2="+r+",progress="+progress+",centerX="+centerX+",centerY="+centerY);
         baller.setX(x);
         baller.setY(y);
         baller.setRadiusLocal(r);
@@ -116,7 +117,6 @@ public class AbouchementView extends View {
             startAnimation();
         }
     }
-
 
     private void drawView(Canvas canvas) {
         //QDLogger.e("progress=" + progress + "");
@@ -183,7 +183,7 @@ public class AbouchementView extends View {
                 RectF mRecF5 = new RectF(baller.getLeft() , baller.getTop(), baller.getRight(), baller.getBottom());
                 canvas.drawOval(mRecF5, mPaint);
             }
-            mPaint.setColor(getCurrentColor(1-progress,Color.parseColor("#4876FF"),Color.parseColor("#483D8B")));
+            mPaint.setColor(QDColorUtil.getCurrentColor(1-progress,Color.parseColor("#4876FF"),Color.parseColor("#483D8B")));
             Path path = new Path();
             for(int i=0;i<ballers.size()/2;i++){
                 if(i==0) {
@@ -305,38 +305,6 @@ public class AbouchementView extends View {
                 animator.cancel();
             }
         }
-    }
-
-    /**
-     * 根据fraction值来计算当前的颜色。
-     */
-    private int getCurrentColor(float fraction, int startColor, int endColor) {
-        int redCurrent;
-        int blueCurrent;
-        int greenCurrent;
-        int alphaCurrent;
-
-        int redStart = Color.red(startColor);
-        int blueStart = Color.blue(startColor);
-        int greenStart = Color.green(startColor);
-        int alphaStart = Color.alpha(startColor);
-
-        int redEnd = Color.red(endColor);
-        int blueEnd = Color.blue(endColor);
-        int greenEnd = Color.green(endColor);
-        int alphaEnd = Color.alpha(endColor);
-
-        int redDifference = redEnd - redStart;
-        int blueDifference = blueEnd - blueStart;
-        int greenDifference = greenEnd - greenStart;
-        int alphaDifference = alphaEnd - alphaStart;
-
-        redCurrent = (int) (redStart + fraction * redDifference);
-        blueCurrent = (int) (blueStart + fraction * blueDifference);
-        greenCurrent = (int) (greenStart + fraction * greenDifference);
-        alphaCurrent = (int) (alphaStart + fraction * alphaDifference);
-
-        return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
 
 }

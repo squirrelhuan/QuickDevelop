@@ -53,7 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //当更新数据库的时候执行该方法
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //输出更新数据库的日志信息
-        QDLogger.i(TAG, "update Database------------->oldVersion="+oldVersion+",newVersion="+newVersion);
+        QDLogger.println(TAG, "update Database------------->oldVersion="+oldVersion+",newVersion="+newVersion);
         if(dbHelperInterface!=null){
             dbHelperInterface.onUpgrade(db,oldVersion,newVersion);
         }
@@ -70,7 +70,7 @@ public class DbHelper extends SQLiteOpenHelper {
             if (DATABASE_VERSION != dbVersion) {
                 File dbFile = mContext.getDatabasePath(DATABASE_NAME);
                 if (!dbFile.delete()) {
-                    QDLogger.w(TAG, "Unable to update database");
+                    QDLogger.println(TAG, "Unable to update database");
                 }
             }
         }
@@ -94,7 +94,7 @@ public class DbHelper extends SQLiteOpenHelper {
         File file = new File(parentPath);
         if (!file.exists()) {
             if (!file.mkdir()) {
-                QDLogger.w(TAG, "Unable to create database directory");
+                QDLogger.println(TAG, "Unable to create database directory");
                 return;
             }
         }

@@ -54,11 +54,9 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".activity.Main3Activity">
-        </activity>
 
-        <!--<activity
-            android:name=".activity.sample.Main2Activity"
+       <!-- <activity
+            android:name=".activity.Main3Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/StartAppTheme.NoActionBar">
             <intent-filter>

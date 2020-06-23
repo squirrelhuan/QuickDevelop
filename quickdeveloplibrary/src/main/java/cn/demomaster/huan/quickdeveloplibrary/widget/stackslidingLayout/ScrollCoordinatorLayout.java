@@ -247,7 +247,7 @@ public class ScrollCoordinatorLayout extends CoordinatorLayout {
         getGlobalVisibleRect(viewport);
         int height = viewport.height();
         int width = viewport.width();
-        QDLogger.d("viewport="+viewport+",height="+height+",width="+width);
+        //QDLogger.d("viewport="+viewport+",height="+height+",width="+width);
 
         int scrollX = getScrollX();
         int scrollY = getScrollY();

@@ -13,11 +13,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  */
 public class CPopupWindow extends PopupWindow {
 
-
-    private Context context;
-
     private CPopupWindow(PopBuilder builder) {
-        this.context = builder.context;
         this.setContentView(builder.contentView);
         this.setWidth(builder.width);
         this.setHeight(builder.height);
@@ -29,12 +25,11 @@ public class CPopupWindow extends PopupWindow {
 
     public static class PopBuilder {
         private View contentView;
-        private Context context;
         private int width, height;
         private boolean focusable;
 
-        public PopBuilder(Context context) {
-            this.context = context;
+        public PopBuilder() {
+
         }
 
         public PopBuilder setContentView(View view, int width, int height, boolean focusable) {
@@ -48,8 +43,6 @@ public class CPopupWindow extends PopupWindow {
         public CPopupWindow build() {
             return new CPopupWindow(this);
         }
-
     }
-
 
 }

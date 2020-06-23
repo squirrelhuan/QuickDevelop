@@ -149,14 +149,14 @@ public class UpdateAppFragment extends QDFragment {
         }
 
         //存储权限
-        PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 checkVersionCode(context);
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
 
             }
         });
@@ -320,7 +320,7 @@ public class UpdateAppFragment extends QDFragment {
     //下载文件
     public static void downloadFile(final Context context, String urls, final String name) {
         final String url = urls;
-        PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 /*DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
@@ -352,7 +352,7 @@ public class UpdateAppFragment extends QDFragment {
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
                 Toast.makeText(context, "请打开相关权限！", Toast.LENGTH_SHORT).show();
             }
         });

@@ -63,7 +63,7 @@ public class InstallHelper {
         }
 
         //存储权限
-        PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
@@ -96,8 +96,7 @@ public class InstallHelper {
             }
 
             @Override
-            public void onNoPassed() {
-
+            public void onRefused() {
 
             }
         });
@@ -194,7 +193,6 @@ public class InstallHelper {
         dialog.show();
     }
 
-
     public static boolean checkAppInstalled(Context context, String pkgName) {
         if (pkgName == null || pkgName.isEmpty()) {
             return false;
@@ -210,7 +208,6 @@ public class InstallHelper {
         }
         return false;
     }
-
 
     public static void downloadAndSilenceInstall(final Activity context, boolean autoReStartApp, final String name, final String url) {
         downloadAndSilenceInstall(context, autoReStartApp, name, url, null);
@@ -257,7 +254,7 @@ public class InstallHelper {
 
     public static void downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
         //存储权限
-        PermissionManager.chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
@@ -314,7 +311,7 @@ public class InstallHelper {
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
                 QDLogger.e("app未获得存储权限，请先获取权限后重试");
                 if (listener != null) {
                     listener.onDownloadFail();
@@ -325,16 +322,12 @@ public class InstallHelper {
 
     /**
      * 静默安装
-     *
      * @param context
      * @param autoReStartApp 是否重启app
      * @param file
      * @throws Exception
      */
     public static void silenceInstall(@NonNull Context context, boolean autoReStartApp, @NonNull File file) throws Exception {
-        //installSlient(context,file);
-        //QDLogger.i("下载文件path:" + file.getAbsolutePath());
-        //QDLogger.e("silenceInstall="+installSilent(file));
         silenceInstall(context, autoReStartApp,file, null);
     }
 
@@ -451,7 +444,6 @@ public class InstallHelper {
     }
 
     public static void installSlient(Context context, File apk) {
-
         String cmd = "pm install -r " + apk.getPath();
         Process process = null;
         DataOutputStream os = null;
@@ -486,7 +478,6 @@ public class InstallHelper {
             while ((s = errorResult.readLine()) != null) {
                 errorMsg.append(s);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -507,16 +498,11 @@ public class InstallHelper {
                 e.printStackTrace();
             }
         }
-
-        QDLogger.e("=================== successMsg: " + successMsg.toString() + ", errorMsg: " + errorMsg.toString());
-
+        QDLogger.e("installMsg: " + successMsg.toString() + ", errorMsg: " + errorMsg.toString());
         //安装成功
         if ("Success".equals(successMsg.toString())) {
-
             QDLogger.e("======= apk install success");
-
         }
-
         launchAPK(context, apk);
     }
 
@@ -573,7 +559,6 @@ public class InstallHelper {
         return result;
     }
 
-
     public static void runInstall(final Context context, final File file) {
         Uri uri = Uri.fromFile(file);
         runInstall(context, uri);
@@ -607,6 +592,11 @@ public class InstallHelper {
         }).start();
     }
 
+    /**
+     * 判断无障碍辅助功能是否开启
+     * @param context
+     * @return
+     */
     public static boolean isAccessBilityOn(Context context) {
         int i = 0;
         String service = context.getPackageName() + "/" + InstallService.class.getCanonicalName();

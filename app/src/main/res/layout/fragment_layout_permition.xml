@@ -7,7 +7,7 @@
 
 
 
-        <ScrollView
+        <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
                 <LinearLayout
@@ -31,7 +31,12 @@
                             android:layout_height="wrap_content"
                             android:text="@string/select_font"/>
 
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="权限组"/>
                 </LinearLayout>
-        </ScrollView>
+        </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 
 </RelativeLayout>

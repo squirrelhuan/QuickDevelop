@@ -229,14 +229,14 @@ public class DeviceFragment extends QDFragment {
     private void registerPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            PermissionManager.chekPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionManager.OnCheckPermissionListener() {
+            PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionManager.PermissionListener() {
                 @Override
                 public void onPassed() {
                     print();
                 }
 
                 @Override
-                public void onNoPassed() {
+                public void onRefused() {
 
                 }
             });

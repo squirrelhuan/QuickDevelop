@@ -260,7 +260,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: requestCode: " + requestCode + ", resultCode: " + requestCode + ", data: " + data + ",resultCode:" + resultCode);
+        QDLogger.d(TAG, "onActivityResult: requestCode: " + requestCode + ", resultCode: " + requestCode + ", data: " + data + ",resultCode:" + resultCode);
         switch (requestCode) {
             //如果是拍照
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:

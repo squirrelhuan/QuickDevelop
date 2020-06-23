@@ -306,7 +306,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
 
         width = w;
         height = h;
-        QDLogger.e("sw="+w+",sh="+h);
+        //QDLogger.println("sw="+w+",sh="+h);
         centerX = width / 2;
         centerY = height/2;
     }
@@ -350,7 +350,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
                 isForward = false;
                 if (getVisibility() == VISIBLE) {
                     progress =(float) value;
-                    QDLogger.d( "progress=" + progress+",value="+value);
+                    //QDLogger.println( "progress=" + progress+",value="+value);
                     invalidate();
                 }
             }

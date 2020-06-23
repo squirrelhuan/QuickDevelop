@@ -66,7 +66,7 @@ public class MessageHelper {
     private static void initPopToast(Context context, String text,int time,int gravity) {
 
         if(builder==null) {
-            builder = new CPopupWindow.PopBuilder(context);
+            builder = new CPopupWindow.PopBuilder();
             //contentView = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.layout_customer_toast, null, false);
             //messageView = contentView.findViewById(R.id.tv_message);
             //popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();

@@ -9,8 +9,6 @@ public class DownloadProgress {
     private String downloadUrl;//下载路径
     private String downloadUri;//下载路径
 
-
-
     public DownloadProgress(long downloadId, int status, int hasLoadSize, int totalSize) {
         this.hasLoadSize = hasLoadSize;
         this.totalSize = totalSize;

@@ -1,15 +1,13 @@
 package cn.demomaster.huan.quickdevelop.service;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -20,6 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.NetworkStatsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.TrafficHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.QDFloatingService;
+import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
 
 /**
  * 流量悬浮

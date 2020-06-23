@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDColorUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
@@ -120,7 +121,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 if (completeColor == targetColor) {
                     color = completeColor;
                 } else {
-                    color = getCurrentColor(progress, completeColor, targetColor);
+                    color = QDColorUtil.getCurrentColor(progress, completeColor, targetColor);
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
@@ -153,7 +154,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 if (errorColor == targetColor) {
                     color = errorColor;
                 } else {
-                    color = getCurrentColor(progress, errorColor, targetColor);
+                    color = QDColorUtil.getCurrentColor(progress, errorColor, targetColor);
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
@@ -180,7 +181,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 if (warningColor == targetColor) {
                     color = warningColor;
                 } else {
-                    color = getCurrentColor(progress, warningColor, targetColor);
+                    color = QDColorUtil.getCurrentColor(progress, warningColor, targetColor);
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
@@ -207,7 +208,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 if (loadingColor == targetColor) {
                     color = loadingColor;
                 } else {
-                    color = getCurrentColor(progress, loadingColor, targetColor);
+                    color = QDColorUtil.getCurrentColor(progress, loadingColor, targetColor);
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
@@ -338,38 +339,6 @@ public class StateView extends ImageTextView implements OnReleaseListener {
     public void setDrawCricleBackground(boolean drawCricleBackground) {
         this.drawCricleBackground = drawCricleBackground;
         postInvalidate();
-    }
-
-    /**
-     * 根据fraction值来计算当前的颜色。
-     */
-    private int getCurrentColor(float fraction, int startColor, int endColor) {
-        int redCurrent;
-        int blueCurrent;
-        int greenCurrent;
-        int alphaCurrent;
-
-        int redStart = Color.red(startColor);
-        int blueStart = Color.blue(startColor);
-        int greenStart = Color.green(startColor);
-        int alphaStart = Color.alpha(startColor);
-
-        int redEnd = Color.red(endColor);
-        int blueEnd = Color.blue(endColor);
-        int greenEnd = Color.green(endColor);
-        int alphaEnd = Color.alpha(endColor);
-
-        int redDifference = redEnd - redStart;
-        int blueDifference = blueEnd - blueStart;
-        int greenDifference = greenEnd - greenStart;
-        int alphaDifference = alphaEnd - alphaStart;
-
-        redCurrent = (int) (redStart + fraction * redDifference);
-        blueCurrent = (int) (blueStart + fraction * blueDifference);
-        greenCurrent = (int) (greenStart + fraction * greenDifference);
-        alphaCurrent = (int) (alphaStart + fraction * alphaDifference);
-
-        return Color.argb(alphaCurrent, redCurrent, greenCurrent, blueCurrent);
     }
 
     @Override

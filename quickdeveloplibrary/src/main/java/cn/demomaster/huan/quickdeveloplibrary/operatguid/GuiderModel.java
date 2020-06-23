@@ -165,7 +165,6 @@ public class GuiderModel {
         roundedrectangle,rectangle,oval,img
     }
 
-
     public static enum GuidActionType{
         TOUCH,MOVE,CLICK,LONGCLICK
     }

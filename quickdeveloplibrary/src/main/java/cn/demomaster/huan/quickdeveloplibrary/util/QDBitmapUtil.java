@@ -11,8 +11,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
+import android.util.Base64;
 
 import com.bumptech.glide.load.engine.Resource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 /*
 import core.base.XBaseApplication;*/
 
@@ -130,5 +136,24 @@ public class QDBitmapUtil {
         }
         // 在低版本中用一行的字节x高度
         return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
+    }
+
+
+    public static String imageToBase64(String path) {
+        File file = new File(path);
+        String imgBase64 =null ;
+        byte[] content = new byte[(int) file.length()];
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            inputStream.read(content);
+            inputStream.close();
+            imgBase64 = Base64.encodeToString( content,Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            return imgBase64;
+        }
     }
 }

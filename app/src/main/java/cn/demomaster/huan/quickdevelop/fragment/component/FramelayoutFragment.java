@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
+import cn.demomaster.huan.quickdeveloplibrary.view.timeline.TimeLineView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
 import cn.demomaster.huan.quickdeveloplibrary.widget.slidingLayout.ComponentAdapter;
 
@@ -121,6 +123,10 @@ public class FramelayoutFragment extends QDFragment {
         //mRecyclerView.addItemDecoration(new RefreshItemDecoration(getContext(), RefreshItemDecoration.VERTICAL_LIST));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        ((TimeLineView) mView.findViewById(R.id.time_line)).setTargetViewById(recyclerView,R.id.tv_message);
+
     }
 
 }

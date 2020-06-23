@@ -64,7 +64,7 @@ public class ScreenShotUitl {
         // window.showAsDropDown(anchor, xoff, yoff);
         //window.showAsDropDown(anchor);
 
-        CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder(context);
+        CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder();
         ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivityNoBar(context));
         final PopupWindow popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true).build();
         popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
@@ -102,19 +102,27 @@ public class ScreenShotUitl {
                 popupWindow.dismiss();
             }
         });
-
-        // Log.i("CGQ","edn");
     }
 
     public static Bitmap shotActivityNoBar(Activity activity) {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
-        view.buildDrawingCache();
-
         // 获取状态栏高度
         Rect rect = new Rect();
         view.getWindowVisibleDisplayFrame(rect);
         int statusBarHeights = rect.top;
+        return shotActivity(activity,statusBarHeights);
+    }
+
+    public static Bitmap shotActivity(Activity activity) {
+        return shotActivity(activity,0);
+    }
+
+    public static Bitmap shotActivity(Activity activity,int top) {
+        // 获取windows中最顶层的view
+        View view = activity.getWindow().getDecorView();
+        view.buildDrawingCache();
+
         Display display = activity.getWindowManager().getDefaultDisplay();
 
         // 获取屏幕宽和高
@@ -124,26 +132,7 @@ public class ScreenShotUitl {
         view.setDrawingCacheEnabled(true);
         // 去掉状态栏
         Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
-                statusBarHeights, widths, heights - statusBarHeights);
-
-        // 销毁缓存信息
-        view.destroyDrawingCache();
-        return bmp;
-    }
-    public static Bitmap shotActivity(Activity activity) {
-        // 获取windows中最顶层的view
-        View view = activity.getWindow().getDecorView();
-        view.buildDrawingCache();
-
-        Display display = activity.getWindowManager().getDefaultDisplay();
-
-        // 获取屏幕宽和高
-        int widths = display.getWidth();
-        int heights = display.getHeight();
-        // 允许当前窗口保存缓存信息
-        view.setDrawingCacheEnabled(true);
-        // 去掉状态栏
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, widths, heights);
+                top, widths, heights - top);
 
         // 销毁缓存信息
         view.destroyDrawingCache();
@@ -181,7 +170,6 @@ public class ScreenShotUitl {
 
     /**
      * 获取一个 View 的缓存视图
-     *
      * @param view
      * @return
      */

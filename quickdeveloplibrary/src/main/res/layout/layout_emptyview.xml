@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/ll_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -31,8 +32,9 @@
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/it_empty_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_16"
@@ -40,7 +42,7 @@
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/it_empty_description"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black"

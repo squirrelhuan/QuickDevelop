@@ -85,9 +85,7 @@ public class GuiderActionDialog extends Dialog {
         ViewGroup layout = new RelativeLayout(getContext());
         layout.addView(contentView, layoutParams);
 
-
         setContentView(layout, layoutParams);
-
     }
 
     private OnActionFinishListener onActionFinishListener;
@@ -112,7 +110,6 @@ public class GuiderActionDialog extends Dialog {
         private int backgroundColor = Color.WHITE;
         private float[] backgroundRadius = new float[8];
 
-
         public Builder(Activity context, GuiderModel guiderModel, View view) {
             this.context = context;
             this.guiderModel = guiderModel;
@@ -127,7 +124,6 @@ public class GuiderActionDialog extends Dialog {
             this.message = message;
             return this;
         }
-
 
         public Builder setBackgroundColor(int backgroundColor) {
             this.backgroundColor = backgroundColor;
@@ -145,7 +141,6 @@ public class GuiderActionDialog extends Dialog {
             this.backgroundRadius = backgroundRadius;
             return this;
         }
-
 
         public GuiderActionDialog create() {
             return new GuiderActionDialog(context, this);

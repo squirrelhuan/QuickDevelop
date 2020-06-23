@@ -1,8 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.util.system;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -77,5 +82,60 @@ public class QDAppInfoUtil {
         }
         return false;
     }
+    /**
+     * 判断当前应用是否是debug状态
+     */
+    public static boolean isApkInDebug(Context context) {
+        try {
+            ApplicationInfo info = context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
+    /**
+     * 检测其他应用是否处于debug模式。
+     */
+    public static boolean isApkDebugable(Context context, String packageName) {
+        try {
+            @SuppressLint("WrongConstant") PackageInfo pkginfo = context.getPackageManager().getPackageInfo(packageName, 1);
+            if (pkginfo != null) {
+                ApplicationInfo info = pkginfo.applicationInfo;
+                return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            }
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+
+    /**
+     * 获取图标 bitmap
+     *
+     * @param context
+     */
+
+    public static Bitmap getAppIconBitmap(Context context) {
+        Drawable d = getAppIconDrawable(context); //xxx根据自己的情况获取drawable
+        BitmapDrawable bd = (BitmapDrawable) d;
+        Bitmap bm = bd.getBitmap();
+        return bm;
+    }
+    public static  Drawable getAppIconDrawable(Context context) {
+        PackageManager packageManager = null;
+        ApplicationInfo applicationInfo = null;
+        try {
+            packageManager = context.getApplicationContext()
+                    .getPackageManager();
+            applicationInfo = packageManager.getApplicationInfo(
+                    context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            applicationInfo = null;
+        }
+        Drawable d = packageManager.getApplicationIcon(applicationInfo); //xxx根据自己的情况获取drawable
+        return d;
+    }
 }

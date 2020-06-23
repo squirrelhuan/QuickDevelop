@@ -1,21 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.download;
 
 import android.Manifest;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.File;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
 
 /**
  * 下载任务

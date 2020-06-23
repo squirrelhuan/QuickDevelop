@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +15,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import java.sql.DatabaseMetaData;
-
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
+import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
 
 /**
  * 悬浮按钮
@@ -28,14 +26,14 @@ import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 public abstract class QDFloatingService extends Service {
     private static boolean isShowing = false;
     private static QDFloatingService instance;
-    private WindowManager windowManager;
-    private WindowManager.LayoutParams layoutParams;
+    private static WindowManager windowManager;
+    public static WindowManager.LayoutParams layoutParams;
 
     public static QDFloatingService getInstance() {
         return instance;
     }
 
-    private View contentView;
+    public static View contentView;
 
     @Override
     public void onCreate() {
@@ -56,10 +54,8 @@ public abstract class QDFloatingService extends Service {
             layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         }
 
-        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.x = 00;
-        layoutParams.y = 00;
+        layoutParams.x = 0;
+        layoutParams.y = 0;
         PointF pointF = getOriginPoint();
         if (pointF != null) {
             layoutParams.x = (int) pointF.x;
@@ -78,6 +74,7 @@ public abstract class QDFloatingService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    //FlowLayout flowLayout = new FlowLayout(getApplicationContext());
     private void initContentView() {
         if (contentView != null && contentView.getParent() != null) {
             windowManager.removeView(contentView);
@@ -87,6 +84,7 @@ public abstract class QDFloatingService extends Service {
             contentView.setOnTouchListener(new FloatingOnTouchListener(this, contentView));
         }
         if (contentView != null) {
+            updateLayoutParams();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Settings.canDrawOverlays(this)) {
                     windowManager.addView(contentView, layoutParams);
@@ -96,6 +94,30 @@ public abstract class QDFloatingService extends Service {
             }
         }
         init();
+    }
+
+    public static void updateLayoutParams(){
+        if(layoutParams!=null) {
+            layoutParams.width = mWidth;
+            layoutParams.height = mHeight;
+            contentView.setLayoutParams(layoutParams);
+        }
+    }
+
+    public static int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+    public static int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+    public static void setHeight(int height){
+        mHeight = height;
+        updateLayoutParams();
+        if(contentView!=null)
+        windowManager.updateViewLayout(contentView,layoutParams);
+    }
+    public static void setWidth(int width){
+        mWidth = width;
+        updateLayoutParams();
+        if(layoutParams!=null) {
+            windowManager.updateViewLayout(contentView, layoutParams);
+        }
     }
 
     public abstract View setContentView(Context context);
@@ -130,6 +152,7 @@ public abstract class QDFloatingService extends Service {
 
         @Override
         public boolean onTouch(View view, MotionEvent event) {
+            //System.out.println("执行顺序down");
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     x = (int) event.getRawX();

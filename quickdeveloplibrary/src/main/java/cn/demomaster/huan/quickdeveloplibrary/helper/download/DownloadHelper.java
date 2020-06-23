@@ -48,7 +48,6 @@ public class DownloadHelper {
         return instance;
     }
 
-
     public Map<Long, DownloadTask> taskMap = new HashMap<>();
     private static BroadcastReceiver broadcastReceiver;//广播接收者
     private static DownloadChangeObserver downloadChangeObserver;//下载变更观察者
@@ -65,7 +64,7 @@ public class DownloadHelper {
     }
 
     private void pushTask(final DownloadTask downloadTask) {
-        PermissionManager.chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.OnCheckPermissionListener() {
+        PermissionManager.getInstance().chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
                 if(downloadTask.getDownloadType()== DownloadTask.DownloadType.DownloadManager) {
@@ -76,7 +75,7 @@ public class DownloadHelper {
             }
 
             @Override
-            public void onNoPassed() {
+            public void onRefused() {
                 QdToast.show(downloadTask.getContext(), "请打开相关权限！", Toast.LENGTH_SHORT);
             }
         });

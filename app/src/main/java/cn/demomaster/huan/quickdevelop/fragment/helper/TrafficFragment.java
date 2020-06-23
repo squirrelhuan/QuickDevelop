@@ -17,7 +17,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -59,8 +58,7 @@ public class TrafficFragment extends QDFragment {
             @Override
             public void onClick(View v) {
 
-                PermissionManager2.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_PHONE_STATE,Manifest.permission.PACKAGE_USAGE_STATS}, new PermissionManager.OnCheckPermissionListener() {
-
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_PHONE_STATE,Manifest.permission.PACKAGE_USAGE_STATS}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
                         /*final AppOpsManager appOps;
@@ -77,7 +75,7 @@ public class TrafficFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
                         Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
                     }
                 });

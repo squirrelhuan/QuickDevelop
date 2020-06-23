@@ -86,8 +86,6 @@ public class CustomDialog extends Dialog {
             dialog.setContentView(contentView);
             return dialog;
         }
-
-
     }
 
 }

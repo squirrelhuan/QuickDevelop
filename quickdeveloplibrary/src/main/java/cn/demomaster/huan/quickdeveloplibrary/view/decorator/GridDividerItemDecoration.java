@@ -58,7 +58,6 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildLayoutPosition(view);

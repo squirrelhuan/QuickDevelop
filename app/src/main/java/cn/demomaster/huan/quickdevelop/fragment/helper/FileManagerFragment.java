@@ -95,9 +95,9 @@ public class FileManagerFragment extends QDFragment {
             @Override
             public void onClick(View v) {
                 count = 0;
-                PermissionManager.chekPermission(mContext, new String[]{
+                PermissionManager.getInstance().chekPermission(mContext, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionManager.OnCheckPermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionManager.PermissionListener() {
 
                     @Override
                     public void onPassed() {
@@ -128,7 +128,7 @@ public class FileManagerFragment extends QDFragment {
                     }
 
                     @Override
-                    public void onNoPassed() {
+                    public void onRefused() {
                         Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });

@@ -46,7 +46,6 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // TODO Auto-generated method stub
-
         // 父控件传进来的宽度和高度以及对应的测量模式
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
