@@ -100,7 +100,6 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     /**
      * 设置顶部view
-     *
      * @param headerLayoutView
      */
     public void addHeaderView(View headerLayoutView) {
@@ -116,7 +115,6 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     /**
      * 设置底部view
-     *
      * @param footerLayoutView
      */
     public void addFooterView(View footerLayoutView) {
@@ -387,7 +385,6 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
                         if (offset_c < 0) {//上拉的
                             if (contentLayout.getTop() > 0) {
-
                                 if (!canChildScrollUp()) {
                                     scrollCardLayout((int) overscrollTop);
                                 } else {
@@ -581,11 +578,13 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         this.canRefresh = canRefresh;
     }
 
+    public void close() {
+        finishSpinner(true);
+    }
     ValueAnimator animator;
 
     /**
      * 根据当前状态处理未结束的事件
-     *
      * @param forceClose 强制恢复到初始状态
      */
     private void finishSpinner(boolean forceClose) {
@@ -653,6 +652,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         final int start = startValue;
         final int end = endValue;
         if (start == end) {
+            dealResult();
             return;
         }
         animator = ValueAnimator.ofInt(startValue, endValue);
@@ -674,18 +674,24 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                if (contentLayout.getTop() == headerHeight) {//上拉处理
-                    setCardState(StateType.isToped);
-                    if (dataListener != null)
-                        dataListener.onRefreshData();
-                }
-                if (contentLayout.getTop() == -footerHeight) {//下拉处理
-                    setCardState(StateType.isBottomed);
-                    if (dataListener != null)
-                        dataListener.onLoadMoreData();
-                }
+                dealResult();
             }
         });
+    }
+
+    private void dealResult() {
+        if (contentLayout.getTop() == headerHeight) {//上拉处理
+            setCardState(StateType.isToped);
+            if (dataListener != null) {
+                dataListener.onRefreshData();
+            }
+        }
+        if (contentLayout.getTop() == -footerHeight) {//下拉处理
+            setCardState(StateType.isBottomed);
+            if (dataListener != null) {
+                dataListener.onLoadMoreData();
+            }
+        }
     }
 
     @Override
@@ -755,12 +761,12 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 //下滑
                 int y = scrollCardLayout((int) (-dy * .1f));
                 consumed[1] = -Math.abs(y);
-                QDLogger.e("onNestedPreScroll 惯性下滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
+                //QDLogger.e("onNestedPreScroll 惯性下滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
             } else if (dy > 0 && !canChildScrollDown()) {
                 //上滑
                 int y = scrollCardLayout((int) (-dy * .1f));
                 consumed[1] = Math.abs(y);
-                QDLogger.e("onNestedPreScroll 惯性上滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
+                //QDLogger.e("onNestedPreScroll 惯性上滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
             }
         }
     }

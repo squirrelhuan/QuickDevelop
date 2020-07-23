@@ -192,7 +192,7 @@ public class DownloadFragment extends QDFragment {
                         .build();
                 OkHttpClient client = new OkHttpClient();
                 try {
-                    System.out.println(client.newCall(request).execute().body().string());
+                   QDLogger.println(client.newCall(request).execute().body().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

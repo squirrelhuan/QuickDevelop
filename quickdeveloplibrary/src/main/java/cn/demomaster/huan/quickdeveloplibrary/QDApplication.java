@@ -14,8 +14,7 @@ import android.text.TextUtils;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.db.DbHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -44,7 +43,7 @@ public class QDApplication extends Application implements
         QDLogger.i(TAG,"包名："+getPackageName()+",myPid="+android.os.Process.myPid());
 
         //初始化全局SharedPreferences
-        SharedPreferencesHelper.init(this);
+        QDSharedPreferences.init(this);
         QDActivityManager.getInstance().init(this);
 
         ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
@@ -56,9 +55,6 @@ public class QDApplication extends Application implements
 
         //NotifycationHelper.getInstance().init(this);
 
-        //处理崩溃日志
-        initCrash();
-
         //QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
         //QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
         QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
@@ -67,6 +63,9 @@ public class QDApplication extends Application implements
                 QDLogger.println("配置文件初始化完成" + result);
             }
         });
+
+        //处理崩溃日志
+        initCrash();
 
         //DoraemonKit.install(this);
         if (isApkInDebug(this)) {
@@ -107,7 +106,7 @@ public class QDApplication extends Application implements
                 QDLogger.println("未定义错误异常捕获页面");
                 return;
             }
-            Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this, errorReportActivity));
+            CrashHandler.getInstance().init(this,errorReportActivity);
         }
     }
 

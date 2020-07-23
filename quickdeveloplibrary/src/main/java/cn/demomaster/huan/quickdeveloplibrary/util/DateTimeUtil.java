@@ -97,7 +97,7 @@ public class DateTimeUtil {
         List<String> weeksList = new ArrayList<String>();
         List<String> dateList = getDateAsCount(21);
         for (String s : dateList) {
-            System.out.println(s);
+           QDLogger.println(s);
             if (s.equals(StringData())) {
                 week = "今天";
             } else {
@@ -106,7 +106,7 @@ public class DateTimeUtil {
             weeksList.add(week);
         }
         for(String str :weeksList){
-            System.out.println(str);
+           QDLogger.println(str);
         }
         //return weeksList;
     }

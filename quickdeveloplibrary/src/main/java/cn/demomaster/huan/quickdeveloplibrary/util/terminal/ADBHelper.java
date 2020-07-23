@@ -89,23 +89,23 @@ public class ADBHelper {
     private void init() {
        /* File directory = new File("adb");//设定为当前文件夹
         try {
-            System.out.println("获取标准的路径=" + directory.getCanonicalPath());//获取标准的路径
+           QDLogger.println("获取标准的路径=" + directory.getCanonicalPath());//获取标准的路径
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("获取绝对路径=" + directory.getAbsolutePath());//获取绝对路径
-        System.out.println("获取class路径=" + getClass().getClass()
+       QDLogger.println("获取绝对路径=" + directory.getAbsolutePath());//获取绝对路径
+       QDLogger.println("获取class路径=" + getClass().getClass()
                 .getResource("/")
                 .toString());//获取绝对路径
         if (!directory.exists()) {
-            System.out.println("未找到 adb可执行文件");//获取绝对路径
+           QDLogger.println("未找到 adb可执行文件");//获取绝对路径
             return;
         } else {
             Path_Temp = directory.getAbsolutePath();
             directory_path = new File("").getAbsolutePath();
             Path_Temp = Path_Temp.substring(0, Path_Temp.lastIndexOf(File.separator));
             Path_Def = Path_Temp + File.separator + "res/screen_android/def.png";
-            System.out.println("获取绝对路径" + Path_Temp);//获取绝对路径
+           QDLogger.println("获取绝对路径" + Path_Temp);//获取绝对路径
         }*/
     }
 
@@ -122,7 +122,7 @@ public class ADBHelper {
         execute(" adb devices ");
         //execute("alias remote-screencap='adb shell screencap -p | sed 's/\r$//'");//设置别名
         String f = directory_path + "/resource/screen_android/";
-        System.out.println(f);
+       QDLogger.println(f);
         File file = new File(f);
         if (!file.exists()) {
             try {

@@ -22,6 +22,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
@@ -59,7 +60,7 @@ public class GuiderView extends View {
         this.onActionFinishListener = onActionFinishListener;
 
         screenHeight = QMUIDisplayHelper.getScreenHeight(getContext());
-        screenWidth = QMUIDisplayHelper.getScreenWidth(getContext());
+        screenWidth = DisplayUtil.getScreenWidth(getContext());
 
         this.setOnClickListener(new OnClickListener() {
             @Override
@@ -738,7 +739,7 @@ public class GuiderView extends View {
         float r = location[0] + view.getWidth();
         float b = location[1] + view.getHeight();
         if (hasStateBar) {
-            float stateBarHeight = QMUIDisplayHelper.getStatusBarHeight(getContext());
+            float stateBarHeight = DisplayUtil.getStatusBarHeight(getContext());
             t = t - stateBarHeight;
             b = b - stateBarHeight;
         }

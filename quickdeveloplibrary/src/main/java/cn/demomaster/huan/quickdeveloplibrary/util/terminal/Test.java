@@ -36,15 +36,15 @@ public class Test {
     private static void init() {
         File directory = new File("adb");//设定为当前文件夹
         if (!directory.exists()) {
-            System.out.println("未找到 adb可执行文件");//获取绝对路径
+           QDLogger.println("未找到 adb可执行文件");//获取绝对路径
             return;
         } else {
             Path_Temp = directory.getAbsolutePath();
             Path_Temp = Path_Temp.substring(0, Path_Temp.lastIndexOf(File.separator));
-            System.out.println("获取绝对路径" + Path_Temp);//获取绝对路径
+           QDLogger.println("获取绝对路径" + Path_Temp);//获取绝对路径
         }
-        // System.out.println(directory.getCanonicalPath());//获取标准的路径
-        // System.out.println(directory.getAbsolutePath());//获取绝对路径
+        //QDLogger.println(directory.getCanonicalPath());//获取标准的路径
+        //QDLogger.println(directory.getAbsolutePath());//获取绝对路径
     }
 
     private static void execute(String cmd) {
@@ -56,7 +56,7 @@ public class Test {
             // 等待程序执行结束并输出状态
             int exitCode = process.waitFor();
             if (exitCode == SUCCESS) {
-                System.out.println(SUCCESS_MESSAGE + cmd);
+               QDLogger.println(SUCCESS_MESSAGE + cmd);
             } else {
                 System.err.println(ERROR_MESSAGE + exitCode + "\n\r" + cmd);
             }

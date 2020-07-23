@@ -3,12 +3,11 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 
 /**
  * @author squirrel桓
@@ -26,9 +25,8 @@ public class PopWinDialog_Update {
     private static boolean canTouch;
 
 
-    private static CustomDialog customDialog;
+    private static QDActionDialog customDialog;
     private static PopWinDialog_Update instance;
-    private static CustomDialog.Builder builder;
 
     public static PopWinDialog_Update getInstance(Context context) {
         instance = new PopWinDialog_Update(context);
@@ -36,8 +34,7 @@ public class PopWinDialog_Update {
     }
 
     PopWinDialog_Update(Context context) {
-        builder = new CustomDialog.Builder(context, R.layout.item_pop_dialog_update);
-        customDialog = builder.setCanTouch(canTouch).create();
+        customDialog = new QDActionDialog.Builder(context).setContentViewLayout(R.layout.item_pop_dialog_update).setCancelable(canTouch).create();
         init();
     }
 
@@ -45,7 +42,6 @@ public class PopWinDialog_Update {
         View ccustomDialogView = customDialog.getContentView();
         contentView = ccustomDialogView.findViewById(R.id.tv_content);
         contentView.setText(contentText);
-        customDialog = builder.setCanTouch(true).create();
         btn_close = ccustomDialogView.findViewById(R.id.btn_close);
         btn_close.setText(btnText);
         btn_close.setOnClickListener(new View.OnClickListener() {

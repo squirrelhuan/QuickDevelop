@@ -59,18 +59,18 @@ public class Zprint {
         }
 
         if (key == null || key.trim().isEmpty()) {
-//          System.out.println("类class ： " + simpleName + "   方法method ：" + methodName + "  line:" + lines + "  输出： " + temp);
+//         QDLogger.println("类class ： " + simpleName + "   方法method ：" + methodName + "  line:" + lines + "  输出： " + temp);
             String parameter = "方法method ：" + methodName + "  输出： " + temp;
             Log.d(TAG, parameter);
         } else {
-//          System.out.println("类class ： " + simpleName + "   方法method ：" + methodName + "  line:" + lines + "  输出： " + key + " :" + temp);
+//         QDLogger.println("类class ： " + simpleName + "   方法method ：" + methodName + "  line:" + lines + "  输出： " + key + " :" + temp);
             String parameter;
             if (out.length == 0) {
                 parameter = "方法method ：" + methodName + "  输出： " + "\"" + key + "\"";
             } else {
                 parameter = "方法method ：" + methodName + "  输出： " + "\"" + key + "\"" + " ::" + temp;
             }
-            System.out.println(TAG+parameter);
+           QDLogger.println(TAG+parameter);
             Log.d(TAG, parameter);
         }
     }

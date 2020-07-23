@@ -40,9 +40,8 @@ public class QDSaxXml {
     {
         // 输出数组元素
         for ( E element : inputArray ){
-            System.out.printf( "%s ", element );
+           System.out.printf( "%s ", element );
         }
-        System.out.println();
     }
 
     public static < T > void parseXmlAssets(Context context, String xmlPath, Class<T> clazz, QDSaxHandler.OnParseCompleteListener onParseCompleteListener){

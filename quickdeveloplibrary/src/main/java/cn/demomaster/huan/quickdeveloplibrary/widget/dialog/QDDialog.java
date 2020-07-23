@@ -113,6 +113,7 @@ public class QDDialog extends QDDialog2 {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
         contentLinearView = new LinearLayout(context);
+        contentLinearView.setId(View.generateViewId());
         contentLinearView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
         QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
@@ -240,6 +241,17 @@ public class QDDialog extends QDDialog2 {
         ViewGroup layout = new RelativeLayout(getContext());
         layout.addView(contentLinearView, layoutParams);
         setContentView(layout, layoutParams);
+        mContentView = layout;
+    }
+
+    View mContentView;
+
+    public View getContentView() {
+        return mContentView;
+    }
+
+    public LinearLayout getContentLinearView() {
+        return contentLinearView;
     }
 
     private void addBodyTextView(LinearLayout viewGroup, String title, int color, int textSize) {

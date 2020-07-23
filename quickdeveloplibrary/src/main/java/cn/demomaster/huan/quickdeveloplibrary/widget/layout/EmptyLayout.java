@@ -37,6 +37,12 @@ public class EmptyLayout extends FrameLayout {
         init(attrs);
     }
 
+    private View targetView;
+
+    public void setTargetView(View targetView) {
+        this.targetView = targetView;
+    }
+
     public QDButton btn_retry;
     ImageTextView it_empty_icon, it_empty_title, it_empty_description;
     QdLoadingView qd_loading;
@@ -95,4 +101,17 @@ public class EmptyLayout extends FrameLayout {
         qd_loading.setVisibility(VISIBLE);
     }
 
+    public void loadSuccess() {
+        hideAll();
+        if(targetView!=null) {
+            targetView.setVisibility(VISIBLE);
+        }
+    }
+
+    public void loadFail() {
+        hideAll();
+        if(targetView!=null) {
+            targetView.setVisibility(INVISIBLE);
+        }
+    }
 }

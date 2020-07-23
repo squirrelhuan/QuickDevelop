@@ -198,7 +198,7 @@ public class ExeCommandFragment extends QDFragment {
         /*QDRuntimeHelper.getInstance().addReceiver(new QDRuntimeHelper.RuntimeReceiver() {
             @Override
             public void onReceive(String data) {
-                System.out.println("data="+data);
+               QDLogger.println("data="+data);
                 ((Activity) getContext()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

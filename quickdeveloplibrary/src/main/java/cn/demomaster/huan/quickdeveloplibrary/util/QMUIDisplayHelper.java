@@ -85,14 +85,6 @@ public class QMUIDisplayHelper {
         return context.getResources().getDisplayMetrics().scaledDensity;
     }
 
-    /**
-     * 获取屏幕宽度
-     *
-     * @return
-     */
-    public static int getScreenWidth(Context context) {
-        return getDisplayMetrics(context).widthPixels;
-    }
 
     /**
      * 获取屏幕高度
@@ -321,49 +313,6 @@ public class QMUIDisplayHelper {
         return true;
     }
 
-    /**
-     * 获取ActionBar高度
-     *
-     * @param context
-     * @return
-     */
-    public static int getActionBarHeight(Context context) {
-        int actionBarHeight = 0;
-        TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,
-                    context.getResources().getDisplayMetrics());
-        }
-        return actionBarHeight;
-    }
-
-    /**
-     * 获取状态栏高度
-     *
-     * @param context
-     * @return
-     */
-    public static int getStatusBarHeight(Context context) {
-        if(QMUIDeviceHelper.isXiaomi()){
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                return context.getResources().getDimensionPixelSize(resourceId);
-            }
-            return 0;
-        }
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            if(x > 0){
-                return context.getResources().getDimensionPixelSize(x);
-            }
-        } catch (Exception e) {
-            QDLogger.e(e);
-        }
-        return 0;
-    }
 
     /**
      * 获取虚拟菜单的高度,若无则返回0

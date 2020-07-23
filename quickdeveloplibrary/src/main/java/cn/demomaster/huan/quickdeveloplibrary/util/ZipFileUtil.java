@@ -109,24 +109,24 @@ public class ZipFileUtil {
     public static void zip(ZipOutputStream zipOutputStream, String name, File fileSrc) throws IOException {
 
         if (fileSrc.isDirectory()) {
-            System.out.println("需要压缩的地址是目录");
+           QDLogger.println("需要压缩的地址是目录");
             File[] files = fileSrc.listFiles();
 
             name = name + "/";
             zipOutputStream.putNextEntry(new ZipEntry(name));  // 建一个文件夹
-            System.out.println("目录名: " + name);
+           QDLogger.println("目录名: " + name);
 
             for (File f : files) {
                 zip(zipOutputStream, name + f.getName(), f);
-                System.out.println("目录: " + name + f.getName());
+               QDLogger.println("目录: " + name + f.getName());
             }
 
         } else {
-            System.out.println("需要压缩的地址是文件");
+           QDLogger.println("需要压缩的地址是文件");
             zipOutputStream.putNextEntry(new ZipEntry(name));
-            System.out.println("文件名: " + name);
+           QDLogger.println("文件名: " + name);
             FileInputStream input = new FileInputStream(fileSrc);
-            System.out.println("文件路径: " + fileSrc);
+           QDLogger.println("文件路径: " + fileSrc);
             byte[] buf = new byte[1024];
             int len = -1;
 

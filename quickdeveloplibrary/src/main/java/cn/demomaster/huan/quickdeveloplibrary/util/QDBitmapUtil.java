@@ -45,7 +45,6 @@ public class QDBitmapUtil {
         return new BitmapDrawable(bitmap);
     }
 
-
     /**
      * drawable to bitmap
      *
@@ -91,7 +90,6 @@ public class QDBitmapUtil {
 
     /**
      * Matrix 缩放宽高
-     *
      * @param srcBitmap    源图
      * @param targetwidth  目标宽度
      * @param targetheight 目标高度
@@ -123,7 +121,6 @@ public class QDBitmapUtil {
         //mSrcBitmap = BitmapFactory.decodeResource(bitmap,  options);
     }
 
-
     /**
      * 得到bitmap的大小
      */
@@ -137,7 +134,6 @@ public class QDBitmapUtil {
         // 在低版本中用一行的字节x高度
         return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
     }
-
 
     public static String imageToBase64(String path) {
         File file = new File(path);
@@ -155,5 +151,19 @@ public class QDBitmapUtil {
         }finally {
             return imgBase64;
         }
+    }
+
+    /**
+     * 生成纯色bitmap
+     * @param width
+     * @param height
+     * @param color
+     * @return
+     */
+    public static Bitmap generateColorBitmap(int width, int height, int color) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(color);//填充颜色
+        return bitmap;
     }
 }

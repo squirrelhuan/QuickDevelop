@@ -207,7 +207,7 @@ public class LoopView extends View {
         this.mWidgetWidth = this.getMeasuredWidth();
         this.mWidgetHeight = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        Log.i(TAG, "onMeasure -> heightMode:" + heightMode);
+        //Log.i(TAG, "onMeasure -> heightMode:" + heightMode);
         this.mItemHeight = this.lineSpacingMultiplier * (float) this.mMaxTextHeight;
         this.mPaddingLeftRight = (this.mWidgetWidth - this.mMaxTextWidth) / 2;
         this.mPaddingTopBottom = (this.mWidgetHeight - this.mCircularDiameter) / 2;

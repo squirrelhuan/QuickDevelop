@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
@@ -138,8 +139,8 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         last.measure(w, h);
         int last_height = last.getMeasuredHeight();
         int last_width = last.getMeasuredWidth();
-        paddingLeft = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - first_width / 2;
-        paddingRight = QMUIDisplayHelper.getScreenWidth(getContext()) / 2 - last_width / 2;
+        paddingLeft = DisplayUtil.getScreenWidth(getContext()) / 2 - first_width / 2;
+        paddingRight = DisplayUtil.getScreenWidth(getContext()) / 2 - last_width / 2;
        /* if(paddingLeft_origenal==0){
             paddingLeft_origenal = getPaddingLeft();
         }
@@ -383,7 +384,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     protected int computeScrollDeltaToGetChildRectOnScreen(Rect rect) {
         //Log.i(tag, "computeScrollDeltaToGetChildRectOnScreen：" + rect);
         Rect rect_temp = rect;
-        rect_temp.left = rect.left - QMUIDisplayHelper.getScreenWidth(getContext()) / 2;
+        rect_temp.left = rect.left - DisplayUtil.getScreenWidth(getContext()) / 2;
         return super.computeScrollDeltaToGetChildRectOnScreen(rect);
     }
 

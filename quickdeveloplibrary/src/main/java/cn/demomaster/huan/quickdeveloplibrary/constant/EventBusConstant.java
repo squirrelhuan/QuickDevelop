@@ -11,6 +11,6 @@ public class EventBusConstant {
     //eventbus 全局提示
     public final static String EVENT_ALERT_MESSAGE = "EVENT_ALERT_MESSAGE";
 
-    public final static String EVENT_RETURN_PUBLISH_SUCCESS = "EVENT_RETURN_PUBLISH_SUCCESS";
+    //public final static String EVENT_RETURN_PUBLISH_SUCCESS = "EVENT_RETURN_PUBLISH_SUCCESS";
 
 }

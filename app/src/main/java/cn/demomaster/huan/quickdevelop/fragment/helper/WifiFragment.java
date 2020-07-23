@@ -1,14 +1,20 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.model.QDScanResult;
+import cn.demomaster.huan.quickdevelop.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -39,15 +46,18 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
+import static android.net.wifi.WifiManager.EXTRA_SUPPLICANT_ERROR;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
+import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
 
 
 /**
@@ -64,13 +74,15 @@ public class WifiFragment extends QDFragment {
     }
 
     //Components
-
-
     View mView;
-
-
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.toggle)
+    ToggleButton toggle;
+    @BindView(R.id.tv_state)
+    TextView tv_state;
+
     private WifiAdapter wifiAdapter;
 
     List<QDScanResult> scanResultList = new ArrayList<>();
@@ -88,28 +100,19 @@ public class WifiFragment extends QDFragment {
     public void initView(View rootView, ActionBar actionBarLayoutOld) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
 
-        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
-        int wifiState = wifiManager.getWifiState();
-        switch (wifiState) {
-            case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
-                QDLogger.e("WIFI网卡正在关闭");
-                break;
-            case WIFI_STATE_DISABLED:// WIFI网卡不可用  1
-                QDLogger.e("WIFI网卡不可用");
-                break;
-            case WIFI_STATE_ENABLING://WIFI网卡正在打开  2
-                QDLogger.e("WIFI网卡正在打开");
-                break;
-            case WIFI_STATE_ENABLED://WIFI网卡可用  3
-                QDLogger.e("WIFI网卡可用");
-                break;
-            case WIFI_STATE_UNKNOWN://WIFI网卡状态不可知 4
-                QDLogger.e("WIFI网卡状态不可知");
-                break;
-            default:
-                QDLogger.e("WIFI default");
-                break;
-        }
+        WifiUtil.getInstance().init(this.getContext());
+        WifiUtil.getInstance().setOnWifiChangeListener(new WifiUtil.OnWifiChangeListener() {
+            @Override
+            public void onWifiStateChanged(NetworkInfo.DetailedState state) {
+                setState(state);
+            }
+
+            @Override
+            public void onScanResult(List<ScanResult> scanResults) {
+                getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
+            }
+        });
+
 
         setOnNetStateChangedListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
             @Override
@@ -143,18 +146,13 @@ public class WifiFragment extends QDFragment {
         wifiAdapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                switch (scanResultList.get(position).getPasswordType()){
-                    case 0:
-                        //wifiPassType="";
-                        break;
-                    case 1://WEP
-                        //wifiPassType="WEP";
-                        break;
-                    case 2://WPA
-                        //wifiPassType="WPA";
-                        break;
+                WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
+                if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
+                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
+                    showInputDialog(position);
+                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
+                    showInputDialog(position);
                 }
-                showInputDialog(position);
             }
         });
 
@@ -175,12 +173,59 @@ public class WifiFragment extends QDFragment {
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        toggle.setChecked(WifiUtil.getInstance().isWifiEnabled());
+        toggle.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
+            @Override
+            public void onToggle(boolean on) {
+                if (on) {
+                    WifiUtil.getInstance().openWifi();
+                } else {
+                    WifiUtil.getInstance().closeWifi();
+                }
+            }
+        });
+
         initData();
-        print();
     }
 
+    /**
+     * 状态变更
+     * @param state
+     */
+    private void setState(NetworkInfo.DetailedState state) {
+        int wifiState = wifiManager.getWifiState();
+        switch (wifiState) {
+            case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
+                tv_state.setText("WIFI网卡正在关闭");
+                break;
+            case WIFI_STATE_DISABLED:// WIFI网卡不可用  1
+                tv_state.setText("WIFI网卡不可用");
+                break;
+            case WIFI_STATE_ENABLING://WIFI网卡正在打开  2
+                tv_state.setText("WIFI网卡正在打开");
+                break;
+            case WIFI_STATE_ENABLED://WIFI网卡可用  3
+                tv_state.setText("WIFI网卡可用");
+                break;
+            case WIFI_STATE_UNKNOWN://WIFI网卡状态不可知 4
+                tv_state.setText("WIFI网卡状态不可知");
+                break;
+            default:
+                tv_state.setText("WIFI default");
+                break;
+        }
+
+        String ssid = WifiUtil.getInstance().getSSID();
+        wifiAdapter.setCurrentWifiName(ssid);
+        toggle.setChecked(WifiUtil.getInstance().isWifiEnabled());
+    }
+
+    /**
+     * 密码输入框
+     * @param position
+     */
     private void showInputDialog(int position) {
-        new QDInputDialog.Builder(mContext).setTitle("连接"+scanResultList.get(position).getScanResult().SSID)
+        new QDInputDialog.Builder(mContext).setTitle("连接" + scanResultList.get(position).getScanResult().SSID)
                 .setMessage("")
                 .setHint("请输入密码")
                 .setBackgroundRadius(30)
@@ -188,28 +233,35 @@ public class WifiFragment extends QDFragment {
                 .addAction("连接", new QDInputDialog.OnClickActionListener() {
                     @Override
                     public void onClick(QDInputDialog dialog, String value) {
-                        Toast.makeText(mContext,"input = "+value,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "input = " + value, Toast.LENGTH_SHORT).show();
                         //连接返回editview的value
-                        WifiConfiguration configuration = configWifiInfo(mContext.getApplicationContext(),scanResultList.get(position).getScanResult().SSID,value,scanResultList.get(position).getPasswordType());
+                        WifiConfiguration configuration = WifiUtil.getInstance().createWifiInfo(scanResultList.get(position).getScanResult().SSID, value, scanResultList.get(position).getPasswordType());
                         int netId = configuration.networkId;
                         if (netId == -1) {
                             netId = wifiManager.addNetwork(configuration);
                         }
                         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
-                        wifiManager.enableNetwork(netId, true);
+                        boolean b = wifiManager.enableNetwork(netId, true);
+                        if(b){
+                            Toast.makeText(mContext, "连接成功：" + value, Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(mContext, "密码错误：" + value, Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
                     }
                 }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
     }
 
 
-    String[] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
     WifiManager wifiManager;
+
     private void initData() {
         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
         PermissionManager.getInstance().chekPermission(mContext, permissions, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
-                scanResultList = getQDWifiList();
+                scanResultList = WifiUtil.getInstance().getWifiList();
                 if (scanResultList != null) {
                     wifiAdapter.updateList(scanResultList);
                     for (int i = 0; i < scanResultList.size(); i++) {
@@ -221,23 +273,13 @@ public class WifiFragment extends QDFragment {
             }
 
             @Override
-            public void onRefused() {QDLogger.i("未通过");
+            public void onRefused() {
+                QDLogger.i("未通过");
             }
         });
     }
 
-    private void print() {
-        List<ScanResult> scanResultList = getWifiList();
-        if (scanResultList != null) {
-            for (int i = 0; i < scanResultList.size(); i++) {
-                QDLogger.i(scanResultList.get(i).SSID+"==> "+scanResultList.get(i).capabilities);
-            }
-        }
-    }
-
-
-    public List<ScanResult> getWifiList() {
-        List<ScanResult> scanWifiList = wifiManager.getScanResults();
+    public List<ScanResult> getWifiListSort(List<ScanResult> scanWifiList,String ssid) {
         List<ScanResult> wifiList = new ArrayList<>();
         if (scanWifiList != null && scanWifiList.size() > 0) {
             HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
@@ -255,85 +297,81 @@ public class WifiFragment extends QDFragment {
         return wifiList;
     }
 
-    public List<QDScanResult> getQDWifiList() {
-        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
-        List<ScanResult> scanWifiList = wifiManager.getScanResults();
-        List<QDScanResult> wifiList = new ArrayList<>();
-        if (scanWifiList != null && scanWifiList.size() > 0) {
-            HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
-            for (int i = 0; i < scanWifiList.size(); i++) {
-                ScanResult scanResult = scanWifiList.get(i);
-                if (!scanResult.SSID.isEmpty()) {
-                    String key = scanResult.SSID + " " + scanResult.capabilities;
-                    if (!signalStrength.containsKey(key)) {
-                        signalStrength.put(key, i);
-                        QDScanResult qdScanResult = new QDScanResult();
-                        qdScanResult.setScanResult(scanResult);
-                        wifiList.add(qdScanResult);
-                    }
-                }
-            }
-        }
-        return wifiList;
+    static WifiManager mWifiManager;
+    public static interface OnScanListener {
+        void onScanResultAvailable();
+
+        void onNetWorkStateChanged(NetworkInfo.DetailedState state, int mSSID);
+
+        void onWiFiStateChanged(int wifiState);
+
+        void onWifiPasswordFault();
     }
 
-    public static WifiConfiguration configWifiInfo(Context context, String SSID, String password, int type) {
-        WifiConfiguration config = null;
-        WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (mWifiManager != null) {
-            List<WifiConfiguration> existingConfigs = mWifiManager.getConfiguredNetworks();
-            for (WifiConfiguration existingConfig : existingConfigs) {
-                if (existingConfig == null) continue;
-                String t = "\"" + SSID + "\"";
-                if (existingConfig.SSID.equals(t)  /*&&  existingConfig.preSharedKey.equals("\""  +  password  +  "\"")*/) {
-                    config = existingConfig;
-                    break;
-                }
+    OnScanListener listener;
+    List<ScanResult> mWifiList = new ArrayList<>();
+
+    public void refreshLocalWifiListData() {
+//逻辑说明：
+        /*1.从扫描结果中将已经连接的wifi添加到wifi列表中
+        2.从所有WiFilist中将已经添加过的已经连接的WiFi移除
+        3.将剩余的WiFi添加到WiFilist中
+                实现了已经连接的WiFi处于wifi列表的第一位*/
+        //得到扫描结果
+        mWifiList.clear();
+        List<ScanResult> tmpList = mWifiManager.getScanResults();
+        for (ScanResult tmp : tmpList) {
+            if (isGivenWifiConnect(tmp.SSID)) {
+                mWifiList.add(tmp);
             }
         }
-        if (config == null) {
-            config = new WifiConfiguration();
+        //从wifi列表中删除已经连接的wifi
+        for (ScanResult tmp : mWifiList) {
+            tmpList.remove(tmp);
         }
-        config.allowedAuthAlgorithms.clear();
-        config.allowedGroupCiphers.clear();
-        config.allowedKeyManagement.clear();
-        config.allowedPairwiseCiphers.clear();
-        config.allowedProtocols.clear();
-        config.SSID = "\"" + SSID + "\"";
+        mWifiList.addAll(tmpList);
+    }
 
-        WifiConfiguration tempConfig=null;
-        if (tempConfig != null) {
-            mWifiManager.removeNetwork(tempConfig.networkId);
+    public void connect(WifiConfiguration config) {
+        int wcgID = mWifiManager.addNetwork(config);
+        mWifiManager.enableNetwork(wcgID, true);
+    }
+
+    //判断当前是否已经连接
+    public boolean isGivenWifiConnect(String SSID) {
+        return isWifiConnected() && getCurentWifiSSID().equals(SSID);
+    }
+
+    //得到当前连接的WiFi  SSID
+    public String getCurentWifiSSID() {
+        String ssid = "";
+        ssid = mWifiManager.getConnectionInfo().getSSID();
+        if (ssid.substring(0, 1).equals("\"")
+                && ssid.substring(ssid.length() - 1).equals("\"")) {
+            ssid = ssid.substring(1, ssid.length() - 1);
         }
-        // 分为三种情况：0没有密码1用wep加密2用wpa加密
-        if (type == 0) {// WIFICIPHER_NOPASSwifiCong.hiddenSSID = false;
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-        } else if (type == 1) {  //  WIFICIPHER_WEP
-            config.hiddenSSID = true;
-            config.wepKeys[0] = "\"" + password + "\"";
-            config.allowedAuthAlgorithms
-                    .set(WifiConfiguration.AuthAlgorithm.SHARED);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-            config.allowedGroupCiphers
-                    .set(WifiConfiguration.GroupCipher.WEP104);
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            config.wepTxKeyIndex = 0;
-        } else if (type == 2) {   // WIFICIPHER_WPA
-            config.preSharedKey = "\"" + password + "\"";
-            config.hiddenSSID = true;
-            config.allowedAuthAlgorithms
-                    .set(WifiConfiguration.AuthAlgorithm.OPEN);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-            config.allowedPairwiseCiphers
-                    .set(WifiConfiguration.PairwiseCipher.TKIP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-            config.allowedPairwiseCiphers
-                    .set(WifiConfiguration.PairwiseCipher.CCMP);
-            config.status = WifiConfiguration.Status.ENABLED;
+        return ssid;
+    }
+
+    ConnectivityManager connectivityManager;
+
+    /**
+     * 是否处于wifi连接的状态
+     */
+    public boolean isWifiConnected() {
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetworkInfo.isConnected()) {
+            return true;
+        } else if (wifiNetworkInfo.isAvailable()) {
+            return true;
         }
-        return config;
+
+        return false;
+    }
+
+    //断开指定ID的网络
+    public void disConnectionWifi(int netId) {
+        mWifiManager.disableNetwork(netId);
+        mWifiManager.disconnect();
     }
 }

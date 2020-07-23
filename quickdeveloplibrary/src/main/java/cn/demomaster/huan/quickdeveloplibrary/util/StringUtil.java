@@ -194,7 +194,7 @@ public class StringUtil {
             }
             bytes[i] = (byte) (n & 0xff);
         }
-        System.out.println(new String(bytes).trim());
+       QDLogger.println(new String(bytes).trim());
         return bytes;
     }
 

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 public class QDTcpServer {
 
     public static final String SERVICE_IP = "127.0.0.1";
@@ -39,7 +41,7 @@ public class QDTcpServer {
         try {
             serverAddress = InetAddress.getByName(serverIP);
             server = new ServerSocket(serverPort, 10, serverAddress);
-            System.out.println("QDTcpServer 初始化成功");
+           QDLogger.println("QDTcpServer 初始化成功");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -55,7 +57,7 @@ public class QDTcpServer {
     private void startService() {
         try {
             while (true) {
-                System.out.println("QDTcpServer 等待连接");
+               QDLogger.println("QDTcpServer 等待连接");
                 // 阻塞式的等待连接
                 Socket client = server.accept();
                 addClient(client);
@@ -74,7 +76,7 @@ public class QDTcpServer {
     private String userName = "admin";
     private String passWord = "admin";
     private void addClient(Socket client) {
-        System.out.println("客户端" + i + "连接");
+       QDLogger.println("客户端" + i + "连接");
         //3.获得输入流
         InputStream is = null;
         try {
@@ -89,7 +91,7 @@ public class QDTcpServer {
                 QDMessage qdMessage = JSON.parseObject(info, QDMessage.class);
 
                 if (!socketMap.containsValue(client)) {
-                    System.out.println("用户信息为：" + info);
+                   QDLogger.println("用户信息为：" + info);
 
                     QDUserInfo userInfo;
                     try {
@@ -102,7 +104,7 @@ public class QDTcpServer {
                     if (userName != null || passWord != null) {
                         long clentId = System.currentTimeMillis() + i;
                         socketMap.put(clentId, client);
-                        System.out.println("连接登录成功");
+                       QDLogger.println("连接登录成功");
                         replyLogin(client, true, qdMessage.getTime());
                     } else {
                         if (userInfo != null && userInfo.getUserName() != null && userInfo.getPassWord() != null) {

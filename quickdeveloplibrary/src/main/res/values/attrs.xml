@@ -89,6 +89,7 @@
         <attr name="pointBackgroundColor" format="color"/>
         <attr name="pointText" format="string"/>
         <attr name="pointTextColor" format="color"/>
+
         <attr name="pointTextSize" format="dimension"/>
         <attr name="pointGravity" format="enum">
             <enum name="leftTop" value="0"/>
@@ -97,6 +98,10 @@
             <enum name="rightBottom" value="3"/>
         </attr>
         <attr name="showPoint" format="boolean"/>
+        <attr name="hollowOut" format="boolean"/>
+        <attr name="hollowColor" format="color"/>
+        <attr name="hollowRadius" format="dimension"/>
+
     </declare-styleable>
 
     <declare-styleable name="SlidingUpPanelLayout">
@@ -153,4 +158,7 @@
         <attr name="drawColor" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="Loadlayout">
+        <attr name="loadlayout" format="integer"/>
+    </declare-styleable>
 </resources>

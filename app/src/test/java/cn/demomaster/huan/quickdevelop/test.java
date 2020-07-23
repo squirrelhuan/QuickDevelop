@@ -11,7 +11,7 @@ public class test {
     @Test
     public void xor(){
         String code = checkcode_0007("1312f70f900168d900007df57b4884");
-        System.out.println(code);
+       QDLogger.println(code);
     }
     public String checkcode_0007(String para){
         String[] dateArr = new String[15];
@@ -75,7 +75,7 @@ public class test {
 
     @Test
     public void time(){
-        System.out.println(System.currentTimeMillis());
+       QDLogger.println(System.currentTimeMillis());
     }
 
 
@@ -116,32 +116,32 @@ public class test {
     public static void main(String[] args) {
 
         test strToHex = new test();
-        System.out.println("\n-----ASCII码转换为16进制 -----");
+       QDLogger.println("\n-----ASCII码转换为16进制 -----");
         String str = "1024";
-        System.out.println("字符串: " + str);
+       QDLogger.println("字符串: " + str);
         String hex = strToHex.convertStringToHex(str);
-        System.out.println("转换为16进制 : " + hex);
+       QDLogger.println("转换为16进制 : " + hex);
 
-        System.out.println("\n***** 16进制转换为ASCII *****");
-        System.out.println("Hex : " + hex);
-        System.out.println("ASCII : " + strToHex.convertHexToString(hex));
+       QDLogger.println("\n***** 16进制转换为ASCII *****");
+       QDLogger.println("Hex : " + hex);
+       QDLogger.println("ASCII : " + strToHex.convertHexToString(hex));
 
         /*****************************************************************/
-        System.out.println("\n-----ASCII码转换为16进制 -----");
+       QDLogger.println("\n-----ASCII码转换为16进制 -----");
         int ins = 1024;
-        System.out.println("int: " + ins);
+       QDLogger.println("int: " + ins);
         hex = strToHex.intToHex(ins);
-        System.out.println("转换为16进制 : " + hex);
+       QDLogger.println("转换为16进制 : " + hex);
 
-        System.out.println("\n***** 16进制转换为ASCII *****");
-        System.out.println("Hex : " + hex);
-        System.out.println("ASCII : " + strToHex.convertHexToString(hex));
+       QDLogger.println("\n***** 16进制转换为ASCII *****");
+       QDLogger.println("Hex : " + hex);
+       QDLogger.println("ASCII : " + strToHex.convertHexToString(hex));
 
         String str1 = "1024";
         int i=Integer.valueOf(str1);
-        System.out.println(intToHex(i));
+       QDLogger.println(intToHex(i));
 
-        System.out.println(intToHex(1900));
+       QDLogger.println(intToHex(1900));
         setData(str1);
         //byte[] b = intToHex(i);
         //b[0] = 'c';
@@ -150,7 +150,7 @@ public class test {
     private static void setData(String str) {
         int i=Integer.valueOf(str);
         String a = intToHex(i);
-        System.out.println(a);
+       QDLogger.println(a);
         String arr[] = {};
         if(a.length()>2){
             arr[0] = a.substring(1,a.length()-1);
@@ -158,7 +158,7 @@ public class test {
         }else if (a.length()>0){
             arr[1] = a.substring(0,a.length()-1);
         }
-        System.out.println(Arrays.toString(arr));
+       QDLogger.println(Arrays.toString(arr));
     }
 
     private static String intToHex(int n) {

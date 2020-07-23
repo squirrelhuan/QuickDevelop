@@ -2,9 +2,11 @@ package cn.demomaster.huan.quickdevelop.activity.sample.model;
 
 import android.net.wifi.ScanResult;
 
+import cn.demomaster.huan.quickdevelop.activity.sample.utils.WifiUtil;
+
 public class QDScanResult {
     private ScanResult scanResult;
-    int passwordType;
+    WifiUtil.WifiCipherType passwordType;
 
     public ScanResult getScanResult() {
         return scanResult;
@@ -14,26 +16,26 @@ public class QDScanResult {
         this.scanResult = scanResult;
     }
 
-    public int getPasswordType() {
+    public WifiUtil.WifiCipherType getPasswordType() {
         passwordType = getPasswordType(scanResult);
         return passwordType;
     }
 
-    public void setPasswordType(int passwordType) {
+    public void setPasswordType(WifiUtil.WifiCipherType passwordType) {
         this.passwordType = passwordType;
     }
 
     /**
      *获取热点的加密类型
      */
-    private int getPasswordType(ScanResult scanResult){
-        int type;
+    private WifiUtil.WifiCipherType getPasswordType(ScanResult scanResult){
+        WifiUtil.WifiCipherType type;
         if (scanResult.capabilities.contains("WPA"))
-            type = 2;
+            type = WifiUtil.WifiCipherType.WIFICIPHER_WPA;
         else if (scanResult.capabilities.contains("WEP"))
-            type = 1;
+            type = WifiUtil.WifiCipherType.WIFICIPHER_WEP;
         else
-            type = 0;
+            type = WifiUtil.WifiCipherType.WIFICIPHER_NOPASS;
         return type;
     }
 }

@@ -41,20 +41,15 @@ public class GPSUtils {
 
     /**
      * 获取经纬度
-     *
      * @return
      */
     public String getLngAndLat(OnLocationResultListener onLocationResultListener) {
-        double latitude = 0.0;
-        double longitude = 0.0;
-
         mOnLocationListener = onLocationResultListener;
 
         String locationProvider = null;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         //获取所有可用的位置提供器
         List<String> providers = locationManager.getProviders(true);
-
         if (providers.contains(LocationManager.GPS_PROVIDER)) {
             //如果是GPS
             locationProvider = LocationManager.GPS_PROVIDER;

@@ -14,6 +14,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
 /**
  * Created by huan on 2017/9/14.
  */
@@ -102,7 +104,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
      */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        System.out.println("ImageSurfaceView is surfaceCreated");
+       QDLogger.println("ImageSurfaceView is surfaceCreated");
         screenH = this.getHeight();
         screenW = this.getWidth();
         handler.post(imageRunnable);
@@ -125,7 +127,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
             canvas.drawRect(rectF, paint);
             //canvas.drawText("nihao",10,10,paint);
             //canvas.drawBitmap(bmp, matrix, paint);
-            System.out.println("绘制图像了吗？");
+           QDLogger.println("绘制图像了吗？");
             //canvas.restore();
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,7 +167,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
      */
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        System.out.println("ImageSurfaceView is surfaceChanged");
+       QDLogger.println("ImageSurfaceView is surfaceChanged");
     }
 
     /**
@@ -173,7 +175,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
      */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        System.out.println("ImageSurfaceView is surfaceDestroyed");
+       QDLogger.println("ImageSurfaceView is surfaceDestroyed");
     }
 
 
@@ -182,7 +184,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
         location = new int[2];
         view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         view.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-        System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
+       QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
 
         float l = location[0];
         float t = location[1];

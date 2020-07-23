@@ -8,8 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +30,8 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatView;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatViewImp;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 
 /**
  * Squirrel桓
@@ -122,8 +117,8 @@ public class MainFragment extends QDFragment {
                 /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
                 final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
                 loadingDialog.show();*/
-                CustomDialog.Builder builder = new CustomDialog.Builder(mContext, R.layout.layout_dialog_loading_default);
-                final CustomDialog customDialog = builder.setCanTouch(false).create();
+                QDActionDialog.Builder builder = new QDActionDialog.Builder(mContext).setContentViewLayout( R.layout.layout_dialog_loading_default);
+                final QDActionDialog customDialog = builder.setCancelable(false).create();
                 customDialog.show();
             }
         });

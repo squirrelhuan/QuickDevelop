@@ -5,6 +5,8 @@ import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
 
+import java.lang.reflect.Field;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
 /**
@@ -19,7 +21,7 @@ public class DisplayUtil {
      * 获取状态栏高度
      * @return
      */
-    public static int getStatusBarHeight(Context context) {
+   /* public static int getStatusBarHeight(Context context) {
         if (statusBar_Height != -1) {
             return statusBar_Height;
         }
@@ -32,6 +34,34 @@ public class DisplayUtil {
             return (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
         }
         return result;
+    }*/
+
+    /**
+     * 获取状态栏高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+        if(QMUIDeviceHelper.isXiaomi()){
+            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                return context.getResources().getDimensionPixelSize(resourceId);
+            }
+            return 0;
+        }
+        try {
+            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Object obj = c.newInstance();
+            Field field = c.getField("status_bar_height");
+            int x = Integer.parseInt(field.get(obj).toString());
+            if(x > 0){
+                return context.getResources().getDimensionPixelSize(x);
+            }
+        } catch (Exception e) {
+            QDLogger.e(e);
+        }
+        return 0;
     }
 
     /**
@@ -54,6 +84,11 @@ public class DisplayUtil {
         return result;
     }
     static int actionBarHeight = -1;
+    /**
+     * 获取ActionBar高度
+     * @param context
+     * @return
+     */
     public static int getActionBarHeight(Context context) {
         final TypedValue tv = new TypedValue();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -65,7 +100,6 @@ public class DisplayUtil {
         }
         return actionBarHeight;
     }
-
 
     /* dp转换成px
      */

@@ -15,7 +15,7 @@ public class HookTest {
 
         static class MyTestView {
             public void test() {
-                System.out.println("啊啊啊");
+               QDLogger.println("啊啊啊");
             }
         }
 
@@ -29,7 +29,7 @@ public class HookTest {
     private static class Other extends MyView.MyTestView {
         @Override
         public void test() {
-            System.out.println("BBBBB");
+           QDLogger.println("BBBBB");
             super.test();
         }
     }
@@ -53,7 +53,7 @@ public class HookTest {
             // 这是内部静态类类的表示方法
             Field field = MyView.class.getDeclaredField("myTestView");
             field.setAccessible(true);
-            // System.out.println(field.getName());
+            //QDLogger.println(field.getName());
 
             // 用新的对象替换掉myView对象内部的对象变量
             Other other = new Other();
@@ -66,7 +66,7 @@ public class HookTest {
                     new Class[]{ProcInterface.class}, new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            System.out.println("这是代理的对象呀 method=" + method);
+                           QDLogger.println("这是代理的对象呀 method=" + method);
                             return null;
                         }
                     });
@@ -77,9 +77,9 @@ public class HookTest {
             // 重新运行该方法，达到替换方法的效果!
             myView.myTestView.test();
         } catch (NoSuchFieldException e) {
-            System.out.println(e.getMessage());
+           QDLogger.println(e.getMessage());
         } catch (IllegalAccessException e) {
-            System.out.println(e.getMessage());
+           QDLogger.println(e.getMessage());
         }
 
         //**************此时我们尝试加载Apk文件，然后拿到补丁的方法，来修复上面对象的方法

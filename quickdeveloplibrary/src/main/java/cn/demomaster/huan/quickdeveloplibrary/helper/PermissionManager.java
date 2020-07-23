@@ -41,6 +41,7 @@ public class PermissionManager {
     //请求悬浮
     public static final int REQUEST_PERMISS_SPECIAL_CODE = 32419;
     private static PermissionManager instance;
+    private static Context mContext;
 
     public static PermissionManager getInstance() {
         if (instance == null) {
@@ -326,6 +327,12 @@ public class PermissionManager {
         return true;
     }
 
+    /**
+     * 权限检查
+     * @param context
+     * @param permissions
+     * @param listener
+     */
     public void chekPermission(Context context, String[] permissions, PermissionListener listener) {
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -397,6 +404,12 @@ public class PermissionManager {
         }
     }
 
+    /**
+     * 已通过的权限从map中移除
+     * @param list
+     * @param str
+     * @return
+     */
     private List<String> removePassedFromList2(List<String> list, String str) {
         for (int j = 0; j < list.size(); j++) {
             if (str.equals(list.get(j))) {
@@ -465,8 +478,16 @@ public class PermissionManager {
 
     private static Map<Integer, PermissionListener> requestMap = new HashMap<>();
 
-    // 开始提交请求权限
+    /**
+     * 发起权限申请
+     * @param context
+     * @param permissions
+     * @param listener
+     */
     private void startRequestPermission(final Context context, String[] permissions, PermissionListener listener) {
+        if(this.mContext==null){
+            mContext = context.getApplicationContext();
+        }
         requestMap.put(REQUEST_PERMISS_COMMON_CODE, listener);
         ActivityCompat.requestPermissions((Activity) context, permissions, REQUEST_PERMISS_COMMON_CODE);
     }
@@ -483,6 +504,12 @@ public class PermissionManager {
         }, 1000);
     }
 
+    /**
+     * 权限请求结果
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                   @NonNull int[] grantResults) {
         boolean hasPermissionDismiss = false;//有权限没有通过
@@ -529,9 +556,12 @@ public class PermissionManager {
     /**
      * 监听器，监听权限是否通过
      */
-    public static interface PermissionListener {
+    public static interface PermissionListenerInterface {
         void onPassed();//通过
-
         void onRefused();//不通过
+    }
+
+    public static abstract class PermissionListener implements PermissionListenerInterface{
+
     }
 }

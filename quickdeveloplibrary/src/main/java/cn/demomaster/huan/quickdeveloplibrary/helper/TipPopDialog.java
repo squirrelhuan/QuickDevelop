@@ -3,13 +3,11 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.CustomDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 
 /**
  * @author squirrel桓
@@ -39,7 +37,7 @@ public class TipPopDialog {
         init();
     }
 
-    public CustomDialog customDialog;
+    public QDActionDialog customDialog;
 
     private void init() {
         /*View v = LayoutInflater.from(context).inflate(R.layout.item_pop_dialog_common, null, false);
@@ -55,9 +53,8 @@ public class TipPopDialog {
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setClippingEnabled(false);*/
 
-        CustomDialog.Builder builder = new CustomDialog.Builder(context, R.layout.item_pop_dialog_tip);
-
-        customDialog = builder.setCanTouch(true).create();
+        QDActionDialog.Builder builder = new QDActionDialog.Builder(context).setContentViewLayout( R.layout.item_pop_dialog_tip);
+        customDialog = builder.setCancelable(true).create();
         View ccustomDialogView = customDialog.getContentView();
         contentView = ccustomDialogView.findViewById(R.id.tv_content);
         contentView.setText(contentText);

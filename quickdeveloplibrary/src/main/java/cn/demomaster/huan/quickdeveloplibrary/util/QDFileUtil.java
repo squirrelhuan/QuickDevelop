@@ -41,7 +41,6 @@ public class QDFileUtil {
 
     /**
      * 初始化保存路径
-     *
      * @return
      */
     private static String makeAppPath() {
@@ -64,7 +63,6 @@ public class QDFileUtil {
         return QDFileUtil.saveBitmap(b, imgPath);
     }
 
-
     /**
      * 根据图片文件路径获取bitmap
      *
@@ -74,7 +72,6 @@ public class QDFileUtil {
     public static Bitmap getBitmapFromPath(String filePath) {
         return BitmapFactory.decodeFile(filePath);
     }
-
 
     public static String saveBitmap(Bitmap b, String imgPath) {
         try {

@@ -71,10 +71,10 @@ public class QDRuntimeHelper {
             Process p = runtime.exec("/system/bin/sh", null, new File("/system/bin"));
             InputStream is = p.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            System.out.println("【version】" );
+           QDLogger.println("【version】" );
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println("【line】-->" + line);
+               QDLogger.println("【line】-->" + line);
             }
             p.waitFor();
             is.close();
@@ -90,25 +90,25 @@ public class QDRuntimeHelper {
 
     //synchronized
     private void excute() {
-        System.out.println("excute...");
+       QDLogger.println("excute...");
         if (isIdle) {
             isIdle = false;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("rThread size=" + map.size());
+                   QDLogger.println("rThread size=" + map.size());
                     try {
                         Map.Entry entry = getFirstEntry();
                         if (entry != null && entry.getKey() != null) {
-                            System.out.println("【sendCmd】-->");
+                           QDLogger.println("【sendCmd】-->");
                             CallBack callBack = (CallBack) entry.getValue();
                             String cmd = callBack.data;
                             Process p = Runtime.getRuntime().exec("/system/bin/sh", null, new File("/system/bin"));
                             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(p.getOutputStream())), true);
-                            System.out.println("【准备发送】-->" + cmd);
+                           QDLogger.println("【准备发送】-->" + cmd);
                             printWriter.println(cmd);
                             //Runtime.getRuntime().exec(cmd);
-                            System.out.println("【发送】-->" + cmd);
+                           QDLogger.println("【发送】-->" + cmd);
                             InputStream is = p.getInputStream();
                             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                             StringBuffer buffer = new StringBuffer();
@@ -118,9 +118,9 @@ public class QDRuntimeHelper {
                                 QDLogger.e("【line】==>"+line);
                             }
                             p.waitFor();
-                            System.out.println("【callBack1】-->" + cmd);
+                           QDLogger.println("【callBack1】-->" + cmd);
                             callBack((Long) entry.getKey());
-                            System.out.println("【callBack2】-->" + cmd);
+                           QDLogger.println("【callBack2】-->" + cmd);
                             /*
                             if (callBack != null) {
                                 callBack.onReceive(buffer.toString());
@@ -143,7 +143,7 @@ public class QDRuntimeHelper {
 
     boolean isIdle = true;
     public void addCommand(String command, CallBack callBack) {
-        System.out.println("addCommand:" + command);
+        QDLogger.println("addCommand:" + command);
         if (callBack == null) {
             callBack = new CallBack() {
                 @Override
@@ -157,9 +157,9 @@ public class QDRuntimeHelper {
 
     public void callBack(Long key) {
         isIdle = true;
-        System.out.println("rThread size1=" + map.size());
+       QDLogger.println("rThread size1=" + map.size());
         removeByKey(key);
-        System.out.println("rThread size2=" + map.size());
+       QDLogger.println("rThread size2=" + map.size());
         excute();
     }
 
@@ -211,7 +211,7 @@ public class QDRuntimeHelper {
                 BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 PrintWriter printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(process.getOutputStream())), true);
 
-                System.out.println("【准备发送】-->" + command);
+               QDLogger.println("【准备发送】-->" + command);
                 printWriter.println(command);
                 runtimeThread.receive();
                 //out.println("exit");
@@ -288,7 +288,7 @@ public class QDRuntimeHelper {
                         if (runtimeReceiver != null) {
                             runtimeReceiver.onReceive(line + "");
                         } else {
-                            System.out.println(line + "");
+                           QDLogger.println(line + "");
                         }
                     }
                     stringBuffer = null;
@@ -360,7 +360,7 @@ public class QDRuntimeHelper {
         try {
             for (int i = 0; i < pros.size(); i++) {
                 f = new File(pros.get(i), "su");
-                System.out.println("f.getAbsolutePath():" + f.getAbsolutePath());
+               QDLogger.println("f.getAbsolutePath():" + f.getAbsolutePath());
                 if (f != null && f.exists() && f.canExecute()) {
                     return true;
                 }

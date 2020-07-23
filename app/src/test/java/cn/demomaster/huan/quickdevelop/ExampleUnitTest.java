@@ -19,14 +19,14 @@ public class ExampleUnitTest {
         //String code = checkcode_0007("000b412e30392e30312e303600");
         String code2 = checkcode_0007("");
         //System.out.println(code);
-        System.out.println(code2);
+       QDLogger.println(code2);
     }
     public String checkcode_0007(String para){
         String[] dateArr = new String[para.length()/2];
         for(int i=0;i<dateArr.length;i++){
             dateArr[i] = para.substring(i*2, (i+1)*2);
         }
-        System.out.println(Arrays.asList(dateArr));
+       QDLogger.println(Arrays.asList(dateArr));
         String code = "00";
         for (int i = 0; i < dateArr.length-1; i++) {
             if(i == 0){
@@ -39,7 +39,7 @@ public class ExampleUnitTest {
     }
 
     private static String xor(String strHex_X,String strHex_Y){
-        System.out.println("strHex_X="+strHex_X+",strHex_Y="+strHex_Y);
+       QDLogger.println("strHex_X="+strHex_X+",strHex_Y="+strHex_Y);
         //将x、y转成二进制形式
         String anotherBinary=Integer.toBinaryString(Integer.valueOf(strHex_X,16));
         String thisBinary=Integer.toBinaryString(Integer.valueOf(strHex_Y,16));
@@ -80,30 +80,30 @@ public class ExampleUnitTest {
         String code ="3";
         String r = String.format("%0" + 2 + "d", Integer.parseInt(code));
 
-        System.out.println(r);
+       QDLogger.println(r);
     }
 
 
     @Test
     public void testClass(){
         String className = this.getClass().getName();
-        System.out.println(className);
+       QDLogger.println(className);
         Class clazz = null;
         try {
             clazz = Class.forName("cn.demomaster.huan.quickdevelop.ExampleUnitTest");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            System.out.println("----------");
+           QDLogger.println("----------");
         }
 
-        System.out.println(clazz.getClass().getName());
-        System.out.println(this.getClass().getPackage().getName());
-        System.out.println(Test.class.getResource(""));
-        System.out.println(Test.class.getResource("/"));
+       QDLogger.println(clazz.getClass().getName());
+       QDLogger.println(this.getClass().getPackage().getName());
+       QDLogger.println(Test.class.getResource(""));
+       QDLogger.println(Test.class.getResource("/"));
     }
 
     @Test
     public void time(){
-        System.out.println(System.currentTimeMillis());
+       QDLogger.println(System.currentTimeMillis());
     }
 }

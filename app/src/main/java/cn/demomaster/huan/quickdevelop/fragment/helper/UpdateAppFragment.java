@@ -34,8 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.UpdatePopDialog;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
@@ -117,7 +116,6 @@ public class UpdateAppFragment extends QDFragment {
             }
         });
 
-
         btn_install_silence2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,23 +128,7 @@ public class UpdateAppFragment extends QDFragment {
     //app更新
     public void updateApp(final Activity context) {
 
-        //兼容8.0 安装权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
-            if (!hasInstallPermission) {
-                // Toast.makeText(context, "请先开启应用安装权限", Toast.LENGTH_SHORT).show();
-                //弹框提示用户手动打开
-                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //此方法需要API>=26才能使用
-                        startInstallPermissionSettingActivity(context);
-                    }
-                });
-                return;
-            }
-        }
+        showDialog();
 
         //存储权限
         PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
@@ -157,7 +139,16 @@ public class UpdateAppFragment extends QDFragment {
 
             @Override
             public void onRefused() {
-
+// Toast.makeText(context, "请先开启应用安装权限", Toast.LENGTH_SHORT).show();
+                //弹框提示用户手动打开
+                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //此方法需要API>=26才能使用
+                        startInstallPermissionSettingActivity(context);
+                    }
+                });
             }
         });
 
@@ -230,23 +221,13 @@ public class UpdateAppFragment extends QDFragment {
                 });
     }
 
-    private UpdatePopDialog updatePopDialog;
     public void showDialog(){
-        SharedPreferencesHelper.init(getContext());
+        QDSharedPreferences.init(getContext());
         String conf = QDFileUtil.getFromAssets(mContext, "config/update.his");
         if (conf != null) {
             List<Version> versions = JSON.parseArray(conf,Version.class);
             final Version version =  versions.get(versions.size()-1);
-            updatePopDialog = new UpdatePopDialog(mContext, versions.get(versions.size()-1).getDescription());
-            updatePopDialog.setOnCloseListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SharedPreferencesHelper.getInstance().putBoolean(version.getVersionCode()+"",false);
-                }
-            });
-            if(SharedPreferencesHelper.getInstance().getBoolean(version.getVersionCode()+"",true)){
-                updatePopDialog.show();
-            }
+            QDSharedPreferences.getInstance().putBoolean(version.getVersionCode()+"",false);
         }
     }
 

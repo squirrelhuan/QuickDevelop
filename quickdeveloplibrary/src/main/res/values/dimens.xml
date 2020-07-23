@@ -27,7 +27,7 @@
     <dimen name="quickdev_middle_text_size">@dimen/sp_14</dimen>
     <dimen name="quickdev_common_text_size">@dimen/sp_16</dimen>
     <dimen name="quickdev_big_text_size">@dimen/sp_18</dimen>
-    <dimen name="quickdev_title_text_size">@dimen/sp_20</dimen>
+    <dimen name="quickdev_title_text_size">@dimen/sp_16</dimen>
     <dimen name="quickdev_option_menu_width">@dimen/dp_140</dimen>
 
 

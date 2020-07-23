@@ -412,7 +412,7 @@ public class LoopView2 extends View {
                 }
             }
 
-            Log.i(LoopView2.TAG, "velocity->" + this.velocity);
+            //Log.i(LoopView2.TAG, "velocity->" + this.velocity);
             if (Math.abs(this.velocity) >= 0.0F && Math.abs(this.velocity) <= 20.0F) {
                 LoopView2.this.cancelSchedule();
                 LoopView2.this.mHandler.sendEmptyMessage(2000);

@@ -13,7 +13,7 @@ import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
 import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 
 /*
@@ -61,7 +61,7 @@ public class Application extends QDApplication {
             /* Read serial port parameters */
             //SharedPreferences sp = getSharedPreferences("android_serialport_api.sample_preferences", MODE_PRIVATE);//"cn_demomaster_huan_quickdevelop_fragment_helper_serialport_sample_SerialPortPreferences"
 
-            SharedPreferences sp = SharedPreferencesHelper.getInstance().getSharedPreferences();
+            SharedPreferences sp = QDSharedPreferences.getInstance().getSharedPreferences();
             String path = sp.getString("DEVICE", "");
             int baudrate = Integer.decode(sp.getString("BAUDRATE", "-1"));
 

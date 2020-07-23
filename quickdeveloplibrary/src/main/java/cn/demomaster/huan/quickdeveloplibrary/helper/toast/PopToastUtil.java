@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -40,26 +41,25 @@ public class PopToastUtil {
         initPopToast(context,text,0,gravity);
     }
 
-    private static int backgroundColor = Color.GREEN;
+    private static int backgroundColor = Color.RED;
     private static int textColor = Color.WHITE;
     public static void setColorStyle(int textColor1,int backgroundColor1){
         textColor = textColor1;
         backgroundColor = backgroundColor1;
     }
 
-    private static CPopupWindow.PopBuilder builder;
     private static int destinc_Y ;
     private static void initPopToast(Activity context, String text,int time,int gravity) {
 
-        if(builder==null) {
-            builder = new CPopupWindow.PopBuilder();
+        if(popupWindow==null) {
+            popupWindow = new PopupWindow();
             //contentView = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.layout_customer_toast, null, false);
             //messageView = contentView.findViewById(R.id.tv_message);
             //popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             messageView = new CircleTextView(context.getApplicationContext());
             messageView.setPadding(DisplayUtil.dp2px(context,20),DisplayUtil.dp2px(context,5),DisplayUtil.dp2px(context,20),DisplayUtil.dp2px(context,5));
             messageView.setTextSize(14);
-            popupWindow = builder.setContentView(messageView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
+            popupWindow.setContentView(messageView);// ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             popupWindow.setTouchable(false);
             popupWindow.setFocusable(false);
             popupWindow.setAnimationStyle(R.style.cgq_pop_toast);
@@ -71,7 +71,7 @@ public class PopToastUtil {
             case Gravity.TOP:
                 popupWindow.setAnimationStyle(R.style.cgq_pop_toast);
                 if(destinc_Y==0){
-                    destinc_Y =  QMUIDisplayHelper.getActionBarHeight(context)-DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
+                    destinc_Y =  DisplayUtil.getActionBarHeight(context)-DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
                 }
                 break;
             case Gravity.BOTTOM:
@@ -85,6 +85,9 @@ public class PopToastUtil {
                 destinc_Y = 0;
                 break;
         }
+
+        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.showAtLocation(getContentView(context), Gravity.CENTER_HORIZONTAL | gravity, 0, destinc_Y);//dp2px(context,80)
         toastRunable.setPopupWindow(popupWindow);
         mHandler.removeCallbacks(toastRunable);
@@ -104,15 +107,16 @@ public class PopToastUtil {
         this.residenceTime = time;
     }
 
-    private static int residenceTime = 2500;
-    private static int timer_t = 2500;
+    private static int residenceTime = 3000;
+    private static int timer_t = 3000;
     private static Handler mHandler = new Handler();
+    static int dt = 500;
     private static ToastRunable toastRunable = new ToastRunable() {
         @Override
         public void run() {
             if (timer_t > 0) {
-                timer_t -= 100;
-                mHandler.postDelayed(this, 100);
+                timer_t -= dt;
+                mHandler.postDelayed(this, dt);
             } else {
                 if (popupWindow.isShowing()) {
                     popupWindow.dismiss();

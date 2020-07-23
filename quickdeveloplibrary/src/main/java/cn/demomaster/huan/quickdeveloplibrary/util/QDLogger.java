@@ -16,6 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.modle.Obj;
 
 /**
  * 日志打印帮助类
@@ -153,13 +154,13 @@ public class QDLogger {
         doLog(null, logType, tag, obj, null);
     }
 
-    public static void println(String message) {
+    public static void println(Object message) {
         println("System",message);
     }
     
-    public static void println(String tag,String message) {
+    public static void println(String tag,Object message) {
         System.out.println(tag+" "+message);
-        LogBean logBean = new LogBean(Logger.PRINTLN, tag, message);
+        LogBean logBean = new LogBean(Logger.PRINTLN, tag,message!=null? message.toString():"NULL");
         if (mLogInterceptor != null) {
             mLogInterceptor.onLog(logBean);
         }
@@ -168,6 +169,7 @@ public class QDLogger {
     public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);// HH:mm:ss
     public static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);// HH:mm:ss
     public static SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss:SSS", Locale.CHINA);// HH:mm:ss
+    public static SimpleDateFormat logDateFormat = new SimpleDateFormat("HH:mm:ss:SSS", Locale.CHINA);// HH:mm:ss
 
    /* static Locale mLocale = Locale.CHINA;
     public static void setLocale(Locale locale) {
@@ -189,14 +191,15 @@ public class QDLogger {
     static String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+    private static long lastLogTime;//上一次打印时间
     private static void doLog(Context context, Logger logType, String tag, Object obj, Throwable throwable) {
 
         if (applicationContext == null && context != null) {
             applicationContext = context.getApplicationContext();
         }
 
-        if (obj instanceof Exception && BuildConfig.DEBUG) {
-            ((Exception) obj).printStackTrace();
+        if (obj instanceof Throwable && BuildConfig.DEBUG) {
+            ((Throwable) obj).printStackTrace();
         }
 
         String message = obj==null?"":obj.toString();
@@ -240,7 +243,7 @@ public class QDLogger {
                 if (canWriteAble) {
                     File file = new File(Environment.getExternalStorageDirectory(), LogFilePath);
                     QDFileUtil.createFile(file);
-                    QDFileUtil.writeFileSdcardFile(file, simpleDateFormat3.format(date) + " "  + message + "\n", true);
+                    QDFileUtil.writeFileSdcardFile(file, logDateFormat.format(date) + " "  + message + "\n", true);
                 }
             } else {
                 println(message);

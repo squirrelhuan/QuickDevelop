@@ -1,9 +1,12 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+
+import java.util.Observer;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -68,5 +71,6 @@ public class ToggleButtonActivity extends QDActivity {
             }
         });
         sb_progress_color.setProgress(50);
+
     }
 }

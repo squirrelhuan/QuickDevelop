@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -18,11 +19,12 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PreviewF
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
 
 
+/**
+ *
+ */
 public class PreviewActivity extends QDActivity {
-
-
     //private PhotoView pv_image;
-    private ViewPager vp_image;
+    private QDViewPager vp_image;
     private FragmentManager mFragmentManager;
     private FragmentPagerAdapter fragmentAdapter;
 
@@ -32,16 +34,17 @@ public class PreviewActivity extends QDActivity {
         setContentView(R.layout.activity_preview);
 
         getActionBarLayout().getRightView().setVisibility(View.GONE);
-        getActionBarLayout().setActionBarType(ACTION_STACK_NO_STATUS);
-        getActionBarLayout().setStateBarColorAuto(true);
+        //getActionBarLayout().setActionBarType(ACTION_STACK_NO_STATUS);
+        //getActionBarLayout().setStateBarColorAuto(true);
         vp_image = findViewById(R.id.vp_image);
+
         //pv_image = (PhotoView) findViewById(R.id.pv_image);
         initV();
     }
-
-
+    
     private void initV() {
         //pv_image = findViewById(R.id.pv_image);
+        Bundle mBundle = getIntent().getExtras();
         if (mBundle != null && mBundle.containsKey("images")) {
             images = (ArrayList<Image>) mBundle.getSerializable("images");
             int index = mBundle.getInt("imageIndex", 0);

@@ -2,19 +2,16 @@ package cn.demomaster.huan.quickdeveloplibrary.util.system;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import java.util.Locale;
 
-import cn.demomaster.huan.quickdeveloplibrary.constant.SharedPreferencesConstant;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SharedPreferencesHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
@@ -52,11 +49,11 @@ public class QDLanguageUtil {
     }
     public static String System_Language_Setting ="System_Language_Setting";
     public static void setLanguageLocalForActivity(Activity context, String language) {
-        SharedPreferencesHelper.getInstance().putString(System_Language_Setting, language);
+        QDSharedPreferences.getInstance().putString(System_Language_Setting, language);
         setLanguageLocal(context,new Locale(language));
     }
     public static void setLanguageLocalForApplication(Activity context, String language) {
-        SharedPreferencesHelper.getInstance().putString(System_Language_Setting, language);
+        QDSharedPreferences.getInstance().putString(System_Language_Setting, language);
         setLanguageLocal(context,new Locale(language));
         setLanguageLocal(context.getApplicationContext(),new Locale(language));
     }
@@ -77,7 +74,7 @@ public class QDLanguageUtil {
         return language;
     }*/
    /* public static String getLanguageLocal() {
-        String language = SharedPreferencesHelper.getInstance().getString(SharedPreferencesConstant.System_Language_Setting, "");
+        String language = QDSharedPreferences.getInstance().getString(SharedPreferencesConstant.System_Language_Setting, "");
         return language;
     }*/
 

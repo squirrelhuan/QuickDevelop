@@ -31,8 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 
 /**
  * Created by Squirrel桓 on 2018/10/29.
@@ -64,9 +62,12 @@ public class ScreenShotUitl {
         // window.showAsDropDown(anchor, xoff, yoff);
         //window.showAsDropDown(anchor);
 
-        CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder();
+        PopupWindow popupWindow = new PopupWindow();
         ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivityNoBar(context));
-        final PopupWindow popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true).build();
+        popupWindow.setContentView(contentView);
+        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popupWindow.setFocusable(true);
         popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
         ImageView iv_code = contentView.findViewById(R.id.iv_code);
         Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher);

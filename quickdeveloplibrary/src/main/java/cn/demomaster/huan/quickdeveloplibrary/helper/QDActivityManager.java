@@ -103,12 +103,11 @@ public class QDActivityManager {
     /**
      * 页面关闭
      * 释放一些资源
-     * @param Object
+     * @param obj
      */
     public static void onFinishActivityOrFragment(Object obj) {
-
         Field[] fields = obj.getClass().getDeclaredFields();
-        QDLogger.i("acitivity属性个数：" + fields.length);
+        QDLogger.println("acitivity属性个数：" + fields.length);
         for (int i = 0, len = fields.length; i < len; i++) {
             // 对于每个属性，获取属性名
             String varName = fields[i].getName();
@@ -122,28 +121,28 @@ public class QDActivityManager {
                 try {
                     o = fields[i].get(obj);
                     if (o != null) {
-                        QDLogger.d("变量：" + varName + " = " + o);
+                        QDLogger.println("变量：" + varName + " = " + o);
                         if(o instanceof OnReleaseListener){
-                            QDLogger.d("释放 OnReleaseListener：" + varName);
+                            QDLogger.println("释放 OnReleaseListener：" + varName);
                             ((OnReleaseListener) o).onRelease();
                         }else
                         if (o instanceof Handler) {
-                            QDLogger.d("释放handler：" + varName);
+                            QDLogger.println("释放handler：" + varName);
                             ((Handler) o).removeCallbacksAndMessages(null);
                         } else if (o instanceof Dialog) {
-                            QDLogger.d("释放dialog：" + varName);
+                            QDLogger.println("释放dialog：" + varName);
                             ((Dialog) o).dismiss();
                         }  else if (o instanceof PopupWindow) {
-                            QDLogger.d("释放PopupWindow：" + varName);
+                            QDLogger.println("释放PopupWindow：" + varName);
                             ((PopupWindow) o).dismiss();
                         } else if (o instanceof Bitmap) {
-                            QDLogger.d("释放Bitmap：" + varName);
+                            QDLogger.println("释放Bitmap：" + varName);
                                 ((Bitmap) o).recycle();
                         }else if (o instanceof View) {
-                            QDLogger.d("释放View：" + varName);
+                            QDLogger.println("释放View：" + varName);
                             ((View) o).clearAnimation();
                         }else if (o instanceof Animator) {
-                            QDLogger.d("释放Animator：" + varName);
+                            QDLogger.println("释放Animator：" + varName);
                             ((Animator) o).cancel();
                         }
                     }
@@ -612,7 +611,7 @@ public class QDActivityManager {
                     ApplicationInfo applicationInfo = pManager.getPackageInfo(packName, 0).applicationInfo;
                     if (!pkgName.equals(packName) && filterApp(applicationInfo)) {
                         forceStopPackage(context, packName);
-                        System.out.println(packName + " has been killed");
+                       QDLogger.println(packName + " has been killed");
                     }
                 }
             } catch (Exception e) {

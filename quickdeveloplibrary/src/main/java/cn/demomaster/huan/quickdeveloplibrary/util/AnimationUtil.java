@@ -66,7 +66,7 @@ public class AnimationUtil {
                                 try {
                                     Method method = ref.getClass().getMethod("onClick",
                                             new Class[]{View.class});
-                                    System.out.println("反射方法名" + method.getName());
+                                   QDLogger.println("反射方法名" + method.getName());
                                     method.invoke(listener,
                                             new Object[]{targetView});
                                 } catch (Exception e) {

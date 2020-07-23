@@ -56,7 +56,7 @@ public class QDTcpClient {
                     //client.setKeepAlive(true);//开启保持活动状态的套接字
                     //client.setSoTimeout(5 * 60 * 1000);//设置超时时间
                     waitMessage();//开启消息接收
-                    qdlogin();//用户登录
+                    //qdlogin();//用户登录
                 } catch (Exception e) {
                     System.err.println("socket连接失败");
                     e.printStackTrace();
@@ -81,8 +81,8 @@ public class QDTcpClient {
                         boolean hasRead = false;
                         while (!((reply = br.readLine()) == null)) {
                             hasRead = true;
-                            System.out.println("接收服务器的信息：" + reply);
                             QDMessage qdMessage = JSON.parseObject(reply, QDMessage.class);
+                            System.out.println("接收信息：" +qdMessage.getTime()+","+ reply);
                             if (qdMessage != null) {
                                 isConnected = true;
                                 if (receiveListenerManager.containsKey(qdMessage.getTime())) {
@@ -183,7 +183,7 @@ public class QDTcpClient {
     }
 
 
-    MessageListenerManager receiveListenerManager;
+    private MessageListenerManager receiveListenerManager;
     public void send(QDMessage qdMessage, MessageReceiveListener listener) {
         if(qdMessage!=null){
             qdMessage.setTime(System.currentTimeMillis());
@@ -200,7 +200,7 @@ public class QDTcpClient {
                         String msg1 = JSON.toJSONString(qdMessage) + END_CHAR;
                         out = client.getOutputStream();
                         out.write(msg1.getBytes());
-                        System.out.println("发送请求：" + JSON.toJSONString(qdMessage));
+                        System.out.println("发送请求："+qdMessage.getTime()+","+ JSON.toJSONString(qdMessage));
                     } catch (IOException e) {
                         e.printStackTrace();
                         reConnect();

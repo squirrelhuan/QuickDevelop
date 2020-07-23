@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import androidx.appcompat.widget.AppCompatImageView;
+
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
@@ -45,14 +46,16 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     public void setTextSize(int textSize) {
-        this.textSize = DisplayUtil.sp2px(getContext(),textSize);
+        this.textSize = DisplayUtil.sp2px(getContext(), textSize);
         requestLayout();
         postInvalidate();
     }
+
     AttributeHelper attributeHelper;
+
     private void init(Context context, AttributeSet attrs) {
         if (attrs != null) {
-            attributeHelper = new AttributeHelper(context,attrs);
+            attributeHelper = new AttributeHelper(context, attrs);
             //attributeHelper.hasAttr("textSize")
 
           /*  int count = attrs.getAttributeCount();
@@ -67,29 +70,29 @@ public class ImageTextView extends AppCompatImageView {
                 }
                 Log.e(TAG, "attrName = " + attrName + " , attrVal = " + attrVal);
             }*/
-            if (textColor==-1&&attributeHelper.hasAttr("textColor")) {
+            if (textColor == -1 && attributeHelper.hasAttr("textColor")) {
                 String colorArr = attributeHelper.getValue("textColor");
                 if (colorArr.startsWith("@")) {
-                    int colorId = Integer.valueOf(colorArr.replace("@",""));
+                    int colorId = Integer.valueOf(colorArr.replace("@", ""));
                     textColor = getResources().getColor(colorId);
-                }else {
+                } else {
                     textColor = Color.parseColor(colorArr);
                     //Log.e(TAG, "colorArr ===================================== " + textColor);
                 }
             }
 
-            if (textSize==-1&&attributeHelper.hasAttr("textSize")) {
+            if (textSize == -1 && attributeHelper.hasAttr("textSize")) {
                 String textSizeArr = attributeHelper.getValue("textSize");
                 if (textSizeArr.startsWith("@")) {
-                    int textSizeId = Integer.valueOf(textSizeArr.replace("@",""));
+                    int textSizeId = Integer.valueOf(textSizeArr.replace("@", ""));
                     textSize = getResources().getDimensionPixelOffset(textSizeId);
-                }else {
-                    textSize =(int) DisplayUtil.getDimension(context,textSizeArr);
-                   // Log.e(TAG, "textSizeId1 ===================================== " + textSize);
+                } else {
+                    textSize = (int) DisplayUtil.getDimension(context, textSizeArr);
+                    // Log.e(TAG, "textSizeId1 ===================================== " + textSize);
                 }
             }
         }
-        attributeHelper =null;
+        attributeHelper = null;
     }
 
     private float textWidth;
@@ -111,7 +114,7 @@ public class ImageTextView extends AppCompatImageView {
             int height = measureHeight(minimumHeight, heightMeasureSpec);
             //QDLogger.e(TAG.TAG,"width="+width+",height="+height);
             setMeasuredDimension(width, height);
-        }else {
+        } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
@@ -131,7 +134,7 @@ public class ImageTextView extends AppCompatImageView {
                 defaultWidth = (int) mPaint.measureText(text) + getPaddingLeft() + getPaddingRight();
                 break;
             case MeasureSpec.EXACTLY:
-                defaultWidth =specSize;// (int) mPaint.measureText(text);
+                defaultWidth = specSize;// (int) mPaint.measureText(text);
                 break;
             case MeasureSpec.UNSPECIFIED:
                 //defaultWidth = Math.max(defaultWidth, specSize);
@@ -179,10 +182,18 @@ public class ImageTextView extends AppCompatImageView {
         center_x = width / 2;
     }
 
+    boolean showImage = true;
+    public void setShowImage(boolean showImage) {
+        this.showImage = showImage;
+        postInvalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         //QDLogger.e(TAG.TAG,"onDraw");
-        super.onDraw(canvas);
+        if (showImage) {
+            super.onDraw(canvas);
+        }
         if (text != null) {
             initPaint();
             drawText(canvas);
@@ -196,9 +207,11 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     private String text;
+
     public String getText() {
         return text;
     }
+
     public void setText(String text) {
         this.text = text;
         requestLayout();
@@ -211,6 +224,7 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     Paint mPaint;
+
     private void initPaint() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -224,10 +238,12 @@ public class ImageTextView extends AppCompatImageView {
         int baseX = (int) (canvas.getWidth() / 2 - mPaint.measureText(text) / 2);
         // 计算Baseline绘制的Y坐标(有点难理解，记住)
         int baseY = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));*/
-        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY , mPaint);
+        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY, mPaint);
         //canvas.drawLine( 0,  height/2,  width,  height/2, mPaint);
     }
+
     private int showType;
+
     public void asTextView() {
 
     }

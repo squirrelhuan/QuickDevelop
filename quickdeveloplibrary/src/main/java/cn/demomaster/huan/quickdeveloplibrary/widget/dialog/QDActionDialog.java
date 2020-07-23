@@ -145,7 +145,7 @@ public class QDActionDialog extends Dialog {
         contentLinearView.setBackground(drawable_content_bg);
 
         contentLinearView.setGravity(Gravity.CENTER);
-        int w = QMUIDisplayHelper.getScreenWidth(context) / 3;
+        int w = DisplayUtil.getScreenWidth(context) / 3;
         contentLinearView.setMinimumHeight(w / 2);
         contentLinearView.setMinimumWidth(w);
         int l = w / 3 * 2;
@@ -255,6 +255,12 @@ public class QDActionDialog extends Dialog {
             if (stateType == QDActionStateType.CONTENTVIEWID) {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
                 contentLinearView.addView(view, layoutParams1);
                 contentLinearView.setBackgroundColor(Color.TRANSPARENT);
                 padding = 0;
@@ -316,6 +322,19 @@ public class QDActionDialog extends Dialog {
 
     @Override
     public void show() {
+        if (getContext() != null) {
+            if (getContext() instanceof Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (((Activity) getContext()).isDestroyed()) {
+                        return;
+                    }
+                }
+                if (((Activity) getContext()).isFinishing()) {
+                    return;
+                }
+            }
+        }
+
         super.show();
         if (delayMillis != -1) {
             contentLinearView.postDelayed(new Runnable() {
@@ -350,7 +369,7 @@ public class QDActionDialog extends Dialog {
         }
     }
 
-    @Override
+   /* @Override
     protected void onStart() {
         super.onStart();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -360,7 +379,7 @@ public class QDActionDialog extends Dialog {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         this.getWindow().getDecorView().setSystemUiVisibility(uiOptions);
-    }
+    }*/
 
     public static class Builder {
         public int styleId = R.style.Dialog_Fullscreen;

@@ -112,7 +112,7 @@
 
     </style>
 
-    <declare-styleable name="MultiRecycleContainer">
+    <declare-styleable name="QdActionBarContainer">
         <attr name="android:colorBackground" format="color"/>
         <attr name="android:text"/>
     </declare-styleable>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/meizi">
 
-    <ScrollView
+    <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -291,5 +291,5 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 </LinearLayout>

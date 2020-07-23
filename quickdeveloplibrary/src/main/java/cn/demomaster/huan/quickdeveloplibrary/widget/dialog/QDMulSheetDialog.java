@@ -36,8 +36,6 @@ public class QDMulSheetDialog extends QDDialog2 {
     private List<String> data;
     private int columnCount = 1;
     private ShowType showType = ShowType.List;
-    private int heightLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
-    private int widthLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
     private OnDialogActionListener onDialogActionListener;
     private int gravity;
     private int boxColor;
@@ -46,8 +44,6 @@ public class QDMulSheetDialog extends QDDialog2 {
         data = builder.data;
         columnCount = builder.columnCount;
         showType = builder.showType;
-        heightLayoutType = builder.heightLayoutType;
-        widthLayoutType = builder.widthLayoutType;
         onDialogActionListener = builder.onDialogActionListener;
         gravity = builder.gravity;
         boxColor = builder.boxColor;

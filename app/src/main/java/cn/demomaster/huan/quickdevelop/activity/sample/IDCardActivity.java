@@ -43,6 +43,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.imageToBase64;
 
 @ActivityPager(name = "身份证读取",preViewClass = TextView.class,resType = ResType.Resource)
 public class IDCardActivity extends QDActivity {
@@ -54,24 +55,6 @@ public class IDCardActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
-    }
-
-    private String imageToBase64(String path) {
-        File file = new File(path);
-        String imgBase64 =null ;
-        byte[] content = new byte[(int) file.length()];
-        try {
-            FileInputStream inputStream = new FileInputStream(file);
-            inputStream.read(content);
-            inputStream.close();
-            imgBase64 = Base64.encodeToString( content,Base64.DEFAULT);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            return imgBase64;
-        }
     }
 
     /**
@@ -87,7 +70,6 @@ public class IDCardActivity extends QDActivity {
                 }
                 String imgBase64 = imageToBase64(path);
                 Log.i("CGQ",imgBase64);
-
                 Bundle extras = data.getExtras();
                 if (extras != null) {
                     Bitmap photo = extras.getParcelable("data");

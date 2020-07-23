@@ -2,27 +2,21 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
+import cn.demomaster.huan.quickdevelop.activity.sample.WifiTestActivity2;
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 
 /**
  *
@@ -52,7 +46,7 @@ public class QDMainFragmentActivity extends QDActivity {
 
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-        System.out.println("当前时间：" + simpleDateFormat.format(date));*/
+       QDLogger.println("当前时间：" + simpleDateFormat.format(date));*/
 
         /*QDRuntimeHelper.getInstance().exeCommand("pwd");
         QDRuntimeHelper.getInstance().exeCommand("cd /");
@@ -77,12 +71,17 @@ public class QDMainFragmentActivity extends QDActivity {
             }
         });
 
+        /*ClipboardUtil.setClip(mContext, Build.BRAND.toLowerCase());
         CharSequence str = ClipboardUtil.getClip(mContext);
         if(!TextUtils.isEmpty(str)) {
             QdToast.show(mContext, str.toString());
         }
+*/
+        QdToast.show(mContext, Build.BRAND.toLowerCase());
+        //DebugFloatingService.showConsole(mContext);
 
-        DebugFloatingService.showConsole(mContext);
+       /* startActivity(WifiTestActivity2.class);
+        finish();*/
     }
 
     @Override

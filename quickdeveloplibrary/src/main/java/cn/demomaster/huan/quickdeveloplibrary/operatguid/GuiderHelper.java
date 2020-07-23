@@ -184,7 +184,7 @@ public class GuiderHelper {
         location = new int[2];
         view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         view.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-        System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
+       QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
 
         float l = location[0];
         float t = location[1];

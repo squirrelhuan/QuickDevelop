@@ -14,42 +14,34 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-
+import cn.demomaster.quicksticker_annotations.BindView;
+import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
+import cn.demomaster.quicksticker_lib.EditViewUtil;
 @ActivityPager(name = "sqlite",preViewClass = TextView.class,resType = ResType.Resource)
 public class CsqliteActivity extends QDActivity {
 
 
     /** Called when the activity is first created. */
 //声明各个按钮
-    private Button createBtn;
-    private Button insertBtn;
-    private Button updateBtn;
-    private Button queryBtn;
-    private Button deleteBtn;
-    private Button ModifyBtn;
-   /* private CBHelper dbHelper;
-    private SQLiteDatabase db;*/
+    @BindView(R.id.createDatabase)
+    Button createBtn;
+    @BindView(R.id.insert)
+    public Button insertBtn;
+    @BindView(R.id.updateDatabase)
+    public Button updateBtn;
+    @BindView(R.id.query)
+    public Button queryBtn;
+    @BindView(R.id.delete)
+    public Button deleteBtn;
+    @BindView(R.id.update)
+    public Button ModifyBtn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_csqlite);
-
-//调用creatView方法
-        creatView();
-//setListener方法
+        QuickStickerBinder.getInstance().bind(this);
+        setTitle("数据库操作");
         setListener();
-    }
-
-    //通过findViewById获得Button对象的方法
-    private void creatView(){
-        createBtn = (Button)findViewById(R.id.createDatabase);
-        updateBtn = (Button)findViewById(R.id.updateDatabase);
-        insertBtn = (Button)findViewById(R.id.insert);
-        ModifyBtn = (Button)findViewById(R.id.update);
-        queryBtn = (Button)findViewById(R.id.query);
-        deleteBtn = (Button)findViewById(R.id.delete);
-
-        getActionBarLayout().setTitle("数据库操作");
     }
 
     //为按钮注册监听的方法
@@ -75,13 +67,11 @@ public class CsqliteActivity extends QDActivity {
 
     //更新数据库的方法
     class UpdateListener implements OnClickListener {
-
         @Override
         public void onClick(View v) {
             // 数据库版本的更新,由原来的1变为2
             //CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,2);
             //SQLiteDatabase db =dbHelper.getReadableDatabase();
-
 
             PopToastUtil.ShowToast(mContext,"更新未实现");
         }
@@ -176,4 +166,12 @@ public class CsqliteActivity extends QDActivity {
             Application.getInstance().getDbHelper().getReadableDatabase().delete("inner_department_category", whereClauses, whereArgs);
         }
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        QuickStickerBinder.getInstance().unBind(this);
+    }
+
 }

@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".helper.simplepicture.PreviewActivity">
+    android:background="@color/black">
 
 
-
-    <androidx.viewpager.widget.ViewPager
+    <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.QDViewPager
         android:id="@+id/vp_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.viewpager.widget.ViewPager>
+    </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.QDViewPager>
 
 </FrameLayout>

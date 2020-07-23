@@ -24,7 +24,14 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
  */
 public class DbHelper extends SQLiteOpenHelper {
     private Context mContext;
-    public SQLiteDatabase db;
+    private SQLiteDatabase db;
+
+    public SQLiteDatabase getDb() {
+        if(db==null){
+            getReadableDatabase();
+        }
+        return db;
+    }
 
     //必须要有构造函数
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version,DbHelperInterface dbHelperInterface) {

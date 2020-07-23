@@ -27,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -204,7 +205,7 @@ public class QDialogActivity extends QDActivity {
                 .setMessage("确定要发送吗？").setBackgroundRadius(backgroundRadio).create().show();
     }
     private void showMessageWithButton(int gravity) {
-        new QDDialog.Builder(mContext)
+        QDDialog qdDialog = new QDDialog.Builder(mContext)
                 .setMessage("确定要发送吗？")
                 //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
@@ -217,7 +218,16 @@ public class QDialogActivity extends QDActivity {
                 .setText_color_foot(Color.GREEN)
                 .setLineColor(Color.RED)
                 .setBackgroundRadius(backgroundRadio)
-                .setGravity_foot(gravity).create().show();
+                .setGravity_foot(gravity).create();
+
+        GroundGlassUtil glassUtil= null;
+        glassUtil = new GroundGlassUtil();
+        glassUtil.setTargetView(qdDialog.getContentLinearView());
+        glassUtil.setBackgroundView(mListView,false);
+        glassUtil.setRadius(100);
+        glassUtil.invalidate();
+        qdDialog.show();
+        glassUtil.setTargetView(qdDialog.getContentLinearView());
     }
 
     private void showMessageWithButton2(int gravity) {

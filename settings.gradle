@@ -1,4 +1,7 @@
-include ':quickdeveloplibrary', ':app'
+include ':quickdeveloplibrary', ':app',':quicksticker_lib',':quicksticker-annotations',':quicksticker-compiler'
 //,':qdzxinglibrary'
 project(':app').projectDir = new File('app')
 //project (':qdzxinglibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QdZxing\\qdzxinglibrary')
+project (':quicksticker-compiler').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickSticker\\quicksticker-compiler')
+project (':quicksticker_lib').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickSticker\\quicksticker_lib')
+project (':quicksticker-annotations').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickSticker\\quicksticker-annotations')

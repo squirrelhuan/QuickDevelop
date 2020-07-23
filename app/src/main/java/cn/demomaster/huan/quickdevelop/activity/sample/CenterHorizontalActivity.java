@@ -136,7 +136,7 @@ public class CenterHorizontalActivity extends QDActivity {
         adapter = new SampleFragmentAdapter(getSupportFragmentManager(),list);
         view_pager_tag.setAdapter(adapter);
         view_pager_tag.setOffscreenPageLimit(10); //缓存页面数
-        view_pager_tag.setPageMargin(-QMUIDisplayHelper.getScreenWidth(mContext) +DisplayUtil.dip2px(mContext,60)); //每页的间隔
+        view_pager_tag.setPageMargin(DisplayUtil.getScreenWidth(mContext) +DisplayUtil.dip2px(mContext,60)); //每页的间隔
         //view_pager_tag.setPadding(QMUIDisplayHelper.getScreenWidth(mContext)/2,0,0,0);
     }
 

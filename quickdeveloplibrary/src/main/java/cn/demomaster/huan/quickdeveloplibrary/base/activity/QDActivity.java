@@ -38,7 +38,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.MessageHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
@@ -52,7 +51,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
 public class QDActivity extends AppCompatActivity implements QDActivityInterface {
     public static String TAG = "CGQ";
     public AppCompatActivity mContext;
-    public Bundle mBundle = null;
     private ActionBar actionBarLayout;
     private int headlayoutResID = R.layout.quickdevelop_activity_actionbar_common;
 
@@ -116,7 +114,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
-        mBundle = getIntent().getExtras();
         super.onCreate(savedInstanceState);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -158,19 +155,16 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     /**
      * 动态设置状态栏的显示隐藏
-     *
      * @param enable
      */
     public void setFullScreen(boolean enable) {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
         if (enable) {
-            WindowManager.LayoutParams attrs = getWindow().getAttributes();
             attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            getWindow().setAttributes(attrs);
         } else {
-            WindowManager.LayoutParams attrs = getWindow().getAttributes();
             attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            getWindow().setAttributes(attrs);
         }
+        getWindow().setAttributes(attrs);
     }
 
     public int getContentViewId() {
@@ -212,10 +206,8 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         return super.dispatchTouchEvent(me);
     }
 
-
     /**
      * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
-     *
      * @param v
      * @param event
      * @return
@@ -264,10 +256,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         finish();
     }
 
-    public MessageHelper getMesageHelper() {
-        return MessageHelper.getInstance(mContext.getApplicationContext());
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String str) {
         switch (str) {
@@ -283,9 +271,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     protected void onDestroy() {
         super.onDestroy();
         try {
-            if (mBundle != null) {
-                mBundle = null;
-            }
             if (fragmentHelper != null) {
                 fragmentHelper.onDestroy();
                 fragmentHelper = null;
@@ -329,8 +314,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             //mContext.unregisterReceiver(netWorkChangReceiver);
         }
     }
-
-
 
     /* if (netWorkChangReceiver == null) {
         netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
@@ -393,10 +376,8 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         return photoHelper;
     }
 
-
     @Override
     public void finish() {
-        QDLogger.e("finish()");
         QDActivityManager.onFinishActivityOrFragment(this);
         super.finish();
     }

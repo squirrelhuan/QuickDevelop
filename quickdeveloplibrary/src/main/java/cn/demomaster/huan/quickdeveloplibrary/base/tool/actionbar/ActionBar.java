@@ -69,6 +69,12 @@ public class ActionBar extends FrameLayout {
     private int contentResId = -1;
     private LayoutInflater mInflater;
 
+    public int contentViewTopPadding = -10000;
+    public void setContentViewTopPadding(int contentViewTopPadding) {
+        this.contentViewTopPadding = contentViewTopPadding;
+        setContentViewPaddingTop();
+    }
+
     private void init() {
         mInflater = LayoutInflater.from(getContext());
         contentLayout = new FrameLayout(getContext());
@@ -89,11 +95,23 @@ public class ActionBar extends FrameLayout {
         LayoutParams layoutParams01 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(contentLayout, layoutParams01);
 
+        setContentViewPaddingTop();
+
         LayoutParams layoutParams02 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(actionLayout, layoutParams02);
 
         LayoutParams layoutParams04 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(fragmentLayout, layoutParams04);
+    }
+
+    private void setContentViewPaddingTop() {
+        int count = contentLayout.getChildCount();
+        if (count > 0) {
+            View view = contentLayout.getChildAt(0);
+            if(contentViewTopPadding!=10000) {
+                view.setPadding(view.getPaddingLeft(), contentViewTopPadding, view.getPaddingRight(), view.getPaddingBottom());
+            }
+        }
     }
 
     public void setContentView(View contentView) {
@@ -122,6 +140,7 @@ public class ActionBar extends FrameLayout {
 
     /**
      * 设置导航栏背景色
+     *
      * @param color
      */
     public void setHeaderBackgroundColor(int color) {
@@ -130,13 +149,12 @@ public class ActionBar extends FrameLayout {
         actionLayout.post(new Runnable() {
             @Override
             public void run() {
-                setColorWithAnimation(actionLayout,color);
+                setColorWithAnimation(actionLayout, color);
             }
         });
     }
 
     private void setColorWithAnimation(final View view, final int colorTo) {
-
         int x = view.getLeft();
         int y = view.getBottom();
 
@@ -147,17 +165,19 @@ public class ActionBar extends FrameLayout {
         int endRadius = (int) Math.hypot(view.getWidth(), view.getHeight());
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Animator anim = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, endRadius);
-            anim.setDuration(500);
-            anim.start();
+            if(view.isAttachedToWindow()) {
+                Animator anim = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, endRadius);
+                anim.setDuration(500);
+                anim.start();
+            }
         }
-
     }
 
     ACTIONBAR_TYPE actionbarType = NORMAL;
 
     /**
      * 设置导航栏样式
+     *
      * @param actionbarType
      */
     public void setActionBarType(ACTIONBAR_TYPE actionbarType) {
@@ -393,10 +413,10 @@ public class ActionBar extends FrameLayout {
             KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
             boolean ret = ((QDFragmentInterface) fragmentWeakReference.get()).onKeyDown(eventCode, down);
             if (ret) {
-                QDLogger.d(fragmentWeakReference.get()+" fragment 消费了返回事件" +ret);
+                QDLogger.d(fragmentWeakReference.get() + " fragment 消费了返回事件" + ret);
                 return;
             }
-        }else if(contextType==ActivityContentType.ActivityModel) {
+        } else if (contextType == ActivityContentType.ActivityModel) {
             ((Activity) getContext()).onBackPressed();
         }
         //context.get().onKeyDown(eventCode,down);
@@ -464,9 +484,9 @@ public class ActionBar extends FrameLayout {
     }
 
     public void hideTitle() {
-       View view = actionLayout.getTitleView();
-       if(view!=null){
-           view.setVisibility(GONE);
-       }
+        View view = actionLayout.getTitleView();
+        if (view != null) {
+            view.setVisibility(GONE);
+        }
     }
 }

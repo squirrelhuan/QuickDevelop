@@ -31,6 +31,8 @@ import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonAct
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.BlurFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.EditViewFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.EmptyLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.FramelayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
@@ -43,7 +45,7 @@ import cn.demomaster.huan.quickdevelop.fragment.component.QdButtonFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.TimeDomainPlotFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.UMengShareFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.ColorPickerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
@@ -94,6 +96,7 @@ public class ComponentFragment extends QDFragment {
 
 
         classList.add(QdButtonFragment.class);
+        classList.add(EditViewFragment.class);
         classList.add(EmptyLayoutFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
@@ -117,7 +120,8 @@ public class ComponentFragment extends QDFragment {
         classList.add(NdkTestFragment.class);
         classList.add(NestedScrollViewFragment.class);
         classList.add(SoundFragment.class);
-        classList.add(UMengShareFragment.class);
+        classList.add(ColorPickerFragment.class);
+        classList.add(BlurFragment.class);
         classList.add(PushCardFragment.class);
         classList.add(QDTipPopupFragment.class);
         classList.add(StackSlidingLayoutFragment.class);

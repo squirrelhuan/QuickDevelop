@@ -141,7 +141,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                         e.printStackTrace();
                     }
                 }
-                System.out.println(a);
+               QDLogger.println(a);
             }
         }
     }

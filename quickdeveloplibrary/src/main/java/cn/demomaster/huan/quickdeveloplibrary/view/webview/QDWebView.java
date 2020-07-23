@@ -117,13 +117,13 @@ public class QDWebView extends WebView {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void share(String msg) {
-            System.out.println("JS调用了Android的share方法");
+           QDLogger.println("JS调用了Android的share方法");
             //GeneralUtils.share((Activity) context, 2, null);
         }
 
         @JavascriptInterface
         public void back(String msg) {
-            System.out.println(msg);
+           QDLogger.println(msg);
             ((Activity) context).finish();
 
         }
@@ -136,7 +136,7 @@ public class QDWebView extends WebView {
 
         @JavascriptInterface
         public void newPage(String url) {
-            System.out.println(url);
+           QDLogger.println(url);
             Class clazz = AppConfig.getClassByClassName("");
             Intent intent = new Intent(context, clazz);
             //String url = ((ArrayList) params).get(0).toString();

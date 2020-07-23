@@ -19,19 +19,29 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private Class<?> mErrorReportClass;
-    private WeakReference<Context> applicationWeakReference;
-    private CrashDealType mCrashDealType;
+    private Context mContext;
+    private CrashDealType mCrashDealType = CrashDealType.showError;
     private OnCrashListener mOnCrashListener;
+    private static CrashHandler instance;
 
-    public CrashHandler(Context context, Class<?> errorReportClass) {
-        mCrashDealType = CrashDealType.showError;
-        applicationWeakReference = new WeakReference<>(context.getApplicationContext());
-        this.mErrorReportClass = errorReportClass;
+    public static CrashHandler getInstance() {
+        if(instance==null){
+            instance = new CrashHandler();
+        }
+        return instance;
     }
 
-    public CrashHandler(Context context, CrashDealType crashDealType) {
-        mCrashDealType = crashDealType;
-        applicationWeakReference = new WeakReference<>(context.getApplicationContext());
+    private CrashHandler() {
+    }
+    public void init(Context context, Class<?> errorReportClass) {
+        mContext = context.getApplicationContext();
+        this.mErrorReportClass = errorReportClass;
+
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+    public void setCrashDealType(CrashDealType crashDealType) {
+        this.mCrashDealType = crashDealType;
     }
 
     public void setmOnCrashListener(OnCrashListener mOnCrashListener) {
@@ -43,7 +53,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             QDLogger.e("/******************* "+Process.myPid()+" Error start ********************/");
             QDLogger.e(TAG, throwableToString(ex));
             QDLogger.e("/******************* Error end ********************/");
-            String t = applicationWeakReference.get().getString(R.string.sorry_for_crash) + ex.toString();
+            String t = mContext.getString(R.string.sorry_for_crash) + ex.toString();
             //处理异常，要么提示用户，要么关闭app，要么重启app
             if (mCrashDealType != null) {
                 switch (mCrashDealType) {
@@ -51,14 +61,16 @@ public class CrashHandler implements UncaughtExceptionHandler {
                         System.exit(0);
                         break;
                     case showError:
-                        Intent intent = new Intent(applicationWeakReference.get(), this.mErrorReportClass);
-                        intent.putExtra("message", t);
-                        intent.putExtra("error", throwableToString(ex));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            applicationWeakReference.get().sendBroadcastAsUser(intent,android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
+                        if(mErrorReportClass!=null) {
+                            Intent intent = new Intent(mContext, this.mErrorReportClass);
+                            intent.putExtra("message", t);
+                            intent.putExtra("error", throwableToString(ex));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
+                            }
+                            mContext.startActivity(intent);
                         }
-                        applicationWeakReference.get().startActivity(intent);
                         //UserHandle.CURRENT
                         break;
                     case reboot:

@@ -6,8 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -82,6 +87,10 @@ public class QDTextViewPoint extends AppCompatTextView {
         pointTextColor = array.getColor(R.styleable.QDTextViewPoint_pointTextColor, 0);
         pointGravity = array.getInt(R.styleable.QDTextViewPoint_pointGravity, 0);
         showPoint = array.getBoolean(R.styleable.QDTextViewPoint_showPoint, true);
+
+        hollowOut = array.getBoolean(R.styleable.QDTextViewPoint_hollowOut, false);
+        hollowColor = array.getColor(R.styleable.QDTextViewPoint_hollowColor, hollowColor);
+        hollowRadius = array.getDimension(R.styleable.QDTextViewPoint_hollowRadius, hollowRadius);
         array.recycle();
 
         // Log.i(TAG, "pointMargin: " + pointMargin);
@@ -102,13 +111,27 @@ public class QDTextViewPoint extends AppCompatTextView {
         center_x = width / 2;
     }
 
+    boolean hollowOut;
+    int hollowColor = Color.WHITE;
+    float hollowRadius  = 5;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(hollowOut){
+            //禁用硬件加速
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            RectF rectf = new RectF(0,0,getWidth(),getHeight());
+            paint = new Paint();
+            paint.setColor(hollowColor);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.XOR));
+            canvas.drawRoundRect(rectf,hollowRadius,hollowRadius,paint);
+            paint.setXfermode(null);
+        }
         if (showPoint) {
             initPaint();
             drawPoint(canvas);
         }
+
     }
 
     private Paint paint;
@@ -131,36 +154,38 @@ public class QDTextViewPoint extends AppCompatTextView {
         paint = new Paint();
         paint.setTextSize(pointTextSize);
 
-        // 文字宽
-        textWidth = paint.measureText(pointText);
-        // 文字baseline在y轴方向的位置
-        baseLineY = Math.abs(paint.ascent() + paint.descent()) / 2;
-        // 文字baseline在y轴方向的位置
-        float descent = Math.abs(paint.descent()) / 2;
+        if(!TextUtils.isEmpty(pointText)) {
+            // 文字宽
+            textWidth = paint.measureText(pointText);
+            // 文字baseline在y轴方向的位置
+            baseLineY = Math.abs(paint.ascent() + paint.descent()) / 2;
+            // 文字baseline在y轴方向的位置
+            float descent = Math.abs(paint.descent()) / 2;
 
-        textWidth_draw = pointPaddingLeft + pointPaddingRight + textWidth;
-        baseLineY_draw = pointPaddingTop + pointPaddingBottom + baseLineY + descent;
+            textWidth_draw = pointPaddingLeft + pointPaddingRight + textWidth;
+            baseLineY_draw = pointPaddingTop + pointPaddingBottom + baseLineY + descent;
 
-        pointRadius = baseLineY_draw / 2;
-        int x = 0, y = 0;
-        if (pointGravity == 0) {//leftTop
-            x = (int) (textWidth_draw / 2);
-            y = (int) baseLineY_draw / 2;
-        }
-        if (pointGravity == 1) {//leftBottom
-            x = (int) (textWidth_draw / 2);
-            y = (int) (height - baseLineY_draw / 2);
-        }
-        if (pointGravity == 2) {//rightTop
-            x = (int) (width - textWidth_draw / 2);
-            y = (int) baseLineY_draw / 2;
-        }
-        if (pointGravity == 3) {//rightBottom
-            x = (int) (width - textWidth_draw / 2);
-            y = (int) (height - baseLineY_draw / 2);
-        }
+            pointRadius = baseLineY_draw / 2;
+            int x = 0, y = 0;
+            if (pointGravity == 0) {//leftTop
+                x = (int) (textWidth_draw / 2);
+                y = (int) baseLineY_draw / 2;
+            }
+            if (pointGravity == 1) {//leftBottom
+                x = (int) (textWidth_draw / 2);
+                y = (int) (height - baseLineY_draw / 2);
+            }
+            if (pointGravity == 2) {//rightTop
+                x = (int) (width - textWidth_draw / 2);
+                y = (int) baseLineY_draw / 2;
+            }
+            if (pointGravity == 3) {//rightBottom
+                x = (int) (width - textWidth_draw / 2);
+                y = (int) (height - baseLineY_draw / 2);
+            }
 
-        point = new Point((int) (x + pointMarginLeft - pointMarginRight), (int) (y + pointMarginTop - pointMarginBottom));
+            point = new Point((int) (x + pointMarginLeft - pointMarginRight), (int) (y + pointMarginTop - pointMarginBottom));
+        }
     }
 
     float textWidth;
@@ -169,13 +194,14 @@ public class QDTextViewPoint extends AppCompatTextView {
     float baseLineY_draw;
 
     private void drawPoint(Canvas canvas) {
-
-        paint.setColor(pointBackgroundColor);
-        //canvas.drawCircle(point.x, point.y, pointRadius, paint);
-        RectF rect = new RectF(point.x - textWidth_draw / 2, point.y - baseLineY_draw / 2, point.x + textWidth_draw / 2, point.y + baseLineY_draw / 2);
-        canvas.drawRoundRect(rect, pointRadius, pointRadius, paint);
-        paint.setColor(pointTextColor);
-        canvas.drawText(pointText, point.x - textWidth / 2, point.y + baseLineY, paint);
+        if(point!=null) {
+            paint.setColor(pointBackgroundColor);
+            //canvas.drawCircle(point.x, point.y, pointRadius, paint);
+            RectF rect = new RectF(point.x - textWidth_draw / 2, point.y - baseLineY_draw / 2, point.x + textWidth_draw / 2, point.y + baseLineY_draw / 2);
+            canvas.drawRoundRect(rect, pointRadius, pointRadius, paint);
+            paint.setColor(pointTextColor);
+            canvas.drawText(pointText, point.x - textWidth / 2, point.y + baseLineY, paint);
+        }
     }
 
 

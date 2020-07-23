@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 
@@ -25,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.CPopupWindow;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 
 /**
@@ -159,15 +158,17 @@ public class TabMenuLayout extends LinearLayout {
     //初始化单个tab内容页
     private void initSingTabContent(final View tabGroup, final View tabButton, final int tabIndex) {
         if (popupWindow == null) {
-            CPopupWindow.PopBuilder builder = new CPopupWindow.PopBuilder();
+            popupWindow = new PopupWindow();
             contentView = LayoutInflater.from(context).inflate(R.layout.layout_mul_menu, null, false);
             location = new int[2];
             tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
             tabGroup.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
 
-            System.out.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
-            popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.MATCH_PARENT, (int) (QMUIDisplayHelper.getScreenHeight(context) - location[1]), true).build();
-
+            QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
+            popupWindow.setContentView(contentView);
+            popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            popupWindow.setHeight((int) (QMUIDisplayHelper.getScreenHeight(context) - location[1]));
+            popupWindow.setTouchable(true);
             contentView.setPadding(0, tabGroup.getHeight(), 0, 0);
             ll_tab_content_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ll_tab_content_panel.getLayoutParams();
@@ -227,7 +228,7 @@ public class TabMenuLayout extends LinearLayout {
                     @Override
                     public void onGlobalLayout() {
                         recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        recy_tab_content.setX((QMUIDisplayHelper.getScreenWidth(context) - recy_tab_content.getWidth()) / 2);//
+                        recy_tab_content.setX((DisplayUtil.getScreenWidth(context) - recy_tab_content.getWidth()) / 2);//
                     }
                 });
             }

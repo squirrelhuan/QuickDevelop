@@ -418,7 +418,7 @@ public class QMUINotchHelper {
         if (resourceId > 0) {
             return context.getResources().getDimensionPixelSize(resourceId);
         }
-        return QMUIDisplayHelper.getStatusBarHeight(context);
+        return DisplayUtil.getStatusBarHeight(context);
     }
 
     public static int getNotchWidthInVivo(Context context){

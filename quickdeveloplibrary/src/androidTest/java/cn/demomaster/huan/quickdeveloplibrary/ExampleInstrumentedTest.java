@@ -24,7 +24,7 @@ public class ExampleInstrumentedTest {
     @Test
     public static void TextHex(){
         String a = numToHex8(10);
-        System.out.println("a="+a.toUpperCase());
+       QDLogger.println("a="+a.toUpperCase());
     }
     @Test
     public void useAppContext() {
@@ -37,7 +37,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testClass(){
-        System.out.println(Test.class.getResource("/"));
+       QDLogger.println(Test.class.getResource("/"));
     }
 
 

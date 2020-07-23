@@ -180,6 +180,9 @@ public class ActionLayout extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         ((ActionBar) getParent()).switchActivonBarType();
+        if(onSizeChangeListener!=null){
+            onSizeChangeListener.onSizeChanged(0,0);
+        }
     }
 
     @Override
@@ -189,4 +192,20 @@ public class ActionLayout extends FrameLayout {
             getChildAt(0).setBackgroundColor(color);
         }
     }
+    public static interface OnSizeChangeListener{
+        void onSizeChanged(int width,int height);
+    }
+    OnSizeChangeListener onSizeChangeListener;
+    public void setOnLayoutChanged(OnSizeChangeListener onLayoutChanged) {
+        onSizeChangeListener = onLayoutChanged;
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if(onSizeChangeListener!=null){
+            onSizeChangeListener.onSizeChanged(w,h);
+        }
+    }
+
 }

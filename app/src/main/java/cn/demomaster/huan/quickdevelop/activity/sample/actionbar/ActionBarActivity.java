@@ -32,7 +32,6 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
         btn_ac_02 = findViewById(R.id.btn_ac_02);
         btn_ac_02.setOnClickListener(this);
 
-
         btn_ac_03 = findViewById(R.id.btn_ac_03);
         btn_ac_03.setOnClickListener(this);
         btn_ac_04 = findViewById(R.id.btn_ac_04);
