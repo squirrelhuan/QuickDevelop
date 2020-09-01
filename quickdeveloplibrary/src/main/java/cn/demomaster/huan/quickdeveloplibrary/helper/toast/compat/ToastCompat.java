@@ -14,6 +14,8 @@ import androidx.annotation.StringRes;
 
 import java.lang.reflect.Field;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author drakeet
  */
@@ -179,7 +181,7 @@ public final class ToastCompat extends Toast {
         field.setAccessible(true);
         field.set(view, context);
       } catch (Throwable throwable) {
-        throwable.printStackTrace();
+        QDLogger.e(throwable);
       }
     }
   }

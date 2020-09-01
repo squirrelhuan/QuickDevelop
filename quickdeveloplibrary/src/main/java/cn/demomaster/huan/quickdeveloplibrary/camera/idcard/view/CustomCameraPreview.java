@@ -9,6 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CamParaUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**
@@ -104,7 +105,7 @@ public class CustomCameraPreview extends SurfaceView implements SurfaceHolder.Ca
                 mCamera.startPreview();
                 focus();
             } catch (Exception e1) {
-                e.printStackTrace();
+                QDLogger.e(e);
                 mCamera = null;
             }
         }

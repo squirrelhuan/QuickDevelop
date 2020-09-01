@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /*
 import com.umeng.commonsdk.UMConfigure;
@@ -27,6 +28,9 @@ public class Application extends QDApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        QDLogger.init(this);
+        QDLogger.setLogPath("/qdlogger/");
+
         NotifycationHelper.getInstance().init(this);
         //SoundHelper.init(this);
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件

@@ -3,7 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.util.terminal;
 
 import java.io.*;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class Test {
     public static final int SUCCESS = 0;            // 表示程序执行成功

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * 显示隐藏布局,当子空间显示或者隐藏状态改变时触发动画
@@ -245,6 +244,8 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 break;
         }
        // QDLogger.e("动画"+str+",start="+start+",end="+end);
+        final int m1 = (int) start;
+        final int m2 = (int) end;
         animator = ValueAnimator.ofInt((int) start, (int) end);
         animator.setInterpolator(mInterpolator);
         animator.setDuration(mDuration).start();
@@ -252,6 +253,10 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 animatedValue = (int) animation.getAnimatedValue();
+                if(onVisiableChangedListener!=null){
+                    float progress = (animatedValue-m1)/(m2-m1);
+                    onVisiableChangedListener.onVisiableChanaged(visibility,progress);
+                }
                 requestLayout();
             }
         });
@@ -263,10 +268,24 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 if(hide_with_child&&(visibility==GONE||visibility==View.INVISIBLE)){
                     setVisibility(INVISIBLE);
                 }
+/*
+                if(onVisiableChangedListener!=null){
+                    onVisiableChangedListener.onVisiableChanaged(visibility,1);
+                }*/
+
                 childView.setVisibility(visibility);
                 VisibilityMap.put(childView.hashCode(),visibility);
             }
         });
+    }
+
+    OnVisiableChangedListener onVisiableChangedListener;
+    public void setOnVisiableChangedListener(OnVisiableChangedListener onVisiableChangedListener) {
+        this.onVisiableChangedListener = onVisiableChangedListener;
+    }
+
+    public static interface OnVisiableChangedListener{
+       void onVisiableChanaged(int visibility,float progress);
     }
 
     /**

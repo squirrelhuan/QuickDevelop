@@ -3,12 +3,12 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 import android.content.Context;
 import androidx.core.view.NestedScrollingParent;
 import androidx.core.view.NestedScrollingParentHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper.TAG;
 

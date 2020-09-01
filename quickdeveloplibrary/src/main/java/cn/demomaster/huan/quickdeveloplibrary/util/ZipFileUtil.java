@@ -19,6 +19,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class ZipFileUtil {
 
     /**
@@ -48,7 +50,7 @@ public class ZipFileUtil {
             }
             out.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 if (in != null) in.close();
@@ -84,10 +86,9 @@ public class ZipFileUtil {
             zipOutputStream.flush();
             zipOutputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            QDLogger.d("压缩error=" + e.getMessage());
+            QDLogger.e(e);
         }
-        QDLogger.d("压缩完成[" + targetZipName + "]");
+        QDLogger.println("压缩完成[" + targetZipName + "]");
     }
 
     /**
@@ -101,7 +102,7 @@ public class ZipFileUtil {
         try {
             upZipFile(FILE, PATH);
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         QDLogger.d("解压完成");
     }
@@ -193,7 +194,7 @@ public class ZipFileUtil {
                 try {
                     substr = new String(substr.getBytes("8859_1"), "GB2312");
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
                 ret = new File(ret, substr);
 
@@ -206,7 +207,7 @@ public class ZipFileUtil {
                 substr = new String(substr.getBytes("8859_1"), "GB2312");
                 QDLogger.d("substr = " + substr);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
             ret = new File(ret, substr);
             QDLogger.d("2ret = " + ret);

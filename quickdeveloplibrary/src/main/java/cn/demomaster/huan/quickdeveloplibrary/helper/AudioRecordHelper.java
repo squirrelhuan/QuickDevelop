@@ -3,12 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.os.Environment;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/23.
@@ -59,7 +60,7 @@ public class AudioRecordHelper {
             }
             recordThread = null;
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             recordThread = null;
         }
@@ -110,7 +111,7 @@ public class AudioRecordHelper {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 
@@ -154,7 +155,7 @@ public class AudioRecordHelper {
             setPath(path);
             startThread();
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -177,7 +178,7 @@ public class AudioRecordHelper {
                 dos.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 

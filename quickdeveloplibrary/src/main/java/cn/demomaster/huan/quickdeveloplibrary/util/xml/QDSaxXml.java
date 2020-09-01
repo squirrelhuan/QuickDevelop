@@ -15,8 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -57,7 +56,6 @@ public class QDSaxXml {
             QDSaxHandler handler = new QDSaxHandler(clazz,onParseCompleteListener);
             xr.setContentHandler(handler);
             xr.setErrorHandler(handler);
-
 
             //获取AssetManager管理器对象
             AssetManager as = context.getAssets();

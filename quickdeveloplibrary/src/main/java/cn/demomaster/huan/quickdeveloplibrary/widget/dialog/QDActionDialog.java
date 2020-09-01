@@ -5,9 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,11 +24,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/7.
@@ -208,13 +206,13 @@ public class QDActionDialog extends Dialog {
                         layoutParams1.rightMargin = l / 8;
                         contentLinearView.addView(imageView, layoutParams1);
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (InstantiationException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                 }
             }
@@ -238,13 +236,13 @@ public class QDActionDialog extends Dialog {
                         }
                         contentLinearView.addView(imageView, layoutParams1);
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (InstantiationException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                 }
             }

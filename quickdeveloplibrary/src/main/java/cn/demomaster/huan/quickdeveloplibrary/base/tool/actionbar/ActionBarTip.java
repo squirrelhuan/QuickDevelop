@@ -13,20 +13,17 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.COMPLETE;
 import static cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType.ERROR;
@@ -98,8 +95,7 @@ public class ActionBarTip extends FrameLayout {
                             try {
                                 actionBarState.getOnLoadingStateListener().loading();
                             } catch (Exception e) {
-                                e.printStackTrace();
-                                QDLogger.e("异常/耗时操作，不能直接处理UI");
+                                QDLogger.e(e);
                             }
                         }
                     });

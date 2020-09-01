@@ -34,6 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.DeviceModel;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDFileUtil {
 
@@ -84,7 +85,7 @@ public class QDFileUtil {
             QDLogger.d("save success path:" + imgPath + ",size:" + file.length());
             return imgPath;
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return null;
     }
@@ -122,7 +123,7 @@ public class QDFileUtil {
                 fout.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             if (fout != null) {
                 try {
@@ -146,7 +147,7 @@ public class QDFileUtil {
             //res = EncodingUtils.getString(buffer, "UTF-8");
             fin.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return res;
     }
@@ -179,7 +180,7 @@ public class QDFileUtil {
             text = new String(buffer, "UTF-8");
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return text;
     }
@@ -469,7 +470,7 @@ public class QDFileUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return file.getAbsolutePath();
     }
@@ -517,7 +518,7 @@ public class QDFileUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return path;
     }
@@ -589,7 +590,7 @@ public class QDFileUtil {
                 paths.add(mountPath);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return paths;
     }
@@ -617,7 +618,7 @@ public class QDFileUtil {
             fout.flush();
             fout.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 

@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

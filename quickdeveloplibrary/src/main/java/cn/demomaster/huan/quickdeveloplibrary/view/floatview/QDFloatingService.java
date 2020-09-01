@@ -235,7 +235,6 @@ public abstract class QDFloatingService extends Service {
             if (onDismissListener != null) {
                 onDismissListener.onDismiss();
             }
-            QDAccessibilityService.setOnAccessibilityEventListener(null);
         }
     }
 

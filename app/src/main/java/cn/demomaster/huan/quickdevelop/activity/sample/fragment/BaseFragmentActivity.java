@@ -2,8 +2,6 @@ package cn.demomaster.huan.quickdevelop.activity.sample.fragment;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -12,8 +10,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 @ActivityPager(name = "BaseFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class BaseFragmentActivity extends QDActivity {

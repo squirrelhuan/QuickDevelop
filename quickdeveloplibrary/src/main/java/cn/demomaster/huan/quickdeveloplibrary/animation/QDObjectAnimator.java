@@ -3,7 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 import android.animation.ValueAnimator;
 import android.view.View;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDObjectAnimator extends QDValueAnimator{
     public  String propertyName;

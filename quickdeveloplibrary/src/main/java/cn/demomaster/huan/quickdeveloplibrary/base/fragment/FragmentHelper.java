@@ -16,8 +16,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.

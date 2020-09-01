@@ -28,10 +28,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static androidx.core.content.ContextCompat.getExternalFilesDirs;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCreatTime;

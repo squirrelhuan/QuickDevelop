@@ -27,11 +27,11 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Squirrel桓

@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -66,8 +66,7 @@ public class QDKeyboardView extends KeyboardView {
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e);
         }
     }
 
@@ -131,7 +130,7 @@ public class QDKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         labelTextSize = (int) field.get(this);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                         QDLogger.e(e==null?"e=null":e.toString());
                     }
                     paint.setTextSize(labelTextSize);
@@ -143,7 +142,7 @@ public class QDKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         keyTextSize = (int) field.get(this);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                         QDLogger.e(e==null?"e=null":e.toString());
                     }
                     paint.setTextSize(keyTextSize);
@@ -183,7 +182,7 @@ public class QDKeyboardView extends KeyboardView {
                 setIconSize(canvas, key, iconSizeWidth, iconSizeHeight);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             QDLogger.e(e==null?"e=null":e.toString());
         }
     }

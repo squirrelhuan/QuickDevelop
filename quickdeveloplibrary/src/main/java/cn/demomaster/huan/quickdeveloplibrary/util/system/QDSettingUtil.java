@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.WindowManager;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDSettingUtil {
 
@@ -23,7 +23,6 @@ public class QDSettingUtil {
             automicBrightness = Settings.System.getInt(resolver,
                     Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
             QDLogger.e(e);
         }
         return automicBrightness;

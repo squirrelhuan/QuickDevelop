@@ -26,8 +26,8 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by amitshekhar on 14/01/17.
@@ -141,7 +141,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                         e.printStackTrace();
                     }
                 }
-               QDLogger.println(a);
+              // QDLogger.println(a);
             }
         }
     }

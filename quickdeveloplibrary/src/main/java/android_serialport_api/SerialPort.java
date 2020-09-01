@@ -26,6 +26,8 @@ import java.io.OutputStream;
 
 import android.util.Log;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class SerialPort {
 
     private static final String TAG = "SerialPort";
@@ -68,7 +70,7 @@ public class SerialPort {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
                 throw new SecurityException();
             }
         }
@@ -100,7 +102,7 @@ public class SerialPort {
         try {
             System.loadLibrary("serial_port");
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 }

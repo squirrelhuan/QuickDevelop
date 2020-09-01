@@ -11,16 +11,12 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.SoundEffectConstants;
-import android.view.View;
-import android.view.accessibility.AccessibilityEvent;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -72,7 +68,7 @@ public class QDKeyboardView extends KeyboardView {
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -150,7 +146,7 @@ public class QDKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         labelTextSize = (int) field.get(this);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -163,7 +159,7 @@ public class QDKeyboardView extends KeyboardView {
                         field.setAccessible(true);
                         keyTextSize = (int) field.get(this);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -204,7 +200,7 @@ public class QDKeyboardView extends KeyboardView {
                 setIconSize(canvas, key, iconSizeWidth, iconSizeHeight);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 

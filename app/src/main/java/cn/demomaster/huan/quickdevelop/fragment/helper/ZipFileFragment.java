@@ -24,11 +24,11 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCreatTime;
 

@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * app xml配置信息
@@ -24,14 +24,24 @@ public class AppConfig {
     private Map<String, Object> configMap;
 
     //要初始化
-    public void init(Context context, String pathName) {
+    public void load(Context context, String pathName) {
         mContext = context.getApplicationContext();
         configPath = pathName;
+        initConfigMap();
+    }
 
+    public Map<String, Object> getConfigMap() {
+        if(configMap==null){
+            initConfigMap();
+        }
+        return configMap;
+    }
+
+    public void initConfigMap(){
         String conf = QDFileUtil.getFromAssets(mContext, configPath);
         if(TextUtils.isEmpty(conf)){
-            QDLogger.e("未找到指定配置文件/或为空 ，路径："+configPath);
-            throw new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径："+configPath);
+            configMap = null;
+            QDLogger.e( new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径："+configPath));
         }
 
         configMap = JSON.parseObject(conf, Map.class);
@@ -67,20 +77,9 @@ public class AppConfig {
         try {
             catClass = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return catClass;
-    }
-
-    public Map<String, Object> getConfigMap() {
-       /* if(configMap==null){
-            try {
-                throw new QDException("请先初始化配置cofig");
-            } catch (QDException e) {
-                e.printStackTrace();
-            }
-        }*/
-        return configMap;
     }
 
     public Object getConfig(String key) {

@@ -10,23 +10,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Interpolator;
-import android.widget.OverScroller;
-import android.widget.Scroller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
 import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleBehavior;
-import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 时域图
@@ -266,7 +259,7 @@ public class TimeDomainPlotView extends View {
                 try {
                     mDragHelper.processTouchEvent(event);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
             return true;

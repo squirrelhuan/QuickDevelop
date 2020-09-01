@@ -2,28 +2,18 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.popup;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundArrowDrawable;
 
 public class QDTipPopup extends QDPopup {

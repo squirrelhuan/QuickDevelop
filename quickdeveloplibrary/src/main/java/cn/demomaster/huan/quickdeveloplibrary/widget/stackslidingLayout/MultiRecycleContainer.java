@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 @CoordinatorLayout.DefaultBehavior(MultiRecycleBehavior.class)
 public class MultiRecycleContainer extends FrameLayout {

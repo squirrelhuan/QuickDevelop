@@ -10,4 +10,12 @@ public class QDException extends Exception {
         super(message);
         this.errorCode = errorCode;
     }
+
+    @Override
+    public String toString() {
+        return "QDException{" +
+                "errorCode=" + errorCode +
+                ",errorMessage=" + getMessage() +
+                '}';
+    }
 }

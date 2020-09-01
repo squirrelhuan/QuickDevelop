@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -37,9 +37,9 @@ public class SoundHelper {
                     //添加到音频集合中
                     soundMap.put(id, fields[i].getName());
                 } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
                 //System.out.println(fields[i].getName());
             }
@@ -164,7 +164,7 @@ public class SoundHelper {
             Field idField = c.getDeclaredField(resName);
             return idField.getInt(idField);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             return -1;
         }
     }

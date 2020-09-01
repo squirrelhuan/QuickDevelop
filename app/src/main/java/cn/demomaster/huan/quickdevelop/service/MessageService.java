@@ -12,10 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
-import android.util.Log;
 
 import cn.demomaster.huan.quickdevelop.receiver.ServiceReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/26.

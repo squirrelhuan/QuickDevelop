@@ -36,7 +36,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.uriToFile;
@@ -66,33 +66,35 @@ public class InstallHelper {
         PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
+                OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
+                    @Override
+                    public void onDownloadRunning(long downloadId, String name, float fraction) {
+                        QDLogger.i("下载进度:" + fraction);
+                    }
+
+                    @Override
+                    public void onDownloadSuccess(DownloadTask downloadTask) {
+                        QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
+                        openAPKFile(context, downloadTask.getDownloadUri());
+                        //runInstall(context,downloadTask.getDownIdUri());
+                    }
+
+                    @Override
+                    public void onDownloadFail() {
+
+                    }
+
+                    @Override
+                    public void onDownloadPaused() {
+
+                    }
+                };
+
                 DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
                         .setFileName(name)
                         .setUrl(url)
-                        .setOnProgressListener(new OnDownloadProgressListener() {
-                            @Override
-                            public void onDownloadRunning(long downloadId, String name, float fraction) {
-                                QDLogger.i("下载进度" + fraction);
-                            }
-
-                            @Override
-                            public void onDownloadSuccess(DownloadTask downloadTask) {
-                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
-                                openAPKFile(context, downloadTask.getDownloadUri());
-                                //runInstall(context,downloadTask.getDownIdUri());
-                            }
-
-                            @Override
-                            public void onDownloadFail() {
-
-                            }
-
-                            @Override
-                            public void onDownloadPaused() {
-
-                            }
-                        });
-                downloadBuilder.start();
+                        .setOnProgressListener(onDownloadProgressListener);
+                int downloadId = downloadBuilder.start();
             }
 
             @Override
@@ -135,7 +137,7 @@ public class InstallHelper {
                     mContext.startActivity(intent);
                 }
             } catch (Throwable e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }
@@ -242,72 +244,73 @@ public class InstallHelper {
 
     /**
      * okhttp 下载
-     *
-     * @param context
+     *  @param context
      * @param name
      * @param url
      * @param listener
+     * @return
      */
-    public static void downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, OnDownloadProgressListener listener) {
-        downloadAndSilenceInstall(context, autoReStartApp, name, url, DownloadTask.DownloadType.Okhttp, listener);
+    public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, OnDownloadProgressListener listener) {
+       return downloadAndSilenceInstall(context, autoReStartApp, name, url, DownloadTask.DownloadType.Okhttp, listener);
     }
 
-    public static void downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
+    public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
+        DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context);
         //存储权限
         PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
-                DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
-                        .setDownloadType(downloadType)
+
+                OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
+                    @Override
+                    public void onDownloadRunning(long downloadId, String name, float progress) {
+                        if (listener != null&&listener.canCallBack()) {
+                            listener.onDownloadRunning(downloadId, name, progress);
+                        }
+                    }
+
+                    @Override
+                    public void onDownloadSuccess(DownloadTask downloadTask) {
+                        if (listener != null) {
+                            listener.onDownloadSuccess(downloadTask);
+                        }
+                        QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
+                        try {
+                            //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
+                            File file = uriToFile(downloadTask.getDownloadUri(), context);
+                            if (file == null || !file.exists()) {
+                                QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownloadUri());
+                                return;
+                            }
+                            QDLogger.i("下载文件path:" + file.getAbsolutePath());
+                            silenceInstall(context, autoReStartApp, file);
+                        } catch (Exception e) {
+                            QDLogger.e(e);
+                        }
+                        //runInstall(context,downloadTask.getDownIdUri());
+                    }
+
+                    @Override
+                    public void onDownloadFail() {
+                        if (listener != null) {
+                            listener.onDownloadFail();
+                        }
+                    }
+
+                    @Override
+                    public void onDownloadPaused() {
+                        if (listener != null) {
+                            listener.onDownloadPaused();
+                        }
+                    }
+                };
+
+
+                downloadBuilder.setDownloadType(downloadType)
                         .setFileName(name)
                         .setUrl(url)
-                        .setOnProgressListener(new OnDownloadProgressListener() {
-                            @Override
-                            public void onDownloadRunning(long downloadId, String name, float progress) {
-                                QDLogger.i("下载进度" + progress);
-                                if (listener != null) {
-                                    listener.onDownloadRunning(downloadId, name, progress);
-                                }
-                            }
-
-                            @Override
-                            public void onDownloadSuccess(DownloadTask downloadTask) {
-                                if (listener != null) {
-                                    listener.onDownloadSuccess(downloadTask);
-                                }
-                                QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
-                                try {
-                                    //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
-                                    File file = uriToFile(downloadTask.getDownloadUri(), context);
-                                    if (file == null || !file.exists()) {
-                                        QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownloadUri());
-                                        return;
-                                    }
-                                    QDLogger.i("下载文件path:" + file.getAbsolutePath());
-                                    silenceInstall(context, autoReStartApp, file);
-                                } catch (Exception e) {
-                                    QDLogger.i("安装异常:" + e.getMessage() + e.getCause());
-                                    e.printStackTrace();
-                                }
-                                //runInstall(context,downloadTask.getDownIdUri());
-                            }
-
-                            @Override
-                            public void onDownloadFail() {
-                                if (listener != null) {
-                                    listener.onDownloadFail();
-                                }
-                            }
-
-                            @Override
-                            public void onDownloadPaused() {
-                                if (listener != null) {
-                                    listener.onDownloadPaused();
-                                }
-                            }
-
-                        });
-                downloadBuilder.start();
+                        .setOnProgressListener(onDownloadProgressListener);
+                int downloadId = downloadBuilder.start();
             }
 
             @Override
@@ -318,31 +321,37 @@ public class InstallHelper {
                 }
             }
         });
+
+        return downloadBuilder;
     }
 
     /**
      * 静默安装
+     *
      * @param context
      * @param autoReStartApp 是否重启app
      * @param file
      * @throws Exception
      */
     public static void silenceInstall(@NonNull Context context, boolean autoReStartApp, @NonNull File file) throws Exception {
-        silenceInstall(context, autoReStartApp,file, null);
+        silenceInstall(context, autoReStartApp, file, null);
     }
 
     /**
      * 静默安装
+     *
      * @param context
      * @param autoReStartApp
      * @param file
      * @param sessionCallback
      * @throws Exception
      */
-    public static void silenceInstall(@NonNull Context context, boolean autoReStartApp,@NonNull File file, PackageInstaller.SessionCallback sessionCallback) throws Exception {
+    public static void silenceInstall(@NonNull Context context, boolean autoReStartApp, @NonNull File file, PackageInstaller.SessionCallback sessionCallback) throws Exception {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             if (!file.exists()) {
-                throw new Exception("安装文件包不存在");
+                Exception e =new Exception("安装文件包不存在");
+                QDLogger.e(e);
+                throw e;
             }
             String path = file.getPath();
             String apkName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".apk"));
@@ -379,7 +388,11 @@ public class InstallHelper {
 
                     @Override
                     public void onFinished(int sessionId, boolean success) {
-                        QDLogger.i("install finish sessionId=" + sessionId);
+                        if (success) {
+                            QDLogger.i( "Silent Install Success,sessionId="+sessionId);
+                        } else {
+                            QDLogger.i( "Silent Install Fail,sessionId="+sessionId);
+                        }
                     }
                 });
             } else {
@@ -426,8 +439,10 @@ public class InstallHelper {
                 //提交启动安装
                 session.commit(intentSender);
             } catch (IOException e) {
+                QDLogger.e(e);
                 throw new RuntimeException("Couldn't install package", e);
             } catch (RuntimeException e) {
+                QDLogger.e(e);
                 if (session != null) {
                     session.abandon();
                 }
@@ -479,7 +494,7 @@ public class InstallHelper {
                 errorMsg.append(s);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 if (os != null) {
@@ -495,7 +510,7 @@ public class InstallHelper {
                     errorResult.close();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
         QDLogger.e("installMsg: " + successMsg.toString() + ", errorMsg: " + errorMsg.toString());
@@ -532,9 +547,9 @@ public class InstallHelper {
                 errorMsg.append(s);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 if (successResult != null) {
@@ -544,7 +559,7 @@ public class InstallHelper {
                     errorResult.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
             if (process != null) {
                 process.destroy();
@@ -594,6 +609,7 @@ public class InstallHelper {
 
     /**
      * 判断无障碍辅助功能是否开启
+     *
      * @param context
      * @return
      */
@@ -614,7 +630,7 @@ public class InstallHelper {
                 }
             }
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return false;
     }
@@ -644,7 +660,7 @@ public class InstallHelper {
                 result = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             result = false;
         } finally {
             try {
@@ -655,7 +671,7 @@ public class InstallHelper {
                     br.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
                 os = null;
                 br = null;
                 process.destroy();

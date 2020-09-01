@@ -12,7 +12,7 @@ import android.text.TextUtils;
 
 import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDAppInfoUtil {
 

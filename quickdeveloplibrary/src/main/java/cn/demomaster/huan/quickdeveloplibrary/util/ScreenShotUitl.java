@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2018/10/29.

@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class QDProcessUtil {
 
     public static String getProcessName() {
@@ -20,7 +22,7 @@ public class QDProcessUtil {
             mBufferedReader.close();
             return processName;
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             return null;
         }
     }

@@ -8,13 +8,9 @@ import android.graphics.Paint;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 
-import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.AttributeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 /**
  * @author squirrel桓

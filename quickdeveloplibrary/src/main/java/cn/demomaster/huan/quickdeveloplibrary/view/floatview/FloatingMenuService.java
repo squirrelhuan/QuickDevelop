@@ -20,8 +20,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView;
  */
 public class FloatingMenuService extends QDFloatingService {
     private boolean isExpanded = false;
-    private SquareImageMenuView button01, button02, button03;
-
+    private static SquareImageMenuView button01, button02, button03;
+    private static ConstraintLayout cl_menu;
     @Override
     public View setContentView(final Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_floating_menu, null);
@@ -29,7 +29,7 @@ public class FloatingMenuService extends QDFloatingService {
         //view.setLayoutParams(new LinearLayout.LayoutParams(w,w));
 
         // dissmissWindow(context, FloatingMenuService.this.getClass());
-        ConstraintLayout cl_menu = view.findViewById(R.id.cl_menu);
+        cl_menu = view.findViewById(R.id.cl_menu);
         QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
         //qdRoundDrawable.setCornerRadius(cl_menu.getWidth()/2);
         qdRoundDrawable.setBackGroundColor(getResources().getColor(R.color.transparent_dark_77));
@@ -43,7 +43,9 @@ public class FloatingMenuService extends QDFloatingService {
                 //changeState();
             }
         });
-        //button01 = view.findViewById(R.id.ib_menu_01);
+        button01 = view.findViewById(R.id.ib_menu_01);
+        buttonEnable = true;
+        button01.setEnabled(buttonEnable);
         /*button02 = view.findViewById(R.id.ib_menu_02);
         button03 = view.findViewById(R.id.ib_menu_03);*/
         //changeState();
@@ -63,6 +65,13 @@ public class FloatingMenuService extends QDFloatingService {
             hideMenus();
         } else {
             enlarge();
+        }
+    }
+    static boolean buttonEnable = true;
+    public static void setMenuEnable(boolean enable){
+        buttonEnable = enable;
+        if(button01!=null){
+            button01.setEnabled(buttonEnable);
         }
     }
 

@@ -4,11 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import cn.demomaster.huan.quickdevelop.service.GuardService;
 import cn.demomaster.huan.quickdevelop.service.MessageService;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/26.

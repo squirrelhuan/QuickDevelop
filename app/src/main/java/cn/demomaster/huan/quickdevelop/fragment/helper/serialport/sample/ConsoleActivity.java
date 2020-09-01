@@ -19,14 +19,11 @@ package cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample;
 import java.io.IOException;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class ConsoleActivity extends SerialPortActivity {
 

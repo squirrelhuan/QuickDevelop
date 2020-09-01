@@ -25,6 +25,8 @@ import java.util.Vector;
 
 import android.util.Log;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class SerialPortFinder {
 
 	public class Driver {
@@ -95,7 +97,7 @@ public class SerialPortFinder {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			QDLogger.e(e);
 		}
 		return devices.toArray(new String[devices.size()]);
 	}
@@ -115,7 +117,7 @@ public class SerialPortFinder {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			QDLogger.e(e);
 		}
 		return devices.toArray(new String[devices.size()]);
 	}

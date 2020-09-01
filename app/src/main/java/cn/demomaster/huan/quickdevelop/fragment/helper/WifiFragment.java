@@ -1,20 +1,14 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,21 +37,19 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
-import static android.net.wifi.WifiManager.EXTRA_SUPPLICANT_ERROR;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
-import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
 
 
 /**

@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author squirrel桓
  * @date 2019/1/15.

@@ -24,11 +24,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -37,7 +35,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.google.zxing.ResultPoint;
@@ -48,7 +45,6 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.qdzxinglibrary.ScanHelper;
 
 import static cn.demomaster.qdzxinglibrary.ScanSurfaceView.TAG;

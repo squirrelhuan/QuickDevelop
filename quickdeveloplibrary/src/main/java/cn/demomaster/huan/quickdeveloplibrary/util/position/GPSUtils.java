@@ -12,11 +12,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 
-import androidx.annotation.RequiresApi;
-
 import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Administrator on 2018/4/17.

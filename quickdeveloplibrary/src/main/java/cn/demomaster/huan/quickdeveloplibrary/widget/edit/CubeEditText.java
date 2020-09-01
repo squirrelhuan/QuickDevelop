@@ -11,16 +11,11 @@ import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
     public CubeEditText(Context context) {
@@ -143,7 +138,7 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return null;
     }
@@ -166,7 +161,7 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return null;
     }

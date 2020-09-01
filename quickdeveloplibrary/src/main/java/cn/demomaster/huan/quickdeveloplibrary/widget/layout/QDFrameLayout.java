@@ -14,12 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDFrameLayout extends android.widget.FrameLayout {
     public QDFrameLayout(@NonNull Context context) {
@@ -73,7 +72,7 @@ public class QDFrameLayout extends android.widget.FrameLayout {
                         child.setZ(indexz);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
             if (child != null) {

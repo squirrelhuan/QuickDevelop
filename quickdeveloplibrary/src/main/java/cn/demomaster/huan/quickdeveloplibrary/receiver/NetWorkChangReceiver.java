@@ -5,11 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;

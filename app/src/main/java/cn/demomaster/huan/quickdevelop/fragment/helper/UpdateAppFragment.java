@@ -39,17 +39,15 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager.startInstallPermissionSettingActivity;
-import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.TAG;
-import static cn.demomaster.huan.quickdeveloplibrary.util.QDLogger.e;
 
 
 /**
@@ -183,7 +181,7 @@ public class UpdateAppFragment extends QDFragment {
                 .subscribe(new DisposableObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object response) {
-                        QDLogger.i(TAG, "onNext: " + JSON.toJSONString(response));
+                        QDLogger.i( "onNext: " + JSON.toJSONString(response));
                         try {
                             //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
                             //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
@@ -206,17 +204,17 @@ public class UpdateAppFragment extends QDFragment {
 
                     @Override
                     protected void onStart() {
-                        QDLogger.i(TAG, "onStart: ");
+                        QDLogger.i( "onStart: ");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable throwable) {
-                        QDLogger.i(TAG, "onError: " + throwable.getMessage());
+                        QDLogger.i( throwable);
                     }
 
                     @Override
                     public void onComplete() {
-                        QDLogger.i(TAG, "onComplete: ");
+                        QDLogger.i("onComplete: ");
                     }
                 });
     }

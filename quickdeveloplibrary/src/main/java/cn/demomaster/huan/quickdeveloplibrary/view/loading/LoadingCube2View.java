@@ -10,8 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
 /**
  * @author squirrel桓
  * @date 2018/11/8.

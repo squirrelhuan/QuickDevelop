@@ -2,10 +2,8 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -26,16 +24,14 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.RichTextView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-
-import static cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper.Tag;
+import cn.demomaster.qdlogger_library.QDLogInterceptor;
+import cn.demomaster.qdlogger_library.QDLogBean;
+import cn.demomaster.qdlogger_library.QDLoggerType;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 调试日志输出
@@ -54,17 +50,17 @@ public class DebugFloating2 implements FloatView {
     static int screenWidth;
     static int screenHeight;
 
-    public static QDLogger.Logger tagFilter = QDLogger.Logger.ALL;
-    public static QDLogger.Logger[] logTagfilters = {QDLogger.Logger.ALL,
-            QDLogger.Logger.VERBOSE,
-            QDLogger.Logger.INFO,
-            QDLogger.Logger.DEBUG,
-            QDLogger.Logger.ERROR};
-    public static String[] logTagNames = {QDLogger.Logger.ALL.name(),
-            QDLogger.Logger.VERBOSE.name(),
-            QDLogger.Logger.INFO.name(),
-            QDLogger.Logger.DEBUG.name(),
-            QDLogger.Logger.ERROR.name()};
+    public static QDLoggerType tagFilter = QDLoggerType.ALL;
+    public static QDLoggerType[] logTagfilters = {QDLoggerType.ALL,
+            QDLoggerType.VERBOSE,
+            QDLoggerType.INFO,
+            QDLoggerType.DEBUG,
+            QDLoggerType.ERROR};
+    public static String[] logTagNames = {QDLoggerType.ALL.name(),
+            QDLoggerType.VERBOSE.name(),
+            QDLoggerType.INFO.name(),
+            QDLoggerType.DEBUG.name(),
+            QDLoggerType.ERROR.name()};
 
     private void showTagFilter(TextView textView) {
         new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
@@ -106,7 +102,7 @@ public class DebugFloating2 implements FloatView {
     };
 
     int strMaxLen = 5000;
-    List<QDLogger.LogBean> logList = new ArrayList<>();
+    List<QDLogBean> logList = new ArrayList<>();
 
     private void initLog(View view) {
         RichTextView tv_log = view.findViewById(R.id.tv_log);
@@ -126,9 +122,9 @@ public class DebugFloating2 implements FloatView {
         QDLogger.setInterceptor(logInterceptor);
     }
 
-    QDLogger.LogInterceptor logInterceptor = new QDLogger.LogInterceptor() {
+    QDLogInterceptor logInterceptor = new QDLogInterceptor() {
         @Override
-        public void onLog(QDLogger.LogBean msg) {
+        public void onLog(QDLogBean msg) {
             View view = floatHelper.getCurrentContentView();
             if (view != null) {
                 RichTextView tv_log = view.findViewById(R.id.tv_log);
@@ -153,7 +149,7 @@ public class DebugFloating2 implements FloatView {
                 QdThreadHelper.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (msg.getType().value() == tagFilter.value() || tagFilter == QDLogger.Logger.ALL && tv_log != null) {
+                        if (msg.getType().value() == tagFilter.value() || tagFilter == QDLoggerType.ALL && tv_log != null) {
                             if (tv_log.getText().length() > strMaxLen) {
                                 tv_log.setText("");
                             }
@@ -263,17 +259,17 @@ public class DebugFloating2 implements FloatView {
     private String getLogText(Context context) {
         StringBuffer stringBuffer = new StringBuffer();
         int i=0;
-        for (QDLogger.LogBean logBean : logList) {
-            if(tagFilter==logBean.getType()||tagFilter== QDLogger.Logger.ALL) {
+        for (QDLogBean QDLogBean : logList) {
+            if(tagFilter== QDLogBean.getType()||tagFilter== QDLoggerType.ALL) {
                 int lineNum =(i + 1);
-                String str = lineNum + " " + logBean.getTag() + " " + logBean.getMessage() + " \n";
+                String str = lineNum + " " + QDLogBean.getTag() + " " + QDLogBean.getMessage() + " \n";
                 SpannableStringBuilder builder = new SpannableStringBuilder(str);
                 //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
                 ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.orange));
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(logBean.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(QDLogBean.getType().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 stringBuffer.append(builder.toString());
                 i++;

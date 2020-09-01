@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -16,9 +15,8 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NetworkStatsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.TrafficHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.QDFloatingService;
-import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 流量悬浮

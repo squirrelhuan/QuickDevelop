@@ -1,14 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.http;
 
 
-import android.util.Log;
+import android.text.TextUtils;
+
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import io.reactivex.Observable;
+import cn.demomaster.qdlogger_library.QDLogger;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -18,13 +17,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * http工具类
  */
 public class HttpUtils {
-
+    public static String TAG = "HttpUtils";
     private static HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
     //新建log拦截器
     private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            QDLogger.i("CGQ", "OkHttpMessage:" + message);
+            if(!TextUtils.isEmpty(message)){
+                QDLogger.i(TAG, message);
+            }
         }
     }).setLevel(level);
 
@@ -34,7 +35,9 @@ public class HttpUtils {
             loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    QDLogger.i("CGQ", "OkHttpMessage:" + message);
+                    if(!TextUtils.isEmpty(message)){
+                        QDLogger.i(TAG, message);
+                    }
                 }
             });
             loggingInterceptor.setLevel(level);

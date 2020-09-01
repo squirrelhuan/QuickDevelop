@@ -25,8 +25,8 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

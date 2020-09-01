@@ -17,6 +17,8 @@ import android.view.WindowManager;
 
 import java.lang.reflect.Method;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class QMUINotchHelper {
 
     private static final String TAG = "QMUINotchHelper";
@@ -86,7 +88,7 @@ public class QMUINotchHelper {
             int hasNotch = (int) getMethod.invoke(null, MIUI_NOTCH, 0);
             return hasNotch == 1;
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return false;
     }

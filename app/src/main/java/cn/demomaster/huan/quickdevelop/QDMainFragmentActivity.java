@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -8,15 +9,15 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import cn.demomaster.huan.quickdevelop.activity.sample.WifiTestActivity2;
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  *
@@ -64,7 +65,7 @@ public class QDMainFragmentActivity extends QDActivity {
             @Override
             public void onReceive(ProcessResult result) {
                 if(result.getCode()==0){
-                    QDLogger.d("result="+result.getResult());
+                    //QDLogger.d("result="+result.getResult());
                 }else {
                     QDLogger.e("result="+result.getCode()+","+result.getError());
                 }
@@ -82,6 +83,8 @@ public class QDMainFragmentActivity extends QDActivity {
 
        /* startActivity(WifiTestActivity2.class);
         finish();*/
+
+        PermissionManager.getInstance().chekPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
     }
 
     @Override

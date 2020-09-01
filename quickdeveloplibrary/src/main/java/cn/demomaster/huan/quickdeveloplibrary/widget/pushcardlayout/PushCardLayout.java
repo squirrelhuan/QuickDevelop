@@ -8,9 +8,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.NestedScrollingChild;
-import androidx.core.view.NestedScrollingChildHelper;
-import androidx.core.view.NestedScrollingParent;
 import androidx.core.view.NestedScrollingParent2;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
@@ -25,7 +22,6 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -34,8 +30,7 @@ import android.widget.OverScroller;
 import android.widget.ScrollView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**

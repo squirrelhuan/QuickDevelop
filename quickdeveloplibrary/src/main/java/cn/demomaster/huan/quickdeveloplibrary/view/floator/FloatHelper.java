@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.google.android.material.internal.FlowLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 
 /**

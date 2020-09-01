@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 import android.content.Context;
 import android.os.Handler;
 import androidx.recyclerview.widget.RecyclerView;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -16,6 +15,8 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

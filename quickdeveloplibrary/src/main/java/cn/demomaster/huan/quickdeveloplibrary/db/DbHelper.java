@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -124,20 +124,20 @@ public class DbHelper extends SQLiteOpenHelper {
             editor.putInt(SP_KEY_DB_VER, DATABASE_VERSION);
             editor.commit();
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
             if (os != null) {
                 try {
                     os.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
         }

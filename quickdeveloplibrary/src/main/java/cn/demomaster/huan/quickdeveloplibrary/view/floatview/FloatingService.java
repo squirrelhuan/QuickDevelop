@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.FPSMonitor;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +23,10 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionStateType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout;
-import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.Saleng;
 
 
 /**

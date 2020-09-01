@@ -16,10 +16,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**

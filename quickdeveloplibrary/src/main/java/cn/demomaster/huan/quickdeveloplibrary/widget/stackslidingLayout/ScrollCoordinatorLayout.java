@@ -17,11 +17,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MotionEventCompat;
 import androidx.core.view.VelocityTrackerCompat;
 import androidx.core.view.ViewCompat;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
-import static androidx.customview.widget.ViewDragHelper.INVALID_POINTER;
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_SETTLING;
 
 /**
  * @author squirrel桓

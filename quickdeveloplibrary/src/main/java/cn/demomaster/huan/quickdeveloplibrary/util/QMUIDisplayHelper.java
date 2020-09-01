@@ -27,6 +27,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author cginechen
  * @date 2016-03-17

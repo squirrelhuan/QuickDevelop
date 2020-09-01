@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.util.Set;
 
 import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2018/9/9.
@@ -50,7 +51,7 @@ public class QDSharedPreferences {
             try {
                 throw new QDException("QDSharedPreferences 创建失败，context为空");
             } catch (QDException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
             return;
         }
@@ -156,5 +157,5 @@ public class QDSharedPreferences {
     //动画
     public static final String Setting_ActivityAnimation = "ActivityAnimation";
     //最近验证码发送时间
-    public static final String Message_Code_Last_Time = "Message_Code_Last_Time";
+    //public static final String Message_Code_Last_Time = "Message_Code_Last_Time";
 }

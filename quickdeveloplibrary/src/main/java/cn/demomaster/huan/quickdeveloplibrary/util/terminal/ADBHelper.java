@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.io.*;
 import java.util.*;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * javaDB helper
@@ -91,7 +91,7 @@ public class ADBHelper {
         try {
            QDLogger.println("获取标准的路径=" + directory.getCanonicalPath());//获取标准的路径
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
        QDLogger.println("获取绝对路径=" + directory.getAbsolutePath());//获取绝对路径
        QDLogger.println("获取class路径=" + getClass().getClass()
@@ -156,22 +156,20 @@ public class ADBHelper {
             }
             if (cmd.contains("cd ") || cmd.trim().equals("\\")) {
                 String pathstr = getPathInCmd(currentPath, cmd);
-                QDLogger.e(Tag,cmd + "包含【cd】命令,"+pathstr);
-
-                QDLogger.e("路径：" + currentPath);
+                QDLogger.e(Tag,cmd + "包含【cd】命令,"+pathstr+"，路径：" + currentPath);
                 File file = new File(pathstr);
                 if (file == null || !file.exists() || !file.isDirectory()) {
+                    if (onReceiveListener != null) {
                         ProcessResult processResult = new ProcessResult();
                         processResult.setCode(-1);
                         processResult.setError("fail");
-                    if (onReceiveListener != null) {
                         onReceiveListener.onReceive(processResult);
                     }
                 } else {
                         setCurrentPath(pathstr);
                         ProcessResult processResult = new ProcessResult();
                         processResult.setCode(0);
-                        processResult.setResult("" + currentPath + "\n\r");
+                        processResult.setResult("" + currentPath);
                     if (onReceiveListener != null) {
                         onReceiveListener.onReceive(processResult);
                     }
@@ -193,7 +191,7 @@ public class ADBHelper {
                     onReceiveListener.onReceive(processResult);
                 }
             } else {
-                QDLogger.e(Tag, ERROR_MESSAGE + cmd +",exitCode="+exitCode+ ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError() + "\n\r");
+                QDLogger.e(Tag, ERROR_MESSAGE + cmd +",exitCode="+exitCode+ ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError());
                 switch (exitCode) {
                     case 255:
                         QDLogger.e("端口ADB被占用");
@@ -278,19 +276,19 @@ public class ADBHelper {
 
     private ProcessResult getProcessResult(Process process) {
         ProcessResult result = new ProcessResult();
-        result.setResult(getResultString(process.getInputStream(), System.out));
-        result.setError(getResultString(process.getErrorStream(), System.err));
+        result.setResult(getResultString(process.getInputStream()));
+        result.setError(getResultString(process.getErrorStream()));//, System.out
         return result;
     }
 
-    private String getResultString(InputStream inputStream, PrintStream out) {
+    private String getResultString(InputStream inputStream) {
         StringBuffer stringBuffer = new StringBuffer();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line + "\n\r");
-                out.println(line);
+                stringBuffer.append(line+"\n");
+                //out.println(line);
             }
         } catch (IOException e) {
             QDLogger.e(e);

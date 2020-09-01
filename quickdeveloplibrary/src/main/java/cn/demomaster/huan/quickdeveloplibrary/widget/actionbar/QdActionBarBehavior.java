@@ -18,7 +18,7 @@ import androidx.core.view.VelocityTrackerCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarContainer> {
 

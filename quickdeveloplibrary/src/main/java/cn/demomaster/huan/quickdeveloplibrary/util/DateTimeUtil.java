@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author squirrel桓
  * @date 2018/11/27.
@@ -36,20 +39,21 @@ public class DateTimeUtil {
         String ss = decimalFormat.format(time % 60);
         return hh + ":" + mm + ":" + ss;
     }
-    public static String formatDayTime1(long time) {
+
+    public static String formatDayTime1(Context context,long time) {
         DecimalFormat decimalFormat = new DecimalFormat("00");
         //String dd = decimalFormat.format(time / 3600/24);
         String timeStr = "";
         if(time>3600){
             String hh = decimalFormat.format(time / 3600);
-            timeStr += hh +"小时";
+            timeStr += hh +context.getResources().getString(R.string.hour);
         }
         if(time>3600/60){
             String mm = decimalFormat.format(time % 3600 / 60);
-            timeStr += mm +"分钟";
+            timeStr += mm +context.getResources().getString(R.string.minute);
         }
         String ss = decimalFormat.format(time % 60);
-        timeStr += ss +"秒";
+        timeStr += ss +context.getResources().getString(R.string.second);
         return timeStr;
     }
 
@@ -234,7 +238,7 @@ public class DateTimeUtil {
         try {
             c.setTime(format.parse(time));
         } catch (ParseException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return c.get(Calendar.DAY_OF_WEEK);
     }
@@ -254,7 +258,7 @@ public class DateTimeUtil {
         try {
             endDate = dft.parse(dft.format(date.getTime()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
@@ -269,7 +273,7 @@ public class DateTimeUtil {
         try {
             endDate = dft.parse(dft.format(date.getTime()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);

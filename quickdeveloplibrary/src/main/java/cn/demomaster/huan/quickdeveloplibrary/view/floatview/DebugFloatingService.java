@@ -24,13 +24,14 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
+import cn.demomaster.qdlogger_library.QDLogBean;
+import cn.demomaster.qdlogger_library.QDLogInterceptor;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
@@ -109,7 +110,7 @@ public class DebugFloatingService extends QDFloatingService {
     }
 
     static int strMaxLen = 20000;
-    static List<QDLogger.LogBean> logList = new ArrayList<>();
+    static List<QDLogBean> logList = new ArrayList<>();
     static String logStr = "";
 
     private static void initLog() {
@@ -120,9 +121,9 @@ public class DebugFloatingService extends QDFloatingService {
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
             }
         });
-        QDLogger.setInterceptor(new QDLogger.LogInterceptor() {
+        QDLogger.setInterceptor(new QDLogInterceptor() {
             @Override
-            public void onLog(QDLogger.LogBean msg) {
+            public void onLog(QDLogBean msg) {
                 QdThreadHelper.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

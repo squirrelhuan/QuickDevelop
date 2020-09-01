@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 import cn.demomaster.huan.quickdeveloplibrary.jni.BaseService;
 import cn.demomaster.huan.quickdeveloplibrary.jni.Watcher;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

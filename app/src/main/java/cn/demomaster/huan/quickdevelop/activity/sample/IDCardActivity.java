@@ -3,33 +3,23 @@ package cn.demomaster.huan.quickdevelop.activity.sample;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -37,8 +27,8 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;

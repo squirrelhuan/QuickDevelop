@@ -4,11 +4,7 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 
-import java.util.Arrays;
-import java.util.List;
-
-import cn.demomaster.huan.quickdeveloplibrary.util.AnimationUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDValueAnimator extends ValueAnimator {
 
@@ -254,7 +250,7 @@ public class QDValueAnimator extends ValueAnimator {
             if(getRepeatMode()==ValueAnimator.REVERSE){
                 currentIndex++;
             }
-            QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
+            //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
             animationListener.onEndClose(startValue);
             /*if(getRepeatCount()==-1||getRepeatCount()<currentIndex){
                 animationListener.onStartClose(endValue);

@@ -1,19 +1,15 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored02;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,9 +17,7 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -35,9 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
@@ -398,7 +391,7 @@ public class QDKeyboard {
                     keyboardView.performClick();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 
@@ -560,9 +553,9 @@ public class QDKeyboard {
                 setShowSoftInputOnFocus.invoke(edit, Boolean.FALSE);
             } catch (NoSuchMethodException e) {
                 edit.setInputType(0);
-                e.printStackTrace();
+                QDLogger.e(e);
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

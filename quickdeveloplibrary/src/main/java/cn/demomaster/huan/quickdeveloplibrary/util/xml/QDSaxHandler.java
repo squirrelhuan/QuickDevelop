@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -103,7 +103,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
     @Override
     public void characters(char ch[], int start, int length) {
         String content = new String(ch, start, length);
-        QDLogger.i(content);
+        //QDLogger.i(content);
     }
 
 
@@ -254,7 +254,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                 try {
                     field.set(currentElement, name);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+            QDLogger.e(e);
                 }
             }
             QDLogger.i(field.getName());

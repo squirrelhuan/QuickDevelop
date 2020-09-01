@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import java.lang.reflect.Field;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

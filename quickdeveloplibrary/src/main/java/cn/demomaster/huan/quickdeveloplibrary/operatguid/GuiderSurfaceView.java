@@ -14,7 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by huan on 2017/9/14.
@@ -130,7 +130,7 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
            QDLogger.println("绘制图像了吗？");
             //canvas.restore();
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             if (canvas != null)
                 sfh.unlockCanvasAndPost(canvas);

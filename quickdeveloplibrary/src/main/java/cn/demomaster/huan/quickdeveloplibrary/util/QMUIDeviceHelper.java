@@ -18,6 +18,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author cginechen
  * @date 2016-08-11
@@ -221,7 +223,7 @@ public class QMUIDeviceHelper {
             try {
                 return (context.getApplicationInfo().flags & 1 << 27) == 1 << 27;
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
                 return false;
             }
         }
@@ -238,7 +240,7 @@ public class QMUIDeviceHelper {
                         Binder.getCallingUid(), context.getPackageName());
                 return AppOpsManager.MODE_ALLOWED == property;
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
         return false;

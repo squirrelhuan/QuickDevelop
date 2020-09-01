@@ -14,6 +14,8 @@ import java.util.List;
 
 import androidx.core.view.LayoutInflaterFactory;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class QDSkinFactory implements LayoutInflaterFactory {
     //自定义的控件，这里面放包控件的包路径
     public static String[] sClassPrefixList = {
@@ -54,15 +56,15 @@ public class QDSkinFactory implements LayoutInflaterFactory {
             //返回控件
             return constructor.newInstance(context, attrs);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
 
         return null;

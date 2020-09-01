@@ -2,14 +2,13 @@ package cn.demomaster.huan.quickdeveloplibrary.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -23,10 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
+/**
+ * 无障碍辅助服务
+ */
 public class QDAccessibilityService extends AccessibilityService {
     public static final String TAG = "QDAccessibilityService";
     private static QDAccessibilityService instance;
@@ -52,21 +52,20 @@ public class QDAccessibilityService extends AccessibilityService {
 
     /**
      * 添加要监听的包名
-     *
      * @param packageName
      */
     public static void addPackage(String packageName) {
         //添加之前先检查包名是否存在
-        QDLogger.i("addPackage =" + packageName);
+        QDLogger.i("addPackage:" + packageName);
         packageMap.put(packageName, packageName);
         resetPackage();
     }
 
     public static void resetPackage() {
-        QDLogger.i("准备重置无障碍服务包名1");
+        //QDLogger.i("准备重置无障碍服务包名1");
         if (getService() != null && getService().getServiceInfo() != null) {
-            QDLogger.i("重置无障碍服务包名2");
             if (getService().getServiceInfo().packageNames != null) {
+                QDLogger.i("无障碍服务监听包名："+getService().getServiceInfo().packageNames);
                 for (String entry : getService().getServiceInfo().packageNames) {
                     packageMap.put(entry, entry);
                 }
@@ -87,8 +86,8 @@ public class QDAccessibilityService extends AccessibilityService {
             instance.setServiceInfo(serviceInfo);
         }
     }
-    static OnAccessibilityEventListener mOnAccessibilityEventListener;
 
+    static OnAccessibilityEventListener mOnAccessibilityEventListener;
     public static void setOnAccessibilityEventListener(OnAccessibilityEventListener onAccessibilityEventListener) {
         mOnAccessibilityEventListener = onAccessibilityEventListener;
     }
@@ -103,8 +102,7 @@ public class QDAccessibilityService extends AccessibilityService {
         if(mOnAccessibilityEventListener!=null){
             mOnAccessibilityEventListener.onAccessibilityEvent(this,event);
         }
-        Log.e(TAG, "TYPE_VIEW=" + event.getAction());
-
+        //Log.e(TAG, "TYPE_VIEW=" + event.getAction());
         int eventType = event.getEventType();
         switch (eventType) {
             case AccessibilityEvent.TYPE_VIEW_CLICKED:
@@ -142,7 +140,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 rootNodeInfo = accessibilityWindowInfo.getRoot();
                 if (rootNodeInfo != null) {
                     getChildsInfo(rootNodeInfo);
-                    Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
+                   // Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
                 }
             }
         } else {
@@ -183,15 +181,18 @@ public class QDAccessibilityService extends AccessibilityService {
         Log.i(TAG, "description=" + description);*/
         rootNodeInfo.getPackageName();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Log.i(TAG, "ViewId=" + rootNodeInfo.getViewIdResourceName());
+           // Log.i(TAG, "ViewId=" + rootNodeInfo.getViewIdResourceName());
         }
-        Log.i(TAG, "视图类型：" + rootNodeInfo.getClassName());
+        /*Log.i(TAG, "视图类型：" + rootNodeInfo.getClassName());
         Log.i(TAG, "文本内容：" + rootNodeInfo.getText());
-        Log.i(TAG, "窗口Id:" + rootNodeInfo.getWindowId());
+        Log.i(TAG, "窗口Id:" + rootNodeInfo.getWindowId());*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static AccessibilityNodeInfo getNodeInfoById(AccessibilityService accessibilityService, String id) {
+        if(TextUtils.isEmpty(id)||accessibilityService.getRootInActiveWindow()==null){
+            return null;
+        }
         List<AccessibilityNodeInfo> nodeInfoList = accessibilityService.getRootInActiveWindow().findAccessibilityNodeInfosByViewId(id);
         if (nodeInfoList != null && nodeInfoList.size() > 0) {
             nodeInfoList.get(0).getViewIdResourceName();
@@ -248,53 +249,76 @@ public class QDAccessibilityService extends AccessibilityService {
 
     /**
      * 判断是否存在置顶的无障碍服务
-     *
      * @param name
      * @return
      */
     public static boolean isAccessibilityServiceRunning(Context context, String name) {
         AccessibilityManager am = (AccessibilityManager) context.getApplicationContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> enableServices
-                = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        List<AccessibilityServiceInfo> enableServices = null;
         int accessibilityEnabled = 0;
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        String enabledServices = null;
         try {
-            String enabledServices = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            Log.i("AccessibilityService", "enabledServices：" + enabledServices);
-            accessibilityEnabled = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(),Settings.Secure.ACCESSIBILITY_ENABLED);
+            enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            Log.i(TAG, "已开启的无障碍服务：" + enabledServices);
+            accessibilityEnabled = Settings.Secure.getInt(contentResolver,Settings.Secure.ACCESSIBILITY_ENABLED);
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
-        Log.i("AccessibilityService", "accessibilityEnabled：" + accessibilityEnabled);
+        String targetId = context.getPackageName()+"/"+name.trim();
+        enableServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         if (accessibilityEnabled == 1) {
-            for (AccessibilityServiceInfo enableService : enableServices) {
-                Log.i("AccessibilityService", "无障碍服务id：" + enableService.getId()+",要开启的服务id：" + name);
-                if (enableService.getId().trim().endsWith(name.trim())) {
-                    return true;
+            //FIX 判断无障碍服务是否开启条件1
+            /*if(!TextUtils.isEmpty(enabledServices)&&enabledServices.contains(targetId)){
+                QDLogger.i(context.getApplicationContext(),"无障碍服务已开启1:"+targetId);
+                return true;
+            }*/
+            if(enableServices!=null&&enableServices.size()>0) {
+                //判断无障碍服务是否开启条件2
+                for (AccessibilityServiceInfo enableService : enableServices) {
+                    Log.i(TAG, "当前服务：" + enableService.getId() + ",目标服务：" + targetId);
+                    if (enableService.getId().trim().equalsIgnoreCase(targetId.trim())) {
+                        Log.e(TAG, "服务已开启：" + targetId);
+                        return true;
+                    }
                 }
+                // + (accessibilityEnabled==1?"1开启":"0关闭")
+            }else {
+                Log.e(TAG, "FEEDBACK_GENERIC "+enableServices.toString()+"不包含"+targetId);
             }
         }
+        Log.e(TAG, "无障碍服务未开启");
         return false;
     }
 
     //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
-    public static void openAccessibilityService(Context context,String packageName,String servicesName){
+    public static void openAccessibilityService(Context context,Class accessibilityService){
+        openAccessibilityService(context,context.getPackageName(),accessibilityService.getCanonicalName());
+    }
+    //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
+    public static void openAccessibilityService(Context context,String packageName,Class serviceClass){
+        openAccessibilityService(context,packageName,serviceClass.getCanonicalName());
+    }
+    //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
+    public static void openAccessibilityService(Context context,String packageName, String serviceClassName){
         try {
-            String enabledServices = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            QDLogger.i("当前已启用的辅助服务:"+enabledServices);
-            String addStr = packageName+"/"+servicesName;
-            if(!TextUtils.isEmpty(enabledServices)&&enabledServices.contains(addStr)){
-                QDLogger.i(context.getApplicationContext(),"无障碍的辅助服务已开启1");
+            String targetID = context.getPackageName()+"/"+serviceClassName;
+            if(isAccessibilityServiceRunning(context,serviceClassName)){
+                QDLogger.i(context.getApplicationContext(),"无障碍的辅助服务已开启，无需重新开启"+targetID);
                 return;
             }
+            ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+            String enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
             String newValue = "";
             if(TextUtils.isEmpty(enabledServices)){
-                newValue = addStr;
-            } else {
-                newValue = enabledServices + ":"+addStr;
+                newValue = targetID;
+            } else if(!enabledServices.contains(targetID)){
+                newValue = enabledServices + ":"+targetID;
             }
-            Settings.Secure.putString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, newValue);
-            Settings.Secure.putString(context.getApplicationContext().getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, "1");
-            QDLogger.i(context.getApplicationContext(),"无障碍的辅助服务已开启2");
+            Settings.Secure.putString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, newValue);
+            Settings.Secure.putString(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, "1");
+            String strs = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+           // QDLogger.i(TAG,"无障碍的辅助服务设置值："+strs);
         } catch (Exception e) {
             //授权方法：开启usb调试并使用adb工具连接手机，执行 adb shell pm grant org.autojs.autojspro android.permission.WRITE_SECURE_SETTING
             //QdToast.show(context.getApplicationContext(),"请确保已给予 WRITE_SECURE_SETTINGS 权限授权代码已复制，请使用adb工具连接手机执行(重启不失效)"+ e.toString());

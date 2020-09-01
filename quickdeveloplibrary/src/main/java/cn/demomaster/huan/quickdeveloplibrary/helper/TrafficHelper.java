@@ -1,30 +1,17 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
-import android.annotation.SuppressLint;
-import android.app.usage.NetworkStats;
-import android.app.usage.NetworkStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.icu.util.Calendar;
-import android.net.ConnectivityManager;
 import android.net.TrafficStats;
-import android.os.Build;
-import android.os.RemoteException;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
-import static android.content.Context.NETWORK_STATS_SERVICE;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class TrafficHelper {
 
@@ -73,11 +60,10 @@ public class TrafficHelper {
             rafRcv = new RandomAccessFile(rcvPath, "r");
             rcvTraffic = Long.parseLong(rafRcv.readLine()); // 读取流量统计
         } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "FileNotFoundException: " + e.getMessage());
+            QDLogger.e(e);
             rcvTraffic = UNSUPPORTED;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException: " + e.toString());
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 if (rafRcv != null)
@@ -110,8 +96,7 @@ public class TrafficHelper {
             Log.e(LOG_TAG, "FileNotFoundException: " + e.getMessage());
             sndTraffic = UNSUPPORTED;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException: " + e.toString());
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             try {
                 if (rafRcv != null)
@@ -202,8 +187,7 @@ public class TrafficHelper {
             ApplicationInfo ai = pm.getApplicationInfo(packageName, PackageManager.GET_ACTIVITIES);
             return ai.uid;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e);
         }
         return -1;
     }

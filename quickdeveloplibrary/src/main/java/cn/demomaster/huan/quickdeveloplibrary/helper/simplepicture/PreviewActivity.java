@@ -58,7 +58,7 @@ public class PreviewActivity extends QDActivity {
                 photo_view.setImageURI(imageUri);
                 actionBarLayout.setStateBarColorAuto(true);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            QDLogger.e(e);
             }*/
         }
     }

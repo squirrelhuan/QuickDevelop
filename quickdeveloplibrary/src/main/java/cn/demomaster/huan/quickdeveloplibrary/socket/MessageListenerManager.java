@@ -3,6 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.socket;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class MessageListenerManager {
     private static MessageListenerManager instance;
 
@@ -24,7 +26,7 @@ public class MessageListenerManager {
                     Thread.sleep(getDelyTime());
                     dealTimeOut();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
         };

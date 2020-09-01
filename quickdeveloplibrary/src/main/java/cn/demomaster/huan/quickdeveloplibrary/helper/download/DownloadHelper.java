@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,8 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -61,6 +60,7 @@ public class DownloadHelper {
     private void init(Context context) {
         this.downloadChangeObserver = DownloadChangeObserver.getInstance(context.getApplicationContext(), this);
         this.downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
+        this.taskHanderMap = new HashMap<>();
     }
 
     private void pushTask(final DownloadTask downloadTask) {
@@ -68,9 +68,9 @@ public class DownloadHelper {
             @Override
             public void onPassed() {
                 if(downloadTask.getDownloadType()== DownloadTask.DownloadType.DownloadManager) {
-                    excute(downloadTask);
+                    excute(downloadTask);//使用下载管理器进行文件下载。
                 }else {
-                    downloadFile(downloadTask);
+                    downloadFile(downloadTask);//使用okhttp方式下载
                 }
             }
 
@@ -80,7 +80,12 @@ public class DownloadHelper {
             }
         });
     }
+    Map<Integer,Object> taskHanderMap;
 
+    /**
+     * okhttp方式下载
+     * @param downloadTask
+     */
     public void downloadFile(DownloadTask downloadTask){
         final long startTime = System.currentTimeMillis();
         QDLogger.i("DOWNLOAD","startTime="+startTime+"，URL="+downloadTask.getDownloadUrl());
@@ -102,13 +107,17 @@ public class DownloadHelper {
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(downloadTask.getDownloadUrl()).build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        Call call = okHttpClient.newCall(request);
+        final int downloadId = downloadTask.hashCode();
+        taskHanderMap.put(downloadId,call);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // 下载失败
-                e.printStackTrace();
+                QDLogger.e(e);
                 QDLogger.i("DOWNLOAD","download failed");
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                taskHanderMap.remove(downloadId);
+                QdThreadHelper.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         downloadTask.getOnProgressListener().onDownloadFail();
@@ -138,7 +147,7 @@ public class DownloadHelper {
                     }
                     fos.flush();
                     downloadTask.setDownUriStr(file.getAbsolutePath());
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             // 下载完成
@@ -148,26 +157,27 @@ public class DownloadHelper {
                     Log.i("DOWNLOAD","download success");
                     Log.i("DOWNLOAD","totalTime="+ (System.currentTimeMillis() - startTime));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                     Log.e("DOWNLOAD","download failed 1");
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             downloadTask.getOnProgressListener().onDownloadFail();
                         }
                     });//在子线程中直接去new 一个handler
                 } finally {
+                    taskHanderMap.remove(downloadId);
                     try {
                         if (is != null)
                             is.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                     try {
                         if (fos != null)
                             fos.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                     }
                 }
             }
@@ -365,7 +375,7 @@ public class DownloadHelper {
             return getInstance(context);
         }
 
-        public void start() {
+        public int start() {
             QDLogger.i("准备下载->" + fileName);
           /*  if(!checkDownloadManagerEnable(context)){
                 QDLogger.i("下载管理器开启失败" + fileName);
@@ -375,8 +385,16 @@ public class DownloadHelper {
             downloadTask.setDownloadUrl(url);
             downloadTask.setFileName(fileName);
             downloadTask.setOnProgressListener(onProgressListener);
+            downloadId = downloadTask.hashCode();
+            //onProgressListener.onDownloadReady(downloadId);
             DownloadHelper.getInstance(context).pushTask(downloadTask);
+            return downloadId;
         }
+        int downloadId;
+        public void cancel(){
+            DownloadHelper.getInstance(context).cancelTask(downloadId);
+        }
+
 
         public void unregister(Context context) {
             QDLogger.i("注销");
@@ -386,5 +404,16 @@ public class DownloadHelper {
         }
     }
 
+    /**
+     * 取消下载
+     * @param downloadId
+     */
+    private void cancelTask(int downloadId) {
+        Object call = taskHanderMap.get(downloadId);
+        if(call!=null&&call instanceof Call){
+            QDLogger.d("取消下载 cancelTask downloadId="+downloadId);
+            ((Call)call).cancel();
+        }
+    }
 
 }

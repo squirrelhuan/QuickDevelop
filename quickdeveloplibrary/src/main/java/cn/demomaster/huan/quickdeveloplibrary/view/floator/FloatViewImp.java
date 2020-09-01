@@ -2,11 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 
 import android.app.Activity;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 public class FloatViewImp {
     int id;

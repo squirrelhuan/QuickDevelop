@@ -12,7 +12,7 @@ import android.util.DisplayMetrics;
 import java.util.Locale;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -26,7 +26,7 @@ public class QDLanguageUtil {
      * @param locale
      */
     public static void setLanguageLocal(Context context, Locale locale) {
-        QDLogger.d("当前语言类型："+locale.getLanguage());
+        QDLogger.println("当前语言类型："+locale.getLanguage());
 
         //设置语言类型
         Resources resources = context.getResources();
@@ -44,7 +44,7 @@ public class QDLanguageUtil {
         }else{
             resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         }
-        QDLogger.d("修改后语言类型："+getLanguageLocal(context).getLanguage());
+        QDLogger.println("修改后语言类型："+getLanguageLocal(context).getLanguage());
         //setLanguageLocal(context,locale.toString());
     }
     public static String System_Language_Setting ="System_Language_Setting";

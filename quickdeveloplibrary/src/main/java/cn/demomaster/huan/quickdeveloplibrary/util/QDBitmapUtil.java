@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 /*
 import core.base.XBaseApplication;*/
 
@@ -145,9 +147,9 @@ public class QDBitmapUtil {
             inputStream.close();
             imgBase64 = Base64.encodeToString( content,Base64.DEFAULT);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }finally {
             return imgBase64;
         }

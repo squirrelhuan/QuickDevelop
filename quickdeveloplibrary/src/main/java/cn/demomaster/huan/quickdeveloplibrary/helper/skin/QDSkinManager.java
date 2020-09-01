@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class QDSkinManager {
     private Context context;
     private Resources skinResource;
@@ -51,13 +53,13 @@ public class QDSkinManager {
                     context.getResources().getConfiguration());
 
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 

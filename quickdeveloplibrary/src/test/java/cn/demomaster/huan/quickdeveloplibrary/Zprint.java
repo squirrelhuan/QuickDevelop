@@ -70,7 +70,7 @@ public class Zprint {
             } else {
                 parameter = "方法method ：" + methodName + "  输出： " + "\"" + key + "\"" + " ::" + temp;
             }
-           QDLogger.println(TAG+parameter);
+           //QDLogger.println(TAG+parameter);
             Log.d(TAG, parameter);
         }
     }

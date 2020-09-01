@@ -25,6 +25,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.view.View;
 import android.widget.ImageView;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 
 /**
  * @author cginechen
@@ -108,7 +110,7 @@ public class QMUIDrawableHelper {
         try {
             return Bitmap.createBitmap(width, height, config);
         } catch (OutOfMemoryError e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             if (retryCount > 0) {
                 System.gc();
                 return createBitmapSafely(width, height, config, retryCount - 1);
@@ -184,7 +186,7 @@ public class QMUIDrawableHelper {
             drawable.draw(canvas);
             return bitmap;
         } catch (OutOfMemoryError e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             return null;
         }
     }

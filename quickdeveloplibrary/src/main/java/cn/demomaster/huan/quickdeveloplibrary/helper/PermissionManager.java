@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**

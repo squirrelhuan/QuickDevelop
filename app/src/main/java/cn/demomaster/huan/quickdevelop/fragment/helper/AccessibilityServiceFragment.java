@@ -94,6 +94,13 @@ public class AccessibilityServiceFragment extends QDFragment {
         });
 
 
+
+ /*if (!QDAccessibilityService.isAccessibilityServiceRunning(getApplicationContext(),QDAccessibilityService.class.getName())) {
+                        //跳转系统自带界面 辅助功能界面
+                        QDAccessibilityService.startSettintActivity(mContext);
+                        return;
+                    }*/
+
     }
 
 

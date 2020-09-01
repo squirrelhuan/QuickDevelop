@@ -12,7 +12,7 @@ import android.os.Bundle;
 import java.util.Arrays;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class Main3Activity extends AppCompatActivity {
 

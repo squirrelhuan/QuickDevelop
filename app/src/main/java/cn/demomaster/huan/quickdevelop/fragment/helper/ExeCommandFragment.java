@@ -21,10 +21,10 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**

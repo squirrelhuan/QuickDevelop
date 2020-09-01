@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
@@ -26,11 +25,10 @@ import java.util.List;
 import java.util.Stack;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleRecorder;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
@@ -90,12 +88,11 @@ public class QDActivityManager {
         @Override
         public void onActivityDestroyed(Activity activity) {
             QDActivityManager.getInstance().removeActivityFormStack(activity);
-
             record(LifecycleType.onActivityDestroyed, activity);
         }
 
         private void record(LifecycleType lifecycleType, Activity activity) {
-            QDLogger.d(TAG.ACTIVITY, lifecycleType + " ==> [" + activity + "]");
+            QDLogger.println(TAG.ACTIVITY, lifecycleType + "(" + activity + ")");
             LifecycleRecorder.record(lifecycleType, activity);
         }
     };
@@ -121,39 +118,39 @@ public class QDActivityManager {
                 try {
                     o = fields[i].get(obj);
                     if (o != null) {
-                        QDLogger.println("变量：" + varName + " = " + o);
+                        //QDLogger.println("变量：" + varName + " = " + o);
                         if(o instanceof OnReleaseListener){
-                            QDLogger.println("释放 OnReleaseListener：" + varName);
+                            //QDLogger.println("释放 OnReleaseListener：" + varName);
                             ((OnReleaseListener) o).onRelease();
                         }else
                         if (o instanceof Handler) {
-                            QDLogger.println("释放handler：" + varName);
+                            //QDLogger.println("释放handler：" + varName);
                             ((Handler) o).removeCallbacksAndMessages(null);
                         } else if (o instanceof Dialog) {
-                            QDLogger.println("释放dialog：" + varName);
+                           // QDLogger.println("释放dialog：" + varName);
                             ((Dialog) o).dismiss();
                         }  else if (o instanceof PopupWindow) {
-                            QDLogger.println("释放PopupWindow：" + varName);
+                            //QDLogger.println("释放PopupWindow：" + varName);
                             ((PopupWindow) o).dismiss();
                         } else if (o instanceof Bitmap) {
-                            QDLogger.println("释放Bitmap：" + varName);
+                            //QDLogger.println("释放Bitmap：" + varName);
                                 ((Bitmap) o).recycle();
                         }else if (o instanceof View) {
-                            QDLogger.println("释放View：" + varName);
+                            //QDLogger.println("释放View：" + varName);
                             ((View) o).clearAnimation();
                         }else if (o instanceof Animator) {
-                            QDLogger.println("释放Animator：" + varName);
+                            //QDLogger.println("释放Animator：" + varName);
                             ((Animator) o).cancel();
                         }
                     }
                 } catch (IllegalAccessException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
                 // 恢复访问控制权限
                 fields[i].setAccessible(accessFlag);
             } catch (IllegalArgumentException ex) {
-                ex.printStackTrace();
+                QDLogger.e(ex);
             }
         }
     }
@@ -167,7 +164,7 @@ public class QDActivityManager {
             //注册
             ((Application) this.context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         ((Application) this.context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         return instance;
@@ -182,7 +179,6 @@ public class QDActivityManager {
 
     /**
      * 添加activity到棧中
-     *
      * @param activity
      */
     public void pushActivity(Activity activity) {
@@ -493,6 +489,22 @@ public class QDActivityManager {
         }
     }
 
+    public static boolean isTopActivity(Context context,String activityName) {
+        String topActivityName = getTopActivity(context);
+        if(topActivityName.equals(activityName)){
+            return true;
+        }
+        return false;
+    }
+    //判断当前界面显示的是哪个Activity
+    public static String getTopActivity(Context context){
+        ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        //QDLogger.d("测试", "pkg:"+cn.getPackageName());//包名
+        //QDLogger.d("测试", "cls:"+cn.getClassName());//包名加类名
+        return cn.getClassName();
+    }
+
     boolean isOnForground = true;
 
     /**
@@ -615,15 +627,13 @@ public class QDActivityManager {
                     }
                 }
             } catch (Exception e) {
-                //e.printStackTrace();
-                QDLogger.e(e.getMessage());
+                QDLogger.e(e);
             }
         }
     }
 
     /**
      * 强制停止应用程序
-     *
      * @param pkgName
      */
     public static void forceStopPackage(Context context, String pkgName) throws Exception {
@@ -631,6 +641,25 @@ public class QDActivityManager {
         Method method = Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", String.class);
         method.invoke(am, pkgName);
     }
+
+    /**
+     * 根据包名强制关闭一个应用，不管前台应用还是后台进程，需要share systemuid
+     * 需要权限 FORCE_STOP_PACKAGES
+     * @param context
+     * @param packageName
+     */
+    public static void forceStopPackage2(Context context, String packageName) {
+        try {
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            Method forceStopPackage = am.getClass().getDeclaredMethod("forceStopPackage", String.class);
+            forceStopPackage.setAccessible(true);
+            forceStopPackage.invoke(am, packageName);
+            QDLogger.d("已关闭进程：" + packageName);
+        } catch (Exception ex) {
+            QDLogger.e(ex);
+        }
+    }
+
 
     /**
      * 判断某个应用程序是 不是三方的应用程序

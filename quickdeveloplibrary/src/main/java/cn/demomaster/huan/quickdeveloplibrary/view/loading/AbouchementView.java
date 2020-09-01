@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -19,7 +18,6 @@ import java.util.Random;
 
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDColorUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.modle.Baller;
 
 /**

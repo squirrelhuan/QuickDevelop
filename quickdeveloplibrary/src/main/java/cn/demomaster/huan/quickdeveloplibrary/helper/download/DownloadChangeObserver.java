@@ -8,17 +8,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -52,7 +48,7 @@ public class DownloadChangeObserver extends ContentObserver {
         public void run() {
             try {
                 if (downloadTaskMap.size() > 0) {
-                    QDLogger.i("下载进度" + downloadTaskMap.size());
+                    QDLogger.i("下载进度:" + downloadTaskMap.size());
                     for (Map.Entry entry : downloadTaskMap.entrySet()) {
                         long id = (Long) entry.getKey();
                         int r = updateProgress(id);

@@ -15,6 +15,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";

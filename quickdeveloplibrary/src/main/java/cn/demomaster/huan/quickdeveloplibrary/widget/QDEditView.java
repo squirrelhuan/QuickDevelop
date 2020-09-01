@@ -18,7 +18,7 @@ import android.view.ViewTreeObserver;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListener {
     public QDEditView(Context context) {

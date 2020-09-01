@@ -34,8 +34,8 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
@@ -420,7 +420,7 @@ public class QDKeyboard_back {
                     editable.replace(start, end, Character.toString((char) primaryCode));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 
@@ -583,9 +583,9 @@ public class QDKeyboard_back {
                 setShowSoftInputOnFocus.invoke(edit, Boolean.FALSE);
             } catch (NoSuchMethodException e) {
                 edit.setInputType(0);
-                e.printStackTrace();
+                QDLogger.e(e);
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
     }

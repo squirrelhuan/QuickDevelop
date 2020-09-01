@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/26.

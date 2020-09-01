@@ -22,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_CONTENT;
 

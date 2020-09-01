@@ -12,8 +12,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -21,8 +19,8 @@ import android.webkit.WebViewClient;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDWebView extends WebView {
     private Context mContext;
@@ -44,6 +42,9 @@ public class QDWebView extends WebView {
     }
 
     private float mProgress;
+    /*private boolean isSupportZoom = true;
+    private boolean isSupportZoomTool = true;*/
+
     private void init() {
         mContext = getContext();
         progressHeight = DisplayUtil.dip2px(mContext, 3);//进度条默认高度

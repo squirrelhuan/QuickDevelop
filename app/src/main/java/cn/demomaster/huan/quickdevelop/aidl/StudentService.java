@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.IStudent;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 
 public class StudentService extends Service {

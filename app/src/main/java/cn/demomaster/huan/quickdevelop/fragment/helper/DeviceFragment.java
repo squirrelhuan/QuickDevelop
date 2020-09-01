@@ -30,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;

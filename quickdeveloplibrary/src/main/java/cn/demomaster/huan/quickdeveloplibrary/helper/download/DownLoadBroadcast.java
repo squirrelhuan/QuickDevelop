@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class DownLoadBroadcast extends BroadcastReceiver {

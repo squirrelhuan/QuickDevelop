@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDTcpClient {
 
@@ -59,7 +60,7 @@ public class QDTcpClient {
                     //qdlogin();//用户登录
                 } catch (Exception e) {
                     System.err.println("socket连接失败");
-                    e.printStackTrace();
+                    QDLogger.e(e);
                 }
             }
         });
@@ -102,7 +103,7 @@ public class QDTcpClient {
                             throw new Exception("maybe disconnect");
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                         closeConnect();
                     }
                 }
@@ -123,7 +124,7 @@ public class QDTcpClient {
                 client = null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -202,7 +203,7 @@ public class QDTcpClient {
                         out.write(msg1.getBytes());
                         System.out.println("发送请求："+qdMessage.getTime()+","+ JSON.toJSONString(qdMessage));
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        QDLogger.e(e);
                         reConnect();
                     }
                 } else {

@@ -14,7 +14,7 @@ import android.telephony.TelephonyManager;
 
 import androidx.annotation.RequiresApi;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.content.Context.NETWORK_STATS_SERVICE;
 

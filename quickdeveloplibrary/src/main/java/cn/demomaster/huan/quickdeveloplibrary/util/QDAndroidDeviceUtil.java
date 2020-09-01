@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
 
@@ -135,7 +137,7 @@ public class QDAndroidDeviceUtil {
         try {
             m = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         m.update(m_szLongID.getBytes(), 0, m_szLongID.length());
         // get md5 bytes
@@ -179,7 +181,7 @@ public class QDAndroidDeviceUtil {
                     return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } finally {
             if (process != null) {
                 process.destroy();

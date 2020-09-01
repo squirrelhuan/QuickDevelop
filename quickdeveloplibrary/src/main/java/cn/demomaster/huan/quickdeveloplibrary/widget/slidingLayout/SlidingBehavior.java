@@ -5,7 +5,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 

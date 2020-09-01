@@ -62,12 +62,12 @@ public class Test {
             }
         } catch (NoSuchFieldException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -219,7 +219,7 @@ public class Test {
 
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         if (c.get(Calendar.DAY_OF_WEEK) == 1) {
             Week += "周天";

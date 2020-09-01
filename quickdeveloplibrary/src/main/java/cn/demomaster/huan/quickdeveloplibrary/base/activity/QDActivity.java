@@ -40,9 +40,9 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
@@ -281,7 +281,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             }
             EventBus.getDefault().unregister(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -307,7 +307,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             try {
                 mContext.registerReceiver(netWorkChangReceiver, filter);
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         } else {
             netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
@@ -324,7 +324,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         try {
             mContext.registerReceiver(netWorkChangReceiver, filter);
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }*/
 

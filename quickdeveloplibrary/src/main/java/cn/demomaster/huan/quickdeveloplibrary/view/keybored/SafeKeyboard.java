@@ -18,20 +18,16 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Administrator on 2018/3/7 0007.
@@ -390,8 +386,7 @@ public class SafeKeyboard {
                     editable.replace(start, end, Character.toString((char) primaryCode));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                QDLogger.e(e==null?"e=null":e.toString());
+                QDLogger.e(e);
             }
         }
 
@@ -601,11 +596,9 @@ public class SafeKeyboard {
                 setShowSoftInputOnFocus.invoke(edit, Boolean.FALSE);
             } catch (NoSuchMethodException e) {
                 edit.setInputType(0);
-                e.printStackTrace();
-                QDLogger.e(e==null?"e=null":e.toString());
+                QDLogger.e(e);
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
-                QDLogger.e(e==null?"e=null":e.toString());
+                QDLogger.e(e);
             }
         }
     }

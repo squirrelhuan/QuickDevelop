@@ -17,6 +17,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author cginechen
  * @date 2016-03-27
@@ -350,7 +352,7 @@ public class QMUIStatusBarHelper {
             WindowManager.LayoutParams attrs = activity.getWindow().getAttributes();
             ret = (attrs.flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         return ret;
     }

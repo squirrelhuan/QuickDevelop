@@ -4,9 +4,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 
 import android.util.AttributeSet;
+
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

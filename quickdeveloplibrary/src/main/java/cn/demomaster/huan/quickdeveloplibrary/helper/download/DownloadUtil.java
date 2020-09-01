@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class DownloadUtil {
 
     /**
@@ -24,14 +26,14 @@ public class DownloadUtil {
                     intent.setData(Uri.parse("package:$packageName"));
                     mContext.startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
+                    QDLogger.e(e);
                     Intent intent = new  Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
                     mContext.startActivity(intent);
                 }
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            QDLogger.e(e);
             return false;
         }
         return true;

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
+import cn.demomaster.qdlogger_library.QDLogger;
 import retrofit2.http.PUT;
 
 /**
@@ -51,9 +52,12 @@ public class StringUtil {
      * @return
      */
     public static String hidePartString(String str,int len) {
-        if(str!=null&& !TextUtils.isEmpty(str.toString())){
-            String p = str.toString();
+        if(str!=null&& !TextUtils.isEmpty(str)){
+            String p = str;
             int length = p.length();
+            if(len>=length){
+                return "";
+            }
             String t = "";
             for(int i=0;i<len;i++){
                 t+="*";

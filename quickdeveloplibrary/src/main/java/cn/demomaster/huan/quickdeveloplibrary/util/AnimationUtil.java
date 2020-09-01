@@ -7,6 +7,8 @@ import android.view.View;
 
 import java.lang.reflect.Method;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /** 全局动画工具类
  * Created by huan on 2017/10/10.
  */
@@ -70,7 +72,7 @@ public class AnimationUtil {
                                     method.invoke(listener,
                                             new Object[]{targetView});
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    QDLogger.e(e);
                                 }
                             }else {
                                 targetView.performClick();

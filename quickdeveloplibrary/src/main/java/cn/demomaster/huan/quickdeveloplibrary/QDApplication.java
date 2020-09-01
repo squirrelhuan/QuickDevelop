@@ -17,10 +17,10 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.isApkInDebug;
@@ -37,9 +37,9 @@ public class QDApplication extends Application implements
     public void onCreate() {
         super.onCreate();
         instance = this;
-
         QdToast.setContext(this);
-        QDLogger.setApplicationContext(this);
+        AppConfig.getInstance().load(this, "config/project.conf");
+        QDLogger.init(this);
         QDLogger.i(TAG,"包名："+getPackageName()+",myPid="+android.os.Process.myPid());
 
         //初始化全局SharedPreferences
@@ -83,7 +83,6 @@ public class QDApplication extends Application implements
     public DbHelper getDbHelper() {
         if(dbHelper==null) {
             String dbpath = null;
-            AppConfig.getInstance().init(this, "config/project.conf");
             if (AppConfig.getInstance().getConfigMap().containsKey("dbpath")) {
                 dbpath = (String) AppConfig.getInstance().getConfigMap().get("dbpath");
             }

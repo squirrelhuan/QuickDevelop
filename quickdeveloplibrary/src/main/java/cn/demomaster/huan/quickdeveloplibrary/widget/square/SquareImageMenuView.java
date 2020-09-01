@@ -24,7 +24,6 @@ import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InputEvent;
@@ -34,22 +33,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.ImageView;
-
-import androidx.appcompat.widget.AppCompatImageView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.content.Context.WINDOW_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -186,12 +180,12 @@ public class SquareImageMenuView extends View {
         try {
             clazz = Class.forName("android.hardware.input.InputManager");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         try {
             injectInputEventMethod = clazz.getMethod("injectInputEvent", InputEvent.class, int.class);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
         try {
             injectInputEventMethod.invoke(inputManager, event, mode);
@@ -200,11 +194,11 @@ public class SquareImageMenuView extends View {
             //执行event的recycle方法
             recycleMethod.invoke(event);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
 
     }

@@ -9,6 +9,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class OnClickListenerHook {
         /**
          * hook的核心代码
@@ -46,7 +48,7 @@ public class OnClickListenerHook {
                 field.set(mListenerInfo, proxyOnClickListener);
                 //完成
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e(e);
             }
         }
 

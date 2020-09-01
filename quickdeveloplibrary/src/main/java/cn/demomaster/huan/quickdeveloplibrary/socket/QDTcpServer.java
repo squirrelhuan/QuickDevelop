@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.socket;
 import com.alibaba.fastjson.JSON;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.QDLogger;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDTcpServer {
 
@@ -43,9 +42,9 @@ public class QDTcpServer {
             server = new ServerSocket(serverPort, 10, serverAddress);
            QDLogger.println("QDTcpServer 初始化成功");
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -66,9 +65,9 @@ public class QDTcpServer {
             }
             //server.close();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -136,7 +135,7 @@ public class QDTcpServer {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -172,7 +171,7 @@ public class QDTcpServer {
             String reply = JSON.toJSONString(qdMessage) + END_CHAR;
             os.write(reply.getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
@@ -187,7 +186,7 @@ public class QDTcpServer {
             String reply = JSON.toJSONString(qdMessage) + END_CHAR;
             os.write(reply.getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            QDLogger.e(e);
         }
     }
 
