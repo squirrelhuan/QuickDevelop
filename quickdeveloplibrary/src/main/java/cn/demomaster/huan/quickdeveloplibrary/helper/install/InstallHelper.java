@@ -350,7 +350,6 @@ public class InstallHelper {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             if (!file.exists()) {
                 Exception e =new Exception("安装文件包不存在");
-                QDLogger.e(e);
                 throw e;
             }
             String path = file.getPath();
@@ -439,10 +438,8 @@ public class InstallHelper {
                 //提交启动安装
                 session.commit(intentSender);
             } catch (IOException e) {
-                QDLogger.e(e);
                 throw new RuntimeException("Couldn't install package", e);
             } catch (RuntimeException e) {
-                QDLogger.e(e);
                 if (session != null) {
                     session.abandon();
                 }

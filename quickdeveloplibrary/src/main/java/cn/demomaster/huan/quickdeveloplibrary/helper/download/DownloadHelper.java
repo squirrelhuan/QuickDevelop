@@ -115,7 +115,6 @@ public class DownloadHelper {
             public void onFailure(Call call, IOException e) {
                 // 下载失败
                 QDLogger.e(e);
-                QDLogger.i("DOWNLOAD","download failed");
                 taskHanderMap.remove(downloadId);
                 QdThreadHelper.runOnUiThread(new Runnable() {
                     @Override
@@ -158,7 +157,6 @@ public class DownloadHelper {
                     Log.i("DOWNLOAD","totalTime="+ (System.currentTimeMillis() - startTime));
                 } catch (Exception e) {
                     QDLogger.e(e);
-                    Log.e("DOWNLOAD","download failed 1");
                     QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

@@ -92,6 +92,7 @@ public class CustomCameraPreview extends SurfaceView implements SurfaceHolder.Ca
             mCamera.startPreview();
             focus();
         } catch (Exception e) {
+            QDLogger.e(e);
             try {
                 Camera.Parameters parameters = mCamera.getParameters();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -105,7 +106,7 @@ public class CustomCameraPreview extends SurfaceView implements SurfaceHolder.Ca
                 mCamera.startPreview();
                 focus();
             } catch (Exception e1) {
-                QDLogger.e(e);
+                QDLogger.e(e1);
                 mCamera = null;
             }
         }

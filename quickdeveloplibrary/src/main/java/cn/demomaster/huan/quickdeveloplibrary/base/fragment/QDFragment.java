@@ -145,11 +145,11 @@ public abstract class QDFragment extends Fragment implements QDFragmentInterface
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            try {
+           /* try {
                 //mContext.registerReceiver(netWorkChangReceiver, filter);
             } catch (Exception e) {
                 QDLogger.e(e);
-            }
+            }*/
         }
     }
 
