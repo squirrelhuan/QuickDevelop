@@ -1,11 +1,15 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +17,9 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
@@ -35,35 +38,30 @@ import okhttp3.RequestBody;
  */
 
 @ActivityPager(name = "https", preViewClass = TextView.class, resType = ResType.Custome)
-public class HttpFragment extends QDFragment {
+public class HttpFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.btn_send_tcp)
     QDButton btn_send_tcp;
     @BindView(R.id.btn_send_connect)
     QDButton btn_send_connect;
 
-    View mView;
-
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_https, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_https, null);
         return (ViewGroup) mView;
     }
 
     private static final MediaType FROM_DATA = MediaType.parse("multipart/form-data");
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("socket");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("socket");
         btn_send_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,12 +100,11 @@ public class HttpFragment extends QDFragment {
                         });*/
                     }
                 }).start();
-            }});
-        btn_send_tcp.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick (View v){
+            }
+        });
+        btn_send_tcp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
                     @Override
                     public void onReceived(QDMessage qdMessage) {
@@ -120,9 +117,9 @@ public class HttpFragment extends QDFragment {
                     }
                 });
             }
-            });
-            //QDTcpClient.setStateListener();
-        }
+        });
+        //QDTcpClient.setStateListener();
+    }
 
        /* public void initActionBarLayout (ActionBarLayout2 actionBarLayoutOld){
             int i = (int) (Math.random() * 10 % 4);
@@ -130,4 +127,4 @@ public class HttpFragment extends QDFragment {
             actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
         }*/
-    }
+}

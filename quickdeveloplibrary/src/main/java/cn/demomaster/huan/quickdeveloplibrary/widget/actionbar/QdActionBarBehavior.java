@@ -25,13 +25,13 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
     CoordinatorLayout parent;
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull QdActionBarContainer child, int layoutDirection) {
-        QDLogger.d("onLayoutChild");
+        QDLogger.println("onLayoutChild");
         parent.onLayoutChild(child, layoutDirection);
         //获取上一个MultiRecycleContainer容器
         QdActionBarContainer previous = getPreviousChild(parent, child);
         if (previous == null) {//为空说明child的position=0
             int offset = child.getTop();
-            QDLogger.d("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset + ", top=" + child.getTop() + ",y=" + child.getY());
+            QDLogger.println("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset + ", top=" + child.getTop() + ",y=" + child.getY());
         } else {
             //获取上一个MultiRecycleContainer容器，来确定当前child的位置 (当前child的位置为，上一个的top+上一个的height)
             int offset = previous.getTop() + previous.getHeight();
@@ -60,7 +60,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
     boolean isVerticalScroll;//是否是垂直滚动
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull QdActionBarContainer child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
-        QDLogger.d("onStartNestedScroll axes=" + axes + ",target=" + target.getClass().getName());
+        QDLogger.println("onStartNestedScroll axes=" + axes + ",target=" + target.getClass().getName());
         this.parent = coordinatorLayout;
         if (!isInital) {//初始化惯性滚动
             init(parent);
@@ -79,7 +79,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
 
     @Override
     public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull QdActionBarContainer child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
-        QDLogger.d("onNestedFling...");
+        QDLogger.println("onNestedFling...");
         //return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
         scroll(parent, child, consumed ? 0 : (int) velocityY);
         scrollParent(parent, child, null, consumed ? 0 : (int) velocityY);
@@ -88,14 +88,14 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
 
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull QdActionBarContainer child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        QDLogger.d("dy=" + dy + ",consumed x=" + consumed[0] + ",y=" + consumed[1]);
+        QDLogger.println("dy=" + dy + ",consumed x=" + consumed[0] + ",y=" + consumed[1]);
 
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
         boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
-        QDLogger.d("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
+        QDLogger.println("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 
         if (child.getTop() == 0 && ((dy > 0 && canScrollUp) || (dy < 0 && canScrollDown))) {
             consumed[1] = scrollChild(parent, child, target, dy);
@@ -115,16 +115,16 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
      */
     private int scrollParent(CoordinatorLayout parent, QdActionBarContainer child, View target, int dy) {
         int py = 0;
-        QDLogger.d("获取下一个可滚动的视图");
+        QDLogger.println("获取下一个可滚动的视图");
         //1.获取下一个可滚动的视图
         if (dy > 0) {//上推
             QDLogger.d("上推");
             QdActionBarContainer upper = getUpperChild(parent);
-            QDLogger.d("获取下一个可上推的视图:" + upper);
+            QDLogger.println("获取下一个可上推的视图:" + upper);
             if (upper == null) {
                 py = dy;
             } else {
-                QDLogger.d("获取下一个可上推的视图:" + upper + ",dy=" + dy + ",upper.getTop()=" + upper.getTop());
+                QDLogger.println("获取下一个可上推的视图:" + upper + ",dy=" + dy + ",upper.getTop()=" + upper.getTop());
                 py = Math.min(upper.getTop(), dy);
             }
         } else {//下拉
@@ -134,7 +134,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
             if (downer == null) {
                 py = dy;
             } else {
-                QDLogger.d("获取下一个可下拉的视图dy=" + dy + ",downer.getTop()=" + downer.getTop());
+                QDLogger.println("获取下一个可下拉的视图dy=" + dy + ",downer.getTop()=" + downer.getTop());
                 py = Math.max(downer.getTop(), dy);
             }
         }
@@ -245,14 +245,14 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
 
     @Override
     public void onNestedScroll(@NonNull CoordinatorLayout parent, @NonNull QdActionBarContainer child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
-        QDLogger.d("onNestedScroll...");
+        QDLogger.println("onNestedScroll...");
 
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
         boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
-        QDLogger.d("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
+        QDLogger.println("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 
         if (child.getTop() == 0 && ((dyUnconsumed > 0 && canScrollUp) || (dyUnconsumed < 0 && canScrollDown))) {
             consumed[1] = scrollChild(parent, child, target, dyUnconsumed);
@@ -270,8 +270,8 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
         //dy>0上推，dy<0下拉
         int top = firstchild.getTop();
         int bottom = lastchild.getBottom() - parent.getHeight();
-        QDLogger.d("height=" + parent.getHeight() + ",lastchild.getBottom()=" + lastchild.getBottom() + ",firstchild.getTop()=" + firstchild.getTop());
-        QDLogger.d("dy=" + dy + ",min=" + top + ",max=" + top + ",initialOffset - dy=" + (initialOffset - dy));
+        QDLogger.println("height=" + parent.getHeight() + ",lastchild.getBottom()=" + lastchild.getBottom() + ",firstchild.getTop()=" + firstchild.getTop());
+        QDLogger.println("dy=" + dy + ",min=" + top + ",max=" + top + ",initialOffset - dy=" + (initialOffset - dy));
         int offset = 0;//= clamp(initialOffset - dy,top ,top)-initialOffset;
         //offset = 目标值-当前值
         if (dy > 0) {

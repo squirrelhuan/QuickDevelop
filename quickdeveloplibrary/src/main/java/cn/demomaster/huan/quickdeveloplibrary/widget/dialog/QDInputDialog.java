@@ -207,8 +207,8 @@ public class QDInputDialog extends AppCompatDialog {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (actionButton.onClickListener != null) {
-                            actionButton.onClickListener.onClick(QDInputDialog.this, TextUtils.isEmpty(textView.getText())?null:textView.getText().toString());
+                        if (actionButton.getOnClickListener() != null) {
+                            actionButton.getOnClickListener().onClick(QDInputDialog.this, TextUtils.isEmpty(textView.getText())?null:textView.getText().toString());
                         } else {
                             dismiss();
                         }
@@ -530,43 +530,6 @@ public class QDInputDialog extends AppCompatDialog {
         public Builder setHint(String hint) {
             this.hint = hint;
             return this;
-        }
-    }
-
-    public static interface OnClickActionListener {
-        void onClick(QDInputDialog dialog,String value);
-    }
-
-    public static class ActionButton {
-        private String text;
-        private int textColor;
-        private OnClickActionListener onClickListener;
-
-        ActionButton() {
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public int getTextColor() {
-            return textColor;
-        }
-
-        public void setTextColor(int textColor) {
-            this.textColor = textColor;
-        }
-
-        public OnClickActionListener getOnClickListener() {
-            return onClickListener;
-        }
-
-        public void setOnClickListener(OnClickActionListener onClickListener) {
-            this.onClickListener = onClickListener;
         }
     }
 }

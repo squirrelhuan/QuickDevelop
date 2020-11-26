@@ -1,21 +1,18 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
-import org.junit.Test;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import cn.demomaster.huan.quickdeveloplibrary.util.MappedByteBufferHelper;
+import cn.demomaster.qdlogger_library.MappedByteBufferHelper;
 
 public class TestMappedByteBuffer {
     private static int length = 1024000;//1G
@@ -50,7 +47,7 @@ public class TestMappedByteBuffer {
                         /*while (dis.read()!= -1) {
                         }*/
                     } catch (IOException e) {
-                        QDLogger.e(e);
+                        e.printStackTrace();
                     }
                 }
             },
@@ -72,7 +69,7 @@ public class TestMappedByteBuffer {
                             mapBuffer.get();
                         }*/
                     } catch (Exception e) {
-                        QDLogger.e(e);
+                        e.printStackTrace();
                     }
                 }
             },
@@ -91,7 +88,7 @@ public class TestMappedByteBuffer {
                             mapBuffer.get();
                         }*/
                     } catch (IOException e) {
-                        QDLogger.e(e);
+                        e.printStackTrace();
                     }
                 }
             }
@@ -138,7 +135,7 @@ public class TestMappedByteBuffer {
             m.setAccessible(true);
             m.invoke(null, mbbi);
         } catch (Throwable e) {
-            QDLogger.e(e);
+            e.printStackTrace();
         }
     }
 

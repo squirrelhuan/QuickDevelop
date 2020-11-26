@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bannerFrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.loading.QdLoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFrameLayout>

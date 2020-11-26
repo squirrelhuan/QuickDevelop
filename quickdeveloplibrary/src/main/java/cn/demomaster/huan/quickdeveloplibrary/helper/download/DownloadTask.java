@@ -28,6 +28,16 @@ public class DownloadTask {
     private Uri downloadUri;
     private String downUriStr;
     private DownloadType downloadType;
+    private String savePath;
+
+    public String getSavePath() {
+        return savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
     //
     private OnDownloadProgressListener onProgressListener;//下载进度监听器
 
@@ -36,8 +46,7 @@ public class DownloadTask {
     }
 
     //默认下载路径
-    private String download_app_folder_name = AppConfig.getInstance().getConfig("DownloadFilePath").toString();
-
+    private String directoryPath = AppConfig.getInstance().getConfig("DownloadFilePath").toString();
     public DownloadTask(Context context) {
         this.context = context;
     }
@@ -58,12 +67,12 @@ public class DownloadTask {
         this.downloadUrl = downloadUrl;
     }
 
-    public String getDownload_app_folder_name() {
-        return download_app_folder_name;
+    public String getDirectoryPath() {
+        return directoryPath;
     }
 
-    public void setDownload_app_folder_name(String download_app_folder_name) {
-        this.download_app_folder_name = download_app_folder_name;
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 
     public OnDownloadProgressListener getOnProgressListener() {

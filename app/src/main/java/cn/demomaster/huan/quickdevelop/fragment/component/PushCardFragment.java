@@ -9,19 +9,21 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
@@ -35,10 +37,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayo
  * 2018/8/25
  */
 
-@ActivityPager(name = "PushCard",preViewClass = TextView.class,resType = ResType.Custome)
-public class PushCardFragment extends QDFragment {
-    //Components
-    ViewGroup mView;
+@ActivityPager(name = "PushCard", preViewClass = TextView.class, resType = ResType.Custome)
+public class PushCardFragment extends BaseFragment {
     private RecyclerView recycler_body;
     private LinearLayoutManager linearLayoutManager;
     private RecycleViewAdapter adapter;
@@ -49,18 +49,14 @@ public class PushCardFragment extends QDFragment {
         return Color.WHITE;
     }
 
+    @Nullable
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_pushcard, null);
-        }
-        Bundle bundle = getArguments();
-        String title = "空界面";
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_pushcard, null);
         return mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
+    public void initView(View rootView) {
         recycler_body = rootView.findViewById(R.id.recycler_body);
         //模拟一些数据加载
         lists = new ArrayList<>();
@@ -97,7 +93,7 @@ public class PushCardFragment extends QDFragment {
         //设置底部布局view
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
+        layoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         //pcl_layout.addFooterView(textView2,layoutParams);
 
 
@@ -114,7 +110,7 @@ public class PushCardFragment extends QDFragment {
                 pcl_layout.removeCallbacks(upRunnable);
                 pcl_layout.postDelayed(upRunnable, 3000);*/
                 //Toast.makeText(mContext, "加载更多。。。", Toast.LENGTH_SHORT).show();
-                QdToast.show(mContext,"加载更多。。。");
+                QdToast.show(mContext, "加载更多。。。");
             }
 
             @Override
@@ -123,7 +119,7 @@ public class PushCardFragment extends QDFragment {
                 pcl_layout.removeCallbacks(upRunnable);
                 pcl_layout.postDelayed(downRunnable, 3000);*/
                 //Toast.makeText(mContext, "刷新数据。。。", Toast.LENGTH_SHORT).show();
-                QdToast.show(mContext,"刷新数据。。。");
+                QdToast.show(mContext, "刷新数据。。。");
             }
         });
 
@@ -148,22 +144,22 @@ public class PushCardFragment extends QDFragment {
         actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
     }*/
 
-   Runnable upRunnable = new Runnable() {
-       @Override
-       public void run() {
-           //qdActionDialog.dismiss();
-           QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
-           qdActionDialog.show();
-           //pcl_layout.dismiss();
-       }
-   };
+    Runnable upRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //qdActionDialog.dismiss();
+            QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
+            qdActionDialog.show();
+            //pcl_layout.dismiss();
+        }
+    };
 
-   Runnable downRunnable = new Runnable() {
-       @Override
-       public void run() {
-           final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
-           qdActionDialog.show();
-       }
-   };
+    Runnable downRunnable = new Runnable() {
+        @Override
+        public void run() {
+            final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
+            qdActionDialog.show();
+        }
+    };
 
 }

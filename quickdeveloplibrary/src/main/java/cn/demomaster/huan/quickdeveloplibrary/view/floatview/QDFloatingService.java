@@ -15,30 +15,40 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
-import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 悬浮按钮
  * Created
  */
+public abstract class QDFloatingService extends Service implements QdFloatingServiceInterFace{
+    public boolean isShowing = false;
+    private QDFloatingService instance;
+    private  WindowManager windowManager;
+    public  WindowManager.LayoutParams layoutParams;
 
-public abstract class QDFloatingService extends Service {
-    private static boolean isShowing = false;
-    private static QDFloatingService instance;
-    private static WindowManager windowManager;
-    public static WindowManager.LayoutParams layoutParams;
-
-    public static QDFloatingService getInstance() {
-        return instance;
+    public View contentView;
+    public Service getInstance() {
+        return this;
     }
 
-    public static View contentView;
+    /**
+     * 窗口消失
+     */
+    @Override
+    public void onDismiss() {
+        if(onDismissListener!=null) {
+            onDismissListener.onDismiss();
+        }
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        QDLogger.e("onCreate " +this.getClass().getName());
+        ServiceHelper.onCreateService(this);
         setIsShowing(true);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         layoutParams = new WindowManager.LayoutParams();
@@ -61,6 +71,7 @@ public abstract class QDFloatingService extends Service {
             layoutParams.x = (int) pointF.x;
             layoutParams.y = (int) pointF.y;
         }
+        initContentView();
     }
 
     @Override
@@ -68,18 +79,12 @@ public abstract class QDFloatingService extends Service {
         return null;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        initContentView();
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    //FlowLayout flowLayout = new FlowLayout(getApplicationContext());
     private void initContentView() {
         if (contentView != null && contentView.getParent() != null) {
             windowManager.removeView(contentView);
         }
         contentView = setContentView(getApplicationContext());
+        //contentView.setBackgroundColor(getResources().getColor(R.color.transparent_dark_33));
         if(getTouchAble()) {
             contentView.setOnTouchListener(new FloatingOnTouchListener(this, contentView));
         }
@@ -96,23 +101,37 @@ public abstract class QDFloatingService extends Service {
         init();
     }
 
-    public static void updateLayoutParams(){
+    /**
+     * 更新布局
+     */
+    public void updateLayoutParams(){
         if(layoutParams!=null) {
+            QDLogger.e("updateLayoutParams width="+mWidth+",mHeight="+mHeight);
             layoutParams.width = mWidth;
             layoutParams.height = mHeight;
             contentView.setLayoutParams(layoutParams);
         }
     }
 
-    public static int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
-    public static int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
-    public static void setHeight(int height){
+    public int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+    public int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+    /**
+     * 设置窗口高度
+     * @param height
+     */
+    public void setHeight(int height){
         mHeight = height;
         updateLayoutParams();
         if(contentView!=null)
         windowManager.updateViewLayout(contentView,layoutParams);
     }
-    public static void setWidth(int width){
+
+    /**
+     * 设置窗口宽度
+     * @param width
+     */
+    public void setWidth(int width){
         mWidth = width;
         updateLayoutParams();
         if(layoutParams!=null) {
@@ -122,14 +141,26 @@ public abstract class QDFloatingService extends Service {
 
     public abstract View setContentView(Context context);
 
+    /**
+     * 获取窗口左上角坐标
+     * @return
+     */
     public abstract PointF getOriginPoint();
 
     public abstract void init();
 
+    /**
+     * 悬浮窗是否可以触摸
+     * @return
+     */
     public boolean getTouchAble(){
         return true;
     }
 
+    /**
+     * 获取悬浮窗视图
+     * @return
+     */
     public View getContentView() {
         return contentView;
     }
@@ -201,6 +232,8 @@ public abstract class QDFloatingService extends Service {
     public void onDestroy() {
         super.onDestroy();
         removeView();
+        QDLogger.e("onDestroyService " +this.getClass().getName());
+        ServiceHelper.onDestroyService(this);
     }
 
     private void removeView() {
@@ -211,36 +244,31 @@ public abstract class QDFloatingService extends Service {
     }
 
     public void setIsShowing(boolean isShowing) {
-        if (isShowing != QDFloatingService.isShowing) {
-            if (!isShowing && onDismissListener != null) {
-                onDismissListener.onDismiss();
-            }
-            QDFloatingService.isShowing = isShowing;
+        if (isShowing != this.isShowing) {
+            this.isShowing = isShowing;
         }
     }
 
-    public static boolean isShowing() {
+    @Override
+    public boolean isShowing() {
         return isShowing;
     }
 
-    public static void showWindow(Context context,Class clazz) {
+    public void showWindow(Context context, Class clazz) {
         if (!isShowing) {
-            context.getApplicationContext().startService(new Intent(context.getApplicationContext(), clazz));
+            context.startService(new Intent(context, clazz));
         }
     }
 
-    public static void dissmissWindow(Context context,Class clazz) {
+    public void dissmissWindow() {
         if (isShowing) {
-            context.getApplicationContext().stopService(new Intent(context.getApplicationContext(), clazz));
-            if (onDismissListener != null) {
-                onDismissListener.onDismiss();
-            }
+            getApplicationContext().stopService(new Intent(getApplicationContext(), this.getClass()));
         }
     }
 
-    private static PopupWindow.OnDismissListener onDismissListener;
-    public static void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
-        onDismissListener = onDismissListener;
+    private PopupWindow.OnDismissListener onDismissListener;
+    public void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
     }
 
 }

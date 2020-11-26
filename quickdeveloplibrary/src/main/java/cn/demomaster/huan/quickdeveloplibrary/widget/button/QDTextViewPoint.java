@@ -93,13 +93,11 @@ public class QDTextViewPoint extends AppCompatTextView {
         array.recycle();
 
         // Log.i(TAG, "pointMargin: " + pointMargin);
-        QDLogger.i( "width: " + width);
-        QDLogger.i( "pointText: " + pointText);
-        QDLogger.i( "pointGravity: " + pointGravity);
-        QDLogger.i( "showPoint: " + showPoint);
+        /*QDLogger.println( "width: " + width);
+        QDLogger.println( "pointText: " + pointText);
+        QDLogger.println( "pointGravity: " + pointGravity);
+        QDLogger.println( "showPoint: " + showPoint);*/
     }
-
-
     private int center_x, center_y, mwidth, width, height;
 
     @Override

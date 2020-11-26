@@ -74,7 +74,7 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
         });
         sb_background.setProgress(50);
 
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 
         //getActionBarLayout2();
 
@@ -118,57 +118,57 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
 
             case R.id.btn_ac_01:
                 btn_ac_01.setText(ACTIONBAR_TYPE.NORMAL+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
                 break;
 
             case R.id.btn_ac_02:
                 btn_ac_02.setText(ACTIONBAR_TYPE.NO_ACTION_BAR+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
                 break;
 
             case R.id.btn_ac_03:
                 btn_ac_03.setText(ACTIONBAR_TYPE.ACTION_STACK+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
                 break;
             case R.id.btn_ac_04:
                 btn_ac_04.setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
                 break;
             case R.id.btn_ac_05:
                 btn_ac_05.setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
                 break;
             case R.id.btn_ac_06:
                 btn_ac_06.setText(ACTIONBAR_TYPE.ACTION_TRANSPARENT+"");
-                getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.black));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.black));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
                 showMessage("黑色主题");
                 break;
             case R.id.btn_color_white:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.white));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.white), getResources().getColor(R.color.black));
                 showMessage("白色主题");
                 break;
             case R.id.btn_color_red:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.red));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.red));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.red), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "红色主题");
                 break;
             case R.id.btn_color_gray:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.gray));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.gray));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.gray), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "灰色主题");
                 break;
             case R.id.btn_color_green:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.green));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.green));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.green), getResources().getColor(R.color.white));
                 PopToastUtil.ShowToast(this, "绿色主题");
                 break;
             case R.id.btn_color_yellow:
-                getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.yellow));
+                getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.yellow));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
                 PopToastUtil.ShowToast(this, "黄色主题");
                 break;

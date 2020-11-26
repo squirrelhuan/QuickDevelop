@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -24,8 +25,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class SafeKeyboardView extends KeyboardView {
 
     private static final String TAG = "SafeKeyboardView";
-
-    private Context mContext;
     private boolean isCap;
     private Drawable delDrawable;
     private Drawable lowDrawable;
@@ -38,13 +37,11 @@ public class SafeKeyboardView extends KeyboardView {
     public SafeKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
-        this.mContext = context;
     }
 
     public SafeKeyboardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
-        this.mContext = context;
     }
 
     private void init() {
@@ -87,7 +84,7 @@ public class SafeKeyboardView extends KeyboardView {
     }
 
     private void drawKeyBackground(int id, Canvas canvas, Keyboard.Key key) {
-        Drawable drawable = mContext.getResources().getDrawable(id);
+        Drawable drawable = getContext().getResources().getDrawable(id);
         int[] state = key.getCurrentDrawableState();
         if (key.codes[0] != 0) {
             drawable.setState(state);
@@ -115,7 +112,7 @@ public class SafeKeyboardView extends KeyboardView {
                         field = KeyboardView.class.getDeclaredField(getContext().getString(R.string.mLabelTextSize));
                         field.setAccessible(true);
                         labelTextSize = (int) field.get(this);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                    } catch (Exception e) {
                         QDLogger.e(e);
                     }
                     paint.setTextSize(labelTextSize);
@@ -126,7 +123,7 @@ public class SafeKeyboardView extends KeyboardView {
                         field = KeyboardView.class.getDeclaredField(getContext().getString(R.string.mLabelTextSize));
                         field.setAccessible(true);
                         keyTextSize = (int) field.get(this);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                    } catch (Exception e) {
                         QDLogger.e(e);
                     }
                     paint.setTextSize(keyTextSize);
@@ -142,8 +139,8 @@ public class SafeKeyboardView extends KeyboardView {
             // 如果: 图标的实际宽度和高度都在按键的宽度和高度的二分之一以内, 那就不需要变换, 否则就需要等比例缩小
             int iconSizeWidth, iconSizeHeight;
             key.icon = drawable;
-            int iconH = px2dip(mContext, key.icon.getIntrinsicHeight());
-            int iconW = px2dip(mContext, key.icon.getIntrinsicWidth());
+            int iconH = DisplayUtil.px2dip(getContext(), key.icon.getIntrinsicHeight());
+            int iconW = DisplayUtil.px2dip(getContext(), key.icon.getIntrinsicWidth());
             if (key.width >= (ICON2KEY * iconW) && key.height >= (ICON2KEY * iconH)) {
                 //图标的实际宽度和高度都在按键的宽度和高度的二分之一以内, 不需要缩放, 因为图片已经够小或者按键够大
                 setIconSize(canvas, key, iconW, iconH);
@@ -195,10 +192,5 @@ public class SafeKeyboardView extends KeyboardView {
 
     public void setUpDrawable(Drawable upDrawable) {
         this.upDrawable = upDrawable;
-    }
-
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
     }
 }

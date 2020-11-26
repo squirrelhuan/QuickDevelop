@@ -2,23 +2,14 @@
 <resources>
 
     <declare-styleable name="LoopView">
-        <attr name="lineColor" format="color"/>
-        <attr name="topBottomTextColor" format="color"/>
-        <attr name="centerTextColor" format="color"/>
-        <attr name="textSize" format="dimension"/>
-        <attr name="canLoop" format="boolean"/>
-        <attr name="initPosition" format="integer"/>
-        <attr name="drawItemCount" format="integer"/>
+        <attr name="lineColor" format="color" />
+        <attr name="topBottomTextColor" format="color" />
+        <attr name="centerTextColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="canLoop" format="boolean" />
+        <attr name="initPosition" format="integer" />
+        <attr name="drawItemCount" format="integer" />
     </declare-styleable>
-
-    <string-array name="tab_titles">
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-    </string-array>
 
     <string-array name="tab_themt_titles">
         <item>@string/Components</item>
@@ -29,31 +20,30 @@
         <item>6</item>
     </string-array>
 
+    <attr name="qd_backgroundColor" format="color" />
+    <attr name="qd_borderColor" format="color" />
+    <attr name="qd_borderWidth" format="dimension" />
+    <attr name="qd_isRadiusAdjustBounds" format="boolean" />
+    <attr name="qd_radius" format="dimension" />
+    <attr name="qd_radiusTopLeft" format="dimension" />
+    <attr name="qd_radiusTopRight" format="dimension" />
+    <attr name="qd_radiusBottomLeft" format="dimension" />
+    <attr name="qd_radiusBottomRight" format="dimension" />
+    <attr name="qd_btn_internal_width" format="dimension" />
 
-    <attr name="qd_backgroundColor" format="color"/>
-    <attr name="qd_borderColor" format="color"/>
-    <attr name="qd_borderWidth" format="dimension"/>
-    <attr name="qd_isRadiusAdjustBounds" format="boolean"/>
-    <attr name="qd_radius" format="dimension"/>
-    <attr name="qd_radiusTopLeft" format="dimension"/>
-    <attr name="qd_radiusTopRight" format="dimension"/>
-    <attr name="qd_radiusBottomLeft" format="dimension"/>
-    <attr name="qd_radiusBottomRight" format="dimension"/>
-    <attr name="qd_btn_internal_width" format="dimension"/>
 
-
-    <attr name="QDButtonStyle" format="reference"/>
+    <attr name="QDButtonStyle" format="reference" />
     <declare-styleable name="QDButton">
-        <attr name="qd_backgroundColor"/>
-        <attr name="qd_borderColor"/>
-        <attr name="qd_borderWidth"/>
-        <attr name="qd_isRadiusAdjustBounds"/>
-        <attr name="qd_radius"/>
-        <attr name="qd_radiusTopLeft"/>
-        <attr name="qd_radiusTopRight"/>
-        <attr name="qd_radiusBottomLeft"/>
-        <attr name="qd_radiusBottomRight"/>
-        <attr name="qd_btn_internal_width"/>
+        <attr name="qd_backgroundColor" />
+        <attr name="qd_borderColor" />
+        <attr name="qd_borderWidth" />
+        <attr name="qd_isRadiusAdjustBounds" />
+        <attr name="qd_radius" />
+        <attr name="qd_radiusTopLeft" />
+        <attr name="qd_radiusTopRight" />
+        <attr name="qd_radiusBottomLeft" />
+        <attr name="qd_radiusBottomRight" />
+        <attr name="qd_btn_internal_width" />
 
     </declare-styleable>
 
@@ -61,46 +51,46 @@
     <!--**********************************************
         *                  btn                      *
         **********************************************-->
-    <attr name="qd_btn_text_size" format="dimension"/>
-    <attr name="qd_btn_border_width" format="dimension"/><!--
+    <attr name="qd_btn_text_size" format="dimension" />
+    <attr name="qd_btn_border_width" format="dimension" /><!--
     <attr name="qd_btn_internal_width" format="dimension"/>-->
     <!-- android 5.0一下不能再selector中用?attr,必须要整个drawable由使用者提供 -->
-    <attr name="qd_btn_bg_color" format="color"/>
-    <attr name="qd_btn_border_color" format="color"/>
-    <attr name="qd_btn_text_color" format="color"/>
+    <attr name="qd_btn_bg_color" format="color" />
+    <attr name="qd_btn_border_color" format="color" />
+    <attr name="qd_btn_text_color" format="color" />
 
 
     <declare-styleable name="QDTextViewPoint">
-        <attr name="pointRadius" format="dimension"/>
-        <attr name="pointWidth" format="dimension"/>
+        <attr name="pointRadius" format="dimension" />
+        <attr name="pointWidth" format="dimension" />
 
-        <attr name="pointMargin" format="dimension"/>
-        <attr name="pointMarginLeft" format="dimension"/>
-        <attr name="pointMarginRight" format="dimension"/>
-        <attr name="pointMarginTop" format="dimension"/>
-        <attr name="pointMarginBottom" format="dimension"/>
+        <attr name="pointMargin" format="dimension" />
+        <attr name="pointMarginLeft" format="dimension" />
+        <attr name="pointMarginRight" format="dimension" />
+        <attr name="pointMarginTop" format="dimension" />
+        <attr name="pointMarginBottom" format="dimension" />
 
-        <attr name="pointPadding" format="dimension"/>
-        <attr name="pointPaddingLeft" format="dimension"/>
-        <attr name="pointPaddingRight" format="dimension"/>
-        <attr name="pointPaddingTop" format="dimension"/>
-        <attr name="pointPaddingBottom" format="dimension"/>
+        <attr name="pointPadding" format="dimension" />
+        <attr name="pointPaddingLeft" format="dimension" />
+        <attr name="pointPaddingRight" format="dimension" />
+        <attr name="pointPaddingTop" format="dimension" />
+        <attr name="pointPaddingBottom" format="dimension" />
 
-        <attr name="pointBackgroundColor" format="color"/>
-        <attr name="pointText" format="string"/>
-        <attr name="pointTextColor" format="color"/>
+        <attr name="pointBackgroundColor" format="color" />
+        <attr name="pointText" format="string" />
+        <attr name="pointTextColor" format="color" />
 
-        <attr name="pointTextSize" format="dimension"/>
+        <attr name="pointTextSize" format="dimension" />
         <attr name="pointGravity" format="enum">
-            <enum name="leftTop" value="0"/>
-            <enum name="leftBottom" value="1"/>
-            <enum name="rightTop" value="2"/>
-            <enum name="rightBottom" value="3"/>
+            <enum name="leftTop" value="0" />
+            <enum name="leftBottom" value="1" />
+            <enum name="rightTop" value="2" />
+            <enum name="rightBottom" value="3" />
         </attr>
-        <attr name="showPoint" format="boolean"/>
-        <attr name="hollowOut" format="boolean"/>
-        <attr name="hollowColor" format="color"/>
-        <attr name="hollowRadius" format="dimension"/>
+        <attr name="showPoint" format="boolean" />
+        <attr name="hollowOut" format="boolean" />
+        <attr name="hollowColor" format="color" />
+        <attr name="hollowRadius" format="dimension" />
 
     </declare-styleable>
 
@@ -112,8 +102,8 @@
         <attr name="umanoFlingVelocity" format="integer" />
         <attr name="umanoDragView" format="reference" />
         <attr name="umanoScrollableView" format="reference" />
-        <attr name="umanoOverlay" format="boolean"/>
-        <attr name="umanoClipPanel" format="boolean"/>
+        <attr name="umanoOverlay" format="boolean" />
+        <attr name="umanoClipPanel" format="boolean" />
         <attr name="umanoAnchorPoint" format="float" />
         <attr name="umanoInitialState" format="enum">
             <enum name="expanded" value="0" />
@@ -139,7 +129,7 @@
     </declare-styleable>
 
     <declare-styleable name="VisibleLayout">
-        <attr name="hide_with_child" format="boolean"/>
+        <attr name="hide_with_child" format="boolean" />
         <attr name="start_from" format="enum">
             <enum name="none" value="-1" />
             <enum name="left" value="3" />
@@ -150,15 +140,15 @@
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">
-        <attr name="circle_background_padding" format="dimension"/>
-        <attr name="circle_background_color" format="color"/>
+        <attr name="circle_background_padding" format="dimension" />
+        <attr name="circle_background_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="LoadingView">
-        <attr name="drawColor" format="color"/>
+        <attr name="drawColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="Loadlayout">
-        <attr name="loadlayout" format="integer"/>
+        <attr name="loadlayout" format="integer" />
     </declare-styleable>
 </resources>

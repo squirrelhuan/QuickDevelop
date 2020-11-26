@@ -1,13 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">@dimen/dp_16</dimen>
     <dimen name="activity_vertical_margin">@dimen/dp_16</dimen>
-    <dimen name="fab_margin">@dimen/dp_16</dimen>
-
-    <dimen name="activity_top">@dimen/dp_65</dimen>
-
-    <dimen name="activity_navigation_bar_bottom_height">@dimen/dp_90</dimen>
-    <dimen name="activity_navigation_bar_bottom_height_min">@dimen/dp_52</dimen>
 
 
     <!--手机状态栏栏高度-->
@@ -19,10 +12,6 @@
     <!--导航栏按钮高度-->
     <dimen name="activity_actionbar_button_height">@dimen/dp_45</dimen>
 
-
-    <dimen name="btn_text_size">@dimen/sp_16</dimen>
-    <dimen name="view_text_size">@dimen/sp_10</dimen>
-
     <dimen name="quickdev_small_text_size">@dimen/sp_12</dimen>
     <dimen name="quickdev_middle_text_size">@dimen/sp_14</dimen>
     <dimen name="quickdev_common_text_size">@dimen/sp_16</dimen>
@@ -30,21 +19,14 @@
     <dimen name="quickdev_title_text_size">@dimen/sp_16</dimen>
     <dimen name="quickdev_option_menu_width">@dimen/dp_140</dimen>
 
-
-
     <!-- Tabs -->
     <dimen name="tab_padding_top_bottom">@dimen/dp_6</dimen>
     <dimen name="tab_padding_left_right">@dimen/dp_40</dimen>
     <dimen name="tab_height">@dimen/dp_30</dimen>
 
-
-
-    <!--**********************************************
-   *                  Button                        *
-   **********************************************-->
+    <!-- Button -->
     <dimen name="qd_btn_text_size">@dimen/sp_16</dimen>
     <dimen name="qd_btn_border_width">@dimen/dp_1</dimen>
-
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="key_height">@dimen/dp_50</dimen>

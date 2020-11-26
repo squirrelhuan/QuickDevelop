@@ -43,7 +43,9 @@ public class QDAccessibilityService extends AccessibilityService {
         super.onServiceConnected();
         QDLogger.i(TAG, "辅助功能已开启...");
         instance = this;
-
+        if(mOnAccessibilityListener!=null){
+            mOnAccessibilityListener.onServiceConnected(this);
+        }
         rootNodeInfo = getRootInActiveWindow();
         resetPackage();
     }
@@ -87,20 +89,23 @@ public class QDAccessibilityService extends AccessibilityService {
         }
     }
 
-    static OnAccessibilityEventListener mOnAccessibilityEventListener;
-    public static void setOnAccessibilityEventListener(OnAccessibilityEventListener onAccessibilityEventListener) {
-        mOnAccessibilityEventListener = onAccessibilityEventListener;
+    static OnAccessibilityListener mOnAccessibilityListener;
+
+    public static void setOnAccessibilityListener(OnAccessibilityListener onAccessibilityListener) {
+        mOnAccessibilityListener = onAccessibilityListener;
     }
 
-    public static interface OnAccessibilityEventListener{
+    public static interface OnAccessibilityListener{
+        void onServiceConnected(QDAccessibilityService qdAccessibilityService);
         void onAccessibilityEvent(AccessibilityService accessibilityService,AccessibilityEvent event);
+        void onServiceDestroy();
     }
 
     //实现辅助功能
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if(mOnAccessibilityEventListener!=null){
-            mOnAccessibilityEventListener.onAccessibilityEvent(this,event);
+        if(mOnAccessibilityListener!=null){
+            mOnAccessibilityListener.onAccessibilityEvent(this,event);
         }
         //Log.e(TAG, "TYPE_VIEW=" + event.getAction());
         int eventType = event.getEventType();
@@ -120,10 +125,10 @@ public class QDAccessibilityService extends AccessibilityService {
                 }
                 break;
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
-                Log.e(TAG, "窗口切换" + event.getClassName());
+                //Log.e(TAG, "窗口切换" + event.getClassName());
                 break;
             case AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED:
-                Log.e(TAG, "文字改变" + event.getClassName());
+                //Log.e(TAG, "文字改变" + event.getClassName());
                 break;
         }
     }
@@ -226,6 +231,10 @@ public class QDAccessibilityService extends AccessibilityService {
     public void onDestroy() {
         super.onDestroy();
         QDLogger.i(TAG, "辅助功能已关闭");
+        if(mOnAccessibilityListener!=null) {
+            mOnAccessibilityListener.onServiceDestroy();
+        }
+        //mOnAccessibilityListener=null;
         instance = null;
     }
 
@@ -322,7 +331,8 @@ public class QDAccessibilityService extends AccessibilityService {
         } catch (Exception e) {
             //授权方法：开启usb调试并使用adb工具连接手机，执行 adb shell pm grant org.autojs.autojspro android.permission.WRITE_SECURE_SETTING
             //QdToast.show(context.getApplicationContext(),"请确保已给予 WRITE_SECURE_SETTINGS 权限授权代码已复制，请使用adb工具连接手机执行(重启不失效)"+ e.toString());
-            QDLogger.e("adb shell pm grant "+context.getApplicationContext().getPackageName()+" android.permission.WRITE_SECURE_SETTINGS"+",e="+e.toString());
+            QDLogger.e(e);
+            //QDLogger.e("adb shell pm grant "+context.getApplicationContext().getPackageName()+" android.permission.WRITE_SECURE_SETTINGS"+",e="+e.toString());
         }
     }
 }

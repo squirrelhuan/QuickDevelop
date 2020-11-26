@@ -2,14 +2,10 @@ package cn.demomaster.huan.quickdevelop.activity.sample.service;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -19,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import cn.demomaster.huan.quickdevelop.activity.sample.WifiTestActivity2;
 import cn.demomaster.huan.quickdevelop.activity.sample.utils.NetWorkUtils;
 import cn.demomaster.huan.quickdevelop.activity.sample.utils.WifiUtil;
 

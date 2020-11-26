@@ -1,15 +1,7 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.utils;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -21,11 +13,12 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 
-import cn.demomaster.huan.quickdevelop.activity.sample.WifiTestActivity2;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import cn.demomaster.huan.quickdevelop.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.activity.sample.service.WifiTimerService2;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;

@@ -1,21 +1,27 @@
 package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.IDCardActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.AccessibilityServiceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.DownloadFragment;
@@ -30,6 +36,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.Keyboard3Fragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.KeyboardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LanguageFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.LmSensorFragment;
+import cn.demomaster.huan.quickdevelop.fragment.helper.NotifycationFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PermitionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.PositionFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.ScreenShotFragment;
@@ -40,11 +47,7 @@ import cn.demomaster.huan.quickdevelop.fragment.helper.UpdateAppFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.WifiFragment;
 import cn.demomaster.huan.quickdevelop.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-
 
 /**
  * Components视图
@@ -53,26 +56,30 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class HelperFragment extends QDFragment {
+public class HelperFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
-    @Override
+
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        return (ViewGroup) inflater.inflate(R.layout.fragment_layout_component, null);
+    public boolean isUseActionBarLayout() {
+        return false;//不带导航栏
     }
 
     @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        //actionBarLayout.getLeftView().setVisibility(View.GONE);
-        actionBarLayout.setHeaderBackgroundColor(Color.RED);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_layout_component, null);
+        return view;
+    }
 
+    public void initView(View rootView) {
+        /*actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        //actionBarLayout.getLeftView().setVisibility(View.GONE);
+        actionBarLayout.setHeaderBackgroundColor(Color.RED);*/
         recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
@@ -80,7 +87,6 @@ public class HelperFragment extends QDFragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
-
 
         classList.add(IDCardActivity.class);
         classList.add(CsqliteActivity.class);
@@ -108,10 +114,11 @@ public class HelperFragment extends QDFragment {
         classList.add(HttpFragment.class);
         classList.add(SettingFragment.class);
         classList.add(AccessibilityServiceFragment.class);
+        classList.add(NotifycationFragment.class);
+        classList.add(AboutMobileFragment.class);
+
 
         //classList.add(QDTerminalFragment.class);
-
-
 
         componentAdapter.updateList(classList);
         //设置Adapter

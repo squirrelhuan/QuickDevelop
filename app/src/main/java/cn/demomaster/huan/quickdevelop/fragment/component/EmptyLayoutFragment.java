@@ -1,33 +1,25 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
-import android.view.Gravity;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.adapter.VisiableLayoutAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.EmptyLayout;
-import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
 
 
 /**
@@ -35,8 +27,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
  * 2018/8/25
  */
 
-@ActivityPager(name = "EmptyLayout", preViewClass = TextView.class, resType = ResType.Custome)
-public class EmptyLayoutFragment extends QDFragment {
+@ActivityPager(name = "加载布局", preViewClass = TextView.class, resType = ResType.Custome)
+public class EmptyLayoutFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -49,35 +41,37 @@ public class EmptyLayoutFragment extends QDFragment {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Nullable
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_emptylayout, null);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_emptylayout, null);
         return mView;
     }
 
     EmptyLayout emptylayout;
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        ButterKnife.bind(this, rootView);
 
-        getActionBarLayout().getRightView().setOnClickListener(new View.OnClickListener() {
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().getRightView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showMulMenuDialog();
             }
         });
-
         emptylayout = rootView.findViewById(R.id.emptylayout);
+        emptylayout.hideAll();
+        emptylayout.showTitle("标题");
+        emptylayout.showMessage("单行提示");
     }
 
     private void showMulMenuDialog() {
-        String[] menus ={"单行提示","标题+描述","单行文字+重试按钮","标题+描述+重试按钮","加载动画","加载动画+加载提示","加载动画+加载提示+加载描述",};
+        String[] menus = {"单行提示", "标题+描述", "单行文字+重试按钮", "标题+描述+重试按钮", "加载动画", "加载动画+加载提示", "加载动画+加载提示+加载描述",};
         new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
                 //PopToastUtil.ShowToast(mContext,data.get(position));
-                switch (position){
+                switch (position) {
                     case 0://单行提示
                         emptylayout.hideAll();
                         emptylayout.showTitle("单行提示");
@@ -118,5 +112,4 @@ public class EmptyLayoutFragment extends QDFragment {
             }
         }).create().show();
     }
-
 }

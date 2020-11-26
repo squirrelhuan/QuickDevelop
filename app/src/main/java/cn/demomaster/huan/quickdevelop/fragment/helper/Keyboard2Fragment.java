@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +9,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored01.QDKeyboard;
 
 
@@ -24,14 +27,13 @@ import cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored01.QDKeyboar
  */
 
 @ActivityPager(name = "Keyboard2", preViewClass = TextView.class, resType = ResType.Custome)
-public class Keyboard2Fragment extends QDFragment {
+public class Keyboard2Fragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.et_system_none)
     EditText et_system_none;
     @BindView(R.id.et_system_number)
@@ -51,22 +53,19 @@ public class Keyboard2Fragment extends QDFragment {
     @BindView(R.id.et_custom_textEmailAddress)
     EditText et_custom_textEmailAddress;
 
-    View mView;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_keyboard_01, null);
-        }
-        ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_layout_keyboard_01, null);
+        return mView;
     }
 
     private QDKeyboard qdKeyboard;
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("键盘");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("键盘");
 
         qdKeyboard = new QDKeyboard(mContext);
         qdKeyboard.addEditText(et_custom_none);
@@ -74,7 +73,7 @@ public class Keyboard2Fragment extends QDFragment {
         qdKeyboard.addEditText(et_custom_numberPassword);
         qdKeyboard.addEditText(et_custom_phone);
         qdKeyboard.addEditText(et_custom_textEmailAddress);
-       // mContext.getCurrentFocus()
+        // mContext.getCurrentFocus()
        /* qdKeyboard.addEditText(et_system_none);
         qdKeyboard.addEditText(et_system_number);
         qdKeyboard.addEditText(et_system_numberPassword);*/
@@ -82,7 +81,7 @@ public class Keyboard2Fragment extends QDFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-       // qdKeyboard.dispatchTouchEvent();
+        // qdKeyboard.dispatchTouchEvent();
         return super.onKeyDown(keyCode, event);
     }
 

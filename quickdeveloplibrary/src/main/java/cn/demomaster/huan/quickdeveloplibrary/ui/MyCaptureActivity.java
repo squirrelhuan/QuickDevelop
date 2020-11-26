@@ -42,9 +42,9 @@ public class MyCaptureActivity extends QDActivity {
         setContentView(R.layout.activity_my_capture);
 
         //请求屏幕常亮
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
-        getActionBarLayout().setActionBarThemeColors(Color.WHITE,Color.WHITE);
-        //getActionBarLayout().setHeaderBackgroundColor(Color.TRANSPARENT);
+        //getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
+        //getActionBarTool().setActionBarThemeColors(Color.WHITE,Color.WHITE);
+        //getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 

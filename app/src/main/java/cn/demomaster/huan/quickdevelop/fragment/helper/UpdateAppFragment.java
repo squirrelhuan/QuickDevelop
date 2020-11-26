@@ -3,11 +3,13 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInstaller;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSON;
@@ -28,11 +31,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
@@ -41,6 +43,7 @@ import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -56,14 +59,13 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager.st
  */
 
 @ActivityPager(name = "Update App", preViewClass = TextView.class, resType = ResType.Custome)
-public class UpdateAppFragment extends QDFragment {
+public class UpdateAppFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.btn_update_app)
     QDButton btn_update_app;
     @BindView(R.id.btn_install_access)
@@ -77,8 +79,9 @@ public class UpdateAppFragment extends QDFragment {
 
     View mView;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_update_app, null);
         }
@@ -88,9 +91,8 @@ public class UpdateAppFragment extends QDFragment {
 
     int type = 0;
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("文件下载");
+    public void initView(View rootView) {
+        getActionBarTool().setTitle("文件下载");
         btn_update_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +156,7 @@ public class UpdateAppFragment extends QDFragment {
 
     /**
      * alert 消息提示框显示
+     *
      * @param context  上下文
      * @param title    标题
      * @param message  消息
@@ -181,7 +184,7 @@ public class UpdateAppFragment extends QDFragment {
                 .subscribe(new DisposableObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object response) {
-                        QDLogger.i( "onNext: " + JSON.toJSONString(response));
+                        QDLogger.i("onNext: " + JSON.toJSONString(response));
                         try {
                             //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
                             //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
@@ -204,12 +207,12 @@ public class UpdateAppFragment extends QDFragment {
 
                     @Override
                     protected void onStart() {
-                        QDLogger.i( "onStart: ");
+                        QDLogger.i("onStart: ");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable throwable) {
-                        QDLogger.i( throwable);
+                        QDLogger.i(throwable);
                     }
 
                     @Override
@@ -219,13 +222,13 @@ public class UpdateAppFragment extends QDFragment {
                 });
     }
 
-    public void showDialog(){
+    public void showDialog() {
         QDSharedPreferences.init(getContext());
         String conf = QDFileUtil.getFromAssets(mContext, "config/update.his");
         if (conf != null) {
-            List<Version> versions = JSON.parseArray(conf,Version.class);
-            final Version version =  versions.get(versions.size()-1);
-            QDSharedPreferences.getInstance().putBoolean(version.getVersionCode()+"",false);
+            List<Version> versions = JSON.parseArray(conf, Version.class);
+            final Version version = versions.get(versions.size() - 1);
+            QDSharedPreferences.getInstance().putBoolean(version.getVersionCode() + "", false);
         }
     }
 
@@ -236,20 +239,20 @@ public class UpdateAppFragment extends QDFragment {
         new QDDialog.Builder(getContext()).setTitle("更新提示")
                 .setMessage("确定要更新吗？")
                 .setBackgroundRadius(30)
-                .addAction("更新", new QDDialog.OnClickActionListener() {
+                .addAction("更新", new OnClickActionListener() {
                     @Override
-                    public void onClick(QDDialog dialog) {
+                    public void onClick(Dialog dialog, Object tag) {
                         dialog.dismiss();
                         //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
                         //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
                         if (type == 0) {
                             InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
-                        } else  if (type == 1){
-                             InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
-                        }else if (type == 2){
+                        } else if (type == 1) {
+                            InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
+                        } else if (type == 2) {
                             try {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    InstallHelper.silenceInstall(mContext, true,new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
+                                    InstallHelper.silenceInstall(mContext, true, new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
                                         @Override
                                         public void onCreated(int sessionId) {
 
@@ -272,18 +275,18 @@ public class UpdateAppFragment extends QDFragment {
 
                                         @Override
                                         public void onFinished(int sessionId, boolean success) {
-                                            InstallHelper.launchAPK(mContext,"");
+                                            InstallHelper.launchAPK(mContext, "");
                                         }
                                     });
-                                }else{
+                                } else {
                                     QDLogger.e("5.0以上用这种静默安装");
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        }else if (type == 3){
+                        } else if (type == 3) {
                             try {
-                                InstallHelper.downloadAndSilenceInstall(getActivity(),true,version.getFileName()+".apk", version.getDownloadUrl());
+                                InstallHelper.downloadAndSilenceInstall(getActivity(), true, version.getFileName() + ".apk", version.getDownloadUrl());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -336,7 +339,6 @@ public class UpdateAppFragment extends QDFragment {
             }
         });
     }
-
 
 
 }

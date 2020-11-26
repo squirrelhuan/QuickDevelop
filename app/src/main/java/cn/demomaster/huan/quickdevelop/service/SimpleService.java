@@ -34,7 +34,7 @@ public class SimpleService extends BaseService {
         watcher.createWatcher(String.valueOf(Process.myUid()),packageName,serviceName);
         watcher.connectMonitor();
         QDLogger.i( "守护进程已启动"+str + index);
-       final Timer timer = new Timer();
+        final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -113,4 +113,5 @@ public class SimpleService extends BaseService {
 
         return START_STICKY;
     }
+
 }

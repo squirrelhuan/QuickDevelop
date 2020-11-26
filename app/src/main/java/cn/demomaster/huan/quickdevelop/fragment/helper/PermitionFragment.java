@@ -2,19 +2,22 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
@@ -26,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "Permition", preViewClass = TextView.class, resType = ResType.Custome)
-public class PermitionFragment extends QDFragment {
+public class PermitionFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -41,20 +44,17 @@ public class PermitionFragment extends QDFragment {
 
     @BindView(R.id.btn_group)
     QDButton btn_group;
-    View mView;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_permition, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_permition, null);
         return (ViewGroup) mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("动态权限");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("动态权限");
         btn_write_external_storage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,12 +64,12 @@ public class PermitionFragment extends QDFragment {
 
                     @Override
                     public void onPassed() {
-                        Toast.makeText(mContext,"通过",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "通过", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onRefused() {
-                        Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -79,16 +79,16 @@ public class PermitionFragment extends QDFragment {
             public void onClick(View v) {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_SETTINGS,Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS, Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
 
                     @Override
                     public void onPassed() {
-                        Toast.makeText(mContext,"通过",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "通过", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onRefused() {
-                        Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -104,12 +104,12 @@ public class PermitionFragment extends QDFragment {
 
                     @Override
                     public void onPassed() {
-                        Toast.makeText(mContext,"通过",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "通过", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onRefused() {
-                        Toast.makeText(mContext,"拒绝",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });
             }

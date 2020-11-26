@@ -2,22 +2,16 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  *
@@ -25,17 +19,22 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class QDMainFragmentActivity extends QDActivity {
 
     @Override
+    public boolean isUseActionBarLayout() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
         if (savedInstanceState == null) {
             QDFragment fragment = new MainFragment();
-            startFragment(mContext, fragment);
+            startFragment(fragment,R.id.container1);
         }
-        getActionBarLayout().setHeaderBackgroundColor(Color.GRAY);
+       /* getActionBarTool().setHeaderBackgroundColor(Color.GRAY);
         //actionBarLayoutView.setHeaderBackgroundColor();
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
-        getActionBarLayout().getLeftView().setVisibility(View.GONE);
+        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
+        getActionBarTool().getLeftView().setVisibility(View.GONE);*/
 
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
@@ -57,7 +56,7 @@ public class QDMainFragmentActivity extends QDActivity {
                 QDLogger.d("cdata="+data);
             }
         });*/
-        ADBHelper adbHelper = ADBHelper.getInstance();
+        /*ADBHelper adbHelper = ADBHelper.getInstance();
         adbHelper.execute("pwd");
         adbHelper.execute("ls");
         adbHelper.execute("cd /proc");
@@ -70,7 +69,7 @@ public class QDMainFragmentActivity extends QDActivity {
                     QDLogger.e("result="+result.getCode()+","+result.getError());
                 }
             }
-        });
+        });*/
 
         /*ClipboardUtil.setClip(mContext, Build.BRAND.toLowerCase());
         CharSequence str = ClipboardUtil.getClip(mContext);
@@ -78,7 +77,7 @@ public class QDMainFragmentActivity extends QDActivity {
             QdToast.show(mContext, str.toString());
         }
 */
-        QdToast.show(mContext, Build.BRAND.toLowerCase());
+        //QdToast.show(mContext, Build.BRAND.toLowerCase());
         //DebugFloatingService.showConsole(mContext);
 
        /* startActivity(WifiTestActivity2.class);
@@ -95,7 +94,6 @@ public class QDMainFragmentActivity extends QDActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -103,12 +101,5 @@ public class QDMainFragmentActivity extends QDActivity {
         super.finish();
         overridePendingTransition(0, 0);//屏蔽转入转出动画
     }
-
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-    }
-
 
 }

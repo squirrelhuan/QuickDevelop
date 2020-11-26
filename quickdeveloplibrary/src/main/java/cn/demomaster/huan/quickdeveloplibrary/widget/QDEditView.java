@@ -225,6 +225,7 @@ public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListen
 
     @Override
     protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         handler.removeCallbacks(runnable);
         handler = null;
     }

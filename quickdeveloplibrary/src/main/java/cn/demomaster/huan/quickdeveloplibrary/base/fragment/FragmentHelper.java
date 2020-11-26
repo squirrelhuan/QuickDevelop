@@ -2,6 +2,8 @@ package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +11,15 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -23,17 +27,30 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * @date 2019/1/10.
  * description：
  */
-public class FragmentHelper implements FragmentManager.OnBackStackChangedListener {
-
-    public FragmentHelper(AppCompatActivity activity) {
-        fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(this);
-    }
-
+public class FragmentHelper implements FragmentManager.OnBackStackChangedListener, OnReleaseListener, NavigationInterface {
+    AppCompatActivity activity;
     public FragmentManager fragmentManager;
 
+    public FragmentHelper(AppCompatActivity activity) {
+        this.activity = activity;
+        fragmentManager = activity.getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(this);
+        fragments = new ArrayList<>();
+    }
+
+    /**
+     * 获取fragment列表，注意过滤掉fragment中嵌套的fragment。
+     * @return
+     */
     public List<Fragment> getFragments() {
-        return getFragmentManager().getFragments();
+        List<Fragment> fragmentList =new ArrayList<>();
+        List<Fragment> fragmentList2 = getFragmentManager().getFragments();
+        for (Fragment fragment:fragmentList2){
+            if(fragment instanceof QDFragment){
+                fragmentList.add(fragment);
+            }
+        }
+        return fragmentList;
     }
 
     public FragmentManager getFragmentManager() {
@@ -41,19 +58,17 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
     }
 
     public boolean onKeyDown(Context context, int keyCode, KeyEvent event) {
-        QDLogger.d("FragmentHelper", "size=" + getFragments().size() + ",BackStackEntryCount=" + getFragmentManager().getBackStackEntryCount());
-       // if (getFragmentManager().getBackStackEntryCount() > 0) {
-            if (getFragments().size() >0) {
-                Fragment fragment = getFragments().get(getFragments().size() - 1);
-                if(fragment==null||fragment.getContext()!=context){
-                    return false;
-                }
-                if (fragment instanceof QDFragmentInterface) {
-                    boolean ret = ((QDFragmentInterface) fragment).onKeyDown(keyCode, event);
-                    return ret;
-                }
+        //QDLogger.d("FragmentHelper", "size=" + getFragments().size() + ",BackStackEntryCount=" + getFragmentManager().getBackStackEntryCount());
+        if (getFragments().size() > 0) {
+            Fragment fragment = getFragments().get(getFragments().size() - 1);
+            if (fragment == null) {
+                return false;
             }
-        //}
+            if (fragment instanceof ViewLifecycle) {
+                boolean ret = ((ViewLifecycle) fragment).onKeyDown(keyCode, event);
+                return ret;
+            }
+        }
         return false;
     }
 
@@ -98,48 +113,104 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
         transaction.commit();
     }
 
-    private WeakReference<Fragment> currentFragment;
-    public void hideFragment(AppCompatActivity activity, Fragment fragment) {
+    /**
+     * 获取当前激活状态的fragment，即最顶层的fragment活动页面
+     * @return
+     */
+    public Fragment getCurrentFragment() {
+        List<Fragment> fragmentList = getFragments();
+        if (fragmentList == null || fragmentList.size() < 1) {
+            return null;
+        } else {
+            return fragmentList.get(fragmentList.size() - 1);
+        }
+    }
+
+    public void hideFragment(Fragment fragment) {
+        QDLogger.d("hideFragment =" + fragment);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.hide(currentFragment.get());
+        transaction.hide(fragment);
         transaction.commit();
     }
 
-    public void startFragment(AppCompatActivity activity, QDFragment fragment) {
-        QDLogger.d(fragment.getClass()+" startFragment fragment");
-        if(fragmentManager.getBackStackEntryCount()==0){
+    int containerViewId;
+
+    public void startFragment(QDFragment fragment) {
+        startFragment(fragment, containerViewId);
+    }
+
+    /* int animation1 = R.anim.slide_in_right;
+     int animation2 = R.anim.slide_out_left;
+     int animation3 = R.anim.slide_in_left;
+     int animation4 = R.anim.slide_out_right;*/
+    int animation1 = R.anim.h5_slide_in_right;
+    int animation2 = R.anim.h5_slide_out_left;
+    int animation3 = R.anim.h5_slide_in_left;
+    int animation4 = R.anim.h5_slide_out_right;
+    List<Fragment> fragments;
+
+    public void startFragment(QDFragment fragment, int containerViewId) {
+        fragment.setFragmentHelper(this);
+        if (fragmentManager.getBackStackEntryCount() == 0) {
             fragment.setRootFragment(true);
-            QDLogger.d(fragment.getClass()+" is root fragment");
+            QDLogger.d("fragment",fragment.getClass().getSimpleName() + " is root fragment");
         }
+
+        this.containerViewId = containerViewId;
+        addFragment(fragment, containerViewId);
+    }
+
+    public void addFragment(QDFragment fragment, int containerViewId) {
+        QDFragment currentFragment = (QDFragment) getCurrentFragment();
+        QDLogger.d("fragment"," addFragment " + fragment.getClass().getSimpleName() + ",containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.getBackStackEntryCount() > 0) {
-            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
-                    R.anim.slide_in_left, R.anim.slide_out_right);
+            transaction.setCustomAnimations(animation1, animation2,
+                    animation3, animation4);
         }
-        transaction.add(R.id.qd_fragment_content_view, fragment, fragment.getClass().getSimpleName())
-                .addToBackStack(fragment.getClass().getSimpleName())
+        transaction.add(containerViewId, fragment, getFragmentTag(fragment))//R.id.qd_fragment_content_view
+                .addToBackStack(getFragmentTag(fragment));
+        if (currentFragment != null) {//replace模式会有动画，add模式要通过hide方法才能有动画显示
+            transaction.hide(currentFragment);
+        }
+        transaction.commitAllowingStateLoss();//.commit();会报错，commitAllowingStateLoss不会报错，activity状态可能会丢失
+        if (currentFragment != null) {
+            currentFragment.doPause();
+        }
+    }
+
+    /**
+     * 拼接fragment的Tag
+     * @param fragment
+     * @return
+     */
+    private String getFragmentTag(QDFragment fragment) {
+        return fragment.getClass().getSimpleName() + "-" + fragment.hashCode();
+    }
+
+    public void replaceFragment(QDFragment fragment, int containerViewId) {
+        QDLogger.println("fragment"," replaceFragment:" + fragment.getClass().getSimpleName() + ",containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            transaction.setCustomAnimations(animation1, animation2,
+                    animation3, animation4);
+        }
+        transaction.replace(containerViewId, fragment, getFragmentTag(fragment))//R.id.qd_fragment_content_view
+                .addToBackStack(getFragmentTag(fragment))
                 .commit();
-        if (currentFragment != null && currentFragment.get() != null && currentFragment.get().isHidden()) {
-            hideFragment(activity, currentFragment.get());
-        }
-        currentFragment = new WeakReference(fragment);
     }
-//PopBackStackImmediate
-
-
-    /*public int getContentViewId() {
-        return R.id.qd_fragment_content_view;
-    }*/
-    public static View getContentView(Activity ac) {
-        ViewGroup view = (ViewGroup) ac.getWindow().getDecorView();
-        FrameLayout content = (FrameLayout) view.findViewById(android.R.id.content);
+    
+ /*   public static View getContentView(Activity activity) {
+        ViewGroup view = (ViewGroup) activity.getWindow().getDecorView();
+        FrameLayout content = view.findViewById(android.R.id.content);
         return content.getChildAt(0);
-    }
+    }*/
 
     public void onDestroy() {
-        if (currentFragment != null) {
-            currentFragment = null;
+        if (fragments != null) {
+            fragments = null;
         }
         if (fragmentManager != null) {
             fragmentManager.removeOnBackStackChangedListener(this);
@@ -149,12 +220,185 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     @Override
     public void onBackStackChanged() {
-        /*FragmentManager manager = activity.getSupportFragmentManager();
-        // android.app.FragmentManager manager1 = activity.getFragmentManager();
-        if (manager != null) {
-            Fragment currFrag = fragment;
-            //currFrag = (Fragment) manager.findFragmentByTag(R.id.fl_home);
-            currFrag.onResume();
+        String str = "";
+        for (Fragment fragment : getFragments()) {
+            str += fragment.getClass().getSimpleName() + ",";
+        }
+        QDLogger.d("fragment","onBackStackChanged " + str);
+    }
+
+    @Override
+    public void navigate(FragmentActivity context, QDFragment fragment, int containerViewId, Intent intent) {
+        ((ViewLifecycle) fragment).setIntent(intent);
+        startFragment(fragment, containerViewId);
+    }
+
+    @Override
+    public void navigateForResult(FragmentActivity context, ViewLifecycle qdFragmentInterface, QDFragment fragment, int containerViewId, Intent intent, int requestCode) {
+        ((ViewLifecycle) fragment).setIntent(intent);
+        ((ViewLifecycle) fragment).setRequestCode(qdFragmentInterface, requestCode);
+        startFragment(fragment, containerViewId);
+    }
+
+    Builder builder;
+
+    public Builder build(Context context, String classPath) {
+        if (builder == null) {
+            builder = new Builder(context, classPath, this);
+        } else {
+            builder.setClassPath(classPath);
+        }
+        return builder;
+    }
+
+    public void OnBackPressed() {
+        //QDLogger.println("OnBackPressed1 " + getCurrentFragment());
+        if (!fragmentManager.isStateSaved() && fragmentManager.popBackStackImmediate()) {
+            QDFragment currentFragment = (QDFragment) getCurrentFragment();
+            QDLogger.d("fragment", "OnBackPressed 强制 resume=>" + currentFragment);
+            if (currentFragment != null) {
+                currentFragment.doResume();
+            }
+            return;
+        }
+        /*
+        int count = fragmentManager.getBackStackEntryCount();
+        for (int i = count - 1; i >= 0; i--) {
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+            QDLogger.println(backStackEntry);
+            if (backStackEntry.getName().equals(fragmentClass.getSimpleName())) {
+                return;
+            } else {
+                QDLogger.println("移除fragment " + backStackEntry);
+                fragmentManager.popBackStack(backStackEntry.getId(), 1);
+            }
+            //backStackEntry.
         }*/
     }
+
+    /**
+     * 回退到某个fragment
+     *
+     * @param fragmentClass
+     */
+    public void backTo(Class fragmentClass) {
+        int count = fragmentManager.getBackStackEntryCount();
+        for (int i = count - 1; i >= 0; i--) {
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+            QDLogger.d(backStackEntry.getName());
+            if (backStackEntry.getName().startsWith(fragmentClass.getSimpleName() + "-")) {
+                QDFragment currentFragment = (QDFragment)fragmentManager.findFragmentByTag(backStackEntry.getName());
+                QDLogger.d("fragment", "backTo 强制 resume=>" + currentFragment);
+                if (currentFragment != null) {
+                    currentFragment.doResume();
+                }
+                return;
+            } else {
+                //QDLogger.println("移除fragment " + backStackEntry);
+                fragmentManager.popBackStack(backStackEntry.getId(), 1);
+            }
+        }
+    }
+
+    /*释放*/
+    @Override
+    public void onRelease() {
+
+    }
+
+    /**
+     * 弹出其他栈，仅保留某class集合内的activity
+     *
+     * @param classList 要保留的 activity 类
+     */
+    public void popOtherFragmentExceptList(List<Class> classList) {
+        if (classList == null) {
+            return;
+        }
+        String classStr = "";
+        for (int i = 0; i < classList.size(); i++) {
+            classStr += classList.get(i).getName() + ",";
+        }
+        int count = fragmentManager.getBackStackEntryCount();
+        for (int i = 0; i < count; i++) {
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
+            QDLogger.d("fragment", "backStackEntry name=" + backStackEntry.getName());
+            if (!classStr.contains("." + backStackEntry.getName())) {
+                QDLogger.d("fragment", "移除fragment " + backStackEntry);
+                fragmentManager.popBackStack(backStackEntry.getId(), 1);
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment fragment = getCurrentFragment();
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+/*
+    public void onActivityResult(QDFragmentInterface fragment,int mRequestCode, int mResultCode, Intent mResultData) {
+        //onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        fragment.onActivityResult();
+    }*/
+
+    public static class Builder {
+        FragmentActivity context;
+        int containerViewId;
+        Bundle bundle;
+        String classPath;
+        FragmentHelper fragmentHelper;
+
+        public Builder(Context context, String classPath, FragmentHelper fragmentHelper) {
+            this.fragmentHelper = fragmentHelper;
+            this.context = (FragmentActivity) context;
+            this.classPath = classPath;
+        }
+
+        public Builder setClassPath(String classPath) {
+            this.classPath = classPath;
+            return this;
+        }
+
+        public Builder putExtras(Bundle extras) {
+            this.bundle = extras;
+            return this;
+        }
+
+        public Builder putExtra(String key, Object objValue) {
+            return this;
+        }
+
+        public Builder setContainerViewId(int containerViewId) {
+            this.containerViewId = containerViewId;
+            return this;
+        }
+
+        public void navigation() {
+            navigation(null, false, 0);
+        }
+
+        public void navigation(ViewLifecycle viewLifecycle, int requestCode) {
+            navigation(viewLifecycle, true, requestCode);
+        }
+
+        public void navigation(ViewLifecycle viewLifecycle, boolean isForResult, int requestCode) {
+            try {
+                Class fragmentClass = Class.forName(classPath);
+                QDFragment fragment = (QDFragment) fragmentClass.newInstance();
+                Intent intent = new Intent();
+                if (bundle != null) {
+                    intent.putExtras(bundle);
+                }
+                if (isForResult) {
+                    fragmentHelper.navigateForResult(context, viewLifecycle, fragment, containerViewId, intent, requestCode);
+                } else {
+                    fragmentHelper.navigate(context, fragment, containerViewId, intent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

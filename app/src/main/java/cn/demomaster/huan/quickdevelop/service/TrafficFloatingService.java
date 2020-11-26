@@ -15,7 +15,9 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NetworkStatsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.TrafficHelper;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.QDFloatingService;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -36,7 +38,7 @@ public class TrafficFloatingService extends QDFloatingService {
         view.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dissmissWindow(mContext, TrafficFloatingService.this.getClass());
+                ServiceHelper.dissmissWindow(TrafficFloatingService.class);
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

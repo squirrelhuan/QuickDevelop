@@ -122,7 +122,7 @@ public class ADBHelper {
         execute(" adb devices ");
         //execute("alias remote-screencap='adb shell screencap -p | sed 's/\r$//'");//设置别名
         String f = directory_path + "/resource/screen_android/";
-       QDLogger.println(f);
+        QDLogger.println(f);
         File file = new File(f);
         if (!file.exists()) {
             try {
@@ -133,6 +133,7 @@ public class ADBHelper {
         }
         new Thread(runnable).start();
     }
+
 
     public void execute(String cmd) {
         execute(currentPath, cmd, null);
@@ -149,14 +150,14 @@ public class ADBHelper {
 
     public void execute(String path, String cmd, OnReceiveListener onReceiveListener) {
         try {
-            QDLogger.e(Tag,"path="+path );
+           // QDLogger.e(Tag, "path=" + path);
             // Process process = Runtime.getRuntime().exec(cmd);
             if (!TextUtils.isEmpty(path)) {
                 setCurrentPath(path);
             }
             if (cmd.contains("cd ") || cmd.trim().equals("\\")) {
                 String pathstr = getPathInCmd(currentPath, cmd);
-                QDLogger.e(Tag,cmd + "包含【cd】命令,"+pathstr+"，路径：" + currentPath);
+                QDLogger.e(Tag, cmd + "包含【cd】命令," + pathstr + "，路径：" + currentPath);
                 File file = new File(pathstr);
                 if (file == null || !file.exists() || !file.isDirectory()) {
                     if (onReceiveListener != null) {
@@ -166,18 +167,18 @@ public class ADBHelper {
                         onReceiveListener.onReceive(processResult);
                     }
                 } else {
-                        setCurrentPath(pathstr);
-                        ProcessResult processResult = new ProcessResult();
-                        processResult.setCode(0);
-                        processResult.setResult("" + currentPath);
+                    setCurrentPath(pathstr);
+                    ProcessResult processResult = new ProcessResult();
+                    processResult.setCode(0);
+                    processResult.setResult("" + currentPath);
                     if (onReceiveListener != null) {
                         onReceiveListener.onReceive(processResult);
                     }
                 }
-                QDLogger.e(Tag,"currentPath=" + currentPath);
+                QDLogger.i(Tag, "currentPath=" + currentPath);
                 return;
             }
-            QDLogger.e(Tag,"currentPath=" + currentPath);
+            QDLogger.i(Tag, "currentPath=" + currentPath);
             Process process = Runtime.getRuntime().exec(cmd, null, new File(currentPath)); // android中使用
             //String[] cmd1 = { "/system/bin", "-c", cmd };
             // 打印程序输出
@@ -191,19 +192,19 @@ public class ADBHelper {
                     onReceiveListener.onReceive(processResult);
                 }
             } else {
-                QDLogger.e(Tag, ERROR_MESSAGE + cmd +",exitCode="+exitCode+ ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError());
+                QDLogger.e(Tag, ERROR_MESSAGE + cmd + ",exitCode=" + exitCode + ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError());
                 switch (exitCode) {
                     case 255:
                         QDLogger.e("端口ADB被占用");
                         break;
                     case 1:
                         QDLogger.e(Tag, "Operation not permitted");
-                        if(TextUtils.isEmpty(processResult.getError())){
+                        if (TextUtils.isEmpty(processResult.getError())) {
                             processResult.setError("Permission denied");
                         }
                     case 2:
                         QDLogger.e(Tag, "error2");
-                        if(TextUtils.isEmpty(processResult.getError())){
+                        if (TextUtils.isEmpty(processResult.getError())) {
                             processResult.setError("error2");
                         }
                         break;
@@ -240,34 +241,34 @@ public class ADBHelper {
 
         if (cmd.trim().startsWith("cd")) {
             String part1 = currentPath.trim();
-            QDLogger.e(Tag, "当前路径="+part1 );
-            int a = cmd.indexOf("cd")+2;
-            QDLogger.e(Tag, "[cd]出现的位置="+a );
+            QDLogger.e(Tag, "当前路径=" + part1);
+            int a = cmd.indexOf("cd") + 2;
+            QDLogger.e(Tag, "[cd]出现的位置=" + a);
             String part2 = cmd.substring(a, cmd.length());
-            QDLogger.e(Tag, "截取后的路径="+part2 );
+            QDLogger.e(Tag, "截取后的路径=" + part2);
 
             if (part2.trim().startsWith(".")) {
                 int i = part2.indexOf("/");
                 int index = Math.max(0, i - 1);
-                int count = (index/2);
-                splitLastSeparatorFormPath(part1,count);
-                QDLogger.e(Tag, "[part2],i=" +i+",l="+part2.length());
-                part2 = part2.substring(i,part2.length());
+                int count = (index / 2);
+                splitLastSeparatorFormPath(part1, count);
+                QDLogger.e(Tag, "[part2],i=" + i + ",l=" + part2.length());
+                part2 = part2.substring(i, part2.length());
                 return part1 + (part1.endsWith(File.separator) ? "" : File.separator) + (part2.startsWith(File.separator) ? part2.substring(1, part2.length() - 1) : part2);
-            }else if (part2.trim().startsWith(File.separator)){
+            } else if (part2.trim().startsWith(File.separator)) {
                 //return (part1.trim().endsWith(File.separator) ?part1.replaceFirst(File.separator,""):part1)+part2;
                 return part2.trim();
-            }else {
-                return part1 + (part1.endsWith(File.separator) ? "" : File.separator)+ part2.trim();
+            } else {
+                return part1 + (part1.endsWith(File.separator) ? "" : File.separator) + part2.trim();
             }
         }
         return null;
     }
 
     private String splitLastSeparatorFormPath(String part1, int count) {
-        if(count<=0){
+        if (count <= 0) {
             return part1;
-        }else {
+        } else {
 
         }
         //part1 + (part1.endsWith(File.separator) ? "" : File.separator)
@@ -287,7 +288,7 @@ public class ADBHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line+"\n");
+                stringBuffer.append(line + "\n");
                 //out.println(line);
             }
         } catch (IOException e) {

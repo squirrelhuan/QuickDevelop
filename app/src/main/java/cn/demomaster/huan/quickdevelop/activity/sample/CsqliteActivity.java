@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import cn.demomaster.huan.quickdevelop.Application;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
-import cn.demomaster.quicksticker_lib.EditViewUtil;
-@ActivityPager(name = "sqlite",preViewClass = TextView.class,resType = ResType.Resource)
-public class CsqliteActivity extends QDActivity {
+@ActivityPager(name = "数据库",preViewClass = TextView.class,resType = ResType.Resource)
+public class CsqliteActivity extends BaseActivity {
 
 
     /** Called when the activity is first created. */
@@ -40,7 +40,6 @@ public class CsqliteActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_csqlite);
         QuickStickerBinder.getInstance().bind(this);
-        setTitle("数据库操作");
         setListener();
     }
 
@@ -56,7 +55,6 @@ public class CsqliteActivity extends QDActivity {
 
     //创建数据库的方法
     class CreateListener implements OnClickListener {
-
         @Override
         public void onClick(View v) {
             //Application.instance.dbHelper = new CBHelper(mContext,"yidao.db",null,1);
@@ -72,21 +70,17 @@ public class CsqliteActivity extends QDActivity {
             // 数据库版本的更新,由原来的1变为2
             //CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,2);
             //SQLiteDatabase db =dbHelper.getReadableDatabase();
-
             PopToastUtil.ShowToast(mContext,"更新未实现");
         }
     }
 
     //插入数据的方法
     class InsertListener implements OnClickListener{
-
         @Override
         public void onClick(View v) {
-
            // CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,1);
             //得到一个可写的数据库
             //db =dbHelper.getWritableDatabase();
-
             //生成ContentValues对象 //key:列名，value:想插入的值
             ContentValues cv = new ContentValues();
             //往ContentValues对象存放数据，键-值对模式
@@ -97,17 +91,14 @@ public class CsqliteActivity extends QDActivity {
            // Application.instance.db.insert("inner_department_category", null, cv);
             //关闭数据库
             //db.close();
-
             PopToastUtil.ShowToastBottom(mContext,"插入数据的方法");
         }
     }
 
     //查询数据的方法
     class QueryListener implements OnClickListener{
-
         @Override
         public void onClick(View v) {
-
             //CBHelper dbHelper = new CBHelper(mContext,"yidao",null,1);
             //得到一个可写的数据库
             //db =dbHelper.getReadableDatabase();
@@ -132,7 +123,6 @@ public class CsqliteActivity extends QDActivity {
 
     //修改数据的方法
     class ModifyListener implements OnClickListener{
-
         @Override
         public void onClick(View v) {
 
@@ -153,10 +143,8 @@ public class CsqliteActivity extends QDActivity {
 
     //删除数据的方法
     class DeleteListener implements OnClickListener{
-
         @Override
         public void onClick(View v) {
-
             //CBHelper dbHelper = new CBHelper(mContext,"stu_db",null,1);
             //得到一个可写的数据库
             //db =dbHelper.getReadableDatabase();

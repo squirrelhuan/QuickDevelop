@@ -3,9 +3,6 @@ package cn.demomaster.huan.quickdevelop.activity.sample;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-
-import androidx.annotation.Nullable;
-
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
@@ -26,11 +26,9 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabRadioGroup;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "TabMenu", preViewClass = TextView.class, resType = ResType.Custome)
-public class TabMenuActivity extends QDActivity {
+@ActivityPager(name = "Tab菜单", preViewClass = TextView.class, resType = ResType.Custome)
+public class TabMenuActivity extends BaseActivity {
 
     TabMenuLayout tabMenuLayout;
 

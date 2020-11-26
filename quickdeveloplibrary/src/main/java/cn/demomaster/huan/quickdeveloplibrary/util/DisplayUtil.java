@@ -2,13 +2,11 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 
 import java.lang.reflect.Field;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -17,26 +15,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class DisplayUtil {
 
-    static int statusBar_Height = -1;
-    /**
-     * 获取状态栏高度
-     * @return
-     */
-   /* public static int getStatusBarHeight(Context context) {
-        if (statusBar_Height != -1) {
-            return statusBar_Height;
-        }
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        if (result == 0) {
-            return (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
-        }
-        return result;
-    }*/
-
+    static int status_bar_height;
     /**
      * 获取状态栏高度
      *
@@ -44,49 +23,62 @@ public class DisplayUtil {
      * @return
      */
     public static int getStatusBarHeight(Context context) {
-        if(QMUIDeviceHelper.isXiaomi()){
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                return context.getResources().getDimensionPixelSize(resourceId);
-            }
-            return 0;
+        if(status_bar_height!=0){
+            return status_bar_height;
         }
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            status_bar_height = context.getResources().getDimensionPixelSize(resourceId);
+            return status_bar_height;
+        }
+
         try {
             Class<?> c = Class.forName("com.android.internal.R$dimen");
+            if (c == null) {
+                return 0;
+            }
             Object obj = c.newInstance();
             Field field = c.getField("status_bar_height");
             int x = Integer.parseInt(field.get(obj).toString());
-            if(x > 0){
-                return context.getResources().getDimensionPixelSize(x);
+            if (x > 0) {
+                status_bar_height = context.getResources().getDimensionPixelSize(x);
+                return status_bar_height;
             }
         } catch (Exception e) {
-            QDLogger.e(e);
+            e.printStackTrace();
+            status_bar_height = (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
+            return status_bar_height;
         }
         return 0;
     }
 
+    static int actionBarHeight = 0;
     /**
      * 获取标题栏高度
+     *
      * @param context
      * @return
      */
-    public static int getActionbarDefaultHeight(Context context) {
-        if (statusBar_Height != -1) {
-            return statusBar_Height;
+    public static int getActionbarHeight(Context context) {
+        if (actionBarHeight != 0) {
+            return actionBarHeight;
         }
-        int result = 0;
         int resourceId = context.getResources().getIdentifier("actionbar_default_height", "dimen", "android");
         if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
+            actionBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+            return actionBarHeight;
         }
-        if (result == 0) {
-            return (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
+        if (actionBarHeight == 0) {
+            actionBarHeight = (int) context.getResources().getDimension(R.dimen.activity_statebar_height);
+            return actionBarHeight;
         }
-        return result;
+        return 0;
     }
-    static int actionBarHeight = -1;
+
+
     /**
      * 获取ActionBar高度
+     *
      * @param context
      * @return
      */
@@ -104,14 +96,14 @@ public class DisplayUtil {
 
     /* dp转换成px
      */
-    public static int dp2px(Context context, float dpValue){
-        float scale=context.getResources().getDisplayMetrics().density;
-        return (int)(dpValue*scale+0.5f);
+    public static int dp2px(Context context, float dpValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
-
 
     /**
      * 根据手机分辨率从DP转成PX
+     *
      * @param context
      * @param dpValue
      * @return
@@ -123,6 +115,7 @@ public class DisplayUtil {
 
     /**
      * 将sp值转换为px值，保证文字大小不变
+     *
      * @param spValue
      * @return
      */
@@ -133,6 +126,7 @@ public class DisplayUtil {
 
     /**
      * 根据手机的分辨率PX(像素)转成DP
+     *
      * @param context
      * @param pxValue
      * @return
@@ -144,41 +138,40 @@ public class DisplayUtil {
 
     /**
      * 将px值转换为sp值，保证文字大小不变
+     *
      * @param pxValue
      * @return
      */
-
     public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 
-
-    public static float getDimension(Context context,String value){
+    public static float getDimension(Context context, String value) {
         float r = 0f;
-        if(value!=null){
+        if (value != null) {
             value = value.trim();
-            if(value.endsWith("dp")){
+            if (value.endsWith("dp")) {
 
             }
-            if(value.endsWith("dip")){
-               String a = value.replace("dip","");
-                r = dip2px(context,Float.valueOf(a));
+            if (value.endsWith("dip")) {
+                String a = value.replace("dip", "");
+                r = dip2px(context, Float.valueOf(a));
             }
-            if(value.endsWith("sp")){
-                String a = value.replace("sp","");
-                r = sp2px(context,Float.valueOf(a));
+            if (value.endsWith("sp")) {
+                String a = value.replace("sp", "");
+                r = sp2px(context, Float.valueOf(a));
             }
-            if(value.endsWith("pt")){
+            if (value.endsWith("pt")) {
 
             }
-            if(value.endsWith("px")){
+            if (value.endsWith("px")) {
 
             }
-            if(value.endsWith("mm")){
+            if (value.endsWith("mm")) {
 
             }
-            if(value.endsWith("in")){
+            if (value.endsWith("in")) {
 
             }
         }
@@ -191,6 +184,7 @@ public class DisplayUtil {
     public static int getScreenHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
+
     /**
      * 获取屏幕宽度(px)
      */

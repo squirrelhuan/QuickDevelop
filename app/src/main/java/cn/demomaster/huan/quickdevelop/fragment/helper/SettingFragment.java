@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 
 
@@ -31,7 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "setting", preViewClass = TextView.class, resType = ResType.Custome)
-public class SettingFragment extends QDFragment {
+public class SettingFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -46,8 +49,9 @@ public class SettingFragment extends QDFragment {
 
     View mView;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_setting, null);
         }
@@ -60,9 +64,9 @@ public class SettingFragment extends QDFragment {
 
     private TestChange mTestChange;
     private IntentFilter mIntentFilter;
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("setting");
+
+    public void initView(View rootView) {
+        getActionBarTool().setTitle("setting");
 
         mTestChange = new TestChange();
         mIntentFilter = new IntentFilter();
@@ -73,30 +77,21 @@ public class SettingFragment extends QDFragment {
         btn_send_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getSyncStatus(mContext)) {
+                if (getSyncStatus(mContext)) {
                     setSyncStatus(false);
-                }
-                else
-                {
+                } else {
                     setSyncStatus(true);
                 }
-            }});
-        btn_send_tcp.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick (View v){
-                    setAutoTime(true);
             }
-            });
-            //QDTcpClient.setStateListener();
-        }
-
-      /*  public void initActionBarLayout (ActionBarLayout2 actionBarLayoutOld){
-            int i = (int) (Math.random() * 10 % 4);
-            actionBarLayoutOld.setTitle("audio play");
-            actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
-
-        }*/
+        });
+        btn_send_tcp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAutoTime(true);
+            }
+        });
+        //QDTcpClient.setStateListener();
+    }
 
     @Override
     public void onDestroy() {
@@ -116,35 +111,31 @@ public class SettingFragment extends QDFragment {
         }
     }
 
-    public void setAutoTime(boolean autoEnabled){
+    public void setAutoTime(boolean autoEnabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Settings.Global.putInt( getContext().getContentResolver(), Settings.Global.AUTO_TIME,
+            Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.AUTO_TIME,
                     autoEnabled ? 1 : 0);
         }
     }
 
-    private boolean getSyncStatus(Context context)
-    {
-        ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    private boolean getSyncStatus(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connManager.getBackgroundDataSetting() && ContentResolver.getMasterSyncAutomatically();
     }
 
-    private void setSyncStatus(boolean enbled)
-    {
+    private void setSyncStatus(boolean enbled) {
         /*getMasterSyncAutomatically和setMasterSyncAutomatically为抽象类ContentResolver的静态函数，
          * 所以可以直接通过类来调用
          */
         ContentResolver.setMasterSyncAutomatically(enbled);
     }
-    private class TestChange extends BroadcastReceiver
-    {
+
+    private class TestChange extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             String action = intent.getAction();
-            if (SYNC_CONN_STATUS_CHANGED.equals(action))
-            {
+            if (SYNC_CONN_STATUS_CHANGED.equals(action)) {
                 Toast.makeText(mContext, "同步模式设置有改变", Toast.LENGTH_SHORT).show();
             }
         }

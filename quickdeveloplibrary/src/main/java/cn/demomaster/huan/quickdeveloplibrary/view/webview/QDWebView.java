@@ -8,14 +8,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -39,6 +39,17 @@ public class QDWebView extends WebView {
     public QDWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    boolean touchAble = true;
+
+    public void setTouchAble(boolean touchAble) {
+        this.touchAble = touchAble;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        return touchAble?super.onTouchEvent(ev):false;
     }
 
     private float mProgress;
@@ -81,7 +92,7 @@ public class QDWebView extends WebView {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                QDLogger.e("url1 ---  =", request.getUrl().toString());
+                QDLogger.i("shouldOverrideUrlLoading1:" + request.getUrl().toString());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if (request.getUrl().toString().contains("geeppies.com")) {
                         view.loadUrl(request.getUrl().toString());
@@ -93,18 +104,16 @@ public class QDWebView extends WebView {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                QDLogger.e("url2 ---  =", url);
-                if (url.toString().contains("geeppies.com")) {
+                QDLogger.i("shouldOverrideUrlLoading2:" + url);
+                if (url.contains("geeppies.com")) {
                     view.loadUrl(url);
                     return true;
                 }
                 return false;
             }
         });
-
         //loadUrl(mUrl);
     }
-
 
     // 继承自Object类
     public class AndroidtoJs extends Object {
@@ -118,13 +127,13 @@ public class QDWebView extends WebView {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void share(String msg) {
-           QDLogger.println("JS调用了Android的share方法");
+            QDLogger.println("JS调用了Android的share方法");
             //GeneralUtils.share((Activity) context, 2, null);
         }
 
         @JavascriptInterface
         public void back(String msg) {
-           QDLogger.println(msg);
+            QDLogger.println(msg);
             ((Activity) context).finish();
 
         }
@@ -137,7 +146,7 @@ public class QDWebView extends WebView {
 
         @JavascriptInterface
         public void newPage(String url) {
-           QDLogger.println(url);
+            QDLogger.println(url);
             Class clazz = AppConfig.getClassByClassName("");
             Intent intent = new Intent(context, clazz);
             //String url = ((ArrayList) params).get(0).toString();
@@ -193,7 +202,7 @@ public class QDWebView extends WebView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (showProgressBar&&mProgress!=0) {
+        if (showProgressBar && mProgress != 0) {
             RectF rectF = new RectF(getLeft(), 0, getRight(), progressHeight);
             Paint mpaint = new Paint();
             mpaint.setColor(progressBarBackgroundColor);

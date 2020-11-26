@@ -262,7 +262,6 @@ public class BlurUtil {
      * @return
      */
     public static Bitmap doBlur(Bitmap bitmap, int radius, float scalequality) {
-        t1 = System.currentTimeMillis();
         Matrix matrix = new Matrix();
 
         int w = bitmap.getWidth();
@@ -280,7 +279,6 @@ public class BlurUtil {
         return doBlur(bitmap, radius, false);
     }
 
-    static long t1 = System.currentTimeMillis();
 
     public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
@@ -513,7 +511,6 @@ public class BlurUtil {
         }
 
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
-        System.out.println("end=" + (System.currentTimeMillis() - t1));
         return (bitmap);
     }
 

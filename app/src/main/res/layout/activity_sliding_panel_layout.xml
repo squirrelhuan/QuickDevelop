@@ -1,6 +1,4 @@
-<cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
@@ -23,13 +21,15 @@
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:gravity="center"
-            android:text="Main Content"
+            android:text="布局1"
             android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="true"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dp_48"
+            android:textColor="@color/white"
+            android:background="@mipmap/meizi"/>
+        <!--android:layout_marginTop="?attr/actionBarSize"-->
     </FrameLayout>
 
     <!-- SLIDING LAYOUT -->
@@ -44,7 +44,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/lightsteelblue">
 
             <TextView
                 android:id="@+id/name"
@@ -52,6 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textSize="14sp"
+                android:textColor="@color/black"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"/>
 
@@ -71,7 +73,8 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/white">
         </ListView>
 
         <!--<ScrollView-->

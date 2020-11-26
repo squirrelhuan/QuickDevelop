@@ -144,31 +144,21 @@ public class ColorPicker2 extends View {
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
-
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-
         // drawing color wheel
-
         canvas.drawBitmap(colorWheelBitmap, centerX - colorWheelRadius, centerY - colorWheelRadius, null);
-
         // drawing color view
-
         colorViewPaint.setColor(Color.HSVToColor(colorHSV));
         canvas.drawPath(colorViewPath, colorViewPaint);
-
         // drawing value slider
-
         float[] hsv = new float[] { colorHSV[0], colorHSV[1], 1f };
-
         SweepGradient sweepGradient = new SweepGradient(centerX, centerY, new int[] { Color.BLACK, Color.HSVToColor(hsv), Color.WHITE }, null);
         sweepGradient.setLocalMatrix(gradientRotationMatrix);
         valueSliderPaint.setShader(sweepGradient);
 
         canvas.drawPath(valueSliderPath, valueSliderPaint);
-
         // drawing color wheel pointer
-
         float hueAngle = (float) Math.toRadians(colorHSV[0]);
         int colorPointX = (int) (-Math.cos(hueAngle) * colorHSV[1] * colorWheelRadius) + centerX;
         int colorPointY = (int) (-Math.sin(hueAngle) * colorHSV[1] * colorWheelRadius) + centerY;

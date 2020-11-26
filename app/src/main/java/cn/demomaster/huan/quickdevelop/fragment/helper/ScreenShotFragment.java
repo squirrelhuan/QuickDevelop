@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,15 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
@@ -28,7 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "ScreenShot", preViewClass = TextView.class, resType = ResType.Custome)
-public class ScreenShotFragment extends QDFragment {
+public class ScreenShotFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -46,30 +49,24 @@ public class ScreenShotFragment extends QDFragment {
     @BindView(R.id.tv_scale)
     TextView tv_scale;
 
-
     @BindView(R.id.tv_size)
     TextView tv_size;
     @BindView(R.id.tv_size2)
     TextView tv_size2;
 
-
-    View mView;
-
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_screen_shot, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_screen_shot, null);
         return (ViewGroup) mView;
     }
 
     Bitmap bitmap;
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        actionBarLayout.setTitle("截图");
-        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("截图");
+        getActionBarTool().setHeaderBackgroundColor(Color.RED);
         btn_shot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

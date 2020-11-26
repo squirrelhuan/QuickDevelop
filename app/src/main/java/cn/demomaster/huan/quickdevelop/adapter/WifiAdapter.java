@@ -2,13 +2,10 @@ package cn.demomaster.huan.quickdevelop.adapter;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.net.wifi.ScanResult;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;

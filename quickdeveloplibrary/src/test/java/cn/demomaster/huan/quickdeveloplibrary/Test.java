@@ -34,9 +34,14 @@ public class Test {
     }
 
     @org.junit.Test
-    public void TextHex(){
+    public void TextHex() {
         String a = numToHex8(10);
-        System.out.println("a="+a.toUpperCase());
+        System.out.println("a=" + a.toUpperCase());
+
+
+        float a1 = 1.51f;
+        int b = (int)a1;
+        System.out.println("a1="+a1+",b="+b);
     }
 
     private List<Character> list;
@@ -48,7 +53,6 @@ public class Test {
     }
 
     public void testa(Class clazza, String fieldName) {
-        // TODO Auto-generated method stub
         try {
             Field listField = clazza.getDeclaredField(fieldName);
             System.out.println(listField.getGenericType());
@@ -61,13 +65,11 @@ public class Test {
                 testa(Class.forName(listActualTypeArguments[i].toString()), "showTextField");
             }
         } catch (NoSuchFieldException e) {
-            // TODO Auto-generated catch block
-            QDLogger.e(e);
+            e.printStackTrace();
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            QDLogger.e(e);
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            QDLogger.e(e);
+            e.printStackTrace();
         }
     }
 
@@ -208,18 +210,12 @@ public class Test {
      */
     public static String getWeek(String time) {
         String Week = "";
-
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         try {
-
-
             c.setTime(format.parse(time));
-
-
         } catch (ParseException e) {
-            QDLogger.e(e);
+            e.printStackTrace();
         }
         if (c.get(Calendar.DAY_OF_WEEK) == 1) {
             Week += "周天";
@@ -248,7 +244,6 @@ public class Test {
 
     @org.junit.Test
     public void testTimer() {
-
         String str = "[\n" +
                 "        {\n" +
                 "            \"Id\": \"6\",\n" +
@@ -644,20 +639,21 @@ public class Test {
 
     @org.junit.Test
     public void logger() {
-        Class clazz =getClass();
-        System.out.println("clazz:"+clazz.getName());
+        Class clazz = getClass();
+        System.out.println("clazz:" + clazz.getName());
         Zprint.log(clazz, "ok");
     }
 
 
     @org.junit.Test
-    public void fomatTime(){
-         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.KOREA);// HH:mm:ss
-        System.out.println( simpleDateFormat.format(1574931387065l));
+    public void fomatTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.KOREA);// HH:mm:ss
+        System.out.println(simpleDateFormat.format(1574931387065l));
     }
+
     @org.junit.Test
-    public void testHexStr2Str(){
-       System.out.println(hexStr2Str("5355444B30383139313030393032323600"));
+    public void testHexStr2Str() {
+        System.out.println(hexStr2Str("5355444B30383139313030393032323600"));
     }
 
 }

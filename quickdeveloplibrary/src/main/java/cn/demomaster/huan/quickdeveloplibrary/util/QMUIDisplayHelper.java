@@ -426,7 +426,6 @@ public class QMUIDisplayHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sysLocale = config.getLocales().get(0);
         } else {
-            //noinspection deprecation
             sysLocale = config.locale;
         }
         return sysLocale.getLanguage()
@@ -446,7 +445,6 @@ public class QMUIDisplayHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sysLocale = config.getLocales().get(0);
         } else {
-            //noinspection deprecation
             sysLocale = config.locale;
         }
         String lang = sysLocale.getCountry();
@@ -550,7 +548,10 @@ public class QMUIDisplayHelper {
 
 
     public static boolean xiaomiNavigationGestureEnabled(Context context) {
-        int val = Settings.Global.getInt(context.getContentResolver(), XIAOMI_FULLSCREEN_GESTURE, 0);
+        int val = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            val = Settings.Global.getInt(context.getContentResolver(), XIAOMI_FULLSCREEN_GESTURE, 0);
+        }
         return val != 0;
     }
 

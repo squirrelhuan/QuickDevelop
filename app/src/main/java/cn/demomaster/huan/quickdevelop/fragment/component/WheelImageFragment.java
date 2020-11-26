@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 
 
 /**
@@ -21,9 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
  */
 
 @ActivityPager(name = "WheelImage", preViewClass = TextView.class, resType = ResType.Custome)
-public class WheelImageFragment extends QDFragment {
-    //Components
-    ViewGroup mView;
+public class WheelImageFragment extends BaseFragment {
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
@@ -35,19 +35,15 @@ public class WheelImageFragment extends QDFragment {
         return super.onKeyDown(keyCode, event);
     }
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_wheelimage, null);
-        }
-        Bundle bundle = getArguments();
-        String title = "空界面";
-
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_wheelimage, null);
         return mView;
     }
 
     @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
+    public void initView(View rootView) {
 
     }
 

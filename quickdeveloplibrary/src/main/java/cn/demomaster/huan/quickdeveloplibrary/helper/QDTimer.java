@@ -3,6 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.os.Handler;
 
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
+
 //import static cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences.Message_Code_Last_Time;
 
 /**
@@ -10,7 +12,7 @@ import android.os.Handler;
  * @date 2018/11/8.
  * description：
  */
-public class QDTimer {
+public class QDTimer implements OnReleaseListener {
 
     //1.手机号，2button,3默认text,4等待text,5,onReciveSmsCode,6time
     private long totalTime = 60;
@@ -88,6 +90,11 @@ public class QDTimer {
         //以秒为单位
         Long second = (diff / 1000);
         return second;
+    }
+
+    @Override
+    public void onRelease() {
+        handler.removeCallbacksAndMessages(null);
     }
 
     public static interface OnTimerListener{

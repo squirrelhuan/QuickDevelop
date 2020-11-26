@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -68,7 +66,7 @@
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:padding="5dp"
-                        android:src="@drawable/umeng_socialize_sina" />
+                        android:src="@drawable/umeng_socialize_fav" />
 
                     <TextView
                         android:id="@+id/header_A"
@@ -85,7 +83,7 @@
                     android:id="@+id/list_A"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
 
@@ -98,7 +96,7 @@
             android:colorBackground="@color/green"
             android:text="RecycleView B">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -115,7 +113,7 @@
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:padding="5dp"
-                        android:src="@drawable/shield" />
+                        android:src="@mipmap/quickdevelop_ic_launcher" />
 
                     <TextView
                         android:id="@+id/header_B"
@@ -133,9 +131,7 @@
                     android:id="@+id/list_B"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -176,16 +172,14 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:padding="5dp"
-                        android:src="@drawable/umeng_socialize_wxcircle" />
+                        android:src="@drawable/umeng_socialize_fav" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list_C"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -232,9 +226,7 @@
                     android:id="@+id/list_D"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>
@@ -277,9 +269,7 @@
                     android:id="@+id/list_E"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
         </cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.MultiRecycleContainer>

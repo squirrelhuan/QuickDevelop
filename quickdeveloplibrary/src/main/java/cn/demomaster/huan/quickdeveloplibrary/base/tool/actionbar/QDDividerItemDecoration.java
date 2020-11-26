@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
 
-
     public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
     public static final int VERTICAL = LinearLayout.VERTICAL;
 
@@ -122,7 +121,6 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
         canvas.save();
         final int left;
         final int right;
-        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
         if (parent.getClipToPadding()) {
             left = parent.getPaddingLeft();
             right = parent.getWidth() - parent.getPaddingRight();
@@ -149,7 +147,7 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
         canvas.save();
         final int top;
         final int bottom;
-        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
+
         if (parent.getClipToPadding()) {
             top = parent.getPaddingTop();
             bottom = parent.getHeight() - parent.getPaddingBottom();

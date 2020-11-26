@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
@@ -47,14 +48,13 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  */
 
 @ActivityPager(name = "DeviceHelper", preViewClass = TextView.class, resType = ResType.Custome)
-public class DeviceFragment extends QDFragment {
+public class DeviceFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.sb_MusicVolume)
     SeekBar sb_MusicVolume;
     @BindView(R.id.sb_RingVolume)
@@ -73,19 +73,15 @@ public class DeviceFragment extends QDFragment {
     @BindView(R.id.tv_VioceVolume)
     TextView tv_VioceVolume;
 
-    View mView;
-
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_device, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_device, null);
         return (ViewGroup) mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         //媒体音量
         tv_MusicVolume.setText("媒体" + QDDeviceHelper.getMusicVolumeCurrent(getContext()) + "/" + QDDeviceHelper.getMusicVolumeMax(getContext()));
@@ -94,7 +90,7 @@ public class DeviceFragment extends QDFragment {
         sb_MusicVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setMusicVolume(getContext(),progress);
+                QDDeviceHelper.setMusicVolume(getContext(), progress);
             }
 
             @Override
@@ -114,7 +110,7 @@ public class DeviceFragment extends QDFragment {
         sb_RingVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setRingVolume(getContext(),progress);
+                QDDeviceHelper.setRingVolume(getContext(), progress);
             }
 
             @Override
@@ -134,7 +130,7 @@ public class DeviceFragment extends QDFragment {
         sb_AlarmVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setAlarmVolume(getContext(),progress);
+                QDDeviceHelper.setAlarmVolume(getContext(), progress);
             }
 
             @Override
@@ -154,7 +150,7 @@ public class DeviceFragment extends QDFragment {
         sb_VioceVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                QDDeviceHelper.setVioceVolume(getContext(),progress);
+                QDDeviceHelper.setVioceVolume(getContext(), progress);
             }
 
             @Override

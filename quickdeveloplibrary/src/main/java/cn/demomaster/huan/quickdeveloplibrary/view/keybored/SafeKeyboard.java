@@ -606,7 +606,6 @@ public class SafeKeyboard {
     private boolean isKeyboardShown() {
         return keyContainer.getVisibility() == View.VISIBLE;
     }
-
     private boolean isValidTouch() {
         long thisTouchTime = SystemClock.elapsedRealtime();
         if (thisTouchTime - lastTouchTime > 500) {

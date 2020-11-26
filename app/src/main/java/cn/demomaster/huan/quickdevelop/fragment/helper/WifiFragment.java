@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -8,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,16 +34,16 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -58,14 +62,13 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  */
 
 @ActivityPager(name = "wifi", preViewClass = TextView.class, resType = ResType.Custome)
-public class WifiFragment extends QDFragment {
+public class WifiFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     View mView;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -79,8 +82,9 @@ public class WifiFragment extends QDFragment {
 
     List<QDScanResult> scanResultList = new ArrayList<>();
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
             mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_wifi, null);
         }
@@ -88,8 +92,7 @@ public class WifiFragment extends QDFragment {
         return (ViewGroup) mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
+    public void initView(View rootView) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
 
         WifiUtil.getInstance().init(this.getContext());
@@ -182,6 +185,7 @@ public class WifiFragment extends QDFragment {
 
     /**
      * 状态变更
+     *
      * @param state
      */
     private void setState(NetworkInfo.DetailedState state) {
@@ -214,6 +218,7 @@ public class WifiFragment extends QDFragment {
 
     /**
      * 密码输入框
+     *
      * @param position
      */
     private void showInputDialog(int position) {
@@ -222,22 +227,22 @@ public class WifiFragment extends QDFragment {
                 .setHint("请输入密码")
                 .setBackgroundRadius(30)
                 .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
-                .addAction("连接", new QDInputDialog.OnClickActionListener() {
+                .addAction("连接", new OnClickActionListener() {
                     @Override
-                    public void onClick(QDInputDialog dialog, String value) {
+                    public void onClick(Dialog dialog, Object tag) {
                         //Toast.makeText(mContext, "input = " + value, Toast.LENGTH_SHORT).show();
                         //连接返回editview的value
-                        WifiConfiguration configuration = WifiUtil.getInstance().createWifiInfo(scanResultList.get(position).getScanResult().SSID, value, scanResultList.get(position).getPasswordType());
+                        WifiConfiguration configuration = WifiUtil.getInstance().createWifiInfo(scanResultList.get(position).getScanResult().SSID, tag.toString(), scanResultList.get(position).getPasswordType());
                         int netId = configuration.networkId;
                         if (netId == -1) {
                             netId = wifiManager.addNetwork(configuration);
                         }
                         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
                         boolean b = wifiManager.enableNetwork(netId, true);
-                        if(b){
-                            Toast.makeText(mContext, "连接成功：" + value, Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(mContext, "密码错误：" + value, Toast.LENGTH_SHORT).show();
+                        if (b) {
+                            Toast.makeText(mContext, "连接成功：" + tag, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, "密码错误：" + tag, Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
                     }
@@ -271,7 +276,7 @@ public class WifiFragment extends QDFragment {
         });
     }
 
-    public List<ScanResult> getWifiListSort(List<ScanResult> scanWifiList,String ssid) {
+    public List<ScanResult> getWifiListSort(List<ScanResult> scanWifiList, String ssid) {
         List<ScanResult> wifiList = new ArrayList<>();
         if (scanWifiList != null && scanWifiList.size() > 0) {
             HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
@@ -290,6 +295,7 @@ public class WifiFragment extends QDFragment {
     }
 
     static WifiManager mWifiManager;
+
     public static interface OnScanListener {
         void onScanResultAvailable();
 

@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -184,8 +185,8 @@ public class TrafficHelper {
     public int getUid(Context context, String packageName) {
         try {
             PackageManager pm = context.getPackageManager();
-            ApplicationInfo ai = pm.getApplicationInfo(packageName, PackageManager.GET_ACTIVITIES);
-            return ai.uid;
+            @SuppressLint("WrongConstant") ApplicationInfo applicationInfo = pm.getApplicationInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return applicationInfo.uid;
         } catch (PackageManager.NameNotFoundException e) {
             QDLogger.e(e);
         }

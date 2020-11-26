@@ -16,6 +16,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -90,7 +91,6 @@ public class QDFileUtil {
         return null;
     }
 
-
     /**
      * 写数据到SD中的文件
      * @param fileName
@@ -99,16 +99,22 @@ public class QDFileUtil {
      */
     public static void writeFileSdcardFile(String dirPath, String fileName,
                                            String write_str, boolean append) throws IOException {
-        File file = new File(Environment.getExternalStorageDirectory(),dirPath + File.separator + fileName);
+        //Environment.getExternalStorageDirectory(),
+        File file = new File(dirPath + File.separator + fileName);
         writeFileSdcardFile(file,write_str,append);
     }
     public static void writeFileSdcardFile(String fileName,
                                            String write_str, boolean append) {
-        File file = new File(Environment.getExternalStorageDirectory(),fileName);
+        File file = new File(fileName);
         writeFileSdcardFile(file,write_str,append);
     }
     public static void writeFileSdcardFile(File file,
                                            String write_str, boolean append) {
+        writeFile(file,write_str.getBytes(),append);
+    }
+
+    public static void writeFile(File file,
+                                           byte[] bytes, boolean append) {
         FileOutputStream fout = null;
         try {
             if (!file.exists()) {
@@ -116,8 +122,6 @@ public class QDFileUtil {
             }
             if (file.exists()) {
                 fout = new FileOutputStream(file, append);
-                byte[] bytes = write_str.getBytes();
-
                 fout.write(bytes);
                 fout.flush();
                 fout.close();
@@ -134,6 +138,7 @@ public class QDFileUtil {
             }
         }
     }
+
 
     // 读SD中的文件
     public static String readFileSdcardFile(String fileName) throws IOException {
@@ -164,6 +169,34 @@ public class QDFileUtil {
         }
     }
 
+    /**
+     * 从项目中res文件目录下复制文件到指定目录
+     * @param context
+     * @param path
+     * @param resourceId
+     * @return
+     */
+    public static String copyFromResource(Context context,String path,int resourceId){
+        File file = new File(path);
+        final BufferedInputStream in = new BufferedInputStream(context.getResources().openRawResource(resourceId));
+        final BufferedOutputStream out;
+        try {
+            out = new BufferedOutputStream(context.openFileOutput(file.getName(), Context.MODE_PRIVATE));
+            byte[] buf = new byte[1024];
+            int size = in.read(buf);
+            while (size > 0) {
+                out.write(buf, 0, size);
+                size = in.read(buf);
+            }
+            in.close();
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getPath();
+    }
+
     public static String getFromAssets(Context context, String fileName) {
         InputStream is;
         String text = "";
@@ -179,7 +212,6 @@ public class QDFileUtil {
             // Convert the buffer into a string.
             text = new String(buffer, "UTF-8");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             QDLogger.e(e);
         }
         return text;

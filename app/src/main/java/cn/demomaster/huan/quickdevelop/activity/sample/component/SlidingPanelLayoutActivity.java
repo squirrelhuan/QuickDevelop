@@ -18,27 +18,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout;
 
-@ActivityPager(name = "SlidingPane",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
-public class SlidingPanelLayoutActivity extends QDActivity {
+@ActivityPager(name = "抽屉布局",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
+public class SlidingPanelLayoutActivity extends BaseActivity {
 
     private SlidingUpPanelLayout mLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding_panel_layout);
-        //getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
-        //getActionBarLayout().getRootView().setBackgroundColor(Color.RED);
 
         ListView lv = (ListView) findViewById(R.id.list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

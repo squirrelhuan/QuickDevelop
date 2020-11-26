@@ -1,127 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
     android:gravity="center"
     android:orientation="vertical">
 
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-<TableLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-       <TableRow android:layout_height="0dp"
-           android:layout_weight="1"
-           android:gravity="center_vertical">
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_01"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="普通提示窗"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="普通提示窗"
+                android:visibility="visible" />
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_02"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="顶部提示"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="顶部提示"
+                android:visibility="visible" />
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_03"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="底部提示"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="底部提示"
+                android:visibility="visible" />
 
-       </TableRow>
-       <TableRow android:layout_height="0dp"
-           android:layout_weight="1"
-           android:gravity="center_vertical">
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_12"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="右边提示"/>
+        </TableRow>
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_11"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="左边提示"/>
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_13"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="顶部多行提示"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="右边提示"
+                android:visibility="visible" />
 
-       </TableRow>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="左边提示"
+                android:visibility="visible" />
 
-       <TableRow android:layout_height="0dp"
-           android:layout_weight="1"
-           android:gravity="center_vertical">
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="顶部多行提示"
+                android:visibility="visible" />
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_21"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="右侧多行提示"/>
+        </TableRow>
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_22"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="普通提示窗"/>
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_23"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="左侧多行提示"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="右侧多行提示"
+                android:visibility="visible" />
 
-       </TableRow>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="普通提示窗"
+                android:visibility="visible" />
 
-       <TableRow android:layout_height="0dp"
-           android:layout_weight="1"
-           android:gravity="center_vertical">
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="左侧多行提示"
+                android:visibility="visible" />
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_31"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="底部多行提示"/>
+        </TableRow>
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_32"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="普通提示窗"/>
+        <TableRow
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
 
-              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                  android:id="@+id/btn_33"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:visibility="visible"
-                  android:text="底部多行"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="底部多行提示"
+                android:visibility="visible" />
 
-       </TableRow>
-</TableLayout>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="普通提示窗"
+                android:visibility="visible" />
 
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="底部多行"
+                android:visibility="visible" />
 
-
-
+        </TableRow>
+    </TableLayout>
 
 
 </LinearLayout>

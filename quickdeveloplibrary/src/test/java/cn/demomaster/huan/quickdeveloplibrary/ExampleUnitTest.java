@@ -66,9 +66,9 @@ public class ExampleUnitTest {
             messageDigest.reset();
             messageDigest.update(str.getBytes("UTF-8"));
         } catch (NoSuchAlgorithmException e) {
-            QDLogger.e(e);
+            e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-            QDLogger.e(e);
+            e.printStackTrace();
         }
         byte[] byteArray = messageDigest.digest();
         StringBuffer md5StrBuff = new StringBuffer();

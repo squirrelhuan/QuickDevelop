@@ -24,12 +24,14 @@ public class QDAppInfoUtil {
      * @return
      */
     public static PackageInfo getPackageInfoByPackageName(Context context, String packageName) {
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
         PackageManager pm = context.getPackageManager();
         try {
             return pm.getPackageInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            QDLogger.e(e);
+            QDLogger.e("未找到安裝包："+packageName);
         }
         return null;
     }

@@ -45,7 +45,7 @@ public class GuiderHelper {
 
     public void setTextBackgroundColor(int textBackgroundColor) {
         this.textBackgroundColor = textBackgroundColor;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setTextBackgroundColor(textBackgroundColor);
             guiderSurfaceView.postInvalidate();
         }
@@ -53,7 +53,7 @@ public class GuiderHelper {
 
     public void setTextPadding(int textPadding) {
         this.textPadding = textPadding;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setTextPadding(textPadding);
             guiderSurfaceView.postInvalidate();
         }
@@ -61,7 +61,7 @@ public class GuiderHelper {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setTextSize(textSize);
             guiderSurfaceView.postInvalidate();
         }
@@ -69,7 +69,7 @@ public class GuiderHelper {
 
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setLineWidth(lineWidth);
             guiderSurfaceView.postInvalidate();
         }
@@ -77,7 +77,7 @@ public class GuiderHelper {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setTextColor(textColor);
             guiderSurfaceView.postInvalidate();
         }
@@ -85,7 +85,7 @@ public class GuiderHelper {
 
     public void setLineColor(int lineColor) {
         this.lineColor = lineColor;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setLineColor(lineColor);
             guiderSurfaceView.postInvalidate();
         }
@@ -93,7 +93,7 @@ public class GuiderHelper {
 
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
-        if(guiderSurfaceView!=null){
+        if (guiderSurfaceView != null) {
             guiderSurfaceView.setGuiderBackgroundColor(backgroundColor);
             guiderSurfaceView.postInvalidate();
         }
@@ -107,18 +107,19 @@ public class GuiderHelper {
     }
 
     private boolean inParentView(ViewGroup decorView) {
-       int count = decorView.getChildCount();
-       for (int i=0;i<count;i++){
-           QDLogger.d("guiderSurfaceView.getClass()="+guiderSurfaceView.getClass().getName()+",decorView.getChildAt(i).getClass()="+decorView.getChildAt(i).getClass().getName());
-               if(decorView.getChildAt(i).getClass().equals(guiderSurfaceView.getClass())){
-                   return true;
-               }
-       }
-       return false;
+        int count = decorView.getChildCount();
+        for (int i = 0; i < count; i++) {
+            QDLogger.d("guiderSurfaceView.getClass()=" + guiderSurfaceView.getClass().getName() + ",decorView.getChildAt(i).getClass()=" + decorView.getChildAt(i).getClass().getName());
+            if (decorView.getChildAt(i).getClass().equals(guiderSurfaceView.getClass())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * 开始展示引导
+     *
      * @param context
      * @param view
      * @param Tag
@@ -179,8 +180,8 @@ public class GuiderHelper {
         location = new int[2];
         view.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         view.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-       QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
-
+        QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
+        
         float l = location[0];
         float t = location[1];
         float r = location[0] + view.getWidth();

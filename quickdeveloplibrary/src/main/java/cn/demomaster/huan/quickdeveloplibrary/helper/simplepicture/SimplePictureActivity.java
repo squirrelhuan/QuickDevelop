@@ -57,11 +57,11 @@ public class SimplePictureActivity extends QDActivity {
 
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
-        getActionBarLayout().setTitle("图片选择器");
-        getActionBarLayout().getRightView().setText("发送");
-        getActionBarLayout().getRightView().setImageResource(0);
-        getActionBarLayout().getRightView().setTextSize(16);
-        getActionBarLayout().getRightView().setOnClickListener(new View.OnClickListener() {
+        getActionBarTool().setTitle("图片选择器");
+        getActionBarTool().getRightView().setText("发送");
+        getActionBarTool().getRightView().setImageResource(0);
+        getActionBarTool().getRightView().setTextSize(16);
+        getActionBarTool().getRightView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //拍照完成，返回对应图片路径
@@ -74,8 +74,8 @@ public class SimplePictureActivity extends QDActivity {
                 mContext.finish();
             }
         });
-        getActionBarLayout().getActionBarLayoutHeaderView().setBackgroundColor(getResources().getColor(R.color.white));
-        getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
+        getActionBarTool().setStateBarColorAuto(true);
         init();
     }
 

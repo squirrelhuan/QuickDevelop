@@ -25,7 +25,7 @@ public class GuiderModel {
     private float imgScale=1;//图片缩放比例
     private GuidActionType complateType;//结束触发类型
     private GuidActionType startType;//开始触发类型
-    private TouchType touchType;
+    private TouchType touchType = TouchType.Other;
 
     public int getImgWidth() {
         return imgWidth;

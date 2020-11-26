@@ -73,16 +73,16 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_camera_idcard);
-        getActionBarLayout().setStateBarColorAuto(true);
-        getActionBarLayout().setTitle("身份证拍照");
+        //getActionBarTool().setStateBarColorAuto(true);
+        setTitle("身份证拍照");
         initOptionsMenu();
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 optionsMenu.show();
             }
         });
-        getActionBarLayout().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
+        getActionBarTool().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
         customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
@@ -150,14 +150,14 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                     .setArrowWidth(30)
                     .setGravity(GuiderView.Gravity.BOTTOM)
                     .setDividerColor(getResources().getColor(R.color.transparent))
-                    .setAnchor(getActionBarLayout().getRightView());
+                    .setAnchor(getActionBarTool().getRightView());
         }
 
         if (optionsMenu == null) {
             optionsMenu = new OptionsMenu(optionsMenubuilder);
         }
         optionsMenu.setMenus(menus);
-        optionsMenu.setAnchor(getActionBarLayout().getRightView());
+        optionsMenu.setAnchor(getActionBarTool().getRightView());
         optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

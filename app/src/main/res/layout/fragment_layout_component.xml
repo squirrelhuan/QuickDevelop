@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-    <cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout
 
+    <cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:scroll_model="only_scroll"
@@ -17,4 +16,5 @@
         android:layoutAnimation="@anim/layout_animation_fall_down"
         android:overScrollMode="never"/>
     </cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout>
+
 </RelativeLayout>

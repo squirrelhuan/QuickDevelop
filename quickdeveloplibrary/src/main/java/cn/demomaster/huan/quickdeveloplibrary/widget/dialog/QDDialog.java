@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -10,11 +9,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +26,15 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/6.
  */
 public class QDDialog extends QDDialog2 {
 
-   // private Builder builder;
-   public int actionButtonPadding;
+    // private Builder builder;
+    public int actionButtonPadding;
     private Context context;
     private String title;
     private String message;
@@ -40,9 +45,13 @@ public class QDDialog extends QDDialog2 {
     private int gravity_header = Gravity.LEFT;
     private int gravity_body = Gravity.LEFT;
     private int gravity_foot = Gravity.CENTER;
-    private int padding_header ;
-    private int padding_body ;
-    private int padding_foot ;
+    private int gravity = Gravity.CENTER;
+    private boolean isFullScreen = false;
+    private int margin = 0;//当isFullScreen=true时生效
+    private int padding = -1;
+    private int padding_header;
+    private int padding_body;
+    private int padding_foot;
     private int minHeight_header;
     private int minHeight_body;
     private int minHeight_foot;
@@ -63,6 +72,7 @@ public class QDDialog extends QDDialog2 {
     private float[] backgroundRadius = new float[8];
     private int animationStyleID = R.style.qd_dialog_animation_center_scale;
     private List<ActionButton> actionButtons = new ArrayList<>();
+
     public QDDialog(Context context, Builder builder) {
         super(context);
         //this.builder = builder;
@@ -77,7 +87,7 @@ public class QDDialog extends QDDialog2 {
         gravity_header = builder.gravity_header;
         gravity_body = builder.gravity_body;
         gravity_foot = builder.gravity_foot;
-        padding_header =builder.padding_header;
+        padding_header = builder.padding_header;
         padding_body = builder.padding_body;
         padding_foot = builder.padding_foot;
         minHeight_header = builder.minHeight_header;
@@ -99,7 +109,11 @@ public class QDDialog extends QDDialog2 {
         lineColor = builder.lineColor;
         backgroundRadius = builder.backgroundRadius;
         animationStyleID = builder.animationStyleID;
-        actionButtons =builder.actionButtons;
+        actionButtons = builder.actionButtons;
+
+        padding = builder.padding;
+        isFullScreen = builder.isFullScreen;
+        margin = builder.margin;
         init();
     }
 
@@ -107,13 +121,38 @@ public class QDDialog extends QDDialog2 {
     private LinearLayout headerView;
     private LinearLayout bodyView;
     private LinearLayout footView;
+
     private void init() {
+
+        Window win = getWindow();
+        if (animationStyleID != -1) {
+            win.setWindowAnimations(animationStyleID);
+        }
+
+        if (padding!=-1) {
+            win.getDecorView().setPadding(0, 0, 0, 0);
+        }
+        if(isFullScreen){//全屏显示
+            win.getDecorView().setPadding(0, 0, 0, 0);
+            win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+            win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            // 在底部，宽度撑满
+            WindowManager.LayoutParams params = win.getAttributes();
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.gravity = gravity;
+            win.setAttributes(params);
+        }
+
         getWindow().setWindowAnimations(animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
         contentLinearView = new LinearLayout(context);
-        contentLinearView.setId(View.generateViewId());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            contentLinearView.setId(View.generateViewId());
+        }
         contentLinearView.setOrientation(LinearLayout.VERTICAL);
         //新建一个Drawable对象
         QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
@@ -169,7 +208,7 @@ public class QDDialog extends QDDialog2 {
             headerView.setBackgroundColor(color_header);
             headerView.setGravity(gravity_header);
             headerView.setTag(gravity_header);
-            addTextView(headerView, title,text_color_header, text_size_header);
+            addTextView(headerView, title, text_color_header, text_size_header);
         }
         if (bodyView != null) {
             contentLinearView.addView(bodyView);
@@ -178,7 +217,7 @@ public class QDDialog extends QDDialog2 {
 
             bodyView.setGravity(gravity_body);
             bodyView.setTag(gravity_body);
-            addBodyTextView(bodyView, message,text_color_body,text_size_body);
+            addBodyTextView(bodyView, message, text_color_body, text_size_body);
         }
         int actionPadding = actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         if (footView != null) {
@@ -218,8 +257,8 @@ public class QDDialog extends QDDialog2 {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (actionButton.onClickListener != null) {
-                            actionButton.onClickListener.onClick(QDDialog.this);
+                        if (actionButton.getOnClickListener() != null) {
+                            actionButton.getOnClickListener().onClick(QDDialog.this,null);
                         } else {
                             dismiss();
                         }
@@ -228,7 +267,7 @@ public class QDDialog extends QDDialog2 {
 
                 //button.setBackgroundDrawable(null);
                 footView.addView(button, layoutParams_button);
-                if (i != actionButtons.size() - 1&&gravity_foot == Gravity.CENTER) {
+                if (i != actionButtons.size() - 1 && gravity_foot == Gravity.CENTER) {
                     View centerLineView = new View(getContext());
                     LinearLayout.LayoutParams layoutParams_line = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
                     centerLineView.setLayoutParams(layoutParams_line);
@@ -240,8 +279,36 @@ public class QDDialog extends QDDialog2 {
 
         ViewGroup layout = new RelativeLayout(getContext());
         layout.addView(contentLinearView, layoutParams);
+        contentLinearView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        layout.setPadding(margin,margin,margin,margin);
+        if(margin>0) {
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(canceledOnTouchOutside&&cancelable){
+                        dismiss();
+                    }
+                }
+            });
+        }
         setContentView(layout, layoutParams);
         mContentView = layout;
+    }
+    boolean canceledOnTouchOutside = true;
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        canceledOnTouchOutside = cancel;
+        super.setCanceledOnTouchOutside(cancel);
+    }
+
+    @Override
+    public void show() {
+        super.show();
     }
 
     View mContentView;
@@ -290,49 +357,52 @@ public class QDDialog extends QDDialog2 {
     }
 
     public static enum ShowType {
-        normal, noHeader, noFoot, onlyBody,contentView,contentLayout
+        normal, noHeader, noFoot, onlyBody, contentView, contentLayout
     }
 
     public static enum DataType {
         radio, checkbox, text, editor
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
         public int actionButtonPadding;
-        private Context context;
-        private String title;
-        private String message;
-        private int icon;
-        private ShowType showType = ShowType.normal;
-        private DataType dataType = DataType.text;
-        private int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        private int gravity_header = Gravity.LEFT;
-        private int gravity_body = Gravity.LEFT;
-        private int gravity_foot = Gravity.CENTER;
-        private int padding_header ;
-        private int padding_body ;
-        private int padding_foot ;
-        private int minHeight_header;
-        private int minHeight_body;
-        private int minHeight_foot;
-        private int color_header = Color.TRANSPARENT;
-        private int color_body = Color.TRANSPARENT;
-        private int color_foot = Color.TRANSPARENT;
-        private int text_color_header = Color.BLACK;
-        private int text_color_body = Color.BLACK;
-        private int text_color_foot = Color.BLACK;
-        private int text_size_header = 18;
-        private int text_size_body = 16;
-        private int text_size_foot = 16;
-        private View contentView;
-        private int contentViewLayoutID;
+        public Context context;
+        public String title;
+        public String message;
+        public int icon;
+        public ShowType showType = ShowType.normal;
+        public DataType dataType = DataType.text;
+        public int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        public int gravity_header = Gravity.LEFT;
+        public int gravity_body = Gravity.LEFT;
+        public int gravity_foot = Gravity.CENTER;
+        public boolean isFullScreen = false;
+        public int margin = 0;//当isFullScreen=true时生效
+        public int padding = -1;
+        public int padding_header;
+        public int padding_body;
+        public int padding_foot;
+        public int minHeight_header;
+        public int minHeight_body;
+        public int minHeight_foot;
+        public int color_header = Color.TRANSPARENT;
+        public int color_body = Color.TRANSPARENT;
+        public int color_foot = Color.TRANSPARENT;
+        public int text_color_header = Color.BLACK;
+        public int text_color_body = Color.BLACK;
+        public int text_color_foot = Color.BLACK;
+        public int text_size_header = 18;
+        public int text_size_body = 16;
+        public int text_size_foot = 16;
+        public View contentView;
+        public int contentViewLayoutID;
 
-        private int backgroundColor = Color.WHITE;
-        private int lineColor = Color.GRAY;
-        private float[] backgroundRadius = new float[8];
-        private int animationStyleID = R.style.qd_dialog_animation_center_scale;
-        private List<ActionButton> actionButtons = new ArrayList<>();
-
+        public int backgroundColor = Color.WHITE;
+        public int lineColor = Color.GRAY;
+        public float[] backgroundRadius = new float[8];
+        public int animationStyleID = R.style.qd_dialog_animation_center_scale;
+        public List<ActionButton> actionButtons = new ArrayList<>();
+        
         public Builder(Context context) {
             this.context = context;
             this.actionButtonPadding = DisplayUtil.dip2px(context, 8);
@@ -512,9 +582,25 @@ public class QDDialog extends QDDialog2 {
             return this;
         }
 
+        public Builder setPadding(int padding) {
+            this.padding = padding;
+            return this;
+        }
+
+        public Builder setFullScreen(boolean fullScreen) {
+            isFullScreen = fullScreen;
+            return this;
+        }
+
+        public Builder setMargin(int margin) {
+            this.margin = margin;
+            return this;
+        }
+
         public Builder addAction(String text) {
             return addAction(text, null);
         }
+
         public Builder addAction(String text, OnClickActionListener onClickListener) {
             ActionButton actionButton = new ActionButton();
             if (text != null) {
@@ -532,40 +618,4 @@ public class QDDialog extends QDDialog2 {
         }
     }
 
-    public static interface OnClickActionListener {
-        void onClick(QDDialog dialog);
-    }
-
-    public static class ActionButton {
-        private String text;
-        private int textColor;
-        private OnClickActionListener onClickListener;
-
-        ActionButton() {
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public int getTextColor() {
-            return textColor;
-        }
-
-        public void setTextColor(int textColor) {
-            this.textColor = textColor;
-        }
-
-        public OnClickActionListener getOnClickListener() {
-            return onClickListener;
-        }
-
-        public void setOnClickListener(OnClickActionListener onClickListener) {
-            this.onClickListener = onClickListener;
-        }
-    }
 }

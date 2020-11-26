@@ -46,9 +46,9 @@ public class ActionBarTipActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_bar_tip);
-        //getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        //getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 
-        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().setHeaderBackgroundColor(Color.RED);
 
         btn_emui_halo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +83,12 @@ public class ActionBarTipActivity extends QDActivity {
         cb_001.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                getActionBarLayout().setActionBarTipType(isChecked ? ActionBarTip.ACTIONBARTIP_TYPE.NORMAL : ActionBarTip.ACTIONBARTIP_TYPE.STACK);
+                getActionBarTool().setActionBarTipType(isChecked ? ActionBarTip.ACTIONBARTIP_TYPE.NORMAL : ActionBarTip.ACTIONBARTIP_TYPE.STACK);
             }
         });
 
-       // getActionBarLayout().setHeaderBackgroundColor(Color.TRANSPARENT);
-        getActionBarLayout().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+       // getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
+        getActionBarTool().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
@@ -107,25 +107,25 @@ public class ActionBarTipActivity extends QDActivity {
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showComplete("完成");
+                getActionBarTool().getActionBarTip().showComplete("完成");
             }
         });
         btn_loading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showLoading("加载");
+                getActionBarTool().getActionBarTip().showLoading("加载");
             }
         });
         btn_warning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showWarning("警告");
+                getActionBarTool().getActionBarTip().showWarning("警告");
             }
         });
         btn_error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActionBarLayout().getActionBarTip().showError("错误");
+                getActionBarTool().getActionBarTip().showError("错误");
             }
         });
 
@@ -137,7 +137,7 @@ public class ActionBarTipActivity extends QDActivity {
                 int max = 0xff000000 + 0xffffff * progress / 100;
                 //int w = DisplayUtil.dip2px(mContext,max* progress/100);
                 //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w,w);
-                getActionBarLayout().getActionBarTip().setBackgroundColor(max);
+                getActionBarTool().getActionBarTip().setBackgroundColor(max);
             }
 
             @Override

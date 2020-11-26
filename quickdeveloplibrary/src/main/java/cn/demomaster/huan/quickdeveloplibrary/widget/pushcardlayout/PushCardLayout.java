@@ -252,7 +252,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
             }
         }
 
-        Log.i("getMeasuredHeight", "初始headerLayout 高度:" + headerLayout.getMeasuredHeight() + ",headerLayoutView 高度:" + headerLayout.getMeasuredHeight());
+        //QDLogger.println("getMeasuredHeight", "初始headerLayout 高度:" + headerLayout.getMeasuredHeight() + ",headerLayoutView 高度:" + headerLayout.getMeasuredHeight());
     }
 
     @Override

@@ -3,11 +3,13 @@ package cn.demomaster.huan.quickdevelop.activity.sample;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
@@ -15,10 +17,9 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PictureAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "PictureSelect",preViewClass = TextView.class,resType = ResType.Custome)
-public class PictureSelectActivity extends QDActivity {
+@ActivityPager(name = "图片选择器",preViewClass = TextView.class,resType = ResType.Custome)
+public class PictureSelectActivity extends BaseActivity {
 
     private GridLayoutManager mLayoutManager;
     private PictureAdapter mAdapter;

@@ -67,9 +67,9 @@ public class DownloadHelper {
         PermissionManager.getInstance().chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
             @Override
             public void onPassed() {
-                if(downloadTask.getDownloadType()== DownloadTask.DownloadType.DownloadManager) {
+                if (downloadTask.getDownloadType() == DownloadTask.DownloadType.DownloadManager) {
                     excute(downloadTask);//使用下载管理器进行文件下载。
-                }else {
+                } else {
                     downloadFile(downloadTask);//使用okhttp方式下载
                 }
             }
@@ -80,18 +80,20 @@ public class DownloadHelper {
             }
         });
     }
-    Map<Integer,Object> taskHanderMap;
+
+    Map<Integer, Object> taskHanderMap;
 
     /**
      * okhttp方式下载
+     *
      * @param downloadTask
      */
-    public void downloadFile(DownloadTask downloadTask){
+    public void downloadFile(DownloadTask downloadTask) {
         final long startTime = System.currentTimeMillis();
-        QDLogger.i("DOWNLOAD","startTime="+startTime+"，URL="+downloadTask.getDownloadUrl());
+        QDLogger.i("DOWNLOAD", "startTime=" + startTime + "，URL=" + downloadTask.getDownloadUrl());
 
         //获取要下载的文件存放路径
-        String download_app_folder_name = downloadTask.getDownload_app_folder_name();
+        String download_app_folder_name = downloadTask.getDirectoryPath();
         QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
 
         String sdpath = Environment.getExternalStorageDirectory() + "";
@@ -99,17 +101,30 @@ public class DownloadHelper {
             sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
             QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
         }
-        String download_app_folder =(download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name));
-        File dir = new File(sdpath + download_app_folder);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
 
+        // 储存下载文件的目录
+        String downloadDirectory = (download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name));
+        final String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + downloadDirectory;
+        try {
+            File dir = new File(sdpath + downloadDirectory);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            dir = new File(savePath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String downFilePath = savePath+downloadTask.getFileName();
+        downloadTask.setSavePath(downFilePath);
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(downloadTask.getDownloadUrl()).build();
         Call call = okHttpClient.newCall(request);
         final int downloadId = downloadTask.hashCode();
-        taskHanderMap.put(downloadId,call);
+        taskHanderMap.put(downloadId, call);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -123,26 +138,25 @@ public class DownloadHelper {
                     }
                 });//在子线程中直接去new 一个handler
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
                 int len = 0;
                 FileOutputStream fos = null;
-                // 储存下载文件的目录
-                String savePath =Environment.getExternalStorageDirectory().getAbsolutePath()+  download_app_folder;
                 try {
                     is = response.body().byteStream();
                     long total = response.body().contentLength();
-                    File file = new File(savePath, downloadTask.getFileName());
+                    File file = new File(downFilePath);
                     fos = new FileOutputStream(file);
                     long sum = 0;
                     while ((len = is.read(buf)) != -1) {
                         fos.write(buf, 0, len);
                         sum += len;
-                        float progress =  (sum * 1.0f / total );
+                        float progress = (sum * 1.0f / total);
                         // 下载中
-                        downloadTask.getOnProgressListener().onDownloadRunning(downloadTask.getDownloadId(),downloadTask.getFileName(),progress);
+                        downloadTask.getOnProgressListener().onDownloadRunning(downloadTask.getDownloadId(), downloadTask.getFileName(), progress);
                     }
                     fos.flush();
                     downloadTask.setDownUriStr(file.getAbsolutePath());
@@ -153,8 +167,7 @@ public class DownloadHelper {
                             downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
                         }
                     });//在子线程中直接去new 一个handler
-                    Log.i("DOWNLOAD","download success");
-                    Log.i("DOWNLOAD","totalTime="+ (System.currentTimeMillis() - startTime));
+                    Log.i("DOWNLOAD", "download success totalTime=" + (System.currentTimeMillis() - startTime));
                 } catch (Exception e) {
                     QDLogger.e(e);
                     QdThreadHelper.runOnUiThread(new Runnable() {
@@ -185,23 +198,23 @@ public class DownloadHelper {
     //执行任务
     private void excute(DownloadTask downloadTask) {
         //获取要下载的文件存放路径
-        String download_app_folder_name = downloadTask.getDownload_app_folder_name();
+        String directoryPath = downloadTask.getDirectoryPath();
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadTask.getDownloadUrl()));
-        QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
+        QDLogger.i("下载文件存放路径：" + directoryPath + "，文件名：" + downloadTask.getFileName());
 
         String sdpath = Environment.getExternalStorageDirectory() + "";
         if (TextUtils.isEmpty(sdpath)) {
             sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
             QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
         }
-        String download_app_folder = download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name);
-        File dir = new File(sdpath + download_app_folder);
+        String downloadDirectory = directoryPath.startsWith(File.separator) ? directoryPath : (File.separator + directoryPath);
+        File dir = new File(sdpath + downloadDirectory);
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
         // 设置存储的目录 文件夹 文件名
-        request.setDestinationInExternalPublicDir(download_app_folder, downloadTask.getFileName());
+        request.setDestinationInExternalPublicDir(downloadDirectory, downloadTask.getFileName());
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 
@@ -330,7 +343,8 @@ public class DownloadHelper {
         private Context context;
         private String url;//下载路径
         private String fileName;//文件名.格式
-        private DownloadTask.DownloadType downloadType= DownloadTask.DownloadType.DownloadManager;
+        private String directoryPath;
+        private DownloadTask.DownloadType downloadType = DownloadTask.DownloadType.DownloadManager;
         private OnDownloadProgressListener onProgressListener;//进度监听
 
         public DownloadBuilder(Context context) {
@@ -343,6 +357,11 @@ public class DownloadHelper {
 
         public DownloadBuilder setUrl(String url) {
             this.url = url;
+            return this;
+        }
+
+        public DownloadBuilder setDirectoryPath(String directoryPath) {
+            this.directoryPath = directoryPath;
             return this;
         }
 
@@ -382,14 +401,19 @@ public class DownloadHelper {
             DownloadTask downloadTask = new DownloadTask(context);
             downloadTask.setDownloadUrl(url);
             downloadTask.setFileName(fileName);
+            if (!TextUtils.isEmpty(directoryPath)) {
+                downloadTask.setDirectoryPath(directoryPath);
+            }
             downloadTask.setOnProgressListener(onProgressListener);
             downloadId = downloadTask.hashCode();
             //onProgressListener.onDownloadReady(downloadId);
             DownloadHelper.getInstance(context).pushTask(downloadTask);
             return downloadId;
         }
+
         int downloadId;
-        public void cancel(){
+
+        public void cancel() {
             DownloadHelper.getInstance(context).cancelTask(downloadId);
         }
 
@@ -404,13 +428,14 @@ public class DownloadHelper {
 
     /**
      * 取消下载
+     *
      * @param downloadId
      */
     private void cancelTask(int downloadId) {
         Object call = taskHanderMap.get(downloadId);
-        if(call!=null&&call instanceof Call){
-            QDLogger.d("取消下载 cancelTask downloadId="+downloadId);
-            ((Call)call).cancel();
+        if (call != null && call instanceof Call) {
+            QDLogger.d("取消下载 cancelTask downloadId=" + downloadId);
+            ((Call) call).cancel();
         }
     }
 

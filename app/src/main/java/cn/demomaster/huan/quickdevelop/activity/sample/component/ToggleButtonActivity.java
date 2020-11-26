@@ -1,33 +1,34 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
-import java.util.Observer;
-
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.quicksticker_annotations.BindView;
+import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 
-@ActivityPager(name = "ToggleButton",preViewClass = ToggleButton.class,resType = ResType.Custome)
-public class ToggleButtonActivity extends QDActivity {
+@ActivityPager(name = "开关按钮",preViewClass = ToggleButton.class,resType = ResType.Custome)
+public class ToggleButtonActivity extends BaseActivity {
 
-    private SeekBar sb_weight;
-    private ToggleButton tooglebutton;
-    private SeekBar sb_progress_color;
+    @BindView(R.id.sb_weight)
+    SeekBar sb_weight;
+    @BindView(R.id.tooglebutton)
+    ToggleButton tooglebutton;
+    @BindView(R.id.sb_progress_color)
+    SeekBar sb_progress_color;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toggle_button);
-
-        tooglebutton = findViewById(R.id.tooglebutton);
-        sb_weight = findViewById(R.id.sb_weight);
+        QuickStickerBinder.getInstance().bind(this);
         sb_weight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -48,9 +49,7 @@ public class ToggleButtonActivity extends QDActivity {
             }
         });
         sb_weight.setProgress(50);
-
         tooglebutton.setToogleColor(Color.YELLOW);
-        sb_progress_color = findViewById(R.id.sb_progress_color);
         sb_progress_color.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -71,6 +70,11 @@ public class ToggleButtonActivity extends QDActivity {
             }
         });
         sb_progress_color.setProgress(50);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        QuickStickerBinder.getInstance().unBind(this);
     }
 }

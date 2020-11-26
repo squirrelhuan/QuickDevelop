@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/debug_console_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/debug_console_bg"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_22"
+            android:orientation="horizontal">
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.CircleImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:lines="1"
+                android:paddingLeft="@dimen/dp_5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_10" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="1"
+                android:lines="1"
+                android:paddingLeft="@dimen/dp_2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:text="关闭"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView
+                android:id="@+id/timeDomainPlotView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadeScrollbars="false"
+            android:visibility="gone">
+
+            <cn.demomaster.huan.quickdeveloplibrary.view.floatview.RichTextView
+                android:id="@+id/tv_log"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_5"
+                android:textColor="@color/greenyellow"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/sp_11" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/debug_console_bg"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_5"
+                android:text="stop"
+                android:textColor="@color/red"/>-->
+            <TextView
+                android:id="@+id/tv_log_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/debug_console_bg"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:text="all"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+            <TextView
+                android:id="@+id/tv_log_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/debug_console_bg"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:text="debug"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+            <TextView
+                android:id="@+id/tv_log_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/debug_console_bg"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:text="debug"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+
+            <ImageView
+                android:id="@+id/iv_drag"
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:padding="@dimen/dp_3"
+                android:src="@drawable/ic_expend"
+                android:tint="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

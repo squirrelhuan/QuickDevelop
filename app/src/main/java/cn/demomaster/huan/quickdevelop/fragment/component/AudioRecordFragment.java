@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
 
 
@@ -24,29 +26,29 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper;
  * 2018/8/25
  */
 
-@ActivityPager(name = "AudioRecordFragment",preViewClass = TextView.class,resType = ResType.Custome)
-public class AudioRecordFragment extends QDFragment {
-    //Components
-    ViewGroup mView;
+@ActivityPager(name = "AudioRecordFragment", preViewClass = TextView.class, resType = ResType.Custome)
+public class AudioRecordFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
+    @Nullable
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_audiorecord, null);
-        }
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_layout_audiorecord, null);
+        return mView;
+    }
+
+    @Override
+    public void initView(View rootView) {
         audioRecordHelper = AudioRecordHelper.getInstance();
-        Bundle bundle = getArguments();
-        String title = "空界面";
-        Button button = mView.findViewById(R.id.btn_start);
+        Button button = rootView.findViewById(R.id.btn_start);
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         start();
                         break;
@@ -57,40 +59,28 @@ public class AudioRecordFragment extends QDFragment {
                 return true;
             }
         });
-        Button btn_set_title = mView.findViewById(R.id.btn_play);
+        Button btn_set_title = rootView.findViewById(R.id.btn_play);
         btn_set_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int i = (int) (Math.random() * 10 % 4);
-                getActionBarLayout().setTitle(titles[i]+"");
+                getActionBarTool().setTitle(titles[i] + "");
             }
         });
-
-
-        return mView;
-    }
-
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
 
     }
 
     private String[] titles = {"1", "2", "3", "4"};
-    private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-/*
-    public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        int i = (int) (Math.random() * 10 % 4);
-        actionBarLayoutOld.setTitle(titles[i]+"---------ASDFGGHHJ");
-        actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
-    }*/
-
     AudioRecordHelper audioRecordHelper;
-    private String path = Environment.getExternalStorageDirectory() + "/buku/audio/record.mp3";;
+    private String path = Environment.getExternalStorageDirectory() + "/buku/audio/record.mp3";
+    ;
+
     private void start() {
         audioRecordHelper.startRecord(path);
     }
 
-    private void stop(){
+    private void stop() {
         audioRecordHelper.stopRecord();
     }
+
 }

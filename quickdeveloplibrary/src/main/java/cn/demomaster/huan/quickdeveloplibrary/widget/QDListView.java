@@ -1,8 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ListView;
+
+import androidx.annotation.RequiresApi;
 
 public class QDListView extends ListView {
     public QDListView(Context context) {
@@ -17,6 +20,7 @@ public class QDListView extends ListView {
         super(context, attrs, defStyleAttr);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public QDListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

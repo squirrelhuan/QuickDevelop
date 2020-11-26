@@ -120,7 +120,7 @@ public class QDActionDialog extends Dialog {
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.gravity = gravity;
         win.setAttributes(params);
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        win.setBackgroundDrawableResource(android.R.color.transparent);
 
         //新建一个Drawable对象
         QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
@@ -549,7 +549,6 @@ public class QDActionDialog extends Dialog {
             this.imageWidth = imageWidth;
             return this;
         }
-
 
         public Builder setAnimationStyleID(int animationStyleID) {
             this.animationStyleID = animationStyleID;

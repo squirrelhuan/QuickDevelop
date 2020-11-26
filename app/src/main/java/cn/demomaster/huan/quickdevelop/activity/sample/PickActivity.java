@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
@@ -21,10 +22,9 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
-@ActivityPager(name = "Pick",preViewClass = TextView.class,resType = ResType.Custome)
-public class PickActivity extends QDActivity {
+@ActivityPager(name = "多级选择器",preViewClass = TextView.class,resType = ResType.Custome)
+public class PickActivity extends BaseActivity {
 
 
     //    private ArrayList<ProvinceModel> mProvinceList = null; // 省份列表

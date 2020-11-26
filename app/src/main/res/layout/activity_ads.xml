@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.sample.AdsActivity"
+    android:orientation="vertical">
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner
+        android:id="@+id/binner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_160"
+        android:layout_margin="@dimen/dp_0"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/frameLayout_01"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_360"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radio_button_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="普通"/>
+            <RadioButton
+                android:id="@+id/radio_button_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="画廊"/>
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekbar_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner
+        android:id="@+id/binner2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_70"
+        android:layout_margin="@dimen/dp_0"/>
+
+
+</LinearLayout>

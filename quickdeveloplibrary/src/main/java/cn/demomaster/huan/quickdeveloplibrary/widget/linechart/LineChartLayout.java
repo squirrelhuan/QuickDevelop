@@ -2,15 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.linechart;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.RelativeLayout;
-
-import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewCompat;
-import androidx.customview.widget.ViewDragHelper;
-
-import com.google.android.material.appbar.AppBarLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout;
 

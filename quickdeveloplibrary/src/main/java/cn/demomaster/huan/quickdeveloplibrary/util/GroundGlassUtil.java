@@ -1,17 +1,23 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import java.nio.IntBuffer;
+
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.generateColorBitmap;
@@ -19,12 +25,14 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.generateC
 /**
  * 毛玻璃特效帮助类
  */
-public class GroundGlassUtil {
+public class GroundGlassUtil implements OnReleaseListener {
     private View targetView;
     private View backgroundView;
     private View backgroundViewParent;
 
-    public GroundGlassUtil() {
+    Context context;
+    public GroundGlassUtil(Context context) {
+        this.context = context;
     }
 
     private int backgroundColor = 0xabffffff;
@@ -34,12 +42,12 @@ public class GroundGlassUtil {
         this.backgroundColor = backgroundColor;
         invalidate();
     }
-
     public View getTargetView() {
         return targetView;
     }
 
     public void setTargetView(View targetView) {
+
         this.targetView = targetView;
 
         QDLogger.println("targetViewId=" + targetView.getId());
@@ -50,7 +58,15 @@ public class GroundGlassUtil {
             @Override
             public void onGlobalLayout() {
                 targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                QDLogger.e("OnGlobalLayoutListener targetView");
+                QDLogger.println("OnGlobalLayoutListener targetView");
+                invalidate();
+            }
+        });
+        targetView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
                 invalidate();
             }
         });
@@ -69,12 +85,35 @@ public class GroundGlassUtil {
         if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
             backgroundViewParent = findBackgroundViewParent(backgroundView);
         }
+        addViewTreeObserver(backgroundView);
 
-        backgroundView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    }
+
+    ViewTreeObserver.OnDrawListener onDrawListener;
+    View lastBackgroundView;
+
+    private void addViewTreeObserver(View view) {
+        if (lastBackgroundView != null) {
+            if (onDrawListener != null) {
+                lastBackgroundView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
+                onDrawListener = null;
+            }
+        }
+        onDrawListener = new ViewTreeObserver.OnDrawListener() {
+            @Override
+            public void onDraw() {
+                //QDLogger.d("QDScrollView", "view重绘重新模糊处理");
+                invalidate();
+            }
+        };
+        lastBackgroundView = view;
+        //view重绘时回调
+        view.getViewTreeObserver().addOnDrawListener(onDrawListener);
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                backgroundView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                QDLogger.e("OnGlobalLayoutListener backgroundView");
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                QDLogger.println("OnGlobalLayoutListener backgroundView");
                 invalidate();
             }
         });
@@ -126,17 +165,13 @@ public class GroundGlassUtil {
         return false;
     }
 
-    long mProcessCode;
     public void invalidate() {
-        if (getBackgroundView() != null && targetView != null) {
-            QDLogger.println("getBackgroundView()=" + getBackgroundView());
-            mProcessCode = System.currentTimeMillis();
+        Bitmap bitmap = generateBackgroundBitmap();
 
-            //获取背景图片
-            Bitmap bitmap = getBackgroundBitmap();
-            if (bitmap == null) {
-                return;
-            }
+        if (bitmap == null) {
+            return;
+        }
+        if (getBackgroundView() != null && targetView != null) {
             //模糊背景
             long t1 = System.currentTimeMillis();
             bitmap = BlurUtil.doBlur(bitmap, radius, 0.2f);
@@ -156,33 +191,61 @@ public class GroundGlassUtil {
             //bitmap = getAlplaBitmap(bitmap, 80);
             if (bitmap != null) {
                 targetView.setBackground(new BitmapDrawable(bitmap));
-                targetView.postInvalidate();
-                targetView.removeCallbacks(runnable);
-                targetView.postDelayed(runnable, waitTime);
             }
         }
     }
 
+    /**
+     * 获取待模糊的图片
+     *
+     * @return
+     */
+    private Bitmap generateBackgroundBitmap() {
+        //截取背景色
+        Bitmap backgroundBitmap = getBackgroundBitmap();
+        if (backgroundBitmap == null) {
+            mBackgroundBitmap = backgroundBitmap;
+            return null;
+        }
+        long t1 = System.currentTimeMillis();
+        boolean b = false;
+        if (backgroundBitmap != null && mBackgroundBitmap != null) {
+            //对比两张图片是否一致
+            b = compare2Image(backgroundBitmap, mBackgroundBitmap);
+        }
+        mBackgroundBitmap = backgroundBitmap;
+        long t2 = System.currentTimeMillis();
+        QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
+        return b ? null : backgroundBitmap;
+    }
+
+    /**
+     * 获取背景图片
+     *
+     * @return
+     */
     private Bitmap getBackgroundBitmap() {
         //获取覆盖区域
         int[] location_background = new int[2];
         //tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         getBackgroundView().getLocationOnScreen(location_background);//获取在整个屏幕内的绝对坐标
         Rect rect_background = new Rect(location_background[0], location_background[1], location_background[0] + getBackgroundView().getWidth(), location_background[1] + getBackgroundView().getHeight());
-        QDLogger.println("x=" + location_background[0] + ",y=" + location_background[1]);
+        //QDLogger.println("x=" + location_background[0] + ",y=" + location_background[1]);
 
         int[] location_target = new int[2];
         //tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         targetView.getLocationOnScreen(location_target);//获取在整个屏幕内的绝对坐标
         Rect rect_target = new Rect(location_target[0], location_target[1], location_target[0] + targetView.getWidth(), location_target[1] + targetView.getHeight());
 
-        QDLogger.println("x2=" + location_target[0] + ",y2=" + location_target[1]);
+        //QDLogger.println("x2=" + location_target[0] + ",y2=" + location_target[1]);
 
         //获取绝对坐标的交集
         Rect rect3 = getBothArea(rect_background, rect_target);
         if (rect3.width() <= 0 || rect3.height() <= 0) {
             return null;
         }
+
+        //QDLogger.println("left=" + rect3.left + ",top=" + rect3.top + ",right=" + rect3.right + ",bottom=" + rect3.bottom+",width="+rect3.width()+",height="+rect3.height());
         //绝对位置改为以backgroundView的内部的相对位置
         Rect rect4 = new Rect(rect3.left - location_background[0], rect3.top - location_background[1], rect3.right - location_background[0], rect3.bottom - location_background[1]);
         Bitmap bitmap = shot(getBackgroundView(), rect4.left, rect4.top, rect4.width(), rect4.height());
@@ -206,37 +269,11 @@ public class GroundGlassUtil {
     }
 
     public int radius = 30;
-
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
-    int waitTime = 60;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            long t1 = System.currentTimeMillis();
-            //截取背景色
-            Bitmap bitmap1 = getBackgroundBitmap();
-            boolean b = false;
-            if (bitmap1 == null && lastBackgroundBitmap != null) {
-                //对比两张图片是否一致
-                b = compare2Image(bitmap1, lastBackgroundBitmap);
-            }
-            long t2 = System.currentTimeMillis();
-            QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
-            lastBackgroundBitmap = bitmap1;
-            if (!b) {
-                invalidate();
-                return;
-            }
-            //waitTime = 100;
-            targetView.removeCallbacks(runnable);
-            targetView.postDelayed(runnable, waitTime);
-        }
-    };
-    Bitmap lastBackgroundBitmap;
-
+    Bitmap mBackgroundBitmap;
     /**
      * 对比两张图片是否一致
      *
@@ -245,25 +282,53 @@ public class GroundGlassUtil {
      * @return
      */
     private boolean compare2Image(Bitmap bmp1, Bitmap bmp2) {
-        if(bmp1==null){
-            return false;
-        }
-        int iteration = 0;
         int width = bmp1.getWidth();
         int height = bmp1.getHeight();
-        if (width != bmp2.getWidth()) return false;
-        if (height != bmp2.getHeight()) return false;
-
-        if (width < height) {
-            iteration = width;
-        } else {
-            iteration = height;
+        if (width != bmp2.getWidth()||height != bmp2.getHeight()) {
+            return false;
         }
-
-        for (int i = 0; i < iteration; ++i) {
-            if (bmp1.getPixel(i, i) != bmp2.getPixel(i, i)) return false;
+        if(bmp1==null&&bmp2==null){
+            return true;
         }
-        return true;
+        if(bmp1==null||bmp2==null){
+            return false;
+        }
+/*
+        for (int i = 0; i < width; i = i + width/10) {
+            for (int j = 0; j < height; j = j + height/10) {
+                if (bmp1.getPixel(i, j) != bmp2.getPixel(i, j)) return false;
+            }
+        }*/
+        long t1 = System.currentTimeMillis();
+        int pixelCount = width * height;
+        int[] pixels1 = new int[pixelCount];
+        int[] pixels2 = new int[pixelCount];
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float density = displayMetrics.density;
+        int setp = (int) Math.max(density,1);
+        QDLogger.e("density="+density+",setp="+setp);
+
+        bmp1.getPixels(pixels1, 0, width, 0, 0, width, height);
+        bmp2.getPixels(pixels2, 0, width, 0, 0, width, height);
+        boolean result1 =true;
+        for (int i = 0; i < pixelCount; i=i+setp*setp) {
+            if (pixels1[i] != pixels2[i]) {
+                result1 = false;
+                break;
+            }
+        }
+       /*long t2 = System.currentTimeMillis();
+        IntBuffer buffer1 = IntBuffer.allocate(pixelCount);
+        IntBuffer buffer2 = IntBuffer.allocate(pixelCount);
+        bmp1.copyPixelsToBuffer(buffer1);
+        bmp2.copyPixelsToBuffer(buffer2);
+        buffer1.position(0);
+        buffer2.position(0);
+        int result = buffer1.compareTo(buffer2);
+        long t3 = System.currentTimeMillis();
+        QDLogger.e("compare2Image width="+width+",height="+height+",t1="+(t2-t1)+",r="+result1+",t2="+(t3-t2) +",r="+(result==0));
+*/
+        return result1;
     }
 
     public static Bitmap drawBitmapBg(Bitmap bt, int color) {
@@ -275,6 +340,12 @@ public class GroundGlassUtil {
         return bt;
     }
 
+    /**
+     * 合并图层
+     * @param background
+     * @param foreground
+     * @return
+     */
     private Bitmap mergeBitmap(Bitmap background, Bitmap foreground) {
         if (background == null) {
             return null;
@@ -330,7 +401,6 @@ public class GroundGlassUtil {
             return null;
         }
         try {
-
             // 获取windows中最顶层的view
             view.buildDrawingCache();
             // 允许当前窗口保存缓存信息
@@ -338,7 +408,6 @@ public class GroundGlassUtil {
             Bitmap bitmap = view.getDrawingCache();
             // QDLogger.e("bitmap寬度=" + bitmap.getWidth() + ",高度=" + bitmap.getHeight());
             // QDLogger.e("width=" + width + ",height=" + height);
-
             if (x < 0 || x > bitmap.getWidth()) {
                 return null;
             }
@@ -351,11 +420,8 @@ public class GroundGlassUtil {
             if ((y + height) > bitmap.getHeight()) {
                 return null;
             }
-            //width
-            //height
             // 去掉状态栏
             Bitmap bmp = Bitmap.createBitmap(bitmap, x, y, width, height);
-
             // 销毁缓存信息
             view.destroyDrawingCache();
             return bmp;
@@ -363,5 +429,15 @@ public class GroundGlassUtil {
             QDLogger.e(e);
         }
         return null;
+    }
+
+    @Override
+    public void onRelease() {
+        if (lastBackgroundView != null) {
+            if (onDrawListener != null) {
+                lastBackgroundView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
+                onDrawListener = null;
+            }
+        }
     }
 }

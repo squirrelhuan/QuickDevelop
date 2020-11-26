@@ -33,9 +33,9 @@ public class PreviewActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
-        getActionBarLayout().getRightView().setVisibility(View.GONE);
-        //getActionBarLayout().setActionBarType(ACTION_STACK_NO_STATUS);
-        //getActionBarLayout().setStateBarColorAuto(true);
+        getActionBarTool().getRightView().setVisibility(View.GONE);
+        //getActionBarTool().setActionBarType(ACTION_STACK_NO_STATUS);
+        //getActionBarTool().setStateBarColorAuto(true);
         vp_image = findViewById(R.id.vp_image);
 
         //pv_image = (PhotoView) findViewById(R.id.pv_image);
@@ -70,19 +70,19 @@ public class PreviewActivity extends QDActivity {
             return;
         }
         final int imageCount = images.size();
-        getActionBarLayout().setTitle((index + 1) + "/" + images.size());
+        getActionBarTool().setTitle((index + 1) + "/" + images.size());
         mFragmentManager = getSupportFragmentManager();
         fragmentAdapter = new PictureFragmentAdapter(mFragmentManager, images);
 
         vp_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-               // getActionBarLayout().getActionBarLayoutHeaderView().refreshStateBarColor();
+               // getActionBarTool().getActionBarLayoutHeaderView().refreshStateBarColor();
             }
 
             @Override
             public void onPageSelected(int position) {
-                getActionBarLayout().setTitle(((position + 1) +"")+ ("/" + imageCount));
+                getActionBarTool().setTitle(((position + 1) +"")+ ("/" + imageCount));
             }
 
             @Override

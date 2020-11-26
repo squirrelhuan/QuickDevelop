@@ -15,7 +15,7 @@ public class HookTest {
 
         static class MyTestView {
             public void test() {
-               QDLogger.println("啊啊啊");
+                System.out.println("啊啊啊");
             }
         }
 
@@ -29,7 +29,7 @@ public class HookTest {
     private static class Other extends MyView.MyTestView {
         @Override
         public void test() {
-           QDLogger.println("BBBBB");
+            System.out.println("BBBBB");
             super.test();
         }
     }
@@ -66,20 +66,19 @@ public class HookTest {
                     new Class[]{ProcInterface.class}, new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                           QDLogger.println("这是代理的对象呀 method=" + method);
+                            System.out.println("这是代理的对象呀 method=" + method);
                             return null;
                         }
                     });
             // 替换对象变量，然后运行
             field2.set(myView, other2);
             myView.other2.test();
-
             // 重新运行该方法，达到替换方法的效果!
             myView.myTestView.test();
         } catch (NoSuchFieldException e) {
-           QDLogger.println(e.getMessage());
+            System.out.println(e.getMessage());
         } catch (IllegalAccessException e) {
-           QDLogger.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         //**************此时我们尝试加载Apk文件，然后拿到补丁的方法，来修复上面对象的方法

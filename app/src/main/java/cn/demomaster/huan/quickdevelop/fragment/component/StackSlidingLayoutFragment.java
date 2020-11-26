@@ -1,11 +1,14 @@
 package cn.demomaster.huan.quickdevelop.fragment.component;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.ComponentAdapter;
 
 /**
@@ -25,16 +27,12 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.Componen
  */
 
 @ActivityPager(name = "StackSliding", preViewClass = TextView.class, resType = ResType.Custome)
-public class StackSlidingLayoutFragment extends QDFragment {
+public class StackSlidingLayoutFragment extends BaseFragment {
 
-    //Components
-    ViewGroup mView;
-
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_stack_sliding, null);
-        }
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_stack_sliding, null);
         return mView;
     }
 
@@ -43,10 +41,9 @@ public class StackSlidingLayoutFragment extends QDFragment {
     private ComponentAdapter adapter_A, adapter_B, adapter_C, adapter_D, adapter_E;
     private List<String> items_A, items_B, items_C, items_D, items_E;
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-       // actionBarLayout.setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
-       // actionBarLayout.setHeaderBackgroundColor(Color.WHITE);
+    public void initView(View rootView) {
+        // actionBarLayout.setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
+        // actionBarLayout.setHeaderBackgroundColor(Color.WHITE);
 
         //A
         recyclerView_A = rootView.findViewById(R.id.list_A);

@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 import android.Manifest;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,10 +24,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
@@ -43,7 +46,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
  */
 
 @ActivityPager(name = "FileManager", preViewClass = TextView.class, resType = ResType.Custome)
-public class FileManagerFragment extends QDFragment {
+public class FileManagerFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
@@ -59,20 +62,17 @@ public class FileManagerFragment extends QDFragment {
     TextView tv_current;
     @BindView(R.id.tv_count)
     TextView tv_count;
-    View mView;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_filemanager, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_filemanager, null);
         return (ViewGroup) mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        actionBarLayout.setTitle("文件管理");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("文件管理");
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +117,7 @@ public class FileManagerFragment extends QDFragment {
                                 }*/
 
                                 //deleteEmptyFiles(rootPath);
-                                deleteEmptyFiles(QDFileUtil.getStoragePath(mContext,true));
+                                deleteEmptyFiles(QDFileUtil.getStoragePath(mContext, true));
 
                                 btn_delete.setEnabled(true);
                                 btn_delete.setText("删除文件");
@@ -137,17 +137,17 @@ public class FileManagerFragment extends QDFragment {
         });
 
         List<String> sdcards = QDFileUtil.getExtSDCardPathList();
-        if(sdcards!=null){
-            for(String sdcard:sdcards) {
-                QDLogger.d("sdcards:"+sdcard);
+        if (sdcards != null) {
+            for (String sdcard : sdcards) {
+                QDLogger.d("sdcards:" + sdcard);
             }
         }
 
         File[] files;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            files = getExternalFilesDirs(mContext,Environment.MEDIA_MOUNTED);
-            for(File file:files){
-                QDLogger.e("main", "得到的全部外存：" +file.getAbsolutePath());
+            files = getExternalFilesDirs(mContext, Environment.MEDIA_MOUNTED);
+            for (File file : files) {
+                QDLogger.e("main", "得到的全部外存：" + file.getAbsolutePath());
 
 
 //便历所有外部存储
@@ -156,7 +156,7 @@ public class FileManagerFragment extends QDFragment {
 
 
         QDLogger.d("StoragePath:", android.os.Environment.getExternalStorageDirectory().getPath());
-        QDLogger.d("StoragePath:", QDFileUtil.getStoragePath(mContext,true));
+        QDLogger.d("StoragePath:", QDFileUtil.getStoragePath(mContext, true));
         QDLogger.d("getExternalStorageState:", Environment.getExternalStorageState());
         QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
         QDLogger.i("getFilesDir=" + getContext().getFilesDir().getAbsolutePath());
@@ -197,31 +197,31 @@ public class FileManagerFragment extends QDFragment {
     private void deleteEmptyFiles(String rootPath) {
         //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);
-        if(file==null){
+        if (file == null) {
             return;
         }
         if (file.isDirectory()) {
-                if (file.listFiles() == null) {
-                    QDLogger.e("文件不存在:" + file.getPath());
-                    return;
-                }
-                if(file.listFiles().length == 0){
-                    count += 1;
-                    QdThreadHelper.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath());
-                        }
-                    });
-                    QDLogger.e("删除第(" + count +")空文件夹["+(QDFileUtil.delete(file.getPath())?"成功":"失败")+"]:" + file.getPath());
-
-                    return;
-                }
-                QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + file.listFiles().length + ")");
-                for (File file1 : file.listFiles()) {
-                    deleteEmptyFiles(file1.getPath());
-                }
+            if (file.listFiles() == null) {
+                QDLogger.e("文件不存在:" + file.getPath());
+                return;
             }
+            if (file.listFiles().length == 0) {
+                count += 1;
+                QdThreadHelper.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath());
+                    }
+                });
+                QDLogger.e("删除第(" + count + ")空文件夹[" + (QDFileUtil.delete(file.getPath()) ? "成功" : "失败") + "]:" + file.getPath());
+
+                return;
+            }
+            QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + file.listFiles().length + ")");
+            for (File file1 : file.listFiles()) {
+                deleteEmptyFiles(file1.getPath());
+            }
+        }
     }
 
     @Override

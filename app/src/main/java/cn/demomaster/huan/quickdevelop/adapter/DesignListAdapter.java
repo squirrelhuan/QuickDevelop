@@ -2,8 +2,6 @@ package cn.demomaster.huan.quickdevelop.adapter;
 
 
 import android.content.Context;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +9,21 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.designer.WebViewFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
 /**
- * Created by amitshekhar on 14/01/17.
+ * Created by  on 14/01/17.
  */
 
 public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.ViewHolder> {
@@ -60,10 +59,9 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        RelativeLayout rl_preview;
+        ViewGroup rl_preview;
         ImageTextView item_icon;
         TextView item_name;
-
         public ViewHolder(View itemView) {
             super(itemView);
             rl_preview = itemView.findViewById(R.id.rl_preview);
@@ -77,12 +75,12 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                       // (Fragment) WebViewFragment.class.newInstance()
-                        WebViewFragment webViewFragment = new WebViewFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("URL", (String) jsonObject.get("url"));
-                        webViewFragment.setArguments(bundle);
-                    ((QDActivity)v.getContext()).getFragmentHelper().startFragment((AppCompatActivity) v.getContext(), webViewFragment);
+                    // (Fragment) WebViewFragment.class.newInstance()
+                    WebViewFragment webViewFragment = new WebViewFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("URL", (String) jsonObject.get("url"));
+                    webViewFragment.setArguments(bundle);
+                    ((QDActivity)v.getContext()).getFragmentHelper().startFragment(webViewFragment);
                 }
             });
         }

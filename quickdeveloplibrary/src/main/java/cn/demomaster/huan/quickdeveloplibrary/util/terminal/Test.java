@@ -62,10 +62,8 @@ public class Test {
             }
             process.destroy();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             QDLogger.e(e);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             QDLogger.e(e);
         }
     }

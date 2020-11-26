@@ -7,5 +7,13 @@ public enum LifecycleType {
     onActivityPaused,
     onActivityStopped,
     onActivitySaveInstanceState,
-    onActivityDestroyed
+    onActivityDestroyed,
+
+    onFragmentCreated,
+    onFragmentStarted,
+    onFragmentResumed,
+    onFragmentPaused,
+    onFragmentStopped,
+    onFragmentSaveInstanceState,
+    onFragmentDestroyed,
 }

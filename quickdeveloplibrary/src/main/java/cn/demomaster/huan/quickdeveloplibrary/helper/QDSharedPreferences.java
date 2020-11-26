@@ -23,7 +23,7 @@ public class QDSharedPreferences {
         return sharedPreferences;
     }
 
-    public boolean contains(String key){
+    public boolean contains(String key) {
         return sharedPreferences.contains(key);
     }
 
@@ -47,7 +47,7 @@ public class QDSharedPreferences {
     }
 
     public QDSharedPreferences(Context context) {
-        if(context==null){
+        if (context == null) {
             try {
                 throw new QDException("QDSharedPreferences 创建失败，context为空");
             } catch (QDException e) {
@@ -56,33 +56,59 @@ public class QDSharedPreferences {
             return;
         }
         this.context = context.getApplicationContext();
-        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences( this.context);
+        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(this.context);
     }
 
     public void putBoolean(String key, boolean value) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.commit();
+        try {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(key, value);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getBoolean(String key, boolean value) {
-        return sharedPreferences.getBoolean(key, value);
+        try {
+           return sharedPreferences.getBoolean(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
     public int getInt(String key, int def) {
-        return sharedPreferences.getInt(key, def);
-    }
-    public float getFloat(String key, float def) {
-        return sharedPreferences.getFloat(key, def);
-    }
-    public long getLong(String key, long def) {
-        return sharedPreferences.getLong(key, def);
+        try {
+           return sharedPreferences.getInt(key, def);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return def;
     }
 
-    //
-    public void setLong(String key, long value) {
-        putLong(key,value);
+    public float getFloat(String key, float def) {
+        try {
+           return sharedPreferences.getFloat(key, def);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return def;
     }
+
+    public long getLong(String key, long def) {
+        try {
+            return sharedPreferences.getLong(key, def);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return def;
+    }
+
+    public void setLong(String key, long value) {
+        putLong(key, value);
+    }
+
     public void putLong(String key, long value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(key, value);
@@ -90,7 +116,12 @@ public class QDSharedPreferences {
     }
 
     public String getString(String key, String def) {
-        return sharedPreferences.getString(key, def);
+        try {
+            return sharedPreferences.getString(key, def);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return def;
     }
 
     public void putString(String key, String value) {
@@ -99,12 +130,13 @@ public class QDSharedPreferences {
         editor.commit();
     }
 
-    public void putInt(String key ,int value){
+    public void putInt(String key, int value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, value);
         editor.commit();
     }
-    public void putFloat(String key ,float value){
+
+    public void putFloat(String key, float value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(key, value);
         editor.commit();
@@ -116,14 +148,21 @@ public class QDSharedPreferences {
         editor.commit();
     }
 
-    public Set<String> getStringSet(String key, Set<String> value) {
-        return sharedPreferences.getStringSet(key, value);
+    public Set<String> getStringSet(String key, Set<String> def) {
+        try {
+            return sharedPreferences.getStringSet(key, def);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return def;
     }
+
     public <T> T getObject(Class<T> clazz) {
         String key = getKey(clazz);
-        return getObject(key,clazz);
+        return getObject(key, clazz);
     }
-    public <T> T getObject(String key,Class<T> clazz) {
+
+    public <T> T getObject(String key, Class<T> clazz) {
         String json = getString(key, null);
         if (TextUtils.isEmpty(json)) {
             return null;
@@ -138,9 +177,10 @@ public class QDSharedPreferences {
 
     public void putObject(Object object) {
         String key = getKey(object.getClass());
-        putObject(key,object);
+        putObject(key, object);
     }
-    public void putObject(String key,Object object) {
+
+    public void putObject(String key, Object object) {
         Gson gson = new Gson();
         String json = gson.toJson(object);
         putString(key, json);

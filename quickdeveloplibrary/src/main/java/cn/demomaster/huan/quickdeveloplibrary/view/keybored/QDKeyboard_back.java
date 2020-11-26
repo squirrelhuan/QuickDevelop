@@ -605,56 +605,13 @@ public class QDKeyboard_back {
         keyboardView.setUpDrawable(upDrawable);
     }
 
-    private OnKeyClickListener onKeyClickListener;
+    private QDKeyboard.OnKeyClickListener onKeyClickListener;
 
-    public void setOnKeyClickListener(OnKeyClickListener onKeyClickListener) {
+    public void setOnKeyClickListener(QDKeyboard.OnKeyClickListener onKeyClickListener) {
         this.onKeyClickListener = onKeyClickListener;
     }
 
     View.OnTouchListener onTouchKeyboardListener;
-
-    public static abstract class OnKeyClickListener implements KeyboardView.OnKeyboardActionListener {
-        @Override
-        public void onPress(int primaryCode) {
-
-        }
-
-        @Override
-        public void onRelease(int primaryCode) {
-
-        }
-
-        @Override
-        public void onKey(int primaryCode, int[] keyCodes) {
-
-        }
-
-        @Override
-        public void onText(CharSequence text) {
-
-        }
-
-        @Override
-        public void swipeLeft() {
-
-        }
-
-        @Override
-        public void swipeRight() {
-
-        }
-
-        @Override
-        public void swipeDown() {
-
-        }
-
-        @Override
-        public void swipeUp() {
-
-        }
-    }
-
     public void dispatchTouchEvent(MotionEvent me) {
         //QDLogger.i("me.getAction()=" + me.getAction());
        /* if(keyContainer==null||keyContainer.getHeight()==0){

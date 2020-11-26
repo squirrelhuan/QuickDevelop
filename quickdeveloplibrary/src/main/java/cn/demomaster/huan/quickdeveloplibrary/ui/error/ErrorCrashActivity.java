@@ -15,7 +15,5 @@ public class ErrorCrashActivity extends QDActivity {
         String error = getIntent().getStringExtra("error");
         TextView tv_content = findViewById(R.id.tv_content);
         tv_content.setText(""+error);
-
-
     }
 }

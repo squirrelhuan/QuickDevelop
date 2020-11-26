@@ -11,16 +11,6 @@
         <attr name="drawItemCount" format="integer"/>
     </declare-styleable>
 
-
-    <string-array name="tab_titles">
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-        <item>@string/app_name</item>
-    </string-array>
-
     <string-array name="tab_themt_titles">
         <item>@string/Components</item>
         <item>@string/Helper</item>

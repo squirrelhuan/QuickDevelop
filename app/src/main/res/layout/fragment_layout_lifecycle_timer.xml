@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_6"
+            android:gravity="center">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="开启activity生命周期监听"/>
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+                android:id="@+id/toggle_enable"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_24"
+                android:text=""/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rg_transitionType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_transitionType_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="橫向拖动" />
+
+            <RadioButton
+                android:id="@+id/rb_transitionType_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="纵向拖动" />
+
+            <RadioButton
+                android:id="@+id/rb_transitionType_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="任意拖动" />
+
+            <RadioButton
+                android:id="@+id/rb_transitionType_04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="禁止滚动" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_scaleType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rg_scaleType_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="橫向缩放" />
+
+            <RadioButton
+                android:id="@+id/rg_scaleType_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="纵向缩放" />
+
+            <RadioButton
+                android:id="@+id/rg_scaleType_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="等比例缩放" />
+
+            <RadioButton
+                android:id="@+id/rg_scaleType_04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="禁止缩放" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--给TimeDomainPlotView一个父布局-->
+        <cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView
+            android:id="@+id/timeDomainPlotView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_160" />
+
+    </LinearLayout>
+</LinearLayout>

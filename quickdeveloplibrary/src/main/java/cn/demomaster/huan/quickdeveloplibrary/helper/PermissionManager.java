@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -376,7 +377,7 @@ public class PermissionManager {
                     }
                 } else {//处理普通动态权限
                     String[] targest = list1.toArray(new String[list1.size()]);
-                    QDLogger.i(TAG.PERMISSION, Arrays.asList(targest));
+                    Log.i(TAG.PERMISSION, Arrays.asList(targest)+"");
                     chekSignPermission(context, targest, new PermissionListener() {
                         @Override
                         public void onPassed() {

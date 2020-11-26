@@ -48,10 +48,10 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
     //获取子view
     @Override
     protected void onFinishInflate() {
+        super.onFinishInflate();
         fixedView = (QDNestedFixedView) getChildAt(0);
         myNestedScrollChild = (QDNestedScrollChild) getChildAt(1);
         //hideHeight = fixedView.getMinHeight();
-
     }
 
     //在此可以判断参数target是哪一个子view以及滚动的方向，然后决定是否要配合其进行嵌套滚动

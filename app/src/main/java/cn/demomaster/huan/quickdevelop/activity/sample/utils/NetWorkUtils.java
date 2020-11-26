@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +11,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-
-import android.util.Log;
 
 public class NetWorkUtils {
 	

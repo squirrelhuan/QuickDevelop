@@ -26,6 +26,7 @@ import java.util.Stack;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleRecorder;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -94,63 +95,61 @@ public class QDActivityManager {
         private void record(LifecycleType lifecycleType, Activity activity) {
             QDLogger.println(TAG.ACTIVITY, lifecycleType + "(" + activity + ")");
             LifecycleRecorder.record(lifecycleType, activity);
+            
         }
     };
 
     /**
      * 页面关闭
      * 释放一些资源
+     *
      * @param obj
      */
-    public static void onFinishActivityOrFragment(Object obj) {
+    public static void destroyObject(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
-        QDLogger.println("acitivity属性个数：" + fields.length);
-        for (int i = 0, len = fields.length; i < len; i++) {
-            // 对于每个属性，获取属性名
-            String varName = fields[i].getName();
-            try {
-                // 获取原来的访问控制权限
-                boolean accessFlag = fields[i].isAccessible();
-                // 修改访问控制权限
-                fields[i].setAccessible(true);
-                // 获取在对象f中属性fields[i]对应的对象中的变量
-                Object o;
+        if(fields!=null) {
+            QDLogger.println(obj+"属性个数：" + fields.length);
+            for (int i = 0, len = fields.length; i < len; i++) {
+                // 对于每个属性，获取属性名
+                String varName = fields[i].getName();
                 try {
+                    // 获取原来的访问控制权限
+                    boolean accessFlag = fields[i].isAccessible();
+                    // 修改访问控制权限
+                    fields[i].setAccessible(true);
+                    // 获取在对象f中属性fields[i]对应的对象中的变量
+                    Object o;
                     o = fields[i].get(obj);
                     if (o != null) {
                         //QDLogger.println("变量：" + varName + " = " + o);
-                        if(o instanceof OnReleaseListener){
+                        if (o instanceof OnReleaseListener) {
                             //QDLogger.println("释放 OnReleaseListener：" + varName);
                             ((OnReleaseListener) o).onRelease();
-                        }else
-                        if (o instanceof Handler) {
+                        } else if (o instanceof Handler) {
                             //QDLogger.println("释放handler：" + varName);
                             ((Handler) o).removeCallbacksAndMessages(null);
                         } else if (o instanceof Dialog) {
-                           // QDLogger.println("释放dialog：" + varName);
+                            // QDLogger.println("释放dialog：" + varName);
                             ((Dialog) o).dismiss();
-                        }  else if (o instanceof PopupWindow) {
+                        } else if (o instanceof PopupWindow) {
                             //QDLogger.println("释放PopupWindow：" + varName);
                             ((PopupWindow) o).dismiss();
                         } else if (o instanceof Bitmap) {
                             //QDLogger.println("释放Bitmap：" + varName);
-                                ((Bitmap) o).recycle();
-                        }else if (o instanceof View) {
+                            ((Bitmap) o).recycle();
+                        } else if (o instanceof View) {
                             //QDLogger.println("释放View：" + varName);
                             ((View) o).clearAnimation();
-                        }else if (o instanceof Animator) {
+                        } else if (o instanceof Animator) {
                             //QDLogger.println("释放Animator：" + varName);
                             ((Animator) o).cancel();
                         }
                     }
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    QDLogger.e(e);
+                    // 恢复访问控制权限
+                    fields[i].setAccessible(accessFlag);
+                } catch (IllegalArgumentException | IllegalAccessException ex) {
+                    QDLogger.e(ex);
                 }
-                // 恢复访问控制权限
-                fields[i].setAccessible(accessFlag);
-            } catch (IllegalArgumentException ex) {
-                QDLogger.e(ex);
             }
         }
     }
@@ -161,7 +160,6 @@ public class QDActivityManager {
         this.context = context.getApplicationContext();
         //注冊activity监听器
         try {
-            //注册
             ((Application) this.context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
         } catch (Exception e) {
             QDLogger.e(e);
@@ -179,6 +177,7 @@ public class QDActivityManager {
 
     /**
      * 添加activity到棧中
+     *
      * @param activity
      */
     public void pushActivity(Activity activity) {
@@ -466,6 +465,8 @@ public class QDActivityManager {
         onStateChanged(activity, false);
     }
 
+    boolean isOnForgroundAvailable = true;
+    boolean isOnBackgroundAvailable = true;
     /**
      * 设置app前后台切换事件
      */
@@ -474,42 +475,52 @@ public class QDActivityManager {
             if (getCurrentActivity() != null) {
                 // ActivityManager mAm = (ActivityManager) currentActivity.getSystemService(ACTIVITY_SERVICE);
                 // String activity_name = mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
-                if (!isRunningOnForeground(context)) {
-                    if (isOnForground) {
-                        isOnForground = false;
-                        onAppRunStateChangedListenner.onBackground();
-                    }
-                } else {
-                    if (!isOnForground) {
-                        isOnForground = true;
+                if (isRunningOnForeground(context)) {//应用在前台
+                    if (isOnForgroundAvailable) {
+                        isOnBackgroundAvailable = true;
                         onAppRunStateChangedListenner.onForeground();
+                        isOnForgroundAvailable = false;
+                    }
+                } else {//应用在后台
+                    if (isOnBackgroundAvailable) {
+                        isOnForgroundAvailable = true;
+                        onAppRunStateChangedListenner.onBackground();
+                        isOnBackgroundAvailable = false;
                     }
                 }
             }
         }
     }
 
-    public static boolean isTopActivity(Context context,String activityName) {
+    public static boolean isTopActivity(Context context, String activityName) {
         String topActivityName = getTopActivity(context);
-        if(topActivityName.equals(activityName)){
+        if (topActivityName.equals(activityName)) {
             return true;
         }
         return false;
     }
+
     //判断当前界面显示的是哪个Activity
-    public static String getTopActivity(Context context){
+    public static String getTopActivity(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
         //QDLogger.d("测试", "pkg:"+cn.getPackageName());//包名
         //QDLogger.d("测试", "cls:"+cn.getClassName());//包名加类名
         return cn.getClassName();
     }
+    public static String getTopPackageName(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        //QDLogger.d("测试", "pkg:"+cn.getPackageName());//包名
+        //QDLogger.d("测试", "cls:"+cn.getClassName());//包名加类名
+        return cn.getPackageName();
+    }
 
-    boolean isOnForground = true;
 
     /**
      * TODO 待驗證first
      * Activity是否在前台
+     *
      * @param context
      * @return
      */
@@ -535,21 +546,28 @@ public class QDActivityManager {
 
     /**
      * 判断应用是否在前台运行
-     *
      * @param context
      * @return
      */
     public boolean isRunningOnForeground(Context context) {
+        return isRunningOnForeground(context,context.getPackageName());
+    }
+
+    /**
+     * 判断应用是否在前台运行
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean isRunningOnForeground(Context context,String packageName) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         if (activityManager.getRunningTasks(1) != null || activityManager.getRunningTasks(1).size() == 1) {
             ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
             String currentPackageName = componentName.getPackageName();
             //QDLogger.i("currentPackageName=" + currentPackageName + ",mypid=" + android.os.Process.myPid());
-            if (!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(context.getPackageName())) {
-                // QDLogger.i("APP在前台运行,context.pid=" + android.os.Process.myPid());
-                return true;
-            }
+            return (!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(packageName));
         }
+        return false;
         // List<ActivityManager.RunningAppProcessInfo> appProcessInfos = activityManager.getRunningAppProcesses();
         // 枚举进程
         /*for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfos) {
@@ -563,7 +581,6 @@ public class QDActivityManager {
             }
         }*/
         //QDLogger.i("isRunningOnForeground="+false);
-        return false;
     }
 
     private boolean isForeground(Context context) {
@@ -609,6 +626,7 @@ public class QDActivityManager {
 
     /**
      * 杀死其他正在运行的程序
+     *
      * @param context
      */
     public static void killOthers(Context context, String pkgName) {
@@ -623,7 +641,7 @@ public class QDActivityManager {
                     ApplicationInfo applicationInfo = pManager.getPackageInfo(packName, 0).applicationInfo;
                     if (!pkgName.equals(packName) && filterApp(applicationInfo)) {
                         forceStopPackage(context, packName);
-                       QDLogger.println(packName + " has been killed");
+                        QDLogger.println(packName + " has been killed");
                     }
                 }
             } catch (Exception e) {
@@ -634,6 +652,7 @@ public class QDActivityManager {
 
     /**
      * 强制停止应用程序
+     *
      * @param pkgName
      */
     public static void forceStopPackage(Context context, String pkgName) throws Exception {
@@ -645,6 +664,7 @@ public class QDActivityManager {
     /**
      * 根据包名强制关闭一个应用，不管前台应用还是后台进程，需要share systemuid
      * 需要权限 FORCE_STOP_PACKAGES
+     *
      * @param context
      * @param packageName
      */
@@ -702,6 +722,21 @@ public class QDActivityManager {
         return flag;
     }
 
+    public void backToApp(Class targetActivityClass) {
+        Activity activity = getCurrentActivity();
+        Intent intent;
+        if(activity!=null){
+            QDLogger.i("backToApp 返回到顶层");
+            intent = new Intent(activity, targetActivityClass);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity.startActivity(intent);
+        }else {
+            QDLogger.i("backToApp 开启新的页面");
+            intent = new Intent(context, targetActivityClass);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(intent);
+        }
+    }
     /**
      * 返回到app，如果当前app在前台不会需要执行
      *
@@ -709,16 +744,19 @@ public class QDActivityManager {
      * @param targetActivityClass 如果不在前台，则打开目标页面
      */
     public void backToApp(Context context, Class targetActivityClass) {
-        if (!isRunningOnForeground(context)) {
+        Intent intent = new Intent(context, targetActivityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+        /*if (!isRunningOnForeground(context)) {
             backToActivity(context, targetActivityClass);
             Activity activity = QDActivityManager.getInstance().getCurrentActivity();
-            //若没有找到运行的task，用户结束了task或被系统释放，则重新启动mainactivity
+            //若没有找到运行的task，用户结束了task或被系统释放，则重新启动主页面
             if (activity == null || !activity.getClass().getName().equals(targetActivityClass.getName())) {
-                Intent resultIntent = new Intent(context, targetActivityClass);
-                resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                context.startActivity(resultIntent);
+                Intent intent = new Intent(context, targetActivityClass);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                context.startActivity(intent);
             }
-        }
+        }*/
     }
 
     /**
@@ -739,7 +777,7 @@ public class QDActivityManager {
                 return;
             }
         }
-        //若没有找到运行的task，用户结束了task或被系统释放，则重新启动mainactivity
+        //若没有找到运行的task，用户结束了task或被系统释放，则重新启动主页面
         Intent resultIntent = new Intent(context, activityClass);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(resultIntent);

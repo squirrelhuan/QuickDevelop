@@ -2,29 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_120"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dp_8"
     android:paddingRight="@dimen/dp_8"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_10"
     tools:ignore="MissingDefaultResource">
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/rl_preview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_70"
+        android:padding="@dimen/dp_5"
         android:gravity="center"
         android:layout_weight="1">
 
 
-    </RelativeLayout>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|top"
-        android:lines="2"
+        android:text=""
         android:textSize="@dimen/dp_14" />
 </LinearLayout>

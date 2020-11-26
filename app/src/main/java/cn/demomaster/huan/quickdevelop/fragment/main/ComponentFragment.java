@@ -2,37 +2,45 @@ package cn.demomaster.huan.quickdevelop.fragment.main;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.sample.ActionBarActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.AdsActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.CenterHorizontalActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.TabMenuActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.actionbar.ActionBarTipActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDActionDialogActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.QDialogActivity;
-import cn.demomaster.huan.quickdevelop.activity.sample.component.RatingBarActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.SlidingPanelLayoutActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.component.ToggleButtonActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.fragment.AppletsFragmentActivity;
 import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BaseFragmentActivity;
+import cn.demomaster.huan.quickdevelop.activity.sample.fragment.BasePaperActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.AudioRecordFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.BlurFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.EditViewFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.ColorPickerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.EmptyLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.FramelayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.GuiderFragment;
@@ -42,14 +50,13 @@ import cn.demomaster.huan.quickdevelop.fragment.component.PopUpFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QDTipPopupFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.QdButtonFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.RatingBarFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.StackSlidingLayoutFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.TimeDomainPlotFragment;
-import cn.demomaster.huan.quickdevelop.fragment.component.ColorPickerFragment;
 import cn.demomaster.huan.quickdevelop.fragment.component.WheelImageFragment;
+import cn.demomaster.huan.quickdevelop.fragment.component.lifecycleTimerFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
 
@@ -60,32 +67,38 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class ComponentFragment extends QDFragment {
+public class ComponentFragment extends BaseFragment {
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
-    
+
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        return (ViewGroup) inflater.inflate(R.layout.fragment_layout_component, null);
+    public boolean isUseActionBarLayout() {
+        return false;//不带导航栏
     }
 
     @Override
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_layout_component, null);
+        return view;
+    }
+
+  /*  @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_layout_component, null);
+        initView(view);
+        return view;
+    }*/
+
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    @Override
-    public boolean isUseActionBarLayout() {
-        return false;
-    }
-
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        /*actionBarLayout.setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-//        actionBarLayout.getLeftView().setVisibility(View.GONE);
-        actionBarLayout.setBackGroundColor(Color.RED);*/
-
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
         recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
@@ -94,27 +107,32 @@ public class ComponentFragment extends QDFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
 
-
+        classList.add(AdsActivity.class);
         classList.add(QdButtonFragment.class);
-        classList.add(EditViewFragment.class);
         classList.add(EmptyLayoutFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
         classList.add(WheelImageFragment.class);
         classList.add(ToggleButtonActivity.class);
         classList.add(TimeDomainPlotFragment.class);
+        classList.add(lifecycleTimerFragment.class);
+
         classList.add(CenterHorizontalActivity.class);
         classList.add(LoadingActivity.class);
         classList.add(PickActivity.class);
         classList.add(TabMenuActivity.class);
         classList.add(PictureSelectActivity.class);
         classList.add(ActionBarActivity.class);
-        classList.add(RatingBarActivity.class);
+        classList.add(RatingBarFragment.class);
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);
         classList.add(QDActionDialogActivity.class);
         classList.add(PopUpFragment.class);
+
+        classList.add(AppletsFragmentActivity.class);
         classList.add(BaseFragmentActivity.class);
+
+        classList.add(BasePaperActivity.class);
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);
         classList.add(NdkTestFragment.class);
@@ -145,17 +163,16 @@ public class ComponentFragment extends QDFragment {
         setFont(rootView);
     }
 
-
-    void setFont(View view){
-        Typeface typeFaceHold = Typeface.createFromAsset(getActivity().getAssets(),"fonts/NanumSquareRoundEB.ttf");
-        if(view instanceof ViewGroup){
+    void setFont(View view) {
+        Typeface typeFaceHold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/NanumSquareRoundEB.ttf");
+        if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
-            for(int i=0;i<viewGroup.getChildCount();i++){
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View view1 = viewGroup.getChildAt(i);
                 setFont(view1);
             }
-        }else {
-            if(view instanceof TextView){
+        } else {
+            if (view instanceof TextView) {
                 ((TextView) view).setTypeface(typeFaceHold);
             }
         }

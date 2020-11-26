@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -31,12 +34,11 @@ import static android.content.Context.SENSOR_SERVICE;
  * 2018/8/25
  */
 
-@ActivityPager(name = "LmSensor",preViewClass = TextView.class,resType = ResType.Custome)
-public class LmSensorFragment extends QDFragment implements SensorEventListener {
+@ActivityPager(name = "陀螺仪", preViewClass = TextView.class, resType = ResType.Custome)
+public class LmSensorFragment extends BaseFragment implements SensorEventListener {
 
     @BindView(R.id.btn_start)
     Button btn_start;
-
     private SensorManager LmSensorManager;
     private Sensor LmSensor;
     //屏幕当前位置
@@ -45,28 +47,22 @@ public class LmSensorFragment extends QDFragment implements SensorEventListener 
     float LPointX;
     float LPointY;
 
-
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
-    View mView;
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_lmsensor, null);
-        }
-        ButterKnife.bind(this,mView);
-        return (ViewGroup) mView;
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_layout_lmsensor, null);
+        return mView;
     }
-    Bitmap bitmap;
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
-        actionBarLayout.setTitle("截图");
-        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
 
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("陀螺仪");
+        getActionBarTool().setHeaderBackgroundColor(Color.RED);
 
         LmSensorManager = (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
         LmSensor = LmSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -79,15 +75,15 @@ public class LmSensorFragment extends QDFragment implements SensorEventListener 
         Lwm.getDefaultDisplay().getMetrics(Ldm);
         Lwidth = Ldm.widthPixels;         // 设备屏幕宽度
         Lheight = Ldm.heightPixels;       // 设备屏幕高度
-        LPointX = Lwidth / 2;			  //默认设置当前 "焦点位置"在屏幕的中心位置
+        LPointX = Lwidth / 2;              //默认设置当前 "焦点位置"在屏幕的中心位置
         LPointY = Lheight / 2;
-
-
     }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor == null) {
@@ -95,9 +91,9 @@ public class LmSensorFragment extends QDFragment implements SensorEventListener 
         }
         LPointX = LPointY = 0;
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x =  event.values[0];
-            float y =  event.values[1];
-            float z =  event.values[2];
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
 
             /**
              * 当设备在正前方90度时 ，X :10 Y:0 Z:0
@@ -111,17 +107,13 @@ public class LmSensorFragment extends QDFragment implements SensorEventListener 
              */
 
             //通过1和3参数得到Y轴位置
-            if (x >= 0.1 && (z >= 0.1 || z <= -0.1))
-            {
+            if (x >= 0.1 && (z >= 0.1 || z <= -0.1)) {
                 LPointY = Lheight / 2 + Lheight / 20 * z;
             }
             //通过2参数得到X轴坐标
-            if ((y >= 0.1 || y <= -0.1) && z >= 0.1)
-            {
+            if ((y >= 0.1 || y <= -0.1) && z >= 0.1) {
                 LPointX = Lwidth / 2 + Lwidth / 20 * -y;
-            }
-            else  if ((y >= 0.1 || y <= -0.1) && z <= -0.1)
-            {
+            } else if ((y >= 0.1 || y <= -0.1) && z <= -0.1) {
                 LPointX = Lwidth / 2 + Lwidth / 20 * -y;
             }
             if (0 == LPointX) //这里做了保护措施，如果超过了设定范围自动回到X轴中心位置
@@ -129,21 +121,21 @@ public class LmSensorFragment extends QDFragment implements SensorEventListener 
             if (0 == LPointY)//如果超过了设定范围自动回到Y轴中心位置
                 LPointY = Lheight / 2;
 
-            SetScreenPoint(LPointX,LPointY);
+            SetScreenPoint(LPointX, LPointY);
         }
     }
+
     /**
      * 设置当前 "焦点位置"
      */
-    void SetScreenPoint(float x,float y)
-    {
+    void SetScreenPoint(float x, float y) {
         //这个函数用来记录计算后的屏幕坐标，可以用到不同的场景
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(LmSensorManager!=null) {
+        if (LmSensorManager != null) {
             LmSensorManager.unregisterListener(this);
         }
     }

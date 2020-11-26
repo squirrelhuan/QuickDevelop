@@ -10,11 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
-import cn.demomaster.huan.quickdevelop.fragment.main.ComponentFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
@@ -27,16 +25,16 @@ public class QDMainActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
 
-        getActionBarLayout().setActionBarType(ACTIONBAR_TYPE.NORMAL);
-        getActionBarLayout().getLeftView().setVisibility(View.GONE);
-        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
+        getActionBarTool().getLeftView().setVisibility(View.GONE);
+        getActionBarTool().setHeaderBackgroundColor(Color.RED);
 
      /*   List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ComponentFragment());
         fragments.add(new BlankFragment());
         FragmentAdapter mPagerAdapter = new FragmentAdapter(getSupportFragmentManager(),fragments);
 */
-        List<Class> list = new ArrayList<>();
+        /*List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
         list.add(BlankFragment.class);
         MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getSupportFragmentManager(), list);
@@ -49,7 +47,7 @@ public class QDMainActivity extends QDActivity {
         mViewPager.setCurrentItem(0);
 
         // Tabs
-        initScrollableTabs(mViewPager);
+        initScrollableTabs(mViewPager);*/
     }
 
     /**

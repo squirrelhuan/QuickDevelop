@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author squirrel桓
  * @date 2018/11/8.
@@ -50,6 +52,12 @@ public class LoadingTengxuntvView extends View {
         }
     }
 
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        //QDLogger.e("dispatchDraw LoadingTengxuntvView");
+    }
+
     private float maxHeight=.4f;
     private float maxWidth = .16f;
     private int childCount =3;
@@ -68,7 +76,7 @@ public class LoadingTengxuntvView extends View {
             float x = (left+right)/2;
             float y = (top+bottom)/2;
             mPaint.setColor(colors[i]);
-
+            
             canvas.save();
             canvas.rotate(15,x,y);
             canvas.drawRoundRect(rectF,5,5,mPaint);

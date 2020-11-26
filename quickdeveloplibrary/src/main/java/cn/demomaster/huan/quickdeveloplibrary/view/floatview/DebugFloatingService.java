@@ -79,7 +79,7 @@ public class DebugFloatingService extends QDFloatingService {
         tv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dissmissWindow(context, DebugFloatingService.class);
+                dissmissWindow();
             }
         });
         tv_log_tag = view.findViewById(R.id.tv_log_tag);
@@ -176,10 +176,10 @@ public class DebugFloatingService extends QDFloatingService {
                     drag_X = nowX;
                     drag_Y = nowY;
 
-                    int height = DebugFloatingService.mHeight + movedY;
+                    int height = mHeight + movedY;
                     height = Math.min(screenHeight, height);
                     setHeight(height);
-                    int width = DebugFloatingService.mWidth + movedX;
+                    int width = mWidth + movedX;
                     width = Math.min(screenWidth, width);
                     setWidth(width);
 
@@ -216,7 +216,8 @@ public class DebugFloatingService extends QDFloatingService {
     public static void showConsole(Activity context) {
         if (QDAppInfoUtil.isApkInDebug(context)) {
             if (PermissionManager.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-                DebugFloatingService.showWindow(context.getApplicationContext(), DebugFloatingService.class);
+                //DebugFloatingService.showWindow(context, DebugFloatingService.class);
+                ServiceHelper.showWindow(context,DebugFloatingService.class);
             } else {
                 QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);
                 if (debugFloating2 == null) {

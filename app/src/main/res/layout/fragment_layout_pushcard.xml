@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout
+        android:id="@+id/pcl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+        <!--<include layout="@layout/layout_main"/>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-
-       <cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout
-           android:id="@+id/pcl_layout"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:overScrollMode="never">
-              <!--<include layout="@layout/layout_main"/>-->
-
-              <androidx.recyclerview.widget.RecyclerView
-                  android:id="@+id/recycler_body"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-
-              </androidx.recyclerview.widget.RecyclerView>
-
-       </cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout>
-
-
-
-
+    </cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout>
 </LinearLayout>

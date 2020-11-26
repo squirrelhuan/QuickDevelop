@@ -1,41 +1,45 @@
 package cn.demomaster.huan.quickdevelop;
 
-//import com.umeng.commonsdk.UMConfigure;
-
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
+
+import com.didichuxing.doraemonkit.DoraemonKit;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
 import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
-import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.cache.QuickCache;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickdatabaselibrary.QuickDb;
 
-/*
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;*/
-//import com.umeng.socialize.PlatformConfig;
-
+import static cn.demomaster.qdlogger_library.QDLogger.TAG;
 
 public class Application extends QDApplication {
+    QuickDb quickDb;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.init(this);
-        QDLogger.setLogPath("/qdlogger/");
+        QDLogger.init(this, "/qdlogger/");
+        quickDb = new QuickDb(this, "quickdev.db", null, 10);
 
-        NotifycationHelper.getInstance().init(this);
+        NotificationHelper.getInstance().init(this);
         //SoundHelper.init(this);
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
-
-       // DoraemonKit.install(this);
+        // DoraemonKit.install(this);
         //初始化友盟分享
         //initUmengShare("5c79138f61f564e0380012fa");
 
@@ -55,6 +59,16 @@ public class Application extends QDApplication {
         PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
+
+        DoraemonKit.install(this);
+        //初始化缓存目录
+        QuickCache.init(this,"/qdlogger/cache/");
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        Log.e(TAG, "attachBaseContext");
     }
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
@@ -70,11 +84,11 @@ public class Application extends QDApplication {
             int baudrate = Integer.decode(sp.getString("BAUDRATE", "-1"));
 
             /* Check parameters */
-            if ( (path.length() == 0) || (baudrate == -1)) {
+            if ((path.length() == 0) || (baudrate == -1)) {
                 throw new InvalidParameterException();
             }
 
-            Log.d("getSerialPort",path+":"+baudrate);
+            Log.d("getSerialPort", path + ":" + baudrate);
             /* Open the serial port */
             mSerialPort = new SerialPort(new File(path), baudrate, 0);
         }

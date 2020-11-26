@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
@@ -23,23 +23,22 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionStateType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
-@ActivityPager(name = "QDActionDialog",preViewClass = TextView.class,resType = ResType.Custome)
-public class QDActionDialogActivity extends QDActivity {
+@ActivityPager(name = "提示框",preViewClass = TextView.class,resType = ResType.Custome)
+public class QDActionDialogActivity extends BaseActivity {
 
     private ListView mListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdaction_dialog);
-        getActionBarLayout().setHeaderBackgroundColor(Color.RED);
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getOptionsMenu().show();
@@ -149,7 +148,7 @@ public class QDActionDialogActivity extends QDActivity {
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarTool().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -10,11 +9,40 @@
        <ScrollView
            android:layout_width="match_parent"
            android:layout_height="match_parent">
+
               <LinearLayout
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:gravity="center_horizontal"
                   android:orientation="vertical">
+
+                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextViewPoint
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="15dp"
+                         android:background="@drawable/btn_green_small"
+                         android:gravity="center"
+                         android:paddingLeft="20dp"
+                         android:paddingTop="10dp"
+                         android:paddingRight="20dp"
+                         android:paddingBottom="5dp"
+                         android:text="消息"
+                         android:textColor="@color/white"
+                         app:pointBackgroundColor="@color/red"
+                         app:pointGravity="rightTop"
+                         app:pointMarginRight="0dp"
+                         app:pointMarginTop="0dp"
+                         app:pointPaddingBottom="5dp"
+                         app:pointPaddingLeft="5dp"
+                         app:pointPaddingRight="5dp"
+                         app:pointPaddingTop="5dp"
+                         app:pointRadius="5dp"
+                         app:pointText="12"
+                         app:pointTextColor="@color/white"
+                         app:pointTextSize="12sp"
+                         app:pointWidth="18dp"
+                         app:showPoint="true" />
+
                      <Button
                          android:id="@+id/btn_play1"
                          android:layout_width="wrap_content"

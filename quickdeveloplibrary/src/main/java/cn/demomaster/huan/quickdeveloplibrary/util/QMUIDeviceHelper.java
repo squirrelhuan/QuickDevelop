@@ -184,6 +184,17 @@ public class QMUIDeviceHelper {
         return BRAND.contains("essential");
     }
 
+    public static boolean isSamsung() {
+        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("samsung");
+    }
+    //乐视
+    public static boolean isLeTV() {
+        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("letv");
+    }
+
+    public static boolean isSmartisan() {
+        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("smartisan");
+    }
 
     /**
      * 判断是否为 ZUK Z1 和 ZTK C2016。

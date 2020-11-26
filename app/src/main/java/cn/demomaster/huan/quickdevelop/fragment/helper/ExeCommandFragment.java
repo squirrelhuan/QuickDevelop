@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,15 +13,17 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
@@ -33,17 +36,15 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 
 @ActivityPager(name = "ExeCommand", preViewClass = TextView.class, resType = ResType.Custome)
-public class ExeCommandFragment extends QDFragment {
+public class ExeCommandFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.btn_exe_02)
     QDButton btn_exe_02;
-    View mView;
 
     @BindView(R.id.btn_clear)
     QDButton btn_clear;
@@ -79,18 +80,16 @@ public class ExeCommandFragment extends QDFragment {
     @BindView(R.id.tv_current_path)
     TextView tv_current_path;
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_execommand, null);
-        }
-        ButterKnife.bind(this, mView);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_execommand, null);
         return (ViewGroup) mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("command");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("command");
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,11 +210,11 @@ public class ExeCommandFragment extends QDFragment {
             }
         });*/
 
-        //getActionBarLayout().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+        //getActionBarTool().setActionBarType(ActionBarInterface.ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
     }
 
     private void send() {
-        if(!TextUtils.isEmpty(et_console.getText())&&et_console.getText().toString().contains("clear")){
+        if (!TextUtils.isEmpty(et_console.getText()) && et_console.getText().toString().contains("clear")) {
             et_console.setText("");
             tv_console.setText("");
             return;
@@ -223,19 +222,20 @@ public class ExeCommandFragment extends QDFragment {
         ADBHelper.getInstance().execute(et_console.getText().toString(), new ADBHelper.OnReceiveListener() {
             @Override
             public void onReceive(ProcessResult result) {
-                if(result.getCode()==0) {
+                if (result.getCode() == 0) {
                     tv_console.append(result.getResult());
-                }else {
+                } else {
                     tv_console.append(result.getError());
                 }
                 et_console.setText("");
-                scroll_01.scrollTo(0,tv_console.getHeight());
-                tv_current_path.setText(">_"+ADBHelper.getInstance().currentPath);
+                scroll_01.scrollTo(0, tv_console.getHeight());
+                tv_current_path.setText(">_" + ADBHelper.getInstance().currentPath);
             }
         });
     }
 
     public static String content;
+
     @Override
     public void onDestroy() {
         super.onDestroy();

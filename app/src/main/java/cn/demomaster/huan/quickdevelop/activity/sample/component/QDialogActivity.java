@@ -1,14 +1,20 @@
 package cn.demomaster.huan.quickdevelop.activity.sample.component;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -20,32 +26,34 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
-@ActivityPager(name = "QDialog",preViewClass = TextView.class,resType = ResType.Custome)
-public class QDialogActivity extends QDActivity {
+@ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Custome)
+public class QDialogActivity extends BaseActivity {
 
-    private int backgroundRadio=20;
+    private int backgroundRadio = 20;
     private ListView mListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdialog);
 
-        getActionBarLayout().setRightOnClickListener(new View.OnClickListener() {
+        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getOptionsMenu().show();
@@ -135,10 +143,10 @@ public class QDialogActivity extends QDActivity {
                 .setHint("请输入密码")
                 .setBackgroundRadius(backgroundRadio)
                 .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
-                .addAction("连接", new QDInputDialog.OnClickActionListener() {
+                .addAction("连接", new OnClickActionListener() {
                     @Override
-                    public void onClick(QDInputDialog dialog, String value) {
-                        Toast.makeText(mContext,"input = "+value,Toast.LENGTH_SHORT).show();
+                    public void onClick(Dialog dialog, Object tag) {
+                        Toast.makeText(mContext, "input = " + tag, Toast.LENGTH_SHORT).show();
                         //连接返回editview的value
                     }
                 }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
@@ -157,7 +165,7 @@ public class QDialogActivity extends QDActivity {
         getOptionsMenu().setMenus(menus);
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
-        getOptionsMenu().setAnchor(getActionBarLayout().getRightView());
+        getOptionsMenu().setAnchor(getActionBarTool().getRightView());
         getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
@@ -187,8 +195,8 @@ public class QDialogActivity extends QDActivity {
     }
 
     private void showSheetMenu() {
-        String[] menus ={"item1","item2","item3"};
-        QDSheetDialog  dialog = new QDSheetDialog.Builder(mContext).setData(menus).setGravity(Gravity.BOTTOM).setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT).create();
+        String[] menus = {"item1", "item2", "item3"};
+        QDSheetDialog dialog = new QDSheetDialog.Builder(mContext).setData(menus).setGravity(Gravity.BOTTOM).setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT).create();
         dialog.show();
     }
     /*private void showMessagePositiveDialog() {
@@ -200,10 +208,12 @@ public class QDialogActivity extends QDActivity {
     private void showMessage() {
         new QDDialog.Builder(mContext).setMessage("这是一个提示").setBackgroundRadius(backgroundRadio).create().show();
     }
+
     private void showMessage1() {
         new QDDialog.Builder(mContext).setTitle("标题")
                 .setMessage("确定要发送吗？").setBackgroundRadius(backgroundRadio).create().show();
     }
+
     private void showMessageWithButton(int gravity) {
         QDDialog qdDialog = new QDDialog.Builder(mContext)
                 .setMessage("确定要发送吗？")
@@ -220,55 +230,83 @@ public class QDialogActivity extends QDActivity {
                 .setBackgroundRadius(backgroundRadio)
                 .setGravity_foot(gravity).create();
 
-        GroundGlassUtil glassUtil= null;
-        glassUtil = new GroundGlassUtil();
-        glassUtil.setTargetView(qdDialog.getContentLinearView());
-        glassUtil.setBackgroundView(mListView,false);
-        glassUtil.setRadius(100);
-        glassUtil.invalidate();
+        GroundGlassUtil glassUtil = null;
+        glassUtil = new GroundGlassUtil(qdDialog.getContext());
+        qdDialog.getContentLinearView().setLayoutAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                QDLogger.e("setLayoutAnimationListener onAnimationStart");
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                QDLogger.e("setLayoutAnimationListener onAnimationEnd");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                QDLogger.e("setLayoutAnimationListener onAnimationRepeat");
+
+            }
+        });
+        qdDialog.getContentView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                QDLogger.e("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom);
+            }
+        });
+
+        //glassUtil.setTargetView(qdDialog.getContentLinearView());
+        //glassUtil.setBackgroundView(mListView, false);
+        //glassUtil.setRadius(100);
+       // glassUtil.invalidate();
         qdDialog.show();
-        glassUtil.setTargetView(qdDialog.getContentLinearView());
+        //glassUtil.setTargetView(qdDialog.getContentLinearView());
     }
 
     private void showMessageWithButton2(int gravity) {
         new QDDialog.Builder(mContext).setTitle("标题")
                 .setMessage("确定要发送吗？")
                 .setBackgroundRadius(backgroundRadio)
-                .addAction("确定", new QDDialog.OnClickActionListener() {
-            @Override
-            public void onClick(QDDialog dialog) {
-                dialog.dismiss();
-            }
-        }).addAction("取消").setGravity_foot(gravity).create().show();
+                .addAction("确定", new OnClickActionListener() {
+                    @Override
+                    public void onClick(Dialog dialog, Object tag) {
+                        dialog.dismiss();
+                    }
+                }).addAction("取消").setGravity_foot(gravity).create().show();
     }
 
     private void showMenuDialog() {
-        String[] menus ={"item1","item2","item3"};
+        String[] menus = {"item1", "item2", "item3"};
         new QDSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext,data.get(position));
+                PopToastUtil.ShowToast(mContext, data.get(position));
             }
         }).create().show();
     }
+
     private void showMulMenuDialog1() {
-        String[] menus ={"item1","item2","234"};
+        String[] menus = {"item1", "item2", "234"};
         new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext,data.get(position));
+                PopToastUtil.ShowToast(mContext, data.get(position));
             }
         }).create().show();
     }
+
     private void showMulMenuDialog() {
-        String[] menus ={"item1","item2","234","6565","656456","56656","8888","item2","item3","item2","item3","item2","item3","item2","item3","item2","234","6565","656456","56656","8888","item2",};
+        String[] menus = {"item1", "item2", "234", "6565", "656456", "56656", "8888", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "234", "6565", "656456", "56656", "8888", "item2",};
         new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext,data.get(position));
+                PopToastUtil.ShowToast(mContext, data.get(position));
             }
         }).create().show();
     }

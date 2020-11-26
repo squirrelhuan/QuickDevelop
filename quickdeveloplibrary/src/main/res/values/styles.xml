@@ -23,7 +23,6 @@
         <item name="android:windowNoTitle">true</item>
         <!-- 欢迎页背景 -->
         <item name="android:windowBackground">@color/white</item>
-
         <!--<item name="android:windowBackground">@drawable/layout_list_start_pic</item>-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
@@ -44,8 +43,8 @@
 
     <style name="FadeInPopWin">
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="@android:windowEnterAnimation">@anim/pop_win_content_fade_in</item>
-        <item name="@android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
+        <item name="android:windowEnterAnimation">@anim/pop_win_content_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
     </style>
 
     <!--自定义toast样式-->
@@ -55,7 +54,7 @@
     </style>
 
 
-    <!-- Custom tabs -->
+    <!-- Custom tabs1 -->
     <style name="Tabs">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>

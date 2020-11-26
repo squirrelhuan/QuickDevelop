@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -23,7 +24,6 @@ public class QDRuntimeHelper {
     public static final String ERROR_MESSAGE = "出错了：";
     public static String Tag = "QDRuntimeHelper";
     private static QDRuntimeHelper instance;
-    boolean isRunning = true;
     OnAdbReceiceListener onAdbReceiceListener;
 
     /*public Process getProcess() {
@@ -130,21 +130,20 @@ public class QDRuntimeHelper {
                 onReceiveListener.onReceive(p);
             }
         } catch (Exception e) {
-            QDLogger.e(Tag, "Cause:" + e.getCause() + ",Message:" + e.getMessage());
+            QDLogger.e(Tag, e);
             if (onReceiveListener != null) {
                 ProcessResult processResult = new ProcessResult();
                 processResult.setCode(-1);
                 processResult.setError("Cause:" + e.getCause() + ",Message:" + e.getMessage());
                 onReceiveListener.onReceive(processResult);
             }
-            QDLogger.e(e);
         }
     }
 
     private ProcessResult executeChild(String path, String cmd) {
         QDLogger.println(Tag, "executeChild cmd:" + cmd + ",path:" + path);
         Process process = null;
-        DataOutputStream os =null;
+        DataOutputStream os = null;
         try {
             try {
                 process = Runtime.getRuntime().exec("su");
@@ -155,7 +154,7 @@ public class QDRuntimeHelper {
                 process = Runtime.getRuntime().exec(cmd, null, new File(TextUtils.isEmpty(path) ? "/" : path)); // android中使用
             }
             os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("cd "+path+"\n");
+            os.writeBytes("cd " + path + "\n");
             os.writeBytes(cmd + "\n");
             os.writeBytes("exit\n");
             os.flush();
@@ -202,14 +201,111 @@ public class QDRuntimeHelper {
         }
     }
 
-    private ProcessResult getProcessResult(Process process) {
+    public static void executeSu(String cmd, OnReceiveListener onReceiveListener) {
+        ProcessResult processResult = null;
+        try {
+            processResult = execSuCmd(cmd);
+        } catch (Exception e) {
+            QDLogger.e(Tag, e);
+            processResult.setError("Cause:" + e.getCause() + ",Message:" + e.getMessage());
+        }finally {
+            if (onReceiveListener != null) {
+                if(processResult==null) {
+                    processResult.setCode(-1);
+                }
+                onReceiveListener.onReceive(processResult);
+            }
+        }
+    }
+
+    public static ProcessResult execSuCmd(String cmd) {
+        try {
+            Process process = Runtime.getRuntime().exec("su");
+            OutputStream outputStream = process.getOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(
+                    outputStream);
+            dataOutputStream.writeBytes(cmd);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+            outputStream.close();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        QDLogger.println(Tag, "executeChild cmd:" + cmd);
+        Process process = null;
+        OutputStream outputStream = null;
+        DataOutputStream os = null;
+        ProcessResult processResult = null;
+        try {
+            process = Runtime.getRuntime().exec("su");
+            outputStream = process.getOutputStream();
+            os = new DataOutputStream(outputStream);
+            os.writeBytes(cmd);
+            os.flush();
+
+            processResult = getProcessResult(process);
+            // 等待程序执行结束并输出状态
+            int exitCode = 0;
+            exitCode = process.waitFor();
+            process.destroy();
+            os.close();
+            processResult.setCode(exitCode);
+            if (exitCode == SUCCESS) {
+                QDLogger.i(Tag, SUCCESS_MESSAGE + cmd + ",Result=" + processResult.getResult());
+                return processResult;
+            } else {
+                QDLogger.e(Tag, ERROR_MESSAGE + cmd + ",exitCode=" + exitCode + ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError() + "\n\r");
+                switch (exitCode) {
+                    case 255:
+                        QDLogger.e("端口ADB被占用");
+                        break;
+                    case 1:
+                        QDLogger.e(Tag, "Operation not permitted");
+                        if (TextUtils.isEmpty(processResult.getError())) {
+                            processResult.setError("Permission denied");
+                        }
+                    case 2:
+                        QDLogger.e(Tag, "error2");
+                        if (TextUtils.isEmpty(processResult.getError())) {
+                            processResult.setError("error2");
+                        }
+                        break;
+                }
+                return processResult;
+            }
+        } catch (Exception e) {
+            QDLogger.e(Tag, "[" + cmd + "],Cause:" + e.getCause() + ",Message:" + e.getMessage());
+            processResult = new ProcessResult();
+            processResult.setCode(-1);
+            processResult.setError("" + "[" + cmd + "],Cause:" + e.getCause() + ",Message:" + e.getMessage());
+            return processResult;
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(outputStream!=null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static ProcessResult getProcessResult(Process process) {
         ProcessResult result = new ProcessResult();
         result.setResult(getResultString(process.getInputStream()));//, System.out
         result.setError(getResultString(process.getErrorStream()));//, System.err
         return result;
     }
 
-    private String getResultString(InputStream inputStream) {
+    private static String getResultString(InputStream inputStream) {
         StringBuffer stringBuffer = new StringBuffer();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

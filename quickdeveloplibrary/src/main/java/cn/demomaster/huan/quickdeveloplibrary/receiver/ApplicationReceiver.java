@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.NotifycationHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 
 /**
  * @author squirrel桓
@@ -18,8 +18,8 @@ public class ApplicationReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         if(bundle!=null&&bundle.containsKey("message")){
            String message = bundle.getString("message","");
-            NotifycationHelper.getInstance().init(context);
-            NotifycationHelper.getInstance().sendChatMsg(message);
+            NotificationHelper.getInstance().init(context);
+            NotificationHelper.getInstance().sendNotification("无标题",message,null);
         }
     }
 }

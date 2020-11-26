@@ -31,7 +31,7 @@ public class FloatingService extends QDFloatingService {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dissmissWindow(context,FloatingService.this.getClass());
+                dissmissWindow();
             }
         });
         //linearLayout.addView(button);
@@ -81,4 +81,12 @@ public class FloatingService extends QDFloatingService {
             handler.postDelayed(runnable,1000);
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
+        if(fpsMonitor!=null)
+        fpsMonitor.stop();
+    }
 }

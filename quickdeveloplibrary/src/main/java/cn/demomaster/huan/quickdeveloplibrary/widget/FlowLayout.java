@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author caizhiming
- * @created on 2015-4-13
- */
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class FlowLayout extends ViewGroup {
 
-    private Context mContext;
     // 存储所有子View
     private List<List<View>> mAllChildViews = new ArrayList<>();
     // 每一行的高度
@@ -23,91 +21,216 @@ public class FlowLayout extends ViewGroup {
 
     public FlowLayout(Context context) {
         this(context, null);
-        // TODO Auto-generated constructor stub
-        init(context);
+        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        // TODO Auto-generated constructor stub
-        init(context);
+        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        // TODO Auto-generated constructor stub
-        init(context);
+        init();
     }
 
-    public void init(Context context) {
-        mContext = context;
+    public void init() {
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // TODO Auto-generated method stub
-        // 父控件传进来的宽度和高度以及对应的测量模式
-        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
-        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        int count = getChildCount();
+        int lineWidth = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();//单行宽度
+        //QDLogger.e("单行宽度=" + lineWidth);
+        mAllChildViews = new ArrayList<>();//所有view按行分割成多个list
+        List<View> lineViewList = new ArrayList<>();//单行
+        for (int i = 0; i < count; i++) {
+            View chid = getChildAt(i);
+            TextView textView = (TextView) chid;
+            QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
+            if (lineViewList.size() == 0) {//空行
+                lineViewList.add(chid);
 
-        // 如果当前ViewGroup的宽高为wrap_content的情况
-        int width = 0;// 自己测量的 宽度
-        int height = 0;// 自己测量的高度
-        // 记录每一行的宽度和高度
-        int lineWidth = 0;
-        int lineHeight = 0;
+                MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
+                int viewWith = chid.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                if (viewWith > lineWidth) {//单个元素占用一行的情况
+                    //QDLogger.e("换行=" + viewWith);
+                    QDLogger.println("单个元素占用一行：" + lineViewList.size());
+                    List<View> viewList = new ArrayList<>();
+                    viewList.addAll(lineViewList);
+                    mAllChildViews.add(viewList);
+                    lineViewList = new ArrayList<>();
+                }
+            } else {//判断新加的view会不会撑满整个父窗体
+                int currentWidth = 0;
+                for (int j = 0; j < lineViewList.size(); j++) {
+                    View v = lineViewList.get(j);
+                    MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
+                    currentWidth += v.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                }
 
-        // 获取子view的个数
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            // 测量子View的宽和高
-            measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            int childWidth;
-            int childHeight;
-            // 得到LayoutParams
-            childWidth = child.getMeasuredWidth() ;
-            // 子View占据的高度
-            childHeight = child.getMeasuredHeight() ;
-            if(child.getLayoutParams() instanceof MarginLayoutParams) {
-                MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-                // 子View占据的宽度
-                childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
-                // 子View占据的高度
-                childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            }
-            // 换行时候
-            if (lineWidth + childWidth > sizeWidth) {
-                // 对比得到最大的宽度
-                width = Math.max(width, lineWidth);
-                // 重置lineWidth
-                lineWidth = childWidth;
-                // 记录行高
-                height += lineHeight;
-                lineHeight = childHeight;
-            } else {// 不换行情况
-                // 叠加行宽
-                lineWidth += childWidth;
-                // 得到最大行高
-                lineHeight = Math.max(lineHeight, childHeight);
-            }
-            // 处理最后一个子View的情况
-            if (i == childCount - 1) {
-                width = Math.max(width, lineWidth);
-                height += lineHeight;
+                MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
+                int viewWith = chid.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                if (currentWidth + viewWith > lineWidth) {//再追加一个元素会超出最大宽度
+                    QDLogger.println("换行追加=" + lineViewList.size());
+                    List<View> viewList = new ArrayList<>();
+                    viewList.addAll(lineViewList);
+                    mAllChildViews.add(viewList);
+                    lineViewList = new ArrayList<>();
+                    lineViewList.add(chid);
+                } else {//再追加一个元素不会超出最大宽度
+                    lineViewList.add(chid);
+                }
             }
         }
-        // wrap_content
-        setMeasuredDimension(modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width,
-                modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height);
+        if (lineViewList.size() > 0) {
+            mAllChildViews.add(lineViewList);
+        }
+
+        QDLogger.println("mAllChildViews=" + mAllChildViews.size());
+        mLineHeight = new ArrayList<>();
+        for (int i = 0; i < mAllChildViews.size(); i++) {
+            List<View> lineViews = mAllChildViews.get(i);
+            int maxLineHeight = 0;
+            for (int j = 0; j < lineViews.size(); j++) {
+                View v = lineViews.get(j);
+                MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
+                maxLineHeight = Math.max(maxLineHeight, v.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin);
+            }
+            mLineHeight.add(maxLineHeight);
+        }
+
+        int layoutHeight = 0;
+        for (int i = 0; i < mLineHeight.size(); i++) {
+            layoutHeight += mLineHeight.get(i);
+            QDLogger.println("h" + i + "=" + mLineHeight.get(i));
+        }
+        layoutHeight += getPaddingTop() + getPaddingBottom();
+
+        //高度度
+        int specModeHeight = MeasureSpec.getMode(heightMeasureSpec);
+        QDLogger.println("specModeHeight=" + specModeHeight + ",layoutHeight=" + layoutHeight + ",count=" + count);
+        switch (specModeHeight) {
+            case MeasureSpec.UNSPECIFIED:
+                setMeasuredDimension(widthMeasureSpec, layoutHeight);
+                break;
+            case MeasureSpec.AT_MOST://AT_MOST 自适应模式，根据设置的行数动态申请高度
+                setMeasuredDimension(widthMeasureSpec, layoutHeight);
+                //super.onMeasure(widthMeasureSpec, layoutHeight);
+                break;
+            case MeasureSpec.EXACTLY:
+                break;
+        }
+
+
+
+        QDLogger.println("specModeHeight=" + specModeHeight);
 
     }
 
+    /*    @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            // 父控件传进来的宽度和高度以及对应的测量模式
+            int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+            int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
+            int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+            int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
+
+            // 如果当前ViewGroup的宽高为wrap_content的情况
+            int width = 0;// 自己测量的 宽度
+            int height = 0;// 自己测量的高度
+            // 记录每一行的宽度和高度
+            int lineWidth = 0;
+            int lineHeight = 0;
+
+            // 获取子view的个数
+            int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = getChildAt(i);
+                // 测量子View的宽和高
+                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+                int childWidth;
+                int childHeight;
+                // 得到LayoutParams
+                childWidth = child.getMeasuredWidth();
+                // 子View占据的高度
+                childHeight = child.getMeasuredHeight();
+                if (child.getLayoutParams() instanceof MarginLayoutParams) {
+                    MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+                    // 子View占据的宽度
+                    childWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+                    // 子View占据的高度
+                    childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+                }
+                // 换行时候
+                if (lineWidth + childWidth > sizeWidth) {
+                    // 对比得到最大的宽度
+                    width = Math.max(width, lineWidth);
+                    // 重置lineWidth
+                    lineWidth = childWidth;
+                    // 记录行高
+                    height += lineHeight;
+                    lineHeight = childHeight;
+                } else {// 不换行情况
+                    // 叠加行宽
+                    lineWidth += childWidth;
+                    // 得到最大行高
+                    lineHeight = Math.max(lineHeight, childHeight);
+                }
+                // 处理最后一个子View的情况
+                if (i == childCount - 1) {
+                    width = Math.max(width, lineWidth);
+                    height += lineHeight;
+                }
+            }
+            // wrap_content
+            setMeasuredDimension(modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width,
+                    modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height);
+
+        }*/
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // TODO Auto-generated method stub
+        QDLogger.println("onLayout");
+        // 获取行数
+        int lineCount = mAllChildViews.size();
+        for (int i = 0; i < lineCount; i++) {
+            // 当前行的views和高度
+            List<View> lineViews = mAllChildViews.get(i);//单行
+            int lineHeight = mLineHeight.get(i);
+            int top_last = getPaddingTop();
+            QDLogger.println("onLayout top_last1=" + top_last);
+            for (int j = 0; j < i; j++) {
+                top_last += mLineHeight.get(j);
+            }
+            QDLogger.println("onLayout top_last=" + top_last);
+
+            // 设置子View的位置
+            int left_last = getPaddingLeft();
+            for (int j = 0; j < lineViews.size(); j++) {
+                View child = lineViews.get(j);
+                // 判断是否显示
+                if (child.getVisibility() == View.GONE) {
+                    continue;
+                }
+                MarginLayoutParams layoutParams = (MarginLayoutParams) child.getLayoutParams();
+                int left = left_last + layoutParams.leftMargin;
+                int top = top_last + layoutParams.topMargin;
+                //if (child.getLayoutParams() instanceof MarginLayoutParams) {
+                //}
+                // 进行子View进行布局
+                child.layout(left, top, left + child.getMeasuredWidth(), top + child.getMeasuredHeight());
+
+                QDLogger.println("进行子View进行布局:" + left + "," + top + "," + (left + child.getMeasuredWidth()) + "," + (top + child.getMeasuredHeight()));
+                left_last += layoutParams.leftMargin + child.getMeasuredWidth() + layoutParams.rightMargin;
+            }
+        }
+    }
+  /*  @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
         mAllChildViews.clear();
         mLineHeight.clear();
         // 获取当前ViewGroup的宽度
@@ -118,9 +241,11 @@ public class FlowLayout extends ViewGroup {
         // 记录当前行的view
         List<View> lineViews = new ArrayList<View>();
         int childCount = getChildCount();
+
+        QdToast.show("childCount="+childCount);
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-           int margin_left=0 ,margin_right=0,margin_top=0,margin_bottom=0;
+            int margin_left = 0, margin_right = 0, margin_top = 0, margin_bottom = 0;
             if (child.getLayoutParams() instanceof MarginLayoutParams) {
                 MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
                 margin_left = lp.leftMargin;
@@ -143,7 +268,7 @@ public class FlowLayout extends ViewGroup {
                 // 重置view的集合
                 lineViews = new ArrayList();
             }
-            lineWidth += childWidth + margin_left+ margin_right;
+            lineWidth += childWidth + margin_left + margin_right;
             lineHeight = Math.max(lineHeight, childHeight + margin_top + margin_bottom);
             lineViews.add(child);
         }
@@ -167,8 +292,8 @@ public class FlowLayout extends ViewGroup {
                 if (child.getVisibility() == View.GONE) {
                     continue;
                 }
-                int cLeft = left ;
-                int cTop = top ;
+                int cLeft = left;
+                int cTop = top;
                 int cRight = cLeft + child.getMeasuredWidth();
                 int cBottom = cTop + child.getMeasuredHeight();
                 if (child.getLayoutParams() instanceof MarginLayoutParams) {
@@ -188,16 +313,13 @@ public class FlowLayout extends ViewGroup {
             left = 0;
             top += lineHeight;
         }
-
-    }
+    }*/
 
     /**
      * 与当前ViewGroup对应的LayoutParams
      */
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        // TODO Auto-generated method stub
-
         return new MarginLayoutParams(getContext(), attrs);
     }
 
@@ -263,7 +385,6 @@ public class FlowLayout extends ViewGroup {
         postInvalidate();
     }
 
-
     public int setCheckItem(View v) {
         for (int i = 0; i < getChildCount(); i++) {
             if (((TextView) v).getText().equals(((TextView) getChildAt(i)).getText())) {
@@ -293,4 +414,8 @@ public class FlowLayout extends ViewGroup {
     }
 
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
 }

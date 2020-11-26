@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -195,20 +196,28 @@ public class InstallHelper {
         dialog.show();
     }
 
+    /**
+     * 判断某个app是否已安装
+     * @param context
+     * @param pkgName
+     * @return
+     */
     public static boolean checkAppInstalled(Context context, String pkgName) {
-        if (pkgName == null || pkgName.isEmpty()) {
+        if (TextUtils.isEmpty(pkgName)) {
             return false;
         }
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> info = packageManager.getInstalledPackages(0);
-        if (info == null || info.isEmpty())
+        if (info == null) {
             return false;
-        for (int i = 0; i < info.size(); i++) {
-            if (pkgName.equals(info.get(i).packageName)) {
-                return true;
+        } else {
+            for (int i = 0; i < info.size(); i++) {
+                if (pkgName.equals(info.get(i).packageName)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
 
     public static void downloadAndSilenceInstall(final Activity context, boolean autoReStartApp, final String name, final String url) {
@@ -244,14 +253,15 @@ public class InstallHelper {
 
     /**
      * okhttp 下载
-     *  @param context
+     *
+     * @param context
      * @param name
      * @param url
      * @param listener
      * @return
      */
     public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, OnDownloadProgressListener listener) {
-       return downloadAndSilenceInstall(context, autoReStartApp, name, url, DownloadTask.DownloadType.Okhttp, listener);
+        return downloadAndSilenceInstall(context, autoReStartApp, name, url, DownloadTask.DownloadType.Okhttp, listener);
     }
 
     public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
@@ -264,7 +274,7 @@ public class InstallHelper {
                 OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
                     @Override
                     public void onDownloadRunning(long downloadId, String name, float progress) {
-                        if (listener != null&&listener.canCallBack()) {
+                        if (listener != null && listener.canCallBack()) {
                             listener.onDownloadRunning(downloadId, name, progress);
                         }
                     }
@@ -349,7 +359,7 @@ public class InstallHelper {
     public static void silenceInstall(@NonNull Context context, boolean autoReStartApp, @NonNull File file, PackageInstaller.SessionCallback sessionCallback) throws Exception {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             if (!file.exists()) {
-                Exception e =new Exception("安装文件包不存在");
+                Exception e = new Exception("安装文件包不存在");
                 throw e;
             }
             String path = file.getPath();
@@ -388,9 +398,9 @@ public class InstallHelper {
                     @Override
                     public void onFinished(int sessionId, boolean success) {
                         if (success) {
-                            QDLogger.i( "Silent Install Success,sessionId="+sessionId);
+                            QDLogger.i("Silent Install Success,sessionId=" + sessionId);
                         } else {
-                            QDLogger.i( "Silent Install Fail,sessionId="+sessionId);
+                            QDLogger.i("Silent Install Fail,sessionId=" + sessionId);
                         }
                     }
                 });
@@ -577,10 +587,12 @@ public class InstallHelper {
     }
 
     /* 卸载apk */
-    public static void uninstallApk(Context context, String packageName) {
+    public static void unInstallApk(Context context, String packageName) {
         Uri uri = Uri.parse("package:" + packageName);
         Intent intent = new Intent(Intent.ACTION_DELETE, uri);
         context.startActivity(intent);
+        //int REQUEST_CODE = 4567;
+        // context.startActivityForResult(intent, REQUEST_CODE);
     }
 
     public static void runInstall(final Context context, final Uri uri) {
@@ -593,7 +605,6 @@ public class InstallHelper {
                         //Intent intent = new Intent(Intent.ACTION_VIEW);
                         //intent.setDataAndType(uri,"application/vnd.android.package-archive");
                         //context.startActivity(intent);
-
                         openAPKFile((Activity) context, uri);
                     } else {
                         Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);

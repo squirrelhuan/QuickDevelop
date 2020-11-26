@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
@@ -535,6 +536,7 @@ public class GuiderView extends View {
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                QDLogger.println("引导",motionEvent.getX()+","+motionEvent.getY());
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isAnimationFinished) {//动画加载完成并且为点击操作
                     switch (guiderModel.getComplateType()) {
                         case CLICK:
@@ -553,9 +555,7 @@ public class GuiderView extends View {
                 return false;
             }
         });
-
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

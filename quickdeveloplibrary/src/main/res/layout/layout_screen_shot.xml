@@ -33,7 +33,7 @@
                 android:layout_height="@dimen/dp_18"
                 android:layout_weight="1"
                 android:scaleType="fitStart"
-                android:src="@mipmap/quickdevelop_ic_launcher_round" />
+                android:src="@mipmap/quickdevelop_ic_launcher" />
 
             <ImageView
                 android:id="@+id/iv_code"

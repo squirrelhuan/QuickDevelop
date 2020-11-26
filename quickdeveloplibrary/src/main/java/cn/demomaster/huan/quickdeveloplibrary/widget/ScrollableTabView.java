@@ -90,8 +90,13 @@ public class ScrollableTabView extends HorizontalScrollView implements
             return;
         for (int i = 0; i < mPager.getAdapter().getCount(); i++) {
             final int index = i;
-            View tab = mAdapter.getView(i);
-            mContainer.addView(tab);
+            View tab = mAdapter.getView(i,mContainer);
+            if(tab==null){
+                return;
+            }
+            if(tab.getParent()==null) {
+                mContainer.addView(tab);
+            }
             tab.setFocusable(true);
             mTabs.add(tab);
             tab.setOnClickListener(new OnClickListener() {

@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.activity.sample;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,12 +22,14 @@ import java.util.Date;
 
 import butterknife.BindView;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -35,8 +38,8 @@ import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.imageToBase64;
 
-@ActivityPager(name = "身份证读取",preViewClass = TextView.class,resType = ResType.Resource)
-public class IDCardActivity extends QDActivity {
+@ActivityPager(name = "身份证读取", preViewClass = TextView.class, resType = ResType.Resource)
+public class IDCardActivity extends BaseActivity {
 
     @BindView(R.id.main_image)
     public ImageView imageView;
@@ -49,17 +52,18 @@ public class IDCardActivity extends QDActivity {
 
     /**
      * 拍摄证件照片
+     *
      * @param type 拍摄证件类型
      */
     private void takePhoto(final int type) {
         getPhotoHelper().takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
             @Override
-            public void onSuccess(Intent data, String path){
+            public void onSuccess(Intent data, String path) {
                 if (!TextUtils.isEmpty(path)) {
                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
                 String imgBase64 = imageToBase64(path);
-                Log.i("CGQ",imgBase64);
+                Log.i("CGQ", imgBase64);
                 Bundle extras = data.getExtras();
                 if (extras != null) {
                     Bitmap photo = extras.getParcelable("data");
@@ -91,13 +95,14 @@ public class IDCardActivity extends QDActivity {
     public void frontIdCard(View view) {
         getPhotoHelper().takePhotoForIDCard(new PhotoHelper.OnTakePhotoResult() {
             @Override
-            public void onSuccess(Intent data,String path) {
+            public void onSuccess(Intent data, String path) {
                 if (!TextUtils.isEmpty(path)) {
                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
                 String imgBase64 = imageToBase64(path);
-                Log.i("CGQ",imgBase64);
+                Log.i("CGQ", imgBase64);
             }
+
             @Override
             public void onFailure(String error) {
 
@@ -122,22 +127,23 @@ public class IDCardActivity extends QDActivity {
     }
 
     QDDialog qdDialog;
+
     //选择照片的popupWindow
     private void SelectPhotoPopupWindow() {
         //@drawable/listview_option_menu
         qdDialog = new QDDialog.Builder(mContext)
                 .setMessage("请选择你要上传的图片")
                 .setBackgroundRadius(50)
-                .addAction("拍照", new QDDialog.OnClickActionListener() {
+                .addAction("拍照", new OnClickActionListener() {
                     @Override
-                    public void onClick(QDDialog dialog) {
+                    public void onClick(Dialog dialog, Object tag) {
                         dialog.dismiss();
                         getPhotoHelper().takePhoto(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
-                                Log.i(TAG,"map_path="+path);
+                                Log.i(TAG, "map_path=" + path);
                                 String map_str2 = JSON.toJSONString(data);
-                                Log.i(TAG,"map_str2="+map_str2);
+                                Log.i(TAG, "map_str2=" + map_str2);
                                 if (!TextUtils.isEmpty(path)) {
                                     imageView.setImageBitmap(BitmapFactory.decodeFile(path));
                                 }
@@ -160,23 +166,23 @@ public class IDCardActivity extends QDActivity {
                         });
 
                     }
-                }).addAction("从相册中选取", new QDDialog.OnClickActionListener() {
-            @Override
-            public void onClick(QDDialog dialog) {
-                dialog.dismiss();
-                getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                }).addAction("从相册中选取", new OnClickActionListener() {
                     @Override
-                    public void onSuccess(Intent data, String path) {
-                        QDLogger.i("path="+path);
-                    }
+                    public void onClick(Dialog dialog, Object tag) {
+                        dialog.dismiss();
+                        getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                            @Override
+                            public void onSuccess(Intent data, String path) {
+                                QDLogger.i("path=" + path);
+                            }
 
-                    @Override
-                    public void onFailure(String error) {
-                        QDLogger.i("error="+error);
+                            @Override
+                            public void onFailure(String error) {
+                                QDLogger.i("error=" + error);
+                            }
+                        });
                     }
-                });
-            }
-        }).setGravity_foot(Gravity.CENTER).create();
+                }).setGravity_foot(Gravity.CENTER).create();
         qdDialog.show();
 
       /*  pop.setBackgroundDrawable(new BitmapDrawable());

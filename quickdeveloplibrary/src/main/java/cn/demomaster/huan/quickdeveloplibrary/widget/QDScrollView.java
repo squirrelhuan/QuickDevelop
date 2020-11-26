@@ -3,11 +3,14 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class QDScrollView extends ScrollView {
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public QDScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -39,7 +43,6 @@ public class QDScrollView extends ScrollView {
         setVerticalFadingEdgeEnabled(false);
         setOverScrollMode(OVER_SCROLL_NEVER);
     }
-
 
     private View convertView;
     //获取初始控件

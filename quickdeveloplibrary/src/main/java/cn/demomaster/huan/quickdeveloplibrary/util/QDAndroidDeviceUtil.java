@@ -116,7 +116,10 @@ public class QDAndroidDeviceUtil {
     public static String getBTMACAddress(Context mContext) {
         BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
         m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        @SuppressLint("MissingPermission") String m_szBTMAC = m_BluetoothAdapter.getAddress();
+        if(m_BluetoothAdapter==null){
+            return null;
+        }
+        String m_szBTMAC = m_BluetoothAdapter.getAddress();
         return m_szBTMAC;
     }
 

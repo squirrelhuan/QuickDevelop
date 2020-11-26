@@ -24,7 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.PreviewActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
-import cn.demomaster.huan.quickdeveloplibrary.util.ImageUitl;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollRecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 
@@ -158,7 +158,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                             Bundle extras = data.getExtras();
                             if (extras != null) {
                                 Bitmap bitmap = extras.getParcelable("data");
-                                String filePath = ImageUitl.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
+                                String filePath = QDBitmapUtil.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
                                 imageList.add(new Image(filePath, UrlType.file));
                                 addImageToView();
                                 if (onPictureChangeListener != null) {

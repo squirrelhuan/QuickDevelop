@@ -1,19 +1,22 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnDoubleClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnMultClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
@@ -24,15 +27,14 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "ErrorTest",preViewClass = TextView.class,resType = ResType.Custome)
-public class ErrorTestFragment extends QDFragment {
+@ActivityPager(name = "ErrorTest", preViewClass = TextView.class, resType = ResType.Custome)
+public class ErrorTestFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
-    //Components
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
 
@@ -41,38 +43,35 @@ public class ErrorTestFragment extends QDFragment {
     @BindView(R.id.btn_three_click)
     QDButton btn_three_click;
 
-    View mView;
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_errortest, null);
-        }
-        ButterKnife.bind(this,mView);
-        return (ViewGroup) mView;
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_layout_errortest, null);
+        return  mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayoutOld) {
-        actionBarLayoutOld.setTitle("异常捕获");
+    public void initView(View rootView) {
+        ButterKnife.bind(this, rootView);
+        getActionBarTool().setTitle("异常捕获");
         btn_error_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int a =0;
+                int a = 0;
                 int b = 1;
-                int c = b/a;
+                int c = b / a;
             }
         });
 
         btn_double_click.setOnClickListener(new OnDoubleClickListener() {
             @Override
             public void onDoubleClick(View v) {
-                Toast.makeText(mContext,"double click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "double click", Toast.LENGTH_SHORT).show();
             }
         });
-        btn_three_click.setOnClickListener(new OnMultClickListener(3,300) {
+        btn_three_click.setOnClickListener(new OnMultClickListener(3, 300) {
             @Override
             public void onClickEvent(View v) {
-                Toast.makeText(mContext,"three click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "three click", Toast.LENGTH_SHORT).show();
             }
         });
     }

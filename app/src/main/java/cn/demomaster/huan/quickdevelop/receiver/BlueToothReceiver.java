@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-
 /**
  * 监听蓝牙的连接状态
  */

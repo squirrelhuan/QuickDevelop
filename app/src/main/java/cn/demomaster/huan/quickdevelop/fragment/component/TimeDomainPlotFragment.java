@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.LinePoint;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotView;
 
@@ -26,35 +28,26 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotVie
  * 2018/8/25
  */
 
-@ActivityPager(name = "TimeDomainPlot",preViewClass = TextView.class,resType = ResType.Custome)
-public class TimeDomainPlotFragment extends QDFragment {
-    //Components
-    ViewGroup mView;
+@ActivityPager(name = "时域图", preViewClass = TextView.class, resType = ResType.Custome)
+public class TimeDomainPlotFragment extends BaseFragment {
 
     @Override
     public int getBackgroundColor() {
         return Color.WHITE;
     }
 
+    @NonNull
     @Override
-    public ViewGroup getContentView(LayoutInflater inflater) {
-        if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_timedominplot, null);
-        }
-
-        Bundle bundle = getArguments();
-        String title = "空界面";
-        // Example of a call to a native method
-
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_layout_timedominplot, null);
         return mView;
     }
 
-    @Override
-    public void initView(View rootView, ActionBar actionBarLayout) {
+    public void initView(View rootView) {
         TimeDomainPlotView timeDomainPlotView = rootView.findViewById(R.id.timeDomainPlotView);
         List<LinePoint> linePoints = new ArrayList<>();
-        for(int i =0;i<50000;i++){
-            linePoints.add(new LinePoint(i*20, ((i%2)==1)?Math.round( (float) (Math.random() * 100) *100)/100: Math.round(-(float) (Math.random() * 100)*100)/100));
+        for (int i = 0; i < 20000; i++) {
+            linePoints.add(new LinePoint(i * 20, ((i % 2) == 1) ? Math.round((float) (Math.random() * 100) * 100) / 100 : Math.round(-(float) (Math.random() * 100) * 100) / 100));
         }
         timeDomainPlotView.setLinePoints(linePoints);
         //timeDomainPlotView.setBaselineY(0);
@@ -63,7 +56,7 @@ public class TimeDomainPlotFragment extends QDFragment {
         rg_transitionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_transitionType_01:
                         timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.horizontal);
                         break;
@@ -83,7 +76,7 @@ public class TimeDomainPlotFragment extends QDFragment {
         rg_scaleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rg_scaleType_01:
                         timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleX);
                         break;

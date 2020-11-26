@@ -8,15 +8,13 @@
                android:layout_gravity="center"
                android:layout_height="fill_parent"
                />
-  
+
    <cn.demomaster.huan.quickdevelop.view.ViewfinderView
       android:id="@+id/viewfinder_view"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
-      
       android:background="#00000000"/>
    
     <include  android:id="@+id/two_dim_title" layout= "@layout/title_ceter_imageview"/>
-	
 
 </FrameLayout>
