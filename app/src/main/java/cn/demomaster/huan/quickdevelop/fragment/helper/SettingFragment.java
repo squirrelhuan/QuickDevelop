@@ -33,38 +33,29 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "setting", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "设置", preViewClass = TextView.class, resType = ResType.Custome)
 public class SettingFragment extends BaseFragment {
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     //Components
     @BindView(R.id.btn_send_tcp)
     QDButton btn_send_tcp;
     @BindView(R.id.btn_send_connect)
     QDButton btn_send_connect;
-
     View mView;
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_setting, null);
+            mView = inflater.inflate(R.layout.fragment_layout_setting, null);
         }
         ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     //同步模式改变系统发送的广播
     private static final String SYNC_CONN_STATUS_CHANGED = "com.android.sync.SYNC_CONN_STATUS_CHANGED";
-
     private TestChange mTestChange;
     private IntentFilter mIntentFilter;
-
     public void initView(View rootView) {
         getActionBarTool().setTitle("setting");
 

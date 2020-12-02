@@ -25,7 +25,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -41,12 +40,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.content.Context.WINDOW_SERVICE;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * 正方形的ImageView
@@ -81,23 +80,20 @@ public class SquareImageMenuView extends View {
     }
 
     private boolean isExpanded = false;
-
     private void init() {
         if (maxWith != -1) {
             return;
         }
-        //QDLogger.i("init.......");
-        //QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
         setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QDLogger.i("onClick=stopAnimation" + clickX + "," + clickY);
+                //QDLogger.i("onClick=stopAnimation" + clickX + "," + clickY);
                 //stopAnimation();
                 if (isExpanded) {
                     for (Map.Entry entry : pointMap.entrySet()) {
                         Point point = (Point) entry.getValue();
                         if (Math.abs(point.x - clickX) < button_width && Math.abs(point.y - clickY) < button_width) {
-                            QDLogger.i("clicked=" + entry.getKey());
+                            //QDLogger.i("clicked=" + entry.getKey());
                             int id = (int) entry.getKey();
                             doAction(id);
                             stopAnimation();
@@ -111,7 +107,7 @@ public class SquareImageMenuView extends View {
         setOnTouchListener(new OnTouchListener(getContext(), (ViewGroup) getParent(), new OnClickListener() {
             @Override
             public void onClick(MotionEvent event) {
-                QDLogger.i("event=" + event);
+
             }
         }));
     }
@@ -121,25 +117,21 @@ public class SquareImageMenuView extends View {
      * @param type
      */
     public void doAction(int type) {
-        if (type == 0 && !QDAccessibilityService.isAccessibilityServiceRunning(getContext(),QDAccessibilityService.class.getName())) {
+        if (type == 0 && !AccessibilityHelper.isEnable(getContext(),QDAccessibilityService.class)) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             getContext().startActivity(intent);
             return;
         }
-        if (!QDAccessibilityService.isAccessibilityServiceRunning(getContext(),QDAccessibilityService.class.getName())) {
+        if (!AccessibilityHelper.isEnable(getContext(),QDAccessibilityService.class)) {
             //跳转系统自带界面 辅助功能界面
             Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
             return;
         }
-        if (!QDAccessibilityService.isStart()) {
-            Log.i(TAG, "isStart.........");
-            //QDAccessibilityService.addPackage("com.huan.quanmintoutiao");
-            //getContext().startService(new Intent(getContext(), QDAccessibilityService.class));
-
+        if (AccessibilityHelper.getService()==null) {
             AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
             serviceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
             serviceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
@@ -148,22 +140,24 @@ public class SquareImageMenuView extends View {
             //QDAccessibilityService.getService().setServiceInfo(serviceInfo);
             return;
         }
-        switch (type) {
-            case 0:
-                QDAccessibilityService.recentApps(QDAccessibilityService.getService(), AccessibilityService.GLOBAL_ACTION_HOME);
-                break;
-            case 1:
-                QDAccessibilityService.recentApps(QDAccessibilityService.getService(), AccessibilityService.GLOBAL_ACTION_RECENTS);
-                break;
-            case 2:
-                QDAccessibilityService.recentApps(QDAccessibilityService.getService(), AccessibilityService.GLOBAL_ACTION_BACK);
-                break;
+        QDAccessibilityService qdAccessibilityService = AccessibilityHelper.getService();
+        if(qdAccessibilityService!=null) {
+            switch (type) {
+                case 0:
+                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
+                    break;
+                case 1:
+                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                    break;
+                case 2:
+                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+                    break;
+            }
         }
     }
 
     private void onback() {
         InputManager inputManager = (InputManager) getContext().getSystemService(Context.INPUT_SERVICE);
-
         long now = SystemClock.uptimeMillis();
         KeyEvent down = new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1, 0);
         //inputManager.injectInputEvent(down, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
@@ -205,7 +199,6 @@ public class SquareImageMenuView extends View {
 
     float clickX = 0;
     float clickY = 0;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         handler.removeCallbacks(runnable);
@@ -220,7 +213,6 @@ public class SquareImageMenuView extends View {
     }
 
     Map<Integer, Point> pointMap = new HashMap<>();
-
     public class OnTouchListener implements View.OnTouchListener {
         private int x;
         private int y;
@@ -288,7 +280,6 @@ public class SquareImageMenuView extends View {
 
     int maxWith = -1;
     int maxHeight = -1;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

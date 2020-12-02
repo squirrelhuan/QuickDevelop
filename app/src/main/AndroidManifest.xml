@@ -67,18 +67,7 @@
         <activity
             android:name=".activity.sample.AdsActivity"
             android:label="@string/title_activity_ads"></activity>
-        <!--
-         <activity
-            android:name=".activity.Main3Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/StartAppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
         <!-- 声明service组件 -->
         <!--
   <service
@@ -103,6 +92,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--<activity
+            android:name=".activity.Main3Activity"
+            android:label="@string/title_activity_main2"
+            android:taskAffinity="com.squareup.leakcanary.${applicationId}"
+            android:theme="@style/StartAppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>-->
         <activity android:name=".activity.sample.WifiTestActivity2" />
         <activity android:name=".activity.sample.component.SlidingPanelLayoutActivity" />
         <activity android:name=".activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->

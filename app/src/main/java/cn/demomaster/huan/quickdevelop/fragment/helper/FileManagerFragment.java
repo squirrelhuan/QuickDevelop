@@ -45,7 +45,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
  * 2018/8/25
  */
 
-@ActivityPager(name = "FileManager", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "文件管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class FileManagerFragment extends BaseFragment {
 
     @Override
@@ -132,7 +132,6 @@ public class FileManagerFragment extends BaseFragment {
                         Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
         });
 
@@ -146,14 +145,10 @@ public class FileManagerFragment extends BaseFragment {
         File[] files;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             files = getExternalFilesDirs(mContext, Environment.MEDIA_MOUNTED);
-            for (File file : files) {
-                QDLogger.e("main", "得到的全部外存：" + file.getAbsolutePath());
-
-
-//便历所有外部存储
+            for (File file : files) {//便历所有外部存储
+                QDLogger.e("main", "外部存储：" + file.getAbsolutePath());
             }
         }
-
 
         QDLogger.d("StoragePath:", android.os.Environment.getExternalStorageDirectory().getPath());
         QDLogger.d("StoragePath:", QDFileUtil.getStoragePath(mContext, true));
@@ -186,7 +181,7 @@ public class FileManagerFragment extends BaseFragment {
                 if (qdFile != null) {
                     //Date date1 = new Date(System.currentTimeMillis());
                     Date date = new Date(qdFile.getModifyTime());
-                    QDLogger.e("-------------------------" + simpleDateFormat.format(date));
+                    QDLogger.e("文件创建时间：" + simpleDateFormat.format(date));
                 }
             }
         });

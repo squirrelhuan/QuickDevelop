@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Point;
-import android.os.Bundle;
 import android.view.View;
 
 public interface FloatView {

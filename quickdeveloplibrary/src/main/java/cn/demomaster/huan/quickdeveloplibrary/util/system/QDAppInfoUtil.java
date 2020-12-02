@@ -18,7 +18,6 @@ public class QDAppInfoUtil {
 
     /**
      * 根据包名获取版本信息
-     *
      * @param context
      * @param packageName
      * @return
@@ -36,16 +35,23 @@ public class QDAppInfoUtil {
         return null;
     }
 
+    /**
+     * 判断是否存在pckName包
+     *
+     * @param pckName
+     * @return
+     */
+    public static boolean isPackageExist(Context context, String pckName) {
+        return getPackageInfoByPackageName(context,pckName)!=null;
+    }
+
     public static String getVersionName(Context context) {
         return getVersionName(context, context.getPackageName());
     }
 
     public static String getVersionName(Context context, String packageName) {
         PackageInfo pi = getPackageInfoByPackageName(context, packageName);
-        if (pi != null) {
-            return pi.versionName;
-        }
-        return null;
+        return pi != null?pi.versionName:null;
     }
 
     // 获取本地的版本号

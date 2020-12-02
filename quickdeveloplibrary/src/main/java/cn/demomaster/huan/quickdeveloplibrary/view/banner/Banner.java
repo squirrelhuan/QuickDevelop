@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.cache.QuickCache;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerAdapter.basePosition;
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerAdapter.getRealPosition;

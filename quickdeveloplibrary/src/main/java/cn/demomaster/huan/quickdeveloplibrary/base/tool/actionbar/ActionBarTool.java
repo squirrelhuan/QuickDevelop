@@ -28,8 +28,7 @@ public class ActionBarTool implements ActionBarLayoutInterface{
         this.activity = fragment.getActivity();
         this.fragment = fragment;
     }
-
-
+    
     View mActionView;
     View mContentView;
     ActionBarLayout2 actionBarLayout2;

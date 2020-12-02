@@ -48,7 +48,6 @@ public class DebugFloatingService extends QDFloatingService {
 
     @Override
     public View setContentView(final Context context) {
-
         View view = getView(context, onTouchListener);
         return view;
     }

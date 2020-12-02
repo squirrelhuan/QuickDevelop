@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout height="-1" orientation="vertical" width="-1" xmlns="poetry"><!--根元素-->
-    <gridView backgroundColor="#00ff6000" backgroundImg="http:" column="5" row="10">
-        <banner height="3"  width="5" x="0"
+    <PercentLayout backgroundColor="#00ff6000" backgroundImg="http:" width="100%" height="100%">
+        <banner height="30%"  width="100%" x="0"
             y="0" desc="图片1;视频播放卡卡西;图片2" radius="30,30" duration="60000" direction="horizontal" gravity="bottom"  textGravity="center" url="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3496915261,2096217974&amp;fm=26&amp;gp=0.jpg;http://vfx.mtime.cn/Video/2019/03/09/mp4/190309153658147087.mp4;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967527&amp;di=4bc4c14d4184e29de804975ba4699942&amp;imgtype=0&amp;src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201307%2F24%2F213459izmmcsheybh3z6ee.jpg" />
-        <banner height="1"  width="1" x="0"
-            y="3"  url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=f4ea0e437cd0dfa1635206947a6703e6&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fsoftbbs%2F1102%2F19%2Fc0%2F6778140_1298084431382_1024x1024soft.jpg"/>
-        <banner height="1"  width="2" x="0" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604925885712&amp;di=cab53a922b337f7da3652d92a1d35955&amp;imgtype=0&amp;src=http%3A%2F%2Fa0.att.hudong.com%2F87%2F75%2F01300000200980121595759248258.jpg"
+        <banner height="30%"  width="40%" x="0"
+            y="30%"  url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=f4ea0e437cd0dfa1635206947a6703e6&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fsoftbbs%2F1102%2F19%2Fc0%2F6778140_1298084431382_1024x1024soft.jpg"/>
+        <banner height="20%"  width="40%" x="0" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604925885712&amp;di=cab53a922b337f7da3652d92a1d35955&amp;imgtype=0&amp;src=http%3A%2F%2Fa0.att.hudong.com%2F87%2F75%2F01300000200980121595759248258.jpg"
             y="4"  />
-        <banner height="1"  width="1" x="1" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604926261251&amp;di=9b33f88f92eb599d94dca5b5867aa157&amp;imgtype=0&amp;src=http%3A%2F%2Fa0.att.hudong.com%2F43%2F17%2F01300000400875125022179001625.jpg"
+        <banner height="10%"  width="20%" x="10%" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604926261251&amp;di=9b33f88f92eb599d94dca5b5867aa157&amp;imgtype=0&amp;src=http%3A%2F%2Fa0.att.hudong.com%2F43%2F17%2F01300000400875125022179001625.jpg"
             y="3" />
-        <banner height="2"  width="3" x="2" y="3" indicator="circle" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=63afa601de32dbe3f545b0ba94f50a19&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fsoftbbs%2F1003%2F07%2Fc0%2F3134443_1267900790753_1024x1024soft.jpg"/>
-        <banner height="1"  width="5" x="0" y="5" radius="0" indicator="Rectangle" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=484e1ecfcb6f370f7739d061d907dc09&amp;imgtype=0&amp;src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F633%2F567%2F898%2F533999026aec404cbe70a0ae5834c96e.jpg;https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=523622917,4032313627&amp;fm=26&amp;gp=0.jpg"/>
-        <web height="3"  width="5" x="0"
-            y="6" url="https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6420?positionId=531&amp;queryWord=&amp;spm=1001.2101.3001.4649;https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6323?positionId=532&amp;queryWord=&amp;spm=1001.2101.3001.4651;https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6428?positionId=533&amp;queryWord=&amp;spm=1001.2101.3001.4653"/>
-        <banner height="1" width="5" x="0" y="9" direction="vertical" duration="5000"  radius="0,0,30,30" desc="人生没有不劳而获的事情，想要幸福，就要付出，想要财富，就得加油，没有谁的人生，能一直坐享其成;视频区域12345678900-==-99i应该还好积极健康;图片2陶然亭跟" textBackgroundColor="#0040a0;#ffc040;#0040a0;#0040a0;#0040a0" textColor="#ffffff;#000000;#ffffffff;#330033;#ffff6060"/>
-    </gridView>
+        <banner height="30%"  width="60%" x="40%" y="30%" indicator="circle" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=63afa601de32dbe3f545b0ba94f50a19&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fsoftbbs%2F1003%2F07%2Fc0%2F3134443_1267900790753_1024x1024soft.jpg"/>
+        <banner height="20%"  width="100%" x="0" y="60%" radius="0" indicator="Rectangle" url="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967526&amp;di=484e1ecfcb6f370f7739d061d907dc09&amp;imgtype=0&amp;src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F633%2F567%2F898%2F533999026aec404cbe70a0ae5834c96e.jpg;https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=523622917,4032313627&amp;fm=26&amp;gp=0.jpg"/>
+        <web height="10%"  width="100%" x="0"
+            y="80%" url="https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6420?positionId=531&amp;queryWord=&amp;spm=1001.2101.3001.4649;https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6323?positionId=532&amp;queryWord=&amp;spm=1001.2101.3001.4651;https://kunpeng-sc.csdnimg.cn/?timestamp=1623163941/#/preview/6428?positionId=533&amp;queryWord=&amp;spm=1001.2101.3001.4653"/>
+        <banner height="10%" width="100%" x="0" y="90%" direction="vertical" duration="5000"  radius="0,0,30,30" desc="人生没有不劳而获的事情，想要幸福，就要付出，想要财富，就得加油，没有谁的人生，能一直坐享其成;视频区域12345678900-==-99i应该还好积极健康;图片2陶然亭跟" textBackgroundColor="#0040a0;#ffc040;#0040a0;#0040a0;#0040a0" textColor="#ffffff;#000000;#ffffffff;#330033;#ffff6060"/>
+    </PercentLayout>
 </layout>

@@ -30,13 +30,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "ScreenShot", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "截图", preViewClass = TextView.class, resType = ResType.Custome)
 public class ScreenShotFragment extends BaseFragment {
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     //Components
     @BindView(R.id.btn_shot)
@@ -57,15 +52,14 @@ public class ScreenShotFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_screen_shot, null);
-        return (ViewGroup) mView;
+        View mView = inflater.inflate(R.layout.fragment_layout_screen_shot, null);
+        return mView;
     }
 
     Bitmap bitmap;
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        getActionBarTool().setTitle("截图");
         getActionBarTool().setHeaderBackgroundColor(Color.RED);
         btn_shot.setOnClickListener(new View.OnClickListener() {
             @Override

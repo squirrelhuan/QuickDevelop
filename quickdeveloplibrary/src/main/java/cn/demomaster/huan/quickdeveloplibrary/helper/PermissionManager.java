@@ -311,16 +311,10 @@ public class PermissionManager {
     public static boolean getPermissionStatus(Context context, String[] permissions) {
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 检查该权限是否已经获取
             for (String str : permissions) {
-                if (specialMap.containsKey(str)) {//特殊权限
-                    if (!getPermissionStatus(context, str)) {
-                        return false;
-                    }
-                } else {//普通权限
-                    if (!getPermissionStatus(context, str)) {
-                        return false;
-                    }
+                if (!getPermissionStatus(context, str)) {
+                    QDLogger.e("权限，"+str);
+                    return false;
                 }
             }
         }

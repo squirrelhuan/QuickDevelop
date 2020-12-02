@@ -20,6 +20,18 @@
                             android:text="除以零错误"/>
 
                         <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_error_02"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="空指针错误"/>
+
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_error_03"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="类型转换错误"/>
+
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                             android:id="@+id/btn_double_click"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

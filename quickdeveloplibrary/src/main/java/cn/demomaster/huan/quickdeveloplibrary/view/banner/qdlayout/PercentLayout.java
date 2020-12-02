@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,8 +11,6 @@ import androidx.annotation.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class PercentLayout extends FrameLayout {
     /*int row = 3;

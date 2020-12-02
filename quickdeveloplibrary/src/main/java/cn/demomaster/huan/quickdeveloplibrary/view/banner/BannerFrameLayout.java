@@ -5,13 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 
 
 public class BannerFrameLayout extends FrameLayout {

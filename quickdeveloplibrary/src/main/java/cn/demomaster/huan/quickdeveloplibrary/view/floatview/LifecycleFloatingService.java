@@ -5,11 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PointF;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,30 +14,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import android.os.Handler;
+import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
+import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleTimerData;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
 import cn.demomaster.qdlogger_library.QDLogBean;
-import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
@@ -198,8 +187,8 @@ public class LifecycleFloatingService extends QDFloatingService {
 
     @Override
     public void init() {
-        setWidth(800);
-        setHeight(500);
+        setWidth(DisplayUtil.getScreenWidth(getApplicationContext()));
+        setHeight(DisplayUtil.getScreenHeight(getApplicationContext()));
     }
 
     static DebugFloating2 debugFloating2;

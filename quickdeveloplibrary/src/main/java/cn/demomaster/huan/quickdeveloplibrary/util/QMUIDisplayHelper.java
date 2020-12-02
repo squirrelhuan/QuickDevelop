@@ -387,22 +387,6 @@ public class QMUIDisplayHelper {
         return cm.getActiveNetworkInfo() != null;
     }
 
-    /**
-     * 判断是否存在pckName包
-     *
-     * @param pckName
-     * @return
-     */
-    public static boolean isPackageExist(Context context, String pckName) {
-        try {
-            PackageInfo pckInfo = context.getPackageManager()
-                    .getPackageInfo(pckName, 0);
-            if (pckInfo != null)
-                return true;
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-        return false;
-    }
 
     /**
      * 判断 SD Card 是否 ready

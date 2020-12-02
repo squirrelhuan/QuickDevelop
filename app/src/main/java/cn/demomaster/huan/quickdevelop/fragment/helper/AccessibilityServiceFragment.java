@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
@@ -58,15 +59,12 @@ public class AccessibilityServiceFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 //QDAccessibilityService.addPackage("cn.demomaster.huan.quickdevelop");
-                if (!QDAccessibilityService.isAccessibilityServiceRunning(getContext(), QDAccessibilityService.class.getName())) {
+                if (!AccessibilityHelper.isEnable(getContext(), QDAccessibilityService.class)) {
                     //跳转系统自带界面 辅助功能界面
-                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getContext().startActivity(intent);
+                    QDAccessibilityService.startSettintActivity(mContext);
                     return;
-                }
-                if (QDAccessibilityService.isAccessibilityServiceRunning(mContext, QDAccessibilityService.class.getName())) {
-                    QdToast.show(mContext, "true");
+                }else {
+                    QdToast.show(mContext, "无障碍已开启");
                 }
             }
         });
@@ -76,7 +74,6 @@ public class AccessibilityServiceFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        Toast.makeText(getContext(), "开启", Toast.LENGTH_SHORT).show();
                         if(ServiceHelper.getServiceByKey(FloatingMenuService.class.getName())!=null){
                             if(ServiceHelper.getServiceByKey(FloatingMenuService.class.getName()).isShowing){
                                 ServiceHelper.dissmissWindow(FloatingMenuService.class);
@@ -89,23 +86,14 @@ public class AccessibilityServiceFragment extends BaseFragment {
                             ServiceHelper.showWindow(getContext(),FloatingMenuService.class);
                             btn_floating_02.setText("关闭悬浮");
                         }
-
                     }
 
                     @Override
                     public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "权限授权失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
-
- /*if (!QDAccessibilityService.isAccessibilityServiceRunning(getApplicationContext(),QDAccessibilityService.class.getName())) {
-                        //跳转系统自带界面 辅助功能界面
-                        QDAccessibilityService.startSettintActivity(mContext);
-                        return;
-                    }*/
-
     }
-
 }

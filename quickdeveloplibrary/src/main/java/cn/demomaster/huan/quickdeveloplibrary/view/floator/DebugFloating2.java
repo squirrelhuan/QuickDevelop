@@ -28,10 +28,10 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.RichTextView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogBean;
-import cn.demomaster.qdlogger_library.QDLoggerType;
+import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdlogger_library.QDLoggerType;
 
 /**
  * 调试日志输出

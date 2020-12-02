@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.IBinder;
@@ -15,22 +16,22 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 悬浮按钮
  * Created
  */
-public abstract class QDFloatingService extends Service implements QdFloatingServiceInterFace{
+public abstract class QDFloatingService extends Service implements QdFloatingServiceInterFace {
     public boolean isShowing = false;
-    private QDFloatingService instance;
-    private  WindowManager windowManager;
-    public  WindowManager.LayoutParams layoutParams;
-
+    private WindowManager windowManager;
+    public WindowManager.LayoutParams layoutParams;
     public View contentView;
     public Service getInstance() {
         return this;
+    }
+    public WindowManager getWindowManager() {
+        return windowManager;
     }
 
     /**
@@ -38,7 +39,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
      */
     @Override
     public void onDismiss() {
-        if(onDismissListener!=null) {
+        if (onDismissListener != null) {
             onDismissListener.onDismiss();
         }
     }
@@ -46,8 +47,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-        QDLogger.e("onCreate " +this.getClass().getName());
+        QDLogger.e("onCreate " + this.getClass().getName());
         ServiceHelper.onCreateService(this);
         setIsShowing(true);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -60,12 +60,10 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
         layoutParams.format = PixelFormat.RGBA_8888;
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        if(!getTouchAble()) {
-            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (!getTouchAble()) {
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         }
 
-        layoutParams.x = 0;
-        layoutParams.y = 0;
         PointF pointF = getOriginPoint();
         if (pointF != null) {
             layoutParams.x = (int) pointF.x;
@@ -85,8 +83,8 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
         }
         contentView = setContentView(getApplicationContext());
         //contentView.setBackgroundColor(getResources().getColor(R.color.transparent_dark_33));
-        if(getTouchAble()) {
-            contentView.setOnTouchListener(new FloatingOnTouchListener(this, contentView));
+        if (getTouchAble()) {
+            contentView.setOnTouchListener(new FloatingOnTouchListener(contentView));
         }
         if (contentView != null) {
             updateLayoutParams();
@@ -104,9 +102,9 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     /**
      * 更新布局
      */
-    public void updateLayoutParams(){
-        if(layoutParams!=null) {
-            QDLogger.e("updateLayoutParams width="+mWidth+",mHeight="+mHeight);
+    public void updateLayoutParams() {
+        if (layoutParams != null) {
+            QDLogger.e("updateLayoutParams width=" + mWidth + ",mHeight=" + mHeight);
             layoutParams.width = mWidth;
             layoutParams.height = mHeight;
             contentView.setLayoutParams(layoutParams);
@@ -118,23 +116,25 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
 
     /**
      * 设置窗口高度
+     *
      * @param height
      */
-    public void setHeight(int height){
+    public void setHeight(int height) {
         mHeight = height;
         updateLayoutParams();
-        if(contentView!=null)
-        windowManager.updateViewLayout(contentView,layoutParams);
+        if (contentView != null)
+            windowManager.updateViewLayout(contentView, layoutParams);
     }
 
     /**
      * 设置窗口宽度
+     *
      * @param width
      */
-    public void setWidth(int width){
+    public void setWidth(int width) {
         mWidth = width;
         updateLayoutParams();
-        if(layoutParams!=null) {
+        if (layoutParams != null) {
             windowManager.updateViewLayout(contentView, layoutParams);
         }
     }
@@ -143,22 +143,35 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
 
     /**
      * 获取窗口左上角坐标
+     *
      * @return
      */
     public abstract PointF getOriginPoint();
 
     public abstract void init();
 
+    public Point getPosition(){
+        layoutParams = (WindowManager.LayoutParams) contentView.getLayoutParams();
+        return new Point(layoutParams.x,layoutParams.y);
+    }
+    public void setPosition(Point point){
+        layoutParams = (WindowManager.LayoutParams) contentView.getLayoutParams();
+        layoutParams.x = (int) point.x;
+        layoutParams.y = (int) point.y;
+        contentView.setLayoutParams(layoutParams);
+    }
     /**
      * 悬浮窗是否可以触摸
+     *
      * @return
      */
-    public boolean getTouchAble(){
+    public boolean getTouchAble() {
         return true;
     }
 
     /**
      * 获取悬浮窗视图
+     *
      * @return
      */
     public View getContentView() {
@@ -173,11 +186,12 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
         private long endTime = 0;
         private boolean isclick;
 
-        View targetView;
+        View targetView;//目标控件（位置要移动的控件）
         WindowManager windowManager;
 
-        public FloatingOnTouchListener(Context context, View targetView) {
+        public FloatingOnTouchListener(View targetView) {
             this.targetView = targetView;
+            Context context = targetView.getContext();
             windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
         }
 
@@ -202,13 +216,21 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
                     x = nowX;
                     y = nowY;
 
-                    WindowManager.LayoutParams layoutParams;
                     if (targetView != null) {
                         if (targetView.getLayoutParams() instanceof WindowManager.LayoutParams) {
+                            WindowManager.LayoutParams layoutParams;
                             layoutParams = (WindowManager.LayoutParams) targetView.getLayoutParams();
                             layoutParams.x = layoutParams.x + movedX;
                             layoutParams.y = layoutParams.y + movedY;
                             windowManager.updateViewLayout(targetView, layoutParams);
+                        }else if (targetView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams){
+                            ViewGroup.MarginLayoutParams layoutParams;
+                            layoutParams = (ViewGroup.MarginLayoutParams) targetView.getLayoutParams();
+                            layoutParams.leftMargin = layoutParams.leftMargin + movedX;
+                            layoutParams.topMargin = layoutParams.topMargin + movedY;
+                            targetView.setLayoutParams(layoutParams);
+                        }else {
+                            QDLogger.e("onTouch:" + targetView.getLayoutParams().getClass().getName());
                         }
                     }
                     break;
@@ -232,7 +254,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     public void onDestroy() {
         super.onDestroy();
         removeView();
-        QDLogger.e("onDestroyService " +this.getClass().getName());
+        QDLogger.e("onDestroyService " + this.getClass().getName());
         ServiceHelper.onDestroyService(this);
     }
 
@@ -267,6 +289,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     }
 
     private PopupWindow.OnDismissListener onDismissListener;
+
     public void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
     }

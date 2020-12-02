@@ -28,71 +28,14 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * 无障碍辅助服务
  */
 public class QDAccessibilityService extends AccessibilityService {
-    public static final String TAG = "QDAccessibilityService";
-    private static QDAccessibilityService instance;
-
-    public static AccessibilityNodeInfo rootNodeInfo;
-
-    public static AccessibilityService getService() {
-        return instance;
-    }
+    public static final String TAG = QDAccessibilityService.class.getSimpleName();
 
     //初始化
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        QDLogger.i(TAG, "辅助功能已开启...");
-        instance = this;
-        if(mOnAccessibilityListener!=null){
-            mOnAccessibilityListener.onServiceConnected(this);
-        }
-        rootNodeInfo = getRootInActiveWindow();
-        resetPackage();
-    }
-
-    public static Map<String, String> packageMap = new HashMap<>();
-
-    /**
-     * 添加要监听的包名
-     * @param packageName
-     */
-    public static void addPackage(String packageName) {
-        //添加之前先检查包名是否存在
-        QDLogger.i("addPackage:" + packageName);
-        packageMap.put(packageName, packageName);
-        resetPackage();
-    }
-
-    public static void resetPackage() {
-        //QDLogger.i("准备重置无障碍服务包名1");
-        if (getService() != null && getService().getServiceInfo() != null) {
-            if (getService().getServiceInfo().packageNames != null) {
-                QDLogger.i("无障碍服务监听包名："+getService().getServiceInfo().packageNames);
-                for (String entry : getService().getServiceInfo().packageNames) {
-                    packageMap.put(entry, entry);
-                }
-            }
-            //String[] packageNames = instance.getServiceInfo().packageNames;
-            String[] packageNames1 = new String[packageMap.size()];
-
-            int i = 0;
-            for (Map.Entry entry : packageMap.entrySet()) {
-                packageNames1[i] = (String) entry.getKey();
-                i++;
-            }
-            //packageNames1[packageNames.length] = packageName;
-            AccessibilityServiceInfo serviceInfo = instance.getServiceInfo();
-            if (packageNames1.length != 0) {
-                serviceInfo.packageNames = packageNames1;
-            }
-            instance.setServiceInfo(serviceInfo);
-        }
-    }
-
-    static OnAccessibilityListener mOnAccessibilityListener;
-
-    public static void setOnAccessibilityListener(OnAccessibilityListener onAccessibilityListener) {
-        mOnAccessibilityListener = onAccessibilityListener;
+        QDLogger.i(TAG, "无障碍服务【开启】");
+        AccessibilityHelper.onServiceConnected(this);
     }
 
     public static interface OnAccessibilityListener{
@@ -101,14 +44,24 @@ public class QDAccessibilityService extends AccessibilityService {
         void onServiceDestroy();
     }
 
+    String currentActivityName;
+    public String getCurrentActivityName() {
+        return currentActivityName;
+    }
+
     //实现辅助功能
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if(mOnAccessibilityListener!=null){
-            mOnAccessibilityListener.onAccessibilityEvent(this,event);
-        }
-        //Log.e(TAG, "TYPE_VIEW=" + event.getAction());
         int eventType = event.getEventType();
+        switch (eventType) {
+            case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
+                if (event.getClassName() != null) {
+                    currentActivityName = event.getClassName().toString();
+                }
+                break;
+        }
+        AccessibilityHelper.onAccessibilityEvent(this,event);
+        /*
         switch (eventType) {
             case AccessibilityEvent.TYPE_VIEW_CLICKED:
                 Log.i(TAG, "捕获到点击事件");
@@ -121,6 +74,7 @@ public class QDAccessibilityService extends AccessibilityService {
                         Log.i(TAG, "long-click button!");
                         // 执行长按操作
                         item.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
+                        item.getParent().performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
                     }
                 }
                 break;
@@ -130,7 +84,7 @@ public class QDAccessibilityService extends AccessibilityService {
             case AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED:
                 //Log.e(TAG, "文字改变" + event.getClassName());
                 break;
-        }
+        }*/
     }
 
     /**
@@ -145,7 +99,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 rootNodeInfo = accessibilityWindowInfo.getRoot();
                 if (rootNodeInfo != null) {
                     getChildsInfo(rootNodeInfo);
-                   // Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
+                    Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
                 }
             }
         } else {
@@ -182,14 +136,9 @@ public class QDAccessibilityService extends AccessibilityService {
         }
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Log.i(TAG, "showDialog:" + rootNodeInfo.canOpenPopup());
-        }
-        Log.i(TAG, "description=" + description);*/
+        }*/
         rootNodeInfo.getPackageName();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-           // Log.i(TAG, "ViewId=" + rootNodeInfo.getViewIdResourceName());
-        }
-        /*Log.i(TAG, "视图类型：" + rootNodeInfo.getClassName());
-        Log.i(TAG, "文本内容：" + rootNodeInfo.getText());
+       /*
         Log.i(TAG, "窗口Id:" + rootNodeInfo.getWindowId());*/
     }
 
@@ -209,44 +158,19 @@ public class QDAccessibilityService extends AccessibilityService {
     }
 
     /**
-     * 模拟全局按键
-     *
-     * @param service
+     * 模拟全局按键 performGlobalAction "Android 4.1及以上系统才支持此功能
      */
-    public static void recentApps(AccessibilityService service, int action) {
-        if (Build.VERSION.SDK_INT < 16) {
-            QdToast.show(service, "Android 4.1及以上系统才支持此功能.", Toast.LENGTH_SHORT);
-        } else {
-            service.performGlobalAction(action);
-        }
-    }
 
     @Override
     public void onInterrupt() {
         QDLogger.i(TAG, "辅助功能被迫中断");
-        //instance = null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         QDLogger.i(TAG, "辅助功能已关闭");
-        if(mOnAccessibilityListener!=null) {
-            mOnAccessibilityListener.onServiceDestroy();
-        }
-        //mOnAccessibilityListener=null;
-        instance = null;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 公共方法
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 辅助功能是否启动
-     */
-    public static boolean isStart() {
-        return instance != null;
+        AccessibilityHelper.onServiceDestroy();
     }
 
     public static void startSettintActivity(Context context){
@@ -256,83 +180,4 @@ public class QDAccessibilityService extends AccessibilityService {
         context.getApplicationContext().startActivity(intent);
     }
 
-    /**
-     * 判断是否存在置顶的无障碍服务
-     * @param name
-     * @return
-     */
-    public static boolean isAccessibilityServiceRunning(Context context, String name) {
-        AccessibilityManager am = (AccessibilityManager) context.getApplicationContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> enableServices = null;
-        int accessibilityEnabled = 0;
-        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String enabledServices = null;
-        try {
-            enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            Log.i(TAG, "已开启的无障碍服务：" + enabledServices);
-            accessibilityEnabled = Settings.Secure.getInt(contentResolver,Settings.Secure.ACCESSIBILITY_ENABLED);
-        } catch (Settings.SettingNotFoundException e) {
-            QDLogger.e(e);
-        }
-        String targetId = context.getPackageName()+"/"+name.trim();
-        enableServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
-        if (accessibilityEnabled == 1) {
-            //FIX 判断无障碍服务是否开启条件1
-            /*if(!TextUtils.isEmpty(enabledServices)&&enabledServices.contains(targetId)){
-                QDLogger.i(context.getApplicationContext(),"无障碍服务已开启1:"+targetId);
-                return true;
-            }*/
-            if(enableServices!=null&&enableServices.size()>0) {
-                //判断无障碍服务是否开启条件2
-                for (AccessibilityServiceInfo enableService : enableServices) {
-                    Log.i(TAG, "当前服务：" + enableService.getId() + ",目标服务：" + targetId);
-                    if (enableService.getId().trim().equalsIgnoreCase(targetId.trim())) {
-                        Log.e(TAG, "服务已开启：" + targetId);
-                        return true;
-                    }
-                }
-                // + (accessibilityEnabled==1?"1开启":"0关闭")
-            }else {
-                Log.e(TAG, "FEEDBACK_GENERIC "+enableServices.toString()+"不包含"+targetId);
-            }
-        }
-        Log.e(TAG, "无障碍服务未开启");
-        return false;
-    }
-
-    //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
-    public static void openAccessibilityService(Context context,Class accessibilityService){
-        openAccessibilityService(context,context.getPackageName(),accessibilityService.getCanonicalName());
-    }
-    //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
-    public static void openAccessibilityService(Context context,String packageName,Class serviceClass){
-        openAccessibilityService(context,packageName,serviceClass.getCanonicalName());
-    }
-    //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
-    public static void openAccessibilityService(Context context,String packageName, String serviceClassName){
-        try {
-            String targetID = context.getPackageName()+"/"+serviceClassName;
-            if(isAccessibilityServiceRunning(context,serviceClassName)){
-                QDLogger.i(context.getApplicationContext(),"无障碍的辅助服务已开启，无需重新开启"+targetID);
-                return;
-            }
-            ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-            String enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            String newValue = "";
-            if(TextUtils.isEmpty(enabledServices)){
-                newValue = targetID;
-            } else if(!enabledServices.contains(targetID)){
-                newValue = enabledServices + ":"+targetID;
-            }
-            Settings.Secure.putString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, newValue);
-            Settings.Secure.putString(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, "1");
-            String strs = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-           // QDLogger.i(TAG,"无障碍的辅助服务设置值："+strs);
-        } catch (Exception e) {
-            //授权方法：开启usb调试并使用adb工具连接手机，执行 adb shell pm grant org.autojs.autojspro android.permission.WRITE_SECURE_SETTING
-            //QdToast.show(context.getApplicationContext(),"请确保已给予 WRITE_SECURE_SETTINGS 权限授权代码已复制，请使用adb工具连接手机执行(重启不失效)"+ e.toString());
-            QDLogger.e(e);
-            //QDLogger.e("adb shell pm grant "+context.getApplicationContext().getPackageName()+" android.permission.WRITE_SECURE_SETTINGS"+",e="+e.toString());
-        }
-    }
 }

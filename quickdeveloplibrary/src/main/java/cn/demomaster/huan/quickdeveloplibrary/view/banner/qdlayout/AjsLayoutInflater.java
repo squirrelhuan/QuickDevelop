@@ -14,11 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFileType;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerContentType;
-import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebView;
-
 import com.bumptech.glide.Glide;
 
 import org.xml.sax.InputSource;
@@ -35,7 +30,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerContentType;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFileType;
+import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebView;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.backgroundColorDefault;

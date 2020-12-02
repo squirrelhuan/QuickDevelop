@@ -58,7 +58,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager.st
  * 2018/8/25
  */
 
-@ActivityPager(name = "Update App", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "App更新", preViewClass = TextView.class, resType = ResType.Custome)
 public class UpdateAppFragment extends BaseFragment {
 
     @Override

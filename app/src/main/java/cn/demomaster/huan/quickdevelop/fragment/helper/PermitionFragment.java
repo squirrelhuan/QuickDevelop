@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Permition", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class PermitionFragment extends BaseFragment {
 
     @Override

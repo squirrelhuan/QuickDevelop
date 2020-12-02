@@ -37,12 +37,9 @@ public class Application extends QDApplication {
         quickDb = new QuickDb(this, "quickdev.db", null, 10);
 
         NotificationHelper.getInstance().init(this);
-        //SoundHelper.init(this);
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
-        // DoraemonKit.install(this);
         //初始化友盟分享
         //initUmengShare("5c79138f61f564e0380012fa");
-
        /* UMConfigure.init(this,"5c79138f61f564e0380012fa"
                 ,"umeng", UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
 

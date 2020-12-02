@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.view.tabmenu;
 import android.graphics.Color;
 import android.view.View;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

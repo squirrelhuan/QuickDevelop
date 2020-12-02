@@ -32,7 +32,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Traffic", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "流量", preViewClass = TextView.class, resType = ResType.Custome)
 public class TrafficFragment extends BaseFragment {
 
     @Override
@@ -50,18 +50,16 @@ public class TrafficFragment extends BaseFragment {
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_traffic, null);
+            mView = inflater.inflate(R.layout.fragment_layout_traffic, null);
         }
         ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     public void initView(View rootView) {
-        getActionBarTool().setTitle("socket");
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_PHONE_STATE, Manifest.permission.PACKAGE_USAGE_STATS}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {

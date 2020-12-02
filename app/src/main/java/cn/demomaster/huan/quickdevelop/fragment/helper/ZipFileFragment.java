@@ -42,7 +42,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
  * 2018/8/25
  */
 
-@ActivityPager(name = "ZipFile", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "文件压缩", preViewClass = StateView.class, resType = ResType.Custome)
 public class ZipFileFragment extends BaseFragment {
 
     @Override

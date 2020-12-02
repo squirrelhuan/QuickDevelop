@@ -25,8 +25,6 @@ public class FloatingMenuService extends QDFloatingService {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_floating_menu, null);
         //int w =DisplayUtil.dip2px(context,100);
         //view.setLayoutParams(new LinearLayout.LayoutParams(w,w));
-
-        // dissmissWindow(context, FloatingMenuService.this.getClass());
         cl_menu = view.findViewById(R.id.cl_menu);
         QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
         //qdRoundDrawable.setCornerRadius(cl_menu.getWidth()/2);
@@ -44,8 +42,6 @@ public class FloatingMenuService extends QDFloatingService {
         button01 = view.findViewById(R.id.ib_menu_01);
         buttonEnable = true;
         button01.setEnabled(buttonEnable);
-        /*button02 = view.findViewById(R.id.ib_menu_02);
-        button03 = view.findViewById(R.id.ib_menu_03);*/
         //changeState();
         /*button01.setOnTouchListener(new FloatingOnTouchListener(this, view));
         button01.setOnClickListener(new View.OnClickListener() {

@@ -3,13 +3,13 @@ package cn.demomaster.huan.quickdeveloplibrary.view.drawable;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 

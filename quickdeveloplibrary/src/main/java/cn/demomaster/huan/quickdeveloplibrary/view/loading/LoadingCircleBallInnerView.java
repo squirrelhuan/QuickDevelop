@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PointF;

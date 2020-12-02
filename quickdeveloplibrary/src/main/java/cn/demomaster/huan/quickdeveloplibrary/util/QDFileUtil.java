@@ -543,7 +543,6 @@ public class QDFileUtil {
             for (int i = 0; i < Array.getLength(result); i++) {
                 Object storageVolumeElement = Array.get(result, i);
                 path = (String) getPath.invoke(storageVolumeElement);
-                QDLogger.e("getStoragePath---" + path);
                 boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
                 if (is_removale == removable) {
                     //return path;

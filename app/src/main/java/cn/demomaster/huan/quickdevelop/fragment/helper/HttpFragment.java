@@ -37,7 +37,7 @@ import okhttp3.RequestBody;
  * 2018/8/25
  */
 
-@ActivityPager(name = "https", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "网络请求", preViewClass = TextView.class, resType = ResType.Custome)
 public class HttpFragment extends BaseFragment {
 
     @Override
@@ -53,15 +53,14 @@ public class HttpFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_https, null);
-        return (ViewGroup) mView;
+        View mView = inflater.inflate(R.layout.fragment_layout_https, null);
+        return mView;
     }
 
     private static final MediaType FROM_DATA = MediaType.parse("multipart/form-data");
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        getActionBarTool().setTitle("socket");
         btn_send_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,11 +119,4 @@ public class HttpFragment extends BaseFragment {
         });
         //QDTcpClient.setStateListener();
     }
-
-       /* public void initActionBarLayout (ActionBarLayout2 actionBarLayoutOld){
-            int i = (int) (Math.random() * 10 % 4);
-            actionBarLayoutOld.setTitle("audio play");
-            actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
-
-        }*/
 }

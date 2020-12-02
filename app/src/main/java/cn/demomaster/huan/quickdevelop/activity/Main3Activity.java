@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Arrays;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.qdlogger_library.QDLogger;
 
-public class Main3Activity extends AppCompatActivity {
+public class Main3Activity extends QDActivity {
     SensorManager sensorManager;
     Sensor gyroscopeSensor;
     SensorEventListener gyroscopeSensorListener;
@@ -30,7 +31,7 @@ public class Main3Activity extends AppCompatActivity {
         gyroscopeSensorListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-               QDLogger.println("onSensorChanged="+Arrays.toString(sensorEvent.values));//sensorEvent.values[0] 代表x轴角速度，sensorEvent.values[1] 代表y轴，sensorEvent.values[2] 代表z轴，
+               //QDLogger.println("onSensorChanged="+Arrays.toString(sensorEvent.values));//sensorEvent.values[0] 代表x轴角速度，sensorEvent.values[1] 代表y轴，sensorEvent.values[2] 代表z轴，
                 // 对接收的数据处理
                 if (sensorEvent.values[2] > 0.5f) { // anticlockwise
                     getWindow().getDecorView().setBackgroundColor(Color.BLUE);

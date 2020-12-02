@@ -20,7 +20,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 /**
  * Created
  */
-public class FloatingService extends QDFloatingService {
+public class FpsFloatingService extends QDFloatingService {
     Button button;
     @Override
     public View setContentView(final Context context) {
@@ -45,7 +45,6 @@ public class FloatingService extends QDFloatingService {
 
     @Override
     public void init() {
-        QDLogger.e("FloatingService init");
         handler.postDelayed(runnable,1000);
         fpsMonitor.setOnFramChangedListener(new FPSMonitor.OnFramChangedListener() {
             @Override

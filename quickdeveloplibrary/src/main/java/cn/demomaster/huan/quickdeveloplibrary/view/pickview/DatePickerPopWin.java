@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,14 +1,11 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
-import android.app.Service;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingService;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FpsFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.LifecycleFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.QDFloatingService;
@@ -34,13 +31,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Floating", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "悬浮窗", preViewClass = TextView.class, resType = ResType.Custome)
 public class FloatingFragment extends BaseFragment {
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.btn_floating_01)
     Button btn_floating_01;
@@ -60,9 +52,7 @@ public class FloatingFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-
-
-        ServiceHelper.addServiceListener(FloatingService.class, new ServiceHelper.ServiceListener() {
+        ServiceHelper.addServiceListener(FpsFloatingService.class, new ServiceHelper.ServiceListener() {
             @Override
             public void onCreateService() {
                 btn_floating_01.setText("关闭悬浮");
@@ -80,11 +70,11 @@ public class FloatingFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        QDFloatingService service = ServiceHelper.getServiceByKey(FloatingService.class.getName());
+                        QDFloatingService service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
                         if (service != null && service.isShowing) {
-                            ServiceHelper.dissmissWindow(FloatingService.class);
+                            ServiceHelper.dissmissWindow(FpsFloatingService.class);
                         } else {
-                            ServiceHelper.showWindow(mContext, FloatingService.class);
+                            ServiceHelper.showWindow(mContext, FpsFloatingService.class);
                         }
                     }
 
@@ -93,16 +83,6 @@ public class FloatingFragment extends BaseFragment {
                         Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
                     }
                 });
-                /*if (!Settings.canDrawOverlays(mContext)) {
-                    Toast.makeText(mContext, "授权失败", Toast.LENGTH_SHORT).show();
-                } else {
-                    if(FloatingService.isShowing()){
-                        FloatingService.dissmissWindow(mContext,FloatingService.class);
-                    }else {
-                        FloatingService.showWindow(mContext,FloatingService.class);
-                        btn_floating_01.setText("关闭悬浮");
-                    }
-                }*/
             }
         });
 

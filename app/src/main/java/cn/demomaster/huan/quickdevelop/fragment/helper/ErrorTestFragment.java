@@ -1,10 +1,13 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 
-@ActivityPager(name = "ErrorTest", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "异常捕获", preViewClass = TextView.class, resType = ResType.Custome)
 public class ErrorTestFragment extends BaseFragment {
 
     @Override
@@ -37,6 +40,10 @@ public class ErrorTestFragment extends BaseFragment {
 
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
+    @BindView(R.id.btn_error_02)
+    QDButton btn_error_02;
+    @BindView(R.id.btn_error_03)
+    QDButton btn_error_03;
 
     @BindView(R.id.btn_double_click)
     QDButton btn_double_click;
@@ -59,6 +66,25 @@ public class ErrorTestFragment extends BaseFragment {
                 int a = 0;
                 int b = 1;
                 int c = b / a;
+            }
+        });
+        btn_error_02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Paint paint =null;
+                paint.setColor(Color.RED);
+            }
+        });
+        btn_error_03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Object linearLayout = new LinearLayout(getContext());
+                        RelativeLayout relativeLayout = (RelativeLayout) linearLayout;
+                    }
+                }).start();
             }
         });
 

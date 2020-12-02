@@ -55,8 +55,8 @@ public class NotifycationFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_notifycation, null);
-        return (ViewGroup) mView;
+        View mView = inflater.inflate(R.layout.fragment_layout_notifycation, null);
+        return mView;
     }
 
     public void initView(View rootView) {

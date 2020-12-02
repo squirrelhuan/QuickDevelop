@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.banner;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;

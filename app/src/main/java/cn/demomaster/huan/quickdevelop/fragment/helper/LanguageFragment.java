@@ -31,7 +31,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  * 2018/8/25
  */
 
-@ActivityPager(name = "Language", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "多语言", preViewClass = TextView.class, resType = ResType.Custome)
 public class LanguageFragment extends BaseFragment {
 
     @Override
@@ -45,8 +45,8 @@ public class LanguageFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_language, null);
-        return (ViewGroup) mView;
+        View mView = inflater.inflate(R.layout.fragment_layout_language, null);
+        return mView;
     }
 
     public void initView(View rootView) {

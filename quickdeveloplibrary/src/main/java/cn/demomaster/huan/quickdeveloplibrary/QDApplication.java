@@ -58,14 +58,12 @@ public class QDApplication extends Application implements UpgradeInterface {
         LifecycleManager.getInstance().init(this);
 
         ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
-        // other process will create app instance.
         if (TextUtils.isEmpty(processInfo.processName) || !getPackageName().equals(processInfo.processName)) {
             QDLogger.e(TAG, getPackageName() + "进程[" + android.os.Process.myPid() + "]已存在无需重复初始化");
             return;
         }
 
         //NotifycationHelper.getInstance().init(this);
-
         //QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
         //QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
         QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
@@ -77,7 +75,6 @@ public class QDApplication extends Application implements UpgradeInterface {
 
         //处理崩溃日志
         initCrash();
-
         //DoraemonKit.install(this);
         if (isApkInDebug(this)) {
             // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
@@ -91,7 +88,6 @@ public class QDApplication extends Application implements UpgradeInterface {
     }
 
     private QuickDb dbHelper;
-
     /**
      * 初始化本地数据库
      * @return
@@ -115,7 +111,6 @@ public class QDApplication extends Application implements UpgradeInterface {
      */
     public void initCrash() {
         if (BuildConfig.DEBUG) {
-            QDLogger.println("初始化异常捕获");
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
             if (errorReportActivity == null) {
                 QDLogger.println("未定义错误异常捕获页面");

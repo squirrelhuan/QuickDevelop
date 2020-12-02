@@ -29,7 +29,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * 2018/8/25
  */
 
-@ActivityPager(name = "Position", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "定位", preViewClass = TextView.class, resType = ResType.Custome)
 public class PositionFragment extends BaseFragment {
 
     @Override

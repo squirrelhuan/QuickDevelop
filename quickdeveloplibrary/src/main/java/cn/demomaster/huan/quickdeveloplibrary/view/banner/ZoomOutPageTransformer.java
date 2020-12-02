@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.banner;
 
 import android.view.View;
+
 import androidx.viewpager2.widget.ViewPager2;
 
 public class ZoomOutPageTransformer implements ViewPager2.PageTransformer {

@@ -26,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * Squirrel桓
  * 2018/8/25 QDTerminal
  */
-@ActivityPager(name = "Terminal", preViewClass = StateView.class, resType = ResType.Custome)
+@ActivityPager(name = "终端", preViewClass = StateView.class, resType = ResType.Custome)
 public class QDTerminalFragment extends BaseFragment {
 
     @Override

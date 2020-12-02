@@ -53,7 +53,6 @@ public class Keyboard2Fragment extends BaseFragment {
     @BindView(R.id.et_custom_textEmailAddress)
     EditText et_custom_textEmailAddress;
 
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
