@@ -140,11 +140,17 @@ public class QDFileUtil {
     }
 
 
-    // 读SD中的文件
     public static String readFileSdcardFile(String fileName) throws IOException {
+        return readFileSdcardFile(new File(fileName));
+    }
+    // 读SD中的文件
+    public static String readFileSdcardFile(File file) throws IOException {
+        if(file==null||!file.exists()){
+            return null;
+        }
         String res = null;
         try {
-            FileInputStream fin = new FileInputStream(fileName);
+            FileInputStream fin = new FileInputStream(file);
             int length = fin.available();
             byte[] buffer = new byte[length];
             fin.read(buffer);

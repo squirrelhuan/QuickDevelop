@@ -108,7 +108,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                                 public void run() {
                                     System.exit(0);
                                 }
-                            },3000);
+                            },5000);
                         }
                         break;
                     case reboot:

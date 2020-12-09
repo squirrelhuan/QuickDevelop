@@ -29,6 +29,13 @@ public class QuickCache {
     }
 
     /**
+     * 是否启用了缓存
+     * @return
+     */
+    public static boolean enable(){
+        return quickCacheMap!=null;
+    }
+    /**
      * 添加文件到缓存
      *
      * @param url

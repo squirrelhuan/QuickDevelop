@@ -39,7 +39,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 import static androidx.core.content.ContextCompat.getExternalFilesDirs;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCreatTime;
 
-
 /**
  * Squirrel桓
  * 2018/8/25
@@ -66,8 +65,8 @@ public class FileManagerFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_filemanager, null);
-        return (ViewGroup) mView;
+        View mView = inflater.inflate(R.layout.fragment_layout_filemanager, null);
+        return mView;
     }
 
     public void initView(View rootView) {
@@ -188,7 +187,6 @@ public class FileManagerFragment extends BaseFragment {
     }
 
     private int count;
-
     private void deleteEmptyFiles(String rootPath) {
         //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);

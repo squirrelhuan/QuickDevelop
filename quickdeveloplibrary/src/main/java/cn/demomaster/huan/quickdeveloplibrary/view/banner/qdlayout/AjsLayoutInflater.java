@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.DomSaxHandler;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.NodeElement;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerContentType;
@@ -50,8 +53,35 @@ public class AjsLayoutInflater {
 
     }
 
-    public static void parseXmlFile(File file) {
+    public static NodeElement parseXmlFile(Context context, File file, DomSaxHandler.OnParseCompleteListener onParseCompleteListener) {
+        XMLReader xr = null;
+        try {
+            //使用工厂方法初始化SAXParserFactory变量spf
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            //通过SAXParserFactory得到SAXParser的实例
+            SAXParser sp = spf.newSAXParser();
+            //通过SAXParser得到XMLReader的实例
+            xr = sp.getXMLReader();
 
+            DomSaxHandler handler = new DomSaxHandler(context, onParseCompleteListener);
+            //handler.setUseLowerCase(true);//使用小写转换
+            xr.setContentHandler(handler);
+            xr.setErrorHandler(handler);
+
+            //QDLogger.e("解析xml：" + file.getAbsolutePath());
+            FileInputStream is = new FileInputStream(file);
+            //通过获取到的InputStream来得到InputSource实例
+            InputSource is2 = new InputSource(is);
+            xr.parse(is2);
+            return handler.getRootElement();
+        } catch (SAXException e) {
+            QDLogger.e(e);
+        } catch (IOException e) {
+            QDLogger.e(e);
+        } catch (ParserConfigurationException e) {
+            QDLogger.e(e);
+        }
+        return null;
     }
 
     public static void parseXmlString(String txt) {
@@ -68,25 +98,23 @@ public class AjsLayoutInflater {
 
     /**
      * 解析资源文件中的xml文件
-     *
+     * @param <T>
      * @param context
      * @param xmlPath
-     * @param rootView
      * @param onParseCompleteListener
-     * @param <T>
+     * @return
      */
-    public static <T> void parseXmlAssets(Context context, String xmlPath, View rootView, AjsSaxHandler.OnParseCompleteListener onParseCompleteListener) {
-        XMLReader xr = null;
+    public static <T> NodeElement parseXmlAssets(Context context, String xmlPath, DomSaxHandler.OnParseCompleteListener onParseCompleteListener) {
         try {
             //使用工厂方法初始化SAXParserFactory变量spf
             SAXParserFactory spf = SAXParserFactory.newInstance();
             //通过SAXParserFactory得到SAXParser的实例
             SAXParser sp = spf.newSAXParser();
             //通过SAXParser得到XMLReader的实例
-            xr = sp.getXMLReader();
+            XMLReader xr = sp.getXMLReader();
 
-            AjsSaxHandler handler = new AjsSaxHandler(context, rootView, onParseCompleteListener);
-            handler.setUseLowerCase(true);//使用小写转换
+            DomSaxHandler handler = new DomSaxHandler(context, onParseCompleteListener);
+            //handler.setUseLowerCase(true);//使用小写转换
             xr.setContentHandler(handler);
             xr.setErrorHandler(handler);
 
@@ -97,6 +125,7 @@ public class AjsLayoutInflater {
             //通过获取到的InputStream来得到InputSource实例
             InputSource is2 = new InputSource(is);
             xr.parse(is2);
+            return handler.getRootElement();
         } catch (SAXException e) {
             QDLogger.e(e);
         } catch (IOException e) {
@@ -104,6 +133,7 @@ public class AjsLayoutInflater {
         } catch (ParserConfigurationException e) {
             QDLogger.e(e);
         }
+        return null;
     }
 
     /**
@@ -136,10 +166,6 @@ public class AjsLayoutInflater {
                 Button button = new Button(context);
                 button.setText(element.getText());
                 view = button;
-            } else if (element.getTag().equals("button")) {
-                Button button = new Button(context);
-                button.setText(element.getText());
-                view = button;
             } else if (element.getTag().equalsIgnoreCase("PercentLayout")) {
                 PercentLayout percentLayout = new PercentLayout(context);
                 //int row = Integer.valueOf(element.getAttribute("row"));
@@ -154,7 +180,7 @@ public class AjsLayoutInflater {
                         percentLayout.setBackgroundColor(color);
                     }
                 } catch (Exception e) {
-                    Log.e("","背景色颜色解析失败："+backgroundColor+","+e.getMessage());
+                    Log.e("", "背景色颜色解析失败：" + backgroundColor + "," + e.getMessage());
                 }
 
                 percentLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -276,7 +302,6 @@ public class AjsLayoutInflater {
                     }
                 }
 
-
                 //解析圆角配置
                 String radiusStrs = element.getAttribute("radius");
                 float[] radiusArray = new float[8];
@@ -382,7 +407,6 @@ public class AjsLayoutInflater {
                         }
 
 
-
                         if (textSizesArray.length > i) {
                             float textSize = textSizeDefault;
                             textSize = textSizesArray[i];
@@ -482,36 +506,36 @@ public class AjsLayoutInflater {
                 String ystr = element.getAttribute("y");
                 String wstr = element.getAttribute("width");
                 String hstr = element.getAttribute("height");
-                if(!TextUtils.isEmpty(xstr)&&!TextUtils.isEmpty(ystr)&&!TextUtils.isEmpty(wstr)&&!TextUtils.isEmpty(hstr)){
+                if (!TextUtils.isEmpty(xstr) && !TextUtils.isEmpty(ystr) && !TextUtils.isEmpty(wstr) && !TextUtils.isEmpty(hstr)) {
                     xstr = xstr.trim();
                     ystr = ystr.trim();
                     float x = 0;
-                    if(xstr.contains("%")){
-                        x = Float.valueOf(xstr.replace("%",""))/100;
-                    }else {
+                    if (xstr.contains("%")) {
+                        x = Float.valueOf(xstr.replace("%", "")) / 100;
+                    } else {
                         x = Float.valueOf(xstr);
                     }
                     float y = 0;
-                    if(ystr.contains("%")){
-                        y = Float.valueOf(ystr.replace("%",""))/100;
-                    }else {
+                    if (ystr.contains("%")) {
+                        y = Float.valueOf(ystr.replace("%", "")) / 100;
+                    } else {
                         y = Float.valueOf(ystr);
                     }
 
                     float width = 0;
-                    if(wstr.contains("%")){
-                        width = Float.valueOf(wstr.replace("%",""))/100;
-                    }else {
+                    if (wstr.contains("%")) {
+                        width = Float.valueOf(wstr.replace("%", "")) / 100;
+                    } else {
                         width = Float.valueOf(wstr);
                     }
-                    
+
                     float height = 0;
-                    if(hstr.contains("%")){
-                        height = Float.valueOf(hstr.replace("%",""))/100;
-                    }else {
+                    if (hstr.contains("%")) {
+                        height = Float.valueOf(hstr.replace("%", "")) / 100;
+                    } else {
                         height = Float.valueOf(hstr);
                     }
-                    
+
                     posionConfig.setX(x);
                     posionConfig.setY(y);
                     posionConfig.setWidth(width);

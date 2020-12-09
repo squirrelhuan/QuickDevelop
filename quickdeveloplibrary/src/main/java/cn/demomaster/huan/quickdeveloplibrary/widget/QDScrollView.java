@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
@@ -44,6 +45,18 @@ public class QDScrollView extends ScrollView {
         setOverScrollMode(OVER_SCROLL_NEVER);
     }
 
+    @Override
+    public void addView(View child) {
+        super.addView(child);
+        convertView = getChildAt(0);
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        super.addView(child, params);
+        convertView = getChildAt(0);
+    }
+
     private View convertView;
     //获取初始控件
     @Override
@@ -58,43 +71,45 @@ public class QDScrollView extends ScrollView {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        //用rect记录 scrollview的子控件的上下左右
-        originalRect.set(convertView.getLeft(), convertView.getTop(), convertView.getRight(), convertView.getBottom());
+        if(convertView!=null) {
+            //用rect记录 scrollview的子控件的上下左右
+            originalRect.set(convertView.getLeft(), convertView.getTop(), convertView.getRight(), convertView.getBottom());
+        }
     }
 
   //  事件分发
     float startY,startX;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startY = (int) ev.getY();
-                startX = (int) ev.getX();
-                break;
+        if(convertView!=null) {
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    startY = (int) ev.getY();
+                    startX = (int) ev.getX();
+                    break;
 
-            case MotionEvent.ACTION_UP:
-                //还原位置，回弹动画， 可以自己定于需要的动画
-                TranslateAnimation animation = new TranslateAnimation(0, 0, convertView.getTop(), originalRect.top);
-                animation.setDuration(200);
-                convertView.setAnimation(animation);
-                convertView.layout(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+                case MotionEvent.ACTION_UP:
+                    //还原位置，回弹动画， 可以自己定于需要的动画
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, convertView.getTop(), originalRect.top);
+                    animation.setDuration(200);
+                    convertView.setAnimation(animation);
+                    convertView.layout(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
 
-                break;
+                    break;
 
-            case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_MOVE:
 
-                int detalY = (int) (ev.getY() - startY);
-                int detalX = (int) (ev.getX() - startX);
+                    int detalY = (int) (ev.getY() - startY);
+                    int detalX = (int) (ev.getX() - startX);
 
-                if (Math.abs(detalX) < Math.abs(detalY)) {
-                    //detalY 乘以0.2 使得很难的效果
-                    convertView.layout(originalRect.left, (int) (originalRect.top + detalY * 0.2),
-                            originalRect.right, (int) (originalRect.bottom + detalY * 0.2));
-                }
-                break;
-
+                    if (Math.abs(detalX) < Math.abs(detalY)) {
+                        //detalY 乘以0.2 使得很难的效果
+                        convertView.layout(originalRect.left, (int) (originalRect.top + detalY * 0.2),
+                                originalRect.right, (int) (originalRect.bottom + detalY * 0.2));
+                    }
+                    break;
+            }
         }
-
         return super.dispatchTouchEvent(ev);
     }
 

@@ -84,7 +84,7 @@ public class HierarchyFlotingService extends QDFloatingService {
         });
 
         dialogView = LayoutInflater.from(context).inflate(cn.demomaster.huan.quickdeveloplibrary.R.layout.layout_floating_hierachy, null);
-        dialogView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_33));
+        dialogView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_55));
         dialogView.setVisibility(View.GONE);
         tv_title = dialogView.findViewById(R.id.tv_title);
         TextView tv_copy = dialogView.findViewById(R.id.tv_copy);

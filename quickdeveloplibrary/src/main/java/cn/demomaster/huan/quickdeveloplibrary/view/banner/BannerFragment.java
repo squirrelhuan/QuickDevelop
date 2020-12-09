@@ -162,7 +162,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         //QDLogger.i("loadRemoteResource >> "+fragmentCode);
         //获取url类型
         final String urlString = adsResource.getUrl();
-        if (QuickCache.containsUrl(urlString)) {
+        if (QuickCache.enable()&&QuickCache.containsUrl(urlString)) {
             CacheInfo fileInfo = QuickCache.getCacheInfoByUrl(urlString);
             if (fileInfo != null) {
                 if (!TextUtils.isEmpty(fileInfo.getFilePath())) {
