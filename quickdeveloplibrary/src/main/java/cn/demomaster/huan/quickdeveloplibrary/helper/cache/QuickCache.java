@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.cache;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -16,7 +15,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.cache.CacheMap.strin
 
 public class QuickCache {
     private static CacheMap quickCacheMap;
-    static String cacheFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qdlogger/cache/";
+    private static String cacheFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() +"/qdlogger/cache/";
     static Context applicationContext;
 
     public static void init(Context context,String cacheFolder) {
@@ -54,10 +53,14 @@ public class QuickCache {
         quickCacheMap.put(url, cacheInfo);
     }
 
-    private static String imgFolder = cacheFolderPath + "img/";
+    /**
+     * 缓存图片
+     * @param url
+     * @param bitmap
+     */
     public static void saveBitmap(String url, Bitmap bitmap) {
         String key = stringToMD5(url) + ".png";
-        String folderPath = imgFolder;
+        String folderPath = cacheFolderPath + "img/";
         String filePath = folderPath + key;
         QDFileUtil.createDir(folderPath);
         QDFileUtil.saveBitmap(bitmap, filePath);

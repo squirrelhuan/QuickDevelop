@@ -72,7 +72,7 @@ public class AnimationUtil {
         }
 
         public ValueAnimator apply() {
-            return addScaleAnimition(mView, startValue, endValue, duration, null, animatorUpdateListener,listenerTriggerType);
+            return addScaleAnimition(mView, startValue, endValue, duration, onClickListener, animatorUpdateListener,listenerTriggerType);
         }
     }
 

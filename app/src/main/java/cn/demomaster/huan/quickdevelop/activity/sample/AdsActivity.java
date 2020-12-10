@@ -10,8 +10,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.activity.BaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.DomSaxHandler;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.NodeElement;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.AjsLayoutInflater;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.AjsSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.Element;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner;
 import cn.demomaster.huan.quickdeveloplibrary.view.banner.NormalPageTransformer;
@@ -24,6 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
 
@@ -50,14 +52,10 @@ public class AdsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ads);
         ButterKnife.bind(this);
-        AjsSaxHandler.OnParseCompleteListener onParseCompleteListener = new AjsSaxHandler.OnParseCompleteListener() {
-            @Override
-            public void onComplete(Context context, Element element, View rootView) {
-                frameLayout_01.addView(generateLayout(context,null, element));
-            }
-        };
 
-        AjsLayoutInflater.parseXmlAssets(this, "config/layout_test.xml",null,onParseCompleteListener);
+        NodeElement nodeElement = AjsLayoutInflater.parseXmlAssets(this, "config/layout_test.xml",null);
+        Element myElement = getElement(nodeElement);
+        frameLayout_01.addView(generateLayout(this,null, myElement));
         binner.setRadius(20);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -80,5 +78,22 @@ public class AdsActivity extends BaseActivity {
         binner2.setPageTransformer(true,new ZoomOutPageTransformer2());
     }
 
+    public static Element getElement(NodeElement nodeElement) {
+        Element myNodeElement = new Element();
+        myNodeElement.setTag(nodeElement.getNodeName());
+        List<NodeElement.NodeProperty> atts = nodeElement.getAttributes();
+        if (atts != null) {
+            for (int i = 0; i < atts.size(); i++) {
+                String attsQName = atts.get(i).getName();
+                String value = atts.get(i).getValue();
+                //QDLogger.i("元素: attsQName=" + attsQName + ",value=" + value);
+                myNodeElement.addProperty(attsQName, value);
+            }
+        }
+        for (NodeElement element1 : nodeElement.getChildNodes()) {
+            myNodeElement.addNode(getElement(element1));
+        }
+        return myNodeElement;
+    }
 
 }

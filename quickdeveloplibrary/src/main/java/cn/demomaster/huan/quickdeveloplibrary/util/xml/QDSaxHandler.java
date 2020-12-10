@@ -21,7 +21,6 @@ public class QDSaxHandler<T> extends DefaultHandler {
     private Class<T> mClazz;
     private T targetInstance;
     private List<Object> elements;//当前元素
-    //private Object currentElement;
 
     // Event handlers.
     public QDSaxHandler(Class<T> clazz,OnParseCompleteListener onParseCompleteListener) {

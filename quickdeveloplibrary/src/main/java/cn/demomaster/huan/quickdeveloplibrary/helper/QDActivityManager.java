@@ -177,7 +177,6 @@ public class QDActivityManager {
 
     /**
      * 添加activity到棧中
-     *
      * @param activity
      */
     public void pushActivity(Activity activity) {
@@ -214,7 +213,6 @@ public class QDActivityManager {
 
     /**
      * 把指定activity从栈中移除，并销毁该页面
-     *
      * @param activity 要移除的activity
      */
     public void popActivity(Activity activity) {
@@ -231,7 +229,6 @@ public class QDActivityManager {
 
     /**
      * 从栈中移除activity，但不负责销毁
-     *
      * @param activity
      */
     public void removeActivityFormStack(Activity activity) {
@@ -246,7 +243,6 @@ public class QDActivityManager {
 
     /**
      * 弹出其他所有activity，仅保留指定activity
-     *
      * @param targetActivity 要保留的activity类
      */
     public void popOtherActivityExceptOne(Class targetActivity) {
@@ -263,7 +259,6 @@ public class QDActivityManager {
 
     /**
      * 判断画面栈中是否存在该 activity 对象
-     *
      * @param activity
      * @return 存在返回TRUE ，不存在返回FALSE
      */
@@ -292,7 +287,6 @@ public class QDActivityManager {
 
     /**
      * 弹出其他栈，仅保留某class集合内的activity
-     *
      * @param classList 要保留的 activity 类
      */
     public void popOtherActivityExceptList(List<Class> classList) {
@@ -473,8 +467,6 @@ public class QDActivityManager {
     private void onStateChanged(Activity activity, boolean b) {
         if (onAppRunStateChangedListenner != null) {
             if (getCurrentActivity() != null) {
-                // ActivityManager mAm = (ActivityManager) currentActivity.getSystemService(ACTIVITY_SERVICE);
-                // String activity_name = mAm.getRunningTasks(1).get(0).topActivity.getPackageName();
                 if (isRunningOnForeground(context)) {//应用在前台
                     if (isOnForgroundAvailable) {
                         isOnBackgroundAvailable = true;
@@ -504,18 +496,15 @@ public class QDActivityManager {
     public static String getTopActivity(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        //QDLogger.d("测试", "pkg:"+cn.getPackageName());//包名
-        //QDLogger.d("测试", "cls:"+cn.getClassName());//包名加类名
+        //QDLogger.d("测试", "pkg:"+cn.getPackageName()+ ",cls:"+cn.getClassName());//包名加类名
         return cn.getClassName();
     }
     public static String getTopPackageName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        //QDLogger.d("测试", "pkg:"+cn.getPackageName());//包名
-        //QDLogger.d("测试", "cls:"+cn.getClassName());//包名加类名
+        //QDLogger.d("测试", "pkg:"+cn.getPackageName()+ "cls:"+cn.getClassName());//包名加类名
         return cn.getPackageName();
     }
-
 
     /**
      * TODO 待驗證first
@@ -534,7 +523,7 @@ public class QDActivityManager {
 
         String processName = context.getApplicationInfo().processName;
         for (ActivityManager.RunningAppProcessInfo processInfo : appProcessInfoList) {
-            QDLogger.i("" + processInfo.processName + "," + processInfo.importance);
+            QDLogger.println("" + processInfo.processName + "," + processInfo.importance);
             if (processInfo.processName.equals(processName) && processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return true;
             } else {
@@ -568,19 +557,15 @@ public class QDActivityManager {
             return (!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(packageName));
         }
         return false;
-        // List<ActivityManager.RunningAppProcessInfo> appProcessInfos = activityManager.getRunningAppProcesses();
-        // 枚举进程
-        /*for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfos) {
-            //QDLogger.i("isRunningOnForeground="+appProcessInfo.processName+appProcessInfo.importance );
-            if (appProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                //ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
-                if (appProcessInfo.processName.equals(context.getApplicationInfo().processName)) {
-                    QDLogger.i("isRunningOnForeground=" + true+",appProcessInfo.pid="+appProcessInfo.pid+",context.pid="+android.os.Process.myPid());
-                    return true;
-                }
+        //判断某个服务是否在运行
+        /*ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Short.MAX_VALUE);
+        for (ActivityManager.RunningServiceInfo info : services) {
+            QDLogger.println("服务："+info.service.getClassName());
+            if (info.service.getClassName().equals(context.getPackageName() + ".DingService")) {//DingService是你的包名
+                return true;
             }
         }*/
-        //QDLogger.i("isRunningOnForeground="+false);
     }
 
     private boolean isForeground(Context context) {
@@ -602,7 +587,6 @@ public class QDActivityManager {
 
     /**
      * 设置app前后台运行切换状态监听
-     *
      * @param onAppRunStateChangedListenner
      */
     public void setOnAppRunStateChangedListenner(OnAppRunStateChangedListenner onAppRunStateChangedListenner) {
@@ -698,7 +682,6 @@ public class QDActivityManager {
 
     /**
      * 判断activity是否已经启动
-     *
      * @param activityClass
      * @return true已启动，false未启动
      */
@@ -706,16 +689,16 @@ public class QDActivityManager {
         Intent intent = new Intent(context, activityClass);
         ComponentName cmpName = intent.resolveActivity(context.getPackageManager());
         boolean flag = false;
-        if (cmpName != null) { // 说明系统中存在这个activity    
+        if (cmpName != null) {
             ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> taskInfoList = am.getRunningTasks(10);//
+            List<ActivityManager.RunningTaskInfo> taskInfoList = am.getRunningTasks(Integer.MAX_VALUE);//
             //这里获取的是APP栈的数量，一般也就两个
-            ActivityManager.RunningTaskInfo runningTaskInfo = taskInfoList.get(0);// 只是拿          当前运行的栈
+            ActivityManager.RunningTaskInfo runningTaskInfo = taskInfoList.get(0);// 只是拿当前运行的栈
             int numActivities = runningTaskInfo.numActivities;
             for (ActivityManager.RunningTaskInfo taskInfo : taskInfoList) {
                 if (taskInfo.baseActivity.equals(cmpName)) {// 说明它已经启动了
                     flag = true;
-                    break;//跳出循环，优化效率
+                    break;
                 }
             }
         }
@@ -747,16 +730,6 @@ public class QDActivityManager {
         Intent intent = new Intent(context, targetActivityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
-        /*if (!isRunningOnForeground(context)) {
-            backToActivity(context, targetActivityClass);
-            Activity activity = QDActivityManager.getInstance().getCurrentActivity();
-            //若没有找到运行的task，用户结束了task或被系统释放，则重新启动主页面
-            if (activity == null || !activity.getClass().getName().equals(targetActivityClass.getName())) {
-                Intent intent = new Intent(context, targetActivityClass);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                context.startActivity(intent);
-            }
-        }*/
     }
 
     /**
@@ -766,10 +739,9 @@ public class QDActivityManager {
      * @param activityClass
      */
     public void backToActivity(Context context, Class activityClass) {
-        //获取ActivityManager
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         //获得当前运行的task
-        List<ActivityManager.RunningTaskInfo> taskList = activityManager.getRunningTasks(100);
+        List<ActivityManager.RunningTaskInfo> taskList = activityManager.getRunningTasks(Integer.MAX_VALUE);
         for (ActivityManager.RunningTaskInfo runningTaskInfo : taskList) {
             //找到当前应用的task，并启动task的栈顶activity，达到程序切换到前台
             if (runningTaskInfo.topActivity.getPackageName().equals(context.getPackageName())) {
