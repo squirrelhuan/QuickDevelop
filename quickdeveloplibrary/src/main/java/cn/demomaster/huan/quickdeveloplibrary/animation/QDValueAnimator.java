@@ -1,8 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.animation;
 
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -19,9 +24,14 @@ public class QDValueAnimator extends ValueAnimator {
         isCloseStart,
     }
 
+    boolean hasReversed = false;
+
+    public boolean isHasReversed() {
+        return hasReversed;
+    }
+
     private Object tag;
     private AnimationState animationState = AnimationState.idle;
-
     private int currentIndex;//当前执行次数
     public QDValueAnimator(Class dataType) {
         this.dataType = dataType;
@@ -30,86 +40,102 @@ public class QDValueAnimator extends ValueAnimator {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     value = animation.getAnimatedValue();
-                    // QDLogger.i("value="+value+",isStarted()="+isStarted());
-                    if (startValue == null || endValue == null) {
-                        return;
+                    if (!isReversing(ValueAnimator.class, animation)) {
+                        onOpening(value);
+                    } else {
+                        onClosing(value);
                     }
-                    if (lastValue == null) {
-                        lastValue = startValue;
-                        onStartOpen(value);
-                    }
-                    double c = 0;
-                    boolean isEndValue = false;
-                    boolean isStartValue = false;
-                    if (dataType.equals(Double.class)) {
-                        double a = Double.valueOf((double) endValue - (double) startValue);
-                        double b = Double.valueOf((double) value - (double) lastValue);
-                        c = a * b;
-
-                        isEndValue=(double)value==(double)endValue;
-                        isStartValue=(double)value==(double)startValue;
-                    } else if (dataType.equals(Float.class)) {
-                        float a = Float.valueOf((float) endValue - (float) startValue);
-                        float b = Float.valueOf((float) value - (float) lastValue);
-                        c = (double) a * b;
-                        
-                        isEndValue=(float)value==(float)endValue;
-                        isStartValue=(float)value==(float)startValue;
-                    } else if (dataType.equals(Integer.class)) {
-                        int a = Integer.valueOf((int) endValue - (int) startValue);
-                        int b = Integer.valueOf((int) value - (int) lastValue);
-                        c = (double) a * b;
-
-                        isEndValue=(int)value==(int)endValue;
-                        isStartValue=(int)value==(int)startValue;
-                    }
-                    //QDLogger.e("c="+c+",value="+value+",endValue="+endValue+",state="+animationState);
-                    if (c > 0) {
-                        if(isEndValue){
-                            //QDLogger.e("onEndOpen.......");
-                            onEndOpen();
-                        }else {
-                            //QDLogger.e("onOpening.......");
-                            onOpening(value);
-                        }
-                    } else if (c < 0) {//打开中
-                        if(isStartValue){
-                            onEndClose();
-                        }else {
-                            onClosing(value);
-                        }
-                    } else if (c == 0) {
-                        boolean nearStart = false;
-                        if (dataType.equals(Double.class)) {
-                            double a = Double.valueOf((double) value - (double) endValue);
-                            double b = Double.valueOf((double) value - (double) startValue);
-
-                            double dz = Double.valueOf((double) value - (double) lastValue);
-                            nearStart = Math.abs(a) > Math.abs(b);
-                        } else if (dataType.equals(Float.class)) {
-                            float a = Float.valueOf((float) value - (float) endValue);
-                            float b = Float.valueOf((float) value - (float) startValue);
-                            nearStart = Math.abs(a) > Math.abs(b);
-                        } else if (dataType.equals(Integer.class)) {
-                            int a = Integer.valueOf((int) value - (int) endValue);
-                            int b = Integer.valueOf((int) value - (int) startValue);
-                            nearStart = Math.abs(a) > Math.abs(b);
-                        }
-                        if (!nearStart) {//打开结束
-                            onEndOpen();
-                        } else {//关闭结束
-                            onEndClose();
-                        }
-                    }
-
                     lastValue = value;
                 }
             };
             addUpdateListener(animatorUpdateListener);
+            if (mAnimatorListener == null) {
+                addListener(new AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        for (AnimatorListener animatorListener : listeners) {
+                            animatorListener.onAnimationStart(animation);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        for (AnimatorListener animatorListener : listeners) {
+                            animatorListener.onAnimationEnd(animation);
+                        }
+                        if (isReversing(ValueAnimator.class, animation)) {
+                            onEndClose();
+                        } else {
+                            onEndOpen();
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        for (AnimatorListener animatorListener : listeners) {
+                            animatorListener.onAnimationCancel(animation);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                        for (AnimatorListener animatorListener : listeners) {
+                            animatorListener.onAnimationRepeat(animation);
+                        }
+                    }
+                });
+            }
         }
     }
 
+    boolean isReversing() {
+        return isReversing(ValueAnimator.class, this);
+    }
+
+    boolean isReversing(Class clazz, Animator animator) {
+        Field[] fields = clazz.getDeclaredFields();
+        // 暴力反射获取属性
+       // Field filed = class1.getDeclaredField("name");
+        if (fields != null) {
+            QDLogger.println(clazz.getName()+":fields.length =" + fields.length);
+            for (int i = 0, len = fields.length; i < len; i++) {
+                String varName = fields[i].getName();
+                QDLogger.println("varName =" + varName);
+                if (varName.equals("mReversing")) {
+                    try {
+                        boolean accessFlag = fields[i].isAccessible();
+                        fields[i].setAccessible(true);
+                        Object o = fields[i].get(animator);
+                        fields[i].setAccessible(accessFlag);
+                        QDLogger.println("isReversing =" + o);
+                        return (boolean) o;
+                    } catch (IllegalArgumentException | IllegalAccessException ex) {
+                        QDLogger.e(ex);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    AnimatorListener mAnimatorListener;
+    List<AnimatorListener> listeners;
+
+    @Override
+    public void addListener(AnimatorListener listener) {
+        if (listeners == null) {
+            listeners = new ArrayList<>();
+        }
+        if (mAnimatorListener == null) {
+            mAnimatorListener = listener;
+        } else {
+            listeners.add(listener);
+        }
+        super.addListener(mAnimatorListener);
+    }
+
     public Class dataType;
+
     public static QDValueAnimator ofFloat(float... values) {
         QDValueAnimator anim = new QDValueAnimator(Float.class);
         anim.setFloatValues(values);
@@ -133,11 +159,6 @@ public class QDValueAnimator extends ValueAnimator {
     Object lastValue;
 
     public AnimationState getAnimationState() {
-        if (value == startValue) {
-            animationState = AnimationState.isClosed;
-        } else if (value == endValue) {
-            animationState = AnimationState.isOpened;
-        }
         return animationState;
     }
 
@@ -158,18 +179,18 @@ public class QDValueAnimator extends ValueAnimator {
 
     @Override
     public void start() {
-        animationState = AnimationState.isOpening;
+        hasReversed = false;
         super.start();
     }
 
     @Override
     public void reverse() {
+        hasReversed = true;
         super.reverse();
     }
 
     public void reverseBack() {
         if (animationState == AnimationState.isOpened || animationState == AnimationState.isOpening) {
-            animationState = AnimationState.isColosing;
             reverse();
         }
     }
@@ -197,30 +218,22 @@ public class QDValueAnimator extends ValueAnimator {
     }
 
     private void onOpening(Object value) {
+        //QDLogger.i("onOpening:" + value);
+        animationState = AnimationState.isOpening;
         if (animationListener != null) {
-            if(animationState==AnimationState.isColosing){
-                onEndClose();
-            }else if(animationState==AnimationState.isOpened){
-                onStartOpen(startValue);
-            }else {
-                animationState = AnimationState.isOpening;
-                //QDLogger.i("onOpening:" + value);
-                animationListener.onOpening(value);
-            }
+            animationListener.onOpening(value);
         }
     }
 
     @SuppressLint("WrongConstant")
     private void onEndOpen() {
-        if (animationState == AnimationState.isOpening) {
-            animationState = AnimationState.isOpened;
-            if(getRepeatMode()==ValueAnimator.INFINITE){
-                currentIndex++;
-            }
-            QDLogger.i("onEndOpen:" + endValue);
-            if(animationListener != null ) {
-                animationListener.onEndOpen(endValue);
-            }
+        animationState = AnimationState.isOpened;
+        if (getRepeatMode() == ValueAnimator.INFINITE) {
+            currentIndex++;
+        }
+        QDLogger.i("onEndOpen:" + endValue);
+        if (animationListener != null) {
+            animationListener.onEndOpen(endValue);
         }
     }
 
@@ -233,28 +246,21 @@ public class QDValueAnimator extends ValueAnimator {
     }
 
     private void onClosing(Object value) {
-        if(animationState==AnimationState.isOpening){
-            onEndOpen();
-        }else if(animationState==AnimationState.isOpened){
-            onStartClose(value);
-        }else if (animationListener != null) {
-            animationState = AnimationState.isColosing;
-            //QDLogger.i("onClosing:" + value);
+        animationState = AnimationState.isColosing;
+        //QDLogger.i("onClosing:" + value);
+        if (animationListener != null) {
             animationListener.onClosing(value);
         }
     }
 
     private void onEndClose() {
-        if (animationListener != null && animationState == AnimationState.isColosing) {
-            animationState = AnimationState.isClosed;
-            if(getRepeatMode()==ValueAnimator.REVERSE){
-                currentIndex++;
-            }
+        animationState = AnimationState.isClosed;
+        if (getRepeatMode() == ValueAnimator.REVERSE) {
+            currentIndex++;
+        }
+        if (animationListener != null) {
             //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
             animationListener.onEndClose(startValue);
-            /*if(getRepeatCount()==-1||getRepeatCount()<currentIndex){
-                animationListener.onStartClose(endValue);
-            }*/
         }
     }
 

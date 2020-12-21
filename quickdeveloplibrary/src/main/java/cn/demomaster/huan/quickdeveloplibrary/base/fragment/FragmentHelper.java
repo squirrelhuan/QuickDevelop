@@ -344,7 +344,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     public static class Builder {
         FragmentActivity context;
-        int containerViewId;
+        int containerViewId = android.R.id.content;
         Bundle bundle;
         String classPath;
         FragmentHelper fragmentHelper;

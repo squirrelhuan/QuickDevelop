@@ -47,15 +47,16 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.e("onCreate " + this.getClass().getName());
+        QDLogger.i("服务启动" + this.getClass().getName());
         ServiceHelper.onCreateService(this);
         setIsShowing(true);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         layoutParams = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;//TYPE_APPLICATION_OVERLAY;
         } else {
-            layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            //layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         }
         layoutParams.format = PixelFormat.RGBA_8888;
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;

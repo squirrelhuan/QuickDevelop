@@ -62,25 +62,6 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fadeScrollbars="false"
-            android:visibility="gone">
-
-            <cn.demomaster.huan.quickdeveloplibrary.view.floatview.RichTextView
-                android:id="@+id/tv_log"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/dp_5"
-                android:textColor="@color/greenyellow"
-                android:textIsSelectable="true"
-                android:textSize="@dimen/sp_11" />
-
-        </ScrollView>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,39 +75,6 @@
                 android:layout_marginRight="@dimen/dp_5"
                 android:text="stop"
                 android:textColor="@color/red"/>-->
-            <TextView
-                android:id="@+id/tv_log_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:background="@drawable/debug_console_bg"
-                android:paddingLeft="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_5"
-                android:text="all"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_10" />
-            <TextView
-                android:id="@+id/tv_log_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:background="@drawable/debug_console_bg"
-                android:paddingLeft="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_5"
-                android:text="debug"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_10" />
-            <TextView
-                android:id="@+id/tv_log_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:background="@drawable/debug_console_bg"
-                android:paddingLeft="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_5"
-                android:text="debug"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_10" />
 
             <ImageView
                 android:id="@+id/iv_drag"

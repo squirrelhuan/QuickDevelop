@@ -58,7 +58,7 @@ public class lifecycleTimerFragment extends BaseFragment {
         toggle_enable.setChecked(LifecycleManager.getInstance().isEnable());
         toggle_enable.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 LifecycleManager.getInstance().setEnable(on);
             }
         });

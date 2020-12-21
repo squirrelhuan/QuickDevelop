@@ -86,7 +86,7 @@ public class RatingBarFragment extends BaseFragment {
         tooglebutton = (ToggleButton) findViewById(R.id.tooglebutton);
         tooglebutton.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 ratingBar.setCanTouch(on);
             }
         });
@@ -96,7 +96,7 @@ public class RatingBarFragment extends BaseFragment {
         tooglebutton_datatype.setToogleColor(Color.RED);
         tooglebutton_datatype.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 ratingBar.setFloat(on);
             }
         });
@@ -105,7 +105,7 @@ public class RatingBarFragment extends BaseFragment {
         tooglebutton_customdrable.setToogleColor(Color.BLUE);
         tooglebutton_customdrable.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 //使用默认背景前要把自定义的资源设置好
                 ratingBar.setBackResourceId(R.mipmap.meizi);
                 ratingBar.setFrontResourceId(R.mipmap.ic_launcher);
@@ -117,7 +117,7 @@ public class RatingBarFragment extends BaseFragment {
         tooglebutton_minValue.setToogleColor(Color.BLUE);
         tooglebutton_minValue.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 //使用默认背景前要把自定义的资源设置好
                 ratingBar.setCountMni(on ? 3 : 0);//int类型
                 ratingBar.setProgressMin(on ? .6f : 0f);//int类型

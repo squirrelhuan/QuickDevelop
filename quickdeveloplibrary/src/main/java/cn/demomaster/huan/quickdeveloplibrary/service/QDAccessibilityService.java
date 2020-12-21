@@ -99,7 +99,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 rootNodeInfo = accessibilityWindowInfo.getRoot();
                 if (rootNodeInfo != null) {
                     getChildsInfo(rootNodeInfo);
-                    Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
+                    //Log.e(TAG, "wid=" + rootNodeInfo.getWindowId());
                 }
             }
         } else {
@@ -151,7 +151,7 @@ public class QDAccessibilityService extends AccessibilityService {
         if (nodeInfoList != null && nodeInfoList.size() > 0) {
             nodeInfoList.get(0).getViewIdResourceName();
             int count = nodeInfoList.get(0).getChildCount();
-            Log.d(TAG, "ChildCount="+count);
+            //Log.d(TAG, "ChildCount="+count);
             return nodeInfoList.get(0);
         }
         return null;
@@ -172,7 +172,7 @@ public class QDAccessibilityService extends AccessibilityService {
         QDLogger.i(TAG, "辅助功能已关闭");
         AccessibilityHelper.onServiceDestroy();
     }
-
+    
     public static void startSettintActivity(Context context){
         //跳转系统自带界面 辅助功能界面
         Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);

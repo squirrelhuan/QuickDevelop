@@ -60,7 +60,6 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "wifi", preViewClass = TextView.class, resType = ResType.Custome)
 public class WifiFragment extends BaseFragment {
 
@@ -72,14 +71,11 @@ public class WifiFragment extends BaseFragment {
     View mView;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
     @BindView(R.id.toggle)
     ToggleButton toggle;
     @BindView(R.id.tv_state)
     TextView tv_state;
-
     private WifiAdapter wifiAdapter;
-
     List<QDScanResult> scanResultList = new ArrayList<>();
 
     @NonNull
@@ -94,7 +90,6 @@ public class WifiFragment extends BaseFragment {
 
     public void initView(View rootView) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
-
         WifiUtil.getInstance().init(this.getContext());
         WifiUtil.getInstance().setOnWifiChangeListener(new WifiUtil.OnWifiChangeListener() {
             @Override
@@ -132,7 +127,6 @@ public class WifiFragment extends BaseFragment {
         });
         //registerPermission();
 
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
         //设置为垂直布局，这也是默认的
@@ -167,11 +161,10 @@ public class WifiFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridDividerItemDecoration(mContext, spanCount));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         toggle.setChecked(WifiUtil.getInstance().isWifiEnabled());
         toggle.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
             @Override
-            public void onToggle(boolean on) {
+            public void onToggle(View view, boolean on) {
                 if (on) {
                     WifiUtil.getInstance().openWifi();
                 } else {

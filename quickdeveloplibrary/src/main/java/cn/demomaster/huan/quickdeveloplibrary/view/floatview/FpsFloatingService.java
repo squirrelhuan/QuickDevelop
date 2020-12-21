@@ -2,65 +2,40 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Build;
 import android.view.Display;
-import android.view.View;
+import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.FPSMonitor;
-import cn.demomaster.qdlogger_library.QDLogger;
-
 
 /**
  * Created
  */
-public class FpsFloatingService extends QDFloatingService {
-    Button button;
+public class FpsFloatingService extends QDFloatingService2 {
+    LinearLayout linearLayout;
     @Override
-    public View setContentView(final Context context) {
-        LinearLayout linearLayout = new LinearLayout(context.getApplicationContext());
+    public void onCreateView(Context context, WindowManager windowManager) {
+        linearLayout = new LinearLayout(context.getApplicationContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-        button = new Button(context);
-        button.setText("hello");
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dissmissWindow();
-            }
-        });
-        //linearLayout.addView(button);
-        return button;
-    }
 
-    @Override
-    public PointF getOriginPoint() {
-        return new PointF(100,100);
-    }
-
-    @Override
-    public void init() {
-        handler.postDelayed(runnable,1000);
+        TextView button = new TextView(context);
+        button.setText("fps");
+        button.setPadding(10,10,10,10);
+        button.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_99));
+        button.setTextColor(context.getResources().getColor(R.color.white));
         fpsMonitor.setOnFramChangedListener(new FPSMonitor.OnFramChangedListener() {
             @Override
             public void onChanged(float mframe) {
                 frame = mframe;
-            }
-        });
-        fpsMonitor.start();
-    }
-    float frame = 0;
-    FPSMonitor fpsMonitor = new FPSMonitor();
-    Handler handler = new Handler(Looper.getMainLooper());
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if(button!=null){
                 if(QDActivityManager.getInstance().getCurrentActivity()!=null) {
                     Display display = QDActivityManager.getInstance().getCurrentActivity().getWindowManager().getDefaultDisplay();
                     float refreshRate = display.getRefreshRate();
@@ -71,20 +46,48 @@ public class FpsFloatingService extends QDFloatingService {
                             ///QDLogger.i("rate:"+refreshRate);
                         }
                     });
-                }else {
-                    QDLogger.e("getCurrentActivity == null");
                 }
-            }else {
-                QDLogger.e("button == null");
             }
-            handler.postDelayed(runnable,1000);
-        }
-    };
+        });
+        fpsMonitor.start();
 
+        layoutParams = new WindowManager.LayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;//TYPE_APPLICATION_OVERLAY;
+        } else {
+            //layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+        layoutParams.format = PixelFormat.RGBA_8888;
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (!getTouchAble()) {
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+
+        PointF pointF = getOriginPoint();
+        if (pointF != null) {
+            layoutParams.x = (int) pointF.x;
+            layoutParams.y = (int) pointF.y;
+        }
+        linearLayout.addView(button);
+        layoutParams.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height=ViewGroup.LayoutParams.WRAP_CONTENT;
+        windowManager.addView(linearLayout,layoutParams);
+        linearLayout.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
+    }
+
+    @Override
+    public PointF getOriginPoint() {
+        return new PointF(100,100);
+    }
+
+    float frame = 0;
+    FPSMonitor fpsMonitor = new FPSMonitor();
     @Override
     public void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnable);
+        removeView(linearLayout);
         if(fpsMonitor!=null)
         fpsMonitor.stop();
     }

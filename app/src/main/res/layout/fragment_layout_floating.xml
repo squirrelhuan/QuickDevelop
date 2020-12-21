@@ -27,5 +27,16 @@
        android:layout_height="wrap_content"
        android:text="生命周期监控器"/>
 
+   <Button
+       android:id="@+id/btn_floating_05"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="忽略电池优化"/>
+
+   <Button
+       android:id="@+id/btn_floating_06"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="应用自启动"/>
 
 </LinearLayout>

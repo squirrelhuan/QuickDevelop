@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<dimen name="activity_vertical_margin">@dimen/dp_16</dimen>
+	<dimen name="activity_statebar_height">@dimen/dp_24</dimen>
+	<dimen name="activity_actionbar_height">@dimen/dp_65</dimen>
+	<dimen name="activity_actionbar_button_width">@dimen/dp_45</dimen>
+	<dimen name="activity_actionbar_button_height">@dimen/dp_45</dimen>
+	<dimen name="quickdev_small_text_size">@dimen/sp_12</dimen>
+	<dimen name="quickdev_middle_text_size">@dimen/sp_14</dimen>
+	<dimen name="quickdev_common_text_size">@dimen/sp_16</dimen>
+	<dimen name="quickdev_big_text_size">@dimen/sp_18</dimen>
+	<dimen name="quickdev_title_text_size">@dimen/sp_16</dimen>
+	<dimen name="quickdev_option_menu_width">@dimen/dp_140</dimen>
+	<dimen name="tab_padding_top_bottom">@dimen/dp_6</dimen>
+	<dimen name="tab_padding_left_right">@dimen/dp_40</dimen>
+	<dimen name="tab_height">@dimen/dp_30</dimen>
+	<dimen name="qd_btn_text_size">@dimen/sp_16</dimen>
+	<dimen name="qd_btn_border_width">@dimen/dp_1</dimen>
+	<dimen name="key_height">@dimen/dp_50</dimen>
+	<dimen name="key_num_height">@dimen/dp_50</dimen>
+	<dimen name="key_horizontal_gap">2.5%</dimen>
+	<dimen name="key_vertical_gap">1.5%</dimen>
+	<dimen name="keyboard_tip_height">@dimen/dp_50</dimen>
+	<dimen name="key_num_height2">@dimen/dp_80</dimen>
 	<dimen name="common_margin">@dimen/dp_15</dimen>
 	<dimen name="dp_m_60">-68.3333dp</dimen>
 	<dimen name="dp_m_30">-34.1667dp</dimen>

@@ -2,99 +2,90 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
+import android.os.Build;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView;
 
+import static cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView.SquareImageMenuView_X_SP;
+import static cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView.SquareImageMenuView_Y_SP;
+
 /**
  * Created
  */
-public class FloatingMenuService extends QDFloatingService {
-    private boolean isExpanded = false;
-    private static SquareImageMenuView button01, button02, button03;
-    private static ConstraintLayout cl_menu;
+public class FloatingMenuService extends QDFloatingService2 {
+    private static SquareImageMenuView menuView;
+    View view;
     @Override
-    public View setContentView(final Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_floating_menu, null);
-        //int w =DisplayUtil.dip2px(context,100);
+    public void onCreateView(Context context, WindowManager windowManager) {
+        view = LayoutInflater.from(context).inflate(R.layout.layout_floating_menu, null);
         //view.setLayoutParams(new LinearLayout.LayoutParams(w,w));
-        cl_menu = view.findViewById(R.id.cl_menu);
+        /*
         QDRoundDrawable qdRoundDrawable = new QDRoundDrawable();
         //qdRoundDrawable.setCornerRadius(cl_menu.getWidth()/2);
         qdRoundDrawable.setBackGroundColor(getResources().getColor(R.color.transparent_dark_77));
         qdRoundDrawable.setCornerRadius(DisplayUtil.dip2px(context,5));
         qdRoundDrawable.setRadiusAuto(true);
-        //cl_menu.setBackground(qdRoundDrawable);
-        cl_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isExpanded = !isExpanded;
-                //changeState();
-            }
-        });
-        button01 = view.findViewById(R.id.ib_menu_01);
+        //cl_menu.setBackground(qdRoundDrawable);*/
+        menuView = view.findViewById(R.id.ib_menu_01);
         buttonEnable = true;
-        button01.setEnabled(buttonEnable);
-        //changeState();
-        /*button01.setOnTouchListener(new FloatingOnTouchListener(this, view));
-        button01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button01.stopAnimation();
-            }
-        });*/
-        //linearLayout.addView(button);
-        return view;
-    }
-
-    private void changeState() {
-        if (isExpanded) {
-            hideMenus();
+        menuView.setEnabled(buttonEnable);
+        menuView.setWindowManager(windowManager);
+        layoutParams = new WindowManager.LayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;//TYPE_APPLICATION_OVERLAY;
         } else {
-            enlarge();
+            //layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         }
+        layoutParams.format = PixelFormat.RGBA_8888;
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (!getTouchAble()) {
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+
+        PointF pointF = getOriginPoint();
+        if (pointF != null) {
+            layoutParams.x = (int) pointF.x;
+            layoutParams.y = (int) pointF.y;
+        }
+        layoutParams.width= DisplayUtil.dip2px(context,40);//ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height= DisplayUtil.dip2px(context,40);//ViewGroup.LayoutParams.WRAP_CONTENT;
+        this.windowManager = windowManager;
+        windowManager.addView(view,layoutParams);
+        view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
     static boolean buttonEnable = true;
     public static void setMenuEnable(boolean enable){
         buttonEnable = enable;
-        if(button01!=null){
-            button01.setEnabled(buttonEnable);
+        if(menuView!=null){
+            menuView.setEnabled(buttonEnable);
         }
-    }
-
-    /**
-     * 放大
-     */
-    private void enlarge() {
-       /* button01.setVisibility(View.VISIBLE);
-        button02.setVisibility(View.VISIBLE);
-        button03.setVisibility(View.VISIBLE);*/
-    }
-
-    /**
-     * hide
-     */
-    private void hideMenus() {
-       /* button01.setVisibility(View.GONE);
-        button02.setVisibility(View.GONE);
-        button03.setVisibility(View.GONE);*/
     }
 
     @Override
     public PointF getOriginPoint() {
-        return new PointF(0, 200);
+        int x = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_X_SP,0);
+        int y = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_Y_SP,200);
+        return new PointF(x, y);
     }
 
     @Override
-    public void init() {
-
+    public void onDestroy() {
+        super.onDestroy();
+        removeView(view);
     }
-
 }

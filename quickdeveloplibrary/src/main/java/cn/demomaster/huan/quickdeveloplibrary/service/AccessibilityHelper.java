@@ -50,7 +50,7 @@ public class AccessibilityHelper {
             ((QDAccessibilityService.OnAccessibilityListener)entry.getValue()).onServiceConnected(qdAccessibilityService);
         }
     }
-
+    
     public static void onServiceDestroy() {
         for(Map.Entry entry:listenerMap.entrySet()){
             ((QDAccessibilityService.OnAccessibilityListener)entry.getValue()).onServiceDestroy();

@@ -42,7 +42,6 @@ public class ActionBarLayout2 extends FrameLayout {
         update();
     }
 
-
     private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

@@ -32,6 +32,11 @@ public class ActionBarTool implements ActionBarLayoutInterface{
     View mActionView;
     View mContentView;
     ActionBarLayout2 actionBarLayout2;
+
+    public ActionBarLayout2 getActionBarLayout() {
+        return actionBarLayout2;
+    }
+
     public void setContentView(int contentViewId){
         setContentView(getLayoutInflater().inflate(contentViewId,null));
     }
@@ -114,6 +119,9 @@ public class ActionBarTool implements ActionBarLayoutInterface{
                     .setActionBarView(mActionView)
                     .setActionbarType(actionbarType)
                     .creat();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                actionBarLayout2.setId(View.generateViewId());
+            }
         }else {
             return mContentView;
         }

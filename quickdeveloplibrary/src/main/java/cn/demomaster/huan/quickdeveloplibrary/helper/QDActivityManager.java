@@ -499,11 +499,19 @@ public class QDActivityManager {
         //QDLogger.d("测试", "pkg:"+cn.getPackageName()+ ",cls:"+cn.getClassName());//包名加类名
         return cn.getClassName();
     }
+
+    /**
+     * 获取当前前台应用的包名
+     * @param context
+     * @return
+     */
     public static String getTopPackageName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        //QDLogger.d("测试", "pkg:"+cn.getPackageName()+ "cls:"+cn.getClassName());//包名加类名
-        return cn.getPackageName();
+        if (am.getRunningTasks(1) != null && am.getRunningTasks(1).size()>0) {
+            ComponentName componentName = am.getRunningTasks(1).get(0).topActivity;
+            return componentName.getPackageName();
+        }
+        return null;
     }
 
     /**
@@ -711,7 +719,7 @@ public class QDActivityManager {
         if(activity!=null){
             QDLogger.i("backToApp 返回到顶层");
             intent = new Intent(activity, targetActivityClass);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
         }else {
             QDLogger.i("backToApp 开启新的页面");
@@ -720,6 +728,20 @@ public class QDActivityManager {
             context.startActivity(intent);
         }
     }
+
+    //当本应用位于后台时，则将它切换到最前端
+    public static void setTopApp(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfoList = activityManager.getRunningTasks(100);
+        for (ActivityManager.RunningTaskInfo taskInfo : taskInfoList) {
+            //找到本应用的 task，并将它切换到前台
+            if (taskInfo.topActivity.getPackageName().equals(context.getPackageName())) {
+                activityManager.moveTaskToFront(taskInfo.id, 0);
+                break;
+            }
+        }
+    }
+
     /**
      * 返回到app，如果当前app在前台不会需要执行
      *

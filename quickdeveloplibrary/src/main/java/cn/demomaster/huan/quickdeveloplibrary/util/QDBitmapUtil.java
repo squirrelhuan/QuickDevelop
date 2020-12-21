@@ -1,17 +1,25 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Base64;
+
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.bumptech.glide.load.engine.Resource;
 
@@ -73,23 +81,7 @@ public class QDBitmapUtil {
         }
     }
 
-    public static Bitmap drawable2Bitmap(Context context, int resId) {
-        try {
-            BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inScaled = false;         //设置这个属性防止因为不同的dpi文件夹导致缩放
-            opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, opt).copy(Bitmap.Config.ARGB_8888, true);
-            if (bitmap == null) {
-                return null;
-            }
-            bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
-            //bitmap.recycle();
-            return bitmap;
-        } catch (Exception e) {
-            QDLogger.e(e);
-            return null;
-        }
-    }
+
 
     /**
      * Matrix 缩放宽高
@@ -216,5 +208,101 @@ public class QDBitmapUtil {
             }
         }
         return localPath;
+    }
+
+    /**
+     * 图片明度调整
+     * @param bitmap
+     * @param value
+     * @return
+     */
+    public static Bitmap setBitmapLight(Bitmap bitmap, int value) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+       /* int[] pix = new int[w * h];
+        bitmap.getPixels(pix, 0, w, 0, 0, w, h);*/
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                int color = bitmap.getPixel(i,j);//x、y为bitmap所对应的位置
+                //QDLogger.i("colorStr1 = " + color);
+                if(color!=0) {
+                    int r = Color.red(color);
+                    int g = Color.green(color);
+                    int b = Color.blue(color);
+                    //int a = Color.alpha(color);
+                if(value>=0) {
+                    r = r + (255 - r) * value / 255;
+                    g = g + (255 - g) * value / 255;
+                    b = b + (255 - b) * value / 255;
+                }else {
+                    r = r + r * value / 255;
+                    g = g + g * value / 255;
+                    b = b + b * value / 255;
+                }
+                    String r1 = Integer.toHexString(r);
+                    String g1 = Integer.toHexString(g);
+                    String b1 = Integer.toHexString(b);
+                    String colorStr = "#"+r1 + g1 + b1;    //十六进制的颜色字符串。
+                    //QDLogger.i("colorStr2 = " + colorStr);
+                    int color1 = (r << 16) | (g << 8) | b | color;
+                    bitmap.setPixel(i, j, Color.parseColor(colorStr));
+                }
+            }
+        }
+        return (bitmap);
+    }
+
+    public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId) {
+        Bitmap bitmap = null;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
+            bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                    vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            vectorDrawable.draw(canvas);
+        } else {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), vectorDrawableId);
+        }
+        return bitmap;
+    }
+
+    public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId,int apha) {
+        Bitmap bitmap = null;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
+            bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                    vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            vectorDrawable.draw(canvas);
+        } else {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), vectorDrawableId);
+        }
+        return bitmap;
+    }
+
+    public static Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
+        final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintList(wrappedDrawable, colors);
+        return wrappedDrawable;
+    }
+
+    public static Bitmap drawable2Bitmap(Context context, int resId) {
+        try {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inScaled = false;         //设置这个属性防止因为不同的dpi文件夹导致缩放
+            opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId, opt).copy(Bitmap.Config.ARGB_8888, true);
+            if (bitmap != null) {
+                bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
+            }
+            //bitmap.recycle();
+            return bitmap;
+        } catch (Exception e) {
+            QDLogger.e(e);
+            return null;
+        }
     }
 }

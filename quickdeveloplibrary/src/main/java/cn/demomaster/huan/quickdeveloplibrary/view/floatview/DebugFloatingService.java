@@ -2,17 +2,23 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 
 import android.Manifest;
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,31 +46,20 @@ import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2
 /**
  * Created
  */
-public class DebugFloatingService extends QDFloatingService {
+public class DebugFloatingService extends QDFloatingService2 {
 
     static Context mcontext;
-    static int screenWidth;
-    static int screenHeight;
-
-    @Override
-    public View setContentView(final Context context) {
-        View view = getView(context, onTouchListener);
-        return view;
-    }
-
     static RichTextView tv_log;
     static ScrollView scrollView;
     static ImageView iv_drag;
     static ImageView iv_logo;
     static TextView tv_title;
     static TextView tv_log_tag;
-
-    public View getView(Context context, View.OnTouchListener onTouchListener) {
+    View view;
+    @Override
+    public void onCreateView(Context context, WindowManager windowManager) {
         mcontext = context;
-        screenWidth = DisplayUtil.getScreenWidth(mcontext);
-        screenHeight = DisplayUtil.getScreenHeight(mcontext);
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_debug_console, null, false);
-        contentView = view;
+        view = LayoutInflater.from(context).inflate(R.layout.layout_debug_console, null, false);
         iv_drag = view.findViewById(R.id.iv_drag);
         iv_drag.setOnTouchListener(onTouchListener);
         iv_logo = view.findViewById(R.id.iv_logo);
@@ -86,7 +81,31 @@ public class DebugFloatingService extends QDFloatingService {
         tv_log_tag.setTextColor(QDLogger.getColor(tagFilter.value()));
         tv_log_tag.setOnClickListener(onClickTagListenernew);
         initLog();
-        return view;
+
+        layoutParams = new WindowManager.LayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;//TYPE_APPLICATION_OVERLAY;
+        } else {
+            //layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+        layoutParams.format = PixelFormat.RGBA_8888;
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (!getTouchAble()) {
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+
+        PointF pointF = getOriginPoint();
+        if (pointF != null) {
+            layoutParams.x = (int) pointF.x;
+            layoutParams.y = (int) pointF.y;
+        }
+        layoutParams.width=800;
+        layoutParams.height=500;
+        this.windowManager = windowManager;
+        windowManager.addView(view,layoutParams);
+        view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
 
     View.OnClickListener onClickTagListenernew = new View.OnClickListener() {
@@ -111,7 +130,6 @@ public class DebugFloatingService extends QDFloatingService {
     static int strMaxLen = 20000;
     static List<QDLogBean> logList = new ArrayList<>();
     static String logStr = "";
-
     private static void initLog() {
         tv_log.setText(logStr);
         scrollView.post(new Runnable() {
@@ -142,7 +160,7 @@ public class DebugFloatingService extends QDFloatingService {
                         builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                         ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(msg.getType().value()));
                         builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                        // Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
+                        //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
                         tv_log.append(builder);
                         logStr = tv_log.getText().toString();
                         scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
@@ -163,25 +181,23 @@ public class DebugFloatingService extends QDFloatingService {
                     drag_Y = (int) event.getRawY();
                     //isclick = false;//当按下的时候设置isclick为false
                     //startTime = System.currentTimeMillis();
-                    //System.out.println("执行顺序down");
+                    System.out.println("执行顺序down");
                     break;
                 case MotionEvent.ACTION_MOVE:
                     //isclick = true;//当按钮被移动的时候设置isclick为true,就拦截掉了点击事件
-
                     int nowX = (int) event.getRawX();
                     int nowY = (int) event.getRawY();
                     int movedX = nowX - drag_X;
                     int movedY = nowY - drag_Y;
                     drag_X = nowX;
                     drag_Y = nowY;
-
-                    int height = mHeight + movedY;
-                    height = Math.min(screenHeight, height);
-                    setHeight(height);
-                    int width = mWidth + movedX;
-                    width = Math.min(screenWidth, width);
-                    setWidth(width);
-
+                    WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) view.getLayoutParams();
+                    int height = layoutParams.height + movedY;
+                    height = Math.min(DisplayUtil.getScreenHeight(view.getContext()), height);
+                    int width = layoutParams.width + movedX;
+                    width = Math.min(DisplayUtil.getScreenWidth(view.getContext()), width);
+                    QDLogger.i("movedX="+movedX+",movedY="+movedY+",width="+ width+",height="+ height);
+                    updateViewLayout(view,width,height);
                     break;
                 case MotionEvent.ACTION_UP:
                     /*endTime = System.currentTimeMillis();
@@ -204,12 +220,6 @@ public class DebugFloatingService extends QDFloatingService {
         return new PointF(100, 100);
     }
 
-    @Override
-    public void init() {
-        setWidth(800);
-        setHeight(500);
-    }
-
     static DebugFloating2 debugFloating2;
 
     public static void showConsole(Activity context) {
@@ -225,5 +235,11 @@ public class DebugFloatingService extends QDFloatingService {
                 debugFloating2.show(context);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        removeView(view);
     }
 }

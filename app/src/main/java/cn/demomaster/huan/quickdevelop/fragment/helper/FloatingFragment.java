@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdevelop.fragment.helper;
 
 import android.Manifest;
+import android.app.Service;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FpsFloatingService;
@@ -42,7 +45,10 @@ public class FloatingFragment extends BaseFragment {
     Button btn_floating_03;
     @BindView(R.id.btn_floating_04)
     Button btn_floating_04;
-
+    @BindView(R.id.btn_floating_05)
+    Button btn_floating_05;
+    @BindView(R.id.btn_floating_06)
+    Button btn_floating_06;
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,8 +76,8 @@ public class FloatingFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        QDFloatingService service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
-                        if (service != null && service.isShowing) {
+                        Service service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
+                        if (service != null) {
                             ServiceHelper.dissmissWindow(FpsFloatingService.class);
                         } else {
                             ServiceHelper.showWindow(mContext, FpsFloatingService.class);
@@ -103,8 +109,8 @@ public class FloatingFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        QDFloatingService service = ServiceHelper.getServiceByKey(FloatingMenuService.class.getName());
-                        if (service != null && service.isShowing) {
+                        Service service = ServiceHelper.getServiceByKey(FloatingMenuService.class.getName());
+                        if (service != null) {
                             ServiceHelper.dissmissWindow(FloatingMenuService.class);
                         } else {
                             ServiceHelper.showWindow(mContext, FloatingMenuService.class);
@@ -135,8 +141,8 @@ public class FloatingFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        QDFloatingService service = ServiceHelper.getServiceByKey(DebugFloatingService.class.getName());
-                        if (service != null && service.isShowing) {
+                        Service service = ServiceHelper.getServiceByKey(DebugFloatingService.class.getName());
+                        if (service != null) {
                             ServiceHelper.dissmissWindow(DebugFloatingService.class);
                         } else {
                             ServiceHelper.showWindow(mContext, DebugFloatingService.class);
@@ -167,8 +173,8 @@ public class FloatingFragment extends BaseFragment {
                 PermissionManager.getInstance().chekPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionManager.PermissionListener() {
                     @Override
                     public void onPassed() {
-                        QDFloatingService service = ServiceHelper.getServiceByKey(LifecycleFloatingService.class.getName());
-                        if (service != null && service.isShowing) {
+                        Service service = ServiceHelper.getServiceByKey(LifecycleFloatingService.class.getName());
+                        if (service != null) {
                             ServiceHelper.dissmissWindow(LifecycleFloatingService.class);
                         } else {
                             ServiceHelper.showWindow(mContext, LifecycleFloatingService.class);
@@ -180,6 +186,20 @@ public class FloatingFragment extends BaseFragment {
                         Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+        btn_floating_05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    BatteryOptimizationsHelper.requestIgnoreBatteryOptimizations(getContext());
+                }
+            }
+        });
+        btn_floating_06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BatteryOptimizationsHelper.requestAutoStartService(getContext());
             }
         });
     }

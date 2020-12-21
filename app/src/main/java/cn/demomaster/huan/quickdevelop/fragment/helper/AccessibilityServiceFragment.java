@@ -75,7 +75,7 @@ public class AccessibilityServiceFragment extends BaseFragment {
                     @Override
                     public void onPassed() {
                         if(ServiceHelper.getServiceByKey(FloatingMenuService.class.getName())!=null){
-                            if(ServiceHelper.getServiceByKey(FloatingMenuService.class.getName()).isShowing){
+                            if(ServiceHelper.getServiceByKey(FloatingMenuService.class.getName())!=null){
                                 ServiceHelper.dissmissWindow(FloatingMenuService.class);
                                 btn_floating_02.setText("开启悬浮");
                             }else {

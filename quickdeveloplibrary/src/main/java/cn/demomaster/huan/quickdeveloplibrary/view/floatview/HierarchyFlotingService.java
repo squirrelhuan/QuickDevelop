@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -30,19 +31,20 @@ import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 页面视图结构查看
  */
-public class HierarchyFlotingService extends QDFloatingService {
+public class HierarchyFlotingService extends QDFloatingService2 {
     HierarchyView hierarchyView;
     View dialogView;
-    TextView button,tv_title;
+    TextView button, tv_title;
     String currentActivityName;
     FrameLayout linearLayout;
 
     @Override
-    public View setContentView(Context context) {
+    public void onCreateView(Context context, WindowManager windowManager) {
         linearLayout = new FrameLayout(context.getApplicationContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         hierarchyView = new HierarchyView(context);
@@ -57,7 +59,7 @@ public class HierarchyFlotingService extends QDFloatingService {
         button.setTextColor(Color.WHITE);
         button.setText("捕获");
         button.setPadding(20, 20, 20, 20);
-        button.setOnTouchListener(new FloatingOnTouchListener(linearLayout));
+        button.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
         linearLayout.addView(button, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +81,9 @@ public class HierarchyFlotingService extends QDFloatingService {
                 layoutParams.width = DisplayUtil.getScreenWidth(context);
                 layoutParams.height = DisplayUtil.getScreenHeight(context);
                 dialogView.setLayoutParams(layoutParams);
-                showNodeInfo(nodeInfo);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    showNodeInfo(nodeInfo);
+                }
             }
         });
 
@@ -92,7 +96,7 @@ public class HierarchyFlotingService extends QDFloatingService {
             @Override
             public void onClick(View v) {
                 ClipboardUtil.setClip(getApplicationContext(), stringMap.toString());
-                QdToast.show(getApplicationContext(),"copy success",1000);
+                QdToast.show(getApplicationContext(), "copy success", 1000);
             }
         });
         ImageView iv_colse = dialogView.findViewById(R.id.iv_colse);
@@ -112,11 +116,47 @@ public class HierarchyFlotingService extends QDFloatingService {
             }
         });
 
-        return linearLayout;
+        layoutParams = new WindowManager.LayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;//TYPE_APPLICATION_OVERLAY;
+        } else {
+            //layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+        layoutParams.format = PixelFormat.RGBA_8888;
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (!getTouchAble()) {
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+
+        PointF pointF = getOriginPoint();
+        if (pointF != null) {
+            layoutParams.x = (int) pointF.x;
+            layoutParams.y = (int) pointF.y;
+        }
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        this.windowManager = windowManager;
+        windowManager.addView(linearLayout, layoutParams);
+        linearLayout.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
+        QDLogger.i("HierarchyFlotingService");
+    }
+
+    public Point getPosition() {
+        layoutParams = (WindowManager.LayoutParams) linearLayout.getLayoutParams();
+        return new Point(layoutParams.x, layoutParams.y);
+    }
+
+    public void setPosition(Point point) {
+        layoutParams = (WindowManager.LayoutParams) linearLayout.getLayoutParams();
+        layoutParams.x = (int) point.x;
+        layoutParams.y = (int) point.y;
+        linearLayout.setLayoutParams(layoutParams);
     }
 
     private void showDetailInfo() {
-        button.setOnTouchListener(new FloatingOnTouchListener(linearLayout));
+        button.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
         Point point = new Point(button.getLeft(), button.getTop());
         hierarchyView.setVisibility(View.GONE);
         setViewPosition(button, 0, 0);
@@ -128,8 +168,8 @@ public class HierarchyFlotingService extends QDFloatingService {
     private void hideDetailInfo() {
         Point point = getPosition();
         hierarchyView.setVisibility(View.VISIBLE);
-        setViewPosition(button, Math.min(Math.max(0,point.x),DisplayUtil.getScreenWidth(getApplicationContext())), Math.min(Math.max(0,point.y),DisplayUtil.getScreenHeight(getApplicationContext())));
-        button.setOnTouchListener(new FloatingOnTouchListener(button));
+        setViewPosition(button, Math.min(Math.max(0, point.x), DisplayUtil.getScreenWidth(getApplicationContext())), Math.min(Math.max(0, point.y), DisplayUtil.getScreenHeight(getApplicationContext())));
+        button.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(button));
         button.setBackgroundColor(Color.RED);
         button.setText("结束");
 
@@ -141,6 +181,7 @@ public class HierarchyFlotingService extends QDFloatingService {
     }
 
     Map<String, String> stringMap;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void showNodeInfo(HierarchyView.ViewNodeInfo nodeInfo) {
         dialogView.setVisibility(View.VISIBLE);
@@ -149,7 +190,7 @@ public class HierarchyFlotingService extends QDFloatingService {
         stringMap = new LinkedHashMap<>();
         PackageInfo packageInfo = QDAppInfoUtil.getPackageInfoByPackageName(getApplicationContext(), nodeInfo.getPackageName());
         String appName = null;
-        if (packageInfo != null){
+        if (packageInfo != null) {
             appName = getApplicationContext().getPackageManager().getApplicationLabel(packageInfo.applicationInfo).toString();// 得到应用名
         }
         stringMap.put("应用名称", "" + appName);
@@ -205,7 +246,7 @@ public class HierarchyFlotingService extends QDFloatingService {
             layoutParams = (WindowManager.LayoutParams) targetView.getLayoutParams();
             layoutParams.x = left;
             layoutParams.y = top;
-            getWindowManager().updateViewLayout(targetView, layoutParams);
+            windowManager.updateViewLayout(targetView, layoutParams);
         } else if (targetView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams;
             layoutParams = (ViewGroup.MarginLayoutParams) targetView.getLayoutParams();
@@ -221,15 +262,13 @@ public class HierarchyFlotingService extends QDFloatingService {
     }
 
     @Override
-    public void init() {
-        //setWidth(800);
-        //setHeight(500);
-        //setWidth(DisplayUtil.getScreenWidth(getApplicationContext()));
-        //setHeight(DisplayUtil.getScreenHeight(getApplicationContext()));
+    public boolean getTouchAble() {
+        return true;
     }
 
     @Override
-    public boolean getTouchAble() {
-        return true;
+    public void onDestroy() {
+        super.onDestroy();
+        removeView(linearLayout);
     }
 }

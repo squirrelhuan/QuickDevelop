@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -28,30 +27,42 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QMUIDeviceHelper.isXia
 public class BatteryOptimizationsHelper {
     static Context context;
 
+    /*IgnoreBatteryOptimizationsHelper(Context context){
+        this.context = context;
+    }*/
+
     public static void request(Context context) {
         BatteryOptimizationsHelper.context = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!isIgnoringBatteryOptimizations(context)) {
                 requestIgnoreBatteryOptimizations(context);
-            }else {
-                if (isXiaomi()) {
-                    goXiaomiSetting();
-                } else if (isHuawei()) {
-                    goHuaweiSetting();
-                } else if (isOppo()) {
-                    goOPPOSetting();
-                } else if (isVivo()) {
-                    goVIVOSetting();
-                } else if (isMeizu()) {
-                    goMeizuSetting();
-                } else if (isSamsung()) {
-                    goSamsungSetting();
-                } else if (isLeTV()) {
-                    goLetvSetting();
-                } else if (isSmartisan()) {
-                    goSmartisanSetting();
-                }
+            } else {
+                requestAutoStartService(context);
             }
+        }
+    }
+
+    /**
+     * 跳转到app自启动设置页面
+     */
+    public static void requestAutoStartService(Context context){
+        BatteryOptimizationsHelper.context = context;
+        if (isXiaomi()) {
+            goXiaomiSetting();
+        } else if (isHuawei()) {
+            goHuaweiSetting();
+        } else if (isOppo()) {
+            goOPPOSetting();
+        } else if (isVivo()) {
+            goVIVOSetting();
+        } else if (isMeizu()) {
+            goMeizuSetting();
+        } else if (isSamsung()) {
+            goSamsungSetting();
+        } else if (isLeTV()) {
+            goLetvSetting();
+        } else if (isSmartisan()) {
+            goSmartisanSetting();
         }
     }
 
@@ -62,12 +73,13 @@ public class BatteryOptimizationsHelper {
      * @param context
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private static boolean isIgnoringBatteryOptimizations(Context context) {
-        boolean isIgnoring = false;
-        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        if (powerManager != null) {
-            isIgnoring = powerManager.isIgnoringBatteryOptimizations(context.getPackageName());
+    public static boolean isIgnoringBatteryOptimizations(Context context) {
+        boolean isIgnoring = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (powerManager != null) {
+                isIgnoring = powerManager.isIgnoringBatteryOptimizations(context.getPackageName());
+            }
         }
         return isIgnoring;
     }

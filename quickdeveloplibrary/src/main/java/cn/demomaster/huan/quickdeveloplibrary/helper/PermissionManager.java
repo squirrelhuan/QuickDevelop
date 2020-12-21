@@ -313,7 +313,7 @@ public class PermissionManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (String str : permissions) {
                 if (!getPermissionStatus(context, str)) {
-                    QDLogger.e("权限，"+str);
+                    //QDLogger.e("权限，"+str);
                     return false;
                 }
             }

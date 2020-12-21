@@ -4,6 +4,7 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 import android.os.Handler;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 //import static cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences.Message_Code_Last_Time;
 
@@ -34,6 +35,7 @@ public class QDTimer implements OnReleaseListener {
 
     public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
+        QDLogger.i("totalTime="+totalTime);
     }
 
     public long getTotalTime() {
