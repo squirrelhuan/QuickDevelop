@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.activity.sample.model.QDScanResult;
-import cn.demomaster.huan.quickdevelop.activity.sample.utils.WifiUtil;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.model.QDScanResult;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 
 /**

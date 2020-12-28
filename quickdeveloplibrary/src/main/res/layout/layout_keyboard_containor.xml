@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="bottom"
     android:orientation="vertical">
 
@@ -24,10 +25,11 @@
                 android:id="@+id/iv_security"
                 android:layout_width="25sp"
                 android:layout_height="25sp"
-                android:tint="@color/lightGray"
+                app:tint="@color/lightGray"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/description"
-                android:src="@drawable/ic_security_black_24dp" />
+                app:srcCompat="@drawable/ic_security_black_24dp"
+                tools:ignore="VectorDrawableCompat" />
 
             <TextView
                 android:id="@+id/keyboardTip"
@@ -52,8 +54,9 @@
             android:background="@drawable/bg_keyboard_done"
             android:contentDescription="@null"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_keyboard_hide_black_24dp"
-            android:textColor="@color/white" />
+            app:srcCompat="@drawable/ic_keyboard_hide_black_24dp"
+            android:textColor="@color/white"
+            tools:ignore="VectorDrawableCompat" />
 
     </FrameLayout>
 

@@ -26,7 +26,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -36,7 +35,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTool;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
@@ -44,6 +42,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
@@ -98,7 +97,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             super.setContentView(view);
         }
         //bind在setContentView之后
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
     }
 
     //public LayoutInflater mInflater;
@@ -359,14 +358,14 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         if (photoHelper != null) {
             photoHelper.onActivityResult(requestCode, resultCode, data);
         }
-        PermissionManager.onActivityResult(this, requestCode, resultCode, data);
+        PermissionHelper.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         QDLogger.d(requestCode + permissions.toString() + grantResults.toString());
-        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionHelper.onRequestPermissionsResult(mContext,requestCode, permissions, grantResults);
     }
 
     public PhotoHelper getPhotoHelper() {

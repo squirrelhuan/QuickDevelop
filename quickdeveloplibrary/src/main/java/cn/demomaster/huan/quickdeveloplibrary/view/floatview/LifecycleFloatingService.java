@@ -14,16 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
@@ -32,13 +28,8 @@ import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-import cn.demomaster.qdlogger_library.QDLogBean;
 import cn.demomaster.qdlogger_library.QDLogger;
-
-import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
-import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
-import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.tagFilter;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 /**
  * 生命周期悬浮窗
@@ -166,7 +157,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
 
     public void showConsole(Activity context) {
         if (QDAppInfoUtil.isApkInDebug(context)) {
-            if (PermissionManager.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //showWindow(context.getApplicationContext(), DebugFloatingService.class);
             } else {
                 QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);

@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 
 import android.Manifest;
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -27,17 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogBean;
 import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
@@ -196,7 +193,7 @@ public class DebugFloatingService extends QDFloatingService2 {
                     height = Math.min(DisplayUtil.getScreenHeight(view.getContext()), height);
                     int width = layoutParams.width + movedX;
                     width = Math.min(DisplayUtil.getScreenWidth(view.getContext()), width);
-                    QDLogger.i("movedX="+movedX+",movedY="+movedY+",width="+ width+",height="+ height);
+                    //QDLogger.i("movedX="+movedX+",movedY="+movedY+",width="+ width+",height="+ height);
                     updateViewLayout(view,width,height);
                     break;
                 case MotionEvent.ACTION_UP:
@@ -224,11 +221,11 @@ public class DebugFloatingService extends QDFloatingService2 {
 
     public static void showConsole(Activity context) {
         if (QDAppInfoUtil.isApkInDebug(context)) {
-            if (PermissionManager.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //DebugFloatingService.showWindow(context, DebugFloatingService.class);
                 ServiceHelper.showWindow(context,DebugFloatingService.class);
             } else {
-                QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);
+                //QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);
                 if (debugFloating2 == null) {
                     debugFloating2 = new DebugFloating2();
                 }

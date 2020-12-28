@@ -40,6 +40,7 @@ public class HierarchyView extends View {
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public HierarchyView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -190,7 +191,7 @@ public class HierarchyView extends View {
             getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
             Rect rect = new Rect();
             viewNodeInfo.getBoundsInScreen(rect);//获取类名
-            QDLogger.e("drawNode="+rect);
+            //QDLogger.e("drawNode="+rect);
             Rect rect1 = new Rect(rect.left - location[0], rect.top - location[1], rect.right - location[0], rect.bottom - location[1]);
 
             canvas.drawRect(rect1, paint);
@@ -212,6 +213,7 @@ public class HierarchyView extends View {
      * 设置选中的控件
      * @param accessibilityNodeInfo
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
         generateViewNode(null,accessibilityNodeInfo);
     }
@@ -226,6 +228,7 @@ public class HierarchyView extends View {
                 parent.setViewIdResourceName(accessibilityNodeInfo.getViewIdResourceName());
                 parent.setClickable(accessibilityNodeInfo.isClickable());
                 parent.setEnabled(accessibilityNodeInfo.isEnabled());
+                parent.setText(accessibilityNodeInfo.getText()+"");
                 parent.setContentDescription(accessibilityNodeInfo.getContentDescription()==null?null:accessibilityNodeInfo.getContentDescription().toString());
                 Rect rect =new Rect();
                 accessibilityNodeInfo.getBoundsInScreen(rect);
@@ -246,6 +249,7 @@ public class HierarchyView extends View {
                     viewNodeInfo1.setViewIdResourceName(child.getViewIdResourceName());
                     viewNodeInfo1.setClickable(child.isClickable());
                     viewNodeInfo1.setEnabled(child.isEnabled());
+                    viewNodeInfo1.setText(child.getText()+"");
                     viewNodeInfo1.setContentDescription(child.getContentDescription()==null?null:child.getContentDescription().toString());
                     Rect rect = new Rect();
                     child.getBoundsInScreen(rect);
@@ -266,6 +270,7 @@ public class HierarchyView extends View {
     public static class ViewNodeInfo implements Serializable {
         String contentDescription;
         String mClassName;
+        String text;
         String mPackageName;
         String mViewIdResourceName;
         boolean enabled;
@@ -299,9 +304,9 @@ public class HierarchyView extends View {
         }
 
         public void setBoundsInScreen(Rect boundsInScreen) {
-            QDLogger.e("boundsInScreen="+boundsInScreen);
+            //QDLogger.e("boundsInScreen="+boundsInScreen);
             this.mBoundsInScreen = boundsInScreen;
-            QDLogger.e("mBoundsInScreen="+mBoundsInScreen);
+            //QDLogger.e("mBoundsInScreen="+mBoundsInScreen);
         }
 
         public void setPackageName(String mPackageName) {
@@ -368,5 +373,15 @@ public class HierarchyView extends View {
         public void setContentDescription(String contentDescription) {
             this.contentDescription = contentDescription;
         }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
     }
+
+
 }

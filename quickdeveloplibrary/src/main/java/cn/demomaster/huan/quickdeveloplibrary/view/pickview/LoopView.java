@@ -4,6 +4,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.pickview;
  * Created by Squirrel桓 on 2018/11/13.
  */
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -122,6 +123,7 @@ public class LoopView extends View {
         this.initView(context, attrs);
     }
 
+    @SuppressLint("WrongConstant")
     private void initView(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoopView);
         if (array != null) {

@@ -22,8 +22,24 @@
                 android:id="@+id/btn_02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="消息通知" />
+                android:text="消息通知（系统默认）" />
 
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="消息通知（自定义音频）" />
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_04"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="消息通知（静音+震动）" />
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_05"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="消息通知（静音不震动）" />
         </LinearLayout>
     </ScrollView>
 

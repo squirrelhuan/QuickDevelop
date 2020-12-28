@@ -85,18 +85,19 @@ public class SquareImageMenuView extends View {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 
-    public static String SquareImageMenuView_X_SP ="SquareImageMenuView_X_SP";
-    public static String SquareImageMenuView_Y_SP ="SquareImageMenuView_Y_SP";
+    public static String SquareImageMenuView_X_SP = "SquareImageMenuView_X_SP";
+    public static String SquareImageMenuView_Y_SP = "SquareImageMenuView_Y_SP";
     private void init() {
         setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QDLogger.println("触发点击事件 onClick=" + animator);
                 if (animator != null) {
-                    QDLogger.println("animator=" + animator.getAnimationState()+",isHasReversed="+animator.isHasReversed());
-                    if (animator.getAnimationState()== QDValueAnimator.AnimationState.isOpened||animator.getAnimationState()== QDValueAnimator.AnimationState.isOpening) {
+                    QDLogger.println("animator=" + animator.getAnimationState() + ",isHasReversed=" + animator.isHasReversed());
+                    if (animator.getAnimationState() == QDValueAnimator.AnimationState.isOpened || animator.getAnimationState() == QDValueAnimator.AnimationState.isOpening) {
                         boolean canDoAction = false;
-                        W:for (Map.Entry entry : pointMap.entrySet()) {
+                        W:
+                        for (Map.Entry entry : pointMap.entrySet()) {
                             Point point = (Point) entry.getValue();
                             if (Math.abs(point.x - clickX) < button_width && Math.abs(point.y - clickY) < button_width) {
                                 //QDLogger.i("clicked=" + entry.getKey());
@@ -109,7 +110,7 @@ public class SquareImageMenuView extends View {
                         if (canDoAction) {
                             stopAnimation();
                         }
-                    }else {
+                    } else {
                         startAnimation();
                     }
                 } else {
@@ -117,23 +118,11 @@ public class SquareImageMenuView extends View {
                 }
             }
         });
-
-        /*getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                setOnTouchListener(new OnTouchListener(getContext(), (ViewGroup) getParent(), new OnClickListener() {
-                    @Override
-                    public void onClick(MotionEvent event) {
-
-                    }
-                }));
-            }
-        });*/
     }
-
+    
     /**
      * 执行动作
+     *
      * @param type
      */
     public void doAction(int type) {
@@ -206,12 +195,14 @@ public class SquareImageMenuView extends View {
 
     float clickX = 0;
     float clickY = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         clickX = event.getX();
         clickY = event.getY();
         return super.onTouchEvent(event);
     }
+
     WindowManager windowManager;
     public void setWindowManager(WindowManager windowManager) {
         this.windowManager = windowManager;
@@ -261,16 +252,15 @@ public class SquareImageMenuView extends View {
                     y = nowY;
 
                     WindowManager.LayoutParams layoutParams;
-                    if (targetView != null) {
-                        if (targetView.getLayoutParams() instanceof WindowManager.LayoutParams) {
-                            layoutParams = (WindowManager.LayoutParams) targetView.getLayoutParams();
-                            layoutParams.x = layoutParams.x + movedX;
-                            layoutParams.y = layoutParams.y + movedY;
-                            QDSharedPreferences.getInstance().putInt(SquareImageMenuView_X_SP,layoutParams.x);
-                            QDSharedPreferences.getInstance().putInt(SquareImageMenuView_Y_SP,layoutParams.y);
-                            windowManager.updateViewLayout(targetView, layoutParams);
-                        }
+                    if (targetView.getLayoutParams() instanceof WindowManager.LayoutParams) {
+                        layoutParams = (WindowManager.LayoutParams) targetView.getLayoutParams();
+                        layoutParams.x = layoutParams.x + movedX;
+                        layoutParams.y = layoutParams.y + movedY;
+                        QDSharedPreferences.getInstance().putInt(SquareImageMenuView_X_SP, layoutParams.x);
+                        QDSharedPreferences.getInstance().putInt(SquareImageMenuView_Y_SP, layoutParams.y);
+                        windowManager.updateViewLayout(targetView, layoutParams);
                     }
+                    delayedStopAnimation();
                     break;
                 case MotionEvent.ACTION_UP:
                     endTime = System.currentTimeMillis();
@@ -291,32 +281,34 @@ public class SquareImageMenuView extends View {
 
     int maxWith = -1;
     int maxHeight = -1;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawView(canvas);
     }
+
     private int miniWidth = -1;
     private int button_width = 0;
     int[] images = {R.drawable.ic_home_black_24dp, R.drawable.ic_view_carousel_black_24dp, R.drawable.ic_trending_flat_black_24dp};//R.drawable.ic_baseline_settings_24,
 
     private void drawView(Canvas canvas) {
-        float progress2= progress / 360;
+        float progress2 = progress / 360;
         Paint paintb = new Paint();
         paintb.setAntiAlias(true);
         paintb.setColor(Color.BLACK);
-        paintb.setAlpha((int) (100*progress2)+70);
+        paintb.setAlpha((int) (100 * progress2) + 70);
         int rectWidth = (int) ((maxWith) * (progress2) + miniWidth);
         RectF rectFb = new RectF(0, 0, rectWidth, rectWidth);
         canvas.drawRoundRect(rectFb, DisplayUtil.dip2px(getContext(), 15), DisplayUtil.dip2px(getContext(), 15), paintb);
 
-        button_width = maxWith / 3*2 ;
-        int centX = (int) (rectFb.width()/2);
-        int centY = (int) (rectFb.width()/2);
-        if (animator != null&&animator.getAnimationState()!= QDValueAnimator.AnimationState.isClosed) {
+        button_width = maxWith / 3 * 2;
+        int centX = (int) (rectFb.width() / 2);
+        int centY = (int) (rectFb.width() / 2);
+        if (animator != null && animator.getAnimationState() != QDValueAnimator.AnimationState.isClosed) {
             int count = images.length;
             for (int i = 0; i < count; i++) {
-                int r = (int) (progress2*(rectWidth/2 - button_width / 3 * 2));
+                int r = (int) (progress2 * (rectWidth / 2 - button_width / 3 * 2));
                 double a = Math.toRadians(i * 360 / count - 90);
                 int x1 = (int) (centX + r * Math.cos(a));
                 int y1 = (int) (centY + r * Math.sin(a));
@@ -327,12 +319,12 @@ public class SquareImageMenuView extends View {
                 RectF rectF = new RectF(point.x - button_width / 2, point.y - button_width / 2, point.x + button_width / 2, point.y + button_width / 2);
                 Paint paint = new Paint();
                 paint.setColor(Color.WHITE);
-                paint.setAlpha((int) (180*(progress2)));
+                paint.setAlpha((int) (180 * (progress2)));
                 paint.setAntiAlias(true);
                 paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
                 //canvas.rotate(360 / count, centX, centY);
                 canvas.drawRoundRect(rectF, button_width / 2, button_width / 2, paint);
-                paint.setAlpha((int) (10+200*(progress2)));
+                paint.setAlpha((int) (10 + 200 * (progress2)));
                 Bitmap bitmap = QDBitmapUtil.getBitmapByDrawableId(getContext(), images[i]);
                 //bitmap = QDBitmapUtil.setBitmapLight(bitmap, (int) (100+progress2*150));
                 Rect bitmapSrcRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
@@ -346,9 +338,9 @@ public class SquareImageMenuView extends View {
             //paint.setColor(Color.WHITE);
             int color = 0xffffff;
             paint.setColor(color);
-            paint.setAlpha((int) (100+125*(1-progress2))/7*6);
+            paint.setAlpha((int) (100 + 125 * (1 - progress2)) / 7 * 6);
             paint.setAntiAlias(true);
-            int r = (int) ((1-progress2)*maxWith / 3);
+            int r = (int) ((1 - progress2) * maxWith / 3);
             RectF rectF = new RectF(centX - r, centY - r, centX + r, centY + r);
             canvas.drawRoundRect(rectF, maxWith / 2, maxWith / 2, paint);
             paint.setXfermode(null);
@@ -362,17 +354,18 @@ public class SquareImageMenuView extends View {
         //setLayoutParams(lp);
         //requestLayout();
         //View parentView = (View) this.getParent();
-        if(windowManager!=null){
+        if (windowManager != null) {
             WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) getLayoutParams();
             layoutParams.width = lp.width;
             layoutParams.height = lp.height;
-            QDLogger.e("setSize w1="+lp.width+",w2="+layoutParams.width);
-            windowManager.updateViewLayout((View) this,layoutParams);
+            QDLogger.e("setSize w1=" + lp.width + ",w2=" + layoutParams.width);
+            windowManager.updateViewLayout((View) this, layoutParams);
         }
     }
 
     private float progress;
     QDValueAnimator animator;
+
     public void startAnimation() {
         Log.d(TAG, "开启动画");
         if (animator == null) {
@@ -400,8 +393,7 @@ public class SquareImageMenuView extends View {
                 @Override
                 public void onEndOpen(Object value) {
                     Log.d(TAG, "onEndOpen");
-                    handler.removeCallbacks(runnable);
-                    handler.postDelayed(runnable, 3000);
+                    delayedStopAnimation();
                 }
 
                 @Override
@@ -435,9 +427,14 @@ public class SquareImageMenuView extends View {
     public void stopAnimation() {
         Log.d(TAG, "关闭动画");
         handler.removeCallbacks(runnable);
-        if (animator != null&&!animator.isHasReversed()) {
+        if (animator != null && !animator.isHasReversed()) {
             animator.reverse();
         }
+    }
+
+    public void delayedStopAnimation() {
+        handler.removeCallbacks(runnable);
+        handler.postDelayed(runnable, 3500);
     }
 
     Handler handler = new Handler();

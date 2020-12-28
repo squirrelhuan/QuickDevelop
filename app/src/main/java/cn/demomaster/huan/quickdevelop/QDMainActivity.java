@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
 
-import cn.demomaster.huan.quickdevelop.fragment.component.BlankFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;

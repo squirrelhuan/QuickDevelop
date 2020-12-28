@@ -1,17 +1,18 @@
 package cn.demomaster.huan.quickdevelop;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import cn.demomaster.huan.quickdevelop.fragment.main.MainFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  *
@@ -83,8 +84,10 @@ public class QDMainFragmentActivity extends QDActivity {
        /* startActivity(WifiTestActivity2.class);
         finish();*/
 
-        PermissionManager.getInstance().chekPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
+        //PermissionManager.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

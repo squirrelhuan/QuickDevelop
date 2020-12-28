@@ -172,7 +172,6 @@ public class ScreenShotUitl {
 
     /**
      * 获取一个 View 的缓存视图
-     * @param view
      * @return
      */
     public static Bitmap getCacheBitmapFromView(View v) {

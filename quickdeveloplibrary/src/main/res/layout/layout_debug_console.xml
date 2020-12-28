@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/debug_console_bg">
 
     <LinearLayout
@@ -95,8 +97,9 @@
                 android:layout_width="@dimen/dp_18"
                 android:layout_height="@dimen/dp_18"
                 android:padding="@dimen/dp_3"
-                android:tint="@color/white"
-                android:src="@drawable/ic_expend" />
+                app:tint="@color/white"
+                 app:srcCompat="@drawable/ic_expend"
+                 tools:ignore="VectorDrawableCompat" />
         </LinearLayout>
     </LinearLayout>
 

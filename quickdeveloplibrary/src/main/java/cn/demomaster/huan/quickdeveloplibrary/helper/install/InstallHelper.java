@@ -32,12 +32,12 @@ import java.io.OutputStream;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.uriToFile;
@@ -64,7 +64,7 @@ public class InstallHelper {
         }
 
         //存储权限
-        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
+        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
@@ -267,7 +267,7 @@ public class InstallHelper {
     public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
         DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context);
         //存储权限
-        PermissionManager.getInstance().chekPermission(context, PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
+        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
 

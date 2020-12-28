@@ -5,7 +5,6 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.compat.ToastCompat;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper.runOnUiThread;

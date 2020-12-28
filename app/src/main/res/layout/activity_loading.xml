@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="12dp"
     android:orientation="horizontal"
-    tools:context=".activity.sample.component.LoadingActivity">
+    tools:context=".ui.activity.sample.component.LoadingActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

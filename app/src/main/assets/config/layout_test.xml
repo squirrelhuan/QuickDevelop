@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout height="-1" orientation="vertical" width="-1" xmlns="poetry"><!--根元素-->
+<layout height="-1" orientation="vertical" width="-1"><!--根元素-->
     <PercentLayout backgroundColor="#00ff6000" backgroundImg="http:" width="100%" height="100%">
         <banner height="30%"  width="100%" x="0"
             y="0" desc="图片1;视频播放卡卡西;图片2" radius="30,30" duration="60000" direction="horizontal" gravity="bottom"  textGravity="center" url="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3496915261,2096217974&amp;fm=26&amp;gp=0.jpg;http://vfx.mtime.cn/Video/2019/03/09/mp4/190309153658147087.mp4;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1604596967527&amp;di=4bc4c14d4184e29de804975ba4699942&amp;imgtype=0&amp;src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201307%2F24%2F213459izmmcsheybh3z6ee.jpg" />

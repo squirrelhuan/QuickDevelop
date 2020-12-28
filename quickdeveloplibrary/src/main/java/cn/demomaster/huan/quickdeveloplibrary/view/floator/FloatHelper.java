@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -126,7 +127,7 @@ public class FloatHelper {
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View view = decorView.findViewById(contenId);
         if (view == null) {
-            FlowLayout flowLayout = new FlowLayout(activity);
+            @SuppressLint("RestrictedApi") FlowLayout flowLayout = new FlowLayout(activity);
             flowLayout.setId(contenId);
             flowLayout.setOnTouchListener(floatingOnTouchListener);
             ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(width, height);

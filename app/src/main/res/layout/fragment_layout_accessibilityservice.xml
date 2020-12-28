@@ -8,11 +8,6 @@
        android:id="@+id/btn_01"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:text="是否开启辅助功能"/>
-   <Button
-       android:id="@+id/btn_floating_02"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:text="悬浮menu"/>
+       android:text="开启无障碍辅助功能"/>
 
 </LinearLayout>

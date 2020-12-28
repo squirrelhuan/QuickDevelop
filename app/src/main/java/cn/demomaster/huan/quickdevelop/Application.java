@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.multidex.MultiDex;
+
 import com.didichuxing.doraemonkit.DoraemonKit;
 
 import java.io.File;
@@ -36,7 +38,6 @@ public class Application extends QDApplication {
         QDLogger.init(this, "/qdlogger/");
         quickDb = new QuickDb(this, "quickdev.db", null, 10);
 
-        NotificationHelper.getInstance().init(this);
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
         //初始化友盟分享
         //initUmengShare("5c79138f61f564e0380012fa");
@@ -66,6 +67,7 @@ public class Application extends QDApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         Log.e(TAG, "attachBaseContext");
+        MultiDex.install(base);
     }
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();

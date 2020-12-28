@@ -70,7 +70,7 @@ public class StringUtil {
     /**
      * 字符串转换成十六进制字符串
      *
-     * @param String str 待转换的ASCII字符串
+     * @param str 待转换的ASCII字符串
      * @return String 每个Byte之间空格分隔，如: [61 6C 6B]
      */
     public static String str2HexStr(String str) {
@@ -99,7 +99,7 @@ public class StringUtil {
 
     /**
      * 十六进制转换字符串 --- 不去除空字符的结果
-     * @param String str Byte字符串(Byte之间无分隔符 如:[616C6B])
+     * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
     public static String hexStr2Str_(String hexStr) {
@@ -117,7 +117,7 @@ public class StringUtil {
     }
     /**
      * 十六进制转换字符串(去除空字符的结果)
-     * @param String hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
+     * @param  hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
     public static String hexStr2Str(String hexStr) {
@@ -146,7 +146,7 @@ public class StringUtil {
     /**
      * bytes转换成十六进制字符串
      *
-     * @param byte[] b byte数组
+     * @param  b byte数组
      * @return String 每个Byte值之间空格分隔
      */
     public static String byte2HexStr(byte[] b) {
@@ -163,7 +163,7 @@ public class StringUtil {
     /**
      * bytes字符串转换为Byte值
      *
-     * @param String src Byte字符串，每个Byte之间没有分隔符
+     * @param  src Byte字符串，每个Byte之间没有分隔符
      * @return byte[]
      */
     public static byte[] hexStr2Bytes(String src) {
@@ -214,7 +214,7 @@ public class StringUtil {
     /**
      * String的字符串转换成unicode的String
      *
-     * @param String strText 全角字符串
+     * @param  strText 全角字符串
      * @return String 每个unicode之间无分隔符
      * @throws Exception
      */
@@ -238,7 +238,7 @@ public class StringUtil {
 
     /**
      * unicode的String转换成String的字符串
-     * @param String hex 16进制值字符串 （一个unicode为2byte）
+     * @param  hex 16进制值字符串 （一个unicode为2byte）
      * @return String 全角字符串
      */
     public static String unicodeToString(String hex) {

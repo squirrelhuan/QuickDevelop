@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.service;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class GuardService extends Service {
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知

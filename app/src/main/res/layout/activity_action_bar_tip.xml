@@ -8,7 +8,7 @@
     android:padding="20dp"
     android:gravity="center"
     android:background="@mipmap/meizi"
-    tools:context=".activity.sample.actionbar.ActionBarTipActivity">
+    tools:context=".ui.activity.sample.actionbar.ActionBarTipActivity">
 
     <CheckBox
         android:id="@+id/cb_001"

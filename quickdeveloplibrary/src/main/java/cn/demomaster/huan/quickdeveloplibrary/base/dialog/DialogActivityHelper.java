@@ -31,8 +31,8 @@ public class DialogActivityHelper {
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            NotificationHelper.getInstance().clearAllNotifiication();
-            NotificationHelper.getInstance().sendFullScreenNotification("消息", "点击查看",clazz,bundle);
+            NotificationHelper.clearAllNotifiication(context);
+            NotificationHelper.sendFullScreenNotification(context,"消息", "点击查看",clazz,bundle);
         }else {
             context.startActivity(intent);
         }

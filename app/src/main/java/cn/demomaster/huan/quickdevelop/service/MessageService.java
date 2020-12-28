@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -56,6 +57,7 @@ public class MessageService extends Service {
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知

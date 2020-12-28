@@ -62,8 +62,8 @@ public class FloatingMenuService extends QDFloatingService2 {
             layoutParams.x = (int) pointF.x;
             layoutParams.y = (int) pointF.y;
         }
-        layoutParams.width= DisplayUtil.dip2px(context,40);//ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.height= DisplayUtil.dip2px(context,40);//ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.width= (int) getResources().getDimension(R.dimen.dp_45);//ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height= layoutParams.width;//ViewGroup.LayoutParams.WRAP_CONTENT;
         this.windowManager = windowManager;
         windowManager.addView(view,layoutParams);
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));

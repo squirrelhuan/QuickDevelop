@@ -18,10 +18,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -64,7 +64,7 @@ public class DownloadHelper {
     }
 
     private void pushTask(final DownloadTask downloadTask) {
-        PermissionManager.getInstance().chekPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionManager.PermissionListener() {
+        PermissionHelper.getInstance().requestPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 if (downloadTask.getDownloadType() == DownloadTask.DownloadType.DownloadManager) {

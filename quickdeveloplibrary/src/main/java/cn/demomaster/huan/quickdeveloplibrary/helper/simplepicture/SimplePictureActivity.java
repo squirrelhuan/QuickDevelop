@@ -21,9 +21,9 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.helper.PermissionManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
@@ -89,17 +89,7 @@ public class SimplePictureActivity extends QDActivity {
         result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
 
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionManager.getInstance().chekPermission(mContext, permission, new PermissionManager.PermissionListener() {
-            @Override
-            public void onPassed() {
-                initView();
-            }
-
-            @Override
-            public void onRefused() {
-
-            }
-        });
+        PermissionHelper.getInstance().requestPermission(mContext, permission, null);
 
     }
 

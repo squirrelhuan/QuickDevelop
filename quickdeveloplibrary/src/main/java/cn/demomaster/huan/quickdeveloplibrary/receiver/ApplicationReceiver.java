@@ -16,10 +16,9 @@ public class ApplicationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        if(bundle!=null&&bundle.containsKey("message")){
-           String message = bundle.getString("message","");
-            NotificationHelper.getInstance().init(context);
-            NotificationHelper.getInstance().sendNotification("无标题",message,null);
+        if (bundle != null && bundle.containsKey("message")) {
+            String message = bundle.getString("message", "");
+            NotificationHelper.sendNotification(context, "无标题", message, null);
         }
     }
 }

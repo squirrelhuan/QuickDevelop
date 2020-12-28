@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
         android:padding="16dp"
-        android:tint="?attr/colorAccent"
+        app:tint="?attr/colorAccent"
         android:rotationX="180"
         app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 

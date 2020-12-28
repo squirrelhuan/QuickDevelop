@@ -1,5 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.lifecycle;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.Objects;
 
 public class LifeCycleClassInfo {
@@ -31,6 +35,7 @@ public class LifeCycleClassInfo {
         this.clazzHashCode = clazzHashCode;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,6 +45,7 @@ public class LifeCycleClassInfo {
                 Objects.equals(clazz, that.clazz);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
         return Objects.hash(clazz, clazzHashCode);

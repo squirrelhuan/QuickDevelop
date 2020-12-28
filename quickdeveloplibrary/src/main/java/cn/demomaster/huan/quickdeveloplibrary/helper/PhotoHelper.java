@@ -23,6 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePicture
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_CONTENT;
 
@@ -109,7 +110,7 @@ public class PhotoHelper {
 
     private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        PermissionManager.getInstance().chekPermission(contextWeakReference.get(), permissions, new PermissionManager.PermissionListener() {
+        PermissionHelper.getInstance().requestPermission(contextWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 photoResultMap.put(resultCodeTakePhoto, onTakePhotoResult);

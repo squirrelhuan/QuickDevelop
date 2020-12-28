@@ -202,6 +202,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         stringMap.put("是否可用", "" + nodeInfo.isEnabled());
         stringMap.put("是否可点击", "" + nodeInfo.isClickable());
         stringMap.put("是否显示", "" + nodeInfo.isVisibleToUser());
+        stringMap.put("文本", "" + nodeInfo.getText());
         Rect rect = new Rect();
         nodeInfo.getBoundsInScreen(rect);
         stringMap.put("在屏幕中的位置", "" + rect);

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:context=".activity.sample.component.ToggleButtonActivity">
+    tools:context=".ui.activity.sample.component.ToggleButtonActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

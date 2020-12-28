@@ -17,7 +17,7 @@ import java.util.Map;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2;
-import cn.demomaster.huan.quickdeveloplibrary.widget.SquareImageView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
 
 /**
  * @author squirrel桓
