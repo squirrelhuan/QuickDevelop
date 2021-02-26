@@ -29,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
  * 2018/8/25
  */
 
-@ActivityPager(name = "NdkTestFragment", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "Ndk测试", preViewClass = TextView.class, resType = ResType.Custome)
 public class NdkTestFragment extends BaseFragment {
 
     private ServiceToken mToken;

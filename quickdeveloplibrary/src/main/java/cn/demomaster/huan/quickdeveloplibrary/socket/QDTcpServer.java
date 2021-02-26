@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.BindException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,12 +36,26 @@ public class QDTcpServer {
     }
 
     private QDTcpServer() {
+        initConnect();
+    }
+
+    private void initConnect() {
         //封装服务端地址
         InetAddress serverAddress = null;
         try {
             serverAddress = InetAddress.getByName(serverIP);
             server = new ServerSocket(serverPort, 10, serverAddress);
-           QDLogger.println("QDTcpServer 初始化成功");
+            QDLogger.println("QDTcpServer 初始化成功，端口号："+serverPort);
+        } catch (BindException e) {
+            QDLogger.e(e);
+            //随机生成端口
+            QDLogger.println("QDTcpServer 端口号占用："+serverPort);
+            if(serverPort < 65535){
+                serverPort+=1;
+            }else {
+                serverPort=0;
+            }
+            initConnect();
         } catch (UnknownHostException e) {
             QDLogger.e(e);
         } catch (IOException e) {
@@ -53,14 +68,15 @@ public class QDTcpServer {
     }
 
     private ServerSocket server;
+
     private void startService() {
         try {
             while (true) {
-               QDLogger.println("QDTcpServer 等待连接");
+                QDLogger.println("QDTcpServer 等待连接");
                 // 阻塞式的等待连接
                 Socket client = server.accept();
                 addClient(client);
-                i++;
+                index++;
                 //checkClient();
             }
             //server.close();
@@ -68,14 +84,21 @@ public class QDTcpServer {
             QDLogger.e(e);
         } catch (IOException e) {
             QDLogger.e(e);
+        }catch (Exception e) {
+            QDLogger.e(e);
         }
     }
 
-    int i = 0;
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    int index = 0;
     private String userName = "admin";
     private String passWord = "admin";
+
     private void addClient(Socket client) {
-       QDLogger.println("客户端" + i + "连接");
+        QDLogger.println("客户端" + index + "连接");
         //3.获得输入流
         InputStream is = null;
         try {
@@ -90,28 +113,28 @@ public class QDTcpServer {
                 QDMessage qdMessage = JSON.parseObject(info, QDMessage.class);
 
                 if (!socketMap.containsValue(client)) {
-                   QDLogger.println("用户信息为：" + info);
+                    QDLogger.println("用户信息为：" + info);
 
                     QDUserInfo userInfo;
                     try {
                         userInfo = JSON.parseObject(qdMessage.getData().toString(), QDUserInfo.class);
                     } catch (Exception e) {
                         System.err.println("用户登录失败,参数有误");
-                        replyLogin(client, false,qdMessage.getTime());
+                        replyLogin(client, false, qdMessage.getTime());
                         return;
                     }
                     if (userName != null || passWord != null) {
-                        long clentId = System.currentTimeMillis() + i;
+                        long clentId = System.currentTimeMillis() + index;
                         socketMap.put(clentId, client);
-                       QDLogger.println("连接登录成功");
+                        QDLogger.println("连接登录成功");
                         replyLogin(client, true, qdMessage.getTime());
                     } else {
                         if (userInfo != null && userInfo.getUserName() != null && userInfo.getPassWord() != null) {
                             if (userInfo.getUserName().equals(userName) && userInfo.getPassWord().equals(passWord)) {
-                                long clentId = System.currentTimeMillis() + i;
+                                long clentId = System.currentTimeMillis() + index;
                                 socketMap.put(clentId, client);
                                 System.out.println("连接登录成功");
-                                replyLogin(client,true, qdMessage.getTime());
+                                replyLogin(client, true, qdMessage.getTime());
                             } else {
                                 System.err.println("用户登录失败");
                                 replyLogin(client, false, qdMessage.getTime());
@@ -128,8 +151,8 @@ public class QDTcpServer {
                         //过滤
                     } else {
                         System.out.println("用户消息：" + info);
-                        if(onReceiveMessageListener!=null){
-                            onReceiveMessageListener.onReceiveMessage(getSocketId(client),qdMessage);
+                        if (onReceiveMessageListener != null) {
+                            onReceiveMessageListener.onReceiveMessage(getSocketId(client), qdMessage);
                         }
                     }
                 }
@@ -140,8 +163,8 @@ public class QDTcpServer {
     }
 
     private long getSocketId(Socket client) {
-        for(Map.Entry entry:socketMap.entrySet()){
-            if(entry.getValue()==client){
+        for (Map.Entry entry : socketMap.entrySet()) {
+            if (entry.getValue() == client) {
                 return (long) entry.getKey();
             }
         }
@@ -149,13 +172,15 @@ public class QDTcpServer {
     }
 
     OnReceiveMessageListener onReceiveMessageListener;
+
     public void setOnReceiveMessageListener(OnReceiveMessageListener onReceiveMessageListener) {
         this.onReceiveMessageListener = onReceiveMessageListener;
     }
 
-    public static interface OnReceiveMessageListener{
-      void onReceiveMessage(long clientId,QDMessage qdMessage);
+    public static interface OnReceiveMessageListener {
+        void onReceiveMessage(long clientId, QDMessage qdMessage);
     }
+
     public static final char END_CHAR = '\n';
 
     private void replyLogin(Socket client, boolean isSuccess, long time) {
@@ -175,7 +200,7 @@ public class QDTcpServer {
         }
     }
 
-    public void sendMessage(long clientId,long time, String msg) {
+    public void sendMessage(long clientId, long time, String msg) {
         OutputStream os = null;
         try {
             os = getSocketById(clientId).getOutputStream();

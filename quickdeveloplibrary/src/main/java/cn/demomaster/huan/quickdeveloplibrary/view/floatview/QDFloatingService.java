@@ -105,7 +105,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
      */
     public void updateLayoutParams() {
         if (layoutParams != null) {
-            QDLogger.e("updateLayoutParams width=" + mWidth + ",mHeight=" + mHeight);
+            //QDLogger.e("updateLayoutParams width=" + mWidth + ",mHeight=" + mHeight);
             layoutParams.width = mWidth;
             layoutParams.height = mHeight;
             contentView.setLayoutParams(layoutParams);

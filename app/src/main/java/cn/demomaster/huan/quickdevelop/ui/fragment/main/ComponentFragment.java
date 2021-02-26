@@ -53,9 +53,11 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.QdButtonFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.RatingBarFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.StackSlidingLayoutFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.TextSpanFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.TimeDomainPlotFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.lifecycleTimerFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.CompressLayoutFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 
@@ -109,9 +111,12 @@ public class ComponentFragment extends BaseFragment {
 
         classList.add(AdsActivity.class);
         classList.add(QdButtonFragment.class);
+        classList.add(TextSpanFragment.class);
+
         classList.add(EmptyLayoutFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
+        classList.add(CompressLayoutFragment.class);
         classList.add(WheelImageFragment.class);
         classList.add(ToggleButtonActivity.class);
         classList.add(TimeDomainPlotFragment.class);

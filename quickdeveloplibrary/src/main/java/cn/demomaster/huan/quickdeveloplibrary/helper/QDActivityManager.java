@@ -108,7 +108,7 @@ public class QDActivityManager {
     public static void destroyObject(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         if(fields!=null) {
-            QDLogger.println(obj+"属性个数：" + fields.length);
+            //QDLogger.println(obj+"属性个数：" + fields.length);
             for (int i = 0, len = fields.length; i < len; i++) {
                 // 对于每个属性，获取属性名
                 String varName = fields[i].getName();

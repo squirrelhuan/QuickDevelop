@@ -21,7 +21,6 @@ public class ServiceHelper {
             }
         }
         Class clazz = service.getClass();
-        QDLogger.i("clazz=" + clazz.getName());
         service.stopService(new Intent(service.getApplicationContext(), clazz));
     }
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.demomaster.huan.quickdevelop">
     <!-- Include required permissions for Google Mobile Ads to run. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- android:sharedUserId="android.uid.system" -->
     <uses-permission
@@ -79,7 +80,8 @@
         <!-- android:theme="@style/SplashTheme" 添加给启动页来显示启动背景  QDMainFragmentActivity -->
         <activity
             android:name=".QDMainFragmentActivity"
-            android:theme="@style/SplashTheme"> <!-- android:process=":main" -->
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustResize"> <!-- android:process=":main" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

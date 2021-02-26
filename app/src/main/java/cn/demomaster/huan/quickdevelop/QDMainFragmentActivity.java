@@ -1,9 +1,14 @@
 package cn.demomaster.huan.quickdevelop;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,6 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
 
 /**
  *
@@ -33,7 +39,6 @@ public class QDMainFragmentActivity extends QDActivity {
             startFragment(fragment,R.id.container1);
         }
        /* getActionBarTool().setHeaderBackgroundColor(Color.GRAY);
-        //actionBarLayoutView.setHeaderBackgroundColor();
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
         getActionBarTool().getLeftView().setVisibility(View.GONE);*/
 
@@ -80,14 +85,25 @@ public class QDMainFragmentActivity extends QDActivity {
 */
         //QdToast.show(mContext, Build.BRAND.toLowerCase());
         //DebugFloatingService.showConsole(mContext);
-
-       /* startActivity(WifiTestActivity2.class);
-        finish();*/
-
-        //PermissionManager.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
-
+        PermissionHelper.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
+        QDLogger.d("getAppName="+getAppName(this));
     }
-
+    /**
+     * 获取应用程序名称
+     */
+    public static String getAppName(Context context) {
+        try {
+            Log.i(TAG, "getAppName=" + context.getApplicationContext().getPackageName());
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
+            int labelRes = packageInfo.applicationInfo.labelRes;
+            return context.getResources().getString(labelRes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -103,6 +119,21 @@ public class QDMainFragmentActivity extends QDActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, 0);//屏蔽转入转出动画
+    }
+
+    //当指定了android:configChanges="orientation"后,方向改变时onConfigurationChanged被调用,并且activity不再销毁重建
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        switch (newConfig.orientation) {
+            case Configuration.ORIENTATION_PORTRAIT://竖屏
+                Log.i(TAG,"竖屏");
+                break;
+            case Configuration.ORIENTATION_LANDSCAPE://横屏
+                Log.i(TAG,"横屏");
+            default:
+                break;
+        }
     }
 
 }

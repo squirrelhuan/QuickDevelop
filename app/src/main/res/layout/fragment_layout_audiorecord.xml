@@ -4,20 +4,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+       <cn.demomaster.quickaudiorecorderlib.view.WaveView
+           android:id="@+id/waveView"
+           android:layout_width="match_parent"
+           android:layout_height="100dp"/>
+       <cn.demomaster.quickaudiorecorderlib.view.WaveLineView
+           android:id="@+id/waveLineView"
+           android:layout_width="match_parent"
+           android:layout_height="160dp"
+           android:layout_below="@+id/wave_view"/>
 
-
-       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-           android:id="@+id/btn_start"
+       <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="录音"/>
+           android:gravity="center"
+           android:orientation="horizontal">
 
-       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-           android:id="@+id/btn_play"
+              <Button
+                  android:id="@+id/btn_start_record"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="录音" />
+
+              <Button
+                  android:id="@+id/btn_pause_record"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:text="暂停" />
+
+              <Button
+                  android:id="@+id/btn_stop_record"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:text="结束" />
+
+       </LinearLayout>
+       <LinearLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="播放"/>
-
-
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:padding="@dimen/dp_15">
+              <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/recyclerview_audio"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"/>
+              <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                  android:id="@+id/btn_record"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:padding="@dimen/dp_10"
+                  android:layout_gravity="bottom"
+                  android:textColor="@color/orange"
+                  android:text="按住录音"/>
+       </LinearLayout>
 
 </LinearLayout>

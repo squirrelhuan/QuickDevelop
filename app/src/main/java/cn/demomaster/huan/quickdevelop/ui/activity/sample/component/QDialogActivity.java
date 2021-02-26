@@ -278,7 +278,7 @@ public class QDialogActivity extends BaseActivity {
             @Override
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext, data.get(position));
+                PopToastUtil.showToast(mContext, data.get(position));
             }
         }).create().show();
     }
@@ -289,7 +289,7 @@ public class QDialogActivity extends BaseActivity {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext, data.get(position));
+                PopToastUtil.showToast(mContext, data.get(position));
             }
         }).create().show();
     }
@@ -300,7 +300,7 @@ public class QDialogActivity extends BaseActivity {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
-                PopToastUtil.ShowToast(mContext, data.get(position));
+                PopToastUtil.showToast(mContext, data.get(position));
             }
         }).create().show();
     }

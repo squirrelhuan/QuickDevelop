@@ -192,7 +192,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
     @Override
     protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        QDLogger.d("measureChildWithMargins");
+        QDLogger.println("measureChildWithMargins");
         Log.d("CGQ", "parentWidthMeasureSpec=" + parentWidthMeasureSpec);
         Log.d("CGQ", "widthUsed=" + widthUsed);
         Log.d("CGQ", "parentHeightMeasureSpec=" + parentHeightMeasureSpec);

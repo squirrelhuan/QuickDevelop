@@ -43,7 +43,7 @@ public class SlidingLayout extends FrameLayout {
         int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random()*10%3)]);
         header.setText(Math.random()*10+"");
-        QDLogger.d("StackSlidingLayout",header.getText());
+        QDLogger.println("StackSlidingLayout",header.getText());
         ComponentAdapter adapter = new ComponentAdapter(getContext());
         List<String> items = new ArrayList();
         for(int i=0;i<30;i++){
@@ -59,11 +59,11 @@ public class SlidingLayout extends FrameLayout {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        QDLogger.d("StackSlidingLayout","onSizeChanged w="+w+",h="+h+",oldw="+oldw+ ",oldh="+oldh);
+        QDLogger.println("StackSlidingLayout","onSizeChanged w="+w+",h="+h+",oldw="+oldw+ ",oldh="+oldh);
         if(w!=oldw||h!=oldh){
             mHeaderViewHeight = findViewById(R.id.header).getMeasuredHeight();
         }
-        QDLogger.d("StackSlidingLayout","mHeaderViewHeight="+mHeaderViewHeight);
+        QDLogger.println("StackSlidingLayout","mHeaderViewHeight="+mHeaderViewHeight);
        // super.onSizeChanged(w, h, oldw, oldh);
     }
 

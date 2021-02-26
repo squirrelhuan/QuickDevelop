@@ -1,11 +1,16 @@
 package cn.demomaster.huan.quickdeveloplibrary.service;
 
+import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +28,8 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickpermission_library.PermissionHelper;
+import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
 
 /**
  * 无障碍辅助服务
@@ -172,12 +179,21 @@ public class QDAccessibilityService extends AccessibilityService {
         QDLogger.i(TAG, "辅助功能已关闭");
         AccessibilityHelper.onServiceDestroy();
     }
-    
+
+    //跳转系统自带界面 辅助功能界面
     public static void startSettintActivity(Context context){
-        //跳转系统自带界面 辅助功能界面
-        Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.getApplicationContext().startActivity(intent);
+        PermissionHelper.requestPermission(context,
+                new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, new PermissionHelper.PermissionListener() {
+                    @Override
+                    public void onPassed() {
+                        
+                    }
+
+                    @Override
+                    public void onRefused() {
+
+                    }
+                });
     }
 
 }

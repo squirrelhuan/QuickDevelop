@@ -30,7 +30,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "关于手机", preViewClass = TextView.class, resType = ResType.Custome)
 public class AboutMobileFragment extends BaseFragment {
 

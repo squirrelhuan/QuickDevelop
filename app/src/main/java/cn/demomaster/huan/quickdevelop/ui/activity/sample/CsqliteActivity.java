@@ -69,7 +69,7 @@ public class CsqliteActivity extends BaseActivity {
             // 数据库版本的更新,由原来的1变为2
             //CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,2);
             //SQLiteDatabase db =dbHelper.getReadableDatabase();
-            PopToastUtil.ShowToast(mContext,"更新未实现");
+            PopToastUtil.showToast(mContext,"更新未实现");
         }
     }
 
@@ -90,7 +90,7 @@ public class CsqliteActivity extends BaseActivity {
            // Application.instance.db.insert("inner_department_category", null, cv);
             //关闭数据库
             //db.close();
-            PopToastUtil.ShowToastBottom(mContext,"插入数据的方法");
+            PopToastUtil.showToastBottom(mContext,"插入数据的方法");
         }
     }
 
@@ -116,7 +116,7 @@ public class CsqliteActivity extends BaseActivity {
             }
             //关闭数据库
             //db.close();
-            PopToastUtil.ShowToastCenter(mContext,"插入数据的方法");
+            PopToastUtil.showToastCenter(mContext,"插入数据的方法");
         }
     }
 

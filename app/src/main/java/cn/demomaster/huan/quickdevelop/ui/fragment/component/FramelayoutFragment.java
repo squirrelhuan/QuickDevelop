@@ -69,6 +69,8 @@ public class FramelayoutFragment extends BaseFragment {
             }
         });
 
+
+
         VisibleLayout vl_layout = rootView.findViewById(R.id.vl_layout);
 
         RadioGroup rg_positon = rootView.findViewById(R.id.rg_positon);

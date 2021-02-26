@@ -18,19 +18,17 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 
-
 /**
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "PopUp", preViewClass = TextView.class, resType = ResType.Custome)
 public class PopUpFragment extends BaseFragment {
 
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_popup, null);
+        View mView = inflater.inflate(R.layout.fragment_layout_popup, null);
         return mView;
     }
 

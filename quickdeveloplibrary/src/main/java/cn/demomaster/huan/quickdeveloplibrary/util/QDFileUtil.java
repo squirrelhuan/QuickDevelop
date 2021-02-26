@@ -792,4 +792,11 @@ public class QDFileUtil {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
+    public static boolean isSdcardExit() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            return true;
+        else
+            return false;
+    }
+
 }

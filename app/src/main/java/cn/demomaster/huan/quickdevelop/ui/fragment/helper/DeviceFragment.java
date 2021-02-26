@@ -1,9 +1,12 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -29,6 +32,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -187,10 +191,12 @@ public class DeviceFragment extends BaseFragment {
                 break;
         }
 
-        setOnNetStateChangedListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
+        NetworkUtil.registerNetworkStatusChangedListener(getContext(),new NetWorkChangReceiver.OnNetStateChangedListener() {
             @Override
-            public void onConnected(NetworkInfo networkInfo) {
-                QDLogger.e("wifi onConnected");
+            public void onConnected(Context context, Intent intent) {
+                QDLogger.i("wifi onConnected");
+                ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = manager.getActiveNetworkInfo();
                 switch (networkInfo.getType()) {
                     case TYPE_MOBILE:
                         QDLogger.i("CGQ", "正在使用2G/3G/4G网络");
@@ -204,8 +210,8 @@ public class DeviceFragment extends BaseFragment {
             }
 
             @Override
-            public void onDisConnected() {
-                QDLogger.e("wifi dis");
+            public void onDisConnected(Context context, Intent intent) {
+                QDLogger.e("網絡 斷開");
             }
         });
         registerPermission();

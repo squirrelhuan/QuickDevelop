@@ -224,7 +224,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
         for (Fragment fragment : getFragments()) {
             str += fragment.getClass().getSimpleName() + ",";
         }
-        QDLogger.d("fragment","onBackStackChanged " + str);
+        QDLogger.println("fragment","onBackStackChanged " + str);
     }
 
     @Override

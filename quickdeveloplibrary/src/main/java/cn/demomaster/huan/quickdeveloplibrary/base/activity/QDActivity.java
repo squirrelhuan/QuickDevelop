@@ -3,9 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.base.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
@@ -37,7 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
@@ -68,14 +65,15 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     }
 
     private ActionBarTool actionBarTool;
+
     //获取自定义导航
     public ActionBarTool getActionBarTool() {
-        if(actionBarTool==null){
+        if (actionBarTool == null) {
             actionBarTool = new ActionBarTool(this);
         }
         return actionBarTool;
     }
-    
+
     private void initQDContentView(View view) {
         if (isUseActionBarLayout()) {//是否使用自定义导航栏
             StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
@@ -84,7 +82,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             getActionBarTool().setActionView(getHeadlayoutResID());
             View view1 = getActionBarTool().inflateView();
             ImageTextView imageTextView = getActionBarTool().getLeftView();
-            if(imageTextView!=null) {
+            if (imageTextView != null) {
                 imageTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -105,6 +103,10 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         // mInflater = LayoutInflater.from(this);
         View view = getLayoutInflater().inflate(layoutResID, null);
         initQDContentView(view);
+        initContentView();
+    }
+
+    public void initContentView() {
     }
 
     @Override
@@ -129,6 +131,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     }
 
     private FragmentHelper fragmentHelper;
+
     public FragmentHelper getFragmentHelper() {
         if (fragmentHelper == null) {
             fragmentHelper = new FragmentHelper(mContext);
@@ -136,8 +139,8 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         return fragmentHelper;
     }
 
-    public void startFragment(QDFragment fragment,int parentId) {
-        getFragmentHelper().startFragment(fragment,parentId);
+    public void startFragment(QDFragment fragment, int parentId) {
+        getFragmentHelper().startFragment(fragment, parentId);
     }
 
     public void startActivity(Class<?> clazz) {
@@ -158,6 +161,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     /**
      * 动态设置状态栏的显示隐藏
+     *
      * @param enable
      */
     public void setFullScreen(boolean enable) {
@@ -181,7 +185,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.d("getAction=" + keyCode + ",event=" + event);
+        //QDLogger.d("getAction=" + keyCode + ",event=" + event);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (fragmentHelper != null) {
                 if (!fragmentHelper.onKeyDown(mContext, keyCode, event)) {
@@ -191,7 +195,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
                 }
             }
         }
-        QDLogger.d("onKeyDown=" + true);
+        //QDLogger.d("onKeyDown=" + true);
         return super.onKeyDown(keyCode, event);
     }
 
@@ -247,9 +251,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         }
     }
 
-    /*
- 是否使用自定义导航
-  */
+    ///是否使用自定义导航
     public boolean isUseActionBarLayout() {
         return true;
     }
@@ -274,10 +276,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     protected void onDestroy() {
         super.onDestroy();
         try {
-            if (netWorkChangReceiver != null) {
-                netWorkChangReceiver.setOnNetStateChangedListener(null);
-                unregisterReceiver(netWorkChangReceiver);
-            }
+            NetworkUtil.unRegisterNetworkStatusChangedListener(this);
             EventBus.getDefault().unregister(this);
         } catch (Exception e) {
             QDLogger.e(e);
@@ -292,41 +291,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     }
 
     private PhotoHelper photoHelper;
-    public NetWorkChangReceiver netWorkChangReceiver;
-    public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
-
-    public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
-        this.onNetStateChangedListener = onNetStateChangedListener;
-        if (netWorkChangReceiver == null) {
-            netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            try {
-                mContext.registerReceiver(netWorkChangReceiver, filter);
-            } catch (Exception e) {
-                QDLogger.e(e);
-            }
-        } else {
-            netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
-            //mContext.unregisterReceiver(netWorkChangReceiver);
-        }
-    }
-
-    /* if (netWorkChangReceiver == null) {
-        netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        try {
-            mContext.registerReceiver(netWorkChangReceiver, filter);
-        } catch (Exception e) {
-            QDLogger.e(e);
-        }
-    }*/
-
     private OptionsMenu optionsMenu;
 
     //获取自定义菜单
@@ -348,7 +312,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     }
 
     public void showMessage(String message) {
-        PopToastUtil.ShowToast(this, message);
+        PopToastUtil.showToast(this, message);
         //getMesageHelper().showMessage(message);
     }
 
@@ -364,8 +328,8 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        QDLogger.d(requestCode + permissions.toString() + grantResults.toString());
-        PermissionHelper.onRequestPermissionsResult(mContext,requestCode, permissions, grantResults);
+        //QDLogger.d(requestCode + permissions.toString() + grantResults.toString());
+        PermissionHelper.onRequestPermissionsResult(mContext, requestCode, permissions, grantResults);
     }
 
     public PhotoHelper getPhotoHelper() {

@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.actionbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -153,22 +152,22 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
             case R.id.btn_color_red:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.red));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.red), getResources().getColor(R.color.white));
-                PopToastUtil.ShowToast(this, "红色主题");
+                PopToastUtil.showToast(this, "红色主题");
                 break;
             case R.id.btn_color_gray:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.gray));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.gray), getResources().getColor(R.color.white));
-                PopToastUtil.ShowToast(this, "灰色主题");
+                PopToastUtil.showToast(this, "灰色主题");
                 break;
             case R.id.btn_color_green:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.green));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.green), getResources().getColor(R.color.white));
-                PopToastUtil.ShowToast(this, "绿色主题");
+                PopToastUtil.showToast(this, "绿色主题");
                 break;
             case R.id.btn_color_yellow:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.yellow));
                 PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
-                PopToastUtil.ShowToast(this, "黄色主题");
+                PopToastUtil.showToast(this, "黄色主题");
                 break;
         }
     }

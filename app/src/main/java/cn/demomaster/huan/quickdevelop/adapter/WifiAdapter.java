@@ -19,9 +19,8 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 
 /**
- * Created by amitshekhar on 14/01/17.
+ *
  */
-
 public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder> {
 
     private List<QDScanResult> data;

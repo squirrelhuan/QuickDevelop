@@ -26,6 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -163,16 +164,6 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     }
 
     public PhotoHelper photoHelper;
-    public NetWorkChangReceiver netWorkChangReceiver;
-    public NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener;
-
-    public void setOnNetStateChangedListener(NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
-        this.onNetStateChangedListener = onNetStateChangedListener;
-        if (netWorkChangReceiver != null) {
-            netWorkChangReceiver.setOnNetStateChangedListener(onNetStateChangedListener);
-        }
-    }
-
     //实例化各种帮助类
     private void initHelper() {
         if (getContext() instanceof QDActivity) {
@@ -181,18 +172,6 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
         /*if (photoHelper == null) {
             photoHelper = new PhotoHelper(mContext);
         }*/
-        if (netWorkChangReceiver == null) {
-            netWorkChangReceiver = new NetWorkChangReceiver(onNetStateChangedListener);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-           /* try {
-                //mContext.registerReceiver(netWorkChangReceiver, filter);
-            } catch (Exception e) {
-                QDLogger.e(e);
-            }*/
-        }
     }
 
     /**
@@ -224,11 +203,12 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //NetworkUtil.unRegisterNetworkStatusChangedListener(getContext());
+        //请手动注销，已添加的广播监听
     }
 
     int mResultCode;
     Intent mResultData;
-
     public void setResult(int resultCode, Intent data) {
         mResultCode = resultCode;
         mResultData = data;

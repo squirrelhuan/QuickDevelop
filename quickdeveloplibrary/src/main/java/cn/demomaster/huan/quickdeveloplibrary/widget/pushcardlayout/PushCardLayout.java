@@ -374,7 +374,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                     return false;
                 }
                 if (offset_c != 0) {
-                    Log.i("CGQ", "整体是" + (offset_c > 0 ? "下滑" : "上滑") + "手势,局部" + (dy > 0 ? "下滑" : "上滑"));
+                    //Log.i("CGQ", "整体是" + (offset_c > 0 ? "下滑" : "上滑") + "手势,局部" + (dy > 0 ? "下滑" : "上滑"));
                     if (contentLayout instanceof ScrollView) {//兼容scrollview滚动
                         float overscrollTop = DRAG_RATE * dy;
 
@@ -383,14 +383,14 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                                 if (!canChildScrollUp()) {
                                     scrollCardLayout((int) overscrollTop);
                                 } else {
-                                    Log.e("CGQ", "上拉的终止1");
+                                    //Log.e("CGQ", "上拉的终止1");
                                     return false;
                                 }
                             } else if (contentLayout.getTop() < 0) {
                                 if (!canChildScrollUp()) {
                                     scrollCardLayout((int) overscrollTop);
                                 } else {
-                                    Log.e("CGQ", "上拉的终止2");
+                                    //Log.e("CGQ", "上拉的终止2");
                                     return false;
                                 }
                             } else {
@@ -403,14 +403,14 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                                 if (!canChildScrollDown()) {
                                     scrollCardLayout((int) overscrollTop);
                                 } else {
-                                    Log.e("CGQ", "下滑的终止1");
+                                    //Log.e("CGQ", "下滑的终止1");
                                     return false;
                                 }
                             } else if (contentLayout.getTop() < 0) {
                                 if (!canChildScrollDown()) {
                                     scrollCardLayout((int) overscrollTop);
                                 } else {
-                                    Log.e("CGQ", "下滑的终止2");
+                                    //Log.e("CGQ", "下滑的终止2");
                                     return false;
                                 }
                             } else {
@@ -433,11 +433,11 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i("CGQ", "ACTION_UP ");
+                //Log.i("CGQ", "ACTION_UP ");
                 finishSpinner(touchForceClose);
                 break;
             case MotionEvent.ACTION_CANCEL:
-                Log.i("CGQ", "ACTION_CANCEL ");
+                //Log.i("CGQ", "ACTION_CANCEL ");
                 finishSpinner(touchForceClose);
                 break;
         }
@@ -584,7 +584,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      */
     private void finishSpinner(boolean forceClose) {
         if (scroll_model == 0) {
-            Log.i("CGQ1", "强制回滚动画1");
+            //Log.i("CGQ1", "强制回滚动画1");
             resetAnimation(null, false);
             return;
         }
@@ -596,7 +596,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         }
         if (forceClose) {
             //回滚动画
-            Log.i("CGQ1", "强制回滚动画1");
+            //Log.i("CGQ1", "强制回滚动画1");
             resetAnimation(null, false);
         } else {
             //处理是否触发刷新或者加载更多//(默认拉到三分之二就触发加载)
@@ -633,7 +633,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
      * @param isOpen true 展开动画 false 关闭动画
      */
     private void resetAnimation(View view, boolean isOpen) {
-        Log.i("CGQ1", isOpen ? "展开动画" : "关闭动画");
+        //Log.i("CGQ1", isOpen ? "展开动画" : "关闭动画");
         int startValue = 0;
         int endValue = 0;
         if (isOpen) {

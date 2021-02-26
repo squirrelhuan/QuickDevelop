@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdevelop;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
@@ -13,30 +11,26 @@ import com.didichuxing.doraemonkit.DoraemonKit;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortFinder;
 import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
-import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.cache.QuickCache;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.quickdatabaselibrary.QuickDb;
+import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
 
 import static cn.demomaster.qdlogger_library.QDLogger.TAG;
 
 public class Application extends QDApplication {
-    QuickDb quickDb;
+    QuickDbHelper quickDb;
 
     @Override
     public void onCreate() {
         super.onCreate();
         QDLogger.init(this, "/qdlogger/");
-        quickDb = new QuickDb(this, "quickdev.db", null, 10);
+        quickDb = new QuickDbHelper(this, "quickdev.db", null, 10);
 
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
         //初始化友盟分享
@@ -58,6 +52,7 @@ public class Application extends QDApplication {
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
 
+
         DoraemonKit.install(this);
         //初始化缓存目录
         QuickCache.init(this,"/qdlogger/cache/");
@@ -66,7 +61,7 @@ public class Application extends QDApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.e(TAG, "attachBaseContext");
+        Log.i(TAG, "attachBaseContext");
         MultiDex.install(base);
     }
 
@@ -77,7 +72,6 @@ public class Application extends QDApplication {
         if (mSerialPort == null) {
             /* Read serial port parameters */
             //SharedPreferences sp = getSharedPreferences("android_serialport_api.sample_preferences", MODE_PRIVATE);//"cn_demomaster_huan_quickdevelop_fragment_helper_serialport_sample_SerialPortPreferences"
-
             SharedPreferences sp = QDSharedPreferences.getInstance().getSharedPreferences();
             String path = sp.getString("DEVICE", "");
             int baudrate = Integer.decode(sp.getString("BAUDRATE", "-1"));

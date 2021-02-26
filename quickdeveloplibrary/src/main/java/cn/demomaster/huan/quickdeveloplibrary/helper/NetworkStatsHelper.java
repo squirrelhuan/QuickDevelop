@@ -20,13 +20,10 @@ import static android.content.Context.NETWORK_STATS_SERVICE;
 
 public class NetworkStatsHelper {
     //以上的方法封装在了NetworkStatsHelper类里
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     public NetworkStatsHelper(Context context) {
-        //初始化这个工具类
-        NetworkStatsManager networkStatsManager = (NetworkStatsManager) context.getSystemService(NETWORK_STATS_SERVICE);
-    }
 
+    }
 
     /**
      * 本机使用的 wifi 总流量
@@ -111,7 +108,6 @@ public class NetworkStatsHelper {
 
     /**
      * 获取当天的零点时间
-     *
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -135,7 +131,6 @@ public class NetworkStatsHelper {
 
     /**
      * 根据包名获取uid
-     *
      * @param context     上下文
      * @param packageName 包名
      */

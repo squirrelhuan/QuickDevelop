@@ -49,8 +49,8 @@ public class FlowLayout extends ViewGroup {
         List<View> lineViewList = new ArrayList<>();//单行
         for (int i = 0; i < count; i++) {
             View chid = getChildAt(i);
-            TextView textView = (TextView) chid;
-            QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
+            View textView = chid;
+           // QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
             if (lineViewList.size() == 0) {//空行
                 lineViewList.add(chid);
 
@@ -75,7 +75,7 @@ public class FlowLayout extends ViewGroup {
                 MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
                 int viewWith = chid.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
                 if (currentWidth + viewWith > lineWidth) {//再追加一个元素会超出最大宽度
-                    QDLogger.println("换行追加=" + lineViewList.size());
+                    //QDLogger.println("换行追加=" + lineViewList.size());
                     List<View> viewList = new ArrayList<>();
                     viewList.addAll(lineViewList);
                     mAllChildViews.add(viewList);
@@ -90,7 +90,7 @@ public class FlowLayout extends ViewGroup {
             mAllChildViews.add(lineViewList);
         }
 
-        QDLogger.println("mAllChildViews=" + mAllChildViews.size());
+        //QDLogger.println("mAllChildViews=" + mAllChildViews.size());
         mLineHeight = new ArrayList<>();
         for (int i = 0; i < mAllChildViews.size(); i++) {
             List<View> lineViews = mAllChildViews.get(i);
@@ -106,13 +106,13 @@ public class FlowLayout extends ViewGroup {
         int layoutHeight = 0;
         for (int i = 0; i < mLineHeight.size(); i++) {
             layoutHeight += mLineHeight.get(i);
-            QDLogger.println("h" + i + "=" + mLineHeight.get(i));
+           // QDLogger.println("h" + i + "=" + mLineHeight.get(i));
         }
         layoutHeight += getPaddingTop() + getPaddingBottom();
 
         //高度度
         int specModeHeight = MeasureSpec.getMode(heightMeasureSpec);
-        QDLogger.println("specModeHeight=" + specModeHeight + ",layoutHeight=" + layoutHeight + ",count=" + count);
+        //QDLogger.println("specModeHeight=" + specModeHeight + ",layoutHeight=" + layoutHeight + ",count=" + count);
         switch (specModeHeight) {
             case MeasureSpec.UNSPECIFIED:
                 setMeasuredDimension(widthMeasureSpec, layoutHeight);
@@ -124,11 +124,7 @@ public class FlowLayout extends ViewGroup {
             case MeasureSpec.EXACTLY:
                 break;
         }
-
-
-
-        QDLogger.println("specModeHeight=" + specModeHeight);
-
+        //QDLogger.println("specModeHeight=" + specModeHeight);
     }
 
     /*    @Override
@@ -194,7 +190,7 @@ public class FlowLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        QDLogger.println("onLayout");
+        //QDLogger.println("onLayout");
         // 获取行数
         int lineCount = mAllChildViews.size();
         for (int i = 0; i < lineCount; i++) {
@@ -202,11 +198,11 @@ public class FlowLayout extends ViewGroup {
             List<View> lineViews = mAllChildViews.get(i);//单行
             int lineHeight = mLineHeight.get(i);
             int top_last = getPaddingTop();
-            QDLogger.println("onLayout top_last1=" + top_last);
+            //QDLogger.println("onLayout top_last1=" + top_last);
             for (int j = 0; j < i; j++) {
                 top_last += mLineHeight.get(j);
             }
-            QDLogger.println("onLayout top_last=" + top_last);
+            //QDLogger.println("onLayout top_last=" + top_last);
 
             // 设置子View的位置
             int left_last = getPaddingLeft();
@@ -224,7 +220,7 @@ public class FlowLayout extends ViewGroup {
                 // 进行子View进行布局
                 child.layout(left, top, left + child.getMeasuredWidth(), top + child.getMeasuredHeight());
 
-                QDLogger.println("进行子View进行布局:" + left + "," + top + "," + (left + child.getMeasuredWidth()) + "," + (top + child.getMeasuredHeight()));
+                //QDLogger.println("进行子View进行布局:" + left + "," + top + "," + (left + child.getMeasuredWidth()) + "," + (top + child.getMeasuredHeight()));
                 left_last += layoutParams.leftMargin + child.getMeasuredWidth() + layoutParams.rightMargin;
             }
         }
@@ -349,7 +345,6 @@ public class FlowLayout extends ViewGroup {
                 addView(view);
             }
         }
-
 
        /* WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);

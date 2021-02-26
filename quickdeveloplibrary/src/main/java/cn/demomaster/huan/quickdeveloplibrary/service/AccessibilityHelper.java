@@ -11,6 +11,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,5 +202,24 @@ public class AccessibilityHelper {
             return false;
         }
         return false;
+    }
+
+    public static List<AccessibilityNodeInfo> findAccessibilityNodeInfosByViewClass(AccessibilityNodeInfo nodeInfo, String viewClass) {
+        if(nodeInfo!=null){
+            List<AccessibilityNodeInfo> list = new ArrayList<>();
+            if(nodeInfo.getClassName().equals(viewClass)){
+                list.add(nodeInfo);
+            }
+            if(nodeInfo.getChildCount()>0){
+                for(int i=0;i<nodeInfo.getChildCount();i++) {
+                    List<AccessibilityNodeInfo> list2 = findAccessibilityNodeInfosByViewClass(nodeInfo.getChild(i), viewClass);
+                    if(list2!=null){
+                        list.addAll(list2);
+                    }
+                }
+            }
+            return list;
+        }
+        return null;
     }
 }

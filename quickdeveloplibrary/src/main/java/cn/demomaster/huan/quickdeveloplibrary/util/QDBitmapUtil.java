@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,15 +12,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Base64;
 
 import androidx.core.graphics.drawable.DrawableCompat;
-
-import com.bumptech.glide.load.engine.Resource;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,14 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.demomaster.qdlogger_library.QDLogger;
-/*
-import core.base.XBaseApplication;*/
 
 /**
  * @Description: bitmap、drawable转换工具
- * @Functions:
- * @Author:
- * @Date: 2016-02-17
  */
 public class QDBitmapUtil {
 
@@ -82,9 +70,9 @@ public class QDBitmapUtil {
     }
 
 
-
     /**
      * Matrix 缩放宽高
+     *
      * @param srcBitmap    源图
      * @param targetwidth  目标宽度
      * @param targetheight 目标高度
@@ -132,24 +120,25 @@ public class QDBitmapUtil {
 
     public static String imageToBase64(String path) {
         File file = new File(path);
-        String imgBase64 =null ;
+        String imgBase64 = null;
         byte[] content = new byte[(int) file.length()];
         try {
             FileInputStream inputStream = new FileInputStream(file);
             inputStream.read(content);
             inputStream.close();
-            imgBase64 = Base64.encodeToString( content,Base64.DEFAULT);
+            imgBase64 = Base64.encodeToString(content, Base64.DEFAULT);
         } catch (FileNotFoundException e) {
             QDLogger.e(e);
         } catch (IOException e) {
             QDLogger.e(e);
-        }finally {
+        } finally {
             return imgBase64;
         }
     }
 
     /**
      * 生成纯色bitmap
+     *
      * @param width
      * @param height
      * @param color
@@ -212,6 +201,7 @@ public class QDBitmapUtil {
 
     /**
      * 图片明度调整
+     *
      * @param bitmap
      * @param value
      * @return
@@ -224,26 +214,26 @@ public class QDBitmapUtil {
         bitmap.getPixels(pix, 0, w, 0, 0, w, h);*/
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
-                int color = bitmap.getPixel(i,j);//x、y为bitmap所对应的位置
+                int color = bitmap.getPixel(i, j);//x、y为bitmap所对应的位置
                 //QDLogger.i("colorStr1 = " + color);
-                if(color!=0) {
+                if (color != 0) {
                     int r = Color.red(color);
                     int g = Color.green(color);
                     int b = Color.blue(color);
                     //int a = Color.alpha(color);
-                if(value>=0) {
-                    r = r + (255 - r) * value / 255;
-                    g = g + (255 - g) * value / 255;
-                    b = b + (255 - b) * value / 255;
-                }else {
-                    r = r + r * value / 255;
-                    g = g + g * value / 255;
-                    b = b + b * value / 255;
-                }
+                    if (value >= 0) {
+                        r = r + (255 - r) * value / 255;
+                        g = g + (255 - g) * value / 255;
+                        b = b + (255 - b) * value / 255;
+                    } else {
+                        r = r + r * value / 255;
+                        g = g + g * value / 255;
+                        b = b + b * value / 255;
+                    }
                     String r1 = Integer.toHexString(r);
                     String g1 = Integer.toHexString(g);
                     String b1 = Integer.toHexString(b);
-                    String colorStr = "#"+r1 + g1 + b1;    //十六进制的颜色字符串。
+                    String colorStr = "#" + r1 + g1 + b1;    //十六进制的颜色字符串。
                     //QDLogger.i("colorStr2 = " + colorStr);
                     int color1 = (r << 16) | (g << 8) | b | color;
                     bitmap.setPixel(i, j, Color.parseColor(colorStr));
@@ -254,21 +244,24 @@ public class QDBitmapUtil {
     }
 
     public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId) {
-        Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
-            bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-                    vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            vectorDrawable.draw(canvas);
+            return getBitmapByDrawable(vectorDrawable);
         } else {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), vectorDrawableId);
+            return BitmapFactory.decodeResource(context.getResources(), vectorDrawableId);
         }
+    }
+
+    public static Bitmap getBitmapByDrawable(Drawable vectorDrawable) {
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
         return bitmap;
     }
 
-    public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId,int apha) {
+    public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId, int apha) {
         Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             Drawable vectorDrawable = context.getDrawable(vectorDrawableId);

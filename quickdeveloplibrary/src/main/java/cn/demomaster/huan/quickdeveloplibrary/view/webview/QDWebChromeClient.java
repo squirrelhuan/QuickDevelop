@@ -3,18 +3,29 @@ package cn.demomaster.huan.quickdeveloplibrary.view.webview;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-public class QDWebCromeClient extends WebChromeClient {
-
-    public static interface OnProgressChanged {
+public class QDWebChromeClient extends WebChromeClient {
+    public static interface OnStateChangedListener {
         void onProgress(int progress);
 
+        void onFinish();
+
+        void onReceivedTitle(WebView view, String title);
+
+        boolean onNewTab(WebView view, String url);
+    }
+    public static interface OnProgressChanged {
+        void onProgress(int progress);
         void onFinish();
     }
 
     private OnProgressChanged onProgressChanged;
-
     public void setOnProgressChanged(OnProgressChanged onProgressChanged) {
         this.onProgressChanged = onProgressChanged;
+    }
+
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        super.onReceivedTitle(view, title);
     }
 
     @Override

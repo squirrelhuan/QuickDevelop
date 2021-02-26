@@ -2,6 +2,8 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -38,6 +40,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
@@ -102,12 +105,12 @@ public class WifiFragment extends BaseFragment {
                 getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
             }
         });
-
-
-        setOnNetStateChangedListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
+        NetworkUtil.registerNetworkStatusChangedListener(getContext(),new NetWorkChangReceiver.OnNetStateChangedListener() {
             @Override
-            public void onConnected(NetworkInfo networkInfo) {
+            public void onConnected(Context context, Intent intent) {
                 QDLogger.e("wifi onConnected");
+                ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = manager.getActiveNetworkInfo();
                 switch (networkInfo.getType()) {
                     case TYPE_MOBILE:
                         QDLogger.i("CGQ", "正在使用2G/3G/4G网络");
@@ -121,12 +124,11 @@ public class WifiFragment extends BaseFragment {
             }
 
             @Override
-            public void onDisConnected() {
-                QDLogger.e("wifi dis");
+            public void onDisConnected(Context context, Intent intent) {
+                QDLogger.e("wifi disconnect");
             }
         });
         //registerPermission();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
         //设置为垂直布局，这也是默认的

@@ -11,6 +11,7 @@
         style="@style/quick_actionbar_common_weight"
         android:layout_width="@dimen/activity_actionbar_button_width"
         android:layout_height="match_parent"
+        android:minWidth="@dimen/activity_actionbar_button_width"
         android:padding="@dimen/dp_6"
         android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical"

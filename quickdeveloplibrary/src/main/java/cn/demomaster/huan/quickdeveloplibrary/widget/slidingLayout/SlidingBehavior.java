@@ -14,7 +14,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 
     @Override
     public boolean onMeasureChild(@NonNull CoordinatorLayout parent, @NonNull SlidingLayout child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        QDLogger.d("onMeasureChild");
+        QDLogger.println("onMeasureChild");
         int offset = getChildMeasureOffset(parent, child);
         int height = View.MeasureSpec.getSize(parentHeightMeasureSpec) - offset;
         child.measure(parentWidthMeasureSpec, View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
@@ -22,7 +22,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
     }
 
     private int getChildMeasureOffset(CoordinatorLayout parent, SlidingLayout child) {
-        QDLogger.d("getChildMeasureOffset");
+        QDLogger.println("getChildMeasureOffset");
         int offset = 0;
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
@@ -35,7 +35,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull SlidingLayout child, int layoutDirection) {
-        QDLogger.d("onLayoutChild");
+        QDLogger.println("onLayoutChild");
         parent.onLayoutChild(child, layoutDirection);
         SlidingLayout previous = getPreviousChild(parent, child);
         if (previous != null) {
@@ -45,10 +45,10 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
             //layoutParams_c.topMargin = offset;
             //child.setLayoutParams(layoutParams_c);
             //child.setY();
-            QDLogger.d("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset+", top="+ child.getTop()+",y="+child.getY());
+            QDLogger.println("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset+", top="+ child.getTop()+",y="+child.getY());
         }
         mInitialOffset = child.getTop();
-        QDLogger.d("SlidingBehavior", child.getId() + "mInitialOffset=" + mInitialOffset);
+        QDLogger.println("SlidingBehavior", child.getId() + "mInitialOffset=" + mInitialOffset);
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
@@ -65,7 +65,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull SlidingLayout child, @NonNull View directTargetChild, @NonNull View target, int axes) {
-        QDLogger.d("onStartNestedScroll2");
+        QDLogger.println("onStartNestedScroll2");
         boolean isVertical = (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
         return isVertical && child == directTargetChild;
         // return super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes);
@@ -73,7 +73,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull SlidingLayout child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
-        QDLogger.d("onStartNestedScroll");
+        QDLogger.println("onStartNestedScroll");
         boolean isVertical = (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
         return isVertical && child == directTargetChild;
     }

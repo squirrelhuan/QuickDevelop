@@ -6,11 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-
 //import com.umeng.commonsdk.UMConfigure;
 //import com.umeng.socialize.PlatformConfig;
 //import com.didichuxing.doraemonkit.DoraemonKit;
@@ -28,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.quickdatabaselibrary.QuickDb;
+import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
 import cn.demomaster.quickdatabaselibrary.listener.UpgradeInterface;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
@@ -87,12 +82,12 @@ public class QDApplication extends Application implements UpgradeInterface {
         //MultiDex.install(base);
     }
 
-    private QuickDb dbHelper;
+    public QuickDbHelper dbHelper;
     /**
      * 初始化本地数据库
      * @return
      */
-    public QuickDb getDbHelper() {
+    public QuickDbHelper getDbHelper() {
         if (dbHelper == null) {
             String dbpath = null;
             if (AppConfig.getInstance().getConfigMap().containsKey("dbpath")) {
@@ -100,7 +95,8 @@ public class QDApplication extends Application implements UpgradeInterface {
             }
 
             if (!TextUtils.isEmpty(dbpath)) {
-                dbHelper = new QuickDb(this, dbpath, null, 7, this);
+                dbHelper = new QuickDbHelper(this, dbpath, null, 7, this);
+               // dbHelper = new QuickDb(this, dbpath, null, 7, this);
             }
         }
         return dbHelper;

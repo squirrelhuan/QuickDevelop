@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper.TAG;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -43,7 +43,7 @@ public class QDNestedFixedView extends FrameLayout {
     private float progress;
     public float getProgress() {
         progress =  (float)(getMeasuredHeight()-minHeight)/(float)(maxHeight-minHeight);
-        Log.d(TAG, "getProgress: "+progress+",getMeasuredHeight="+getMeasuredHeight()+",maxHeight="+maxHeight+",minHeight="+minHeight);
+        QDLogger.d("getProgress: "+progress+",getMeasuredHeight="+getMeasuredHeight()+",maxHeight="+maxHeight+",minHeight="+minHeight);
         return progress<0?0:progress;
     }
 

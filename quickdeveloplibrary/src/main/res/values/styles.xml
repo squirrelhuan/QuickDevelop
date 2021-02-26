@@ -140,7 +140,6 @@
         <item name="android:windowExitAnimation">@anim/keybored_hide</item>
     </style>
 
-
    <!-- ************************************************** -->
 
     <style name="quick_actionbar_common">

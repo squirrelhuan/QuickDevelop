@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -47,6 +48,7 @@ public class IDCardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idcard);
+        ButterKnife.bind(this);
     }
 
     /**

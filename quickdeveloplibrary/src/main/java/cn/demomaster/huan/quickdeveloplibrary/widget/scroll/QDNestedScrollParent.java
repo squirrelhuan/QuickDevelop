@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.AudioRecordHelper.TAG;
 
 
 /**
@@ -134,7 +133,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
         if (dy < 0) {
             int toTop = fixedView.getMeasuredHeight()- fixedView.getMinHeight();
             toTop = toTop>0?toTop:0;
-            QDLogger.d(TAG, "getScrollY="+getScrollY()+"hideImg toTop: "+toTop );
+            QDLogger.println( "getScrollY="+getScrollY()+"hideImg toTop: "+toTop );
             //toTop = fixedView.getMinHeight();
             if (getScrollY() <= toTop) {
                 return true;

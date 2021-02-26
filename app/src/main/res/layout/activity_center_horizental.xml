@@ -25,9 +25,7 @@
         android:id="@+id/achs_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false">
-
-    </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+        android:clipToPadding="false"/>
 
     <TextView
         android:id="@+id/tv_index"

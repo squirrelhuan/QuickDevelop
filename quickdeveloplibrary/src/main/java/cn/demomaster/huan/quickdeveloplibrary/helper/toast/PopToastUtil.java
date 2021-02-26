@@ -7,11 +7,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView;
 
 
@@ -24,17 +22,17 @@ public class PopToastUtil {
     static View contentView;
     static CircleTextView messageView;
 
-    public static void ShowToast(Activity context, String text) {
-        ShowToast(context,text,Gravity.TOP);
+    public static void showToast(Activity context, String text) {
+        showToast(context,text,Gravity.TOP);
     }
-    public static void ShowToastBottom(Activity context, String text) {
-        ShowToast(context,text,Gravity.BOTTOM);
+    public static void showToastBottom(Activity context, String text) {
+        showToast(context,text,Gravity.BOTTOM);
     }
-    public static void ShowToastCenter(Activity context, String text) {
-        ShowToast(context,text,Gravity.CENTER);
+    public static void showToastCenter(Activity context, String text) {
+        showToast(context,text,Gravity.CENTER);
     }
 
-    private static void ShowToast(Activity context, String text,int gravity) {
+    private static void showToast(Activity context, String text, int gravity) {
         if(popupWindow!=null&&popupWindow.isShowing()){
             popupWindow.dismiss();
         }

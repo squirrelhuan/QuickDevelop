@@ -1,88 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_content"
+    android:background="@mipmap/meizi"
+    android:fitsSystemWindows="true">
+    <!--android:fitsSystemWindows="true"-->
 
-    <ScrollView
+    <cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout
+        android:id="@+id/compressLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-           <EditText
-               android:id="@+id/et_system_none"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_margin="5dp"
-               android:hint="我是系统输入法"/>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/et_system_none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:hint="我是系统输入法"/>
 
-            <EditText
-                android:id="@+id/et_system_number"
+                    <EditText
+                        android:id="@+id/et_system_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="number"
+                        android:hint="我是系统输入法(number)"/>
+
+                    <EditText
+                        android:id="@+id/et_system_numberPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="numberPassword"
+                        android:hint="我是系统输入法(numberPassword)"/>
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue"
+                        android:text="内置键盘"/>
+
+                    <EditText
+                        android:id="@+id/et_custom_none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:hint="自定义输入法" />
+
+                    <EditText
+                        android:id="@+id/et_custom_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="number"
+                        android:hint="自定义输入法(number)"/>
+
+                    <EditText
+                        android:id="@+id/et_custom_numberPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="numberPassword"
+                        android:hint="自定义输入法(numberPassword)"/>
+
+                    <EditText
+                        android:id="@+id/et_custom_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="phone"
+                        android:hint="自定义输入法(phone)"/>
+
+                    <EditText
+                        android:id="@+id/et_custom_textEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:inputType="textEmailAddress"
+                        android:hint="自定义输入法(textEmailAddress)"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100"
+                        android:text="content"
+                        android:padding="@dimen/dp_10"
+                        android:gravity="center"
+                        android:background="#FF82AB"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_14"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="number"
-                android:hint="我是系统输入法(number)"/>
+                android:orientation="horizontal"
+                android:background="@color/orange"
+                android:gravity="center">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入"/>
 
-            <EditText
-                android:id="@+id/et_system_numberPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="numberPassword"
-                android:hint="我是系统输入法(numberPassword)"/>
+                <ImageView
+                    android:id="@+id/iv_emtion"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@mipmap/meizi"/>
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="@color/blue"
-                android:text="内置键盘"/>
-
-            <EditText
-                android:id="@+id/et_custom_none"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="自定义输入法" />
-
-            <EditText
-                android:id="@+id/et_custom_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="number"
-                android:hint="自定义输入法(number)"/>
-
-            <EditText
-                android:id="@+id/et_custom_numberPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="numberPassword"
-                android:hint="自定义输入法(numberPassword)"/>
-
-            <EditText
-                android:id="@+id/et_custom_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="phone"
-                android:hint="自定义输入法(phone)"/>
-
-            <EditText
-                android:id="@+id/et_custom_textEmailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="textEmailAddress"
-                android:hint="自定义输入法(textEmailAddress)"/>
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+
+
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+            <ImageView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:src="@mipmap/meizi"/>
+        </cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout>
+
+    </cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout>
 
 </RelativeLayout>

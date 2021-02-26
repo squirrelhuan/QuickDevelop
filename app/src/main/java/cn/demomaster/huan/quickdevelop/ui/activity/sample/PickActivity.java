@@ -117,7 +117,7 @@ public class PickActivity extends BaseActivity {
         loopView2.setLoopListener(new LoopScrollListener() {
             @Override
             public void onItemSelect(int item) {
-                PopToastUtil.ShowToast(mContext,"item="+item);
+                PopToastUtil.showToast(mContext,"item="+item);
             }
         });
         loopView2.setTextSize(25);//must be called before setDateList

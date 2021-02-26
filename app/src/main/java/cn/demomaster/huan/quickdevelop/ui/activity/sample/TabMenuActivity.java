@@ -79,7 +79,7 @@ public class TabMenuActivity extends BaseActivity {
                 loopView2.setLoopListener(new LoopScrollListener() {
                     @Override
                     public void onItemSelect(int item) {
-                        PopToastUtil.ShowToast(mContext, "item=" + item);
+                        PopToastUtil.showToast(mContext, "item=" + item);
                     }
                 });
                 loopView2.setTextSize(16);//must be called before setDateList
@@ -96,7 +96,7 @@ public class TabMenuActivity extends BaseActivity {
         tabMenuLayout.setData(tabSelectModels, new TabMenuLayout.TabMenuInterface() {
             @Override
             public String onSelected(TabRadioGroup.TabRadioButton tabButton, int tabIndex, int position) {
-                PopToastUtil.ShowToast(mContext, "" + tabIndex + ":" + position);
+                PopToastUtil.showToast(mContext, "" + tabIndex + ":" + position);
                 tabMenuLayout.getPopupWindow().dismiss();
                 switch (tabIndex) {
                     case 0:

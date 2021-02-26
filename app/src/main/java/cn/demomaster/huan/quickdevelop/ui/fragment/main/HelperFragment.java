@@ -23,6 +23,8 @@ import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AccessibilityServiceFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AdbForwardFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.BluetoothFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DragViewFragment;
@@ -107,7 +109,9 @@ public class HelperFragment extends BaseFragment {
         classList.add(PermitionFragment.class);
         classList.add(PositionFragment.class);
         classList.add(ExeCommandFragment.class);
+        classList.add(AdbForwardFragment.class);
         classList.add(WifiFragment.class);
+        classList.add(BluetoothFragment.class);
         classList.add(FloatingFragment.class);
         classList.add(SocketFragment.class);
         classList.add(TrafficFragment.class);

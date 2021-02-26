@@ -43,7 +43,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     public void init(Context context, Class<?extends Activity> errorReportClass) {
-        QDLogger.println("初始化异常捕获");
+        //QDLogger.println("初始化异常捕获");
         mContext = context.getApplicationContext();
         this.mErrorReportClass = errorReportClass;
         Thread.setDefaultUncaughtExceptionHandler(this);

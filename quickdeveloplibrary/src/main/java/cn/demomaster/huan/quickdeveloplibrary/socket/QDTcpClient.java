@@ -59,7 +59,6 @@ public class QDTcpClient {
                     waitMessage();//开启消息接收
                     //qdlogin();//用户登录
                 } catch (Exception e) {
-                    System.err.println("socket连接失败");
                     QDLogger.e(e);
                 }
             }

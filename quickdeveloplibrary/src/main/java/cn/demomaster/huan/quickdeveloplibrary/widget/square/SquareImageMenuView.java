@@ -425,7 +425,7 @@ public class SquareImageMenuView extends View {
     }
 
     public void stopAnimation() {
-        Log.d(TAG, "关闭动画");
+        //Log.d(TAG, "关闭动画");
         handler.removeCallbacks(runnable);
         if (animator != null && !animator.isHasReversed()) {
             animator.reverse();

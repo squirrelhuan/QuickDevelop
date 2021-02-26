@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -18,6 +19,7 @@ import android.webkit.WebViewClient;
 import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -49,18 +51,31 @@ public class QDWebView extends WebView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return touchAble?super.onTouchEvent(ev):false;
+        return touchAble ? super.onTouchEvent(ev) : false;
     }
 
     private float mProgress;
     /*private boolean isSupportZoom = true;
     private boolean isSupportZoomTool = true;*/
+    QDWebChromeClient.OnStateChangedListener onStateChangedListener;
+
+    public void setOnStateChangedListener(QDWebChromeClient.OnStateChangedListener onStateChangedListener) {
+        this.onStateChangedListener = onStateChangedListener;
+    }
 
     private void init() {
         mContext = getContext();
         progressHeight = DisplayUtil.dip2px(mContext, 3);//进度条默认高度
-        QDWebCromeClient qdWebCromeClient = new QDWebCromeClient();
-        qdWebCromeClient.setOnProgressChanged(new QDWebCromeClient.OnProgressChanged() {
+        QDWebChromeClient qdWebCromeClient = new QDWebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                if (onStateChangedListener != null) {
+                    onStateChangedListener.onReceivedTitle(view, title);
+                }
+            }
+        };
+        qdWebCromeClient.setOnProgressChanged(new QDWebChromeClient.OnProgressChanged() {
             @Override
             public void onProgress(int progress) {
                 mProgress = progress / 100f;
@@ -92,27 +107,110 @@ public class QDWebView extends WebView {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                QDLogger.i("shouldOverrideUrlLoading1:" + request.getUrl().toString());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (request.getUrl().toString().contains("geeppies.com")) {
-                        view.loadUrl(request.getUrl().toString());
-                        return true;
-                    }
-                }
-                return false;
+                QDLogger.println("shouldOverrideUrlLoading1:" + request.getUrl().toString());
+                String url = request.getUrl().toString();
+                return shouldOverrideUrlLoading1(view, url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                QDLogger.i("shouldOverrideUrlLoading2:" + url);
-                if (url.contains("geeppies.com")) {
-                    view.loadUrl(url);
-                    return true;
+                QDLogger.println("shouldOverrideUrlLoading2:" + url);
+                return shouldOverrideUrlLoading1(view, url);
+            }
+        });
+        //loadUrl(mUrl);
+        setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //dealUrlLoading();
+                final WebView.HitTestResult result = getHitTestResult();
+                if (null == result) {
+                    return false;
+                }
+                int type = result.getType();
+                switch (type) {
+                    case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
+                        QdToast.show(getContext(), "选中的文字类型");
+                        break;
+                    case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
+                        QdToast.show(getContext(), "处理拨号");
+                        break;
+                    case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
+                        QdToast.show(getContext(), "处理Email");
+                        break;
+                    case WebView.HitTestResult.GEO_TYPE: // 　地图类型
+                        QdToast.show(getContext(), "地图类型");
+                        break;
+                    case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+                        QdToast.show(getContext(), "超链接");
+                        break;
+                    case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
+                        QdToast.show(getContext(), "带有链接的图片类型");
+                        break;
+                    case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
+                        String url = result.getExtra();//获取图片
+                        QdToast.show(getContext(), "处理长按图片的菜单项");
+                        break;
+                    case WebView.HitTestResult.UNKNOWN_TYPE: //未知
+                        QdToast.show(getContext(), "未知");
+                        break;
                 }
                 return false;
             }
         });
-        //loadUrl(mUrl);
+    }
+
+    private boolean shouldOverrideUrlLoading1(WebView view, String url) {
+        if (url.startsWith("newtab:")) {
+            //对新的URL进行截取，去掉前面的newtab:
+            /*String realUrl=url.substring(7,url.length());*/
+            if (onStateChangedListener != null) {
+                return onStateChangedListener.onNewTab(view, url);
+            }
+        } else {
+            view.loadUrl(url);
+            return true;
+        }
+        return false;
+    }
+
+    private void dealUrlLoading(WebView view, String url) {
+        final WebView.HitTestResult result = getHitTestResult();
+        if (null == result)
+            return;
+        int type = result.getType();
+        switch (type) {
+            case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
+                QdToast.show(getContext(), "选中的文字类型");
+                break;
+            case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
+                QdToast.show(getContext(), "处理拨号");
+                break;
+            case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
+                QdToast.show(getContext(), "处理Email");
+                break;
+            case WebView.HitTestResult.GEO_TYPE: // 　地图类型
+                QdToast.show(getContext(), "地图类型");
+                break;
+            case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+                QdToast.show(getContext(), "超链接");
+                break;
+            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
+                QdToast.show(getContext(), "带有链接的图片类型");
+                break;
+            case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
+                //String url = result.getExtra();//获取图片
+                QdToast.show(getContext(), "处理长按图片的菜单项");
+                break;
+            case WebView.HitTestResult.UNKNOWN_TYPE: //未知
+                QdToast.show(getContext(), "未知");
+                break;
+        }
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        super.loadUrl(url);
     }
 
     // 继承自Object类
@@ -175,7 +273,6 @@ public class QDWebView extends WebView {
                 }
             });
         }
-
     }
 
     private int progressHeight = 10;

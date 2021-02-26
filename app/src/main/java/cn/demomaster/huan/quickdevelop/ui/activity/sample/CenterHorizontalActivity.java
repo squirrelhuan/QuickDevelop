@@ -35,17 +35,14 @@ public class CenterHorizontalActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_center_horizental);
 
-        //init();
         initHorizontal();
         //setUpRecyclerView();
         //initSlidingView();
     }
 
     //  SnapHelper snapHelperCenter = new LinearSnapHelper();
-
     private void initHorizontal() {
-        AutoCenterHorizontalScrollView autoCenterHorizontalScrollView;
-        autoCenterHorizontalScrollView = findViewById(R.id.achs_test);
+        AutoCenterHorizontalScrollView autoCenterHorizontalScrollView = findViewById(R.id.achs_test);
         //测试用的随机字符串集合
         List<String> names =new ArrayList<>();
         for(int i=0;i<50;i++){

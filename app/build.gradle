@@ -63,6 +63,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':qdRouter_library')
     implementation project(path: ':qdlogger_library')
+    implementation project(path: ':quickdatabaselibrary')
+
+    implementation project(path: ':quickAudioRecorderlib')
     // implementation project(path: ':qdlogger_library')
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.3.0'

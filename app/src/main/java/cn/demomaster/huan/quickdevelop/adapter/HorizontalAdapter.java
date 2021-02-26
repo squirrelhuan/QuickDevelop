@@ -27,6 +27,11 @@ public class HorizontalAdapter implements AutoCenterHorizontalScrollView.HAdapte
     }
 
     @Override
+    public void setData(List<String> data) {
+
+    }
+
+    @Override
     public int getCount() {
         return names.size();
     }

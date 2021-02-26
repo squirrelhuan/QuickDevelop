@@ -263,11 +263,10 @@ public class ScreenShotUitl {
             File file = new File(path);
             if (!file.exists())
                 file.mkdirs();
-            path = file.getPath() + "/" + "欢迎分享" + ".jpg";
+            path = file.getPath() + "/欢迎分享.jpg";
             int permission = ActivityCompat.checkSelfPermission(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (permission != PackageManager.PERMISSION_GRANTED) {
-                // We don't have permission so prompt the user
                 ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
                         REQUEST_EXTERNAL_STORAGE);
                 return uri;

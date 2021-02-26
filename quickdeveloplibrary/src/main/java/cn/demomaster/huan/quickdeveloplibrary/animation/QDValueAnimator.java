@@ -97,17 +97,17 @@ public class QDValueAnimator extends ValueAnimator {
         // 暴力反射获取属性
        // Field filed = class1.getDeclaredField("name");
         if (fields != null) {
-            QDLogger.println(clazz.getName()+":fields.length =" + fields.length);
+            //QDLogger.println(clazz.getName()+":fields.length =" + fields.length);
             for (int i = 0, len = fields.length; i < len; i++) {
                 String varName = fields[i].getName();
-                QDLogger.println("varName =" + varName);
+                //QDLogger.println("varName =" + varName);
                 if (varName.equals("mReversing")) {
                     try {
                         boolean accessFlag = fields[i].isAccessible();
                         fields[i].setAccessible(true);
                         Object o = fields[i].get(animator);
                         fields[i].setAccessible(accessFlag);
-                        QDLogger.println("isReversing =" + o);
+                        //QDLogger.println("isReversing =" + o);
                         return (boolean) o;
                     } catch (IllegalArgumentException | IllegalAccessException ex) {
                         QDLogger.e(ex);

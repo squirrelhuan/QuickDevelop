@@ -1,11 +1,17 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.os.Handler;
+
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +56,112 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
      * itemView适配器很随意
      */
     private HAdapter adapter;
+    ViewPager viewPager;
+    ViewPager.OnPageChangeListener onPageChangeListener;
+    public void setupWithViewPager(ViewPager viewPager) {
+        if (viewPager != null) {
+            this.viewPager = viewPager;
+            if (onPageChangeListener == null) {
+                onPageChangeListener = new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        setCurrentIndex(position);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                };
+            }
+            viewPager.addOnPageChangeListener(onPageChangeListener);
+            final PagerAdapter adapter = viewPager.getAdapter();
+            if (adapter != null) {
+                // Now we'll populate ourselves from the pager adapter, adding an observer if
+                // autoRefresh is enabled
+                boolean autoRefresh = true;
+                setPagerAdapter(adapter, autoRefresh);
+                //adapter.setPrimaryItem();
+            }
+        }
+    }
+    private DataSetObserver pagerAdapterObserver;
+    PagerAdapter pagerAdapter;
+    void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
+        if (pagerAdapter != null && pagerAdapterObserver != null) {
+            // If we already have a PagerAdapter, unregister our observer
+            pagerAdapter.unregisterDataSetObserver(pagerAdapterObserver);
+        }
+
+        pagerAdapter = adapter;
+
+        if (addObserver && adapter != null) {
+            // Register our observer on the new adapter
+            if (pagerAdapterObserver == null) {
+                pagerAdapterObserver = new PagerAdapterObserver();
+            }
+            adapter.registerDataSetObserver(pagerAdapterObserver);
+        }
+
+        setOnSelectChangeListener(new OnSelectChangeListener() {
+            @Override
+            public void onSelectChange(int position) {
+                viewPager.setCurrentItem(position);
+            }
+        });
+
+        // Finally make sure we reflect the new adapter
+        populateFromPagerAdapter();
+    }
+
+    void populateFromPagerAdapter() {
+        removeAllTabs();
+
+        if (pagerAdapter != null) {
+            final int adapterCount = pagerAdapter.getCount();
+            List<String> names =new ArrayList<>();
+            for (int i = 0; i < adapterCount; i++) {
+               //addTab(newTab().setText(pagerAdapter.getPageTitle(i)), false);
+                names.add(pagerAdapter.getPageTitle(i)+"");
+            }
+            if(adapter!=null) {
+                adapter.setData(names);
+                setAdapter(adapter);
+            }
+            // Make sure we reflect the currently set ViewPager item
+            if (viewPager != null && adapterCount > 0) {
+               /* final int curItem = viewPager.getCurrentItem();
+                if (curItem != getSelectedTabPosition() && curItem < getTabCount()) {
+                    selectTab(getTabAt(curItem));
+                }*/
+            }
+        }
+    }
+
+    private void removeAllTabs() {
+    }
+
+    private class PagerAdapterObserver extends DataSetObserver {
+        PagerAdapterObserver() {}
+
+        @Override
+        public void onChanged() {
+            populateFromPagerAdapter();
+        }
+
+        @Override
+        public void onInvalidated() {
+            populateFromPagerAdapter();
+        }
+    }
+
     public static interface HAdapter {
+        void setData(List<String> data);
         int getCount();//获取子view个数
         RecyclerView.ViewHolder getItemView(int position);//获取指定index的view
         void onSelectStateChanged(RecyclerView.ViewHolder itemView,int position,boolean isSelected);//改变选中状态
@@ -59,7 +170,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     List<RecyclerView.ViewHolder> viewHolders = new ArrayList<>();
     //自己组装itemView
     public void setAdapter(final HAdapter adapter) {
-        if(adapter==null||adapter.getCount()==0){
+        if(adapter==null){
             return;
         }
         this.adapter = adapter;
@@ -108,14 +219,14 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
         int offset_tmp = 0;
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            int child_width = child.getWidth();
-            offset_tmp = offset_tmp + child_width;
             if (i == index) {
-                offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
+                offset_target = offset_tmp;
                 setCurrent(i);
                 return offset_target;
             }
+            View child = viewGroup.getChildAt(i);
+            int child_width = child.getWidth();
+            offset_tmp = offset_tmp + child_width;
         }
         return 0;
     }
@@ -123,6 +234,17 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private int paddingLeft = 0;//左侧内边距
     private int paddingRight = 0;//右侧内边距
     private float touchDown_X;//判断是否是点击还是滑动来用
+
+    int gravity = Gravity.CENTER;
+
+    public void setGravity(int gravity) {
+        this.gravity = gravity;
+        if(gravity==Gravity.CENTER) {
+            setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
+        }else if(gravity==Gravity.LEFT){
+            setPadding(0, getPaddingTop(), 0, getPaddingBottom());
+        }
+    }
 
     void init() {
         //添加触摸事件，滑动事件会触发
@@ -165,8 +287,13 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
                 last.measure(w, h);
                 int last_width = last.getMeasuredWidth();
-                paddingLeft = getWidth() / 2 - first_width / 2;
-                paddingRight = getWidth() / 2 - last_width / 2;
+                if(gravity==Gravity.CENTER) {
+                    paddingLeft = getWidth() / 2 - first_width / 2;
+                    paddingRight = getWidth() / 2 - last_width / 2;
+                }else if(gravity==Gravity.LEFT){
+                    paddingLeft = 0;
+                    paddingRight = 0;
+                }
                 setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
                 //设置默认位置
                 setCurrentIndex(currentIndex);
@@ -217,21 +344,21 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        QDLogger.i(tag, "left=" + l);
+        //QDLogger.println(tag, "left=" + l);
         // 更新ScrollView的滑动位置
         nowScrollLeft = l;
     }
 
     @Override
     protected int computeHorizontalScrollRange() {
-        QDLogger.i(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
-        QDLogger.i(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getWidth()));
+        //QDLogger.println(tag, "横向总宽度 computeHorizontalScrollRange:" + super.computeHorizontalScrollRange());
+        //QDLogger.println(tag, "computeHorizontalScrollRange2:" + (super.computeHorizontalScrollRange() + getWidth()));
         return super.computeHorizontalScrollRange() + paddingLeft + paddingRight;
     }
 
     @Override
     protected int computeHorizontalScrollOffset() {
-        QDLogger.i(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
+        //QDLogger.println(tag, "当前位置 computeHorizontalScrollOffset:" + super.computeHorizontalScrollOffset());
         return super.computeHorizontalScrollOffset() + paddingLeft;
     }
 
@@ -252,7 +379,6 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 onSelectChangeListener.onSelectChange(currentIndex);
             }
         }
-
     }
 
     public void setCurrentIndex(int currentIndex) {
@@ -271,13 +397,8 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
             child.measure(w, h);
             int child_width = child.getMeasuredWidth();
-            offset_tmp = offset_tmp + child_width;
             if (i ==currentIndex) {
-                View child0 = viewGroup.getChildAt(0);
-                child0.measure(w, h);
-                int child_width0 = child0.getMeasuredWidth();
-                offset_target = offset_tmp - child_width / 2 - child_width0 / 2;
-
+                offset_target = offset_tmp;
                 this.post(new Runnable() {
                     @Override
                     public void run() {
@@ -286,6 +407,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 });
                 return;
             }
+            offset_tmp = offset_tmp + child_width;
         }
     }
 

@@ -39,15 +39,14 @@ public class SocketFragment extends BaseFragment {
     QDButton btn_send_tcp;
     @BindView(R.id.btn_send_connect)
     QDButton btn_send_connect;
-
     View mView;
 
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_socket, null);
+            mView = inflater.inflate(R.layout.fragment_layout_socket, null);
         }
-        return (ViewGroup) mView;
+        return mView;
     }
 
     public void initView(View rootView) {
