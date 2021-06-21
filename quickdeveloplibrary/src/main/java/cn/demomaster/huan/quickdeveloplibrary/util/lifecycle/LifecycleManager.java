@@ -16,12 +16,13 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class LifecycleManager {
     boolean enable;//是否启用
     Context context;
+
     public void setEnable(boolean enable) {
         this.enable = enable;
-        if(enable){
-            ((Application)context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
-        }else {
-            ((Application)context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        if (enable) {
+            ((Application) context).registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        } else {
+            ((Application) context).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
     }
 
@@ -32,26 +33,28 @@ public class LifecycleManager {
     private static LifecycleManager instance;
 
     public static LifecycleManager getInstance() {
-        if(instance==null){
-            instance=new LifecycleManager();
+        if (instance == null) {
+            instance = new LifecycleManager();
         }
         return instance;
     }
-    
-    private LifecycleManager(){
-        
+
+    private LifecycleManager() {
+
     }
-    
-    public void init(Context context){
+
+    public void init(Context context) {
         this.context = context.getApplicationContext();
+        lifecycleTimerData = new LifecycleTimerData();
     }
 
     //生命周期数据
-    LifecycleTimerData lifecycleTimerData = new LifecycleTimerData();
+    LifecycleTimerData lifecycleTimerData = null;
+
     public LifecycleTimerData getLifecycleTimerData() {
         return lifecycleTimerData;
     }
-    
+
 
     /**
      * 页面切换监听
@@ -63,7 +66,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityCreated);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
 
         @Override
@@ -72,7 +75,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityResumed);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
 
         @Override
@@ -82,7 +85,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityResumed);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
 
         @Override
@@ -92,7 +95,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityPaused);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
 
         @Override
@@ -101,7 +104,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityStopped);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
 
         @Override
@@ -115,7 +118,7 @@ public class LifecycleManager {
             LifeCycleEvent lifeCycleEvent = new LifeCycleEvent();
             lifeCycleEvent.setTime(System.currentTimeMillis());
             lifeCycleEvent.setLifecycleType(LifecycleType.onActivityDestroyed);
-            lifecycleTimerData.addLifecycleEvent(activity,lifeCycleEvent);
+            lifecycleTimerData.addLifecycleEvent(activity, lifeCycleEvent);
         }
     };
 }

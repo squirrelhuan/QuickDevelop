@@ -30,9 +30,10 @@ public class WakeLockUtil {
 
     /**
      * 唤醒屏幕
+     *
      * @param context
      */
-    public static void acquireWakeLock(@NonNull Context context){
+    public static void acquireWakeLock(@NonNull Context context) {
         //管理锁屏的一个服务
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         if (km.inKeyguardRestrictedInputMode()) {

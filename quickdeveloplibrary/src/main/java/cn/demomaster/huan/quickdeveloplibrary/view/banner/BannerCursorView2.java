@@ -57,25 +57,26 @@ public class BannerCursorView2 extends View implements Banner.BannerIndicator {
 
     float radius = 7;
     float radius_actived = 7;
-    float w =30;
+    float w = 30;
     Paint mPaint;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float x1 = getWidth()/2-(indicatorCount+1)*w;
-        for(int i=0;i<indicatorCount;i++){
-            float x = w*(i*2+1);
-            float y = getHeight()/2-w/4;
+        float x1 = getWidth() / 2 - (indicatorCount + 1) * w;
+        for (int i = 0; i < indicatorCount; i++) {
+            float x = w * (i * 2 + 1);
+            float y = getHeight() / 2 - w / 4;
             float radius_c = radius;
-            if(tabIndex==i){
+            if (tabIndex == i) {
                 radius_c = radius_actived;
                 mPaint.setColor(Color.GREEN);
-            }else {
+            } else {
                 mPaint.setColor(Color.WHITE);
             }
 
-            RectF rectF = new RectF(x1+x,y,x1+x+w,y+w/4);
-            canvas.drawRoundRect(rectF,0, 0, mPaint);
+            RectF rectF = new RectF(x1 + x, y, x1 + x + w, y + w / 4);
+            canvas.drawRoundRect(rectF, 0, 0, mPaint);
         }
     }
 
@@ -84,7 +85,7 @@ public class BannerCursorView2 extends View implements Banner.BannerIndicator {
     @Override
     public void selecte(int position) {
         tabIndex = position;
-        startTransPositonAnimation(currentX, getWidth()/(indicatorCount+1)*position);
+        startTransPositonAnimation(currentX, getWidth() / (indicatorCount + 1) * position);
     }
 
     public void setIndicatorCount(int indicatorCount) {

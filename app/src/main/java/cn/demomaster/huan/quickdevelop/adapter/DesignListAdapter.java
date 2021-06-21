@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,8 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
                 }
             });
         }
+        Looper
+        ThreadLocal
     }
 
 }

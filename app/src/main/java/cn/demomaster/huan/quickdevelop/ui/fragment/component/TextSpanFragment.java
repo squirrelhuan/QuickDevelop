@@ -32,11 +32,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 public class TextSpanFragment extends BaseFragment {
 
     @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
-    @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_layout_textspan, null);
         return mView;

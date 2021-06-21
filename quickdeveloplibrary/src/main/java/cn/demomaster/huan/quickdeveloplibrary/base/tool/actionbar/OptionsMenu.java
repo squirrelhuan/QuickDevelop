@@ -199,7 +199,7 @@ public class OptionsMenu implements OnReleaseListener {
             anchor.getLocationOnScreen(anchorLoc);*/
             //popupWindow.showAsDropDown(anchor);
             //右侧的算法
-            //TODO 这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
+            //这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
 
             qdTipPopup.showTip(anchor, gravity);

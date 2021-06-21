@@ -53,11 +53,11 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
                 drawable.setBounds(0, 0, lists.get(i).getIconWidth(), lists.get(i).getIconWidth());
                 //给View左边添加一个图片
                 viewHolder.tv_title.setCompoundDrawables(drawable, null, null, null);
-            }else {
+            } else {
                 viewHolder.tv_title.setCompoundDrawablesWithIntrinsicBounds(drawable,
                         null, null, null);
             }
-        }else{
+        } else {
             viewHolder.tv_title.setCompoundDrawables(null, null, null, null);
         }
         if (lists.get(i).getIconPadding() != 0) {

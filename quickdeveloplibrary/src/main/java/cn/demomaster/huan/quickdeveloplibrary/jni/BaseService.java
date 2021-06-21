@@ -23,8 +23,8 @@ public class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.i( "BaseService onCreate " + index);
-        if(baseBinder==null) {
+        //QDLogger.i( "BaseService onCreate " + index);
+        if (baseBinder == null) {
             baseBinder = new BaseBinder(this);
         }
        /* String packageName = getApplicationContext().getPackageName();
@@ -65,7 +65,7 @@ public class BaseService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        QDLogger.i( "BaseService onStartCommand " + index);
+        //QDLogger.i( "BaseService onStartCommand " + index);
 
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
@@ -73,9 +73,9 @@ public class BaseService extends Service {
 
     @Override
     public void onDestroy() {
-        QDLogger.i( "BaseService onDestroy" + index);
+        //QDLogger.i( "BaseService onDestroy" + index);
         super.onDestroy();
-       // startService(new Intent(getApplicationContext(), this.getClass()));
+        // startService(new Intent(getApplicationContext(), this.getClass()));
     }
 
     public static class ServiceStub extends IBaseService.Stub {
@@ -103,24 +103,26 @@ public class BaseService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        QDLogger.i( "BaseService onUnbind" + index);
+        //QDLogger.i( "BaseService onUnbind" + index);
         return super.onUnbind(intent);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         //QdToast.show(getApplicationContext(), "service onBind",Toast.LENGTH_SHORT).show();
-        if(baseBinder==null) {
+        if (baseBinder == null) {
             baseBinder = new BaseBinder(this);
         }
-        QDLogger.i( "BaseService onBind" + index);
+        //QDLogger.i( "BaseService onBind" + index);
         return baseBinder;
     }
 
     private final IBinder mBinder = new ServiceStub(this);
     public static BaseBinder baseBinder;
+
     public static class BaseBinder extends Binder {
         private Service service;
+
         public BaseBinder(Service service) {
             this.service = service;
         }

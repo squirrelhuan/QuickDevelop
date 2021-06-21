@@ -27,7 +27,7 @@ public class QDividerDrawable extends GradientDrawable {
 
     public QDividerDrawable(DividerGravity... gravitys) {
         this.gravityList = new ArrayList<>();
-        for(DividerGravity gravity :gravitys){
+        for (DividerGravity gravity : gravitys) {
             this.gravityList.add(gravity);
         }
         init();
@@ -40,7 +40,7 @@ public class QDividerDrawable extends GradientDrawable {
     }
 
     private void init() {
-        if(gravityList==null){
+        if (gravityList == null) {
             gravityList = new ArrayList<>();
             gravityList.add(DividerGravity.ALL);
         }
@@ -56,7 +56,7 @@ public class QDividerDrawable extends GradientDrawable {
     }
 
     @Override
-    public void setCornerRadii( float[] radii) {
+    public void setCornerRadii(float[] radii) {
         super.setCornerRadii(radii);
         setRadiusAuto(false);
     }
@@ -73,63 +73,63 @@ public class QDividerDrawable extends GradientDrawable {
         r.top = r.top - mStrokeWidth;
         r.right = r.right + mStrokeWidth;
         r.bottom = r.bottom + mStrokeWidth;
-        if(gravityList.contains(DividerGravity.LEFT)){//左边
+        if (gravityList.contains(DividerGravity.LEFT)) {//左边
             r.left = r.left + mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.TOP)){//上边
+        if (gravityList.contains(DividerGravity.TOP)) {//上边
             r.top = r.top + mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.RIGHT)){//右边
+        if (gravityList.contains(DividerGravity.RIGHT)) {//右边
             r.right = r.right - mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.BOTTOM)){//下边
+        if (gravityList.contains(DividerGravity.BOTTOM)) {//下边
             r.bottom = r.bottom - mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.VERTICAL)){//上下
+        if (gravityList.contains(DividerGravity.VERTICAL)) {//上下
             r.top = r.top + mStrokeWidth;
             r.bottom = r.bottom - mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.HORIZONTAL)){//左右
-            r.left = r.left + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.LEFTTOP)){//左上
-            r.left = r.left + mStrokeWidth;
-            r.top = r.top + mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.LEFTRIGHT)){//左下
-            r.left = r.left + mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.RIGHTTOP)){//右上
-            r.right = r.right - mStrokeWidth;
-            r.top = r.top + mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.RIGHTBOTTOM)){//右下
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.BESIDES_LEFT)){//非左
-            r.top = r.top + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.BESIDES_TOP)){//非上
-            r.left = r.left + mStrokeWidth;
-            r.right = r.right - mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.BESIDES_RIGHT)){//非右
-            r.top = r.top + mStrokeWidth;
-            r.left = r.left + mStrokeWidth;
-            r.bottom = r.bottom - mStrokeWidth;
-        }
-        if(gravityList.contains(DividerGravity.BESIDES_BOTTOM)){//非下
-            r.top = r.top + mStrokeWidth;
+        if (gravityList.contains(DividerGravity.HORIZONTAL)) {//左右
             r.left = r.left + mStrokeWidth;
             r.right = r.right - mStrokeWidth;
         }
-        if(gravityList.contains(DividerGravity.ALL)){//所有边
+        if (gravityList.contains(DividerGravity.LEFTTOP)) {//左上
+            r.left = r.left + mStrokeWidth;
+            r.top = r.top + mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.LEFTRIGHT)) {//左下
+            r.left = r.left + mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.RIGHTTOP)) {//右上
+            r.right = r.right - mStrokeWidth;
+            r.top = r.top + mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.RIGHTBOTTOM)) {//右下
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.BESIDES_LEFT)) {//非左
+            r.top = r.top + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.BESIDES_TOP)) {//非上
+            r.left = r.left + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.BESIDES_RIGHT)) {//非右
+            r.top = r.top + mStrokeWidth;
+            r.left = r.left + mStrokeWidth;
+            r.bottom = r.bottom - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.BESIDES_BOTTOM)) {//非下
+            r.top = r.top + mStrokeWidth;
+            r.left = r.left + mStrokeWidth;
+            r.right = r.right - mStrokeWidth;
+        }
+        if (gravityList.contains(DividerGravity.ALL)) {//所有边
             r.left = r.left + mStrokeWidth;
             r.top = r.top + mStrokeWidth;
             r.right = r.right - mStrokeWidth;

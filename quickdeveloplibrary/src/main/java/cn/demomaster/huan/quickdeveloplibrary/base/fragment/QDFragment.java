@@ -1,10 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.fragment;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -25,8 +26,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTool;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
-import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -37,11 +36,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public abstract class QDFragment extends Fragment implements ViewLifecycle {
 
     public AppCompatActivity mContext;
-    private int backgroundColor = Color.WHITE;
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
     private int headlayoutResID = R.layout.qd_activity_actionbar_common;
 
     public int getHeadlayoutResID() {
@@ -49,14 +43,19 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     }
 
     private View fragmentView;
-    public View findViewById(int id) {
+
+    public <T extends View> T findViewById(int id) {
+        if (fragmentView == null) {
+            return null;
+        }
         return fragmentView.findViewById(id);
     }
+
     private String mTitle;
 
     public void setTitle(String title) {
         this.mTitle = title;
-        if(getActionBarTool()!=null) {
+        if (getActionBarTool() != null) {
             getActionBarTool().setTitle(getTitle());
         }
     }
@@ -68,25 +67,20 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        QDLogger.println("onHiddenChanged="+this.getClass().getSimpleName()+",hidden="+hidden);
+        QDLogger.println("onHiddenChanged=" + this.getClass().getSimpleName() + ",hidden=" + hidden);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = onGenerateView(inflater, container, savedInstanceState);
-        if (getBackgroundColor() != -1) {
-            view.setBackgroundColor(getBackgroundColor());
-        }
         if (isUseActionBarLayout()) {
             getActionBarTool().setContentView(view);
             getActionBarTool().setActionView(getHeadlayoutResID());
             //生成最終的view
             fragmentView = getActionBarTool().inflateView();
-            fragmentView.setBackgroundColor(Color.WHITE);
-
             getActionBarTool().setTitle(getTitle());
             ImageTextView imageTextView = getActionBarTool().getLeftView();
-            if(imageTextView!=null) {
+            if (imageTextView != null) {
                 imageTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,12 +88,37 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
                     }
                 });
             }
-        }else {
+        } else {
             fragmentView = view;
         }
-
+        fragmentView.setClickable(clickable);// 防止点击穿透，底层的fragment响应上层点击触摸事件
+        setThemeColor();
         initCreatView(fragmentView);
         return fragmentView;
+    }
+
+    public void setThemeColor() {
+        TypedArray array = getContext().getTheme().obtainStyledAttributes(new int[]{
+                android.R.attr.colorBackground,
+                android.R.attr.textColorPrimary,
+                android.R.attr.colorPrimary,
+                android.R.attr.colorPrimaryDark,
+                android.R.attr.colorAccent,
+        });
+        int backgroundColor = array.getColor(0, 0x00FF00FF);
+        fragmentView.setBackgroundColor(backgroundColor);
+        int textColor = array.getColor(1, 0xFF00FF);
+        int colorPrimary = array.getColor(2, getResources().getColor(R.color.colorPrimary));
+        int colorPrimaryDark = array.getColor(3, getResources().getColor(R.color.colorPrimaryDark));
+        int colorAccent = array.getColor(4, getResources().getColor(R.color.colorAccent));
+        array.recycle();
+    }
+
+    //是否可以被点击 false点击穿透
+    public boolean clickable = true;
+
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
     }
 
     public void initCreatView(View mView) {
@@ -108,7 +127,7 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
 
     public void finish() {
         onClickBack();
-        if(fromFragment!=null) {
+        if (fromFragment != null) {
             fromFragment.onActivityResult(mRequestCode, mResultCode, mResultData);
         }
     }
@@ -119,7 +138,7 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
         KeyEvent down = new KeyEvent(now, now, ACTION_DOWN, eventCode, 0);
         //boolean ret = ((QDFragmentInterface) qdFragment).onKeyDown(eventCode, down);
         getActivity().onKeyDown(eventCode, down);*/
-      getFragmentHelper().OnBackPressed();
+        getFragmentHelper().OnBackPressed();
     }
 
     private OptionsMenu optionsMenu;
@@ -164,6 +183,7 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     }
 
     public PhotoHelper photoHelper;
+
     //实例化各种帮助类
     private void initHelper() {
         if (getContext() instanceof QDActivity) {
@@ -203,12 +223,17 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        QDActivityManager.destroyObject(this);
         //NetworkUtil.unRegisterNetworkStatusChangedListener(getContext());
         //请手动注销，已添加的广播监听
     }
 
     int mResultCode;
     Intent mResultData;
+
     public void setResult(int resultCode, Intent data) {
         mResultCode = resultCode;
         mResultData = data;
@@ -216,6 +241,7 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
 
     int mRequestCode;
     ViewLifecycle fromFragment;
+
     @Override
     public void setRequestCode(ViewLifecycle qdFragmentInterface, int requestCode) {
         mRequestCode = requestCode;
@@ -248,31 +274,35 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     }
 
     boolean isResumed;
+
     @Override
     public void doResume() {
-        QDLogger.i("doResume isResumed="+isResumed+",hide="+isHidden());
-        if(!isResumed){
+        QDLogger.i("doResume isResumed=" + isResumed + ",hide=" + isHidden());
+        if (!isResumed) {
             onResume();
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         isPaused = false;
         isResumed = true;
-        
-         if(!isHidden()){
-             onFragmentResume();
-         }
+
+        if (!isHidden()) {
+            onFragmentResume();
+        }
     }
 
     boolean isPaused;
+
     @Override
     public void doPause() {
-        if(!isPaused){
+        if (!isPaused) {
             onPause();
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -288,13 +318,14 @@ public abstract class QDFragment extends Fragment implements ViewLifecycle {
     @Override
     public void onDetach() {
         super.onDetach();
-        QDLogger.d(this.getClass().getSimpleName(),"onDetach");
+        QDLogger.d(this.getClass().getSimpleName(), "onDetach");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        QDLogger.d(this.getClass().getSimpleName(),"onDestroyView");
+        QDLogger.d(this.getClass().getSimpleName(), "onDestroyView");
         QDActivityManager.destroyObject(this);
     }
+
 }

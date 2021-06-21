@@ -16,25 +16,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:id="@+id/camera_option"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <!--android:background="@color/transparent_dark_cc"-->
+    <LinearLayout
+        android:id="@+id/camera_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <!--android:background="@color/transparent_dark_cc"-->
 
-            <ImageView
-                android:id="@+id/camera_take"
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="@dimen/dp_60"
-                android:padding="@dimen/dp_12"
-                android:layout_margin="@dimen/dp_18"
-                android:background="@drawable/btn_camera"
-                app:srcCompat="@drawable/ic_photo_camera_black_24dp"
-                tools:ignore="VectorDrawableCompat" />
+        <ImageView
+            android:id="@+id/camera_take"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:padding="@dimen/dp_12"
+            android:layout_margin="@dimen/dp_18"
+            android:background="@drawable/btn_camera"
+            app:srcCompat="@drawable/ic_photo_camera_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

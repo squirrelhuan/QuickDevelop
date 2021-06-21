@@ -4,10 +4,10 @@ public class ActionButton {
     private String text;
     private int textColor;
     private OnClickActionListener onClickListener;
-    
+
     public ActionButton() {
     }
-    
+
     public String getText() {
         return text;
     }

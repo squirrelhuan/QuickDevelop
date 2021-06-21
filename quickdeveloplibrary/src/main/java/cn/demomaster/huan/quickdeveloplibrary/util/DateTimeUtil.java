@@ -23,8 +23,9 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class DateTimeUtil {
 
     public static String getDuration(long startTime, long currentTimeMillis) {
-        return formatDayTime((currentTimeMillis-startTime)/1000);
+        return formatDayTime((currentTimeMillis - startTime) / 1000);
     }
+
     /**
      * 将秒转化为 HH:mm:ss 的格式
      *
@@ -40,20 +41,20 @@ public class DateTimeUtil {
         return hh + ":" + mm + ":" + ss;
     }
 
-    public static String formatDayTime1(Context context,long time) {
+    public static String formatDayTime1(Context context, long time) {
         DecimalFormat decimalFormat = new DecimalFormat("00");
         //String dd = decimalFormat.format(time / 3600/24);
         String timeStr = "";
-        if(time>3600){
+        if (time > 3600) {
             String hh = decimalFormat.format(time / 3600);
-            timeStr += hh +context.getResources().getString(R.string.hour);
+            timeStr += hh + context.getResources().getString(R.string.hour);
         }
-        if(time>3600/60){
+        if (time > 3600 / 60) {
             String mm = decimalFormat.format(time % 3600 / 60);
-            timeStr += mm +context.getResources().getString(R.string.minute);
+            timeStr += mm + context.getResources().getString(R.string.minute);
         }
         String ss = decimalFormat.format(time % 60);
-        timeStr += ss +context.getResources().getString(R.string.second);
+        timeStr += ss + context.getResources().getString(R.string.second);
         return timeStr;
     }
 
@@ -71,23 +72,24 @@ public class DateTimeUtil {
         String ss = decimalFormat.format(time % 60);
         return hh + ":" + mm + ":" + ss;
     }
-    public static String formatTime(Context context,long time,String formatStrs) {
+
+    public static String formatTime(Context context, long time, String formatStrs) {
         int day = (int) (time / 86400);
         int hour = (int) (time % 86400 / 3600);
         int minute = (int) (time % 86400 % 3600 / 60);
         int second = (int) (time % 86400 % 3600 % 60);
         StringBuffer stringBuffer = new StringBuffer();
         if (day > 0) {
-            stringBuffer.append(day );
+            stringBuffer.append(day);
         }
         if (day > 0 || hour > 0) {
-            stringBuffer.append(hour );
+            stringBuffer.append(hour);
         }
         if (day > 0 || hour > 0 || minute > 0) {
-            stringBuffer.append(minute );
+            stringBuffer.append(minute);
         }
         if (day > 0 || hour > 0 || minute > 0 || second > 0) {
-            stringBuffer.append(second );
+            stringBuffer.append(second);
         }
         return stringBuffer.toString();
     }
@@ -96,25 +98,24 @@ public class DateTimeUtil {
     /**
      * 获取今天往后一周的集合
      */
-    public  void get7week(){
+    public void get7week() {
         String week = "";
         List<String> weeksList = new ArrayList<String>();
         List<String> dateList = getDateAsCount(21);
         for (String s : dateList) {
-           QDLogger.println(s);
+            QDLogger.println(s);
             if (s.equals(StringData())) {
                 week = "今天";
             } else {
-                week = "周"+getWeek(s);
+                week = "周" + getWeek(s);
             }
             weeksList.add(week);
         }
-        for(String str :weeksList){
-           QDLogger.println(str);
+        for (String str : weeksList) {
+            QDLogger.println(str);
         }
         //return weeksList;
     }
-
 
 
     public static List<String> getDateAsCount(int count) {
@@ -125,7 +126,7 @@ public class DateTimeUtil {
                 "yyyy-MM-dd");
         String date = sim.format(c.getTime());
         dates.add(date);
-        for (int i = 0; i < count-1; i++) {
+        for (int i = 0; i < count - 1; i++) {
             c.add(Calendar.DAY_OF_MONTH, 1);
             date = sim.format(c.getTime());
             dates.add(date);
@@ -133,7 +134,7 @@ public class DateTimeUtil {
         return dates;
     }
 
-    public static List<String> getDateAsCount(Date targetDate,int count) {
+    public static List<String> getDateAsCount(Date targetDate, int count) {
         List<String> dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
@@ -141,8 +142,8 @@ public class DateTimeUtil {
                 "yyyy-MM-dd");
         String date = sim.format(targetDate);//targetDate+" 00:00:00"/*c.getTime()*/);
         dates.add(date);
-        for (int i = 0; i < count-1; i++) {
-            dates.add(addDay(date,i+1));
+        for (int i = 0; i < count - 1; i++) {
+            dates.add(addDay(date, i + 1));
             /*c.add(java.util.Calendar.DAY_OF_MONTH, 1);
             date = sim.format(c.getTime());
             dates.add(date);*/
@@ -199,7 +200,8 @@ public class DateTimeUtil {
 
     /**
      * 获取当前年月日
-     * 
+     *  
+     *
      * @return
      */
     public static String StringData() {
@@ -210,26 +212,29 @@ public class DateTimeUtil {
         mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
         mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
         mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
-        if(Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth)))){
-            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth))));
+        if (Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth)))) {
+            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth))));
         }
-        return mYear + "-" + (mMonth.length()==1?"0"+mMonth:mMonth) + "-" + (mDay.length()==1?"0"+mDay:mDay);
+        return mYear + "-" + (mMonth.length() == 1 ? "0" + mMonth : mMonth) + "-" + (mDay.length() == 1 ? "0" + mDay : mDay);
     }
 
-    /**得到当年当月的最大日期**/
-    public static int MaxDayFromDay_OF_MONTH(int year,int month){
-        Calendar time=Calendar.getInstance();
+    /**
+     * 得到当年当月的最大日期
+     **/
+    public static int MaxDayFromDay_OF_MONTH(int year, int month) {
+        Calendar time = Calendar.getInstance();
         time.clear();
-        time.set(Calendar.YEAR,year);
-        time.set(Calendar.MONTH,month-1);//注意,Calendar对象默认一月为0                 
-        int day=time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
+        time.set(Calendar.YEAR, year);
+        time.set(Calendar.MONTH, month - 1);//注意,Calendar对象默认一月为0                 
+        int day = time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
         return day;
     }
 
 
     /**
      * 根据当前日期获得是星期几
-     * 
+     *  
+     *
      * @return
      */
     public static int getWeek(String time) {
@@ -242,6 +247,7 @@ public class DateTimeUtil {
         }
         return c.get(Calendar.DAY_OF_WEEK);
     }
+
     /**
      * 获取前n天日期、后n天日期
      *
@@ -263,6 +269,7 @@ public class DateTimeUtil {
         //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
     }
+
     public static Date getPreDate(int distanceDay) {
         SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = new Date();
@@ -278,8 +285,9 @@ public class DateTimeUtil {
         //Log.d("CGQ","前7天==" + dft.format(endDate));
         return endDate;//dft.format(endDate);
     }
-//获取本周
-    public static long getTimeOfWeekStart(){
+
+    //获取本周
+    public static long getTimeOfWeekStart() {
         Calendar ca = Calendar.getInstance();
         ca.set(Calendar.HOUR_OF_DAY, 0);
         ca.clear(Calendar.MINUTE);
@@ -290,7 +298,7 @@ public class DateTimeUtil {
     }
 
     //获取本周
-    public static String getTimeOfWeekStartDate(){
+    public static String getTimeOfWeekStartDate() {
         Calendar ca = Calendar.getInstance();
         ca.set(Calendar.HOUR_OF_DAY, 0);
         ca.clear(Calendar.MINUTE);
@@ -302,15 +310,15 @@ public class DateTimeUtil {
         mYear = String.valueOf(ca.get(Calendar.YEAR));// 获取当前年份
         mMonth = String.valueOf(ca.get(Calendar.MONTH) + 1);// 获取当前月份
         mDay = String.valueOf(ca.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
-        if(Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth)))){
-            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear),(Integer.parseInt(mMonth))));
+        if (Integer.parseInt(mDay) > MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth)))) {
+            mDay = String.valueOf(MaxDayFromDay_OF_MONTH(Integer.parseInt(mYear), (Integer.parseInt(mMonth))));
         }
-       // return ca.getTimeInMillis();
-       return mYear + "-" + (mMonth.length()==1?"0"+mMonth:mMonth) + "-" + (mDay.length()==1?"0"+mDay:mDay);
+        // return ca.getTimeInMillis();
+        return mYear + "-" + (mMonth.length() == 1 ? "0" + mMonth : mMonth) + "-" + (mDay.length() == 1 ? "0" + mDay : mDay);
     }
 
 
-    public static long getTimeOfMonthStart(){
+    public static long getTimeOfMonthStart() {
         Calendar ca = Calendar.getInstance();
         ca.set(Calendar.HOUR_OF_DAY, 0);
         ca.clear(Calendar.MINUTE);
@@ -320,7 +328,7 @@ public class DateTimeUtil {
         return ca.getTimeInMillis();
     }
 
-    public static long getTimeOfYearStart(){
+    public static long getTimeOfYearStart() {
         Calendar ca = Calendar.getInstance();
         ca.set(Calendar.HOUR_OF_DAY, 0);
         ca.clear(Calendar.MINUTE);
@@ -332,38 +340,41 @@ public class DateTimeUtil {
 
     /**
      * 获取当前日期
+     *
      * @return
      */
     public static MyDate getToday() {
         TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
         return getToday(timeZone);
     }
+
     /**
      * 获取当前日期
+     *
      * @return
      */
-    public static MyDate getToday(TimeZone timeZone){
+    public static MyDate getToday(TimeZone timeZone) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(timeZone);
 
         int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int day = cal.get(Calendar.DATE);
-        int hour =0;
+        int hour = 0;
         if (cal.get(Calendar.AM_PM) == 0)
             hour = cal.get(Calendar.HOUR);
         else
-            hour = cal.get(Calendar.HOUR)+12;
+            hour = cal.get(Calendar.HOUR) + 12;
         int minute = cal.get(Calendar.MINUTE);
         int second = cal.get(Calendar.SECOND);
 
         //my_time_1 = year + "-" + month + "-" + day;
         //my_time_2 = hour + "-" + minute + "-" + second;
-        MyDate myDate = new MyDate(year,month,day,hour,minute,second);
-        return  myDate;
+        MyDate myDate = new MyDate(year, month, day, hour, minute, second);
+        return myDate;
     }
 
-    public static class MyDate{
+    public static class MyDate {
         private int year;
         private int month;
         private int day;
@@ -380,18 +391,22 @@ public class DateTimeUtil {
             this.second = second;
         }
 
-        public String getYearMonthDay(){
-            return year+"-"+StringUtil.formatNumberToStr(month,2)+"-"+StringUtil.formatNumberToStr(day,2);
+        public String getYearMonthDay() {
+            return year + "-" + StringUtil.formatNumberToStr(month, 2) + "-" + StringUtil.formatNumberToStr(day, 2);
         }
-        public String getHourMinuteSecond(){
-            return StringUtil.formatNumberToStr(hour,2)+":"+StringUtil.formatNumberToStr(minute,2)+":"+StringUtil.formatNumberToStr(second,2);
+
+        public String getHourMinuteSecond() {
+            return StringUtil.formatNumberToStr(hour, 2) + ":" + StringUtil.formatNumberToStr(minute, 2) + ":" + StringUtil.formatNumberToStr(second, 2);
         }
-        public String getHourMinute(){
-            return StringUtil.formatNumberToStr(hour,2)+":"+StringUtil.formatNumberToStr(minute,2);
+
+        public String getHourMinute() {
+            return StringUtil.formatNumberToStr(hour, 2) + ":" + StringUtil.formatNumberToStr(minute, 2);
         }
-        public String getDateTimeStr(){
-            return getYearMonthDay()+" "+getHourMinuteSecond();
+
+        public String getDateTimeStr() {
+            return getYearMonthDay() + " " + getHourMinuteSecond();
         }
+
         public int getYear() {
             return year;
         }
@@ -440,7 +455,6 @@ public class DateTimeUtil {
             this.second = second;
         }
     }
-
 
 
 }

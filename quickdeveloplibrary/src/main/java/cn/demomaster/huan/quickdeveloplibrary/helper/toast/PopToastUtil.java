@@ -23,39 +23,43 @@ public class PopToastUtil {
     static CircleTextView messageView;
 
     public static void showToast(Activity context, String text) {
-        showToast(context,text,Gravity.TOP);
+        showToast(context, text, Gravity.TOP);
     }
+
     public static void showToastBottom(Activity context, String text) {
-        showToast(context,text,Gravity.BOTTOM);
+        showToast(context, text, Gravity.BOTTOM);
     }
+
     public static void showToastCenter(Activity context, String text) {
-        showToast(context,text,Gravity.CENTER);
+        showToast(context, text, Gravity.CENTER);
     }
 
     private static void showToast(Activity context, String text, int gravity) {
-        if(popupWindow!=null&&popupWindow.isShowing()){
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
-        initPopToast(context,text,0,gravity);
+        initPopToast(context, text, 0, gravity);
     }
 
     private static int backgroundColor = Color.RED;
     private static int textColor = Color.WHITE;
-    public static void setColorStyle(int textColor1,int backgroundColor1){
+
+    public static void setColorStyle(int textColor1, int backgroundColor1) {
         textColor = textColor1;
         backgroundColor = backgroundColor1;
     }
 
-    private static int destinc_Y ;
-    private static void initPopToast(Activity context, String text,int time,int gravity) {
+    private static int destinc_Y;
 
-        if(popupWindow==null) {
+    private static void initPopToast(Activity context, String text, int time, int gravity) {
+
+        if (popupWindow == null) {
             popupWindow = new PopupWindow();
             //contentView = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.layout_customer_toast, null, false);
             //messageView = contentView.findViewById(R.id.tv_message);
             //popupWindow = builder.setContentView(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             messageView = new CircleTextView(context.getApplicationContext());
-            messageView.setPadding(DisplayUtil.dp2px(context,20),DisplayUtil.dp2px(context,5),DisplayUtil.dp2px(context,20),DisplayUtil.dp2px(context,5));
+            messageView.setPadding(DisplayUtil.dp2px(context, 20), DisplayUtil.dp2px(context, 5), DisplayUtil.dp2px(context, 20), DisplayUtil.dp2px(context, 5));
             messageView.setTextSize(14);
             popupWindow.setContentView(messageView);// ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true).build();
             popupWindow.setTouchable(false);
@@ -65,17 +69,17 @@ public class PopToastUtil {
         messageView.setText(text);
         messageView.setTextColor(textColor);
         messageView.setBackgroundColor(backgroundColor);
-        switch (gravity){
+        switch (gravity) {
             case Gravity.TOP:
                 popupWindow.setAnimationStyle(R.style.cgq_pop_toast);
-                if(destinc_Y==0){
-                    destinc_Y =  DisplayUtil.getActionBarHeight(context)-DisplayUtil.dp2px(context,5)+ DisplayUtil.getStatusBarHeight(context);
+                if (destinc_Y == 0) {
+                    destinc_Y = DisplayUtil.getActionBarHeight(context) - DisplayUtil.dp2px(context, 5) + DisplayUtil.getStatusBarHeight(context);
                 }
                 break;
             case Gravity.BOTTOM:
                 popupWindow.setAnimationStyle(R.anim.anim_null);
-                if(destinc_Y==0){
-                    destinc_Y = context.getResources().getDimensionPixelOffset(R.dimen.activity_actionbar_button_height)+ DisplayUtil.getStatusBarHeight(context);
+                if (destinc_Y == 0) {
+                    destinc_Y = context.getResources().getDimensionPixelOffset(R.dimen.activity_actionbar_button_height) + DisplayUtil.getStatusBarHeight(context);
                 }
                 break;
             case Gravity.CENTER:
@@ -90,7 +94,7 @@ public class PopToastUtil {
         toastRunable.setPopupWindow(popupWindow);
         mHandler.removeCallbacks(toastRunable);
         timer_t = residenceTime;
-        mHandler.postDelayed(toastRunable,time);
+        mHandler.postDelayed(toastRunable, time);
     }
 
     public static View getContentView(Activity context) {
@@ -99,9 +103,10 @@ public class PopToastUtil {
 
     /**
      * 设置停留时间
+     *
      * @param time
      */
-    public void setResidenceTime(int time ){
+    public void setResidenceTime(int time) {
         this.residenceTime = time;
     }
 
@@ -126,9 +131,11 @@ public class PopToastUtil {
 
     public static class ToastRunable implements Runnable {
         static PopupWindow popupWindow;
+
         public void setPopupWindow(PopupWindow popupWindow) {
             this.popupWindow = popupWindow;
         }
+
         @Override
         public void run() {
 

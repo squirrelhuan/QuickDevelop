@@ -45,13 +45,16 @@ public class QDAccessibilityService extends AccessibilityService {
         AccessibilityHelper.onServiceConnected(this);
     }
 
-    public static interface OnAccessibilityListener{
+    public static interface OnAccessibilityListener {
         void onServiceConnected(QDAccessibilityService qdAccessibilityService);
-        void onAccessibilityEvent(AccessibilityService accessibilityService,AccessibilityEvent event);
+
+        void onAccessibilityEvent(AccessibilityService accessibilityService, AccessibilityEvent event);
+
         void onServiceDestroy();
     }
 
     String currentActivityName;
+
     public String getCurrentActivityName() {
         return currentActivityName;
     }
@@ -67,7 +70,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 }
                 break;
         }
-        AccessibilityHelper.onAccessibilityEvent(this,event);
+        AccessibilityHelper.onAccessibilityEvent(this, event);
         /*
         switch (eventType) {
             case AccessibilityEvent.TYPE_VIEW_CLICKED:
@@ -96,13 +99,14 @@ public class QDAccessibilityService extends AccessibilityService {
 
     /**
      * 打印view结构树
+     *
      * @param accessibilityService
      */
-    public static void parseNodeInfo(AccessibilityService accessibilityService){
+    public static void parseNodeInfo(AccessibilityService accessibilityService) {
         AccessibilityNodeInfo rootNodeInfo = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             List<AccessibilityWindowInfo> accessibilityNodeInfoList = accessibilityService.getWindows();
-            for(AccessibilityWindowInfo accessibilityWindowInfo : accessibilityNodeInfoList){
+            for (AccessibilityWindowInfo accessibilityWindowInfo : accessibilityNodeInfoList) {
                 rootNodeInfo = accessibilityWindowInfo.getRoot();
                 if (rootNodeInfo != null) {
                     getChildsInfo(rootNodeInfo);
@@ -151,7 +155,7 @@ public class QDAccessibilityService extends AccessibilityService {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static AccessibilityNodeInfo getNodeInfoById(AccessibilityService accessibilityService, String id) {
-        if(TextUtils.isEmpty(id)||accessibilityService.getRootInActiveWindow()==null){
+        if (TextUtils.isEmpty(id) || accessibilityService.getRootInActiveWindow() == null) {
             return null;
         }
         List<AccessibilityNodeInfo> nodeInfoList = accessibilityService.getRootInActiveWindow().findAccessibilityNodeInfosByViewId(id);
@@ -181,19 +185,9 @@ public class QDAccessibilityService extends AccessibilityService {
     }
 
     //跳转系统自带界面 辅助功能界面
-    public static void startSettintActivity(Context context){
+    public static void startSettintActivity(Activity context) {
         PermissionHelper.requestPermission(context,
-                new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        
-                    }
-
-                    @Override
-                    public void onRefused() {
-
-                    }
-                });
+                new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, null);
     }
 
 }

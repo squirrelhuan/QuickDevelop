@@ -95,6 +95,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     /**
      * 设置顶部view
+     *
      * @param headerLayoutView
      */
     public void addHeaderView(View headerLayoutView) {
@@ -110,6 +111,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     /**
      * 设置底部view
+     *
      * @param footerLayoutView
      */
     public void addFooterView(View footerLayoutView) {
@@ -576,10 +578,12 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
     public void close() {
         finishSpinner(true);
     }
+
     ValueAnimator animator;
 
     /**
      * 根据当前状态处理未结束的事件
+     *
      * @param forceClose 强制恢复到初始状态
      */
     private void finishSpinner(boolean forceClose) {
@@ -740,7 +744,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 consumed[1] = Math.abs(y);
                 //QDLogger.e("onNestedPreScroll 上滑=" + y + ",dy=" + dy + ",consumed=" + consumed[1]);
             } else {
-               // QDLogger.e("onNestedPreScroll 未消费");
+                // QDLogger.e("onNestedPreScroll 未消费");
             }
         } else if (type == ViewCompat.TYPE_NON_TOUCH) {//惯性滑动
             //QDLogger.e("onNestedPreScroll dy=" + dy + ",getTop()=" + contentLayout.getTop() + ",canChildScrollUp()=" + canChildScrollUp());

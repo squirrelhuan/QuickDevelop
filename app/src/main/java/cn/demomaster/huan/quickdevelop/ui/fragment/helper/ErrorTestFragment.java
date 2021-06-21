@@ -33,11 +33,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 @ActivityPager(name = "异常捕获", preViewClass = TextView.class, resType = ResType.Custome)
 public class ErrorTestFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
     @BindView(R.id.btn_error_02)

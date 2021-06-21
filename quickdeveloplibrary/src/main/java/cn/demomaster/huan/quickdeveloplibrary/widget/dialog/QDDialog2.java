@@ -58,9 +58,11 @@ public class QDDialog2 extends AppCompatDialog {
     }
 
     boolean hasPadding = false;
+
     public boolean isHasPadding() {
         return hasPadding;
     }
+
     private void init() {
         Window win = getWindow();
         if (animationStyleID != -1) {

@@ -22,27 +22,28 @@ import cn.demomaster.huan.quickdeveloplibrary.util.FPSMonitor;
  */
 public class FpsFloatingService extends QDFloatingService2 {
     LinearLayout linearLayout;
+
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         linearLayout = new LinearLayout(context.getApplicationContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         TextView button = new TextView(context);
         button.setText("fps");
-        button.setPadding(10,10,10,10);
+        button.setPadding(10, 10, 10, 10);
         button.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_99));
         button.setTextColor(context.getResources().getColor(R.color.white));
         fpsMonitor.setOnFramChangedListener(new FPSMonitor.OnFramChangedListener() {
             @Override
             public void onChanged(float mframe) {
                 frame = mframe;
-                if(QDActivityManager.getInstance().getCurrentActivity()!=null) {
+                if (QDActivityManager.getInstance().getCurrentActivity() != null) {
                     Display display = QDActivityManager.getInstance().getCurrentActivity().getWindowManager().getDefaultDisplay();
                     float refreshRate = display.getRefreshRate();
                     QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            button.setText("frame:"+frame);
+                            button.setText("frame:" + frame);
                             ///QDLogger.i("rate:"+refreshRate);
                         }
                     });
@@ -71,24 +72,25 @@ public class FpsFloatingService extends QDFloatingService2 {
             layoutParams.y = (int) pointF.y;
         }
         linearLayout.addView(button);
-        layoutParams.width= ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.height=ViewGroup.LayoutParams.WRAP_CONTENT;
-        windowManager.addView(linearLayout,layoutParams);
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        windowManager.addView(linearLayout, layoutParams);
         linearLayout.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
     }
 
     @Override
     public PointF getOriginPoint() {
-        return new PointF(100,100);
+        return new PointF(100, 100);
     }
 
     float frame = 0;
     FPSMonitor fpsMonitor = new FPSMonitor();
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         removeView(linearLayout);
-        if(fpsMonitor!=null)
-        fpsMonitor.stop();
+        if (fpsMonitor != null)
+            fpsMonitor.stop();
     }
 }

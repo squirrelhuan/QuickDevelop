@@ -45,7 +45,7 @@ public class BatteryOptimizationsHelper {
     /**
      * 跳转到app自启动设置页面
      */
-    public static void requestAutoStartService(Context context){
+    public static void requestAutoStartService(Context context) {
         BatteryOptimizationsHelper.context = context;
         if (isXiaomi()) {
             goXiaomiSetting();

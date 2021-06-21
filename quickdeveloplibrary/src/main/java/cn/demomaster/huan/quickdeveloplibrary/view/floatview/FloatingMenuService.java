@@ -28,6 +28,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMe
 public class FloatingMenuService extends QDFloatingService2 {
     private static SquareImageMenuView menuView;
     View view;
+
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         view = LayoutInflater.from(context).inflate(R.layout.layout_floating_menu, null);
@@ -62,24 +63,26 @@ public class FloatingMenuService extends QDFloatingService2 {
             layoutParams.x = (int) pointF.x;
             layoutParams.y = (int) pointF.y;
         }
-        layoutParams.width= (int) getResources().getDimension(R.dimen.dp_45);//ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.height= layoutParams.width;//ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.width = (int) getResources().getDimension(R.dimen.dp_45);//ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = layoutParams.width;//ViewGroup.LayoutParams.WRAP_CONTENT;
         this.windowManager = windowManager;
-        windowManager.addView(view,layoutParams);
+        windowManager.addView(view, layoutParams);
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
+
     static boolean buttonEnable = true;
-    public static void setMenuEnable(boolean enable){
+
+    public static void setMenuEnable(boolean enable) {
         buttonEnable = enable;
-        if(menuView!=null){
+        if (menuView != null) {
             menuView.setEnabled(buttonEnable);
         }
     }
 
     @Override
     public PointF getOriginPoint() {
-        int x = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_X_SP,0);
-        int y = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_Y_SP,200);
+        int x = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_X_SP, 0);
+        int y = QDSharedPreferences.getInstance().getInt(SquareImageMenuView_Y_SP, 200);
         return new PointF(x, y);
     }
 

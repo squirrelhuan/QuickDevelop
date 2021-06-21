@@ -16,19 +16,24 @@ import cn.demomaster.qdlogger_library.MappedByteBufferHelper;
 
 public class TestMappedByteBuffer {
     private static int length = 1024000;//1G
+
     private abstract static class Tester {
         private String name;
+
         public Tester(String name) {
             this.name = name;
         }
+
         public void runTest() {
             System.out.print(name + ": ");
             long start = System.currentTimeMillis();
             test();
-            System.out.println(System.currentTimeMillis()-start+" ms");
+            System.out.println(System.currentTimeMillis() - start + " ms");
         }
+
         public abstract void test();
     }
+
     private static Tester[] testers = {
             new Tester("Stream RW") {
                 public void test() {
@@ -39,8 +44,8 @@ public class TestMappedByteBuffer {
                                  "src/a.txt");
                          DataOutputStream dos = new DataOutputStream(fos);) {
 
-                        byte b = (byte)0;
-                        for(int i=0;i<length/2;i++) {
+                        byte b = (byte) 0;
+                        for (int i = 0; i < length / 2; i++) {
                             dos.writeBytes("A");
                         }
                         dos.flush();
@@ -55,11 +60,11 @@ public class TestMappedByteBuffer {
                 public void test() {
                     try /*(FileChannel channel = FileChannel.open(Paths.get("src/b.txt"),
                             StandardOpenOption.READ, StandardOpenOption.WRITE);)*/ {
-                        MappedByteBufferHelper.map(Paths.get("src/c.txt").toFile(),0,length);
+                        MappedByteBufferHelper.map(Paths.get("src/c.txt").toFile(), 0, length);
 
                         //MappedByteBuffer mapBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, length);
                         char b = 'B';
-                        for(int i=0;i<length/2;i++) {
+                        for (int i = 0; i < length / 2; i++) {
                             //mapBuffer.put((byte)0);
                             mapBuffer.putChar(b);
                         }
@@ -79,8 +84,8 @@ public class TestMappedByteBuffer {
                             StandardOpenOption.READ, StandardOpenOption.WRITE);) {
                         MappedByteBuffer mapBuffer = channel.map(FileChannel.MapMode.PRIVATE, 0, length);
                         char c = 'C';
-                        for(int i=0;i<length/2;i++) {
-                           // mapBuffer.put((byte)0);
+                        for (int i = 0; i < length / 2; i++) {
+                            // mapBuffer.put((byte)0);
                             mapBuffer.putChar(c);
                         }
                         mapBuffer.flip();
@@ -93,8 +98,9 @@ public class TestMappedByteBuffer {
                 }
             }
     };
+
     public static void main(String[] args) {
-        for(Tester tester:testers) {
+        for (Tester tester : testers) {
             tester.runTest();
         }
     }
@@ -103,7 +109,7 @@ public class TestMappedByteBuffer {
      * 測試前需要在src目录下新建a.txt,b.txt,c.txt
      */
     @org.junit.Test
-    public void test(){
+    public void test() {
         //System.out.println(length/1024/1024);
        /* for(Tester tester:testers) {
             tester.runTest();
@@ -111,9 +117,9 @@ public class TestMappedByteBuffer {
         String filePath = "src/c.txt";
         File file = new File(filePath);
         System.out.println(file.length());
-        MappedByteBufferHelper.MyMappedByteBuffer byteBuffer = MappedByteBufferHelper.map(Paths.get(filePath).toFile(),fileSize);
+        MappedByteBufferHelper.MyMappedByteBuffer byteBuffer = MappedByteBufferHelper.map(Paths.get(filePath).toFile(), fileSize);
         //MappedByteBuffer mapBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, length);
-        for(int i=0;i<30;i++) {
+        for (int i = 0; i < 30; i++) {
             String b = "b1234567890";
             byteBuffer.put(b.getBytes());
             String c = "\n";
@@ -140,9 +146,8 @@ public class TestMappedByteBuffer {
     }
 
 
-    private static long fileSize =100;
+    private static long fileSize = 100;
     static MappedByteBuffer mapBuffer;
-
 
 
     public void write(String s) {

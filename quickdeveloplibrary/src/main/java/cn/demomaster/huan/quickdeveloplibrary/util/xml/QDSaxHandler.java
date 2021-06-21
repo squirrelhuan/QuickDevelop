@@ -23,7 +23,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
     private List<Object> elements;//当前元素
 
     // Event handlers.
-    public QDSaxHandler(Class<T> clazz,OnParseCompleteListener onParseCompleteListener) {
+    public QDSaxHandler(Class<T> clazz, OnParseCompleteListener onParseCompleteListener) {
         super();
         mClazz = clazz;
         mOnParseCompleteListener = onParseCompleteListener;
@@ -45,7 +45,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
     @Override
     public void endDocument() {
         //QDLogger.i("解析结果：" + JSON.toJSON(targetInstance));
-        if(mOnParseCompleteListener!=null){
+        if (mOnParseCompleteListener != null) {
             mOnParseCompleteListener.onComplete(targetInstance);
         }
     }
@@ -119,7 +119,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
         //2.返回字段的数组
         Field[] fields = c.getDeclaredFields();
         for (Field field : fields) {
-           // QDLogger.i(field.getName() + "<----->" + elementName);
+            // QDLogger.i(field.getName() + "<----->" + elementName);
             if (field.getName().endsWith(elementName)) {
                 field.setAccessible(true);
                 if (field.getType() == java.lang.String.class) {//属性:String
@@ -151,10 +151,10 @@ public class QDSaxHandler<T> extends DefaultHandler {
                                 String attName = atts.getQName(i);
                                 String attValueString = atts.getValue(i);
                                 addField(newElement, attName, attValueString);
-                               // QDLogger.i(" " + attName + "=" + attValueString);
+                                // QDLogger.i(" " + attName + "=" + attValueString);
                             }
                             list.add(newElement);
-                           // QDLogger.d(JSON.toJSON(list));
+                            // QDLogger.d(JSON.toJSON(list));
                             field.set(parentElement, list);
                         } catch (Exception e) {
                             QDLogger.e(e);
@@ -226,7 +226,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
                 }
             }
 
-           return newElement;
+            return newElement;
             //QDLogger.i(field.getName() + "类型：" + field.getType());
         }
         return newElement;
@@ -279,6 +279,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
         }
         return targetObj;
     }
+
     /**
      * 添加属性
      *
@@ -292,14 +293,14 @@ public class QDSaxHandler<T> extends DefaultHandler {
         for (Field field : fields) {
             if (field.getName().equals(name)) {
                 field.setAccessible(true);
-               // QDLogger.i(field.getName() + "," + field.getType());
+                // QDLogger.i(field.getName() + "," + field.getType());
                 try {
                     field.set(targetObj, value);
                 } catch (IllegalAccessException e) {
                     QDLogger.e(e);
                 }
             }
-           // QDLogger.i(field.getName());
+            // QDLogger.i(field.getName());
         }
 
         return targetObj;

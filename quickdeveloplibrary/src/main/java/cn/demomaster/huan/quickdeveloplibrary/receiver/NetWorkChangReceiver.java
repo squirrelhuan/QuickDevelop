@@ -40,7 +40,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
         }
     }
 
-    public static interface NetStateChangedReceiver{
+    public static interface NetStateChangedReceiver {
         void onReceive(Context context, Intent intent);
     }
 
@@ -53,7 +53,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
     public static abstract class OnNetStateChangedListener implements NetWorkChangReceiver.OnNetStateChangedListenerInterFace {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+        
         }
 
     }

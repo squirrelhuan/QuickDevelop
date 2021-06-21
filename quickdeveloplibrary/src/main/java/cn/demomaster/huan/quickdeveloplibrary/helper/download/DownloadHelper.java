@@ -20,6 +20,8 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 import okhttp3.Call;
@@ -64,21 +66,13 @@ public class DownloadHelper {
     }
 
     private void pushTask(final DownloadTask downloadTask) {
-        PermissionHelper.getInstance().requestPermission(downloadTask.getContext(), PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
-            @Override
-            public void onPassed() {
-                if (downloadTask.getDownloadType() == DownloadTask.DownloadType.DownloadManager) {
-                    excute(downloadTask);//使用下载管理器进行文件下载。
-                } else {
-                    downloadFile(downloadTask);//使用okhttp方式下载
-                }
-            }
-
-            @Override
-            public void onRefused() {
-                QdToast.show(downloadTask.getContext(), "请打开相关权限！", Toast.LENGTH_SHORT);
-            }
-        });
+        if (downloadTask.getDownloadType() == DownloadTask.DownloadType.DownloadManager) {
+            QDLogger.println("使用下载管理器进行文件下载");
+            excute(downloadTask);//使用下载管理器进行文件下载。
+        } else {
+            QDLogger.println("使用okhttp方式下载");
+            downloadFile(downloadTask);//使用okhttp方式下载
+        }
     }
 
     Map<Integer, Object> taskHanderMap;
@@ -90,35 +84,16 @@ public class DownloadHelper {
      */
     public void downloadFile(DownloadTask downloadTask) {
         final long startTime = System.currentTimeMillis();
-        QDLogger.i("DOWNLOAD", "startTime=" + startTime + "，URL=" + downloadTask.getDownloadUrl());
+        QDLogger.i("DOWNLOAD", "开始下载：" + downloadTask.getDownloadUrl());
 
         //获取要下载的文件存放路径
         String download_app_folder_name = downloadTask.getDirectoryPath();
         QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
 
-        String sdpath = Environment.getExternalStorageDirectory() + "";
-        if (TextUtils.isEmpty(sdpath)) {
-            sdpath = downloadTask.getContext().getFilesDir().getAbsolutePath();
-            QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
-        }
-
         // 储存下载文件的目录
         String downloadDirectory = (download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name));
-        final String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + downloadDirectory;
-        try {
-            File dir = new File(sdpath + downloadDirectory);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            dir = new File(savePath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String downFilePath = savePath+downloadTask.getFileName();
+        QDFileUtil.createDir(downloadDirectory);
+        String downFilePath = downloadDirectory + File.separator + downloadTask.getFileName();
         downloadTask.setSavePath(downFilePath);
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(downloadTask.getDownloadUrl()).build();
@@ -136,7 +111,7 @@ public class DownloadHelper {
                     public void run() {
                         downloadTask.getOnProgressListener().onDownloadFail();
                     }
-                });//在子线程中直接去new 一个handler
+                });
             }
 
             @Override
@@ -159,7 +134,7 @@ public class DownloadHelper {
                         downloadTask.getOnProgressListener().onDownloadRunning(downloadTask.getDownloadId(), downloadTask.getFileName(), progress);
                     }
                     fos.flush();
-                    downloadTask.setDownUriStr(file.getAbsolutePath());
+                    downloadTask.setDownloadFilePath(file.getAbsolutePath());
                     QdThreadHelper.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -167,7 +142,7 @@ public class DownloadHelper {
                             downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
                         }
                     });//在子线程中直接去new 一个handler
-                    Log.i("DOWNLOAD", "download success totalTime=" + (System.currentTimeMillis() - startTime));
+                    Log.i("DOWNLOAD", "下载完成 用时：" + (System.currentTimeMillis() - startTime)+","+file.getAbsolutePath());
                 } catch (Exception e) {
                     QDLogger.e(e);
                     QdThreadHelper.runOnUiThread(new Runnable() {
@@ -175,7 +150,7 @@ public class DownloadHelper {
                         public void run() {
                             downloadTask.getOnProgressListener().onDownloadFail();
                         }
-                    });//在子线程中直接去new 一个handler
+                    });
                 } finally {
                     taskHanderMap.remove(downloadId);
                     try {
@@ -208,10 +183,7 @@ public class DownloadHelper {
             QDLogger.e("外置内存卡不存在,下载存储路径已改为：" + sdpath);
         }
         String downloadDirectory = directoryPath.startsWith(File.separator) ? directoryPath : (File.separator + directoryPath);
-        File dir = new File(sdpath + downloadDirectory);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+        QDFileUtil.createDir(sdpath + downloadDirectory);
 
         // 设置存储的目录 文件夹 文件名
         request.setDestinationInExternalPublicDir(downloadDirectory, downloadTask.getFileName());
@@ -416,7 +388,6 @@ public class DownloadHelper {
         public void cancel() {
             DownloadHelper.getInstance(context).cancelTask(downloadId);
         }
-
 
         public void unregister(Context context) {
             QDLogger.i("注销");

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
 /**
@@ -27,7 +28,8 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
         this.context = context;
         data = new ArrayList<>();
     }
-    public ComponentAdapter(Context context,int textColor) {
+
+    public ComponentAdapter(Context context, int textColor) {
         this.context = context;
         this.textColor = textColor;
         data = new ArrayList<>();
@@ -39,6 +41,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
     }
 
     private int textColor = Color.WHITE;
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu, parent, false);
@@ -47,7 +50,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBind(position,textColor);
+        holder.onBind(position, textColor);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             tv_title = itemView.findViewById(R.id.tv_title);
         }
 
-        public void onBind( final int position,int textColor) {
+        public void onBind(final int position, int textColor) {
             String clazz = data.get(position);
             tv_title.setText(clazz);
             tv_title.setTextColor(textColor);

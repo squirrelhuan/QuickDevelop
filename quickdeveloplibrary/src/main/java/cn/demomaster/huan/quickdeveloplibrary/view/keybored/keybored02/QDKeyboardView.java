@@ -62,7 +62,7 @@ public class QDKeyboardView extends KeyboardView {
         try {
             List<Keyboard.Key> keys = getKeyboard().getKeys();
             for (Keyboard.Key key : keys) {
-                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1|| key.codes[0] == -3||key.codes[0] == 66||key.codes[0] == -4)
+                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1 || key.codes[0] == -3 || key.codes[0] == 66 || key.codes[0] == -4)
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, lowDrawable);
             }
-        }else if (key.codes[0] == -3) {
+        } else if (key.codes[0] == -3) {
             hideDrawable = getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
             if (isCap) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -100,15 +100,17 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, hideDrawable);
             }
-        } if (key.codes[0] == 66||key.codes[0] == -4) {
+        }
+        if (key.codes[0] == 66 || key.codes[0] == -4) {
             //returnDrawable = getResources().getDrawable(R.drawable.ic_keyboard_return_white_24dp);
             drawKeyBackground(R.drawable.keyboard_complate2, canvas, key);
-            drawTextAndIcon(canvas, key, null,Color.WHITE);
+            drawTextAndIcon(canvas, key, null, Color.WHITE);
         }
     }
 
     /**
      * 绘制键盘背景
+     *
      * @param id
      * @param canvas
      * @param key
@@ -124,9 +126,10 @@ public class QDKeyboardView extends KeyboardView {
     }
 
     private void drawTextAndIcon(Canvas canvas, Keyboard.Key key, Drawable drawable) {
-        drawTextAndIcon(canvas,key,drawable,Color.BLACK);
+        drawTextAndIcon(canvas, key, drawable, Color.BLACK);
     }
-    private void drawTextAndIcon(Canvas canvas, Keyboard.Key key, Drawable drawable,int color) {
+
+    private void drawTextAndIcon(Canvas canvas, Keyboard.Key key, Drawable drawable, int color) {
         try {
             Rect bounds = new Rect();
             Paint paint = new Paint();
@@ -162,13 +165,15 @@ public class QDKeyboardView extends KeyboardView {
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
-                   // QDLogger.i("mKeyTextSize="+keyTextSize);
+                    // QDLogger.i("mKeyTextSize="+keyTextSize);
                 }
                 paint.getTextBounds(key.label.toString(), 0, key.label.toString().length(), bounds);
                 canvas.drawText(key.label.toString(), key.x + (key.width / 2),
                         (key.y + key.height / 2) + bounds.height() / 2, paint);
             }
-            if (drawable == null) {return;}
+            if (drawable == null) {
+                return;
+            }
             // 约定: 最终图标的宽度和高度都需要在按键的宽度和高度的二分之一以内
             // 如果: 图标的实际宽度和高度都在按键的宽度和高度的二分之一以内, 那就不需要变换, 否则就需要等比例缩小
             int iconSizeWidth, iconSizeHeight;

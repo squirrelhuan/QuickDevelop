@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,11 +12,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 
 /**
@@ -23,22 +24,22 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
  * @date 2018/11/20.
  * description：
  */
-public class RatingBar extends View {
+public class RatingBar extends androidx.appcompat.widget.AppCompatRatingBar {
 
 
     public RatingBar(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public RatingBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public RatingBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
     private int backResourceId;//背景色
@@ -88,8 +89,18 @@ public class RatingBar extends View {
         this.isFloat = isFloat;
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         setTouch();
+        if (attrs == null) {
+            return;
+        }
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyRatingBar);
+        //int srcTop = typedArray.getColor(R.styleable.MyRadioButton_srcTop, -1);
+
+        foregroundColor = typedArray.getColor(R.styleable.MyRatingBar_foregroundColor,foregroundColor);
+        backgroundColor = typedArray.getColor(R.styleable.MyRatingBar_backgroundColor,backgroundColor);
+       // srcRightDrawable = typedArray.getDrawable(R.styleable.MyRadioButton_srcRight);
+       // srcBottomDrawable = typedArray.getDrawable(R.styleable.MyRadioButton_srcBottom);
     }
 
     private int center_x, center_y, mwidth, width, height;
@@ -105,7 +116,7 @@ public class RatingBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+       // super.onDraw(canvas);
         drawView(canvas);
     }
 
@@ -180,7 +191,7 @@ public class RatingBar extends View {
         return progressInteger;
     }
 
-    public float getProgress() {
+    public float getProgressFloat() {
         return progress;
     }
 
@@ -282,10 +293,11 @@ public class RatingBar extends View {
     }
 
     private boolean canTouch;//是否可触摸改变进度
+
     public void setCanTouch(boolean canTouch) {
         this.canTouch = canTouch;
     }
-
+    
     private void setTouch() {
         this.setOnTouchListener(new OnTouchListener() {
             @Override

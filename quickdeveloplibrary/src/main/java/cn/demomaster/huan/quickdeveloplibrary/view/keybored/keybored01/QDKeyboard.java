@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -127,7 +128,7 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
+                        //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             if ((isClosed || isClosing)) {
                                 currentEditKey = v.getId();
@@ -148,7 +149,7 @@ public class QDKeyboard {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         hideSystemKeyBoard((EditText) v);
-                        QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
+                        //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
                         if (hasFocus) {
                             // 此处为得到焦点时的处理内容
                             setCurrentFocus((EditText) v);
@@ -420,14 +421,14 @@ public class QDKeyboard {
         List<Keyboard.Key> keyList = keyboardLetter.getKeys();
         if (isCapes) {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isUpCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isUpCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toLowerCase();
                     key.codes[0] += 32;
                 }
             }
         } else {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isLowCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isLowCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toUpperCase();
                     key.codes[0] -= 32;
                 }
@@ -488,15 +489,7 @@ public class QDKeyboard {
         int d = DisplayUtil.getScreenHeight(getActivityFromView( mEditText)) - y - mEditText.getHeight();
         return d > keyContainerHeight ? 0 : (int) (keyContainerHeight - d);
     }*/
-    private boolean isLowCaseLetter(String str) {
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        return letters.contains(str);
-    }
-
-    private boolean isUpCaseLetter(String str) {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return letters.contains(str);
-    }
+   
 
     public boolean isShow() {
         return isOpening || isOpened;

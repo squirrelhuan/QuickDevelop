@@ -30,11 +30,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 @ActivityPager(name = "Socket", preViewClass = TextView.class, resType = ResType.Custome)
 public class SocketFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_send_tcp)
     QDButton btn_send_tcp;
     @BindView(R.id.btn_send_connect)

@@ -7,7 +7,9 @@ import android.graphics.Paint;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.AttributeHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -97,7 +99,7 @@ public class ImageTextView extends AppCompatImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //QDLogger.e(TAG.TAG,"onMeasure");
-        if (text != null) {
+        if (!TextUtils.isEmpty(text)) {
             initPaint();
             // 文字宽
             textWidth = mPaint.measureText(text);
@@ -179,6 +181,7 @@ public class ImageTextView extends AppCompatImageView {
     }
 
     boolean showImage = true;
+
     public void setShowImage(boolean showImage) {
         this.showImage = showImage;
         postInvalidate();
@@ -227,14 +230,31 @@ public class ImageTextView extends AppCompatImageView {
         mPaint.setColor(textColor);
         mPaint.setTextSize(textSize);
     }
+    private int textGravity = Gravity.CENTER;
 
+    public void setTextGravity(int textGravity) {
+        this.textGravity = textGravity;
+        postInvalidate();
+    }
     private void drawText(Canvas canvas) {
-        int h = getHeight();
+        //int h = getHeight();
        /* // 计算Baseline绘制的起点X轴坐标
         int baseX = (int) (canvas.getWidth() / 2 - mPaint.measureText(text) / 2);
         // 计算Baseline绘制的Y坐标(有点难理解，记住)
         int baseY = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));*/
-        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + baseLineY, mPaint);
+        float x = 0;
+        float y = 0;
+        if(textGravity==Gravity.LEFT){
+            x = getPaddingLeft();
+            y = height / 2 + baseLineY;
+        }else if(textGravity==Gravity.CENTER){
+            x = width / 2 - textWidth / 2;
+            y = height / 2 + baseLineY;
+        }else if(textGravity==Gravity.RIGHT){
+            x = width / 2 - textWidth / 2;
+            y = height / 2 + baseLineY;
+        }
+        canvas.drawText(text, x, y, mPaint);
         //canvas.drawLine( 0,  height/2,  width,  height/2, mPaint);
     }
 

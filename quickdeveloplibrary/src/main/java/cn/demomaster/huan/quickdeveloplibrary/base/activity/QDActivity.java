@@ -34,11 +34,9 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
-import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
@@ -48,10 +46,9 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
 public class QDActivity extends AppCompatActivity implements QDActivityInterface {
     public static String TAG = "CGQ";
     public AppCompatActivity mContext;
-    private int headlayoutResID = R.layout.qd_activity_actionbar_common;
 
-    public int getHeadlayoutResID() {
-        return headlayoutResID;
+    public View getHeaderlayout() {
+        return View.inflate(this,R.layout.qd_activity_actionbar_common,null);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
             //actionBarLayout = getActionBarLayout(view);
             getActionBarTool().setContentView(view);
-            getActionBarTool().setActionView(getHeadlayoutResID());
+            getActionBarTool().setActionView(getHeaderlayout());
             View view1 = getActionBarTool().inflateView();
             ImageTextView imageTextView = getActionBarTool().getLeftView();
             if (imageTextView != null) {
@@ -129,9 +126,8 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         }
         //changeAppLanguage(this);
     }
-
+    
     private FragmentHelper fragmentHelper;
-
     public FragmentHelper getFragmentHelper() {
         if (fragmentHelper == null) {
             fragmentHelper = new FragmentHelper(mContext);
@@ -215,6 +211,7 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     /**
      * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
      * @param v
      * @param event
      * @return
@@ -275,11 +272,13 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
-            NetworkUtil.unRegisterNetworkStatusChangedListener(this);
-            EventBus.getDefault().unregister(this);
+        /*try {
+            NetworkUtil.unRegisterListener(this);
         } catch (Exception e) {
             QDLogger.e(e);
+        }*/
+        if(EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 
@@ -344,5 +343,4 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         QDActivityManager.destroyObject(this);
         super.finish();
     }
-
 }

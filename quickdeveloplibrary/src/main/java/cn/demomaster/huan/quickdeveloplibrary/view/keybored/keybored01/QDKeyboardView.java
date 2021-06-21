@@ -60,8 +60,8 @@ public class QDKeyboardView extends KeyboardView {
         try {
             List<Keyboard.Key> keys = getKeyboard().getKeys();
             for (Keyboard.Key key : keys) {
-                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1|| key.codes[0] == -3||key.codes[0] == 66||key.codes[0] == -4)
-                { drawSpecialKey(canvas, key);
+                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1 || key.codes[0] == -3 || key.codes[0] == 66 || key.codes[0] == -4) {
+                    drawSpecialKey(canvas, key);
                 }
             }
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, lowDrawable);
             }
-        }else if (key.codes[0] == -3) {
+        } else if (key.codes[0] == -3) {
             hideDrawable = getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
             if (isCap) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -99,7 +99,8 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, hideDrawable);
             }
-        } if (key.codes[0] == 66||key.codes[0] == -4) {
+        }
+        if (key.codes[0] == 66 || key.codes[0] == -4) {
             //returnDrawable = getResources().getDrawable(R.drawable.ic_keyboard_return_white_24dp);
             drawKeyBackground(R.drawable.keyboard_complate, canvas, key);
             drawTextAndIcon(canvas, key, null);
@@ -108,6 +109,7 @@ public class QDKeyboardView extends KeyboardView {
 
     /**
      * 绘制键盘背景
+     *
      * @param id
      * @param canvas
      * @param key
@@ -165,7 +167,7 @@ public class QDKeyboardView extends KeyboardView {
             int iconSizeWidth, iconSizeHeight;
             key.icon = drawable;
             int iconH = DisplayUtil.px2dip(getContext(), key.icon.getIntrinsicHeight());
-            int iconW = DisplayUtil.px2dip(getContext(),key.icon.getIntrinsicWidth());
+            int iconW = DisplayUtil.px2dip(getContext(), key.icon.getIntrinsicWidth());
             if (key.width >= (ICON2KEY * iconW) && key.height >= (ICON2KEY * iconH)) {
                 //图标的实际宽度和高度都在按键的宽度和高度的二分之一以内, 不需要缩放, 因为图片已经够小或者按键够大
                 setIconSize(canvas, key, iconW, iconH);

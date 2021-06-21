@@ -51,13 +51,10 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         init();
     }
 
-
-    /**
-     * itemView适配器很随意
-     */
     private HAdapter adapter;
     ViewPager viewPager;
     ViewPager.OnPageChangeListener onPageChangeListener;
+
     public void setupWithViewPager(ViewPager viewPager) {
         if (viewPager != null) {
             this.viewPager = viewPager;
@@ -90,8 +87,10 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             }
         }
     }
+
     private DataSetObserver pagerAdapterObserver;
     PagerAdapter pagerAdapter;
+
     void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
         if (pagerAdapter != null && pagerAdapterObserver != null) {
             // If we already have a PagerAdapter, unregister our observer
@@ -124,12 +123,12 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
 
         if (pagerAdapter != null) {
             final int adapterCount = pagerAdapter.getCount();
-            List<String> names =new ArrayList<>();
+            List<String> names = new ArrayList<>();
             for (int i = 0; i < adapterCount; i++) {
-               //addTab(newTab().setText(pagerAdapter.getPageTitle(i)), false);
-                names.add(pagerAdapter.getPageTitle(i)+"");
+                //addTab(newTab().setText(pagerAdapter.getPageTitle(i)), false);
+                names.add(pagerAdapter.getPageTitle(i) + "");
             }
-            if(adapter!=null) {
+            if (adapter != null) {
                 adapter.setData(names);
                 setAdapter(adapter);
             }
@@ -147,7 +146,8 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     }
 
     private class PagerAdapterObserver extends DataSetObserver {
-        PagerAdapterObserver() {}
+        PagerAdapterObserver() {
+        }
 
         @Override
         public void onChanged() {
@@ -162,15 +162,19 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
 
     public static interface HAdapter {
         void setData(List<String> data);
+
         int getCount();//获取子view个数
+
         RecyclerView.ViewHolder getItemView(int position);//获取指定index的view
-        void onSelectStateChanged(RecyclerView.ViewHolder itemView,int position,boolean isSelected);//改变选中状态
+
+        void onSelectStateChanged(RecyclerView.ViewHolder itemView, int position, boolean isSelected);//改变选中状态
     }
 
     List<RecyclerView.ViewHolder> viewHolders = new ArrayList<>();
+
     //自己组装itemView
     public void setAdapter(final HAdapter adapter) {
-        if(adapter==null){
+        if (adapter == null) {
             return;
         }
         this.adapter = adapter;
@@ -188,9 +192,9 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                     int index = (int) view.getTag();
                     if (adapter != null) {
                         //处理上一个
-                        adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+                        adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
                         //处理当前选中的
-                        adapter.onSelectStateChanged(viewHolders.get(index) ,index,true);//触发选中事件回调
+                        adapter.onSelectStateChanged(viewHolders.get(index), index, true);//触发选中事件回调
                         lastIndex = index;
                     }
                     smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
@@ -239,9 +243,9 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
 
     public void setGravity(int gravity) {
         this.gravity = gravity;
-        if(gravity==Gravity.CENTER) {
+        if (gravity == Gravity.CENTER) {
             setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
-        }else if(gravity==Gravity.LEFT){
+        } else if (gravity == Gravity.LEFT) {
             setPadding(0, getPaddingTop(), 0, getPaddingBottom());
         }
     }
@@ -254,7 +258,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
                     touchDown_X = motionEvent.getX();
                 }
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP||motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
                     if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
                         touchDown_X = motionEvent.getX();
                         handler.removeCallbacks(scrollerTask);
@@ -287,10 +291,10 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
                 last.measure(w, h);
                 int last_width = last.getMeasuredWidth();
-                if(gravity==Gravity.CENTER) {
+                if (gravity == Gravity.CENTER) {
                     paddingLeft = getWidth() / 2 - first_width / 2;
                     paddingRight = getWidth() / 2 - last_width / 2;
-                }else if(gravity==Gravity.LEFT){
+                } else if (gravity == Gravity.LEFT) {
                     paddingLeft = 0;
                     paddingRight = 0;
                 }
@@ -321,11 +325,11 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                     QDLogger.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
-                if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
+                if (adapter != null && adapter.getCount() > 0 && currentIndex < adapter.getCount()) {
                     //处理上一个
-                    adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+                    adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
                     //处理当前选中的
-                    adapter.onSelectStateChanged(viewHolders.get(index) ,index,true);//触发选中事件回调
+                    adapter.onSelectStateChanged(viewHolders.get(index), index, true);//触发选中事件回调
                     lastIndex = index;
                 }
             } else {
@@ -365,17 +369,17 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     private int offset_target;//目标位置
     private int offset_current;//当前位置
     private int currentIndex = 0;//当前选中的item的position
-    private int lastIndex=0;//上一次选中的位置
+    private int lastIndex = 0;//上一次选中的位置
 
     private void setCurrent(int currentIndex) {
         this.currentIndex = currentIndex;
-        if (adapter != null&&adapter.getCount()>0&&currentIndex<adapter.getCount()) {
+        if (adapter != null && adapter.getCount() > 0 && currentIndex < adapter.getCount()) {
             //处理上一个
-            adapter.onSelectStateChanged(viewHolders.get(lastIndex) ,lastIndex,false);//触发选中事件回调
+            adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
             //处理当前选中的
-            adapter.onSelectStateChanged(viewHolders.get(currentIndex) ,currentIndex,true);//触发选中事件回调
+            adapter.onSelectStateChanged(viewHolders.get(currentIndex), currentIndex, true);//触发选中事件回调
             lastIndex = currentIndex;
-            if(onSelectChangeListener!=null){
+            if (onSelectChangeListener != null) {
                 onSelectChangeListener.onSelectChange(currentIndex);
             }
         }
@@ -384,11 +388,11 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     public void setCurrentIndex(int currentIndex) {
         setCurrent(currentIndex);
         if (getChildCount() <= 0) {
-            return ;
+            return;
         }
         ViewGroup viewGroup = (ViewGroup) getChildAt(0);
         if (viewGroup == null || viewGroup.getChildCount() == 0) {
-            return ;
+            return;
         }
         int offset_tmp = 0;
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
@@ -397,7 +401,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
             child.measure(w, h);
             int child_width = child.getMeasuredWidth();
-            if (i ==currentIndex) {
+            if (i == currentIndex) {
                 offset_target = offset_tmp;
                 this.post(new Runnable() {
                     @Override
@@ -427,7 +431,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int child_width = child.getWidth();
 
             offset_tmp = offset_tmp + child_width;
-            if (offset_tmp >= offset_current+ viewGroup.getChildAt(0).getWidth() / 2) {
+            if (offset_tmp >= offset_current + viewGroup.getChildAt(0).getWidth() / 2) {
                 offset_target = offset_tmp - child_width / 2 - viewGroup.getChildAt(0).getWidth() / 2;
                 setCurrent(i);
                 break;
@@ -447,7 +451,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     }
 
     public static interface OnSelectChangeListener {
-        void onSelectChange( int position);
+        void onSelectChange(int position);
     }
 
     /**

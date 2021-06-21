@@ -5,8 +5,7 @@
     android:propertyName="scale"
     android:valueFrom="0f"
     android:valueTo="1f"
-    android:valueType="floatType" />
-<!--<set xmlns:Android="http://schemas.android.com/apk/res/android"
+    android:valueType="floatType" /><!--<set xmlns:Android="http://schemas.android.com/apk/res/android"
     Android:interpolator="@android:anim/decelerate_interpolator">
     &lt;!&ndash;<scale Android:fromXScale="0" Android:toXScale="1.0"
         Android:fromYScale="0" Android:toYScale="1.0"

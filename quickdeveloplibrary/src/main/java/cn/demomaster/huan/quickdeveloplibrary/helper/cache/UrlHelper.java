@@ -21,10 +21,11 @@ public class UrlHelper {
 
     /**
      * 分析url文件类型
+     *
      * @param urlString
      * @param analyResult
      */
-    public static void analyUrl(String urlString,AnalyResult analyResult){
+    public static void analyUrl(String urlString, AnalyResult analyResult) {
         //获取url类型
         QdThreadHelper.runOnSubThread(new Runnable() {
             @Override
@@ -49,15 +50,15 @@ public class UrlHelper {
                         QdThreadHelper.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(analyResult!=null){
-                                    analyResult.success(urlString,fileType,fileLength);
+                                if (analyResult != null) {
+                                    analyResult.success(urlString, fileType, fileLength);
                                 }
                             }
                         });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(analyResult!=null){
+                    if (analyResult != null) {
                         analyResult.error();
                     }
                 }
@@ -65,8 +66,9 @@ public class UrlHelper {
         });
     }
 
-    public static interface AnalyResult{
-        void success(String url,String fileType,int fileLength);
+    public static interface AnalyResult {
+        void success(String url, String fileType, int fileLength);
+
         void error();
     }
 

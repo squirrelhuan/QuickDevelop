@@ -35,10 +35,6 @@ import cn.demomaster.quickpermission_library.model.PermissionRequest;
 @ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class PermitionFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     //Components
     @BindView(R.id.btn_write_external_storage)

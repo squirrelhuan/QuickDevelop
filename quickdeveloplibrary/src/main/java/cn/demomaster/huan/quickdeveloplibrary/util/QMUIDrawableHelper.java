@@ -17,11 +17,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -155,7 +157,7 @@ public class QMUIDrawableHelper {
      */
     public static ColorFilter setDrawableTintColor(Drawable drawable, @ColorInt int tintColor) {
         LightingColorFilter colorFilter = new LightingColorFilter(Color.argb(255, 0, 0, 0), tintColor);
-        if(drawable != null){
+        if (drawable != null) {
             drawable.setColorFilter(colorFilter);
         }
         return colorFilter;
@@ -252,7 +254,7 @@ public class QMUIDrawableHelper {
         try {
             return AppCompatResources.getDrawable(context, resVector);
         } catch (Exception e) {
-            QDLogger.e(e.toString()+ "Error in getVectorDrawable. resVector=" + resVector + ", resName=" + context.getResources().getResourceName(resVector) + e.getMessage());
+            QDLogger.e(e.toString() + "Error in getVectorDrawable. resVector=" + resVector + ", resName=" + context.getResources().getResourceName(resVector) + e.getMessage());
             return null;
         }
     }

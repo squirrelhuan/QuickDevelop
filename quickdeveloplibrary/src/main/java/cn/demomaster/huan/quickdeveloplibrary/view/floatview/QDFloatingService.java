@@ -27,9 +27,11 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     private WindowManager windowManager;
     public WindowManager.LayoutParams layoutParams;
     public View contentView;
+
     public Service getInstance() {
         return this;
     }
+
     public WindowManager getWindowManager() {
         return windowManager;
     }
@@ -151,16 +153,18 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
 
     public abstract void init();
 
-    public Point getPosition(){
+    public Point getPosition() {
         layoutParams = (WindowManager.LayoutParams) contentView.getLayoutParams();
-        return new Point(layoutParams.x,layoutParams.y);
+        return new Point(layoutParams.x, layoutParams.y);
     }
-    public void setPosition(Point point){
+
+    public void setPosition(Point point) {
         layoutParams = (WindowManager.LayoutParams) contentView.getLayoutParams();
         layoutParams.x = (int) point.x;
         layoutParams.y = (int) point.y;
         contentView.setLayoutParams(layoutParams);
     }
+
     /**
      * 悬浮窗是否可以触摸
      *
@@ -224,13 +228,13 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
                             layoutParams.x = layoutParams.x + movedX;
                             layoutParams.y = layoutParams.y + movedY;
                             windowManager.updateViewLayout(targetView, layoutParams);
-                        }else if (targetView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams){
+                        } else if (targetView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                             ViewGroup.MarginLayoutParams layoutParams;
                             layoutParams = (ViewGroup.MarginLayoutParams) targetView.getLayoutParams();
                             layoutParams.leftMargin = layoutParams.leftMargin + movedX;
                             layoutParams.topMargin = layoutParams.topMargin + movedY;
                             targetView.setLayoutParams(layoutParams);
-                        }else {
+                        } else {
                             QDLogger.e("onTouch:" + targetView.getLayoutParams().getClass().getName());
                         }
                     }
@@ -261,7 +265,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
 
     private void removeView() {
         setIsShowing(false);
-        if (contentView.getParent() != null) {
+        if (contentView!=null&&contentView.getParent() != null) {
             windowManager.removeView(contentView);
         }
     }

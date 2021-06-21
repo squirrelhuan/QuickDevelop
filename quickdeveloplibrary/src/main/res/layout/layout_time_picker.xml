@@ -26,7 +26,7 @@
                 android:background="@null"
                 android:text="cancel"
                 android:textColor="#999999"
-                android:textSize="@dimen/sp_10"/>
+                android:textSize="@dimen/sp_10" />
 
             <Button
                 android:id="@+id/btn_confirm"
@@ -37,7 +37,7 @@
                 android:background="@null"
                 android:text="confirm"
                 android:textColor="#303F9F"
-                android:textSize="@dimen/sp_10"/>
+                android:textSize="@dimen/sp_10" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:textSize="25sp"
-                    app:canLoop="false"/>
+                    app:canLoop="false" />
 
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_minute"
@@ -65,7 +65,7 @@
                     android:layout_marginLeft="@dimen/dp_0_5"
                     android:layout_weight="1"
                     app:textSize="25sp"
-                    app:canLoop="false"/>
+                    app:canLoop="false" />
 
                 <cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView
                     android:id="@+id/picker_meridian"
@@ -74,7 +74,7 @@
                     android:layout_marginLeft="@dimen/dp_0_5"
                     android:layout_weight="1"
                     app:textSize="25sp"
-                    app:canLoop="false"/>
+                    app:canLoop="false" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

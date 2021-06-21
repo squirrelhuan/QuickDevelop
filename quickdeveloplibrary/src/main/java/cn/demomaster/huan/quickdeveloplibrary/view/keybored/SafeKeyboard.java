@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -81,7 +82,7 @@ public class SafeKeyboard {
     }
 
     public void removeEditText(EditText editText) {
-        if(editText==null){
+        if (editText == null) {
             return;
         }
         if (editTextList == null) {
@@ -93,12 +94,13 @@ public class SafeKeyboard {
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();
             editTextList.remove(editText);
-        }else {
+        } else {
             QDLogger.d("contains=false");
         }
     }
+
     public void addEditText(EditText editText) {
-        if(editText==null){
+        if (editText == null) {
             return;
         }
         if (editTextList == null) {
@@ -434,14 +436,14 @@ public class SafeKeyboard {
         List<Keyboard.Key> keyList = keyboardLetter.getKeys();
         if (isCapes) {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isUpCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isUpCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toLowerCase();
                     key.codes[0] += 32;
                 }
             }
         } else {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isLowCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isLowCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toUpperCase();
                     key.codes[0] -= 32;
                 }
@@ -466,15 +468,16 @@ public class SafeKeyboard {
         }
     };
 
-    public static class HideRunnable implements Runnable{
+    public static class HideRunnable implements Runnable {
         WeakReference<SafeKeyboard> safeKeyboardWeakReference;
+
         public HideRunnable(SafeKeyboard safeKeyboard) {
             safeKeyboardWeakReference = new WeakReference<>(safeKeyboard);
         }
 
         @Override
         public void run() {
-            if(safeKeyboardWeakReference!=null&&safeKeyboardWeakReference.get()!=null) {
+            if (safeKeyboardWeakReference != null && safeKeyboardWeakReference.get() != null) {
                 safeKeyboardWeakReference.get().isHideStart = false;
                 if (safeKeyboardWeakReference.get().keyContainer.getVisibility() != View.GONE) {
                     safeKeyboardWeakReference.get().keyContainer.setVisibility(View.GONE);
@@ -484,15 +487,17 @@ public class SafeKeyboard {
     }
 
     private final Runnable hideEnd = new HideRunnable(this);
-    public static class ShowRunnable implements Runnable{
+
+    public static class ShowRunnable implements Runnable {
         WeakReference<SafeKeyboard> safeKeyboardWeakReference;
+
         public ShowRunnable(SafeKeyboard safeKeyboard) {
             safeKeyboardWeakReference = new WeakReference<>(safeKeyboard);
         }
 
         @Override
         public void run() {
-            if(safeKeyboardWeakReference!=null&&safeKeyboardWeakReference.get()!=null) {
+            if (safeKeyboardWeakReference != null && safeKeyboardWeakReference.get() != null) {
                 safeKeyboardWeakReference.get().isShowStart = false;
                 // 在迅速点击不同输入框时, 造成自定义软键盘和系统软件盘不停的切换, 偶尔会出现停在使用系统键盘的输入框时, 没有隐藏
                 // 自定义软键盘的情况, 为了杜绝这个现象, 加上下面这段代码
@@ -502,22 +507,14 @@ public class SafeKeyboard {
             }
         }
     }
+
     private final Runnable showEnd = new ShowRunnable(this);
+
     private void showKeyboard() {
         keyboardView.setKeyboard(keyboardLetter);
         keyContainer.setVisibility(View.VISIBLE);
         keyContainer.clearAnimation();
         keyContainer.startAnimation(showAnimation);
-    }
-
-    private boolean isLowCaseLetter(String str) {
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        return letters.contains(str);
-    }
-
-    private boolean isUpCaseLetter(String str) {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return letters.contains(str);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -568,6 +565,7 @@ public class SafeKeyboard {
     public boolean isShow() {
         return isKeyboardShown();
     }
+
     //隐藏系统键盘关键代码
     private void hideSystemKeyBoard(EditText edit) {
         this.mEditText = edit;
@@ -606,6 +604,7 @@ public class SafeKeyboard {
     private boolean isKeyboardShown() {
         return keyContainer.getVisibility() == View.VISIBLE;
     }
+
     private boolean isValidTouch() {
         long thisTouchTime = SystemClock.elapsedRealtime();
         if (thisTouchTime - lastTouchTime > 500) {

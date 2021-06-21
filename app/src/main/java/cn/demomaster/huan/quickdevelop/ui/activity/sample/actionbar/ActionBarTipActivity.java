@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -47,7 +48,7 @@ public class ActionBarTipActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_bar_tip);
         //getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-
+        ButterKnife.bind(this);
         getActionBarTool().setHeaderBackgroundColor(Color.RED);
 
         btn_emui_halo.setOnClickListener(new View.OnClickListener() {

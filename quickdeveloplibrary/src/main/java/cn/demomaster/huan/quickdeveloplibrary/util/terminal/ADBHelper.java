@@ -150,7 +150,7 @@ public class ADBHelper {
 
     public void execute(String path, String cmd, OnReceiveListener onReceiveListener) {
         try {
-           // QDLogger.e(Tag, "path=" + path);
+            // QDLogger.e(Tag, "path=" + path);
             // Process process = Runtime.getRuntime().exec(cmd);
             if (!TextUtils.isEmpty(path)) {
                 setCurrentPath(path);

@@ -2,6 +2,7 @@
 #define NDK_GUARD_NATIVE_LIB_H
 
 #endif //NDK_GUARD_NATIVE_LIB_H
+
 #include <sys/select.h>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -21,5 +22,7 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
 void child_do_work();
+
 void child_listen_msg();
+
 int child_create_channel();

@@ -133,8 +133,8 @@ public class DebugFloating2 implements FloatView {
                     logList.clear();
                 }
                 logList.add(msg);
-                int lineNum = (tv_log.getLineCount()+1);
-                String str =lineNum + " " + msg.getTag() + " " + msg.getMessage() + " \n";
+                int lineNum = (tv_log.getLineCount() + 1);
+                String str = lineNum + " " + msg.getTag() + " " + msg.getMessage() + " \n";
 
                 SpannableStringBuilder builder = new SpannableStringBuilder(str);
                 //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
@@ -258,10 +258,10 @@ public class DebugFloating2 implements FloatView {
 
     private String getLogText(Context context) {
         StringBuffer stringBuffer = new StringBuffer();
-        int i=0;
+        int i = 0;
         for (QDLogBean QDLogBean : logList) {
-            if(tagFilter== QDLogBean.getType()||tagFilter== QDLoggerType.ALL) {
-                int lineNum =(i + 1);
+            if (tagFilter == QDLogBean.getType() || tagFilter == QDLoggerType.ALL) {
+                int lineNum = (i + 1);
                 String str = lineNum + " " + QDLogBean.getTag() + " " + QDLogBean.getMessage() + " \n";
                 SpannableStringBuilder builder = new SpannableStringBuilder(str);
                 //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色

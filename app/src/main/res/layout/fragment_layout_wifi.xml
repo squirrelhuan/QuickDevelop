@@ -23,6 +23,13 @@
                 android:layout_weight="1"
                 android:text="wifi"
                 android:textSize="@dimen/sp_14"/>
+            <TextView
+                android:id="@+id/tv_pass"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="@dimen/sp_14"/>
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
                 android:id="@+id/toggle"
                 android:layout_width="@dimen/dp_50"
@@ -30,6 +37,7 @@
         </LinearLayout>
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.layout.LoadLayout
+            android:id="@+id/loadlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView

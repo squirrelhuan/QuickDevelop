@@ -55,7 +55,7 @@ public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListen
                 } else {
                     cursorState = 0;
                 }
-            }else {
+            } else {
                 cursorState = 1;
             }
             postInvalidate();
@@ -151,6 +151,7 @@ public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListen
     PointF clickPoint;
     PointF cursorPoint;//游标坐标
     boolean isPressed = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

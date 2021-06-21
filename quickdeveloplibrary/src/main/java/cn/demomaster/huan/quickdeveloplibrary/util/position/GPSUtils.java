@@ -39,6 +39,7 @@ public class GPSUtils {
 
     /**
      * 获取经纬度
+     *
      * @return
      */
     public String getLngAndLat(OnLocationResultListener onLocationResultListener) {
@@ -68,10 +69,10 @@ public class GPSUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 QDLogger.i("no permission");
-            }else {
+            } else {
                 location = locationManager.getLastKnownLocation(locationProvider);
             }
-        }else {
+        } else {
             location = locationManager.getLastKnownLocation(locationProvider);
         }
         if (location != null) {

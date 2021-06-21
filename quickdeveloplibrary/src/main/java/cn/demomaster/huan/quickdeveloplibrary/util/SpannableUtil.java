@@ -23,51 +23,51 @@ public class SpannableUtil {
     public static void addTextView(TextView tv_content) {
     }
 
-    public static void setText(TextView tv_content, String content,SpannableFactory spannableFactory) {
+    public static void setText(TextView tv_content, String content, SpannableFactory spannableFactory) {
         //创建可扩展字符串并输入内容
         SpannableString spannableString = new SpannableString(content);
 
         //获取样式列表
         List<SpanModel> spanList = spannableFactory.getSpans(content);
         //去除重复样式
-        Map<String,SpanModel> spanModelMap_T = new LinkedHashMap<>();
-        for(SpanModel spanModel : spanList){
-            String key = spanModel.getStart()+"_"+ spanModel.getEnd();
-            if(spanModelMap_T.containsKey(key)){
-                SpanModel model1 = spanModelMap_T.put(key,spanModel);
+        Map<String, SpanModel> spanModelMap_T = new LinkedHashMap<>();
+        for (SpanModel spanModel : spanList) {
+            String key = spanModel.getStart() + "_" + spanModel.getEnd();
+            if (spanModelMap_T.containsKey(key)) {
+                SpanModel model1 = spanModelMap_T.put(key, spanModel);
                 model1.addAllSpanMap(spanModel.getSpanMap());
-                spanModelMap_T.put(key,model1);
-            }else {
-                spanModelMap_T.put(key,spanModel);
+                spanModelMap_T.put(key, model1);
+            } else {
+                spanModelMap_T.put(key, spanModel);
             }
         }
 
         List<SpanModel> spanList2 = new ArrayList<>();
-        for(Map.Entry entry :spanModelMap_T.entrySet()){
+        for (Map.Entry entry : spanModelMap_T.entrySet()) {
             spanList2.add((SpanModel) entry.getValue());
         }
         spanList = spanList2;
 
 
-        if(spanList!=null){
-            for (SpanModel model:spanList){
+        if (spanList != null) {
+            for (SpanModel model : spanList) {
                 // 一参：url对象； 二参三参：url生效的字符起始位置； 四参：模式
                 List<CharacterStyle> styleList = model.getSpans();
-                if(styleList!=null) {
+                if (styleList != null) {
                     //要先处理点击事件，再添加其他样式，否则点击样式会覆盖后面追加的文本样式
                     ClickableSpan clickableSpan = model.getClickableSpan();
-                    if(clickableSpan==null){//是否包含点击事件监听
+                    if (clickableSpan == null) {//是否包含点击事件监听
                         clickableSpan = new ClickableSpan() {
                             @Override
                             public void onClick(@NonNull View widget) {
                                 String clickText = model.getKeyText(content);
-                                spannableFactory.onClick(widget,model.getStart(), model.getEnd(),model.getFlags(),clickText);
+                                spannableFactory.onClick(widget, model.getStart(), model.getEnd(), model.getFlags(), clickText);
                             }
                         };
                     }
                     spannableString.setSpan(clickableSpan, model.getStart(), model.getEnd(), model.getFlags());
-                    for(CharacterStyle span:styleList){
-                        if(!(span instanceof ClickableSpan)){
+                    for (CharacterStyle span : styleList) {
+                        if (!(span instanceof ClickableSpan)) {
                             //QDLogger.e("添加样式："+model.getKeyText()+",start="+model.getStart()+",end="+model.getEnd());
                             spannableString.setSpan(span, model.getStart(), model.getEnd(), model.getFlags());
                         }
@@ -80,13 +80,13 @@ public class SpannableUtil {
 
         //把可扩展字符串设置到textView
         tv_content.setText(spannableString);
-        
+
         //1.识别特殊文本
         //2.获取特殊文本的样式和响应
     }
 
-    public static interface SpannableFactory{
-         List<SpanModel> getSpans(String content);
+    public static interface SpannableFactory {
+        List<SpanModel> getSpans(String content);
         // void onClick();
 
         void onClick(View widget, int start, int end, int flags, String clickText);
@@ -95,18 +95,19 @@ public class SpannableUtil {
     /**
      * 文本样式数据源
      */
-    public static class SpanModel{
+    public static class SpanModel {
         int start;
         int end;
         int flags;
         String content;//原文
         String keyText;//关键词
         //ClickableSpan
-        Map<String,CharacterStyle> spanMap = new LinkedHashMap<>();
+        Map<String, CharacterStyle> spanMap = new LinkedHashMap<>();
 
         public Map<String, CharacterStyle> getSpanMap() {
             return spanMap;
         }
+
         public void addAllSpanMap(Map<String, CharacterStyle> characterStyleMap) {
             spanMap.putAll(characterStyleMap);
         }
@@ -121,16 +122,17 @@ public class SpannableUtil {
 
         /**
          * 添加样式
+         *
          * @param span
          */
         public void addSpan(CharacterStyle span) {
-            String tag = String.format("%s_%s_%s_",start+"",end+"",flags+"")+span.getClass().getName();
+            String tag = String.format("%s_%s_%s_", start + "", end + "", flags + "") + span.getClass().getName();
             //QDLogger.e("addSpan tag="+tag);
-            spanMap.put(tag,span);
+            spanMap.put(tag, span);
         }
 
-        public SpanModel(CharacterStyle span, String content,String keyText, int flags) {
-            init(content,keyText,flags);
+        public SpanModel(CharacterStyle span, String content, String keyText, int flags) {
+            init(content, keyText, flags);
             addSpan(span);
         }
 
@@ -141,17 +143,18 @@ public class SpannableUtil {
             this.end = end;
             this.flags = flags;
         }
+
         //关键词（适用于一段文本中仅出现一次的情况）
-        public SpanModel(String content,String keyText, int flags) {
-            init(content,keyText,flags);
+        public SpanModel(String content, String keyText, int flags) {
+            init(content, keyText, flags);
         }
 
-        public void init(String content,String keyText, int flags) {
+        public void init(String content, String keyText, int flags) {
             this.content = content;
             this.keyText = keyText;
-            if(!TextUtils.isEmpty(content)&&!TextUtils.isEmpty(keyText)&&content.contains(keyText)) {
+            if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(keyText) && content.contains(keyText)) {
                 int start = content.indexOf(keyText);
-                int end = start+keyText.length();
+                int end = start + keyText.length();
                 switch (flags) {
                     case Spanned.SPAN_EXCLUSIVE_EXCLUSIVE://(前后都不包括)
                         break;
@@ -195,22 +198,22 @@ public class SpannableUtil {
             this.flags = flags;
         }
 
-        public List<CharacterStyle> getSpans(){
+        public List<CharacterStyle> getSpans() {
             List<CharacterStyle> characterStyleList = new ArrayList<>();
-            for(Map.Entry entry :spanMap.entrySet()){
+            for (Map.Entry entry : spanMap.entrySet()) {
                 characterStyleList.add((CharacterStyle) entry.getValue());
             }
             return characterStyleList;
         }
 
         public void setSpan(CharacterStyle span) {
-           // this.spans = span;
+            // this.spans = span;
         }
 
         public String getKeyText() {
-            if(keyText!=null){
+            if (keyText != null) {
                 return keyText;
-            }else {
+            } else {
                 keyText = getKeyText(content);
             }
             return keyText;
@@ -223,31 +226,32 @@ public class SpannableUtil {
         public String getKeyText(String content) {
             int start = this.start;
             int end = this.end;
-            switch (flags){
+            switch (flags) {
                 case Spanned.SPAN_EXCLUSIVE_EXCLUSIVE://(前后都不包括)
                     break;
                 case Spanned.SPAN_INCLUSIVE_EXCLUSIVE://(前面包括，后面不包括)
-                    start=Math.max(0,start-1);
+                    start = Math.max(0, start - 1);
                     break;
                 case Spanned.SPAN_EXCLUSIVE_INCLUSIVE://(前面不包括，后面包括)
-                    end=Math.min(content.length(),end+1);
+                    end = Math.min(content.length(), end + 1);
                     break;
                 case Spanned.SPAN_INCLUSIVE_INCLUSIVE://(前后都包括)
-                    start=Math.max(0,start-1);
-                    end=Math.min(content.length(),end+1);
+                    start = Math.max(0, start - 1);
+                    end = Math.min(content.length(), end + 1);
                     break;
             }
 
-            return content.substring(start,end);
+            return content.substring(start, end);
         }
 
         /**
          * 获取点击事件
+         *
          * @return
          */
         public ClickableSpan getClickableSpan() {
-            for(Map.Entry entry :spanMap.entrySet()){
-                if(entry.getValue() instanceof ClickableSpan){
+            for (Map.Entry entry : spanMap.entrySet()) {
+                if (entry.getValue() instanceof ClickableSpan) {
                     return (ClickableSpan) entry.getValue();
                 }
             }

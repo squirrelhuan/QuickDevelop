@@ -29,11 +29,6 @@ import cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored01.QDKeyboar
 @ActivityPager(name = "Keyboard2", preViewClass = TextView.class, resType = ResType.Custome)
 public class Keyboard2Fragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.et_system_none)
     EditText et_system_none;
     @BindView(R.id.et_system_number)

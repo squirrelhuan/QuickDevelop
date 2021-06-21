@@ -19,7 +19,7 @@ public class ToStringConverterFactory extends Converter.Factory {
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        if (String.class.equals(type)||Object.class.equals(type)) {
+        if (String.class.equals(type) || Object.class.equals(type)) {
             return new Converter<ResponseBody, String>() {
                 @Override
                 public String convert(ResponseBody value) throws IOException {
@@ -30,8 +30,9 @@ public class ToStringConverterFactory extends Converter.Factory {
         return null;
     }
 
-    @Override public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations,
-                                                                    Annotation[] methodAnnotations, Retrofit retrofit) {
+    @Override
+    public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations,
+                                                          Annotation[] methodAnnotations, Retrofit retrofit) {
         if (String.class.equals(type)) {
             return new Converter<String, RequestBody>() {
                 @Override

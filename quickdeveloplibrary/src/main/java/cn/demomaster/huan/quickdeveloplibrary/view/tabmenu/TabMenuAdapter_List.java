@@ -56,9 +56,9 @@ public class TabMenuAdapter_List extends BaseAdapter {
                 Log.e(TAG.DEF, "默认选中个数不能超过最大个数");
                 return;
             }
-            if (tabMenuModel.getSelectDeftData() != null ) {
-                for (int j=0 ;j< tabMenuModel.getSelectDeftData().size();j++) {
-                    if (tabMenuModel.getSelectDeftData().get(j)!=null&&item.getPosition() == tabMenuModel.getSelectDeftData().get(j)) {
+            if (tabMenuModel.getSelectDeftData() != null) {
+                for (int j = 0; j < tabMenuModel.getSelectDeftData().size(); j++) {
+                    if (tabMenuModel.getSelectDeftData().get(j) != null && item.getPosition() == tabMenuModel.getSelectDeftData().get(j)) {
                         item.setSelected(true);
                     }
                 }
@@ -106,7 +106,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
         TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
         List<Integer> current = tabMenuModel.getSelectDeftData();
         if (Arrays.asList(current).contains(position)) {//如果存在则remove
-            current.remove((Object)position);
+            current.remove((Object) position);
         } else {//如果不存在
             if (current.size() + 1 > tabMenuModel.getSelectCount()) {//判断个数是否超出，没超出则追加，超出则remove第一个
                 tabListViewItems.get(current.get(0)).setSelected(false);

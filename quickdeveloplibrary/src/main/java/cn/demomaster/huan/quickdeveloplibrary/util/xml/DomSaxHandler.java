@@ -16,10 +16,12 @@ import java.util.List;
  */
 public class DomSaxHandler<T> extends DefaultHandler {
     Context mContext;
+
     public DomSaxHandler(Context context) {
         super();
         this.mContext = context;
     }
+
     public DomSaxHandler(Context context, OnParseCompleteListener onParseCompleteListener) {
         super();
         this.mOnParseCompleteListener = onParseCompleteListener;
@@ -28,6 +30,7 @@ public class DomSaxHandler<T> extends DefaultHandler {
 
     NodeElement rootElement;
     List<NodeElement> nodeElementList;
+
     public NodeElement getRootElement() {
         return rootElement;
     }
@@ -56,7 +59,7 @@ public class DomSaxHandler<T> extends DefaultHandler {
         super.startElement(uri, localName, qName, attributes);
         //QDLogger.i("解析元素:uri="+uri+",localName="+localName+",qName=" + qName + ",attributes=" + JSON.toJSONString(attributes));
         NodeElement element = new NodeElement(uri, localName, qName, attributes);
-        if(nodeElementList.size()==0){
+        if (nodeElementList.size() == 0) {
             rootElement = element;
         }
         nodeElementList.add(element);
@@ -65,7 +68,7 @@ public class DomSaxHandler<T> extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
-        if(nodeElementList.size()>1) {
+        if (nodeElementList.size() > 1) {
             NodeElement parent = nodeElementList.get(nodeElementList.size() - 2);
             NodeElement child = nodeElementList.get(nodeElementList.size() - 1);
             parent.addNode(child);
@@ -84,9 +87,11 @@ public class DomSaxHandler<T> extends DefaultHandler {
     }
 
     private OnParseCompleteListener mOnParseCompleteListener;
+
     public void setOnParseCompleteListener(OnParseCompleteListener onParseCompleteListener) {
         this.mOnParseCompleteListener = onParseCompleteListener;
     }
+
     public static interface OnParseCompleteListener<T> {
         void onComplete(Context context, NodeElement nodeElements);
     }

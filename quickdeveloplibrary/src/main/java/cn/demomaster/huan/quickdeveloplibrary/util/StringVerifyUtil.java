@@ -13,10 +13,11 @@ public class StringVerifyUtil {
 
     /**
      * 电话号码格式校验
+     *
      * @param telephone
      * @return
      */
-    public static boolean validateTelePhone(String telephone){
+    public static boolean validateTelePhone(String telephone) {
         if (TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone)) {
             return false;
         }
@@ -25,21 +26,24 @@ public class StringVerifyUtil {
 
     /**
      * 手机号码格式校验
+     *
      * @param telephone
      * @return
      */
-    public static boolean validateMobilePhone(String telephone){
+    public static boolean validateMobilePhone(String telephone) {
         if (TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone)) {
             return false;
         }
         return true;
     }
+
     /**
      * 身份证格式校验
+     *
      * @param idNumber
      * @return
      */
-    public static boolean validateIdCard(String idNumber){
+    public static boolean validateIdCard(String idNumber) {
         if (TextUtils.isEmpty(idNumber) || !isIdCardValid(idNumber)) {
             return false;
         }
@@ -48,15 +52,28 @@ public class StringVerifyUtil {
 
     /**
      * 密码格式校验
+     *
      * @param password
      * @return
      */
-    public static boolean validatePassword(String password){
+    public static boolean validatePassword(String password) {
         if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             return false;
         }
         return true;
     }
+
+    //手机格式验证
+    public static boolean validatelength(String telephone,int min,int max) {
+       if(TextUtils.isEmpty(telephone)){
+           return false;
+       }
+       if(telephone.length()>min&&telephone.length()<max){
+           return true;
+       }
+        return false;
+    }
+
     //手机格式验证
     public static boolean isTelePhoneValid(String telephone) {
         Pattern p = Pattern.compile("^((14[0-9])|(13[0-9])|(15[0-9])|(16[0-9])|(18[0-9])|(17[0-9]))\\d{8}$");
@@ -72,7 +89,7 @@ public class StringVerifyUtil {
 
     //身份证长度判断等于18
     public static boolean isIdCardValid(String password) {
-        return password.length() ==18;
+        return password.length() == 18;
     }
 
     //手机格式验证

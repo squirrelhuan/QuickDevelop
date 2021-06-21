@@ -34,10 +34,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout;
 @ActivityPager(name = "压缩布局", preViewClass = TextView.class, resType = ResType.Custome)
 public class CompressLayoutFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.btn_left)
     Button btn_left;

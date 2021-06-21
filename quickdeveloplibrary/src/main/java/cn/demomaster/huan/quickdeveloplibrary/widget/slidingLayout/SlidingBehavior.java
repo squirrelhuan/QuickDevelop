@@ -11,7 +11,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
 
     private int mInitialOffset;
-
+    
     @Override
     public boolean onMeasureChild(@NonNull CoordinatorLayout parent, @NonNull SlidingLayout child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         QDLogger.println("onMeasureChild");
@@ -45,7 +45,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
             //layoutParams_c.topMargin = offset;
             //child.setLayoutParams(layoutParams_c);
             //child.setY();
-            QDLogger.println("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset+", top="+ child.getTop()+",y="+child.getY());
+            QDLogger.println("SlidingBehavior", child.getId() + "offsetTopAndBottom=" + offset + ", top=" + child.getTop() + ",y=" + child.getY());
         }
         mInitialOffset = child.getTop();
         QDLogger.println("SlidingBehavior", child.getId() + "mInitialOffset=" + mInitialOffset);
@@ -81,7 +81,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
     @Override
     public boolean onNestedFling(@NonNull CoordinatorLayout parent, @NonNull SlidingLayout child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
         //return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
-        int shift = scroll(child, consumed?0:(int) velocityY, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
+        int shift = scroll(child, consumed ? 0 : (int) velocityY, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
         shiftSlidings(shift, parent, child);
         return false;
     }
@@ -90,7 +90,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
     public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull SlidingLayout child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         consumed[1] = scroll(child, dy, mInitialOffset, mInitialOffset + child.getHeight() - child.getHeaderViewHeight());
         shiftSlidings(consumed[1], parent, child);
-       // super.onNestedPreScroll(parent, child, target, dx, dy, consumed, type);
+        // super.onNestedPreScroll(parent, child, target, dx, dy, consumed, type);
     }
 
     @Override
@@ -107,8 +107,8 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
             SlidingLayout current = child;
             SlidingLayout card = getPreviousChild(parent, current);
             while (card != null) {
-                int offset = getHeaderOverlap(card,current);
-                if (offset > 0){
+                int offset = getHeaderOverlap(card, current);
+                if (offset > 0) {
                     card.offsetTopAndBottom(-offset);
                     //CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) card.getLayoutParams();
                     //layoutParams_c.topMargin = -offset;
@@ -150,7 +150,7 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
     private int scroll(SlidingLayout child, int dy, int minOffset, int maxOffset) {
         //1.k控制自己的移动
         int initialOffset = child.getTop();
-        int offset = clamp(initialOffset - dy, minOffset, maxOffset)-initialOffset;
+        int offset = clamp(initialOffset - dy, minOffset, maxOffset) - initialOffset;
         child.offsetTopAndBottom(offset);
         //CoordinatorLayout.LayoutParams layoutParams_c = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
         //layoutParams_c.topMargin = offset;

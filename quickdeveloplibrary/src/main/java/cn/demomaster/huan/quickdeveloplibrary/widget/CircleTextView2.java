@@ -46,6 +46,7 @@ public class CircleTextView2 extends TextView {
         height = h;
         center_x = width / 2;
     }
+
     private boolean isRound = true;
 
     public boolean isRound() {
@@ -84,6 +85,7 @@ public class CircleTextView2 extends TextView {
     }
 
     private Drawable drawable;
+
     public void setDrawable(Drawable background) {
         this.drawable = background;
         postInvalidate();
@@ -93,17 +95,17 @@ public class CircleTextView2 extends TextView {
     protected void onDraw(Canvas canvas) {
         //this.setTextColor(textColor);
         if (isRound) {
-            int padding_l = usePadding?getPaddingLeft():0;
-            int padding_t = usePadding?getPaddingTop():0;
-            int padding_r = usePadding?getPaddingRight():0;
-            int padding_b = usePadding?getPaddingBottom():0;
+            int padding_l = usePadding ? getPaddingLeft() : 0;
+            int padding_t = usePadding ? getPaddingTop() : 0;
+            int padding_r = usePadding ? getPaddingRight() : 0;
+            int padding_b = usePadding ? getPaddingBottom() : 0;
 
             int rel_height = height - padding_t - padding_b;
             int rel_width = height - padding_l - padding_r;
-            int line_w = DisplayUtil.dp2px(getContext(),line_width);
+            int line_w = DisplayUtil.dp2px(getContext(), line_width);
 
             Path path = new Path();
-            double raduis = Math.min(getHeight(),getWidth())/2;
+            double raduis = Math.min(getHeight(), getWidth()) / 2;
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
             //path.addCircle(getWidth()/2, getHeight()/2, (float) (raduis ), Path.Direction.CCW);
@@ -113,17 +115,17 @@ public class CircleTextView2 extends TextView {
 
             paint.setStrokeWidth(line_width);
             paint.setStyle(Paint.Style.STROKE);
-            RectF rectF = new RectF(padding_l,padding_t,rel_width+padding_l,rel_height+padding_t);
-            rectF = new RectF(padding_l+line_w,padding_t+line_w,width-line_w-padding_r,height-line_w-padding_b);
-            canvas.drawRoundRect(rectF, rel_height/2, rel_height/2, paint);
+            RectF rectF = new RectF(padding_l, padding_t, rel_width + padding_l, rel_height + padding_t);
+            rectF = new RectF(padding_l + line_w, padding_t + line_w, width - line_w - padding_r, height - line_w - padding_b);
+            canvas.drawRoundRect(rectF, rel_height / 2, rel_height / 2, paint);
 
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(backgroundColor);
-            RectF rectF2 = new RectF(padding_l+line_w,padding_t+line_w,width-line_w-padding_r,height-line_w-padding_b);
-            canvas.drawRoundRect(rectF2, rel_height/2-line_w, rel_height/2-line_w, paint);
+            RectF rectF2 = new RectF(padding_l + line_w, padding_t + line_w, width - line_w - padding_r, height - line_w - padding_b);
+            canvas.drawRoundRect(rectF2, rel_height / 2 - line_w, rel_height / 2 - line_w, paint);
 
 
-            path.addRoundRect(rectF,rel_height/2, rel_height/2, Path.Direction.CCW);
+            path.addRoundRect(rectF, rel_height / 2, rel_height / 2, Path.Direction.CCW);
             //先将canvas保存
             canvas.save();
             //设置为在圆形区域内绘制
@@ -139,11 +141,11 @@ public class CircleTextView2 extends TextView {
             //drawable.draw(canvas);
            /* BitmapDrawable bd = (BitmapDrawable) drawable;
             Bitmap bm= bd.getBitmap();*/
-            int padding_l = usePadding?getPaddingLeft():0;
-            int padding_t = usePadding?getPaddingTop():0;
-            int padding_r = usePadding?getPaddingRight():0;
-            int padding_b = usePadding?getPaddingBottom():0;
-            Rect rect = new Rect(padding_l,padding_t,width-padding_r,height-padding_b);
+            int padding_l = usePadding ? getPaddingLeft() : 0;
+            int padding_t = usePadding ? getPaddingTop() : 0;
+            int padding_r = usePadding ? getPaddingRight() : 0;
+            int padding_b = usePadding ? getPaddingBottom() : 0;
+            Rect rect = new Rect(padding_l, padding_t, width - padding_r, height - padding_b);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 drawable.setTint(getTextColors().getDefaultColor());
             }

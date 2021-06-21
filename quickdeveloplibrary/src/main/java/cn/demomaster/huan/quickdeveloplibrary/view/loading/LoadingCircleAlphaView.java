@@ -57,7 +57,8 @@ public class LoadingCircleAlphaView extends View {
 
     private int pointCount = 3;
 
-    private float  progress_old;
+    private float progress_old;
+
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -65,32 +66,32 @@ public class LoadingCircleAlphaView extends View {
 
 
         //(x-a)²+(y-b)²=r²中，有三个参数a、b、r，即圆心坐标为(a，b)，只要求出a、b、r
-        int maxRadius = Math.min(width, height) ;
+        int maxRadius = Math.min(width, height);
         int index = (int) progress / (360 / pointCount);
 
         if (circlePoints.size() < pointCount) {
-            int x = (int) (Math.random() * maxRadius*3/5)+maxRadius/5+(width-maxRadius)/2;
-            int y = (int) (Math.random() * maxRadius*3/5)+maxRadius/5+(height-maxRadius)/2;
+            int x = (int) (Math.random() * maxRadius * 3 / 5) + maxRadius / 5 + (width - maxRadius) / 2;
+            int y = (int) (Math.random() * maxRadius * 3 / 5) + maxRadius / 5 + (height - maxRadius) / 2;
             circlePoints.add(index, new CirclePoint(x, y, 255, 0));
         }
 
-        for (int i =0;i< circlePoints.size();i++) {
+        for (int i = 0; i < circlePoints.size(); i++) {
             CirclePoint circlePoint = circlePoints.get(i);
             if (circlePoint.angle >= 360) {
-                int x = (int) (Math.random() * maxRadius*3/5)+maxRadius/5+(width-maxRadius)/2;
-                int y = (int) (Math.random() * maxRadius*3/5)+maxRadius/5+(height-maxRadius)/2;
+                int x = (int) (Math.random() * maxRadius * 3 / 5) + maxRadius / 5 + (width - maxRadius) / 2;
+                int y = (int) (Math.random() * maxRadius * 3 / 5) + maxRadius / 5 + (height - maxRadius) / 2;
                 circlePoints.set(i, new CirclePoint(x, y, 255, 0));
             } else {
                 float t = 0;
-                if(progress_old<progress){
-                    t = progress-progress_old;
-                }else {
-                    t= 360-progress_old+progress;
+                if (progress_old < progress) {
+                    t = progress - progress_old;
+                } else {
+                    t = 360 - progress_old + progress;
                 }
 
-                circlePoint.setAngle(circlePoint.angle+t);
-                circlePoint.setRadius(circlePoint.radius+maxRadius/3 * t / 360);
-                circlePoint.setAlpha(circlePoint.alpha - (int)(t/360f*255f));
+                circlePoint.setAngle(circlePoint.angle + t);
+                circlePoint.setRadius(circlePoint.radius + maxRadius / 3 * t / 360);
+                circlePoint.setAlpha(circlePoint.alpha - (int) (t / 360f * 255f));
                 progress_old = progress;
             }
         }
@@ -117,6 +118,7 @@ public class LoadingCircleAlphaView extends View {
     private List<CirclePoint> circlePoints = new ArrayList<>();
 
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -199,10 +201,11 @@ public class LoadingCircleAlphaView extends View {
             this.angle = angle;
         }
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

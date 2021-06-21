@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -29,10 +30,13 @@ import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_CAR;
 import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
 
-public class NetworkUtil {
+public class NetworkHelper implements OnReleaseListener {
+    Context mContext;
+    public NetworkHelper(Context context){
+        mContext = context;
+    }
     /**
      * 检查网络是否可用
-     *
      * @param context
      * @return
      */
@@ -100,8 +104,8 @@ public class NetworkUtil {
         return null;
     }
 
-    static NetWorkChangReceiver mNetWorkChangReceiver;
-    static Map<NetWorkChangReceiver.OnNetStateChangedListener, Context> mNetStateChangedListenerMap;
+    static NetWorkChangReceiver mNetWorkReceiver;
+    static Map<NetWorkChangReceiver.OnNetStateChangedListener, Integer> mListenerMap;
     private static class MyNetStateChangedListener implements NetWorkChangReceiver.NetStateChangedReceiver {
         public int netState = -400;//0不可用，1可用，-400未初始化
 
@@ -111,7 +115,7 @@ public class NetworkUtil {
             String action = intent.getAction();
             //QDLogger.e("action=" + action);
             if (!TextUtils.isEmpty(action)) {
-                String des =getActionDescription(action);
+                String des = getActionDescription(action);
 
                 switch (action) {
                     case WifiManager.WIFI_STATE_CHANGED_ACTION://数据流量状态变化
@@ -125,7 +129,7 @@ public class NetworkUtil {
                         break;
                 }
 
-                if(action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)){
+                if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                     int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                     String wifiDesc = "";
                     switch (wifiState) {
@@ -148,12 +152,11 @@ public class NetworkUtil {
                             wifiDesc = "WIFI default";
                             break;
                     }
-
-                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action+","+wifiDesc);
-                }else if(action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)){
+                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + wifiDesc);
+                } else if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
                     //int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
-                }else if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)){
-                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action+","+des);
+                } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + des);
                     ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo networkInfo = manager.getActiveNetworkInfo();
                     if (networkInfo != null) { //如果无网络连接networkInfo为null
@@ -166,7 +169,7 @@ public class NetworkUtil {
         }
 
         private String getActionDescription(String action) {
-            String des ="";
+            String des = "";
             switch (action) {
                 case WifiManager.WIFI_STATE_CHANGED_ACTION://数据流量状态变化
                     des = "2G/3G/4G网络";
@@ -182,12 +185,12 @@ public class NetworkUtil {
         }
 
         public void dispatchReceivedEvent(Context context, Intent intent) {
-                if (mNetStateChangedListenerMap != null) {
-                    for (Map.Entry entry : mNetStateChangedListenerMap.entrySet()) {
-                        NetWorkChangReceiver.OnNetStateChangedListener listener = (NetWorkChangReceiver.OnNetStateChangedListener) entry.getKey();
-                        listener.onReceive(context, intent);
-                    }
+            if (mListenerMap != null) {
+                for (Map.Entry entry : mListenerMap.entrySet()) {
+                    NetWorkChangReceiver.OnNetStateChangedListener listener = (NetWorkChangReceiver.OnNetStateChangedListener) entry.getKey();
+                    listener.onReceive(context, intent);
                 }
+            }
         }
 
         public void dispatchConnectedEvent(Context context, Intent intent) {
@@ -212,8 +215,8 @@ public class NetworkUtil {
                             break;
                     }
                     QDLogger.println("网络[连接]," + des);
-                    if (mNetStateChangedListenerMap != null) {
-                        for (Map.Entry entry : mNetStateChangedListenerMap.entrySet()) {
+                    if (mListenerMap != null) {
+                        for (Map.Entry entry : mListenerMap.entrySet()) {
                             NetWorkChangReceiver.OnNetStateChangedListener listener = (NetWorkChangReceiver.OnNetStateChangedListener) entry.getKey();
                             listener.onConnected(context, intent);
                         }
@@ -225,10 +228,10 @@ public class NetworkUtil {
         public void dispatchDisConnectedEvent(Context context, Intent intent) {
             if (netState != 0) {
                 netState = 0;
-                String des =getActionDescription(intent.getAction());
-                QDLogger.println("网络[断开],"+des);
-                if (mNetStateChangedListenerMap != null) {
-                    for (Map.Entry entry : mNetStateChangedListenerMap.entrySet()) {
+                String des = getActionDescription(intent.getAction());
+                QDLogger.println("网络[断开]," + des);
+                if (mListenerMap != null) {
+                    for (Map.Entry entry : mListenerMap.entrySet()) {
                         NetWorkChangReceiver.OnNetStateChangedListener listener = (NetWorkChangReceiver.OnNetStateChangedListener) entry.getKey();
                         listener.onDisConnected(context, intent);
                     }
@@ -237,37 +240,54 @@ public class NetworkUtil {
         }
     }
 
-    public static void registerNetworkStatusChangedListener(Context context, NetWorkChangReceiver.OnNetStateChangedListener onNetStateChangedListener) {
-        if (mNetWorkChangReceiver == null) {
-            mNetWorkChangReceiver = new NetWorkChangReceiver(new MyNetStateChangedListener());
+    public void registerListener(NetWorkChangReceiver.OnNetStateChangedListener listener) {
+        if(mContext==null||listener==null){
+            return;
+        }
+        if(mListenerMap==null){
+            mListenerMap = new HashMap<>();
+        }else {
+            if(mListenerMap.containsKey(listener)){
+                return;
+            }
+        }
+        if (mNetWorkReceiver == null) {
+            mNetWorkReceiver = new NetWorkChangReceiver(new MyNetStateChangedListener());
             IntentFilter filter = new IntentFilter();
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            mNetStateChangedListenerMap = new HashMap<>();
-            context.registerReceiver(mNetWorkChangReceiver, filter);
+            mContext.registerReceiver(mNetWorkReceiver, filter);
         }
-        mNetStateChangedListenerMap.put(onNetStateChangedListener, context);
-        QDLogger.println("add监听,hashcode:" + onNetStateChangedListener.hashCode());
+        mListenerMap.put(listener, mContext.hashCode());
+        QDLogger.println("add监听,hashcode:" + listener.hashCode());
     }
 
-    public static void unRegisterNetworkStatusChangedListener(NetWorkChangReceiver.OnNetStateChangedListener listener) {
-        //context.unregisterReceiver(mNetWorkChangReceiver);
-        if (mNetStateChangedListenerMap != null) {
-            mNetStateChangedListenerMap.remove(listener);
+    public void unRegisterListener(NetWorkChangReceiver.OnNetStateChangedListener listener) {
+        //context.unregisterReceiver(mNetWorkReceiver);
+        if (mListenerMap != null) {
+            mListenerMap.remove(listener);
         }
     }
 
-    public static void unRegisterNetworkStatusChangedListener(Context context) {
-        //context.unregisterReceiver(mNetWorkChangReceiver);
-        if (mNetStateChangedListenerMap != null) {
-            for (Map.Entry entry : mNetStateChangedListenerMap.entrySet()) {
-                NetWorkChangReceiver.OnNetStateChangedListener listener = (NetWorkChangReceiver.OnNetStateChangedListener) entry.getKey();
-                Context context1 = (Context) entry.getValue();
-                if (context == context1) {
-                    mNetStateChangedListenerMap.remove(listener);
+    public void unRegisterListener(Context context) {
+        //context.unregisterReceiver(mNetWorkReceiver);
+        if (context != null) {
+            if (mNetWorkReceiver != null) {
+                try {
+                    context.unregisterReceiver(mNetWorkReceiver);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onRelease() {
+        unRegisterListener(mContext);
+        if(mListenerMap!=null){
+            mListenerMap.clear();
         }
     }
 }

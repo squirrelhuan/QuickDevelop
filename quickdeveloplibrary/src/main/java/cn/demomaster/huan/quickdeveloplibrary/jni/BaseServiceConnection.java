@@ -30,6 +30,6 @@ public class BaseServiceConnection implements ServiceConnection {
     public void onServiceDisconnected(ComponentName className) {
         if (mCallback != null)
             mCallback.onServiceDisconnected(className);
-            ServiceHelper.mService = null;
+        ServiceHelper.mService = null;
     }
 }

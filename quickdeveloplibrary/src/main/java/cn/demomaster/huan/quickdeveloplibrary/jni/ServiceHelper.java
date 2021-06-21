@@ -23,7 +23,7 @@ public class ServiceHelper {
     /**
      * @return
      */
-    public static ServiceToken bindToService(Activity realActivity, Class service,ServiceConnection callback){
+    public static ServiceToken bindToService(Activity realActivity, Class service, ServiceConnection callback) {
         ContextWrapper cw = new ContextWrapper(realActivity);
         //cw.startForegroundService(new Intent(cw, service))
         //cw.startService(new Intent(cw, service));
@@ -45,8 +45,8 @@ public class ServiceHelper {
      * @param context
      * @return
      */
-    public static ServiceToken bindToService(Activity context,Class service) {
-        return bindToService(context,service, null);
+    public static ServiceToken bindToService(Activity context, Class service) {
+        return bindToService(context, service, null);
     }
 
 

@@ -41,6 +41,7 @@ public class LoadingTengxuntvView extends View {
     }
 
     private boolean isPlaying = false;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -56,34 +57,37 @@ public class LoadingTengxuntvView extends View {
         //QDLogger.e("dispatchDraw LoadingTengxuntvView");
     }
 
-    private float maxHeight=.4f;
+    private float maxHeight = .4f;
     private float maxWidth = .16f;
-    private int childCount =3;
-    private int[] colors ={Color.GREEN,Color.YELLOW,Color.RED};
+    private int childCount = 3;
+    private int[] colors = {Color.GREEN, Color.YELLOW, Color.RED};
+
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        for(int i=0;i<childCount;i++){
-            float progress_c = Math.abs(progress-(float)(i+1)/(childCount));
-            progress_c = progress_c>1?1-(progress_c-1):progress_c;
-            float left = width/(childCount+1)*(i+1) - width*maxWidth*progress_c/2f;
-            float right = left + progress_c*maxWidth*width;
-            float top = (float) (height*(0.5-maxHeight*progress_c/2f));
-            float bottom = top+height*maxHeight*progress_c;
-            RectF rectF = new RectF(left,top,right,bottom);
-            float x = (left+right)/2;
-            float y = (top+bottom)/2;
+        for (int i = 0; i < childCount; i++) {
+            float progress_c = Math.abs(progress - (float) (i + 1) / (childCount));
+            progress_c = progress_c > 1 ? 1 - (progress_c - 1) : progress_c;
+            float left = width / (childCount + 1) * (i + 1) - width * maxWidth * progress_c / 2f;
+            float right = left + progress_c * maxWidth * width;
+            float top = (float) (height * (0.5 - maxHeight * progress_c / 2f));
+            float bottom = top + height * maxHeight * progress_c;
+            RectF rectF = new RectF(left, top, right, bottom);
+            float x = (left + right) / 2;
+            float y = (top + bottom) / 2;
             mPaint.setColor(colors[i]);
-            
+
             canvas.save();
-            canvas.rotate(15,x,y);
-            canvas.drawRoundRect(rectF,5,5,mPaint);
+            canvas.rotate(15, x, y);
+            canvas.drawRoundRect(rectF, 5, 5, mPaint);
             canvas.restore();
             //canvas.drawCircle(0,0,59,mPaint);
         }
     }
+
     ValueAnimator animator;
     private float progress;
+
     public void startAnimation() {
         isPlaying = true;
         float end = 2f;
@@ -105,10 +109,11 @@ public class LoadingTengxuntvView extends View {
         animator.setInterpolator(new LinearInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

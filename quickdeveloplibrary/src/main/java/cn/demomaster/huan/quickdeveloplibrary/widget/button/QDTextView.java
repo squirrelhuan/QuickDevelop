@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.os.Build;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.util.AttributeSet;
 import android.util.TypedValue;
 

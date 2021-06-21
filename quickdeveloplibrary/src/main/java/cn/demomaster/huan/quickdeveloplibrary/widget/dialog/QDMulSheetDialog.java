@@ -39,6 +39,7 @@ public class QDMulSheetDialog extends QDDialog2 {
     private OnDialogActionListener onDialogActionListener;
     private int gravity;
     private int boxColor;
+
     public QDMulSheetDialog(Context context, Builder builder) {
         super(context);
         data = builder.data;
@@ -86,7 +87,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         }
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity =gravity;
+        layoutParams.gravity = gravity;
 
         RecyclerView recyclerView = new RecyclerView(getContext());
         recyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
@@ -105,7 +106,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                onDialogActionListener.onItemClick(QDMulSheetDialog.this,position,data);
+                onDialogActionListener.onItemClick(QDMulSheetDialog.this, position, data);
             }
         });
 
@@ -113,14 +114,14 @@ public class QDMulSheetDialog extends QDDialog2 {
         RelativeLayout relativeLayout = new RelativeLayout(getContext());
         //relativeLayout.setBackgroundColor(boxColor);
         QDividerDrawable drawable_bg = new QDividerDrawable(DividerGravity.NONE);
-        float c = DisplayUtil.dip2px(getContext(),20);
-        drawable_bg.setCornerRadii(new float[]{c,c,c,c,0,0,0,0});
+        float c = DisplayUtil.dip2px(getContext(), 20);
+        drawable_bg.setCornerRadii(new float[]{c, c, c, c, 0, 0, 0, 0});
         drawable_bg.setBackGroundColor(boxColor);
         relativeLayout.setBackground(drawable_bg);
-        relativeLayout.addView(recyclerView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        relativeLayout.addView(recyclerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setContentView(relativeLayout, layoutParams);
 
-        setPanelMaginTop(DisplayUtil.getStatusBarHeight(getContext())+DisplayUtil.getActionBarHeight(getContext()));
+        setPanelMaginTop(DisplayUtil.getStatusBarHeight(getContext()) + DisplayUtil.getActionBarHeight(getContext()));
     }
 
     public static enum ShowType {
@@ -221,7 +222,7 @@ public class QDMulSheetDialog extends QDDialog2 {
     }
 
     public static interface OnDialogActionListener {
-          void onItemClick(QDMulSheetDialog dialog, int position, List<String> data);
+        void onItemClick(QDMulSheetDialog dialog, int position, List<String> data);
     }
 
     public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
@@ -255,10 +256,10 @@ public class QDMulSheetDialog extends QDDialog2 {
             vhItem.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   int position = vhItem.getAdapterPosition();
-                   if(onItemClickListener!=null){
-                       onItemClickListener.onItemClick(v,position);
-                   }
+                    int position = vhItem.getAdapterPosition();
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(v, position);
+                    }
                 }
             });
             vhItem.onbind(i);
@@ -271,6 +272,7 @@ public class QDMulSheetDialog extends QDDialog2 {
 
         public class VHItem extends RecyclerView.ViewHolder {
             QDTextView textView;
+
             public VHItem(@NonNull View itemView) {
                 super(itemView);
                 textView = new QDTextView(itemView.getContext());
@@ -285,8 +287,9 @@ public class QDMulSheetDialog extends QDDialog2 {
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 ((ViewGroup) itemView).addView(textView, layoutParams);
             }
-            public void onbind(int position){
-                textView.setText(data.get(position)+"");
+
+            public void onbind(int position) {
+                textView.setText(data.get(position) + "");
             }
         }
     }

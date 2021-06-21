@@ -6,8 +6,15 @@ import java.lang.annotation.Annotation;
 
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
+import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 
 public class BaseActivity extends QDActivity {
+
+    @Override
+    public void initContentView() {
+        super.initContentView();
+        QuickStickerBinder.getInstance().bind(this);
+    }
 
     public String getTitleFromAnnotation(){
         Annotation[] annotations = getClass().getAnnotations();

@@ -17,6 +17,7 @@ import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
+import cn.demomaster.quicksticker_annotations.BindView;
 
 @ActivityPager(name = "导航栏", preViewClass = TextView.class, resType = ResType.Custome)
 public class ActionBarActivity extends BaseActivity implements View.OnClickListener {
@@ -25,7 +26,16 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
     private RadioGroup rg_action, rg_action_color;
     private SeekBar sb_color;
 
-    Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
+    @BindView(R.id.btn_ac_01)
+    Button btn_ac_01;
+    @BindView(R.id.btn_ac_02)
+    Button btn_ac_02;
+    @BindView(R.id.btn_ac_03)
+    Button btn_ac_03;
+    @BindView(R.id.btn_ac_04)
+    Button btn_ac_04;
+    @BindView(R.id.btn_ac_05)
+    Button btn_ac_05;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +65,6 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
                     case R.id.rb_05:
                         ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
                         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
-                        break;
-                    case R.id.rb_06:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_TRANSPARENT+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                         break;
                     case R.id.rb_07:
                         ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_STATUS+"");
@@ -116,21 +122,13 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        btn_ac_01 = findViewById(R.id.btn_ac_01);
         btn_ac_01.setOnClickListener(this);
 
-        btn_ac_02 = findViewById(R.id.btn_ac_02);
         btn_ac_02.setOnClickListener(this);
 
-
-        btn_ac_03 = findViewById(R.id.btn_ac_03);
         btn_ac_03.setOnClickListener(this);
-        btn_ac_04 = findViewById(R.id.btn_ac_04);
         btn_ac_04.setOnClickListener(this);
-        btn_ac_05 = findViewById(R.id.btn_ac_05);
         btn_ac_05.setOnClickListener(this);
-        btn_ac_06 = findViewById(R.id.btn_ac_06);
-        btn_ac_06.setOnClickListener(this);
 
         findViewById(R.id.btn_color_black).setOnClickListener(this);
         findViewById(R.id.btn_color_red).setOnClickListener(this);
@@ -147,7 +145,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
             }
         });
         //getActionBarTool().getActionBarTip().setActionBarState();
-        getActionBarTool().setTitle("导航栏");
+        setTitle("导航栏");
     }
 
     @Override
@@ -167,9 +165,6 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.btn_ac_05:
                 getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-                break;
-            case R.id.btn_ac_06:
-                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
                 /*getActionBarToolOld().setBackGroundColor(getResources().getColor(R.color.black));

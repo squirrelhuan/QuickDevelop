@@ -45,15 +45,15 @@ public class QDTcpServer {
         try {
             serverAddress = InetAddress.getByName(serverIP);
             server = new ServerSocket(serverPort, 10, serverAddress);
-            QDLogger.println("QDTcpServer 初始化成功，端口号："+serverPort);
+            QDLogger.println("QDTcpServer 初始化成功，端口号：" + serverPort);
         } catch (BindException e) {
             QDLogger.e(e);
             //随机生成端口
-            QDLogger.println("QDTcpServer 端口号占用："+serverPort);
-            if(serverPort < 65535){
-                serverPort+=1;
-            }else {
-                serverPort=0;
+            QDLogger.println("QDTcpServer 端口号占用：" + serverPort);
+            if (serverPort < 65535) {
+                serverPort += 1;
+            } else {
+                serverPort = 0;
             }
             initConnect();
         } catch (UnknownHostException e) {
@@ -84,7 +84,7 @@ public class QDTcpServer {
             QDLogger.e(e);
         } catch (IOException e) {
             QDLogger.e(e);
-        }catch (Exception e) {
+        } catch (Exception e) {
             QDLogger.e(e);
         }
     }

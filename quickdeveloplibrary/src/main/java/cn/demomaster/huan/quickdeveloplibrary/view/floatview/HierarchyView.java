@@ -207,50 +207,52 @@ public class HierarchyView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
     }
+
     ViewNodeInfo viewNodeInfo;
 
     /**
      * 设置选中的控件
+     *
      * @param accessibilityNodeInfo
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
-        generateViewNode(null,accessibilityNodeInfo);
+        generateViewNode(null, accessibilityNodeInfo);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void generateViewNode(ViewNodeInfo parent, AccessibilityNodeInfo accessibilityNodeInfo) {
-        if(accessibilityNodeInfo!=null){
-            if(parent==null) {
+        if (accessibilityNodeInfo != null) {
+            if (parent == null) {
                 parent = new ViewNodeInfo();
                 parent.setClassName(accessibilityNodeInfo.getClassName().toString());
                 parent.setPackageName(accessibilityNodeInfo.getPackageName().toString());
                 parent.setViewIdResourceName(accessibilityNodeInfo.getViewIdResourceName());
                 parent.setClickable(accessibilityNodeInfo.isClickable());
                 parent.setEnabled(accessibilityNodeInfo.isEnabled());
-                parent.setText(accessibilityNodeInfo.getText()+"");
-                parent.setContentDescription(accessibilityNodeInfo.getContentDescription()==null?null:accessibilityNodeInfo.getContentDescription().toString());
-                Rect rect =new Rect();
+                parent.setText(accessibilityNodeInfo.getText() + "");
+                parent.setContentDescription(accessibilityNodeInfo.getContentDescription() == null ? null : accessibilityNodeInfo.getContentDescription().toString());
+                Rect rect = new Rect();
                 accessibilityNodeInfo.getBoundsInScreen(rect);
                 parent.setBoundsInScreen(rect);
-                Rect rect2 =new Rect();
+                Rect rect2 = new Rect();
                 accessibilityNodeInfo.getBoundsInParent(rect2);
                 parent.setBoundsInParent(rect2);
                 viewNodeInfo = parent;
             }
 
-            for(int i = 0;i<accessibilityNodeInfo.getChildCount();i++){
+            for (int i = 0; i < accessibilityNodeInfo.getChildCount(); i++) {
                 AccessibilityNodeInfo child = accessibilityNodeInfo.getChild(i);
-                QDLogger.e("i="+i+",child="+child);
-                if(child!=null) {
+                QDLogger.e("i=" + i + ",child=" + child);
+                if (child != null) {
                     ViewNodeInfo viewNodeInfo1 = new ViewNodeInfo();
                     viewNodeInfo1.setClassName(TextUtils.isEmpty(child.getClassName()) ? null : child.getClassName().toString());
                     viewNodeInfo1.setPackageName(TextUtils.isEmpty(child.getPackageName()) ? null : child.getPackageName().toString());
                     viewNodeInfo1.setViewIdResourceName(child.getViewIdResourceName());
                     viewNodeInfo1.setClickable(child.isClickable());
                     viewNodeInfo1.setEnabled(child.isEnabled());
-                    viewNodeInfo1.setText(child.getText()+"");
-                    viewNodeInfo1.setContentDescription(child.getContentDescription()==null?null:child.getContentDescription().toString());
+                    viewNodeInfo1.setText(child.getText() + "");
+                    viewNodeInfo1.setContentDescription(child.getContentDescription() == null ? null : child.getContentDescription().toString());
                     Rect rect = new Rect();
                     child.getBoundsInScreen(rect);
                     viewNodeInfo1.setBoundsInScreen(rect);
@@ -279,6 +281,7 @@ public class HierarchyView extends View {
         Rect mBoundsInScreen;
         Rect mBoundsInParent;
         List<ViewNodeInfo> childList = new ArrayList<>();
+
         public String getClassName() {
             return mClassName;
         }
@@ -291,13 +294,14 @@ public class HierarchyView extends View {
             childList.add(viewNodeInfo1);
         }
 
-        public int getChildCount(){
+        public int getChildCount() {
             return childList.size();
         }
 
         public ViewNodeInfo getChild(int i) {
             return childList.get(i);
         }
+
         public void getBoundsInScreen(Rect rect) {
             rect.set(mBoundsInScreen.left, mBoundsInScreen.top,
                     mBoundsInScreen.right, mBoundsInScreen.bottom);
@@ -357,7 +361,9 @@ public class HierarchyView extends View {
         public void setBoundsInParent(Rect boundsInParent) {
             this.mBoundsInParent = boundsInParent;
         }
+
         ViewNodeInfo parent;
+
         public void setParent(ViewNodeInfo viewNodeInfo) {
             this.parent = viewNodeInfo;
         }

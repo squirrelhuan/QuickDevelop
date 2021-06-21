@@ -54,32 +54,33 @@ public class LoadingDownLoadView extends View {
 
     boolean isDrawed;
     private int lineWidth = 30;
+
     private void drawView(Canvas canvas) {
         //QDLogger.e("progress="+progress+"");
         // canvas.rotate(progress, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
         //canvas.drawColor(Color.BLACK);
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        float currentY = progress*height*2-height;
-        canvas.translate(0,currentY);
+        float currentY = progress * height * 2 - height;
+        canvas.translate(0, currentY);
 
         if (!isDrawed) {
             mPaint.setColor(Color.BLACK);
-            canvas.drawCircle(center_x,-currentY+height/2,width/2,mPaint);
+            canvas.drawCircle(center_x, -currentY + height / 2, width / 2, mPaint);
             Path path1 = new Path();
-            path1.addRoundRect(new RectF(0,0,width,height),center_x, center_y, Path.Direction.CCW);
+            path1.addRoundRect(new RectF(0, 0, width, height), center_x, center_y, Path.Direction.CCW);
             canvas.clipPath(path1);
             mPaint.setColor(Color.RED);
             Path path = new Path();
-            path.moveTo(center_x-lineWidth/2,0);
-            path.lineTo(center_x+lineWidth/2,0);
-            path.lineTo(center_x+lineWidth/2,height-lineWidth*3/2);
-            path.lineTo(center_x+lineWidth*4/3,height-lineWidth*3/2);
-            path.lineTo(center_x,height);
-            path.lineTo(center_x-lineWidth*4/3,height-lineWidth*3/2);
-            path.lineTo(center_x-lineWidth/2,height-lineWidth*3/2);
-            path.lineTo(center_x-lineWidth/2,0);
-            canvas.drawPath(path,mPaint);
+            path.moveTo(center_x - lineWidth / 2, 0);
+            path.lineTo(center_x + lineWidth / 2, 0);
+            path.lineTo(center_x + lineWidth / 2, height - lineWidth * 3 / 2);
+            path.lineTo(center_x + lineWidth * 4 / 3, height - lineWidth * 3 / 2);
+            path.lineTo(center_x, height);
+            path.lineTo(center_x - lineWidth * 4 / 3, height - lineWidth * 3 / 2);
+            path.lineTo(center_x - lineWidth / 2, height - lineWidth * 3 / 2);
+            path.lineTo(center_x - lineWidth / 2, 0);
+            canvas.drawPath(path, mPaint);
         }
 
     }
@@ -87,6 +88,7 @@ public class LoadingDownLoadView extends View {
     private float progress;
     private boolean isForward = true;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final float end = 1f;
@@ -112,10 +114,11 @@ public class LoadingDownLoadView extends View {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

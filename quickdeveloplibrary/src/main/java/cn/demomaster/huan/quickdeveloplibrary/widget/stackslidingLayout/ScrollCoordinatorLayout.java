@@ -162,6 +162,7 @@ public class ScrollCoordinatorLayout extends CoordinatorLayout {
         return true;
 
     }
+
     private void resetTouch() {
         if (mVelocityTracker != null) {
             mVelocityTracker.clear();

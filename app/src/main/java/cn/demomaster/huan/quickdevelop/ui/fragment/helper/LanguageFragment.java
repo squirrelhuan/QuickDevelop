@@ -34,10 +34,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
 @ActivityPager(name = "多语言", preViewClass = TextView.class, resType = ResType.Custome)
 public class LanguageFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;

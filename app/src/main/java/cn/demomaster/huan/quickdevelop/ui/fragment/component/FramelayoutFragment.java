@@ -41,11 +41,6 @@ public class FramelayoutFragment extends BaseFragment {
     @BindView(R.id.btn_show)
     TextView btn_show;
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

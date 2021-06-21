@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/transparent_dark_55"/>
+    <solid android:color="@color/transparent_dark_55" />
 
     <!--corners标签: 圆角-->
     <!--bottomLeftRadius 左下角-->
@@ -9,8 +9,7 @@
     <!--topLeftRadius 左上角-->
     <!--topRightRadius 右上角-->
     <!--radius 是四个角, 设置了这个就不需要设置上面的四个了, PS:它的优先级比较低, 会被其他参数覆盖-->
-    <corners
-        android:radius="100dip"/>
+    <corners android:radius="100dip" />
 
     <!--stroke标签: 边框-->
     <!--width 边框的宽度-->
@@ -22,5 +21,5 @@
         android:width="@dimen/dp_0"
         android:color="@color/black"
         android:dashGap="0dip"
-        android:dashWidth="0dip"/>
+        android:dashWidth="0dip" />
 </shape>

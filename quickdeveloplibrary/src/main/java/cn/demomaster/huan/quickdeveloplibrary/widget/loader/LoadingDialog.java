@@ -46,7 +46,8 @@ public class LoadingDialog extends Dialog {
             this.contentView = v;
             return this;
         }
-        public Builder setCanTouch(Boolean canTouch){
+
+        public Builder setCanTouch(Boolean canTouch) {
             this.canTouch = canTouch;
             return this;
         }
@@ -55,7 +56,7 @@ public class LoadingDialog extends Dialog {
             if (contentView == null) {//默认loading视图
                 contentView = inflater.inflate(R.layout.layout_dialog_loading_default, null);
                 if (message != null) {
-                    ((TextView)contentView.findViewById(R.id.tv_message)).setText(message);
+                    ((TextView) contentView.findViewById(R.id.tv_message)).setText(message);
                     showType = 1;
                 }
                 switch (showType) {

@@ -11,6 +11,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class DownLoadBroadcast extends BroadcastReceiver {
     private DownloadManager downloadManager;
     private DownloadHelper.OnDownloadStateChangeListener onDownloadStateChangeListener;
+
     public DownLoadBroadcast(DownloadHelper.OnDownloadStateChangeListener onDownloadStateChangeListener) {
         this.onDownloadStateChangeListener = onDownloadStateChangeListener;
     }
@@ -25,7 +26,7 @@ public class DownLoadBroadcast extends BroadcastReceiver {
                     Uri downIdUri = downloadManager.getUriForDownloadedFile(downId);
                     if (downIdUri != null) {
                         //QDLogger.i("下载完成，存储路径为 ：" + downIdUri.getPath());
-                        onDownloadStateChangeListener.onComplete(downId,downIdUri);
+                        onDownloadStateChangeListener.onComplete(downId, downIdUri);
                            /* if (listenerMap.containsKey(downId)) {
                                 OnDownloadProgressListener listener = listenerMap.get(downId);
                                 listener.onProgress(downId, listener.fileName, 1);

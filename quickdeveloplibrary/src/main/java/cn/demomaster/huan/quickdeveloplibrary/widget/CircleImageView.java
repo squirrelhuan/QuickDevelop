@@ -43,11 +43,10 @@ public class CircleImageView extends AppCompatImageView {
 
     int circle_background_padding;//是否对背景圆角处理
     int circle_background_color;
-
     private void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleImageView);
-            circle_background_padding = a.getInt(R.styleable.CircleImageView_circle_background_padding, 0);
+            circle_background_padding = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_background_padding, 0);
             circle_background_color = a.getColor(R.styleable.CircleImageView_circle_background_color, Color.TRANSPARENT);
             a.recycle();
         }
@@ -60,15 +59,17 @@ public class CircleImageView extends AppCompatImageView {
     protected void onDraw(Canvas canvas) {
         if (isRound) {
             Path path = new Path();
-            double raduis = Math.min(getHeight(), getWidth()) / 2;
+            float raduis = (Math.min(getHeight(), getWidth())-circle_background_padding)/2;
+            int centerX = getWidth() / 2;
+            int centerY = getHeight() / 2;
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
-            path.addCircle(getWidth() / 2, getHeight() / 2, (float) (raduis), Path.Direction.CCW);
+            path.addCircle(centerX, centerY, (float) (raduis), Path.Direction.CCW);
             if (circle_background_color != Color.TRANSPARENT) {
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setColor(circle_background_color);
-                canvas.drawCircle(getWidth() / 2, getHeight() / 2, Math.min(getWidth(), getHeight()) / 2, paint);
+                canvas.drawCircle(centerX, centerY, raduis, paint);
             }
             //先将canvas保存
             canvas.save();
@@ -83,6 +84,4 @@ public class CircleImageView extends AppCompatImageView {
             super.onDraw(canvas);
         }
     }
-
-
 }

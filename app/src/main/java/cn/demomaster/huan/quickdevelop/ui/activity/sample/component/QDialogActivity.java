@@ -139,7 +139,7 @@ public class QDialogActivity extends BaseActivity {
                 .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
                 .addAction("连接", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         Toast.makeText(mContext, "input = " + tag, Toast.LENGTH_SHORT).show();
                         //连接返回editview的value
                     }
@@ -168,7 +168,7 @@ public class QDialogActivity extends BaseActivity {
                         showSheetMenu();
                         break;
                     case 1:
-                        getPhotoHelper().selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                        getPhotoHelper().selectPhotoFromGalleryAndCrop(null,new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 /*setImageToView(data);*/
@@ -229,26 +229,23 @@ public class QDialogActivity extends BaseActivity {
         qdDialog.getContentLinearView().setLayoutAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                QDLogger.e("setLayoutAnimationListener onAnimationStart");
-
+                QDLogger.println("setLayoutAnimationListener onAnimationStart");
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                QDLogger.e("setLayoutAnimationListener onAnimationEnd");
+                QDLogger.println("setLayoutAnimationListener onAnimationEnd");
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                QDLogger.e("setLayoutAnimationListener onAnimationRepeat");
-
+                QDLogger.println("setLayoutAnimationListener onAnimationRepeat");
             }
         });
         qdDialog.getContentView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-
-                QDLogger.e("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom);
+                QDLogger.println("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom);
             }
         });
 
@@ -266,7 +263,7 @@ public class QDialogActivity extends BaseActivity {
                 .setBackgroundRadius(backgroundRadio)
                 .addAction("确定", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         dialog.dismiss();
                     }
                 }).addAction("取消").setGravity_foot(gravity).create().show();
@@ -274,7 +271,9 @@ public class QDialogActivity extends BaseActivity {
 
     private void showMenuDialog() {
         String[] menus = {"item1", "item2", "item3"};
-        new QDSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
+        new QDSheetDialog.MenuBuilder(mContext)
+                .setData(menus)
+                .setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();

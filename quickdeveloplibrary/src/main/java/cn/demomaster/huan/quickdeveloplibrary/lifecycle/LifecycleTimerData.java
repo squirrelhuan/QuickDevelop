@@ -13,19 +13,22 @@ public class LifecycleTimerData {
         }
         return instance;
     }*/
-    
-    int maxLength=1000;
-    public LifecycleTimerData(int maxLength){
+
+    int maxLength = 1000;
+
+    public LifecycleTimerData(int maxLength) {
         this.maxLength = maxLength;
     }
-    public LifecycleTimerData(){
-        
+
+    public LifecycleTimerData() {
+
     }
-    
+
 
     LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> linePointsMap = new LinkedHashMap();
-    public void addLifecycleEvent(Object object,LifeCycleEvent lifeCycleEvent){
-        if(linePointsMap.size()>maxLength){
+
+    public void addLifecycleEvent(Object object, LifeCycleEvent lifeCycleEvent) {
+        if (linePointsMap.size() > maxLength) {
             linePointsMap.clear();
         }
         List<LifeCycleEvent> lifeCycleEventList = new ArrayList<>();
@@ -34,11 +37,11 @@ public class LifecycleTimerData {
         cycleClassInfo.setClazz(object.getClass());
         cycleClassInfo.setClazzHashCode(object.hashCode());
         cycleClassInfo.setCreatTime(System.currentTimeMillis());
-        if(linePointsMap.containsKey(cycleClassInfo)){
+        if (linePointsMap.containsKey(cycleClassInfo)) {
             lifeCycleEventList = linePointsMap.get(cycleClassInfo);
         }
         lifeCycleEventList.add(lifeCycleEvent);
-        linePointsMap.put(cycleClassInfo,lifeCycleEventList);
+        linePointsMap.put(cycleClassInfo, lifeCycleEventList);
     }
 
     public LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> getLinePointsMap() {

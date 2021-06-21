@@ -16,6 +16,9 @@
     <string name="minute">分</string>
     <string name="second">秒</string>
 
+
+    <string name="send">发送</string>
+    <string name="image_selector">图片选择器</string>
     <string name="image">图片</string>
     <string name="confirm">确定</string>
     <string name="preview">预览</string>
@@ -39,5 +42,6 @@
     <string name="keyboard_demo_new">"安全软键盘"</string>
     <string name="mLabelTextSize">mLabelTextSize</string>
 
-
+    <string name="retry">重试</string>
+    <string name="click_retry">点击重试</string>
 </resources>

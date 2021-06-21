@@ -45,11 +45,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
 @ActivityPager(name = "文件压缩", preViewClass = StateView.class, resType = ResType.Custome)
 public class ZipFileFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_search)
     QDButton btn_search;
     @BindView(R.id.btn_delete)

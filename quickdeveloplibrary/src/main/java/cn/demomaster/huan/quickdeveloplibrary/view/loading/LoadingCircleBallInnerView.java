@@ -74,10 +74,10 @@ public class LoadingCircleBallInnerView extends View {
 
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAlpha((int) (255 * .7f));
-        PointF p = getPointByAngle(a, b, r*2/3, progress);
-        Shader mShader = new LinearGradient(p.x,p.y,p.x+r/2,p.y+r/2,new int[] {0xaaffffff,0x11ffffff},null,Shader.TileMode.REPEAT);
+        PointF p = getPointByAngle(a, b, r * 2 / 3, progress);
+        Shader mShader = new LinearGradient(p.x, p.y, p.x + r / 2, p.y + r / 2, new int[]{0xaaffffff, 0x11ffffff}, null, Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
-        mShader = new RadialGradient(p.x,p.y,maxRadius,new int[] {0xccffffff,0x11ffffff},new float[]{0.3f,1f},Shader.TileMode.REPEAT);
+        mShader = new RadialGradient(p.x, p.y, maxRadius, new int[]{0xccffffff, 0x11ffffff}, new float[]{0.3f, 1f}, Shader.TileMode.REPEAT);
         mPaint.setShader(mShader);
         canvas.drawCircle(p.x, p.y, maxRadius, mPaint);
 
@@ -92,6 +92,7 @@ public class LoadingCircleBallInnerView extends View {
     private float progress;
     private boolean isForward = true;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -123,7 +124,7 @@ public class LoadingCircleBallInnerView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

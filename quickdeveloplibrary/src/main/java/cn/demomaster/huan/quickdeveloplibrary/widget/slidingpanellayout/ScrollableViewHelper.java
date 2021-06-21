@@ -17,14 +17,14 @@ public class ScrollableViewHelper {
      * less, it means at the scrollable view is in a position such as the panel should handle
      * scrolling. If the method returns anything above zero, then the panel will let the scrollable
      * view handle the scrolling
-     *
+     * <p>
      * *返回可滚动视图的当前滚动位置。如果此方法返回零或
      * *更少，这意味着在可滚动视图中处于面板应该处理的位置
      * *滚动。如果该方法返回大于零的值，那么面板将允许
      * *视图句柄滚动
      *
      * @param scrollableView the scrollable view  可滚动视图view
-     * @param isSlidingUp whether or not the panel is sliding up or down 面板是否上下滑动
+     * @param isSlidingUp    whether or not the panel is sliding up or down 面板是否上下滑动
      * @return the scroll position @返回滚动位置
      */
     public int getScrollableViewScrollPosition(View scrollableView, boolean isSlidingUp) {

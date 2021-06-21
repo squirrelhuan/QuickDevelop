@@ -94,17 +94,43 @@
 
     </declare-styleable>
 
+    <declare-styleable name="SlidingLayout">
+        <!--当菜单被折叠时，显示的高度-->
+        <attr name="scroll_marginTop" format="dimension" />
+        <attr name="scroll_marginBottom" format="dimension" />
+        <attr name="initialState" format="enum">
+            <enum name="expanded" value="0" />
+            <enum name="collapsed" value="1" />
+            <enum name="anchored" value="2" />
+            <enum name="hidden" value="3" />
+        </attr>
+    </declare-styleable>
     <declare-styleable name="SlidingUpPanelLayout">
+        <!--当菜单被折叠时，显示的高度-->
         <attr name="umanoPanelHeight" format="dimension" />
+        <!--当菜单被折叠时，显示的高度百分比-->
+        <attr name="umanoPanelHeight2" format="float" />
         <attr name="umanoShadowHeight" format="dimension" />
+        <!--当菜单在滑动的时候，主页面一起移动的视觉偏差。-->
         <attr name="umanoParallaxOffset" format="dimension" />
+        <!--当菜单在滑动的时候，主页面一起移动的视觉偏差。-->
+        <attr name="umanoParallaxOffset2" format="float" />
+        <!--遮罩颜色变化-->
         <attr name="umanoFadeColor" format="color" />
         <attr name="umanoFlingVelocity" format="integer" />
         <attr name="umanoDragView" format="reference" />
         <attr name="umanoScrollableView" format="reference" />
+        <!--意思是菜单是否要覆盖到主页面之上：
+        如果是false，相当于LinearLayout，主页面在上，菜单在下
+        如果是true，相当于FrameLayout-->
         <attr name="umanoOverlay" format="boolean" />
         <attr name="umanoClipPanel" format="boolean" />
+        <!--自定义的菜单展开的锚点比例。值为0-1之间的小数，非手动拖拽菜单的情况下（例如点击）只会展开到这个锚点的比例。-->
         <attr name="umanoAnchorPoint" format="float" />
+        <!--自定义的菜单顶部锚点。值为0-1之间的小数，拖拽菜单的情况下只会展开到这个锚点的比例。-->
+        <attr name="umanoTopAnchorPoint" format="float" />
+        <!--自定义的菜单底部锚点。值为0-1之间的小数，拖拽菜单的情况下只会展开到这个锚点的比例。-->
+        <attr name="umanoBottomAnchorPoint" format="float" />
         <attr name="umanoInitialState" format="enum">
             <enum name="expanded" value="0" />
             <enum name="collapsed" value="1" />
@@ -150,5 +176,45 @@
 
     <declare-styleable name="Loadlayout">
         <attr name="loadlayout" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="MyRadioButton">
+        <attr name="srcLeft" format="reference" />
+        <attr name="srcTop" format="reference" />
+        <attr name="srcRight" format="reference" />
+        <attr name="srcBottom" format="reference" />
+        <attr name="srcHeight" format="dimension" />
+        <attr name="srcWidth" format="dimension" />
+        <attr name="srcMargin" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="MyRatingBar">
+        <attr name="foregroundColor" format="color" />
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="QDNestedScrollParent">
+        <attr name="topView" format="reference" />
+        <attr name="scrollView" format="reference" />
+        <!--距离顶部最大距离-->
+        <attr name="headerHeightMax" format="dimension" />
+        <!--距离顶部最小距离-->
+        <attr name="headerHeightMin" format="dimension" />
+        <!--距离顶部最大距离 参考指定view的高度-->
+        <attr name="headerHeightMaxAlign" format="reference" />
+        <!--距离顶部最小距离 参考指定view的高度-->
+        <attr name="headerHeightMinAlign" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="TabCursorView">
+        <!--对齐视图-->
+        <attr name="alignView" format="reference" />
+        <!--游标宽度-->
+        <attr name="cursorWidth" format="dimension" />
+        <!--对齐视图-->
+        <attr name="cursorColor" format="color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="QDViewPager">
+        <attr name="canScroll" format="boolean" />
     </declare-styleable>
 </resources>

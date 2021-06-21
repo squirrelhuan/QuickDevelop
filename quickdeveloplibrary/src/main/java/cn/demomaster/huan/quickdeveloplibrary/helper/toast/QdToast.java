@@ -17,15 +17,17 @@ public class QdToast {
     }
 
     public static void show(Object object) {
-        show(mContext,object==null?"null":object.toString(),Toast.LENGTH_LONG);
+        show(mContext, object == null ? "null" : object.toString(), Toast.LENGTH_LONG);
     }
+
     public static void show(Context context, String text) {
-        show(context,text,Toast.LENGTH_LONG);
+        show(context, text, Toast.LENGTH_LONG);
     }
-    public static void show(Context context, String text,int time) {
-        if(context==null){
+
+    public static void show(Context context, String text, int time) {
+        if (context == null) {
             return;
-        }else if(mContext==null) {
+        } else if (mContext == null) {
             mContext = context.getApplicationContext();
         }
         runOnUiThread(new Runnable() {
@@ -34,9 +36,9 @@ public class QdToast {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//处理Android7.1上系统bug
                     ToastCompat.makeText(mContext, text, time)
                             .setBadTokenListener(toast -> {
-                                Log.e("failed toast", ""+text);
+                                Log.e("failed toast", "" + text);
                             }).show();
-                }else {
+                } else {
                     Toast.makeText(mContext, text, time).show();
                 }
             }

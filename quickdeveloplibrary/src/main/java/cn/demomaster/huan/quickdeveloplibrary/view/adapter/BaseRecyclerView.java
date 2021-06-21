@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @date 2019/1/18.
  * description：
  */
-public class BaseRecyclerView extends RecyclerView  {
+public class BaseRecyclerView extends RecyclerView {
     public BaseRecyclerView(@NonNull Context context) {
         super(context);
     }
@@ -26,7 +26,7 @@ public class BaseRecyclerView extends RecyclerView  {
         super(context, attrs, defStyle);
     }
 
-    private AdapterView.OnItemClickListener  onItemClickListener ;
+    private AdapterView.OnItemClickListener onItemClickListener;
 
     public AdapterView.OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;

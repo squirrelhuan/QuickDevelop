@@ -7,9 +7,11 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,13 +27,16 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
 
+/**
+ * 图片选择器
+ */
 public class SimplePictureActivity extends QDActivity {
 
     /**
      * 横竖屏切换处理
+     *
      * @param newConfig
      */
     @Override
@@ -55,10 +60,8 @@ public class SimplePictureActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_picture);
 
-        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
-
-        getActionBarTool().setTitle("图片选择器");
-        getActionBarTool().getRightView().setText("发送");
+        getActionBarTool().setTitle(getResources().getString(R.string.image_selector));
+        getActionBarTool().getRightView().setText(getResources().getString(R.string.send));
         getActionBarTool().getRightView().setImageResource(0);
         getActionBarTool().getRightView().setTextSize(16);
         getActionBarTool().getRightView().setOnClickListener(new View.OnClickListener() {
@@ -70,12 +73,12 @@ public class SimplePictureActivity extends QDActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(PHOTOHELPER_RESULT_PATHES, images);
                 intent.putExtras(bundle);
-                setResult(result, intent);
+                setResult(RESULT_OK, intent);
                 mContext.finish();
             }
         });
-        getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
-        getActionBarTool().setStateBarColorAuto(true);
+        //getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
+        //getActionBarTool().setStateBarColorAuto(true);
         init();
     }
 
@@ -84,24 +87,30 @@ public class SimplePictureActivity extends QDActivity {
     private SimplePictureAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
-    private int result;
     private void init() {
-        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE, 0);
-
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionHelper.getInstance().requestPermission(mContext, permission, null);
+        PermissionHelper.getInstance().requestPermission(mContext, permission, new PermissionHelper.PermissionListener() {
+            @Override
+            public void onPassed() {
+                initView();
+            }
 
+            @Override
+            public void onRefused() {
+
+            }
+        });
     }
 
     private void initView() {
-        tv_preview = (TextView) findViewById(R.id.tv_preview);
+        tv_preview = findViewById(R.id.tv_preview);
         tv_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 previewImage();
             }
         });
-        tvFolderName = (TextView) findViewById(R.id.tv_folder_name);
+        tvFolderName = findViewById(R.id.tv_folder_name);
         tv_preview.setVisibility(View.GONE);
         rl_mark = findViewById(R.id.rl_mark);
         rvImage = findViewById(R.id.recy_picture_grid);
@@ -181,7 +190,6 @@ public class SimplePictureActivity extends QDActivity {
                     tv_preview.setVisibility(View.VISIBLE);
                     tv_preview.setText(mContext.getResources().getString(R.string.preview) + "(" + map.size() + "/" + maxCount + ")");
                 }
-
             }
         });
     }

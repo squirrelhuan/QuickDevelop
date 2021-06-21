@@ -28,6 +28,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
+
+/**
+ * 抽屉控件
+ * 
+ */
 public class SlidingUpPanelLayout extends ViewGroup {
 
     private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();
@@ -125,6 +131,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * 突出部分的大小（以像素为单位）。
      */
     private int mPanelHeight = -1;
+    /**
+     * The size of the overhang in pixels.
+     * 突出部分的大小（百分比）。
+     */
+    private float mPanelHeightPercentage = -1;
 
     /**
      * The size of the shadow in pixels.
@@ -137,6 +148,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * 视差偏移
      */
     private int mParallaxOffset = -1;
+    private float mParallaxOffsetPercentage = -1;
 
     /**
      * True if the collapsed panel should be dragged up.
@@ -324,18 +336,22 @@ public class SlidingUpPanelLayout extends ViewGroup {
             TypedArray defAttrs = context.obtainStyledAttributes(attrs, DEFAULT_ATTRS);
 
             if (defAttrs != null) {
-                int gravity = defAttrs.getInt(0, Gravity.NO_GRAVITY);
-                setGravity(gravity);
+                if(defAttrs.length()>0) {
+                    int gravity = defAttrs.getInt(0, Gravity.NO_GRAVITY);
+                    setGravity(gravity);
+                }
                 defAttrs.recycle();
             }
-
 
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SlidingUpPanelLayout);
 
             if (ta != null) {
                 mPanelHeight = ta.getDimensionPixelSize(R.styleable.SlidingUpPanelLayout_umanoPanelHeight, -1);
+                mPanelHeightPercentage = ta.getFloat(R.styleable.SlidingUpPanelLayout_umanoPanelHeight2, -1f);
+
                 mShadowHeight = ta.getDimensionPixelSize(R.styleable.SlidingUpPanelLayout_umanoShadowHeight, -1);
                 mParallaxOffset = ta.getDimensionPixelSize(R.styleable.SlidingUpPanelLayout_umanoParallaxOffset, -1);
+                mParallaxOffsetPercentage = ta.getFloat(R.styleable.SlidingUpPanelLayout_umanoParallaxOffset2, -1);
 
                 mMinFlingVelocity = ta.getInt(R.styleable.SlidingUpPanelLayout_umanoFlingVelocity, DEFAULT_MIN_FLING_VELOCITY);
                 mCoveredFadeColor = ta.getColor(R.styleable.SlidingUpPanelLayout_umanoFadeColor, DEFAULT_FADE_COLOR);
@@ -399,11 +415,14 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (mScrollableViewResId != -1) {
             setScrollableView(findViewById(mScrollableViewResId));
         }
+
     }
 
     public void setGravity(int gravity) {
         if (gravity != Gravity.TOP && gravity != Gravity.BOTTOM) {
-            throw new IllegalArgumentException("gravity must be set to either top or bottom");
+            //throw new IllegalArgumentException("gravity must be set to either top or bottom");
+            QDLogger.e("gravity must be set to either top or bottom");
+            return;
         }
         mIsSlidingUp = gravity == Gravity.BOTTOM;
         if (!mFirstLayout) {
@@ -777,7 +796,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
         final int childCount = getChildCount();
 
         if (childCount != 2) {
-            throw new IllegalStateException("Sliding up panel layout must have exactly 2 children!");
+            //throw new IllegalStateException("Sliding up panel layout must have exactly 2 children!");
+            QDLogger.e("Sliding up panel layout must have exactly 2 children!");
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
         }
 
         mMainView = getChildAt(0);
@@ -849,6 +871,12 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
 
         setMeasuredDimension(widthSize, heightSize);
+        if(mPanelHeightPercentage!=-1){
+            setPanelHeight((int) (getMeasuredHeight()*mPanelHeightPercentage));
+        }
+        if(mParallaxOffsetPercentage!=-1){
+            setParallaxOffset((int) (getMeasuredHeight()*mParallaxOffsetPercentage));
+        }
     }
 
     @Override
@@ -897,7 +925,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
                     childTop = computePanelTopPosition(mSlideOffset) + mSlideableView.getMeasuredHeight();
                 }
             }
-            final int childBottom = childTop + childHeight;
+            int childBottom = childTop + childHeight;
+            if(slidePaneAlignBottom){
+             childBottom = getMeasuredHeight();
+            }
             final int childLeft = paddingLeft + lp.leftMargin;
             final int childRight = childLeft + child.getMeasuredWidth();
 
@@ -910,6 +941,13 @@ public class SlidingUpPanelLayout extends ViewGroup {
         applyParallaxForCurrentSlideOffset();
 
         mFirstLayout = false;
+    }
+
+    //抽屉控件是否支持伸缩布局，比如由下往上拉。抽屉底部时钟和父窗体底部对齐
+    boolean slidePaneAlignBottom = true;
+
+    public void setSlidePaneAlignBottom(boolean slidePaneAlignBottom) {
+        this.slidePaneAlignBottom = slidePaneAlignBottom;
     }
 
     @Override
@@ -1140,7 +1178,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     public void setPanelState(PanelState state) {
 
         // Abort any running animation, to allow state change
-        if(mDragHelper.getViewDragState() == ViewDragHelper.STATE_SETTLING){
+        if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_SETTLING) {
             Log.d(TAG, "View is settling. Aborting animation.");
             mDragHelper.abort();
         }
@@ -1211,6 +1249,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
         LayoutParams lp = (LayoutParams) mMainView.getLayoutParams();
         int defaultHeight = getHeight() - getPaddingBottom() - getPaddingTop() - mPanelHeight;
 
+        //此处新增代码处理抽屉布局高度跟随手指滑动动态改变
+        updateSlidePanelHeight();
+
         if (mSlideOffset <= 0 && !mOverlayContent) {
             // expand the main view
             lp.height = mIsSlidingUp ? (newTop - getPaddingBottom()) : (getHeight() - getPaddingBottom() - mSlideableView.getMeasuredHeight() - newTop);
@@ -1221,6 +1262,16 @@ public class SlidingUpPanelLayout extends ViewGroup {
         } else if (lp.height != LayoutParams.MATCH_PARENT && !mOverlayContent) {
             lp.height = LayoutParams.MATCH_PARENT;
             mMainView.requestLayout();
+        }
+    }
+
+    //处理抽屉布局高度跟随手指滑动动态改变
+    private void updateSlidePanelHeight() {
+        if(slidePaneAlignBottom) {
+            ViewGroup.LayoutParams layoutParams = mSlideableView.getLayoutParams();
+            layoutParams.height = LayoutParams.MATCH_PARENT;
+            mSlideableView.requestLayout();
+            //mSlideableView.layout(mSlideableView.getLeft(), mSlideableView.getTop(), mSlideableView.getRight(), getMeasuredHeight());
         }
     }
 
@@ -1247,7 +1298,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
             result = super.drawChild(canvas, child, drawingTime);
 
-            if (mCoveredFadeColor != 0 && mSlideOffset > 0&&showBackground) {
+            if (mCoveredFadeColor != 0 && mSlideOffset > 0 && showBackground) {
                 final int baseAlpha = (mCoveredFadeColor & 0xff000000) >>> 24;
                 final int imag = (int) (baseAlpha * mSlideOffset);
                 final int color = imag << 24 | (mCoveredFadeColor & 0xffffff);
@@ -1265,6 +1316,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     //是否显示灰色蒙版
     boolean showBackground = true;
+
     public void setShowBackground(boolean showBackground) {
         this.showBackground = showBackground;
     }
@@ -1277,12 +1329,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     boolean smoothSlideTo(float slideOffset, int velocity) {
         if (!isEnabled() || mSlideableView == null) {
-            // Nothing to do.
             return false;
         }
 
         int panelTop = computePanelTopPosition(slideOffset);
-
         if (mDragHelper.smoothSlideViewTo(mSlideableView, mSlideableView.getLeft(), panelTop)) {
             setAllChildrenVisible();
             ViewCompat.postInvalidateOnAnimation(this);
@@ -1307,7 +1357,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     public void draw(Canvas c) {
         super.draw(c);
 
-        if(drawShadow) {
+        if (drawShadow) {
             // draw the shadow
             if (mShadowDrawable != null && mSlideableView != null) {
                 final int right = mSlideableView.getRight();
@@ -1332,6 +1382,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     /**
      * 是否显示边界线
+     *
      * @param drawShadow
      */
     public void setDrawShadow(boolean drawShadow) {
@@ -1438,6 +1489,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
                     updateObscuredViewVisibility();
                     setPanelStateInternal(PanelState.ANCHORED);
                 }
+                //此处新增代码处理抽屉布局高度跟随手指滑动动态改变
+                updateSlidePanelHeight();
             }
         }
 
@@ -1485,6 +1538,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
             if (mDragHelper != null) {
                 mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), target);
             }
+
+            //此处新增代码处理抽屉布局高度跟随手指滑动动态改变
+            updateSlidePanelHeight();
             invalidate();
         }
 
@@ -1511,12 +1567,15 @@ public class SlidingUpPanelLayout extends ViewGroup {
         };
 
         public float weight = 0;
+
         public LayoutParams() {
             super(MATCH_PARENT, MATCH_PARENT);
         }
+
         public LayoutParams(int width, int height) {
             super(width, height);
         }
+
         public LayoutParams(int width, int height, float weight) {
             super(width, height);
             this.weight = weight;
@@ -1525,12 +1584,15 @@ public class SlidingUpPanelLayout extends ViewGroup {
         public LayoutParams(android.view.ViewGroup.LayoutParams source) {
             super(source);
         }
+
         public LayoutParams(MarginLayoutParams source) {
             super(source);
         }
+
         public LayoutParams(LayoutParams source) {
             super(source);
         }
+
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             final TypedArray ta = c.obtainStyledAttributes(attrs, ATTRS);
@@ -1542,10 +1604,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
     }
 
     int panelMarginTop;
+
     //SLIDING
-    public void setPanelMaginTop(int marginTop){
+    public void setPanelMaginTop(int marginTop) {
         panelMarginTop = marginTop;
-        if(mSlideableView!=null){
+        if (mSlideableView != null) {
             LayoutParams layoutParams = (LayoutParams) mSlideableView.getLayoutParams();
             layoutParams.topMargin = panelMarginTop;
             mSlideableView.setLayoutParams(layoutParams);

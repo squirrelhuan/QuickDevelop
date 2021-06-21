@@ -21,9 +21,11 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.QDAndroidDeviceUtil.isRootSystem;
 
 
 /**
@@ -33,13 +35,10 @@ import cn.demomaster.qdlogger_library.QDLogger;
 @ActivityPager(name = "关于手机", preViewClass = TextView.class, resType = ResType.Custome)
 public class AboutMobileFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.tv_info)
     TextView tv_info;
+    @BindView(R.id.tv_root_state)
+    TextView tv_root_state;
     View mView;
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,10 +51,10 @@ public class AboutMobileFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, mView);
         String ip = null;
-        if(NetworkUtil.isNetworkConnected(getContext())){
-            ip = NetworkUtil.getLocalIpAddress(getContext());
+        if(NetworkHelper.isNetworkConnected(getContext())){
+            ip = NetworkHelper.getLocalIpAddress(getContext());
         }
-
+        tv_root_state.setText("root:"+isRootSystem());
         tv_info.setText("ip:"+ip);
 
         //获取屏幕分辨率

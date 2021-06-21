@@ -39,15 +39,15 @@ public class NetworkStatsHelper {
                         0,
                         System.currentTimeMillis());
 
-                if(bucket!=null){
-                    QDLogger.d("bucket="+i+","+bucket.getTxBytes() + bucket.getRxBytes());
+                if (bucket != null) {
+                    QDLogger.d("bucket=" + i + "," + bucket.getTxBytes() + bucket.getRxBytes());
                 }
             } catch (RemoteException e) {
                 QDLogger.e(e);
                 return -1;
             }
         }
-        if(bucket==null){
+        if (bucket == null) {
             QDLogger.d("bucket=null");
             return 0;
         }
@@ -108,6 +108,7 @@ public class NetworkStatsHelper {
 
     /**
      * 获取当天的零点时间
+     *
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -131,6 +132,7 @@ public class NetworkStatsHelper {
 
     /**
      * 根据包名获取uid
+     *
      * @param context     上下文
      * @param packageName 包名
      */

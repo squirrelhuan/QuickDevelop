@@ -117,14 +117,14 @@ public class PictureManager {
 
     private static void getFolder(String name, Image image) {
         if (!folderMap.containsKey(name)) {
-            Log.i("CGQ","containsKey="+name);
+            Log.i("CGQ", "containsKey=" + name);
             Folder folder = new Folder(name);
             folder.addImage(image);
-            folderMap.put(name,folder);
+            folderMap.put(name, folder);
         } else {
             Folder folder = folderMap.get(name);
             folder.addImage(image);
-            folderMap.put(name,folder);
+            folderMap.put(name, folder);
         }
     }
 

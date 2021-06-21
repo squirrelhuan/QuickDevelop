@@ -36,6 +36,7 @@ public class MyCaptureActivity extends QDActivity {
 
     ImageView iv_light;
     ImageView iv_gallery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +50,13 @@ public class MyCaptureActivity extends QDActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         scanMakerView = findViewById(R.id.viewfinder_view);
-        scanMakerView.setMarkerWidth(DisplayUtil.dip2px(mContext,200));
-        scanMakerView.setMarkerHeight(DisplayUtil.dip2px(mContext,200));
-        surfaceView= findViewById(R.id.preview_view);
+        scanMakerView.setMarkerWidth(DisplayUtil.dip2px(mContext, 200));
+        scanMakerView.setMarkerHeight(DisplayUtil.dip2px(mContext, 200));
+        surfaceView = findViewById(R.id.preview_view);
         surfaceView.setOnScanResultListener(new ScanHelper.OnScanResultListener() {
             @Override
             public void handleDecode(Result obj, Bitmap barcode, float scaleFactor) {
-               // Toast.makeText(mContext,obj.toString(),Toast.LENGTH_LONG).show();
+                // Toast.makeText(mContext,obj.toString(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putString(CODED_CONTENT, obj.toString());
@@ -77,9 +78,9 @@ public class MyCaptureActivity extends QDActivity {
         iv_light.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ScanHelper.getInstance().isFlashOpened(MyCaptureActivity.this)){
+                if (ScanHelper.getInstance().isFlashOpened(MyCaptureActivity.this)) {
                     ScanHelper.getInstance().closeFlash(MyCaptureActivity.this);
-                }else {
+                } else {
                     ScanHelper.getInstance().openFlash(MyCaptureActivity.this);
                 }
             }
@@ -90,7 +91,7 @@ public class MyCaptureActivity extends QDActivity {
                 getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
-                        setImageToView(path,data);
+                        setImageToView(path, data);
                     }
 
                     @Override
@@ -100,9 +101,9 @@ public class MyCaptureActivity extends QDActivity {
                 });
             }
         });
-        if(ScanHelper.getInstance().isSupportCameraLedFlash(mContext)){
+        if (ScanHelper.getInstance().isSupportCameraLedFlash(mContext)) {
             iv_light.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             iv_light.setVisibility(View.GONE);
         }
     }
@@ -113,7 +114,7 @@ public class MyCaptureActivity extends QDActivity {
         Bitmap bitmap;
         Result result = null;
         if (extras != null) {
-             bitmap = extras.getParcelable("data");
+            bitmap = extras.getParcelable("data");
             if (bitmap == null) {
                 Uri uri = data.getData();
                 String filePath = QDFileUtil.getFilePathByUri(this, uri);
@@ -123,19 +124,19 @@ public class MyCaptureActivity extends QDActivity {
                 QdToast.show(mContext, "机柜失败 fail");
                 return;
             }
-            result = CodeCreator.readQRcode(this,bitmap);
+            result = CodeCreator.readQRcode(this, bitmap);
         } else {
             if (!TextUtils.isEmpty(path)) {
                 String filePath = QDFileUtil.getFilePathByUri(this, Uri.parse(path));
                 bitmap = QDFileUtil.getBitmapFromPath(filePath);
-                result = CodeCreator.readQRcode(this,bitmap);
+                result = CodeCreator.readQRcode(this, bitmap);
             }
         }
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        String cordStr =  "error null";
-        if(result!=null){
-            cordStr =  result.toString();
+        String cordStr = "error null";
+        if (result != null) {
+            cordStr = result.toString();
         }
         bundle.putString(CODED_CONTENT, cordStr);
         intent.putExtras(bundle);

@@ -40,8 +40,8 @@ public class Test {
 
 
         float a1 = 1.51f;
-        int b = (int)a1;
-        System.out.println("a1="+a1+",b="+b);
+        int b = (int) a1;
+        System.out.println("a1=" + a1 + ",b=" + b);
     }
 
     private List<Character> list;

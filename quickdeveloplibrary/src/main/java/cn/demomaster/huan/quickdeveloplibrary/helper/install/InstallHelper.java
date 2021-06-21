@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.install;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -40,69 +42,79 @@ import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
+import static cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper.isAccessBilityOn;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.uriToFile;
 
 public class InstallHelper {
 
-    public static void downloadAndInstall(final Activity context, final String name, final String url) {
+    /**
+     * 检查下载安装权限
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkDownloadPermission(Context context) {
+        PermissionHelper.requestPermission((Activity) context, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, new PermissionHelper.PermissionListener() {
+            @Override
+            public void onPassed() {
+                
+            }
+
+            @Override
+            public void onRefused() {
+                
+            }
+        });
         //兼容8.0 安装权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
             if (!hasInstallPermission) {
                 // QdToast.show(context, "请先开启应用安装权限", Toast.LENGTH_SHORT).show();
                 //弹框提示用户手动打开
                 showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //此方法需要API>=26才能使用
                         startInstallPermissionSettingActivity(context);
                     }
                 });
-                return;
+                return false;
             }
+        }*/
+        return true;
+    }
+    
+    public static void downloadAndInstall(final Context context, final String name, final String url) {
+        if (checkDownloadPermission(context)) {
+            OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
+                @Override
+                public void onDownloadRunning(long downloadId, String name, float fraction) {
+                    QDLogger.i("下载进度[" + downloadId + "]:" + fraction);
+                }
+                
+                @Override
+                public void onDownloadSuccess(DownloadTask downloadTask) {
+                    openAPKFile(context, downloadTask.getDownloadUri());
+                    //runInstall(context,downloadTask.getDownIdUri());
+                }
+
+                @Override
+                public void onDownloadFail() {
+
+                }
+
+                @Override
+                public void onDownloadPaused() {
+
+                }
+            };
+
+            DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
+                    .setFileName(name)
+                    .setUrl(url)
+                    .setOnProgressListener(onDownloadProgressListener);
+            int downloadId = downloadBuilder.start();
         }
-
-        //存储权限
-        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
-            @Override
-            public void onPassed() {
-                OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
-                    @Override
-                    public void onDownloadRunning(long downloadId, String name, float fraction) {
-                        QDLogger.i("下载进度:" + fraction);
-                    }
-
-                    @Override
-                    public void onDownloadSuccess(DownloadTask downloadTask) {
-                        QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
-                        openAPKFile(context, downloadTask.getDownloadUri());
-                        //runInstall(context,downloadTask.getDownIdUri());
-                    }
-
-                    @Override
-                    public void onDownloadFail() {
-
-                    }
-
-                    @Override
-                    public void onDownloadPaused() {
-
-                    }
-                };
-
-                DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context)
-                        .setFileName(name)
-                        .setUrl(url)
-                        .setOnProgressListener(onDownloadProgressListener);
-                int downloadId = downloadBuilder.start();
-            }
-
-            @Override
-            public void onRefused() {
-
-            }
-        });
     }
 
     /**
@@ -111,70 +123,29 @@ public class InstallHelper {
      * @param mContext
      * @param fileUri
      */
-    public static void openAPKFile(Activity mContext, Uri fileUri) {
-        // DataEmbeddingUtil.dataEmbeddingAPPUpdate(fileUri);
-        // 核心是下面几句代码
-        if (null != fileUri) {
-            try {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                //File apkFile = new File(fileUri);
-                intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
-                //兼容7.0
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    //兼容8.0
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        boolean hasInstallPermission = mContext.getPackageManager().canRequestPackageInstalls();
-                        if (!hasInstallPermission) {
-                            QdToast.show(mContext, "请开启应用安装权限", Toast.LENGTH_SHORT);
-                            startInstallPermissionSettingActivity(mContext);
-                            return;
-                        }
+    public static void openAPKFile(Context mContext, Uri fileUri) {
+        QDLogger.i("开始安装:" + fileUri.getPath());
+        if (checkDownloadPermission(mContext)) {
+            // DataEmbeddingUtil.dataEmbeddingAPPUpdate(fileUri);
+            if (null != fileUri) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//兼容7.0
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        Uri contentUri = FileProvider.getUriForFile(mContext,mContext.getPackageName()+".fileprovider",new File(fileUri.getPath()));
+                        intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                    } else {
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
                     }
-                } else {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if (mContext.getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
+                        mContext.startActivity(intent);
+                    }
+                } catch (Throwable e) {
+                    QDLogger.e(e);
                 }
-                if (mContext.getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
-                    mContext.startActivity(intent);
-                }
-            } catch (Throwable e) {
-                QDLogger.e(e);
             }
         }
-    }
-
-    public static void install(final Activity context, File apkFile) {
-        //兼容8.0 安装权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
-            if (!hasInstallPermission) {
-                //弹框提示用户手动打开
-                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //此方法需要API>=26才能使用
-                        startInstallPermissionSettingActivity(context);
-                    }
-                });
-                return;
-            }
-        }
-        //安裝
-    }
-
-    public static final int INSTALL_PERMISS_CODE = 28757;
-
-    /**
-     * 跳转到设置-允许安装未知来源-页面
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void startInstallPermissionSettingActivity(Activity context) {
-        Uri packageURI = Uri.parse("package:" + context.getPackageName());
-        //注意这个是8.0新API
-        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivityForResult(intent, INSTALL_PERMISS_CODE);
     }
 
     /**
@@ -196,59 +167,8 @@ public class InstallHelper {
         dialog.show();
     }
 
-    /**
-     * 判断某个app是否已安装
-     * @param context
-     * @param pkgName
-     * @return
-     */
-    public static boolean checkAppInstalled(Context context, String pkgName) {
-        if (TextUtils.isEmpty(pkgName)) {
-            return false;
-        }
-        final PackageManager packageManager = context.getPackageManager();
-        List<PackageInfo> info = packageManager.getInstalledPackages(0);
-        if (info == null) {
-            return false;
-        } else {
-            for (int i = 0; i < info.size(); i++) {
-                if (pkgName.equals(info.get(i).packageName)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    public static void downloadAndSilenceInstall(final Activity context, boolean autoReStartApp, final String name, final String url) {
-        downloadAndSilenceInstall(context, autoReStartApp, name, url, null);
-    }
-
     public static void downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url) {
         downloadAndSilenceInstall(context, autoReStartApp, name, url, null);
-    }
-
-    public static void downloadAndSilenceInstallForActivity(final Activity context, final String name, final String url, OnDownloadProgressListener listener) {
-
-        //兼容8.0 安装权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
-            if (!hasInstallPermission) {
-                if (listener != null) {
-                    listener.onDownloadFail();
-                }
-                //弹框提示用户手动打开
-                showAlert(context, "安装权限", "需要打开允许来自此来源，请去设置中开启此权限", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //此方法需要API>=26才能使用
-                        startInstallPermissionSettingActivity(context);
-                    }
-                });
-                return;
-            }
-        }
     }
 
     /**
@@ -264,74 +184,58 @@ public class InstallHelper {
         return downloadAndSilenceInstall(context, autoReStartApp, name, url, DownloadTask.DownloadType.Okhttp, listener);
     }
 
+    //下载前需要
     public static DownloadHelper.DownloadBuilder downloadAndSilenceInstall(final Context context, boolean autoReStartApp, final String name, final String url, DownloadTask.DownloadType downloadType, OnDownloadProgressListener listener) {
         DownloadHelper.DownloadBuilder downloadBuilder = new DownloadHelper.DownloadBuilder(context);
-        //存储权限
-        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
+        OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
             @Override
-            public void onPassed() {
-
-                OnDownloadProgressListener onDownloadProgressListener = new OnDownloadProgressListener() {
-                    @Override
-                    public void onDownloadRunning(long downloadId, String name, float progress) {
-                        if (listener != null && listener.canCallBack()) {
-                            listener.onDownloadRunning(downloadId, name, progress);
-                        }
-                    }
-
-                    @Override
-                    public void onDownloadSuccess(DownloadTask downloadTask) {
-                        if (listener != null) {
-                            listener.onDownloadSuccess(downloadTask);
-                        }
-                        QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
-                        try {
-                            //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
-                            File file = uriToFile(downloadTask.getDownloadUri(), context);
-                            if (file == null || !file.exists()) {
-                                QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownloadUri());
-                                return;
-                            }
-                            QDLogger.i("下载文件path:" + file.getAbsolutePath());
-                            silenceInstall(context, autoReStartApp, file);
-                        } catch (Exception e) {
-                            QDLogger.e(e);
-                        }
-                        //runInstall(context,downloadTask.getDownIdUri());
-                    }
-
-                    @Override
-                    public void onDownloadFail() {
-                        if (listener != null) {
-                            listener.onDownloadFail();
-                        }
-                    }
-
-                    @Override
-                    public void onDownloadPaused() {
-                        if (listener != null) {
-                            listener.onDownloadPaused();
-                        }
-                    }
-                };
-
-
-                downloadBuilder.setDownloadType(downloadType)
-                        .setFileName(name)
-                        .setUrl(url)
-                        .setOnProgressListener(onDownloadProgressListener);
-                int downloadId = downloadBuilder.start();
+            public void onDownloadRunning(long downloadId, String name, float progress) {
+                if (listener != null && listener.canCallBack()) {
+                    listener.onDownloadRunning(downloadId, name, progress);
+                }
             }
 
             @Override
-            public void onRefused() {
-                QDLogger.e("app未获得存储权限，请先获取权限后重试");
+            public void onDownloadSuccess(DownloadTask downloadTask) {
+                if (listener != null) {
+                    listener.onDownloadSuccess(downloadTask);
+                }
+                //QDLogger.i(downloadTask.getFileName() + "下载完成，开始安装" + downloadTask.getDownloadUri().getPath());
+                try {
+                    //File file = new File(new URI(downloadTask.getDownIdUri().toString()));
+                    File file = uriToFile(downloadTask.getDownloadUri(), context);
+                    if (file == null || !file.exists()) {
+                        QDLogger.e("下载文件uri 路径不存在:" + downloadTask.getDownloadUri());
+                        return;
+                    }
+                    QDLogger.i("文件已保存:" + file.getAbsolutePath());
+                    silenceInstall(context, autoReStartApp, file);
+                } catch (Exception e) {
+                    QDLogger.e(e);
+                }
+                //runInstall(context,downloadTask.getDownIdUri());
+            }
+
+            @Override
+            public void onDownloadFail() {
                 if (listener != null) {
                     listener.onDownloadFail();
                 }
             }
-        });
 
+            @Override
+            public void onDownloadPaused() {
+                if (listener != null) {
+                    listener.onDownloadPaused();
+                }
+            }
+        };
+
+        downloadBuilder.setDownloadType(downloadType)
+                .setFileName(name)
+                .setUrl(url)
+                .setOnProgressListener(onDownloadProgressListener);
+        int downloadId = downloadBuilder.start();
         return downloadBuilder;
     }
 
@@ -359,8 +263,7 @@ public class InstallHelper {
     public static void silenceInstall(@NonNull Context context, boolean autoReStartApp, @NonNull File file, PackageInstaller.SessionCallback sessionCallback) throws Exception {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             if (!file.exists()) {
-                Exception e = new Exception("安装文件包不存在");
-                throw e;
+                throw new Exception("安装文件包不存在");
             }
             String path = file.getPath();
             String apkName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".apk"));
@@ -523,7 +426,7 @@ public class InstallHelper {
         QDLogger.e("installMsg: " + successMsg.toString() + ", errorMsg: " + errorMsg.toString());
         //安装成功
         if ("Success".equals(successMsg.toString())) {
-            QDLogger.e("======= apk install success");
+            QDLogger.d("apk install success");
         }
         launchAPK(context, apk);
     }
@@ -613,34 +516,6 @@ public class InstallHelper {
                 }
             }
         }).start();
-    }
-
-    /**
-     * 判断无障碍辅助功能是否开启
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isAccessBilityOn(Context context) {
-        int i = 0;
-        String service = context.getPackageName() + "/" + InstallService.class.getCanonicalName();
-        try {
-            i = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
-            if (i == 1) {
-                String settingVlue = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-                String[] arr = settingVlue.split(":");
-                if (arr != null && arr.length > 0) {
-                    for (String name : arr) {
-                        if (service.equalsIgnoreCase(name)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        } catch (Settings.SettingNotFoundException e) {
-            QDLogger.e(e);
-        }
-        return false;
     }
 
     public static boolean installByRoot() {

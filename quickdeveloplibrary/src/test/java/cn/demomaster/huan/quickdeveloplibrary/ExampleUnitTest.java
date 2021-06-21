@@ -36,11 +36,11 @@ public class ExampleUnitTest {
         QDTcpServer qdTcpServer = QDTcpServer.getInstance();
         qdTcpServer.setOnReceiveMessageListener(new QDTcpServer.OnReceiveMessageListener() {
             @Override
-            public void onReceiveMessage(long clientId,QDMessage qdMessage) {
+            public void onReceiveMessage(long clientId, QDMessage qdMessage) {
                 System.out.println("shou dao le " + qdMessage);
-                if(qdMessage!=null){
-                    if(qdMessage.getData().equals("你好")){
-                        qdTcpServer.sendMessage(clientId,qdMessage.getTime(),"懒得理你");
+                if (qdMessage != null) {
+                    if (qdMessage.getData().equals("你好")) {
+                        qdTcpServer.sendMessage(clientId, qdMessage.getTime(), "懒得理你");
                     }
                 }
             }
@@ -53,6 +53,7 @@ public class ExampleUnitTest {
         QDTcpClient qdTcpClient = QDTcpClient.getInstance();
         qdTcpClient.send("a43654765876");
     }
+
     @Test
     public void testMD5() {
         System.out.println(generate("abcd"));

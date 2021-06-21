@@ -271,10 +271,10 @@ public class BlurUtil {
         }*/
         float sX = scalequality;///Math.min(w/(float)targetWidth,h/(float)targetHeight);
         //Bitmap bitmap1 = BitmapUtil.scaleBitmap(bitmap,1);
-       // QDLogger.println("Bitmap width=" + w + ",Bitmap height=" + h + ",sX=" + sX);
-       // QDLogger.d("Bitmap width2=" + bitmap1.getWidth() + ",Bitmap height2=" + bitmap1.getHeight());
-       // QDLogger.println("Bitmap width=" + (int) (w * sX) + ",Bitmap height=" + (int) (h * sX));
-       // Bitmap bitmap2 = Bitmap.createBitmap(bitmap1, 0, 0, (int) (bitmap1.getWidth() * sX * sX), (int) (bitmap1.getHeight() * sX * sX), null, false);
+        // QDLogger.println("Bitmap width=" + w + ",Bitmap height=" + h + ",sX=" + sX);
+        // QDLogger.d("Bitmap width2=" + bitmap1.getWidth() + ",Bitmap height2=" + bitmap1.getHeight());
+        // QDLogger.println("Bitmap width=" + (int) (w * sX) + ",Bitmap height=" + (int) (h * sX));
+        // Bitmap bitmap2 = Bitmap.createBitmap(bitmap1, 0, 0, (int) (bitmap1.getWidth() * sX * sX), (int) (bitmap1.getHeight() * sX * sX), null, false);
         //QDLogger.d("Bitmap width3=" + bitmap2.getWidth() + ",Bitmap height3=" + bitmap2.getHeight());
         return doBlur(bitmap, radius, false);
     }

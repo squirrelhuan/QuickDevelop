@@ -37,7 +37,7 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             int position = parent.getChildLayoutPosition(child);
             int column = (position + 1) % 3;
-            column  = column == 0 ? mSpanCount : column;
+            column = column == 0 ? mSpanCount : column;
 
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
@@ -51,7 +51,7 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
             mDivider.setBounds(child.getLeft(), top, right, bottom);
             mDivider.draw(c);
 
-            if(column < mSpanCount) {
+            if (column < mSpanCount) {
                 mDivider.setBounds(left, child.getTop(), right, bottom);
                 mDivider.draw(c);
             }
@@ -62,9 +62,9 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildLayoutPosition(view);
-        if((position+1) % mSpanCount > 0) {
+        if ((position + 1) % mSpanCount > 0) {
             outRect.set(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
-        }else{
+        } else {
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         }
     }

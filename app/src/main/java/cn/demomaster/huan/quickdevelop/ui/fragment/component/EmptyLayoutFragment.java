@@ -31,11 +31,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.layout.EmptyLayout;
 public class EmptyLayoutFragment extends BaseFragment {
 
     @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //QDLogger.d("拦截Activity:"+getClass().getName() + "返回事件");
         return super.onKeyDown(keyCode, event);

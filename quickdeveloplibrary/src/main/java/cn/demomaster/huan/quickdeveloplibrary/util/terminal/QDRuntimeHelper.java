@@ -208,9 +208,9 @@ public class QDRuntimeHelper {
         } catch (Exception e) {
             QDLogger.e(Tag, e);
             processResult.setError("Cause:" + e.getCause() + ",Message:" + e.getMessage());
-        }finally {
+        } finally {
             if (onReceiveListener != null) {
-                if(processResult==null) {
+                if (processResult == null) {
                     processResult.setCode(-1);
                 }
                 onReceiveListener.onReceive(processResult);
@@ -288,7 +288,7 @@ public class QDRuntimeHelper {
                     e.printStackTrace();
                 }
             }
-            if(outputStream!=null){
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {

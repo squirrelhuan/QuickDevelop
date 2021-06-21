@@ -31,8 +31,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
  */
 public class QDInputDialog extends AppCompatDialog {
 
-   // private Builder builder;
-   public int actionButtonPadding;
+    // private Builder builder;
+    public int actionButtonPadding;
     private String hint;
     private Context context;
     private String title;
@@ -45,9 +45,9 @@ public class QDInputDialog extends AppCompatDialog {
     private int gravity_header = Gravity.LEFT;
     private int gravity_body = Gravity.LEFT;
     private int gravity_foot = Gravity.CENTER;
-    private int padding_header ;
-    private int padding_body ;
-    private int padding_foot ;
+    private int padding_header;
+    private int padding_body;
+    private int padding_foot;
     private int minHeight_header;
     private int minHeight_body;
     private int minHeight_foot;
@@ -65,6 +65,7 @@ public class QDInputDialog extends AppCompatDialog {
     private float[] backgroundRadius = new float[8];
     private int animationStyleID = R.style.qd_dialog_animation_center_scale;
     private List<ActionButton> actionButtons = new ArrayList<>();
+
     public QDInputDialog(Context context, Builder builder) {
         super(context);
         actionButtonPadding = builder.actionButtonPadding;
@@ -107,6 +108,7 @@ public class QDInputDialog extends AppCompatDialog {
     private LinearLayout headerView;
     private LinearLayout bodyView;
     private LinearLayout footView;
+
     private void init() {
         getWindow().setWindowAnimations(animationStyleID);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -158,7 +160,7 @@ public class QDInputDialog extends AppCompatDialog {
             headerView.setBackgroundColor(color_header);
             headerView.setGravity(gravity_header);
             headerView.setTag(gravity_header);
-            addTextView(headerView, title,text_color_header, text_size_header);
+            addTextView(headerView, title, text_color_header, text_size_header);
         }
         if (bodyView != null) {
             contentView.addView(bodyView);
@@ -167,7 +169,7 @@ public class QDInputDialog extends AppCompatDialog {
 
             bodyView.setGravity(gravity_body);
             bodyView.setTag(gravity_body);
-            addBodyTextView(bodyView, message,text_color_body,text_size_body);
+            addBodyTextView(bodyView, message, text_color_body, text_size_body);
         }
         int actionPadding = actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         if (footView != null) {
@@ -208,7 +210,7 @@ public class QDInputDialog extends AppCompatDialog {
                     @Override
                     public void onClick(View view) {
                         if (actionButton.getOnClickListener() != null) {
-                            actionButton.getOnClickListener().onClick(QDInputDialog.this, TextUtils.isEmpty(textView.getText())?null:textView.getText().toString());
+                            actionButton.getOnClickListener().onClick(QDInputDialog.this,view, TextUtils.isEmpty(textView.getText()) ? null : textView.getText().toString());
                         } else {
                             dismiss();
                         }
@@ -217,7 +219,7 @@ public class QDInputDialog extends AppCompatDialog {
 
                 //button.setBackgroundDrawable(null);
                 footView.addView(button, layoutParams_button);
-                if (i != actionButtons.size() - 1&&gravity_foot == Gravity.CENTER) {
+                if (i != actionButtons.size() - 1 && gravity_foot == Gravity.CENTER) {
                     View centerLineView = new View(getContext());
                     LinearLayout.LayoutParams layoutParams_line = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
                     centerLineView.setLayoutParams(layoutParams_line);
@@ -235,7 +237,9 @@ public class QDInputDialog extends AppCompatDialog {
     private void addBodyTextView(LinearLayout viewGroup, String title, int color, int textSize) {
         addEditView(viewGroup, title, color, textSize);
     }
+
     EditText textView;
+
     public EditText getEditView() {
         return textView;
     }
@@ -268,6 +272,7 @@ public class QDInputDialog extends AppCompatDialog {
             viewGroup.addView(textView);
         }
     }
+
     private void addTextView(LinearLayout viewGroup, String title, int color, int textSize) {
         if (title != null) {
             TextView textView = new TextView(getContext());
@@ -316,9 +321,9 @@ public class QDInputDialog extends AppCompatDialog {
         private int gravity_header = Gravity.LEFT;
         private int gravity_body = Gravity.LEFT;
         private int gravity_foot = Gravity.CENTER;
-        private int padding_header ;
-        private int padding_body ;
-        private int padding_foot ;
+        private int padding_header;
+        private int padding_body;
+        private int padding_foot;
         private int minHeight_header;
         private int minHeight_body;
         private int minHeight_foot;
@@ -506,6 +511,7 @@ public class QDInputDialog extends AppCompatDialog {
         public Builder addAction(String text) {
             return addAction(text, null);
         }
+
         public Builder addAction(String text, OnClickActionListener onClickListener) {
             ActionButton actionButton = new ActionButton();
             if (text != null) {

@@ -19,7 +19,7 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
 
     private LinearLayout ll_root;
     private SeekBar sb_background;
-    Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05, btn_ac_06;
+    Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +37,6 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
         btn_ac_04.setOnClickListener(this);
         btn_ac_05 = findViewById(R.id.btn_ac_05);
         btn_ac_05.setOnClickListener(this);
-        btn_ac_06 = findViewById(R.id.btn_ac_06);
-        btn_ac_06.setOnClickListener(this);
 
 
         findViewById(R.id.btn_color_black).setOnClickListener(this);
@@ -134,10 +132,6 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
             case R.id.btn_ac_05:
                 btn_ac_05.setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
                 getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-                break;
-            case R.id.btn_ac_06:
-                btn_ac_06.setText(ACTIONBAR_TYPE.ACTION_TRANSPARENT+"");
-                getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
                 break;
             case R.id.btn_color_black:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.black));

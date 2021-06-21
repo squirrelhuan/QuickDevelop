@@ -16,7 +16,7 @@ public class ScrollListView extends ListView {
     public ScrollListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
+    
     public ScrollListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -24,7 +24,7 @@ public class ScrollListView extends ListView {
     public ScrollListView(Context context) {
         super(context);
     }
-
+    
     @Override
     /**
      * 重写该方法，达到使ListView适应ScrollView的效果

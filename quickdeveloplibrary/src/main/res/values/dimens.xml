@@ -40,13 +40,7 @@
     <dimen name="key_num_height2">@dimen/dp_80</dimen>
 
 
-
-
-
-
-
-<!--=====================================================================================================-->
-
+    <!--=====================================================================================================-->
 
 
     <!-- Your custom size defind by references, can be writted in anywhere, any module, any values/*.xml, for example: -->

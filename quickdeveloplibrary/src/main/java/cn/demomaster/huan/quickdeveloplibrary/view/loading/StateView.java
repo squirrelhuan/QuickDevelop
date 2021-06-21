@@ -39,14 +39,15 @@ public class StateView extends ImageTextView implements OnReleaseListener {
         init();
     }
 
-    ValueAnimator.AnimatorUpdateListener animatorUpdateListener= new ValueAnimator.AnimatorUpdateListener() {
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             progress = (float) animation.getAnimatedValue();
             invalidate();
         }
     };
-    void init(){
+
+    void init() {
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
         animator.addUpdateListener(animatorUpdateListener);
@@ -72,9 +73,9 @@ public class StateView extends ImageTextView implements OnReleaseListener {
         super.onDraw(canvas);
     }
 
-   /* public static enum LoadStateType {
-        COMPLETE, WARNING, ERROR,LOADING,NONE
-    }*/
+    /* public static enum LoadStateType {
+         COMPLETE, WARNING, ERROR,LOADING,NONE
+     }*/
     private LoadStateType stateType = LoadStateType.LOADING;
     private LoadStateType stateType_target = LoadStateType.LOADING;
 
@@ -125,8 +126,8 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 }
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
-                if(drawCricleBackground)
-                canvas.drawCircle(a, b, r0, mPaint);
+                if (drawCricleBackground)
+                    canvas.drawCircle(a, b, r0, mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(getResources().getColor(R.color.white));
@@ -148,7 +149,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 //Log.i(TAG,pointF1.x+","+pointF1.y);
                 mPaint.setColor(mainColor);
                 canvas.drawLine(pointF1.x, pointF1.y, pointF.x, pointF.y, mPaint);
-                canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2)*progress), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2)*progress), pointF2.x, pointF2.y, mPaint);
+                canvas.drawLine((float) (pointF.x + Math.sin(radians3) * (linewidth / 2) * progress), (float) (pointF.y + Math.cos(radians3) * (linewidth / 2) * progress), pointF2.x, pointF2.y, mPaint);
                 break;
             case ERROR://异常
                 if (errorColor == targetColor) {
@@ -159,8 +160,8 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
 
-                if(drawCricleBackground)
-                canvas.drawCircle(a, b, r0, mPaint);
+                if (drawCricleBackground)
+                    canvas.drawCircle(a, b, r0, mPaint);
 
                 int width_error = r * 5 / 7;
                 PointF pointF_error = new PointF(width / 2, height / 2);
@@ -186,8 +187,8 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
 
-                if(drawCricleBackground)
-                canvas.drawCircle(a, b, r0, mPaint);
+                if (drawCricleBackground)
+                    canvas.drawCircle(a, b, r0, mPaint);
 
                 int height_warning = r * 9 / 7;
                 float weight1 = .6f;
@@ -213,14 +214,14 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 mPaint.setColor(color);
                 mPaint.setStyle(Paint.Style.FILL);
 
-                if(drawCricleBackground)
-                canvas.drawCircle(a, b, r0, mPaint);
+                if (drawCricleBackground)
+                    canvas.drawCircle(a, b, r0, mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
-                RectF oval = new RectF((width-r0)/2,(height-r0)/2,(width-r0)/2+r0,(height-r0)/2+r0);
-                canvas.rotate((float) progress*360,width/2,height/2);
-                canvas.drawArc(oval, 0, 90+Math.abs(progress-0.5f)*140, false, mPaint);
+                RectF oval = new RectF((width - r0) / 2, (height - r0) / 2, (width - r0) / 2 + r0, (height - r0) / 2 + r0);
+                canvas.rotate((float) progress * 360, width / 2, height / 2);
+                canvas.drawArc(oval, 0, 90 + Math.abs(progress - 0.5f) * 140, false, mPaint);
                 //canvas.save();
                 //canvas.translate(0,0);
                 //canvas.rotate((float) (90 - Math.toDegrees(60)));
@@ -229,6 +230,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
     }
 
     private float progress;
+
     public void setStateType(LoadStateType stateType) {
         stateType_target = stateType;
         if (this.stateType != stateType) {
@@ -240,7 +242,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
     }
 
     private ValueAnimator animator;
-    ValueAnimator.AnimatorUpdateListener animatorUpdateListener2=new ValueAnimator.AnimatorUpdateListener() {
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener2 = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             progress = (float) animation.getAnimatedValue();
@@ -248,23 +250,24 @@ public class StateView extends ImageTextView implements OnReleaseListener {
         }
     };
     private int duration = 500;
+
     public void show() {
-       if(animator==null){
+        if (animator == null) {
             init();
-        }else {
-            if(animator.isStarted()||animator.isRunning()){
+        } else {
+            if (animator.isStarted() || animator.isRunning()) {
                 animator.cancel();
                 init();
             }
         }
         //animator = MyValueAnimator.ofFloat(0, 1);
-       // animator.setFloatValues(0, 1);
+        // animator.setFloatValues(0, 1);
         animator.setDuration(duration);
         animator.addUpdateListener(animatorUpdateListener2);
 
-        if(stateType== LoadStateType.LOADING){
+        if (stateType == LoadStateType.LOADING) {
             animator.setRepeatCount(ValueAnimator.INFINITE);
-        }else {
+        } else {
             animator.setRepeatCount(0);
         }
         animator.setInterpolator(new LinearInterpolator());
@@ -280,10 +283,11 @@ public class StateView extends ImageTextView implements OnReleaseListener {
             animator.reverse();
         }
     }
+
     //隐藏后显示
     public void hideAndShow(final LoadStateType stateType1) {
         if (animator != null) {
-            if(animator.isStarted()||animator.isRunning()){
+            if (animator.isStarted() || animator.isRunning()) {
                 animator.cancel();
             }
             animator = ValueAnimator.ofFloat(0, progress);
@@ -349,13 +353,13 @@ public class StateView extends ImageTextView implements OnReleaseListener {
 
     @Override
     public void onRelease() {
-        if(animatorUpdateListener!=null){
-            animatorUpdateListener=null;
+        if (animatorUpdateListener != null) {
+            animatorUpdateListener = null;
         }
-        if(animatorUpdateListener2!=null){
-            animatorUpdateListener2=null;
+        if (animatorUpdateListener2 != null) {
+            animatorUpdateListener2 = null;
         }
-        if(animator!=null){
+        if (animator != null) {
             animator.cancel();
         }
     }

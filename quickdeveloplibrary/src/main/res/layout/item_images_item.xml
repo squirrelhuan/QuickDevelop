@@ -29,5 +29,5 @@
         android:minWidth="@dimen/dp_19"
         android:textSize="14sp"
         android:text=""
-        android:padding="@dimen/dp_3"/>
+        android:padding="@dimen/dp_3" />
 </FrameLayout>

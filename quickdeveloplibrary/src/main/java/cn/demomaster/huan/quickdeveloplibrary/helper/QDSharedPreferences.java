@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
+import java.util.Map;
 import java.util.Set;
 
 import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
@@ -16,7 +17,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * Created by Squirrel桓 on 2018/9/9.
  */
 public class QDSharedPreferences {
-
+    
     private static QDSharedPreferences instance;
 
     public SharedPreferences getSharedPreferences() {
@@ -49,7 +50,7 @@ public class QDSharedPreferences {
     public QDSharedPreferences(Context context) {
         if (context == null) {
             try {
-                throw new QDException("QDSharedPreferences 创建失败，context为空");
+                throw new QDException("SharedPreferences 创建失败:context为空");
             } catch (QDException e) {
                 QDLogger.e(e);
             }
@@ -57,6 +58,12 @@ public class QDSharedPreferences {
         }
         this.context = context.getApplicationContext();
         this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(this.context);
+        /*context.getSharedPreferences(String name,int mode)
+        MODE_PRIVATE:私有
+        MODE_APPED:追加
+        MODE_ENABLE_WRITE_AHEAD_LOGGING:
+        MODE_MULTI_PROCESS：
+        其中MODE_WORLD_READABLE(全局读)和MODE_WORLD_WRITEABLE(全局写)已经过时了。*/
     }
 
     public void putBoolean(String key, boolean value) {
@@ -71,7 +78,7 @@ public class QDSharedPreferences {
 
     public boolean getBoolean(String key, boolean value) {
         try {
-           return sharedPreferences.getBoolean(key, value);
+            return sharedPreferences.getBoolean(key, value);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +87,7 @@ public class QDSharedPreferences {
 
     public int getInt(String key, int def) {
         try {
-           return sharedPreferences.getInt(key, def);
+            return sharedPreferences.getInt(key, def);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +96,7 @@ public class QDSharedPreferences {
 
     public float getFloat(String key, float def) {
         try {
-           return sharedPreferences.getFloat(key, def);
+            return sharedPreferences.getFloat(key, def);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +158,7 @@ public class QDSharedPreferences {
     public Set<String> getStringSet(String key, Set<String> def) {
         try {
             return sharedPreferences.getStringSet(key, def);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return def;
@@ -198,4 +205,15 @@ public class QDSharedPreferences {
     public static final String Setting_ActivityAnimation = "ActivityAnimation";
     //最近验证码发送时间
     //public static final String Message_Code_Last_Time = "Message_Code_Last_Time";
+
+
+    /**
+     * 清空存储
+     */
+    public void clear() {
+        //Map<String,?> objectMap = QDSharedPreferences.getInstance().getSharedPreferences().getAll();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }

@@ -50,6 +50,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
     }
 
     boolean hide_with_child;//跟随子view一起隐藏
+
     private void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VisibleLayout);
@@ -68,31 +69,31 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
-        VisibilityMap.put(child.hashCode(),child.getVisibility());
+        VisibilityMap.put(child.hashCode(), child.getVisibility());
     }
 
     @Override
     public void addView(View child, int width, int height) {
         super.addView(child, width, height);
-        VisibilityMap.put(child.hashCode(),child.getVisibility());
+        VisibilityMap.put(child.hashCode(), child.getVisibility());
     }
 
     @Override
     public void addView(View child, int index) {
         super.addView(child, index);
-        VisibilityMap.put(child.hashCode(),child.getVisibility());
+        VisibilityMap.put(child.hashCode(), child.getVisibility());
     }
 
     @Override
     public void addView(View child, ViewGroup.LayoutParams params) {
         super.addView(child, params);
-        VisibilityMap.put(child.hashCode(),child.getVisibility());
+        VisibilityMap.put(child.hashCode(), child.getVisibility());
     }
 
     @Override
     public void addView(View child) {
         super.addView(child);
-        VisibilityMap.put(child.hashCode(),child.getVisibility());
+        VisibilityMap.put(child.hashCode(), child.getVisibility());
     }
 
     @Override
@@ -100,36 +101,37 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         super.removeView(view);
     }
 
-    Map<Integer,Integer> VisibilityMap ;
+    Map<Integer, Integer> VisibilityMap;
+
     @Override
     public void requestLayout() {
         super.requestLayout();
-        if(isRunning){
+        if (isRunning) {
             return;
         }
         //QDLogger.e("子view显示状态改变造成的重新布局");
-        if(VisibilityMap==null){
+        if (VisibilityMap == null) {
             VisibilityMap = new HashMap<>();
         }
-        if(VisibilityMap.size()>0){
+        if (VisibilityMap.size() > 0) {
 
         }
-        for(int i=0;i<getChildCount();i++){
+        for (int i = 0; i < getChildCount(); i++) {
             View view = getChildAt(i);
-            if(VisibilityMap.containsKey(view.hashCode())){
+            if (VisibilityMap.containsKey(view.hashCode())) {
                 int v = VisibilityMap.get(view.hashCode());
-                if(v!=view.getVisibility()){//上一次保存的可视状态
-                    onChildViewVisiableChanged(i,view,view.getVisibility());
+                if (v != view.getVisibility()) {//上一次保存的可视状态
+                    onChildViewVisiableChanged(i, view, view.getVisibility());
                 }
             }
-            VisibilityMap.put(view.hashCode(),view.getVisibility());
+            VisibilityMap.put(view.hashCode(), view.getVisibility());
             //QDLogger.d(view.hashCode()+":"+view.getVisibility());
         }
     }
 
     private void onChildViewVisiableChanged(int i, View view, int visibility) {
         //QDLogger.e("第"+i+"个child，显示状态已改变触发，目标状态="+(visibility==VISIBLE?"显示":"隐藏"));
-        doAnimation(view,visibility);
+        doAnimation(view, visibility);
     }
 
     @Override
@@ -147,6 +149,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
      * 伸缩方向
      */
     int gravity = Gravity.LEFT;
+
     public void setGravity(int gravity) {
         this.gravity = gravity;
     }
@@ -156,9 +159,9 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //int width = getMeasuredWidth();
         //int height = getMeasuredHeight();
-        for (int i = 0; i <1; i++) {
+        for (int i = 0; i < 1; i++) {
             View child = getChildAt(i);
-            switch (gravity){
+            switch (gravity) {
                 case Gravity.LEFT:
                     child.setTranslationX(-animatedValue);
                     break;
@@ -174,6 +177,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
             }
         }
     }
+
     ValueAnimator animator;
     float animatedValue;
     boolean isRunning = false;
@@ -184,15 +188,15 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         this.mDuration = mDuration;
     }
 
-    public void doAnimation(View childView, final int visibility){
+    public void doAnimation(View childView, final int visibility) {
         setVisibility(VISIBLE);
         childView.setVisibility(VISIBLE);
         //QDLogger.e("执行"+(visibility==VISIBLE?"显示":"隐藏"+"动画"));
         isRunning = true;
         float start = 0;
         float end = 0;
-        if(visibility==VISIBLE){
-            switch (gravity){
+        if (visibility == VISIBLE) {
+            switch (gravity) {
                 case Gravity.LEFT:
                     start = -childView.getTranslationX();
                     end = 0;
@@ -210,9 +214,9 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                     end = 0;
                     break;
             }
-        }else {
-            animator = ValueAnimator.ofInt( getChildMaxWidth(),0);
-            switch (gravity){
+        } else {
+            animator = ValueAnimator.ofInt(getChildMaxWidth(), 0);
+            switch (gravity) {
                 case Gravity.LEFT:
                     end = getChildMaxWidth();
                     start = childView.getTranslationX();
@@ -232,7 +236,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
             }
         }
         String str = null;
-        switch (gravity){
+        switch (gravity) {
             case Gravity.LEFT:
                 str = "居左";
                 break;
@@ -246,7 +250,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 str = "底部";
                 break;
         }
-       // QDLogger.e("动画"+str+",start="+start+",end="+end);
+        // QDLogger.e("动画"+str+",start="+start+",end="+end);
         final int m1 = (int) start;
         final int m2 = (int) end;
         animator = ValueAnimator.ofInt((int) start, (int) end);
@@ -256,9 +260,9 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 animatedValue = (int) animation.getAnimatedValue();
-                if(onVisiableChangedListener!=null){
-                    float progress = (animatedValue-m1)/(m2-m1);
-                    onVisiableChangedListener.onVisiableChanaged(visibility,progress);
+                if (onVisiableChangedListener != null) {
+                    float progress = (animatedValue - m1) / (m2 - m1);
+                    onVisiableChangedListener.onVisiableChanaged(visibility, progress);
                 }
                 requestLayout();
             }
@@ -268,7 +272,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isRunning = false;
-                if(hide_with_child&&(visibility==GONE||visibility==View.INVISIBLE)){
+                if (hide_with_child && (visibility == GONE || visibility == View.INVISIBLE)) {
                     setVisibility(INVISIBLE);
                 }
 /*
@@ -277,41 +281,45 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 }*/
 
                 childView.setVisibility(visibility);
-                VisibilityMap.put(childView.hashCode(),visibility);
+                VisibilityMap.put(childView.hashCode(), visibility);
             }
         });
     }
 
     OnVisiableChangedListener onVisiableChangedListener;
+
     public void setOnVisiableChangedListener(OnVisiableChangedListener onVisiableChangedListener) {
         this.onVisiableChangedListener = onVisiableChangedListener;
     }
 
-    public static interface OnVisiableChangedListener{
-       void onVisiableChanaged(int visibility,float progress);
+    public static interface OnVisiableChangedListener {
+        void onVisiableChanaged(int visibility, float progress);
     }
 
     /**
      * 获取子view最大宽度
+     *
      * @return
      */
     private int getChildMaxWidth() {
         int maxWidth = 0;
-        for (int i = 0; i <getChildCount(); i++) {
+        for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            maxWidth = Math.max(maxWidth,child.getWidth());
+            maxWidth = Math.max(maxWidth, child.getWidth());
         }
         return maxWidth;
     }
+
     /**
      * 获取子view最大高度
+     *
      * @return
      */
     private int getChildMaxHeight() {
         int maxHeight = 0;
-        for (int i = 0; i <getChildCount(); i++) {
+        for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            maxHeight = Math.max(maxHeight,child.getHeight());
+            maxHeight = Math.max(maxHeight, child.getHeight());
         }
         return maxHeight;
     }
@@ -324,10 +332,10 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
 
     @Override
     public void onRelease() {
-        if(VisibilityMap!=null){
+        if (VisibilityMap != null) {
             VisibilityMap.clear();
         }
-        if(animator!=null) {
+        if (animator != null) {
             animator.cancel();
         }
     }

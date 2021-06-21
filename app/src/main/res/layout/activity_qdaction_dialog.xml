@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -12,4 +12,4 @@
         android:dividerHeight="0dp"/>
     <!--android:fitsSystemWindows="true"-->
 
-</LinearLayout>
+</cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>

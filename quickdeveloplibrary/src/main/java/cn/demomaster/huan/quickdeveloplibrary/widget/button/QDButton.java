@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.button;
 
 import android.content.Context;
+
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.graphics.drawable.StateListDrawable;
@@ -31,7 +32,7 @@ public class QDButton extends AppCompatButton {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        StateListDrawable drawable=new StateListDrawable();
+        StateListDrawable drawable = new StateListDrawable();
         //如果要设置莫项为false，在前面加负号 ，比如android.R.attr.state_focesed标志true，-android.R.attr.state_focesed就标志false
 
         QDRoundButtonDrawable bg_normal = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);

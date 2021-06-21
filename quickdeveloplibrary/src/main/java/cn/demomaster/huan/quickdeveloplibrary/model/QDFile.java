@@ -7,6 +7,7 @@ public class QDFile extends File {
     private String creatTimeStr;
     private long creatTime;
     private long modifyTime;
+
     public QDFile(String pathname) {
         super(pathname);
     }
@@ -46,10 +47,11 @@ public class QDFile extends File {
 
     /**
      * 得到单位为毫秒
+     *
      * @return
      */
     public long getModifyTime() {
-        return modifyTime*1000;
+        return modifyTime * 1000;
     }
 
     public void setModifyTime(long modifyTime) {

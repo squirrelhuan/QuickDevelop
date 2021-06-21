@@ -48,7 +48,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.tex
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textSizeDefault;
 
 public class AjsLayoutInflater {
-
+    
     public static void parseXmlFilePath(String path) {
 
     }
@@ -98,6 +98,7 @@ public class AjsLayoutInflater {
 
     /**
      * 解析资源文件中的xml文件
+     *
      * @param <T>
      * @param context
      * @param xmlPath
@@ -172,7 +173,6 @@ public class AjsLayoutInflater {
                 //gridView.setRow(row);
                 //int column = Integer.valueOf(element.getAttribute("column"));
                 //gridView.setColunms(column);
-
                 String backgroundColor = element.getAttribute("backgroundColor");
                 try {
                     if (!TextUtils.isEmpty(backgroundColor)) {
@@ -182,7 +182,6 @@ public class AjsLayoutInflater {
                 } catch (Exception e) {
                     Log.e("", "背景色颜色解析失败：" + backgroundColor + "," + e.getMessage());
                 }
-
                 percentLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 view = percentLayout;
             } else if (element.getTag().equalsIgnoreCase("banner")) {

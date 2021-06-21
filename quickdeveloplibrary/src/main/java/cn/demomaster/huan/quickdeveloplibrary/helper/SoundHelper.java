@@ -49,6 +49,7 @@ public class SoundHelper {
 
     /**
      * 初始化
+     *
      * @param mcontext
      * @return
      */
@@ -65,6 +66,7 @@ public class SoundHelper {
 
     /**
      * 添加音頻
+     *
      * @param resId
      */
     public void addSound(int resId) {
@@ -113,7 +115,7 @@ public class SoundHelper {
             //Object val = soundMap.get(key);
             try {
                 soundPool.load(context, (Integer) key, 1);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.getMessage();
             }
         }
@@ -126,13 +128,13 @@ public class SoundHelper {
 
     //根据资源id播放音频
     public void playByResID(int id) {
-        if(soundPool!=null) {
+        if (soundPool != null) {
             try {
                 soundPool.play(getIndexByResID(id), 1, 1, 0, 0, 1);
-            }catch (Exception e){
-                QDLogger.e("未找到音频文件:"+e.toString());
+            } catch (Exception e) {
+                QDLogger.e("未找到音频文件:" + e.toString());
             }
-        }else {
+        } else {
             QDLogger.e("未找到音频文件");
         }
     }
@@ -149,22 +151,26 @@ public class SoundHelper {
         while (iter.hasNext()) {
             Object key = iter.next();
             if ((int) key == id) {
-                return index+1;
+                return index + 1;
             }
             index = index + 1;
         }
         return 1;
     }
-    public static int getRawIdByName(String resName) {
-            return getResId(resName,R.raw.class);
-    }
 
+    public static int getRawIdByName(String resName) {
+        return getResId(resName, R.raw.class);
+    }
     public static int getResId(String resName, Class<?> c) {
         try {
             Field idField = c.getDeclaredField(resName);
             return idField.getInt(idField);
         } catch (Exception e) {
-            QDLogger.e(e);
+            if(e instanceof NoSuchFieldException){
+                QDLogger.e("未找到音频资源："+resName);
+            }else {
+                QDLogger.e(e);
+            }
             return -1;
         }
     }

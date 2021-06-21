@@ -14,17 +14,17 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * description：滚动导航固定部分视图
  */
 public class QDNestedFixedView extends FrameLayout {
-    public QDNestedFixedView( Context context) {
+    public QDNestedFixedView(Context context) {
         super(context);
         init();
     }
 
-    public QDNestedFixedView( Context context,  AttributeSet attrs) {
+    public QDNestedFixedView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public QDNestedFixedView( Context context,  AttributeSet attrs, int defStyleAttr) {
+    public QDNestedFixedView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -38,13 +38,15 @@ public class QDNestedFixedView extends FrameLayout {
             }
         });
     }
+
     private int minHeight = 100;
     private int maxHeight;
     private float progress;
+
     public float getProgress() {
-        progress =  (float)(getMeasuredHeight()-minHeight)/(float)(maxHeight-minHeight);
-        QDLogger.d("getProgress: "+progress+",getMeasuredHeight="+getMeasuredHeight()+",maxHeight="+maxHeight+",minHeight="+minHeight);
-        return progress<0?0:progress;
+        progress = (float) (getMeasuredHeight() - minHeight) / (float) (maxHeight - minHeight);
+        QDLogger.d("getProgress: " + progress + ",getMeasuredHeight=" + getMeasuredHeight() + ",maxHeight=" + maxHeight + ",minHeight=" + minHeight);
+        return progress < 0 ? 0 : progress;
     }
 
     public void setProgress(float progress) {
@@ -68,6 +70,7 @@ public class QDNestedFixedView extends FrameLayout {
     }
 
     private OnVisibleHeightChangeListener onVisibleHeightChangeListener;
+
     public void setOnVisibleHeightChangeListener(OnVisibleHeightChangeListener onVisibleHeightChangeListener) {
         this.onVisibleHeightChangeListener = onVisibleHeightChangeListener;
     }
@@ -79,7 +82,7 @@ public class QDNestedFixedView extends FrameLayout {
     /**
      * 可视高度改变时触发
      */
-    public static interface OnVisibleHeightChangeListener{
-       void onChange(int px,int py);
+    public static interface OnVisibleHeightChangeListener {
+        void onChange(int px, int py);
     }
 }

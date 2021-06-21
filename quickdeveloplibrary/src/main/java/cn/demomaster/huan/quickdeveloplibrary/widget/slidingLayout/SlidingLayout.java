@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -37,17 +38,17 @@ public class SlidingLayout extends FrameLayout {
     }
 
     private void init() {
-        LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item,this);
-        RecyclerView list = (RecyclerView)findViewById(R.id.list);
+        LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item, this);
+        RecyclerView list = (RecyclerView) findViewById(R.id.list);
         TextView header = findViewById(R.id.header);
-        int colors[] ={Color.RED,Color.GREEN,Color.YELLOW};
-        header.setBackgroundColor(colors[(int) (Math.random()*10%3)]);
-        header.setText(Math.random()*10+"");
-        QDLogger.println("StackSlidingLayout",header.getText());
+        int colors[] = {Color.RED, Color.GREEN, Color.YELLOW};
+        header.setBackgroundColor(colors[(int) (Math.random() * 10 % 3)]);
+        header.setText(Math.random() * 10 + "");
+        QDLogger.println("StackSlidingLayout", header.getText());
         ComponentAdapter adapter = new ComponentAdapter(getContext());
         List<String> items = new ArrayList();
-        for(int i=0;i<30;i++){
-            items.add("A"+i);
+        for (int i = 0; i < 30; i++) {
+            items.add("A" + i);
         }
         adapter.updateList(items);
         list.setAdapter(adapter);
@@ -59,12 +60,12 @@ public class SlidingLayout extends FrameLayout {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        QDLogger.println("StackSlidingLayout","onSizeChanged w="+w+",h="+h+",oldw="+oldw+ ",oldh="+oldh);
-        if(w!=oldw||h!=oldh){
+        QDLogger.println("StackSlidingLayout", "onSizeChanged w=" + w + ",h=" + h + ",oldw=" + oldw + ",oldh=" + oldh);
+        if (w != oldw || h != oldh) {
             mHeaderViewHeight = findViewById(R.id.header).getMeasuredHeight();
         }
-        QDLogger.println("StackSlidingLayout","mHeaderViewHeight="+mHeaderViewHeight);
-       // super.onSizeChanged(w, h, oldw, oldh);
+        QDLogger.println("StackSlidingLayout", "mHeaderViewHeight=" + mHeaderViewHeight);
+        // super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public int getHeaderViewHeight() {

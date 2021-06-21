@@ -13,12 +13,15 @@ public class QDWebChromeClient extends WebChromeClient {
 
         boolean onNewTab(WebView view, String url);
     }
+
     public static interface OnProgressChanged {
         void onProgress(int progress);
+
         void onFinish();
     }
 
     private OnProgressChanged onProgressChanged;
+
     public void setOnProgressChanged(OnProgressChanged onProgressChanged) {
         this.onProgressChanged = onProgressChanged;
     }
@@ -31,9 +34,9 @@ public class QDWebChromeClient extends WebChromeClient {
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         //更新进度
-        if (onProgressChanged != null){
-                onProgressChanged.onProgress(newProgress);
-            if(newProgress==100){
+        if (onProgressChanged != null) {
+            onProgressChanged.onProgress(newProgress);
+            if (newProgress == 100) {
                 onProgressChanged.onFinish();
             }
         }

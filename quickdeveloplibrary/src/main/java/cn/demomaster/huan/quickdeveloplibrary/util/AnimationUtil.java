@@ -23,12 +23,12 @@ public class AnimationUtil {
         View mView;
         float startValue;
         float endValue;
-        long duration = 300;
+        long duration = 200;
         MyAnimatorUpdateListener animatorUpdateListener;
         View.OnClickListener onClickListener;
         ListenerTriggerType listenerTriggerType = ListenerTriggerType.onAnimationFinished;
 
-        public Builder(){
+        public Builder() {
             animatorUpdateListener = new MyAnimatorUpdateListener() {
                 @Override
                 void onAnimationUpdate(View view, ValueAnimator animation) {
@@ -38,6 +38,7 @@ public class AnimationUtil {
                 }
             };
         }
+
         public Builder setDuration(long duration) {
             this.duration = duration;
             return this;
@@ -55,7 +56,7 @@ public class AnimationUtil {
         }
 
         public Builder setAnimatorUpdateListener(MyAnimatorUpdateListener animatorUpdateListener) {
-            if(animatorUpdateListener!=null) {
+            if (animatorUpdateListener != null) {
                 this.animatorUpdateListener = animatorUpdateListener;
             }
             return this;
@@ -72,12 +73,12 @@ public class AnimationUtil {
         }
 
         public ValueAnimator apply() {
-            return addScaleAnimition(mView, startValue, endValue, duration, onClickListener, animatorUpdateListener,listenerTriggerType);
+            return addScaleAnimition(mView, startValue, endValue, duration, onClickListener, animatorUpdateListener, listenerTriggerType);
         }
     }
 
     public static ValueAnimator addScaleAnimition(final View targetView, final View.OnClickListener listener) {
-        return new AnimationUtil.Builder().setView(targetView).setValue(1, 0.8f).setOnClickListener(listener).setDuration(300).setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
+        return new AnimationUtil.Builder().setView(targetView).setValue(1, 0.8f).setOnClickListener(listener).setDuration(200).setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
             @Override
             void onAnimationUpdate(View view, ValueAnimator animation) {
                 float curValue = (float) animation.getAnimatedValue();
@@ -93,7 +94,7 @@ public class AnimationUtil {
      * @param targetView 要添加动画的目标view
      * @param listener   点击事件监听器，如果自身已经添加了点击事件可设置为null(这也是通用的参数)
      */
-    public static ValueAnimator addScaleAnimition(View targetView, float startValue, float endValue, long duration, final View.OnClickListener listener, MyAnimatorUpdateListener animatorUpdateListener,ListenerTriggerType listenerTriggerType) {
+    public static ValueAnimator addScaleAnimition(View targetView, float startValue, float endValue, long duration, final View.OnClickListener listener, MyAnimatorUpdateListener animatorUpdateListener, ListenerTriggerType listenerTriggerType) {
         final int[] location = new int[2];
         targetView.getLocationOnScreen(location);
 
@@ -118,6 +119,7 @@ public class AnimationUtil {
                 //animatorUpdateListener.onAnimationUpdate(animator);
             }
         });*/
+        //targetView.setOnClickListener(listener);
         targetView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -141,7 +143,7 @@ public class AnimationUtil {
                         }
                     }
                     animator.reverse();
-                    Log.i("CGQ", "event type = 无效點擊");
+                    QDLogger.println("CGQ", "点击动画 无效点击");
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     animator.reverse();
                 }
@@ -158,7 +160,7 @@ public class AnimationUtil {
      * @param listener   点击事件监听器，如果自身已经添加了点击事件可设置为null(这也是通用的参数)
      */
     public static ValueAnimator addScaleAnimition2(View targetView, final View.OnClickListener listener) {
-        return new AnimationUtil.Builder().setView(targetView).setValue(1, 1.2f).setOnClickListener(listener).setDuration(300).setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
+        return new AnimationUtil.Builder().setView(targetView).setValue(1, 1.2f).setOnClickListener(listener).setDuration(200).setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
             @Override
             void onAnimationUpdate(View view, ValueAnimator animation) {
                 float curValue = (float) animation.getAnimatedValue();
@@ -214,7 +216,7 @@ public class AnimationUtil {
         }
 
         public void setTriggerType(ListenerTriggerType triggerType) {
-            if(triggerType!=null) {
+            if (triggerType != null) {
                 this.triggerType = triggerType;
             }
         }
@@ -231,25 +233,26 @@ public class AnimationUtil {
        /* public void onTouchDown(){
             canDoClickEvent = false;
         }*/
+
         /**
          * 手势触发点击效果
          */
-        public void doClick(){
-            switch (triggerType){
+        public void doClick() {
+            switch (triggerType) {
                 case None://无需判断当前动画状态，直接触发点击事件
                     triggerClick();
                     break;
                 case onAnimationFinished://等待动画执行结束后，触发点击事件
-                    if((float)valueAnimator.getAnimatedValue()==endValue){
+                    if ((float) valueAnimator.getAnimatedValue() == endValue) {
                         triggerClick();
-                    }else {
+                    } else {
                         canDoClickEvent = true;
                     }
                     break;
                 case onAnimationReverseed://等待动画回滚结束后，触发点击事件
-                    if((float)valueAnimator.getAnimatedValue()==startValue){
+                    if ((float) valueAnimator.getAnimatedValue() == startValue) {
                         triggerClick();
-                    }else {
+                    } else {
                         canDoClickEvent = true;
                     }
                     break;
@@ -259,14 +262,14 @@ public class AnimationUtil {
         /**
          * 执行点击事件
          */
-        private void triggerClick(){
+        private void triggerClick() {
             canDoClickEvent = false;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     valueAnimator.reverse();
                 }
-            },0);
+            }, 0);
             if (onClickListener != null) {
                 View.OnClickListener ref = onClickListener;
                 try {
@@ -286,15 +289,15 @@ public class AnimationUtil {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             onAnimationUpdate(mView, animation);
-            if(canDoClickEvent){
-                switch (triggerType){
+            if (canDoClickEvent) {
+                switch (triggerType) {
                     case onAnimationFinished:
-                        if((float)animation.getAnimatedValue()==endValue){
+                        if ((float) animation.getAnimatedValue() == endValue) {
                             triggerClick();
                         }
                         break;
                     case onAnimationReverseed:
-                        if((float)animation.getAnimatedValue()==startValue){
+                        if ((float) animation.getAnimatedValue() == startValue) {
                             triggerClick();
                         }
                         break;
@@ -306,7 +309,7 @@ public class AnimationUtil {
     }
 
     //触发listener类型
-    public static enum ListenerTriggerType{
+    public static enum ListenerTriggerType {
         onAnimationFinished,//当前动画结束后执行
         onAnimationReverseed,//关闭（回滚）动画结束后执行
         onAnimationStarted,//开启动画结束后执行

@@ -40,13 +40,14 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     /**
      * 获取fragment列表，注意过滤掉fragment中嵌套的fragment。
+     *
      * @return
      */
     public List<Fragment> getFragments() {
-        List<Fragment> fragmentList =new ArrayList<>();
+        List<Fragment> fragmentList = new ArrayList<>();
         List<Fragment> fragmentList2 = getFragmentManager().getFragments();
-        for (Fragment fragment:fragmentList2){
-            if(fragment instanceof QDFragment){
+        for (Fragment fragment : fragmentList2) {
+            if (fragment instanceof QDFragment) {
                 fragmentList.add(fragment);
             }
         }
@@ -115,6 +116,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     /**
      * 获取当前激活状态的fragment，即最顶层的fragment活动页面
+     *
      * @return
      */
     public Fragment getCurrentFragment() {
@@ -154,7 +156,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
         fragment.setFragmentHelper(this);
         if (fragmentManager.getBackStackEntryCount() == 0) {
             fragment.setRootFragment(true);
-            QDLogger.d("fragment",fragment.getClass().getSimpleName() + " is root fragment");
+            QDLogger.d("fragment", String.format("[%s] is root fragment", fragment.getClass().getSimpleName()));
         }
 
         this.containerViewId = containerViewId;
@@ -163,8 +165,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     public void addFragment(QDFragment fragment, int containerViewId) {
         QDFragment currentFragment = (QDFragment) getCurrentFragment();
-        QDLogger.d("fragment"," addFragment " + fragment.getClass().getSimpleName() + ",containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
-
+        QDLogger.d("fragment", "添加Fragment[" + fragment.getClass().getSimpleName() + "],containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             transaction.setCustomAnimations(animation1, animation2,
@@ -183,6 +184,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
 
     /**
      * 拼接fragment的Tag
+     *
      * @param fragment
      * @return
      */
@@ -191,7 +193,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
     }
 
     public void replaceFragment(QDFragment fragment, int containerViewId) {
-        QDLogger.println("fragment"," replaceFragment:" + fragment.getClass().getSimpleName() + ",containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
+        QDLogger.println("fragment", "replaceFragment:" + fragment.getClass().getSimpleName() + ",containerViewId=" + containerViewId + ",getFragments()=" + getFragments().size());
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             transaction.setCustomAnimations(animation1, animation2,
@@ -224,7 +226,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
         for (Fragment fragment : getFragments()) {
             str += fragment.getClass().getSimpleName() + ",";
         }
-        QDLogger.println("fragment","onBackStackChanged " + str);
+        QDLogger.println("fragment", "onBackStackChanged " + str);
     }
 
     @Override
@@ -287,7 +289,7 @@ public class FragmentHelper implements FragmentManager.OnBackStackChangedListene
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(i);
             QDLogger.d(backStackEntry.getName());
             if (backStackEntry.getName().startsWith(fragmentClass.getSimpleName() + "-")) {
-                QDFragment currentFragment = (QDFragment)fragmentManager.findFragmentByTag(backStackEntry.getName());
+                QDFragment currentFragment = (QDFragment) fragmentManager.findFragmentByTag(backStackEntry.getName());
                 QDLogger.d("fragment", "backTo 强制 resume=>" + currentFragment);
                 if (currentFragment != null) {
                     currentFragment.doResume();

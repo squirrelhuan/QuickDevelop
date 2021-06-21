@@ -38,10 +38,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 @ActivityPager(name = "ExeCommand", preViewClass = TextView.class, resType = ResType.Custome)
 public class ExeCommandFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.btn_exe_02)
     QDButton btn_exe_02;

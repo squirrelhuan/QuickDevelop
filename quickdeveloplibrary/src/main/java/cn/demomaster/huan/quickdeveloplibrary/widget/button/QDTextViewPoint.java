@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatTextView;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -98,6 +99,7 @@ public class QDTextViewPoint extends AppCompatTextView {
         QDLogger.println( "pointGravity: " + pointGravity);
         QDLogger.println( "showPoint: " + showPoint);*/
     }
+
     private int center_x, center_y, mwidth, width, height;
 
     @Override
@@ -110,18 +112,19 @@ public class QDTextViewPoint extends AppCompatTextView {
 
     boolean hollowOut;
     int hollowColor = Color.WHITE;
-    float hollowRadius  = 5;
+    float hollowRadius = 5;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(hollowOut){
+        if (hollowOut) {
             //禁用硬件加速
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            RectF rectf = new RectF(0,0,getWidth(),getHeight());
+            RectF rectf = new RectF(0, 0, getWidth(), getHeight());
             paint = new Paint();
             paint.setColor(hollowColor);
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.XOR));
-            canvas.drawRoundRect(rectf,hollowRadius,hollowRadius,paint);
+            canvas.drawRoundRect(rectf, hollowRadius, hollowRadius, paint);
             paint.setXfermode(null);
         }
         if (showPoint) {
@@ -151,7 +154,7 @@ public class QDTextViewPoint extends AppCompatTextView {
         paint = new Paint();
         paint.setTextSize(pointTextSize);
 
-        if(!TextUtils.isEmpty(pointText)) {
+        if (!TextUtils.isEmpty(pointText)) {
             // 文字宽
             textWidth = paint.measureText(pointText);
             // 文字baseline在y轴方向的位置
@@ -191,7 +194,7 @@ public class QDTextViewPoint extends AppCompatTextView {
     float baseLineY_draw;
 
     private void drawPoint(Canvas canvas) {
-        if(point!=null) {
+        if (point != null) {
             paint.setColor(pointBackgroundColor);
             //canvas.drawCircle(point.x, point.y, pointRadius, paint);
             RectF rect = new RectF(point.x - textWidth_draw / 2, point.y - baseLineY_draw / 2, point.x + textWidth_draw / 2, point.y + baseLineY_draw / 2);

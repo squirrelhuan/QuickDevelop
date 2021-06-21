@@ -33,7 +33,6 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.DeviceModel;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -43,6 +42,7 @@ public class QDFileUtil {
 
     /**
      * 初始化保存路径
+     *
      * @return
      */
     private static String makeAppPath() {
@@ -56,6 +56,7 @@ public class QDFileUtil {
 
     /**
      * 保存Bitmap到sdcard
+     *
      * @param b 得到的图片
      */
     public static String saveBitmap(Bitmap b) {
@@ -93,6 +94,7 @@ public class QDFileUtil {
 
     /**
      * 写数据到SD中的文件
+     *
      * @param fileName
      * @param write_str
      * @throws IOException
@@ -101,20 +103,22 @@ public class QDFileUtil {
                                            String write_str, boolean append) throws IOException {
         //Environment.getExternalStorageDirectory(),
         File file = new File(dirPath + File.separator + fileName);
-        writeFileSdcardFile(file,write_str,append);
+        writeFileSdcardFile(file, write_str, append);
     }
+
     public static void writeFileSdcardFile(String fileName,
                                            String write_str, boolean append) {
         File file = new File(fileName);
-        writeFileSdcardFile(file,write_str,append);
+        writeFileSdcardFile(file, write_str, append);
     }
+
     public static void writeFileSdcardFile(File file,
                                            String write_str, boolean append) {
-        writeFile(file,write_str.getBytes(),append);
+        writeFile(file, write_str.getBytes(), append);
     }
 
     public static void writeFile(File file,
-                                           byte[] bytes, boolean append) {
+                                 byte[] bytes, boolean append) {
         FileOutputStream fout = null;
         try {
             if (!file.exists()) {
@@ -143,9 +147,10 @@ public class QDFileUtil {
     public static String readFileSdcardFile(String fileName) throws IOException {
         return readFileSdcardFile(new File(fileName));
     }
+
     // 读SD中的文件
     public static String readFileSdcardFile(File file) throws IOException {
-        if(file==null||!file.exists()){
+        if (file == null || !file.exists()) {
             return null;
         }
         String res = null;
@@ -177,12 +182,13 @@ public class QDFileUtil {
 
     /**
      * 从项目中res文件目录下复制文件到指定目录
+     *
      * @param context
      * @param path
      * @param resourceId
      * @return
      */
-    public static String copyFromResource(Context context,String path,int resourceId){
+    public static String copyFromResource(Context context, String path, int resourceId) {
         File file = new File(path);
         final BufferedInputStream in = new BufferedInputStream(context.getResources().openRawResource(resourceId));
         final BufferedOutputStream out;
@@ -294,7 +300,7 @@ public class QDFileUtil {
             // 删除子目录
             else if (file.isDirectory()) {
                 flag = deleteDirectory(file.getAbsolutePath());
-                if (!flag)break;
+                if (!flag) break;
             }
         }
         if (!flag) {
@@ -338,11 +344,11 @@ public class QDFileUtil {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
+            cursor.close();
         }
-        cursor.close();
         return res;
     }
 
@@ -493,16 +499,16 @@ public class QDFileUtil {
         System.out.println(rs);
     }
 
-    public static boolean existsFile(String path){
+    public static boolean existsFile(String path) {
         File file = new File(path);
         return file.exists();
     }
+
     public static String createFile(File file) {
         try {
             if (!file.exists()) {
                 //创建目录之后再创建文件
                 createDir(file.getParentFile().getAbsolutePath());
-                System.out.println("创建文件:" + file.getAbsolutePath());
                 if (file.getParentFile().exists()) {
                     file.createNewFile();
                 }
@@ -513,10 +519,15 @@ public class QDFileUtil {
         return file.getAbsolutePath();
     }
 
+    /**
+     * 创建文件夹
+     *
+     * @param dirPath
+     * @return
+     */
     public static String createDir(String dirPath) {
         File file = new File(dirPath);
-        if(!file.exists()) {
-            System.out.println("创建文件夹:" + file.getAbsolutePath());
+        if (!file.exists()) {
             file.mkdirs();
         }
         return dirPath;
@@ -797,6 +808,25 @@ public class QDFileUtil {
             return true;
         else
             return false;
+    }
+
+    public static Uri getUrifromFile(Context context, File file) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return getUrifromPath1(context, file.getAbsolutePath());
+        } else {
+            return Uri.fromFile(file);
+        }
+    }
+
+    public static Uri getUrifromPath1(Context context, String path) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ContentValues contentValues = new ContentValues(1);
+            contentValues.put(MediaStore.Images.Media.DATA, path);
+            return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
+            //fileUri = FileProvider.getUriForFile(context, "cn.demomaster.huan.quickdeveloplibrary.fileprovider", pictureFile);
+        } else {
+            return Uri.parse(path);
+        }
     }
 
 }

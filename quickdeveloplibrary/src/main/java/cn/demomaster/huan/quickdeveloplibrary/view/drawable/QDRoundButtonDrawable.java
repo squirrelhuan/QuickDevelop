@@ -22,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  * <li>使用 {@link #setIsRadiusAdjustBounds(boolean)} 设置圆角大小是否自动适应为 {@link android.view.View} 的高度的一半, 默认为 true。</li>
  * </ul>
  */
-public class QDRoundButtonDrawable extends GradientDrawable  {
+public class QDRoundButtonDrawable extends GradientDrawable {
 
     /**
      * 圆角大小是否自适应为 View 的高度的一般
@@ -37,7 +37,7 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
     /**
      * 设置按钮的背景色(只支持纯色,不支持 Bitmap 或 Drawable)
      */
-    public void setBgData(@Nullable ColorStateList colors,int state) {
+    public void setBgData(@Nullable ColorStateList colors, int state) {
         colorState = state;
         setBgData(colors);
     }
@@ -113,14 +113,17 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
                 || super.isStateful();
     }
 
-    int padding_internal =10;//内部边距，但是看起来效果更像margin
+    int margin_left = 0;
+    int margin_top = 0;
+    int margin_right = 0;
+    int margin_bottom = 0;
+
     @Override
     protected void onBoundsChange(Rect r) {
-
-        r.left=r.left+padding_internal;
-        r.top=r.top+padding_internal;
-        r.right=r.right-padding_internal;
-        r.bottom=r.bottom-padding_internal;
+        r.left = r.left + margin_left;
+        r.top = r.top + margin_top;
+        r.right = r.right - margin_right;
+        r.bottom = r.bottom - margin_bottom;
         super.onBoundsChange(r);
         if (mRadiusAdjustBounds) {
             // 修改圆角为短边的一半
@@ -155,7 +158,7 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
             isRadiusAdjustBounds = false;
         } else {
             bg.setCornerRadius(mRadius);
-            if(mRadius > 0){
+            if (mRadius > 0) {
                 isRadiusAdjustBounds = false;
             }
         }
@@ -164,13 +167,12 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
     }
 
     /**
-     *
      * @param context
      * @param attrs
      * @param defStyleAttr
      * @return
      */
-    public static QDRoundButtonDrawable fromAttributeStateSet(Context context, AttributeSet attrs, int defStyleAttr,int state) {
+    public static QDRoundButtonDrawable fromAttributeStateSet(Context context, AttributeSet attrs, int defStyleAttr, int state) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDButton, defStyleAttr, 0);
         ColorStateList colorBg = typedArray.getColorStateList(R.styleable.QDButton_qd_backgroundColor);
         ColorStateList colorBorder = typedArray.getColorStateList(R.styleable.QDButton_qd_borderColor);
@@ -184,7 +186,7 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
         typedArray.recycle();
 
         QDRoundButtonDrawable bg = new QDRoundButtonDrawable();
-        bg.setBgData(colorBg,state);
+        bg.setBgData(colorBg, state);
         bg.setStrokeData(borderWidth, colorBorder);
         if (mRadiusTopLeft > 0 || mRadiusTopRight > 0 || mRadiusBottomLeft > 0 || mRadiusBottomRight > 0) {
             float[] radii = new float[]{
@@ -197,7 +199,7 @@ public class QDRoundButtonDrawable extends GradientDrawable  {
             isRadiusAdjustBounds = false;
         } else {
             bg.setCornerRadius(mRadius);
-            if(mRadius > 0){
+            if (mRadius > 0) {
                 isRadiusAdjustBounds = false;
             }
         }

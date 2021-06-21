@@ -133,6 +133,7 @@ public class LoopView2 extends View {
     }
 
     int allItemHeight;
+
     private void initData() {
         if (this.mDataList == null) {
             throw new IllegalArgumentException("data list must not be null!");
@@ -143,9 +144,9 @@ public class LoopView2 extends View {
             this.mTextPaint.setTypeface(Typeface.MONOSPACE);
             this.mTextPaint.setTextSize((float) this.mTextSize);
             this.measureTextWidthHeight();
-            this.lineHeight=mMaxTextHeight*lineSpacingMultiplier;
-            this.allItemHeight=(int)lineHeight*mDataList.size();
-            this.mTotalScrollY = (int)((mCurrentIndex)*lineHeight);
+            this.lineHeight = mMaxTextHeight * lineSpacingMultiplier;
+            this.allItemHeight = (int) lineHeight * mDataList.size();
+            this.mTotalScrollY = (int) ((mCurrentIndex) * lineHeight);
 
             this.invalidate();
         }
@@ -236,11 +237,11 @@ public class LoopView2 extends View {
         } else {
             super.onDraw(canvas);
 
-            Log.d("CGQ", "mTotalScrollY=" + mTotalScrollY+",allItemHeight="+allItemHeight);
-            if(mTotalScrollY<0){
-                mTotalScrollY=0;
-            }else if(mTotalScrollY>allItemHeight){
-                mTotalScrollY=allItemHeight;
+            Log.d("CGQ", "mTotalScrollY=" + mTotalScrollY + ",allItemHeight=" + allItemHeight);
+            if (mTotalScrollY < 0) {
+                mTotalScrollY = 0;
+            } else if (mTotalScrollY > allItemHeight) {
+                mTotalScrollY = allItemHeight;
             }
             int mChangingItem = (int) ((float) this.mTotalScrollY / this.lineHeight);
             this.mCurrentIndex = mChangingItem % this.mDataList.size();
@@ -265,7 +266,7 @@ public class LoopView2 extends View {
                 }
             }
             //Log.d("CGQ", "startIndex=" + startIndex);
-            int count_t = ((data1.length - startIndex-1) > mDrawItemsCount+1 ? mDrawItemsCount +1: (data1.length - startIndex));
+            int count_t = ((data1.length - startIndex - 1) > mDrawItemsCount + 1 ? mDrawItemsCount + 1 : (data1.length - startIndex));
 
             String[] data2 = new String[count_t];
             for (int i = 0; i < data2.length; i++) {
@@ -349,7 +350,7 @@ public class LoopView2 extends View {
     }
 
     public int getCurrentIndex() {
-        return mCurrentIndex+mDrawItemsCount/2;
+        return mCurrentIndex + mDrawItemsCount / 2;
     }
 
     public void setCurrentIndex(int mCurrentIndex) {
@@ -391,7 +392,6 @@ public class LoopView2 extends View {
     }
 
 
-
     class FlingRunnable implements Runnable {
         float velocity;
         final float velocityY;
@@ -423,10 +423,10 @@ public class LoopView2 extends View {
                 LoopView2.this.mTotalScrollY = LoopView2.this.mTotalScrollY - i;
                 float itemHeight = LoopView2.this.lineSpacingMultiplier * (float) LoopView2.this.mMaxTextHeight;
 
-                    if (LoopView2.this.mTotalScrollY >= (int) ((float) (LoopView2.this.mDataList.size() - 1) * itemHeight)) {
-                        LoopView2.this.mTotalScrollY = (int) ((float) (LoopView2.this.mDataList.size() - 1) * itemHeight);
-                        this.velocity = -40.0F;
-                    }
+                if (LoopView2.this.mTotalScrollY >= (int) ((float) (LoopView2.this.mDataList.size() - 1) * itemHeight)) {
+                    LoopView2.this.mTotalScrollY = (int) ((float) (LoopView2.this.mDataList.size() - 1) * itemHeight);
+                    this.velocity = -40.0F;
+                }
 
                 if (this.velocity < 0.0F) {
                     this.velocity += 20.0F;
@@ -511,7 +511,7 @@ public class LoopView2 extends View {
 
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             Log.i(LoopView2.TAG, "LoopViewGestureListener->onScroll");
-            int temp_scroll  = (int) ((float) LoopView2.this.mTotalScrollY + distanceY);
+            int temp_scroll = (int) ((float) LoopView2.this.mTotalScrollY + distanceY);
 
             allItemHeight = (int) ((float) (LoopView2.this.mDataList.size() - 1) * LoopView2.this.lineHeight);
             if (temp_scroll >= allItemHeight) {

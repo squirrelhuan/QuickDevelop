@@ -11,7 +11,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/tv_root_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:text=""
+                android:textColor="@color/black"/>
             <TextView
                 android:id="@+id/tv_info"
                 android:layout_width="match_parent"

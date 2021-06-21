@@ -17,6 +17,7 @@ public class FloatViewImp {
 
     /**
      * 生成子view 不要重复创建
+     *
      * @param activity
      * @return
      */

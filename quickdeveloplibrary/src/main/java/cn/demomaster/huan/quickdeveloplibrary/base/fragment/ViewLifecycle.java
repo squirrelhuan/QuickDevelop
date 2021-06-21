@@ -35,7 +35,7 @@ public interface ViewLifecycle extends QDBaseInterface {
     void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
 
     void doResume();
-    
+
     void onFragmentResume();//为了解决 多个fragment存在时，activity的resume事件，影响到所有fragment的resume触发
 
     void doPause();

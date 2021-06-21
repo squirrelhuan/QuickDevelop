@@ -22,11 +22,6 @@ public class ColorPickerFragment extends BaseFragment {
     TextView tv_color;
     ColorPicker cp_color;
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

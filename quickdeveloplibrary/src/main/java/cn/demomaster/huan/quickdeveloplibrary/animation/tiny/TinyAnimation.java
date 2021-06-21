@@ -11,7 +11,7 @@ import android.view.animation.TranslateAnimation;
 public class TinyAnimation {
 
     public static void payRandomAnimition(View targetView) {
-        if (targetView.getParent() != null && targetView.getParent() instanceof View) {
+        if (targetView!=null&&targetView.getParent() != null && targetView.getParent() instanceof View) {
             View parentView = (View) targetView.getParent();
             // 组合动画设置
             AnimationSet setAnimation = new AnimationSet(true);
@@ -24,25 +24,25 @@ public class TinyAnimation {
             setAnimation.setRepeatCount(1);// 设置了循环一次,但无效
 
             // 旋转动画
-            Animation rotate = new RotateAnimation(0,360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+            Animation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             rotate.setDuration(1000);
             rotate.setRepeatMode(Animation.RESTART);
             rotate.setRepeatCount(Animation.INFINITE);
 
             // 平移动画
-            Animation translate = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_PARENT,-0.5f,
-                    TranslateAnimation.RELATIVE_TO_PARENT,0.5f,
-                    TranslateAnimation.RELATIVE_TO_SELF,0
-                    ,TranslateAnimation.RELATIVE_TO_SELF,0);
+            Animation translate = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_PARENT, -0.5f,
+                    TranslateAnimation.RELATIVE_TO_PARENT, 0.5f,
+                    TranslateAnimation.RELATIVE_TO_SELF, 0
+                    , TranslateAnimation.RELATIVE_TO_SELF, 0);
             translate.setDuration(10000);
 
             // 透明度动画
-            Animation alpha = new AlphaAnimation(1,0);
+            Animation alpha = new AlphaAnimation(1, 0);
             alpha.setDuration(3000);
             alpha.setStartOffset(7000);
 
             // 缩放动画
-            Animation scale1 = new ScaleAnimation(1,0.5f,1,0.5f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+            Animation scale1 = new ScaleAnimation(1, 0.5f, 1, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             scale1.setDuration(1000);
             scale1.setStartOffset(4000);
 

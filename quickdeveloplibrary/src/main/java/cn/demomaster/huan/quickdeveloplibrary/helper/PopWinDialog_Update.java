@@ -72,7 +72,7 @@ public class PopWinDialog_Update {
     public void show() {
         //View root = getContentView(context);
         //showAtLocation(root,  Gravity.CENTER, 0,0);
-        if (customDialog != null&&!customDialog.isShowing()) {
+        if (customDialog != null && !customDialog.isShowing()) {
             customDialog.show();
         }
     }

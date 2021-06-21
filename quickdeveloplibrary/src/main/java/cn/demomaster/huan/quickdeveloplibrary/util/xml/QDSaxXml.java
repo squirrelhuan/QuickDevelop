@@ -24,26 +24,27 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class QDSaxXml {
 
-    public static void parseXmlFilePath(String path){
+    public static void parseXmlFilePath(String path) {
 
     }
-    public static void parseXmlFile(File file){
+
+    public static void parseXmlFile(File file) {
 
     }
-    public static void parseXmlString(String txt){
+
+    public static void parseXmlString(String txt) {
 
     }
 
     // 泛型方法 printArray
-    public static < E > void printArray( E[] inputArray )
-    {
+    public static <E> void printArray(E[] inputArray) {
         // 输出数组元素
-        for ( E element : inputArray ){
-           System.out.printf( "%s ", element );
+        for (E element : inputArray) {
+            System.out.printf("%s ", element);
         }
     }
 
-    public static < T > void parseXmlAssets(Context context, String xmlPath, Class<T> clazz, QDSaxHandler.OnParseCompleteListener onParseCompleteListener){
+    public static <T> void parseXmlAssets(Context context, String xmlPath, Class<T> clazz, QDSaxHandler.OnParseCompleteListener onParseCompleteListener) {
         XMLReader xr = null;
         try {
             //使用工厂方法初始化SAXParserFactory变量spf
@@ -53,7 +54,7 @@ public class QDSaxXml {
             //通过SAXParser得到XMLReader的实例
             xr = sp.getXMLReader();
 
-            QDSaxHandler handler = new QDSaxHandler(clazz,onParseCompleteListener);
+            QDSaxHandler handler = new QDSaxHandler(clazz, onParseCompleteListener);
             xr.setContentHandler(handler);
             xr.setErrorHandler(handler);
 

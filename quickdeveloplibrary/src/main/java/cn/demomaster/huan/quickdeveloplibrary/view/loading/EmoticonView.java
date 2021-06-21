@@ -125,7 +125,7 @@ public class EmoticonView extends ImageTextView {
                 mPaint.setColor(mainColor);
                 mPaint.setStyle(Paint.Style.STROKE);
                 if (drawCricleBackground)
-                    canvas.drawCircle(a, b, r0-mPaint.getStrokeWidth(), mPaint);
+                    canvas.drawCircle(a, b, r0 - mPaint.getStrokeWidth(), mPaint);
                 mPaint.setColor(getResources().getColor(R.color.white));
                 mPaint.setColor(mainColor);
                 mPaint.setStyle(Paint.Style.FILL);
@@ -136,10 +136,10 @@ public class EmoticonView extends ImageTextView {
                 //path1.moveTo(pointF1.x - w1, pointF1.y);
                 //path1.quadTo(pointF1.x, pointF1.y - h1 * progress, pointF1.x + w1, pointF1.y);
                 //canvas.drawPath(path1, mPaint);
-                canvas.drawCircle(pointF1.x,pointF1.y,w1,mPaint);
+                canvas.drawCircle(pointF1.x, pointF1.y, w1, mPaint);
 
                 PointF pointF2 = new PointF(width * 3 / 4 - w1 / 2, height / 3);
-                canvas.drawCircle(pointF2.x,pointF2.y,w1,mPaint);
+                canvas.drawCircle(pointF2.x, pointF2.y, w1, mPaint);
                 /*Path path2 = new Path();
                 path2.moveTo(pointF2.x - w1, pointF2.y);
                 path2.quadTo(pointF2.x, pointF2.y - h1 * progress, pointF2.x + w1, pointF2.y);
@@ -148,8 +148,8 @@ public class EmoticonView extends ImageTextView {
                 mPaint.setStyle(Paint.Style.STROKE);
                 PointF pointF3 = new PointF(width / 2, height * 3 / 4);
                 Path path = new Path();
-                path.moveTo(pointF3.x - r / 2*progress, pointF3.y);
-                path.quadTo(pointF3.x, pointF3.y + r * 2 / 5 * progress, pointF3.x + r / 2*progress, pointF3.y);
+                path.moveTo(pointF3.x - r / 2 * progress, pointF3.y);
+                path.quadTo(pointF3.x, pointF3.y + r * 2 / 5 * progress, pointF3.x + r / 2 * progress, pointF3.y);
                 canvas.drawPath(path, mPaint);
 
                 break;
@@ -157,7 +157,7 @@ public class EmoticonView extends ImageTextView {
                 mPaint.setColor(mainColor);
                 mPaint.setStyle(Paint.Style.STROKE);
                 if (drawCricleBackground)
-                    canvas.drawCircle(a, b, r0-mPaint.getStrokeWidth(), mPaint);
+                    canvas.drawCircle(a, b, r0 - mPaint.getStrokeWidth(), mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
@@ -186,7 +186,7 @@ public class EmoticonView extends ImageTextView {
                 mPaint.setColor(mainColor);
                 mPaint.setStyle(Paint.Style.STROKE);
                 if (drawCricleBackground)
-                    canvas.drawCircle(a, b, r0-mPaint.getStrokeWidth(), mPaint);
+                    canvas.drawCircle(a, b, r0 - mPaint.getStrokeWidth(), mPaint);
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
@@ -194,20 +194,20 @@ public class EmoticonView extends ImageTextView {
                 float C_h1 = 0;
                 PointF C_pointF1 = new PointF(width / 4 + C_w1 / 2, height / 3);
                 Path C_path1 = new Path();
-                C_path1.moveTo(C_pointF1.x - C_w1* progress, C_pointF1.y);
-                C_path1.quadTo(C_pointF1.x, C_pointF1.y - C_h1 * progress, C_pointF1.x + C_w1* progress, C_pointF1.y);
+                C_path1.moveTo(C_pointF1.x - C_w1 * progress, C_pointF1.y);
+                C_path1.quadTo(C_pointF1.x, C_pointF1.y - C_h1 * progress, C_pointF1.x + C_w1 * progress, C_pointF1.y);
                 canvas.drawPath(C_path1, mPaint);
 
                 PointF C_pointF2 = new PointF(width * 3 / 4 - C_w1 / 2, height / 3);
                 Path C_path2 = new Path();
-                C_path2.moveTo(C_pointF2.x - C_w1* progress, C_pointF2.y);
-                C_path2.quadTo(C_pointF2.x, C_pointF2.y - C_h1 * progress, C_pointF2.x + C_w1* progress, C_pointF2.y);
+                C_path2.moveTo(C_pointF2.x - C_w1 * progress, C_pointF2.y);
+                C_path2.quadTo(C_pointF2.x, C_pointF2.y - C_h1 * progress, C_pointF2.x + C_w1 * progress, C_pointF2.y);
                 canvas.drawPath(C_path2, mPaint);
 
                 PointF C_pointF3 = new PointF(width / 2, height * 3 / 4);
                 Path C_path = new Path();
-                C_path.moveTo(C_pointF3.x - r / 3*progress, C_pointF3.y);
-                C_path.quadTo(C_pointF3.x, C_pointF3.y , C_pointF3.x + r / 3*progress, C_pointF3.y);
+                C_path.moveTo(C_pointF3.x - r / 3 * progress, C_pointF3.y);
+                C_path.quadTo(C_pointF3.x, C_pointF3.y, C_pointF3.x + r / 3 * progress, C_pointF3.y);
                 canvas.drawPath(C_path, mPaint);
                 break;
             case LOADING://加载
@@ -230,6 +230,7 @@ public class EmoticonView extends ImageTextView {
     }
 
     private float progress;
+
     public void setStateType(LoadStateType stateType) {
         stateType_target = stateType;
         if (this.stateType != stateType) {
@@ -249,6 +250,7 @@ public class EmoticonView extends ImageTextView {
             invalidate();
         }
     };
+
     public void show() {
         if (animator == null) {
             init();
@@ -295,6 +297,7 @@ public class EmoticonView extends ImageTextView {
             }
         }
     };
+
     //隐藏后显示
     public void hideAndShow(final LoadStateType stateType1) {
         this.stateType1 = stateType1;
@@ -332,13 +335,13 @@ public class EmoticonView extends ImageTextView {
         if (animator != null) {
             animator.cancel();
         }
-        if(showUpdateListener!=null) {
+        if (showUpdateListener != null) {
             showUpdateListener = null;
         }
-        if(hideUpdateListener!=null){
+        if (hideUpdateListener != null) {
             hideUpdateListener = null;
         }
-        if(updateListener!=null){
+        if (updateListener != null) {
             updateListener = null;
         }
     }

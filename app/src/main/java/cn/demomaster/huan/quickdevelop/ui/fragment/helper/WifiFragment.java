@@ -40,7 +40,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
@@ -66,11 +66,6 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
 @ActivityPager(name = "wifi", preViewClass = TextView.class, resType = ResType.Custome)
 public class WifiFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     View mView;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -91,6 +86,7 @@ public class WifiFragment extends BaseFragment {
         return (ViewGroup) mView;
     }
 
+    NetworkHelper networkHelper;
     public void initView(View rootView) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         WifiUtil.getInstance().init(this.getContext());
@@ -105,7 +101,7 @@ public class WifiFragment extends BaseFragment {
                 getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
             }
         });
-        NetworkUtil.registerNetworkStatusChangedListener(getContext(),new NetWorkChangReceiver.OnNetStateChangedListener() {
+        networkHelper.registerListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
                 QDLogger.e("wifi onConnected");
@@ -224,7 +220,7 @@ public class WifiFragment extends BaseFragment {
                 .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
                 .addAction("连接", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         //Toast.makeText(mContext, "input = " + value, Toast.LENGTH_SHORT).show();
                         //连接返回editview的value
                         WifiConfiguration configuration = WifiUtil.getInstance().createWifiInfo(scanResultList.get(position).getScanResult().SSID, tag.toString(), scanResultList.get(position).getPasswordType());

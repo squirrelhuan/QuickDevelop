@@ -20,7 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
  * 伪悬浮帮助类，再每个acitvity的decorView布局中添加view
  */
 public class FloatHelper {
-    public static int contenId=131415;
+    public static int contenId = 131415;
 
     Application.ActivityLifecycleCallbacks activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
         @Override
@@ -69,7 +69,7 @@ public class FloatHelper {
     }*/
 
     private void onActivityPause(Activity activity) {
-       floatView.onPause(activity);
+        floatView.onPause(activity);
     }
 
     boolean isShow = true;
@@ -103,7 +103,7 @@ public class FloatHelper {
             } else {
                 ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
                 //QDLogger.d(Tag, "layoutParams="+layoutParams);
-                if(layoutParams instanceof ViewGroup.MarginLayoutParams){
+                if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
                     ((ViewGroup.MarginLayoutParams) layoutParams).leftMargin = pointX;
                     ((ViewGroup.MarginLayoutParams) layoutParams).topMargin = pointY;
                 }
@@ -115,7 +115,7 @@ public class FloatHelper {
                 layoutParams1.height = ViewGroup.LayoutParams.MATCH_PARENT;
                 layoutParams1.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 ((ViewGroup) view).getChildAt(0).setLayoutParams(layoutParams1);
-                 floatView.onResume(activity);
+                floatView.onResume(activity);
             }
         }
     }
@@ -123,7 +123,7 @@ public class FloatHelper {
     public static String Tag = "floatHelper";
 
     private void attachView(Activity activity) {
-       // QDLogger.d(Tag, "attachView getParent=" + activity);
+        // QDLogger.d(Tag, "attachView getParent=" + activity);
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View view = decorView.findViewById(contenId);
         if (view == null) {
@@ -156,6 +156,7 @@ public class FloatHelper {
     int screenWidth;
     int screenHeight;
     FloatingOnTouchListener floatingOnTouchListener;
+
     public void init(Context context) {
         if (application == null) {
             application = ((Application) context.getApplicationContext());
@@ -168,10 +169,11 @@ public class FloatHelper {
     }
 
     FloatView floatView;
+
     public void addFloatView(Activity activity, FloatView view) {
         isShow = true;
         init(activity);
-        floatView =view;
+        floatView = view;
         height = floatView.getSize().y;
         width = floatView.getSize().x;
         pointX = floatView.leftTopPoint().x;
@@ -186,7 +188,7 @@ public class FloatHelper {
     private static int pointX;
     private static int pointY;
 
-    public void updateSize( int width, int height) {
+    public void updateSize(int width, int height) {
         this.width = width;
         this.height = height;
         ViewGroup decorView = (ViewGroup) QDActivityManager.getInstance().getCurrentActivity().getWindow().getDecorView();
@@ -198,7 +200,7 @@ public class FloatHelper {
             layoutParams.width = width;
             view.setLayoutParams(layoutParams);
             view.requestLayout();
-           ViewGroup.LayoutParams layoutParams1 = view.getChildAt(0).getLayoutParams();
+            ViewGroup.LayoutParams layoutParams1 = view.getChildAt(0).getLayoutParams();
             layoutParams1.height = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams1.width = ViewGroup.LayoutParams.MATCH_PARENT;
             view.getChildAt(0).setLayoutParams(layoutParams1);
@@ -221,7 +223,7 @@ public class FloatHelper {
         height = Math.min(screenHeight, height);
         width = width + movedX;
         width = Math.min(screenWidth, width);
-        updateSize( width, height);
+        updateSize(width, height);
     }
 
     public static class FloatingOnTouchListener implements View.OnTouchListener {
@@ -258,16 +260,16 @@ public class FloatHelper {
                     x = nowX;
                     y = nowY;
 
-                    View targetView =  floatHelper.getCurrentContentView();
-                    ViewGroup.MarginLayoutParams  layoutParams = (ViewGroup.MarginLayoutParams) targetView.getLayoutParams();
-                        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
-                            pointX =  layoutParams.leftMargin + movedX;
-                            layoutParams.leftMargin = pointX;
-                            pointY =  layoutParams.topMargin + movedY;
-                            layoutParams.topMargin = pointY;
-                        }
-                        targetView.setLayoutParams(layoutParams);
-                       // QDLogger.e(Tag,"ACTION_MOVE setLayoutParams"+targetView.getContext()+","+targetView.getId()+","+targetView);
+                    View targetView = floatHelper.getCurrentContentView();
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) targetView.getLayoutParams();
+                    if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+                        pointX = layoutParams.leftMargin + movedX;
+                        layoutParams.leftMargin = pointX;
+                        pointY = layoutParams.topMargin + movedY;
+                        layoutParams.topMargin = pointY;
+                    }
+                    targetView.setLayoutParams(layoutParams);
+                    // QDLogger.e(Tag,"ACTION_MOVE setLayoutParams"+targetView.getContext()+","+targetView.getId()+","+targetView);
                     break;
                 case MotionEvent.ACTION_UP:
                     endTime = System.currentTimeMillis();

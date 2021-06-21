@@ -86,15 +86,6 @@
                     android:text="叠加导航(不占状态栏)" />
 
                 <RadioButton
-                    android:id="@+id/rb_06"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:text="透明导航" />
-
-                <RadioButton
                     android:id="@+id/rb_07"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,11 +140,6 @@
                     android:layout_height="wrap_content"
                     android:text="叠加导航(不占状态栏)" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                    android:id="@+id/btn_ac_06"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="透明导航" />
                 <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                     android:id="@+id/btn_ac_07"
                     android:layout_width="wrap_content"

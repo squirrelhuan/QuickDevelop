@@ -60,11 +60,6 @@ import io.reactivex.schedulers.Schedulers;
 @ActivityPager(name = "App更新", preViewClass = TextView.class, resType = ResType.Custome)
 public class UpdateAppFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_update_app)
     QDButton btn_update_app;
     @BindView(R.id.btn_install_access)
@@ -228,7 +223,7 @@ public class UpdateAppFragment extends BaseFragment {
                 .setBackgroundRadius(30)
                 .addAction("更新", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         dialog.dismiss();
                         //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
                         //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
@@ -287,7 +282,7 @@ public class UpdateAppFragment extends BaseFragment {
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     //下载文件
-    public static void downloadFile(final Context context, String urls, final String name) {
+    public static void downloadFile(final Activity context, String urls, final String name) {
         final String url = urls;
         PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override

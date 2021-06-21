@@ -22,16 +22,17 @@ public abstract class QdDialogActivity extends Activity {
     private long id;
     public Object data;
     FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null&&bundle.containsKey("QDDialogId")){
+        if (bundle != null && bundle.containsKey("QDDialogId")) {
             id = bundle.getLong("QDDialogId");
             data = DialogActivityHelper.getDataById(id);
         }
         frameLayout = new FrameLayout(this);
-        generateView(getLayoutInflater(),frameLayout);
+        generateView(getLayoutInflater(), frameLayout);
         setContentView(frameLayout);
         StatusBarUtil.transparencyBar(new WeakReference<Activity>(this));
         getWindow().setBackgroundDrawable(new ColorDrawable(0x55000000));
@@ -42,7 +43,7 @@ public abstract class QdDialogActivity extends Activity {
             }
         });
     }
-    
+
     public abstract void generateView(LayoutInflater layoutInflater, ViewGroup viewParent);
 
     @Override
@@ -56,13 +57,13 @@ public abstract class QdDialogActivity extends Activity {
         super.onDestroy();
         //ActivityDialogHelper.onDialogActivityDismiss(id);
     }
-    
-    public static class Builder extends QDDialog.Builder{
-        
+
+    public static class Builder extends QDDialog.Builder {
+
         public Builder(Context context) {
             super(context);
         }
-        
+
         public Builder addButtonAction(String text, OnClickListener onClickListener) {
             //return super.addAction(text, onClickListener);
             ActionButton actionButton = new ActionButton();
@@ -75,15 +76,15 @@ public abstract class QdDialogActivity extends Activity {
             this.actionButtons.add(actionButton);
             return this;
         }
-        
+
     }
-    
-    public static abstract class OnClickListener implements OnClickActionListener{
+
+    public static abstract class OnClickListener implements OnClickActionListener {
         public abstract void onClick(Activity activity, Object tag);
-        
+
         @Override
-        public void onClick(Dialog dialog, Object tag) {
-            
+        public void onClick(Dialog dialog, View view, Object tag) {
+
         }
     }
 }

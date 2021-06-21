@@ -4,14 +4,14 @@ import android.graphics.Color;
 import android.view.Gravity;
 
 public class AdsResource {
-    public static final int textColorDefault=Color.WHITE;
-    public static final int textBackgroundColorDefault=0x99000000;
-    public static final int textSizeDefault=18;
-    public static final int backgroundColorDefault=Color.TRANSPARENT;
-    public static final int textGravityDefault=Gravity.CENTER;
-    public static final int layout_gravityDefault=Gravity.BOTTOM;
+    public static final int textColorDefault = Color.WHITE;
+    public static final int textBackgroundColorDefault = 0x99000000;
+    public static final int textSizeDefault = 18;
+    public static final int backgroundColorDefault = Color.TRANSPARENT;
+    public static final int textGravityDefault = Gravity.CENTER;
+    public static final int layout_gravityDefault = Gravity.BOTTOM;
 
-    int type =-1;
+    int type = -1;
     int from = 0;
     int duration = 0;
     String url;

@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop.net;
 
 import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
@@ -34,4 +35,9 @@ public interface RetrofitInterface {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST(URLConstant.URL_BASE)
     Observable<Object> getUserInfo(@Body RequestBody body);
+
+
+    //get请求
+    @POST(URLConstant.uploadFile)
+    Observable<Object> uploadHeaderImg(String userId,MultipartBody.Part body);
 }

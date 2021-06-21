@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.TypedValue;
@@ -16,6 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 public class DisplayUtil {
 
     static int status_bar_height;
+
     /**
      * 获取状态栏高度
      *
@@ -23,7 +25,7 @@ public class DisplayUtil {
      * @return
      */
     public static int getStatusBarHeight(Context context) {
-        if(status_bar_height!=0){
+        if (status_bar_height != 0) {
             return status_bar_height;
         }
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -53,6 +55,7 @@ public class DisplayUtil {
     }
 
     static int actionBarHeight = 0;
+
     /**
      * 获取标题栏高度
      *
@@ -183,6 +186,14 @@ public class DisplayUtil {
      */
     public static int getScreenHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
+    /**
+     * 获取屏幕高度(px)
+     */
+    public static int getScreenHeight(Activity context) {
+        int height = context.getWindow().getDecorView().getMeasuredHeight();
+        return Math.max(height, context.getResources().getDisplayMetrics().heightPixels);
     }
 
     /**

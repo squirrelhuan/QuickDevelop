@@ -4,7 +4,7 @@
     <item>
         <shape android:shape="rectangle">
             <!-- 填充背景色-->
-            <solid android:color="@color/transparent"/>
+            <solid android:color="@color/transparent" />
         </shape>
         <selector>
             <!-- 未点击背景图-->

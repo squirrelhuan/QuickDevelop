@@ -55,6 +55,7 @@ public class LoadingWaveTextView extends AppCompatTextView {
     boolean isDrawed;
     private int[] colors = {Color.BLUE, Color.YELLOW, Color.GREEN, Color.RED};
     private int spacing = 6;
+
     private void drawView(Canvas canvas) {
 
         //QDLogger.e("progress="+progress+"");
@@ -63,16 +64,16 @@ public class LoadingWaveTextView extends AppCompatTextView {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.RED);
-        int r = (int) (Math.min(width, height)/1.44);
+        int r = (int) (Math.min(width, height) / 1.44);
 
-        int r2 =  (Math.min(width, height));
-        canvas.translate((r2-r)/2,(r2-r)/2);
+        int r2 = (Math.min(width, height));
+        canvas.translate((r2 - r) / 2, (r2 - r) / 2);
         int margin_left = width > height ? (width - height) / 2 : 0;
         int margin_top = width < height ? (height - width) / 2 : 0;
-        RectF mRecF1 = new RectF(margin_left, margin_top, margin_left + r/2-spacing/2, margin_top + r / 2-spacing/2);
-        RectF mRecF2 = new RectF(margin_left + r/2+spacing/2, margin_top, margin_left + r, margin_top + r/2-spacing/2);
-        RectF mRecF3 = new RectF(margin_left, margin_top + r / 2+spacing/2, margin_left + r / 2-spacing/2, margin_top + r);
-        RectF mRecF4 = new RectF(margin_left + r / 2+spacing/2, margin_top + r/2+spacing/2, margin_left + r, margin_top + r);
+        RectF mRecF1 = new RectF(margin_left, margin_top, margin_left + r / 2 - spacing / 2, margin_top + r / 2 - spacing / 2);
+        RectF mRecF2 = new RectF(margin_left + r / 2 + spacing / 2, margin_top, margin_left + r, margin_top + r / 2 - spacing / 2);
+        RectF mRecF3 = new RectF(margin_left, margin_top + r / 2 + spacing / 2, margin_left + r / 2 - spacing / 2, margin_top + r);
+        RectF mRecF4 = new RectF(margin_left + r / 2 + spacing / 2, margin_top + r / 2 + spacing / 2, margin_left + r, margin_top + r);
         if (!isDrawed) {
             //isDrawed = true;
             if (isForward) {
@@ -103,6 +104,7 @@ public class LoadingWaveTextView extends AppCompatTextView {
     private float progress;
     private boolean isForward = true;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -128,10 +130,11 @@ public class LoadingWaveTextView extends AppCompatTextView {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

@@ -36,11 +36,6 @@ import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 @ActivityPager(name = "生命周期查看器", preViewClass = TextView.class, resType = ResType.Custome)
 public class lifecycleTimerFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

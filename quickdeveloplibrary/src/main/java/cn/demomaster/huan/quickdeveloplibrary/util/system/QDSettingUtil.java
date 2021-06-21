@@ -13,6 +13,7 @@ public class QDSettingUtil {
 
     /**
      * 判断是否开启了自动亮度调节
+     *
      * @param context
      * @return
      */
@@ -30,6 +31,7 @@ public class QDSettingUtil {
 
     /**
      * 关闭自动亮度调节
+     *
      * @param activity
      * @param flag
      * @return
@@ -48,6 +50,7 @@ public class QDSettingUtil {
 
     /**
      * 获取当前屏幕亮度
+     *
      * @param context
      * @return
      */
@@ -64,6 +67,7 @@ public class QDSettingUtil {
 
     /**
      * 设置亮度，退出app也能保持该亮度值
+     *
      * @param context
      * @param brightness
      */

@@ -179,11 +179,11 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
 
         int j;
         for (j = 1; j <= 12; ++j) {
-            this.hourList.add(StringUtil.formatNumberToStr(j,2));
+            this.hourList.add(StringUtil.formatNumberToStr(j, 2));
         }
 
         for (j = 0; j < 60; ++j) {
-            this.minList.add(StringUtil.formatNumberToStr(j,2));
+            this.minList.add(StringUtil.formatNumberToStr(j, 2));
         }
 
         this.meridianList.add("AM");
@@ -200,7 +200,7 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
         if (v != this.contentView && v != this.cancelBtn) {
             if (v == this.confirmBtn) {
                 if (null != this.mListener) {
-                    this.mListener.onDateSelect(0,0,0,this.hourPos + 1+(this.meridianPos==0?0:12), this.minutePos, 0);
+                    this.mListener.onDateSelect(0, 0, 0, this.hourPos + 1 + (this.meridianPos == 0 ? 0 : 12), this.minutePos, 0);
                 }
 
                 this.dismissPopWin();

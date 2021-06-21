@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.core.view.ViewCompat;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,7 +36,8 @@ public class QMUIStatusBarHelper {
     public static float sVirtualDensity = -1;
     public static float sVirtualDensityDpi = -1;
     private static int sStatusbarHeight = -1;
-    private static @StatusBarType int mStatuBarType = STATUSBAR_TYPE_DEFAULT;
+    private static @StatusBarType
+    int mStatuBarType = STATUSBAR_TYPE_DEFAULT;
     private static Integer sTransparentValue;
 
     public static void translucent(Activity activity) {

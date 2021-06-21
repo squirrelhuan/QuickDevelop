@@ -8,6 +8,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.square;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -87,14 +88,15 @@ public class SquareImageMenuView extends View {
 
     public static String SquareImageMenuView_X_SP = "SquareImageMenuView_X_SP";
     public static String SquareImageMenuView_Y_SP = "SquareImageMenuView_Y_SP";
+
     private void init() {
         setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 QDLogger.println("触发点击事件 onClick=" + animator);
                 if (animator != null) {
-                    QDLogger.println("animator=" + animator.getAnimationState() + ",isHasReversed=" + animator.isHasReversed());
-                    if (animator.getAnimationState() == QDValueAnimator.AnimationState.isOpened || animator.getAnimationState() == QDValueAnimator.AnimationState.isOpening) {
+                    QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
+                    if (animator.getState() == QDValueAnimator.AnimationState.isOpened || animator.getState() == QDValueAnimator.AnimationState.isOpening) {
                         boolean canDoAction = false;
                         W:
                         for (Map.Entry entry : pointMap.entrySet()) {
@@ -119,7 +121,7 @@ public class SquareImageMenuView extends View {
             }
         });
     }
-    
+
     /**
      * 执行动作
      *
@@ -138,7 +140,7 @@ public class SquareImageMenuView extends View {
         }
         if (!AccessibilityHelper.isEnable(getContext(), QDAccessibilityService.class)) {
             //跳转系统自带界面 辅助功能界面
-            QDAccessibilityService.startSettintActivity(getContext());
+            QDAccessibilityService.startSettintActivity((Activity) getContext());
             return;
         }
         if (AccessibilityHelper.getService() == null) {
@@ -204,6 +206,7 @@ public class SquareImageMenuView extends View {
     }
 
     WindowManager windowManager;
+
     public void setWindowManager(WindowManager windowManager) {
         this.windowManager = windowManager;
     }
@@ -213,6 +216,7 @@ public class SquareImageMenuView extends View {
     }
 
     Map<Integer, Point> pointMap = new HashMap<>();
+
     public class OnTouchListener implements View.OnTouchListener {
         private int x;
         private int y;
@@ -305,7 +309,7 @@ public class SquareImageMenuView extends View {
         button_width = maxWith / 3 * 2;
         int centX = (int) (rectFb.width() / 2);
         int centY = (int) (rectFb.width() / 2);
-        if (animator != null && animator.getAnimationState() != QDValueAnimator.AnimationState.isClosed) {
+        if (animator != null && animator.getState() != QDValueAnimator.AnimationState.isClosed) {
             int count = images.length;
             for (int i = 0; i < count; i++) {
                 int r = (int) (progress2 * (rectWidth / 2 - button_width / 3 * 2));

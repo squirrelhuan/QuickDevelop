@@ -50,11 +50,10 @@ public class EmptyLayout extends FrameLayout {
     ImageTextView it_empty_icon, it_empty_title, it_empty_description;
     QdLoadingView qd_loading;
     LinearLayout ll_custom;
-    private LayoutInflater mInflater;
     ViewGroup layout_emptyview;
     ViewGroup ll_content;
     private void init(AttributeSet attrs) {
-        mInflater = LayoutInflater.from(getContext());
+        LayoutInflater mInflater = LayoutInflater.from(getContext());
         layout_emptyview = (ViewGroup) mInflater.inflate(R.layout.layout_emptyview, this, false);
         ll_content = layout_emptyview.findViewById(R.id.ll_content);
         btn_retry = layout_emptyview.findViewById(R.id.btn_retry);
@@ -65,10 +64,24 @@ public class EmptyLayout extends FrameLayout {
         ll_custom = layout_emptyview.findViewById(R.id.ll_custom);
         addView(layout_emptyview);
     }
-
+    
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        btn_retry = null;
+        it_empty_icon = null;
+        it_empty_title = null;
+        it_empty_description = null;
+        qd_loading = null;
+        ll_custom = null;
+        layout_emptyview = null;
+        ll_content = null;
+        targetView = null;
+    }
+    
     public void hideAll() {
         int count = ll_content.getChildCount();
-        for(int i=0;i<count;i++){
+        for (int i = 0; i < count; i++) {
             ll_content.getChildAt(i).setVisibility(GONE);
         }
     }
@@ -106,14 +119,14 @@ public class EmptyLayout extends FrameLayout {
 
     public void loadSuccess() {
         hideAll();
-        if(targetView!=null) {
+        if (targetView != null) {
             targetView.setVisibility(VISIBLE);
         }
     }
 
     public void loadFail() {
         hideAll();
-        if(targetView!=null) {
+        if (targetView != null) {
             targetView.setVisibility(INVISIBLE);
         }
     }

@@ -78,12 +78,13 @@ public class NotificationHelper {
 
     /**
      * 检查锁屏状态，如果锁屏先点亮屏幕
+     *
      * @param context
      */
     public void checkLockAndShowNotification(Context context, String message, Class targetClazz) {
         if (isNotificationEnabled(context)) {//唤醒屏幕
             WakeLockUtil.acquireWakeLock(context);
-            sendNotification(context,"", message, targetClazz);
+            sendNotification(context, "", message, targetClazz);
         } else {
             Log.e("Notification", "通知权限不足");
             checkNotification(context);
@@ -92,6 +93,7 @@ public class NotificationHelper {
 
     /**
      * 检测是否开启通知
+     *
      * @param context
      */
     private static void checkNotification(final Context context) {
@@ -114,6 +116,7 @@ public class NotificationHelper {
 
     /**
      * 如果没有开启通知，跳转至设置界面
+     *
      * @param context
      */
     private static void startNotificationSetting(Context context) {
@@ -151,9 +154,9 @@ public class NotificationHelper {
     private static boolean isNotificationEnabled(Context context) {
         if (SDK_INT < Build.VERSION_CODES.KITKAT) {
             return true;
-        }else if (SDK_INT < Build.VERSION_CODES.O){
+        } else if (SDK_INT < Build.VERSION_CODES.O) {
             return isEnableV19(context);
-        }else {
+        } else {
             return isEnableV26(context);
         }
     }
@@ -211,12 +214,12 @@ public class NotificationHelper {
         notificationManager.cancelAll();
     }
 
-    public static void sendNotifiication(Builer builder){
+    public static void sendNotifiication(Builer builder) {
         NotificationManager manager = (NotificationManager) builder.context.getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuiler = null;
         PendingIntent pendingIntent = null;
         Class clazz = null;
-        if(!TextUtils.isEmpty(builder.acitvityName)) {
+        if (!TextUtils.isEmpty(builder.acitvityName)) {
             try {
                 Intent intent = new Intent();
                 clazz = Class.forName(builder.acitvityName);
@@ -236,15 +239,15 @@ public class NotificationHelper {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        if(builder.pattern!=null){
+        if (builder.pattern != null) {
             notificationBuiler.setVibrate(builder.pattern);
         }
 
         if (builder.enableSound) {
-            if(builder.soundUri!=null) {
+            if (builder.soundUri != null) {
                 notificationBuiler.setSound(builder.soundUri);
             }
-        }else {//静音
+        } else {//静音
             notificationBuiler.setSound(null);
             //notificationBuiler.setDefaults(Notification.DEFAULT_VIBRATE);
             notificationBuiler.setDefaults(NotificationCompat.FLAG_ONLY_ALERT_ONCE);//消除声音和震动
@@ -266,14 +269,14 @@ public class NotificationHelper {
                     NotificationManager.IMPORTANCE_HIGH);
             channel.enableLights(builder.enableLights);//闪光
             channel.enableVibration(builder.enableVibration);
-            if(builder.pattern!=null){
+            if (builder.pattern != null) {
                 channel.setVibrationPattern(builder.pattern);
             }
-            if(builder.enableSound) {
-                if(builder.soundUri!=null) {
+            if (builder.enableSound) {
+                if (builder.soundUri != null) {
                     channel.setSound(builder.soundUri, null);//Uri.parse("file:///android_asset/"+soundResourceName)
                 }
-            }else {
+            } else {
                 channel.setSound(null, null);
             }
             manager.createNotificationChannel(channel);
@@ -283,6 +286,7 @@ public class NotificationHelper {
         Notification notification = notificationBuiler.build();
         manager.notify(builder.id, notification);
     }
+
     public static class Builer {
         Context context;
         String acitvityName;
@@ -296,9 +300,9 @@ public class NotificationHelper {
         String contentText;
         int smallIcon;
 
-        public Builer(Context context){
+        public Builer(Context context) {
             this.context = context;
-            smallIcon =  context.getApplicationInfo().icon;
+            smallIcon = context.getApplicationInfo().icon;
         }
 
         public Builer setTitle(String title) {
@@ -356,17 +360,17 @@ public class NotificationHelper {
             return this;
         }
 
-        public void send(){
+        public void send() {
             NotificationHelper.sendNotifiication(this);
         }
 
         public String getChannelId() {
-            return enableLights+"_"+enableVibration+"_"+enableSound+"_"+soundUri;
+            return enableLights + "_" + enableVibration + "_" + enableSound + "_" + soundUri;
         }
     }
 
     //从resource中获取音频
-   public static Uri getUriFromResource(Context context, String soundResourceName) {
+    public static Uri getUriFromResource(Context context, String soundResourceName) {
         int soundResourceId = context.getResources().getIdentifier(soundResourceName, "raw", context.getPackageName());
         if (soundResourceId != 0) {
             String path = "android.resource://" + context.getPackageName() + "/" + soundResourceId;
@@ -374,6 +378,7 @@ public class NotificationHelper {
         }
         return null;
     }
+
     //从Assets中获取音频
     public static Uri getUriFromAssets(Context context, String soundResourceName) {
         if (!TextUtils.isEmpty(soundResourceName)) {

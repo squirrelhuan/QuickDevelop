@@ -25,23 +25,25 @@ public class NodeElement {
         this.qName = qName;
         this.attributes = new ArrayList<>();
         this.childNodes = new ArrayList<>();
-        if(attributes!=null){
-            for(int i=0;i<attributes.getLength();i++){
+        if (attributes != null) {
+            for (int i = 0; i < attributes.getLength(); i++) {
                 String attsQName = attributes.getQName(i);
                 String value = attributes.getValue(attsQName);
                 String type = attributes.getType(attsQName);
                 //QDLogger.i("元素: attsQName=" + attsQName + ",value="+value+",type="+type);
-                addProperty(attsQName,value);
+                addProperty(attsQName, value);
             }
         }
     }
 
-    public void addNode(NodeElement node){
+    public void addNode(NodeElement node) {
         childNodes.add(node);
     }
+
     public void addProperty(String attrName, String attrValue) {
-        attributes.add(new NodeProperty(attrName,attrValue));
+        attributes.add(new NodeProperty(attrName, attrValue));
     }
+
     public String getNodeName() {
         return nodeName;
     }
@@ -90,7 +92,7 @@ public class NodeElement {
         this.childNodes = childNodes;
     }
 
-    public static class NodeProperty{
+    public static class NodeProperty {
         String name;
         String value;
         String type;

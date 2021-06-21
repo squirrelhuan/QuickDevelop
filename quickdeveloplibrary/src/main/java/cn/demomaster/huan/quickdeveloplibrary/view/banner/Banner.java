@@ -70,20 +70,22 @@ public class Banner extends FrameLayout {
 
     /**
      * 设置banner 方向和滚动动画
+     *
      * @param direction
      */
     public void setDirection(int direction) {
         this.direction = direction;
         setOrientation(direction);
-        if(direction==LinearLayout.HORIZONTAL){
+        if (direction == LinearLayout.HORIZONTAL) {
             //setPageTransformer(true,new ZoomOutPageTransformer2());
-        }else {
-            setPageTransformer(true,new ZoomOutPageTransformer());
+        } else {
+            setPageTransformer(true, new ZoomOutPageTransformer());
         }
     }
 
     /**
      * 设置滚动器样式
+     *
      * @param indicatorStyle
      */
     public void setIndicatorStyle(IndicatorStyle indicatorStyle) {
@@ -108,6 +110,7 @@ public class Banner extends FrameLayout {
 
     /**
      * 设置轮播滚动器
+     *
      * @param bannerCursorView
      */
     public void setIndicatorView(BannerIndicator bannerCursorView) {
@@ -133,6 +136,7 @@ public class Banner extends FrameLayout {
 
     BannerAdapter adsAdapter;
     int currentPosition;
+
     private void init() {
         mViewPager = new ViewPager2(getContext());
         addView(mViewPager);
@@ -145,7 +149,7 @@ public class Banner extends FrameLayout {
         adsResourceList = new ArrayList<AdsResource>();
         indicatorCount = adsResourceList.size();
         mBannerCursorView.setIndicatorCount(indicatorCount);
-        if(adsAdapter==null) {
+        if (adsAdapter == null) {
             adsAdapter = new BannerAdapter((FragmentActivity) getContext(), adsResourceList, mViewPager, new BannerAdapter.OnPlayingListener() {
                 @Override
                 public void onVideoComplete() {
@@ -189,7 +193,7 @@ public class Banner extends FrameLayout {
             public void onPageScrollStateChanged(int state) {
                 //QDLogger.i("mViewPager","onPageScrollStateChanged="+state);
                 super.onPageScrollStateChanged(state);
-                if(state==0){
+                if (state == 0) {
                     //QDLogger.i("mViewPager","fragment切换完成："+currentPosition);
                     int p = getRealPosition(currentPosition);
                     if ((currentPosition < basePosition) || (currentPosition >= basePosition + adsAdapter.getItemCount2())) {
@@ -203,7 +207,7 @@ public class Banner extends FrameLayout {
                         ((RecyclerView) mViewPager.getChildAt(0)).scrollToPosition(index);
                         adsAdapter.setCurrentItem(index);
                         //QDLogger.i("mViewPager","切换完成2："+index);
-                    }else {
+                    } else {
                         adsAdapter.setCurrentItem(currentPosition);
                     }
                 }
@@ -215,25 +219,27 @@ public class Banner extends FrameLayout {
         initScroller();
     }
 
-    public void setCurrentItem(int position){
+    public void setCurrentItem(int position) {
         mViewPager.setCurrentItem(position);
         adsAdapter.setCurrentItem(position);
     }
-    public void setCurrentItem(int position,boolean smoothScroll){
-        mViewPager.setCurrentItem(position,smoothScroll);
+
+    public void setCurrentItem(int position, boolean smoothScroll) {
+        mViewPager.setCurrentItem(position, smoothScroll);
         adsAdapter.setCurrentItem(position);
     }
 
     List<AdsResource> adsResourceList = new ArrayList<>();
+
     public void setData(List<AdsResource> list) {
         indicatorCount = list.size();
         if (mBannerCursorView != null) {
-            mBannerCursorView.setIndicatorCount(indicatorCount<=1?0:indicatorCount);
+            mBannerCursorView.setIndicatorCount(indicatorCount <= 1 ? 0 : indicatorCount);
         }
         adsResourceList.clear();
         adsResourceList.addAll(list);
         if (adsAdapter != null) {
-            setOffscreenPageLimit(list.size()>1?3:1);
+            setOffscreenPageLimit(list.size() > 1 ? 3 : 1);
             adsAdapter.setData(list);
             setCurrentItem(basePosition, false);
         }
@@ -270,7 +276,7 @@ public class Banner extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!canDrag||adsResourceList==null||adsResourceList.size()<=1) {
+        if (!canDrag || adsResourceList == null || adsResourceList.size() <= 1) {
             return true;
         } else {
             return super.onInterceptTouchEvent(ev);
@@ -279,6 +285,7 @@ public class Banner extends FrameLayout {
 
     /**
      * 延迟滚动到下一个
+     *
      * @param time
      */
     public void postDelayedToNext(long time) {
@@ -295,6 +302,7 @@ public class Banner extends FrameLayout {
      * 根据固定时长切换
      */
     long loopTime = 10000;
+
     public void setLoopTime(long loopTime) {
         this.loopTime = loopTime;
     }
@@ -316,19 +324,19 @@ public class Banner extends FrameLayout {
             index = index % adsResourceList.size();
 
             int index1 = mViewPager.getCurrentItem() + 1;
-           // System.out.println("index1=" + index1);
-           // System.out.println(Banner.this.hashCode()+"]当前2：" + index);
+            // System.out.println("index1=" + index1);
+            // System.out.println(Banner.this.hashCode()+"]当前2：" + index);
             AdsResource adsResource = adsResourceList.get(index);
             String url = adsResource.getUrl();
-            if(QuickCache.containsUrl(url)){
+            if (QuickCache.containsUrl(url)) {
                 String fileType = QuickCache.getCacheInfoByUrl(adsResource.getUrl()).getFileType();
-                if (!TextUtils.isEmpty(fileType)&&fileType.startsWith("video/")) {
+                if (!TextUtils.isEmpty(fileType) && fileType.startsWith("video/")) {
                     //System.out.println("urlTypMap " + fileType);
                 } else {
                     setCurrentItem(index1);
                     handler.postDelayed(runnable, loopTime);
                 }
-            }else {
+            } else {
                 if (BannerContentType.getEnum(adsResource.getType()) == BannerContentType.video) {
 
                 } else {

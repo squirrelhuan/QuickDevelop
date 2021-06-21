@@ -115,6 +115,7 @@ public class LoadingCube3View extends View {
     private float lastPro;
     private float dx;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int start = 0;
@@ -136,9 +137,9 @@ public class LoadingCube3View extends View {
                         invalidate();
                     }
                     float t1 = progress - lastPro;
-                    if (t1 * dx < 0 || (t1 == 0 && progress!=lastPro )) {
+                    if (t1 * dx < 0 || (t1 == 0 && progress != lastPro)) {
                         //方向转换了
-                       // QDLogger.d("方向转换了");
+                        // QDLogger.d("方向转换了");
                         if (index == 3) {
                             index = 0;
                         } else {
@@ -156,10 +157,11 @@ public class LoadingCube3View extends View {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

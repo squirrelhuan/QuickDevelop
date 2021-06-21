@@ -40,6 +40,7 @@ public class QDTcpClient {
 
     private String userName = "admin";
     private String passWord = "admin";
+
     public void connect(String serverIP, int serverPort) {
         flag = true;
         this.serverIP = serverIP;
@@ -67,6 +68,7 @@ public class QDTcpClient {
     }
 
     boolean flag = true;
+
     private void waitMessage() {
         new Thread(new Runnable() {
             @Override
@@ -82,12 +84,12 @@ public class QDTcpClient {
                         while (!((reply = br.readLine()) == null)) {
                             hasRead = true;
                             QDMessage qdMessage = JSON.parseObject(reply, QDMessage.class);
-                            System.out.println("接收信息：" +qdMessage.getTime()+","+ reply);
+                            System.out.println("接收信息：" + qdMessage.getTime() + "," + reply);
                             if (qdMessage != null) {
                                 isConnected = true;
                                 if (receiveListenerManager.containsKey(qdMessage.getTime())) {
                                     MessageReceiveListener listener = receiveListenerManager.getListener(qdMessage.getTime());
-                                    if(listener!=null){
+                                    if (listener != null) {
                                         listener.onReceived(qdMessage);
                                     }
                                     receiveListenerManager.removeListenerById(qdMessage.getTime());
@@ -98,7 +100,7 @@ public class QDTcpClient {
                                 }
                             }
                         }
-                        if(!hasRead){
+                        if (!hasRead) {
                             throw new Exception("maybe disconnect");
                         }
                     } catch (Exception e) {
@@ -128,10 +130,11 @@ public class QDTcpClient {
     }
 
     private boolean isConnected;
-    private long connectTime=30000;//超过30秒会连接超时
+    private long connectTime = 30000;//超过30秒会连接超时
 
     /**
      * 设置超时时间
+     *
      * @param connectTime
      */
     public void setConnectTime(long connectTime) {
@@ -184,12 +187,13 @@ public class QDTcpClient {
 
 
     private MessageListenerManager receiveListenerManager;
+
     public void send(QDMessage qdMessage, MessageReceiveListener listener) {
-        if(qdMessage!=null){
+        if (qdMessage != null) {
             qdMessage.setTime(System.currentTimeMillis());
         }
         if (listener != null) {
-            receiveListenerManager.addListener(qdMessage.getTime(),listener);
+            receiveListenerManager.addListener(qdMessage.getTime(), listener);
         }
         //这里比较重要，需要给请求信息添加终止符，否则服务端会在解析数据时，一直等待
         Thread thread = new Thread(new Runnable() {
@@ -200,7 +204,7 @@ public class QDTcpClient {
                         String msg1 = JSON.toJSONString(qdMessage) + END_CHAR;
                         out = client.getOutputStream();
                         out.write(msg1.getBytes());
-                        System.out.println("发送请求："+qdMessage.getTime()+","+ JSON.toJSONString(qdMessage));
+                        System.out.println("发送请求：" + qdMessage.getTime() + "," + JSON.toJSONString(qdMessage));
                     } catch (IOException e) {
                         QDLogger.e(e);
                         reConnect();
@@ -215,7 +219,7 @@ public class QDTcpClient {
     }
 
     private boolean validConnect() {
-       return client != null && client.isConnected();
+        return client != null && client.isConnected();
     }
 
     /**
@@ -256,6 +260,7 @@ public class QDTcpClient {
     }
 
     MessageReceiveListener onMessageReceiveListener;
+
     public void setOnMessageReceiveListener(MessageReceiveListener onMessageReceiveListener) {
         this.onMessageReceiveListener = onMessageReceiveListener;
     }

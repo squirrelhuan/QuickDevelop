@@ -50,7 +50,7 @@ public class FlowLayout extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View chid = getChildAt(i);
             View textView = chid;
-           // QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
+            // QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
             if (lineViewList.size() == 0) {//空行
                 lineViewList.add(chid);
 
@@ -106,7 +106,7 @@ public class FlowLayout extends ViewGroup {
         int layoutHeight = 0;
         for (int i = 0; i < mLineHeight.size(); i++) {
             layoutHeight += mLineHeight.get(i);
-           // QDLogger.println("h" + i + "=" + mLineHeight.get(i));
+            // QDLogger.println("h" + i + "=" + mLineHeight.get(i));
         }
         layoutHeight += getPaddingTop() + getPaddingBottom();
 
@@ -341,7 +341,7 @@ public class FlowLayout extends ViewGroup {
 
         for (int i = 0; i < adapter.getCount(); i++) {
             View view = adapter.getView(i);
-            if (view.getParent() == null) {
+            if (view!=null&&view.getParent() == null) {
                 addView(view);
             }
         }

@@ -47,11 +47,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
 @ActivityPager(name = "文件管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class FileManagerFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     //Components
     @BindView(R.id.btn_search)
     QDButton btn_search;

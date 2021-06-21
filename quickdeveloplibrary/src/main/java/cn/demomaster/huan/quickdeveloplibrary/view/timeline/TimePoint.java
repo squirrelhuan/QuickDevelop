@@ -15,6 +15,7 @@ public class TimePoint extends Point {
         this.x = src.x;
         this.y = src.y;
     }
+
     public boolean isActive() {
         return isActive;
     }

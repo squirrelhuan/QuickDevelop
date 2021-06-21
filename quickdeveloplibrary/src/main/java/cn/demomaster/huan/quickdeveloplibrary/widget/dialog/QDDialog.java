@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -72,7 +74,11 @@ public class QDDialog extends QDDialog2 {
     private float[] backgroundRadius = new float[8];
     private int animationStyleID = R.style.qd_dialog_animation_center_scale;
     private List<ActionButton> actionButtons = new ArrayList<>();
+    public Map<Integer, OnClickActionListener> clickListenerMap = new HashMap<>();
+    public QDDialog(Context context) {
+        super(context);
 
+    }
     public QDDialog(Context context, Builder builder) {
         super(context);
         //this.builder = builder;
@@ -114,25 +120,28 @@ public class QDDialog extends QDDialog2 {
         padding = builder.padding;
         isFullScreen = builder.isFullScreen;
         margin = builder.margin;
+        
+        if(builder.clickListenerMap!=null) {
+            clickListenerMap.putAll(builder.clickListenerMap);
+        }
         init();
     }
-
+    
     private LinearLayout contentLinearView;
     private LinearLayout headerView;
     private LinearLayout bodyView;
     private LinearLayout footView;
 
     private void init() {
-
         Window win = getWindow();
         if (animationStyleID != -1) {
             win.setWindowAnimations(animationStyleID);
         }
 
-        if (padding!=-1) {
+        if (padding != -1) {
             win.getDecorView().setPadding(0, 0, 0, 0);
         }
-        if(isFullScreen){//全屏显示
+        if (isFullScreen) {//全屏显示
             win.getDecorView().setPadding(0, 0, 0, 0);
             win.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
             win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -214,7 +223,7 @@ public class QDDialog extends QDDialog2 {
             contentLinearView.addView(bodyView);
             bodyView.setMinimumHeight(minHeight_body);
             bodyView.setBackgroundColor(color_body);
-
+            
             bodyView.setGravity(gravity_body);
             bodyView.setTag(gravity_body);
             addBodyTextView(bodyView, message, text_color_body, text_size_body);
@@ -258,7 +267,7 @@ public class QDDialog extends QDDialog2 {
                     @Override
                     public void onClick(View view) {
                         if (actionButton.getOnClickListener() != null) {
-                            actionButton.getOnClickListener().onClick(QDDialog.this,null);
+                            actionButton.getOnClickListener().onClick(QDDialog.this, view,null);
                         } else {
                             dismiss();
                         }
@@ -285,12 +294,12 @@ public class QDDialog extends QDDialog2 {
 
             }
         });
-        layout.setPadding(margin,margin,margin,margin);
-        if(margin>0) {
+        layout.setPadding(margin, margin, margin, margin);
+        if (margin > 0) {
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(canceledOnTouchOutside&&cancelable){
+                    if (canceledOnTouchOutside && cancelable) {
                         dismiss();
                     }
                 }
@@ -299,7 +308,26 @@ public class QDDialog extends QDDialog2 {
         setContentView(layout, layoutParams);
         mContentView = layout;
     }
+
+    @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        
+        for(Map.Entry entry: clickListenerMap.entrySet()){
+            View view1 = view.findViewById((Integer) entry.getKey());
+            if(view1!=null){
+                view1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((OnClickActionListener) entry.getValue()).onClick(QDDialog.this,v,null);
+                    }
+                });
+            }
+        }
+    }
+    
     boolean canceledOnTouchOutside = true;
+
     @Override
     public void setCanceledOnTouchOutside(boolean cancel) {
         canceledOnTouchOutside = cancel;
@@ -402,6 +430,7 @@ public class QDDialog extends QDDialog2 {
         public float[] backgroundRadius = new float[8];
         public int animationStyleID = R.style.qd_dialog_animation_center_scale;
         public List<ActionButton> actionButtons = new ArrayList<>();
+        public Map<Integer, OnClickActionListener> clickListenerMap = new HashMap<>();
         
         public Builder(Context context) {
             this.context = context;
@@ -600,7 +629,7 @@ public class QDDialog extends QDDialog2 {
         public Builder addAction(String text) {
             return addAction(text, null);
         }
-
+        
         public Builder addAction(String text, OnClickActionListener onClickListener) {
             ActionButton actionButton = new ActionButton();
             if (text != null) {
@@ -613,9 +642,15 @@ public class QDDialog extends QDDialog2 {
             return this;
         }
 
+        public Builder addAction(int viewID, OnClickActionListener onClickListener) {
+            this.clickListenerMap.put(viewID,onClickListener);
+            return this;
+        }
+
         public QDDialog create() {
             return new QDDialog(context, this);
         }
+        
     }
 
 }

@@ -3,11 +3,26 @@ package cn.demomaster.huan.quickdeveloplibrary.http;
 
 import android.text.TextUtils;
 
+import java.io.File;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
 import cn.demomaster.qdlogger_library.QDLogger;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -23,26 +38,30 @@ public class HttpUtils {
     private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
-            if(!TextUtils.isEmpty(message)){
-                QDLogger.i(TAG, message);
+            if (!TextUtils.isEmpty(message)) {
+                QDLogger.println(TAG, message);
             }
         }
     }).setLevel(level);
 
-    static {
+    public void setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
+        this.loggingInterceptor = loggingInterceptor;
+    }
+
+    /* static {
         if (BuildConfig.DEBUG) {
             //日志拦截器
             loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    if(!TextUtils.isEmpty(message)){
+                    if (!TextUtils.isEmpty(message)) {
                         QDLogger.i(TAG, message);
                     }
                 }
             });
             loggingInterceptor.setLevel(level);
         }
-    }
+    }*/
 
     private static final int DEFAULT_TIMEOUT = 30; //连接 超时的时间，单位：秒
     private static final OkHttpClient client = new OkHttpClient.Builder().
@@ -68,6 +87,7 @@ public class HttpUtils {
 
     private static String baseUrl = "";
     private static Class clazz;
+
     public static void setBaseUrl(String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         retrofit = new Retrofit.Builder()
@@ -80,6 +100,7 @@ public class HttpUtils {
             retrofitInterface = retrofit.create(clazz);
         }
     }
+
     public synchronized <T> T getRetrofit(Class<T> targetClazz) {
         clazz = targetClazz;
         //初始化retrofit的配置
@@ -95,7 +116,7 @@ public class HttpUtils {
         return (T) retrofitInterface;
     }
 
-    public synchronized <T> T getRetrofit(Class<T> targetClazz,String baseUrl) {
+    public synchronized <T> T getRetrofit(Class<T> targetClazz, String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         clazz = targetClazz;
         //初始化retrofit的配置
@@ -113,25 +134,27 @@ public class HttpUtils {
 
     /**
      * 使用了String 转换器，将以文本的方式输出
+     *
      * @param targetClazz
      * @param baseUrl
      * @param <T>
      * @return
      */
-    public synchronized <T> T createRetrofit(Class<T> targetClazz,String baseUrl) {
+    public synchronized <T> T createRetrofit(Class<T> targetClazz, String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         clazz = targetClazz;
         //初始化retrofit的配置
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .client(client)
-                    .addConverterFactory(new ToStringConverterFactory())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(client)
+                .addConverterFactory(new ToStringConverterFactory())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
         return (T) retrofit.create(targetClazz);
     }
 
     private static HttpUtils instance;
+
     public static HttpUtils getInstance() {
         if (instance == null) {
             instance = new HttpUtils();
@@ -139,7 +162,84 @@ public class HttpUtils {
         return instance;
     }
 
-    private void HttpUtils(){
-
+    private void HttpUtils() {
     }
+
+    public static final MediaType FROM_DATA = MediaType.parse("multipart/form-data");
+
+    public void uploadFile(String name, String url, String filePath, Callback callback) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            uploadFile(name, file.getName(), url, filePath, callback);
+        }
+    }
+
+    /**
+     * 文件上传
+     *
+     * @param name
+     * @param fileName
+     * @param url
+     * @param filePath
+     * @param callback
+     */
+    public void uploadFile(String name, String fileName, String url, String filePath, Callback callback) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),
+                            new File(filePath));
+                    MultipartBody body = new MultipartBody.Builder()
+                            .setType(FROM_DATA)
+                            .addFormDataPart("key1", "1")
+                            .addFormDataPart("key2", "2")
+                            .addFormDataPart(name, fileName, fileBody)
+                            .build();
+                    Request request = new Request.Builder()
+                            .post(body)
+                            .url(url)
+                            .build();
+
+                    Call call = okHttpClient.newCall(request);
+                    call.enqueue(callback);
+                }
+            }).start();
+        }
+    }
+
+
+
+
+    public static  SSLSocketFactory createSSLSocketFactory(){
+        SSLSocketFactory ssfFactory=null;
+        try{
+            SSLContext sc=SSLContext.getInstance("TLS");
+            //SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null,new TrustManager[]{trustManager},new SecureRandom());
+            ssfFactory=sc.getSocketFactory();
+        }catch(Exception e){
+        }
+
+        return ssfFactory;
+    }
+    
+   public static final X509TrustManager trustManager = new X509TrustManager() {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+    };
 }

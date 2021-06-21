@@ -51,9 +51,10 @@ public class MyCheckBox extends AppCompatImageView {
     }
 
     boolean mChecked;
+
     public void setChecked(boolean checked) {
         mChecked = checked;
-       // postInvalidate();
+        // postInvalidate();
         if (mOnCheckedChangeListener != null) {
             mOnCheckedChangeListener.onCheckedChanged(this, mChecked);
         }
@@ -105,8 +106,8 @@ public class MyCheckBox extends AppCompatImageView {
 
         //super.onDraw(canvas);
 
-        QDLogger.e("getPaddingLeft()="+ getPaddingLeft());
-        QDLogger.formatArray("getDrawableState", getDrawableState());
+        // QDLogger.e("getPaddingLeft()="+ getPaddingLeft());
+        //QDLogger.formatArray("getDrawableState", getDrawableState());
         mDrawable = getDrawable();
 
         if (getMatrix() == null && getPaddingTop() == 0 && getPaddingLeft() == 0) {

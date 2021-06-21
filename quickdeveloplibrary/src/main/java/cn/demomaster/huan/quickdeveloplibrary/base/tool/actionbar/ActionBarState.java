@@ -5,7 +5,7 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
  * @date 2018/12/28.
  * description：
  */
-public  class ActionBarState {
+public class ActionBarState {
     private OnLoadingStateListener onLoadingStateListener;
 
     public OnLoadingStateListener getOnLoadingStateListener() {
@@ -17,7 +17,7 @@ public  class ActionBarState {
     }
 
     //加载
-    public static abstract class OnLoadingStateListener implements IOnLoadingStateListener{
+    public static abstract class OnLoadingStateListener implements IOnLoadingStateListener {
         private Loading result;
 
         public Loading getResult() {
@@ -37,20 +37,26 @@ public  class ActionBarState {
 
     public static interface IOnLoadingStateListener {
         void loading();
+
         void onLoading(Loading loading);
         //void complete();
     }
 
-    public static abstract class Loading implements ILoading{
+    public static abstract class Loading implements ILoading {
 
     }
 
-    public static interface ILoading{
+    public static interface ILoading {
         void success();
+
         void fail();
+
         void hide();
+
         void setText(String message);
+
         void success(String message);
+
         void fail(String message);
     }
 }

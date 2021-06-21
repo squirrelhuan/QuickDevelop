@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 //apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0.1"
+        targetSdkVersion 30
+        versionCode 2
+        versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
         /*externalNativeBuild {
@@ -47,7 +47,7 @@ android {
             path "CMakeLists.txt"
         }
     }
-    buildToolsVersion '29.0.3'
+    buildToolsVersion '30.0.3'
     ndkVersion '22.0.7026061'
     /*sourceSets {
         main {
@@ -93,7 +93,7 @@ dependencies {
     //implementation 'com.github.yuzhiqiang1993:zxing:2.2.5'
     api project(path: ':qdzxinglibrary')
     //api 'com.github.squirrelhuan:QdZxing:0.1.7'
-   // api 'com.github.squirrelhuan:QuickSticker:0.1.1'
+    // api 'com.github.squirrelhuan:QuickSticker:0.1.1'
     //annotationProcessor "com.github.squirrelhuan:quicksticker-compiler:0.1.1"
 
     //api 'com.github.squirrelhuan:QuickDataBase:0.0.2'

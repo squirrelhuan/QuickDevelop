@@ -2,14 +2,17 @@ package cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.graphics.drawable.Drawable;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,9 +20,11 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 
-public class ActionBarLayout2 extends FrameLayout {
+public class ActionBarLayout2 extends FrameLayout implements ActionBarInterface {
     public ActionBarLayout2(@NonNull Context context) {
         super(context);
     }
@@ -36,128 +41,92 @@ public class ActionBarLayout2 extends FrameLayout {
     public ActionBarLayout2(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
+    /*View statusbarView;
+    View actionBarView;
+    View contentView;*/
     Builder mBuilder;
+
     public ActionBarLayout2(Builder builder) {
         super(builder.activity);
         mBuilder = builder;
         update();
     }
 
-    private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
+    public View getStatusbarView() {
+        return mBuilder == null ? null : mBuilder.statusbarView;
+    }
+
+    public View getActionBarView() {
+        return mBuilder == null ? null : mBuilder.actionBarView;
+    }
+
+    public View getContentView() {
+        return mBuilder == null ? null : mBuilder.contentView;
+    }
+
+    /**
+     * 获取导航栏底部 到屏幕顶端的距离
+     * @return
+     */
+    public int getActionBarPositionY() {
+        View actionBarView = mBuilder.actionBarView;
+        if (actionBarView != null) {
+            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    DisplayUtil.getScreenWidth(getContext()), MeasureSpec.AT_MOST);
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    DisplayUtil.getScreenHeight(getContext()), MeasureSpec.AT_MOST);
+            actionBarView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+
+            int[] location = new int[2];
+            //mBuilder.contentView.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+            actionBarView.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
+            return location[1] + actionBarView.getMeasuredHeight();
+        }
+        return 0;
+    }
+
+    //private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int count = getChildCount();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measureChildren2(mBuilder.contentView);
+    }
 
-        final boolean measureMatchParentChildren =
-                MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
-                        MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
-        mMatchParentChildren.clear();
-
-        int maxHeight = 0;
-        int maxWidth = 0;
-        int childState = 0;
-
-        for (int i = 0; i < count; i++) {
-            final View child = getChildAt(i);
-            if (getMeasureAllChildren() || child.getVisibility() != GONE) {
-                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
-                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                maxWidth = Math.max(maxWidth,
-                        child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
-                maxHeight = Math.max(maxHeight,
-                        child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
-                childState = combineMeasuredStates(childState, child.getMeasuredState());
-               // if (measureMatchParentChildren||child == mBuilder.contentView) {
-                    if (lp.width == LayoutParams.MATCH_PARENT ||
-                            lp.height == LayoutParams.MATCH_PARENT) {
-                        mMatchParentChildren.add(child);
-                    }
-                //}
-            }
+    protected void measureChildren2(View view) {
+        int[] location;
+        location = new int[2];
+        int h = 0;
+        int actionBarHeight = 0;
+        if (mBuilder.actionBarView != null) {
+            actionBarHeight = mBuilder.actionBarView.getMeasuredHeight();
+        }
+        if (mBuilder.mixStatusActionBar) {
+            actionBarHeight -= mBuilder.statusHeight;
+        }
+        switch (mBuilder.actionbarType) {
+            case NORMAL:
+                h = mBuilder.statusHeight + actionBarHeight;
+                break;
+            case NO_STATUS:
+                h = actionBarHeight;
+                break;
+            case NO_ACTION_BAR:
+                h += mBuilder.statusHeight;
+                break;
+            case ACTION_STACK:
+            //case ACTION_TRANSPARENT:
+            case ACTION_STACK_NO_ACTION:
+            case ACTION_STACK_NO_STATUS:
+            case NO_ACTION_BAR_NO_STATUS:
+                h = 0;
+                break;
         }
 
-        // Account for padding too
-        maxWidth += getPaddingLeft() + getPaddingRight();
-        maxHeight += getPaddingTop() + getPaddingBottom();
-
-        // Check against our minimum height and width
-        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
-        maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
-
-        // Check against our foreground's minimum height and width
-        final Drawable drawable = getForeground();
-        if (drawable != null) {
-            maxHeight = Math.max(maxHeight, drawable.getMinimumHeight());
-            maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
-        }
-
-        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
-                resolveSizeAndState(maxHeight, heightMeasureSpec,
-                        childState << MEASURED_HEIGHT_STATE_SHIFT));
-
-        count = mMatchParentChildren.size();
-        if (count > 1) {
-            for (int i = 0; i < count; i++) {
-                final View child = mMatchParentChildren.get(i);
-                final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-
-                final int childWidthMeasureSpec;
-                if (lp.width == LayoutParams.MATCH_PARENT) {
-                    final int width = Math.max(0, getMeasuredWidth()
-                            - getPaddingLeft() - getPaddingRight()
-                            - lp.leftMargin - lp.rightMargin);
-                    childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                            width, MeasureSpec.EXACTLY);
-                } else {
-                    childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec,
-                            getPaddingLeft() + getPaddingRight() +
-                                    lp.leftMargin + lp.rightMargin,
-                            lp.width);
-                }
-
-                final int childHeightMeasureSpec;
-                if (lp.height == LayoutParams.MATCH_PARENT) {
-                    int height = 0;
-                    if (child == mBuilder.contentView) {
-                        int h1=0;
-                        int statusBarHeight = 0;
-                        if (mBuilder.hasStatusBar&&mBuilder.statusbarView != null&&!mBuilder.mixStatusActionBar) {
-                            statusBarHeight = mBuilder.statusHeight;
-                        }
-                        int actionBarHeight = 0;
-                        if (mBuilder.hasActionBar && mBuilder.actionBarView != null) {
-                            actionBarHeight = mBuilder.actionBarView.getMeasuredHeight();
-                        }
-                        switch (mBuilder.contentViewPaddingTop){
-                            case parent:
-                                break;
-                            case actionBar:
-                                h1= actionBarHeight+mBuilder.actionBarView.getTop();
-                                break;
-                            case statusBar:
-                                h1= statusBarHeight;
-                                break;
-                        }
-                        height = Math.max(0, getMeasuredHeight()-h1
-                                - getPaddingTop() - getPaddingBottom()
-                                - lp.topMargin - lp.bottomMargin);
-                    }else {
-                        height = Math.max(0, getMeasuredHeight()
-                                - getPaddingTop() - getPaddingBottom()
-                                - lp.topMargin - lp.bottomMargin);
-                    }
-                    childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                            height, MeasureSpec.EXACTLY);
-                } else {
-                    childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec,
-                            getPaddingTop() + getPaddingBottom() +
-                                    lp.topMargin + lp.bottomMargin,
-                            lp.height);
-                }
-
-                child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-            }
-        }
+        view.measure(View.MeasureSpec.makeMeasureSpec(getMeasuredWidth(),
+                View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(
+                getMeasuredHeight() - location[1] - h, View.MeasureSpec.EXACTLY));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -172,59 +141,48 @@ public class ActionBarLayout2 extends FrameLayout {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     void layoutChildren(int left, int top, int right, int bottom, boolean forceLeftGravity) {
         //按顺序
-        layoutChildren2(mBuilder.statusbarView,left,top,right,bottom,forceLeftGravity);
-        layoutChildren2(mBuilder.actionBarView,left,top,right,bottom,forceLeftGravity);
-        layoutChildren2(mBuilder.contentView,left,top,right,bottom,forceLeftGravity);
+        layoutChildren2(mBuilder.statusbarView, left, top, right, bottom, forceLeftGravity);
+        layoutChildren2(mBuilder.actionBarView, left, top, right, bottom, forceLeftGravity);
+        layoutChildren2(mBuilder.contentView, left, top, right, bottom, forceLeftGravity);
 
         final int count = getChildCount();
-        for (int i = count-1; i >0; i--) {
+        for (int i = count - 1; i > 0; i--) {
             final View child = getChildAt(i);
-            if(child==mBuilder.statusbarView||child==mBuilder.actionBarView||child==mBuilder.contentView){
+            if (child == mBuilder.statusbarView || child == mBuilder.actionBarView || child == mBuilder.contentView) {
                 continue;
             }
-            layoutChildren2(mBuilder.contentView,left,top,right,bottom,forceLeftGravity);
+            layoutChildren2(mBuilder.contentView, left, top, right, bottom, forceLeftGravity);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    void layoutChildren2(final View child,int left, int top, int right, int bottom, boolean forceLeftGravity) {
-        if(child==null){
+    void layoutChildren2(final View child, int left, int top, int right, int bottom, boolean forceLeftGravity) {
+        if (child == null) {
             return;
         }
         final int parentLeft = getPaddingLeft();
         final int parentRight = right - left - getPaddingRight();
-
         final int parentTop = getPaddingTop();
         final int parentBottom = bottom - top - getPaddingBottom();
 
-        int statusBarHeight = 0;
-        if (mBuilder.hasStatusBar&&mBuilder.statusbarView != null&&!mBuilder.mixStatusActionBar) {
-            statusBarHeight = mBuilder.statusHeight;
-        }
-
-        int actionBarHeight = 0;
-        if (mBuilder.hasActionBar && mBuilder.actionBarView != null) {
-            actionBarHeight = mBuilder.actionBarView.getMeasuredHeight();
-        }
-
+        int statusBarHeight = mBuilder.statusHeight;
         //Log.e("action",child.toString());
-        if (child!=null&&child.getVisibility() != GONE) {
+        if (child != null && child.getVisibility() != GONE) {
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            if(lp==null){
+            if (lp == null) {
                 lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             }
 
             final int width = child.getMeasuredWidth();
             final int height = child.getMeasuredHeight();
 
-            int childLeft;
-            int childTop;
-
             int gravity = lp.gravity;
             if (gravity == -1) {
                 gravity = DEFAULT_CHILD_GRAVITY;
             }
 
+            int childLeft;
+            int childTop;
             final int layoutDirection = getLayoutDirection();
             final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
             final int verticalGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
@@ -258,24 +216,87 @@ public class ActionBarLayout2 extends FrameLayout {
                     childTop = parentTop + lp.topMargin;
             }
 
-            if (child == mBuilder.actionBarView) {
-                if(!mBuilder.mixStatusActionBar) {
+            if (mBuilder.hasActionBar&&child == mBuilder.actionBarView) {
+                if(!mBuilder.mixStatusActionBar){
                     childTop += statusBarHeight;
                 }
             } else if (child == mBuilder.contentView) {
-                switch (mBuilder.contentViewPaddingTop){
-                    case parent:
-                        break;
-                    case actionBar:
-                        childTop += actionBarHeight+mBuilder.actionBarView.getTop();
-                        break;
-                    case statusBar:
-                        childTop += statusBarHeight;
-                        break;
-                }
+                childTop = getContentViewTop();
+                /*//融合导航栏模式 需要把状态栏高度附加到actionbar的内边距paddingTop上*/
+                setContentViewPaddingTop();
             }
             child.layout(childLeft, childTop, childLeft + width, childTop + height);
         }
+    }
+    //获取内容区域到屏幕顶部的距离
+    private int getContentViewTop() {
+        int statusBarHeight = mBuilder.statusHeight;
+        int actionBarBottom = getActionBarPositionY();
+        int childTop = 0;
+        switch (mBuilder.actionbarType) {
+            case NORMAL:
+                childTop = actionBarBottom;
+                break;
+            case NO_STATUS:
+                childTop = actionBarBottom;
+                break;
+            case NO_ACTION_BAR:
+                childTop = statusBarHeight;
+                break;
+            case ACTION_STACK:
+            //case ACTION_TRANSPARENT:
+            case ACTION_STACK_NO_ACTION:
+            case ACTION_STACK_NO_STATUS:
+            case NO_ACTION_BAR_NO_STATUS:
+                childTop = 0;
+                break;
+        }
+        return childTop;
+    }
+
+    //获取导航栏高度
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        if (mBuilder.hasActionBar && mBuilder.actionBarView != null) {
+            actionBarHeight = mBuilder.actionBarView.getMeasuredHeight();
+            if (mBuilder.mixStatusActionBar) {
+                int statusBarHeight = mBuilder.statusHeight;
+                actionBarHeight -= statusBarHeight;
+            }
+        }
+        return actionBarHeight;
+    }
+    //设置内边距
+    private void setContentViewPaddingTop() {
+        if(mBuilder.contentView==null){
+            return;
+        }
+        int statusBarHeight = mBuilder.statusHeight;
+        int actionBarHeight = getActionBarHeight();
+
+        int contentViewPaddingTop = 0;
+        switch (mBuilder.contentViewPaddingTop) {
+            case none:
+                contentViewPaddingTop = 0;
+                break;
+            case statusBar_actionBar:
+                contentViewPaddingTop = actionBarHeight + statusBarHeight;
+                break;
+            case actionBar:
+                contentViewPaddingTop = actionBarHeight;
+                break;
+            case statusBar:
+                contentViewPaddingTop = statusBarHeight;
+                break;
+        }
+        View view = mBuilder.contentView;
+        //fix bug 1在这里设置padding 当页面跟布局是RelativeLayout时会出现显示不完全的bug,位置调整到layout后面
+        view.setPadding(view.getPaddingLeft(), contentViewPaddingTop, view.getPaddingRight(), view.getPaddingBottom());
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
     }
 
     /**
@@ -284,105 +305,75 @@ public class ActionBarLayout2 extends FrameLayout {
      * @param actionbarType
      */
     public void setActionBarType(ACTIONBAR_TYPE actionbarType) {
-        mBuilder.actionbarType = actionbarType;
-        switch (actionbarType) {
-            case NORMAL:
-                mBuilder.hasStatusBar = true;
-                mBuilder.hasActionBar = true;
-                setContentViewPaddingTop(ContentView_Layout_Below.actionBar);
-                break;
-            case NO_ACTION_BAR:
-                mBuilder.hasStatusBar = true;
-                mBuilder.hasActionBar = false;/*
-                Drawable drawable = mBuilder.actionBarView.getBackground();
-                mBuilder.statusbarView.setBackground(drawable);
-                mBuilder.statusbarView.setBackgroundColor(Color.RED);*/
-                setContentViewPaddingTop(ContentView_Layout_Below.statusBar);
-                break;
-            case NO_ACTION_BAR_NO_STATUS:
-                mBuilder.hasStatusBar = false;
-                mBuilder.hasActionBar = false;
-                setContentViewPaddingTop(ContentView_Layout_Below.parent);
-                break;
-            case NO_STATUS:
-                mBuilder.hasStatusBar = false;
-                mBuilder.hasActionBar = true;
-                setContentViewPaddingTop(ContentView_Layout_Below.actionBar);
-                break;
-            case ACTION_STACK:
-                mBuilder.hasStatusBar = true;
-                mBuilder.hasActionBar = true;
-                setContentViewPaddingTop(ContentView_Layout_Below.parent);
-                break;
-            case ACTION_TRANSPARENT:
-                mBuilder.hasStatusBar = true;
-                mBuilder.hasActionBar = true;
-                setContentViewPaddingTop(ContentView_Layout_Below.parent);
-                break;
-            case ACTION_STACK_NO_ACTION:
-                mBuilder.hasStatusBar = true;
-                mBuilder.hasActionBar = false;
-                setContentViewPaddingTop(ContentView_Layout_Below.statusBar);
-                break;
-            case ACTION_STACK_NO_STATUS:
-                mBuilder.hasStatusBar = false;
-                mBuilder.hasActionBar = true;
-                setContentViewPaddingTop(ContentView_Layout_Below.actionBar);
-                break;
-        }
-
+        mBuilder.setActionbarType(actionbarType);
         update();
     }
 
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        if (child != null && child.getParent() == null) {
+            super.addView(child, params);
+        }
+    }
+
+    @Override
+    public void removeView(View view) {
+        if (view != null && view.getParent() != null) {
+            super.removeView(view);
+        }
+    }
+
     public void update() {
-        //QDLogger.d("update() "+this.hashCode());
-        if(mBuilder.contentView!=null&&mBuilder.contentView.getParent()==null){
-            addView(mBuilder.contentView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (mBuilder.contentView != null && mBuilder.contentView.getParent() == null) {
+            addView(mBuilder.contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
-        if(mBuilder.hasActionBar){//有无导航栏
-            if (mBuilder.actionBarView != null && mBuilder.actionBarView.getParent() == null) {
-                addView(mBuilder.actionBarView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-        }else {
-            if (mBuilder.actionBarView != null && mBuilder.actionBarView.getParent() != null) {
-                removeView(mBuilder.actionBarView);
-            }
+        if (mBuilder.hasActionBar) {//有无导航栏
+            addView(mBuilder.actionBarView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        } else {
+            removeView(mBuilder.actionBarView);
         }
 
-        if(mBuilder.hasStatusBar&&!mBuilder.mixStatusActionBar){//有無狀態欄
-            if(mBuilder.statusbarView==null){
+        if (mBuilder.hasStatusBar && !mBuilder.mixStatusActionBar) {//有无状态栏
+            if (mBuilder.statusbarView == null) {
                 mBuilder.statusbarView = new FrameLayout(mBuilder.activity);
             }
-            if (mBuilder.statusbarView != null && mBuilder.statusbarView.getParent() == null) {
-                addView(mBuilder.statusbarView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,mBuilder.statusHeight));
-            }
-        }else {
-            if (mBuilder.statusbarView != null && mBuilder.statusbarView.getParent() != null) {
-                removeView(mBuilder.statusbarView);
-            }
+            addView(mBuilder.statusbarView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mBuilder.statusHeight));
+        } else {
+            removeView(mBuilder.statusbarView);
         }
 
-        if(mBuilder.actionBarView!=null){
+        if (mBuilder.actionBarView != null) {
             int paddingTop;
-            if(mBuilder.mixStatusActionBar){
-                paddingTop = mBuilder.hasStatusBar?(mBuilder.statusHeight+mBuilder.actionBarPaddingTop_Last):mBuilder.actionBarPaddingTop_Last;
-            }else {
+            if (mBuilder.mixStatusActionBar && mBuilder.hasStatusBar) {
+                paddingTop = mBuilder.statusHeight + mBuilder.actionBarPaddingTop_Last;
+            } else {
                 paddingTop = mBuilder.actionBarPaddingTop_Last;
             }
-            if(mBuilder.actionBarView.getPaddingTop()!=paddingTop) {
+            if (mBuilder.actionBarView.getPaddingTop() != paddingTop) {
                 mBuilder.actionBarView.setPadding(mBuilder.actionBarView.getPaddingLeft(), paddingTop, mBuilder.actionBarView.getPaddingRight(), mBuilder.actionBarView.getPaddingBottom());
             }
         }
+        requestLayout();
        /* if(hasRequestLayout){
             requestLayout();
         }*/
     }
 
-    public enum ContentView_Layout_Below {
-        parent,
+    @Override
+    public void setTitle(CharSequence string) {
+        ImageTextView imageTextView = findViewById(R.id.it_actionbar_common_title);
+        if (imageTextView != null) {
+            imageTextView.setText((String) string);
+        }
+    }
+
+
+    public enum PaddingWith {
+        statusBar_actionBar,
         statusBar,
-        actionBar
+        actionBar,
+        none
     }
 
     public void setHasActionBar(boolean hasActionBar) {
@@ -395,11 +386,11 @@ public class ActionBarLayout2 extends FrameLayout {
         //QDLogger.d("setHasStatusBar");
     }
 
-    public void setContentViewPaddingTop(ContentView_Layout_Below actionBarPaddingTop) {
-        mBuilder.contentViewPaddingTop = actionBarPaddingTop;
-        //QDLogger.d("setContentViewPaddingTop");
+    public void setContentViewPaddingTop(PaddingWith paddingWith) {
+        mBuilder.contentViewPaddingTop = paddingWith;
         update();
     }
+
     public void setStatusHeight(int statusHeight) {
         mBuilder.statusHeight = statusHeight;
         //QDLogger.d("setStatusHeight");
@@ -412,26 +403,58 @@ public class ActionBarLayout2 extends FrameLayout {
         update();
     }
 
-    public static class Builder{
-        ACTIONBAR_TYPE actionbarType;
-        private int statusHeight;
-        private int actionBarPaddingTop_Last =0;
+    public static class Builder {
+        private ACTIONBAR_TYPE actionbarType = ACTIONBAR_TYPE.NORMAL;
+        private int statusHeight;//状态栏高度
+        private int actionBarPaddingTop_Last = 0;
         private boolean mixStatusActionBar = true;//是否使用融合模式，即actionbar padding 状态栏高度,优先级高于hasStatusBar
         private boolean hasStatusBar = true;
         private boolean hasActionBar = true;
-        private ContentView_Layout_Below contentViewPaddingTop = ContentView_Layout_Below.actionBar;
-        View statusbarView;
-        View actionBarView;
-        View contentView;
-        Activity activity;
+        private PaddingWith contentViewPaddingTop = PaddingWith.none;
+        private View statusbarView;
+        private View actionBarView;
+        private View contentView;
+        private Activity activity;
 
-        public Builder(Activity activity) {
+        public Builder(Activity activity, ACTIONBAR_TYPE actionbarType) {
             this.activity = activity;
+            setActionbarType(actionbarType);
         }
 
-        public Builder setActionbarType(ACTIONBAR_TYPE actionbarType) {
+        private void setActionbarType(ACTIONBAR_TYPE actionbarType) {
             this.actionbarType = actionbarType;
-            return this;
+
+            switch (actionbarType) {
+                case NORMAL:
+                    hasStatusBar = true;
+                    hasActionBar = true;
+                    break;
+                case NO_ACTION_BAR:
+                    hasStatusBar = true;
+                    hasActionBar = false;
+                    break;
+                case NO_ACTION_BAR_NO_STATUS:
+                    hasStatusBar = false;
+                    hasActionBar = false;
+                    break;
+                case NO_STATUS:
+                    hasStatusBar = false;
+                    hasActionBar = true;
+                    break;
+                case ACTION_STACK:
+                    //case ACTION_TRANSPARENT:
+                    hasStatusBar = true;
+                    hasActionBar = true;
+                    break;
+                case ACTION_STACK_NO_ACTION:
+                    hasStatusBar = true;
+                    hasActionBar = false;
+                    break;
+                case ACTION_STACK_NO_STATUS:
+                    hasStatusBar = false;
+                    hasActionBar = true;
+                    break;
+            }
         }
 
         public Builder setStatusHeight(int statusHeight) {
@@ -455,7 +478,7 @@ public class ActionBarLayout2 extends FrameLayout {
             return this;
         }
 
-        public Builder setContentViewPaddingTop(ContentView_Layout_Below contentViewPaddingTop) {
+        public Builder setContentViewPaddingTop(PaddingWith contentViewPaddingTop) {
             this.contentViewPaddingTop = contentViewPaddingTop;
             return this;
         }

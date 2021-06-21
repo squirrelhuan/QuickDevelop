@@ -4,11 +4,17 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDValueAnimator extends ValueAnimator {
@@ -19,83 +25,86 @@ public class QDValueAnimator extends ValueAnimator {
         isOpening,
         isClosed,
         isColosing,
-
         isOpenStart,
         isCloseStart,
     }
 
+    boolean isFrward = false;
     boolean hasReversed = false;
 
     public boolean isHasReversed() {
         return hasReversed;
     }
 
+    Handler handler;
     private Object tag;
-    private AnimationState animationState = AnimationState.idle;
-    private int currentIndex;//当前执行次数
+    private AnimationState state = AnimationState.idle;
+    AnimatorListener mAnimatorListener;
+
     public QDValueAnimator(Class dataType) {
         this.dataType = dataType;
-        if (animatorUpdateListener == null) {
-            animatorUpdateListener = new AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    value = animation.getAnimatedValue();
-                    if (!isReversing(ValueAnimator.class, animation)) {
-                        onOpening(value);
-                    } else {
-                        onClosing(value);
-                    }
-                    lastValue = value;
+        handler = new Handler(Looper.getMainLooper());
+        AnimatorUpdateListener animatorUpdateListener = new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                value = animation.getAnimatedValue();
+                //QDLogger.i("value="+value);
+                if (isFrward) {
+                    onOpening(value);
+                } else {
+                    onClosing(value);
                 }
-            };
-            addUpdateListener(animatorUpdateListener);
-            if (mAnimatorListener == null) {
-                addListener(new AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        for (AnimatorListener animatorListener : listeners) {
-                            animatorListener.onAnimationStart(animation);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        for (AnimatorListener animatorListener : listeners) {
-                            animatorListener.onAnimationEnd(animation);
-                        }
-                        if (isReversing(ValueAnimator.class, animation)) {
-                            onEndClose();
-                        } else {
-                            onEndOpen();
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        for (AnimatorListener animatorListener : listeners) {
-                            animatorListener.onAnimationCancel(animation);
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                        for (AnimatorListener animatorListener : listeners) {
-                            animatorListener.onAnimationRepeat(animation);
-                        }
-                    }
-                });
+                lastValue = value;
             }
-        }
+        };
+        addUpdateListener(animatorUpdateListener);
+        mAnimatorListener = new AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+           /* @Override
+            public void onAnimationEnd(Animator animation, boolean isReverse) {
+            }*/
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //QDLogger.e("onAnimationEnd hash="+QDValueAnimator.this.hashCode()+",listener="+animation.hashCode()+",isFrward="+isFrward+",animation.isRunning="+animation.isRunning());
+                if (isFrward) {
+                    onEndOpen();
+                } else {
+                    onEndClose();
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // QDLogger.e("onAnimationCancel hash="+QDValueAnimator.this.hashCode());
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // QDLogger.e("onAnimationRepeat hash="+QDValueAnimator.this.hashCode());
+            }
+        };
+        addListener(mAnimatorListener);
     }
 
-    boolean isReversing() {
-        return isReversing(ValueAnimator.class, this);
+    public boolean isFrward() {
+        return isFrward;
     }
 
-    boolean isReversing(Class clazz, Animator animator) {
+    //弃用
+    public boolean isReversing2() {
+        return isReversing2(ValueAnimator.class, this);
+    }
+
+    //弃用
+    boolean isReversing2(Class clazz, Animator animator) {
         Field[] fields = clazz.getDeclaredFields();
         // 暴力反射获取属性
-       // Field filed = class1.getDeclaredField("name");
+        // Field filed = class1.getDeclaredField("name");
         if (fields != null) {
             //QDLogger.println(clazz.getName()+":fields.length =" + fields.length);
             for (int i = 0, len = fields.length; i < len; i++) {
@@ -116,22 +125,6 @@ public class QDValueAnimator extends ValueAnimator {
             }
         }
         return false;
-    }
-
-    AnimatorListener mAnimatorListener;
-    List<AnimatorListener> listeners;
-
-    @Override
-    public void addListener(AnimatorListener listener) {
-        if (listeners == null) {
-            listeners = new ArrayList<>();
-        }
-        if (mAnimatorListener == null) {
-            mAnimatorListener = listener;
-        } else {
-            listeners.add(listener);
-        }
-        super.addListener(mAnimatorListener);
     }
 
     public Class dataType;
@@ -155,11 +148,15 @@ public class QDValueAnimator extends ValueAnimator {
         endValue = values[values.length - 1];
     }
 
-    Object value;
-    Object lastValue;
+    Object value;//当前值
+    Object lastValue;//上一次动画值
 
-    public AnimationState getAnimationState() {
-        return animationState;
+    public Object getValue() {
+        return value;
+    }
+
+    public AnimationState getState() {
+        return state;
     }
 
     @Override
@@ -180,73 +177,89 @@ public class QDValueAnimator extends ValueAnimator {
     @Override
     public void start() {
         hasReversed = false;
+        isFrward = true;
         super.start();
     }
 
     @Override
     public void reverse() {
         hasReversed = true;
+        isFrward = !isFrward;
+        //QDLogger.e("reverse() isReversing="+isReversing);
         super.reverse();
     }
 
-    public void reverseBack() {
-        if (animationState == AnimationState.isOpened || animationState == AnimationState.isOpening) {
+    /**
+     * 顺序动画
+     */
+    public void forward() {
+        if (!isFrward) {
+            start();
+        }
+    }
+
+    /**
+     * 逆序动画
+     */
+    public void backward() {
+        if (isFrward) {
             reverse();
         }
     }
 
-    AnimatorUpdateListener animatorUpdateListener;
+    @Override
+    public void resume() {
+        hasReversed = false;
+        super.resume();
+    }
 
     @Override
     public void setupStartValues() {
-        animationState = AnimationState.isClosed;
+        state = AnimationState.isClosed;
         super.setupStartValues();
     }
 
     @Override
     public void setupEndValues() {
-        animationState = AnimationState.isOpened;
+        state = AnimationState.isOpened;
         super.setupEndValues();
     }
 
     private void onStartOpen(Object value) {
-        if (animationListener != null && animationState != AnimationState.isOpening) {
-            animationState = AnimationState.isOpening;
-            QDLogger.i("onStartOpen:" + value);
+        if (animationListener != null && state != AnimationState.isOpening) {
+            state = AnimationState.isOpening;
+            //QDLogger.i("onStartOpen:" + value);
             animationListener.onStartOpen(value);
         }
     }
 
     private void onOpening(Object value) {
         //QDLogger.i("onOpening:" + value);
-        animationState = AnimationState.isOpening;
+        state = AnimationState.isOpening;
         if (animationListener != null) {
             animationListener.onOpening(value);
         }
     }
 
-    @SuppressLint("WrongConstant")
     private void onEndOpen() {
-        animationState = AnimationState.isOpened;
-        if (getRepeatMode() == ValueAnimator.INFINITE) {
-            currentIndex++;
-        }
-        QDLogger.i("onEndOpen:" + endValue);
+        setupEndValues();
+        state = AnimationState.isOpened;
+        //QDLogger.i("onEndOpen:" + endValue);
         if (animationListener != null) {
             animationListener.onEndOpen(endValue);
         }
     }
 
     private void onStartClose(Object value) {
-        if (animationListener != null && animationState != AnimationState.isColosing) {
-            animationState = AnimationState.isColosing;
-            QDLogger.i("onStartOpen:" + value);
+        if (animationListener != null && state != AnimationState.isColosing) {
+            state = AnimationState.isColosing;
+            //QDLogger.i("onStartOpen:" + value);
             animationListener.onStartClose(value);
         }
     }
 
     private void onClosing(Object value) {
-        animationState = AnimationState.isColosing;
+        state = AnimationState.isColosing;
         //QDLogger.i("onClosing:" + value);
         if (animationListener != null) {
             animationListener.onClosing(value);
@@ -254,13 +267,17 @@ public class QDValueAnimator extends ValueAnimator {
     }
 
     private void onEndClose() {
-        animationState = AnimationState.isClosed;
-        if (getRepeatMode() == ValueAnimator.REVERSE) {
-            currentIndex++;
-        }
+        setupStartValues();
+        state = AnimationState.isClosed;
         if (animationListener != null) {
             //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
-            animationListener.onEndClose(startValue);
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    animationListener.onEndClose(startValue);
+                }
+            });
         }
     }
 
@@ -269,13 +286,14 @@ public class QDValueAnimator extends ValueAnimator {
         super.setRepeatCount(value);
     }
 
-    AnimationListener animationListener;
+    private AnimationListener animationListener;
 
-    public void setAnimationListener(AnimationListener animationListener) {
-        this.animationListener = animationListener;
+    public void setAnimationListener(AnimationListener listener) {
+        QDLogger.e("hash=" + hashCode() + ",listener=" + listener.hashCode());
+        this.animationListener = listener;
     }
 
-    public static interface AnimationListener {
+    public static interface AnimationListenerInterface {
         void onStartOpen(Object value);
 
         void onOpening(Object value);
@@ -287,6 +305,18 @@ public class QDValueAnimator extends ValueAnimator {
         void onClosing(Object value);
 
         void onEndClose(Object value);
+    }
+
+    public static abstract class AnimationListener implements AnimationListenerInterface {
+        @Override
+        public void onStartOpen(Object value) {
+
+        }
+
+        @Override
+        public void onStartClose(Object value) {
+
+        }
     }
 
     public Object getTag() {

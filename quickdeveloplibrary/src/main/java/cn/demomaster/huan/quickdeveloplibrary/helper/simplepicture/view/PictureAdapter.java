@@ -158,6 +158,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         return a + (mImages == null ? 0 : mImages.size());
 
     }
+
     private int addButtonPadding;
 
     public void setAddButtonPadding(int addButtonPadding) {
@@ -196,11 +197,13 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
                 setAddButton(addButtonPadding);
             }
         }
-        private void rmovePadding( ) {
-            iv_picture.setPadding(0,0,0,0);
+
+        private void rmovePadding() {
+            iv_picture.setPadding(0, 0, 0, 0);
         }
-        private void setAddButton(int p ) {
-            iv_picture.setPadding(p,p,p,p);
+
+        private void setAddButton(int p) {
+            iv_picture.setPadding(p, p, p, p);
             iv_picture.setImageResource(R.drawable.ic_add_black_24dp);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

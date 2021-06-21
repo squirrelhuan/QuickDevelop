@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
 import android.content.Context;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -22,10 +23,11 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public static void TextHex(){
+    public static void TextHex() {
         String a = numToHex8(10);
-       QDLogger.println("a="+a.toUpperCase());
+        QDLogger.println("a=" + a.toUpperCase());
     }
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -36,12 +38,12 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void testClass(){
-       QDLogger.println(Test.class.getResource("/"));
+    public void testClass() {
+        QDLogger.println(Test.class.getResource("/"));
     }
 
 
-    public void testSAX(){
+    public void testSAX() {
 
     }
 

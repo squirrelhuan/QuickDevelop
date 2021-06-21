@@ -135,7 +135,7 @@ public class FloatingFragment extends BaseFragment {
                     }
 
                     @Override
-                    public boolean handRefused(Context context, PermissionRequest request) {
+                    public boolean handRefused(Activity context, PermissionRequest request) {
                         //return super.handRefused(context, request);
                         PermissionModel permissionModel = request.getPermissionModelList().get(request.getIndex());
                         switch (permissionModel.getName()) {

@@ -44,11 +44,6 @@ public class PushCardFragment extends BaseFragment {
     private RecycleViewAdapter adapter;
     private List<String> lists;
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

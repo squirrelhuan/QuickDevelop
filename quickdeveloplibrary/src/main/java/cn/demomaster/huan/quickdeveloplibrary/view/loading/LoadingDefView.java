@@ -70,6 +70,7 @@ public class LoadingDefView extends View {
     private float progress;
     private boolean isForward = true;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -84,7 +85,7 @@ public class LoadingDefView extends View {
                 if (progress >= end) {
                     isForward = !isForward;
                     //Log.d(TAG, "isForward=" + isForward);
-                }else {
+                } else {
                     //postInvalidate();
                     invalidate();
                 }
@@ -95,10 +96,11 @@ public class LoadingDefView extends View {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null)
+        if (animator != null)
             animator.cancel();
     }
 }

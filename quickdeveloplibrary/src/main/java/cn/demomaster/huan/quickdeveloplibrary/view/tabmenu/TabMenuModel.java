@@ -16,26 +16,27 @@ public class TabMenuModel {
     private List<Integer> selectDeftData;//默认选项
     private String tabName;//Tab名称
     private String[] tabItems;//子内容列表
-    private int columnCount =1;//默认内容列表显示几列
-    private int contentResId=-1;//自定义布局id
-    private int colorSelect_content =Color.RED;
-    private int colorNormal_content= Color.BLACK;
+    private int columnCount = 1;//默认内容列表显示几列
+    private int contentResId = -1;//自定义布局id
+    private int colorSelect_content = Color.RED;
+    private int colorNormal_content = Color.BLACK;
     private TabRadioGroup.TabRadioButton tabButtonView;
     private OnCreatTabContentView onCreatTabContentView;
 
-    public TabMenuModel( String tabName, String[] tabItems,int selectCount, List<Integer> selectDeftData) {
+    public TabMenuModel(String tabName, String[] tabItems, int selectCount, List<Integer> selectDeftData) {
         this.selectCount = selectCount;
         this.selectDeftData = selectDeftData;
         this.tabName = tabName;
         this.tabItems = tabItems;
     }
-    public TabMenuModel( String tabName, String[] tabItems, List<Integer> selectDeftData) {
+
+    public TabMenuModel(String tabName, String[] tabItems, List<Integer> selectDeftData) {
         this.selectDeftData = selectDeftData;
         this.tabName = tabName;
         this.tabItems = tabItems;
     }
 
-    public TabMenuModel( String tabName,int contentResId,OnCreatTabContentView onCreatTabContentView) {
+    public TabMenuModel(String tabName, int contentResId, OnCreatTabContentView onCreatTabContentView) {
         this.tabName = tabName;
         this.contentResId = contentResId;
         this.onCreatTabContentView = onCreatTabContentView;
@@ -88,7 +89,8 @@ public class TabMenuModel {
     public void setColorNormal_content(int colorNormal_content) {
         this.colorNormal_content = colorNormal_content;
     }
-    public void setColorContent(int colorSelect_content,int colorNormal_content) {
+
+    public void setColorContent(int colorSelect_content, int colorNormal_content) {
         this.colorSelect_content = colorSelect_content;
         this.colorNormal_content = colorNormal_content;
     }
@@ -102,7 +104,9 @@ public class TabMenuModel {
     }
 
     public int getColumnCount() {
-        if(contentResId!=-1&&tabItems==null){return -1;}
+        if (contentResId != -1 && tabItems == null) {
+            return -1;
+        }
         return columnCount;
     }
 
@@ -126,7 +130,7 @@ public class TabMenuModel {
         this.onCreatTabContentView = onCreatTabContentView;
     }
 
-    public static interface OnCreatTabContentView{
+    public static interface OnCreatTabContentView {
         void onCreat(View root);
     }
 }

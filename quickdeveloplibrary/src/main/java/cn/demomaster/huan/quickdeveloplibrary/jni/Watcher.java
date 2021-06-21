@@ -10,7 +10,7 @@ public class Watcher {
         System.loadLibrary("native-lib");
     }
 
-    public native void  createWatcher(String  userId,String  packageName,String serviceName);
+    public native void createWatcher(String userId, String packageName, String serviceName);
 
-    public native void  connectMonitor();
+    public native void connectMonitor();
 }

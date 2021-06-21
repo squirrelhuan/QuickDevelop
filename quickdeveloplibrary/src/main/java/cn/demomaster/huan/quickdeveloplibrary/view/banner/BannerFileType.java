@@ -12,6 +12,7 @@ public enum BannerFileType {
     public int value() {
         return this.value;
     }
+
     BannerFileType(int value) {
         this.value = value;
     }

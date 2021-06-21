@@ -25,7 +25,6 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_CODE;
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATH;
 
 
@@ -49,10 +48,9 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     private View optionView;
 
     private int type;
-    private int result;
-
     private OptionsMenu optionsMenu;
     private OptionsMenu.Builder optionsMenubuilder;
+
     //获取自定义菜单
     public OptionsMenu.Builder getOptionsMenuBuilder() {
         if (optionsMenubuilder == null) {
@@ -67,7 +65,6 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getIntent().getIntExtra("type", 0);
-        result = getIntent().getIntExtra(PHOTOHELPER_RESULT_CODE,0);
 
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -178,14 +175,12 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                 getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
-                        QDLogger.e(path);
-                        String relPath = QDFileUtil.getRealPathFromURI(mContext,data.getData());
-                        QDLogger.e(relPath);
+                        String relPath = QDFileUtil.getRealPathFromURI(mContext, data.getData());
                         //setImageToView(data);
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
                         intent.putExtra(PHOTOHELPER_RESULT_PATH, relPath);
-                        setResult(result, intent);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
 
@@ -241,7 +236,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                             //拍照完成，返回对应图片路径
                             Intent intent = new Intent();
                             intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
-                            setResult(result, intent);
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                         return;
@@ -294,7 +289,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                 break;
             case CROP_SMALL_PICTURE:
                 if (data != null) {
-                   // setImageToView(data);
+                    // setImageToView(data);
                 }
             default:
                 break;
@@ -319,7 +314,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                         //拍照完成，返回对应图片路径
                         Intent intent = new Intent();
                         intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
-                        setResult(result, intent);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                     return;
@@ -327,29 +322,6 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
             }).start();
         }
     }
-/*
-    protected void startPhotoZoom(Uri uri) {
-        if (uri == null) {
-            return;
-        }
-        fileUri = uri;
-        Intent intent = new Intent("com.android.camera.action.CROP");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        intent.setDataAndType(uri, "image/*");
-        // ���òü�
-        intent.putExtra("crop", "true");
-        // aspectX aspectY �ǿ�ߵı���
-        intent.putExtra("aspectX", 16);
-        intent.putExtra("aspectY", 10);
-        // outputX outputY �ǲü�ͼƬ���
-        intent.putExtra("outputX", 320);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, CROP_SMALL_PICTURE);
-    }*/
 
     @Override
     protected void onDestroy() {

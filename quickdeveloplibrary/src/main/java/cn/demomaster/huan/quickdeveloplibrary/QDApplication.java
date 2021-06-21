@@ -49,6 +49,7 @@ public class QDApplication extends Application implements UpgradeInterface {
 
         //初始化全局SharedPreferences
         QDSharedPreferences.init(this);
+        //activity管理监听
         QDActivityManager.getInstance().init(this);
         LifecycleManager.getInstance().init(this);
 
@@ -83,8 +84,10 @@ public class QDApplication extends Application implements UpgradeInterface {
     }
 
     public QuickDbHelper dbHelper;
+
     /**
      * 初始化本地数据库
+     *
      * @return
      */
     public QuickDbHelper getDbHelper() {
@@ -96,7 +99,7 @@ public class QDApplication extends Application implements UpgradeInterface {
 
             if (!TextUtils.isEmpty(dbpath)) {
                 dbHelper = new QuickDbHelper(this, dbpath, null, 7, this);
-               // dbHelper = new QuickDb(this, dbpath, null, 7, this);
+                // dbHelper = new QuickDb(this, dbpath, null, 7, this);
             }
         }
         return dbHelper;

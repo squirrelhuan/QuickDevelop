@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.banner;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -52,8 +53,10 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
     BannerAdapter.OnPlayingListener mOnloadingListener;
     BannerAdapter adsAdapter;
     int fragmentCode;
+
     public BannerFragment() {
     }
+
     public BannerFragment(AdsResource adsResource, BannerAdapter.OnPlayingListener onloadingListener, BannerAdapter adsAdapter, int fragmentCode) {
         this.adsResource = adsResource;
         this.mOnloadingListener = onloadingListener;
@@ -69,9 +72,8 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         bannerFrameLayout = view.findViewById(R.id.bannerFrameLayout);
         loadingView = bannerFrameLayout.findViewById(R.id.loadingView);
         bannerFrameLayout.setBannerRadius(adsResource.getRadius());*/
-
         bannerFrameLayout = new BannerFrameLayout(getContext());
-        if(adsResource!=null) {
+        if (adsResource != null) {
             int color = adsResource.getBackgroundColor();
             bannerFrameLayout.setBackgroundColor(color);
             bannerFrameLayout.setBannerRadius(adsResource.getRadius());
@@ -81,20 +83,19 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         layoutParams.gravity = Gravity.CENTER;
         bannerFrameLayout.addView(loadingView, layoutParams);
         bannerFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
         return bannerFrameLayout;
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        QDLogger.d("onHiddenChanged=" + this.getClass().getSimpleName() + ",hidden=" + hidden);
+        QDLogger.println("onHiddenChanged=" + this.getClass().getSimpleName() + ",hidden=" + hidden);
     }
-
+    
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        QDLogger.d("setUserVisibleHint=" + isVisibleToUser);
+        QDLogger.println("setUserVisibleHint=" + isVisibleToUser);
         if (isVisibleToUser) {
             //可见
         } else {
@@ -105,12 +106,12 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
     @Override
     public void onResume() {
         super.onResume();
-        if (adsAdapter!=null&& fragmentCode == adsAdapter.getCurrentItem()) {
-            System.out.println("fragment["+fragmentCode+"] =>"+hashCode()+" onresume ");
+        if (adsAdapter != null && fragmentCode == adsAdapter.getCurrentItem()) {
+            //System.out.println("fragment["+fragmentCode+"] =>"+hashCode()+" onresume ");
             adsAdapter.onFragmentActived(hashCode());
         }
     }
-
+    
     private void loadResource() {
         if (bannerFrameLayout == null) {
             return;
@@ -153,8 +154,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                 break;
         }
     }
-
-
+    
     /**
      * 加载网络资源
      */
@@ -162,7 +162,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         //QDLogger.i("loadRemoteResource >> "+fragmentCode);
         //获取url类型
         final String urlString = adsResource.getUrl();
-        if (QuickCache.enable()&&QuickCache.containsUrl(urlString)) {
+        if (QuickCache.enable() && QuickCache.containsUrl(urlString)) {
             CacheInfo fileInfo = QuickCache.getCacheInfoByUrl(urlString);
             if (fileInfo != null) {
                 if (!TextUtils.isEmpty(fileInfo.getFilePath())) {
@@ -172,20 +172,20 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                     System.out.println("从缓存中获取 " + fileInfo.getFileType() + "," + fileInfo.getFilePath());
                     resetView();
                     return;
-                }else {
-                    System.out.println("缓存文件路徑不存在: " +urlString);
+                } else {
+                    System.out.println("缓存文件路徑不存在: " + urlString);
                 }
-            }else {
-                System.out.println("缓存中不存在2: " +urlString);
+            } else {
+                System.out.println("缓存中不存在2: " + urlString);
             }
-        }else {
-            System.out.println("缓存中不存在1: " +urlString);
+        } else {
+            System.out.println("缓存中不存在1: " + urlString);
         }
 
         UrlHelper.analyUrl(urlString, new UrlHelper.AnalyResult() {
             @Override
             public void success(String url, String fileType, int fileLength) {
-                QDLogger.i(" " + fragmentCode + ",网络资源类型：" + fileType+",当前类型："+BannerContentType.getEnum(adsResource.getType()));
+                QDLogger.i(" " + fragmentCode + ",网络资源类型：" + fileType + ",当前类型：" + BannerContentType.getEnum(adsResource.getType()));
                 if (adsResource.getType() != getFileType(fileType)) {
                     QuickCache.addFile(urlString, fileType, null);
                     adsResource.setType(getFileType(fileType));
@@ -301,7 +301,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
 
                 if (adsResource.getFrom() == BannerFileType.local.value()) {
                     qdVideo.setVideoPath(adsResource.getFilePath());
-                }else {
+                } else {
                     qdVideo.setVideoURI(Uri.parse(adsResource.getUrl()));
                 }
 
@@ -312,10 +312,10 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                     titleView.setGravity(adsResource.getTextGravity());
                     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = adsResource.getLayout_gravity();
-                    layoutParams.leftMargin=0;
-                    layoutParams.topMargin=0;
-                    layoutParams.rightMargin=0;
-                    layoutParams.bottomMargin=0;
+                    layoutParams.leftMargin = 0;
+                    layoutParams.topMargin = 0;
+                    layoutParams.rightMargin = 0;
+                    layoutParams.bottomMargin = 0;
                     titleView.setIncludeFontPadding(false);
                     bannerFrameLayout.addView(titleView, layoutParams);
                     titleView.setTextSize(adsResource.getTextSize());
@@ -338,10 +338,10 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                 }
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 layoutParams.gravity = adsResource.getLayout_gravity();
-                layoutParams.leftMargin=0;
-                layoutParams.topMargin=0;
-                layoutParams.rightMargin=0;
-                layoutParams.bottomMargin=0;
+                layoutParams.leftMargin = 0;
+                layoutParams.topMargin = 0;
+                layoutParams.rightMargin = 0;
+                layoutParams.bottomMargin = 0;
                 titleView.setIncludeFontPadding(false);
                 bannerFrameLayout.addView(titleView, layoutParams);
                 break;
@@ -351,7 +351,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
             activeFragment();
         }
     }
-
+    
     /**
      * 移除无用控件
      *
@@ -412,13 +412,14 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         void complete();
         void error();*/
     boolean isActived;
+
     @Override
     public void onActiveChanged(int activedHash) {
         //QDLogger.i("状态变化 " + fragmentCode + "=> " + hashCode() +"=?"+activedHash);
-        if (activedHash==this.hashCode()) {
+        if (activedHash == this.hashCode()) {
             isActived = true;
             loadResource();
-        } else if(isActived){
+        } else if (isActived) {
             isActived = false;
             pause();
         }

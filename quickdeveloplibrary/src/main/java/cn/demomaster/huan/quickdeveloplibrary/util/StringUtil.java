@@ -18,51 +18,71 @@ import retrofit2.http.PUT;
  * description：
  */
 public class StringUtil {
-
+    /**
+     * 是否是小写
+     * @param str
+     * @return
+     */
+    public static boolean isLowCaseLetter(String str) {
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        return letters.contains(str);
+    }
+    /**
+     * 是否是大写
+     * @param str
+     * @return
+     */
+    public static boolean isUpCaseLetter(String str) {
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return letters.contains(str);
+    }
 
     //length用户要求产生字符串的长度
-    public static String getRandomString(int length){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random=new Random();
-        StringBuffer sb=new StringBuffer();
-        for(int i=0;i<length;i++){
-            int number=random.nextInt(62);
+    public static String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(62);
             sb.append(str.charAt(number));
         }
         return sb.toString();
     }
+
     /**
      * 隐藏部分位数
+     *
      * @param str
      * @return
      */
     public static String hidePartString(String str) {
-        if(str!=null&& !TextUtils.isEmpty(str)){
+        if (str != null && !TextUtils.isEmpty(str)) {
             int length = str.length();
-            int l2 = length/3;
-           return hidePartString(str,l2);
+            int l2 = length / 3;
+            return hidePartString(str, l2);
         }
         return "";
     }
 
     /**
      * 隐藏部分位数
+     *
      * @param str
      * @param len
      * @return
      */
-    public static String hidePartString(String str,int len) {
-        if(str!=null&& !TextUtils.isEmpty(str)){
+    public static String hidePartString(String str, int len) {
+        if (str != null && !TextUtils.isEmpty(str)) {
             String p = str;
             int length = p.length();
-            if(len>=length){
+            if (len >= length) {
                 return "";
             }
             String t = "";
-            for(int i=0;i<len;i++){
-                t+="*";
+            for (int i = 0; i < len; i++) {
+                t += "*";
             }
-            return p.replace(p.substring(len,length-len),t);
+            return p.replace(p.substring(len, length - len), t);
         }
         return "";
     }
@@ -88,17 +108,18 @@ public class StringUtil {
         return sb.toString().trim();
     }
 
-    public static int bytes2int(byte[]  bytes){
-        int  i;
-        int a=bytes[0];
-        int b=(bytes[1]&0xFF)<<8;
-        int c=(bytes[2]&0xFF)<<16;
-        int d=(bytes[3]&0xFF)<<24;
-        return a|b|c|d;
+    public static int bytes2int(byte[] bytes) {
+        int i;
+        int a = bytes[0];
+        int b = (bytes[1] & 0xFF) << 8;
+        int c = (bytes[2] & 0xFF) << 16;
+        int d = (bytes[3] & 0xFF) << 24;
+        return a | b | c | d;
     }
 
     /**
      * 十六进制转换字符串 --- 不去除空字符的结果
+     *
      * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
@@ -115,27 +136,29 @@ public class StringUtil {
         }
         return new String(bytes);
     }
+
     /**
      * 十六进制转换字符串(去除空字符的结果)
-     * @param  hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
+     *
+     * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
     public static String hexStr2Str(String hexStr) {
         String str = "0123456789ABCDEF";
         char[] hexs = hexStr.toCharArray();
         int n;
-        LinkedHashMap<Integer,Byte> characterLinkedHashMap = new LinkedHashMap<>();
+        LinkedHashMap<Integer, Byte> characterLinkedHashMap = new LinkedHashMap<>();
         for (int i = 0; i < hexStr.length() / 2; i++) {
             n = str.indexOf(hexs[2 * i]) * 16;
             n += str.indexOf(hexs[2 * i + 1]);
             byte b = (byte) (n & 0xff);
-            if(b!='\0') {
-                characterLinkedHashMap.put(i,b);
+            if (b != '\0') {
+                characterLinkedHashMap.put(i, b);
             }
         }
         byte[] bytes = new byte[characterLinkedHashMap.size()];
-        int i=0;
-        for(Map.Entry entry: characterLinkedHashMap.entrySet()){
+        int i = 0;
+        for (Map.Entry entry : characterLinkedHashMap.entrySet()) {
             bytes[i] = (byte) entry.getValue();
             i++;
         }
@@ -146,7 +169,7 @@ public class StringUtil {
     /**
      * bytes转换成十六进制字符串
      *
-     * @param  b byte数组
+     * @param b byte数组
      * @return String 每个Byte值之间空格分隔
      */
     public static String byte2HexStr(byte[] b) {
@@ -163,7 +186,7 @@ public class StringUtil {
     /**
      * bytes字符串转换为Byte值
      *
-     * @param  src Byte字符串，每个Byte之间没有分隔符
+     * @param src Byte字符串，每个Byte之间没有分隔符
      * @return byte[]
      */
     public static byte[] hexStr2Bytes(String src) {
@@ -198,23 +221,23 @@ public class StringUtil {
             }
             bytes[i] = (byte) (n & 0xff);
         }
-       QDLogger.println(new String(bytes).trim());
+        QDLogger.println(new String(bytes).trim());
         return bytes;
     }
 
     public static int hexString2Int(String str) {
-       byte[] bytes = str.getBytes();
-       int r =0;
-       for(int i=0;i<bytes.length;i++){
-           r= (int) (r+(bytes[i]*(Math.pow(10, i))));
-       }
-       return r;
+        byte[] bytes = str.getBytes();
+        int r = 0;
+        for (int i = 0; i < bytes.length; i++) {
+            r = (int) (r + (bytes[i] * (Math.pow(10, i))));
+        }
+        return r;
     }
 
     /**
      * String的字符串转换成unicode的String
      *
-     * @param  strText 全角字符串
+     * @param strText 全角字符串
      * @return String 每个unicode之间无分隔符
      * @throws Exception
      */
@@ -238,7 +261,8 @@ public class StringUtil {
 
     /**
      * unicode的String转换成String的字符串
-     * @param  hex 16进制值字符串 （一个unicode为2byte）
+     *
+     * @param hex 16进制值字符串 （一个unicode为2byte）
      * @return String 全角字符串
      */
     public static String unicodeToString(String hex) {
@@ -262,17 +286,18 @@ public class StringUtil {
 
     /**
      * 数字转指定位数的string
-     * @param num 要转的数字
+     *
+     * @param num    要转的数字
      * @param length 目标长度
      * @return
      */
-    public static String formatNumberToStr(int num,int length) {
+    public static String formatNumberToStr(int num, int length) {
         String a = String.valueOf(num);
         int count = length - a.length();
         String r = null;
-        for(int i=0;i<count;i++){
-            r = (r==null?"":r)+"0";
+        for (int i = 0; i < count; i++) {
+            r = (r == null ? "" : r) + "0";
         }
-        return (r==null?"":r)+a;
+        return (r == null ? "" : r) + a;
     }
 }

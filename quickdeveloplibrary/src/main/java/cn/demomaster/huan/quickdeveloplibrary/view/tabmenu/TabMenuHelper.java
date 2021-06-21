@@ -12,6 +12,7 @@ public class TabMenuHelper {
 
     private List<View> tabButtons;
     private ViewGroup tabGroup;
+
     public void setOnTabChangeListener(final OnTabCheckedChangeListener onCheckedChangeListener) {
         for (int i = 0; i < tabButtons.size(); i++) {
             View view = tabButtons.get(i);

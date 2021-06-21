@@ -46,11 +46,6 @@ public class LmSensorFragment extends BaseFragment implements SensorEventListene
     float LPointX;
     float LPointY;
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

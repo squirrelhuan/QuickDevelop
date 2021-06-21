@@ -1,27 +1,22 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.slidingLayout;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import cn.demomaster.huan.quickdeveloplibrary.R;
 
-/**
- * Created by amitshekhar on 14/01/17.
- */
+import cn.demomaster.huan.quickdeveloplibrary.R;
 
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.ViewHolder> {
 
     private List<String> data;
     private Context context;
-
+    
     public ComponentAdapter(Context context) {
         this.context = context;
         data = new ArrayList<>();

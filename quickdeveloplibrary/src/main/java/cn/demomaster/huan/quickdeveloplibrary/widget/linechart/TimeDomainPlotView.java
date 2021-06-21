@@ -197,7 +197,7 @@ public class TimeDomainPlotView extends View {
             h = scale;
         }
         Path path = new Path();
-        path.moveTo(0 + offsetX, -linePoints.get(0).getY()* h / maxY * getHeight() / 2 + centerY - baselineY + offsetY);
+        path.moveTo(0 + offsetX, -linePoints.get(0).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY);
         for (int i = startP; i < endP; i++) {
             float startX = i * w + offsetX;
             float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY;
@@ -427,7 +427,7 @@ public class TimeDomainPlotView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(linePoints!=null) {
+        if (linePoints != null) {
             linePoints = null;
         }
     }

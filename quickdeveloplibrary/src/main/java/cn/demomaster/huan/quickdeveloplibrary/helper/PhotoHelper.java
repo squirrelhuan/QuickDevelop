@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,9 +23,12 @@ import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFileType;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
+import static android.app.Activity.RESULT_OK;
 import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_CONTENT;
 
 /**
@@ -37,183 +41,309 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
 
 public class PhotoHelper {
 
-    private WeakReference<Context> contextWeakReference;
-    public PhotoHelper(Context context) {
+
+    public static enum RequestType {
+        takePhoto(0),//拍照
+        scanQrcode(1),//扫描二维码
+        photoCrop(2),//图片裁剪
+        takePhotoForIDCard(3),
+        selectFromGallery(4),
+        selectFromMyGallery(5);//
+
+        private int value = 0;
+
+        RequestType(int value) {//必须是private的，否则编译错误
+            this.value = value;
+        }
+
+        public static RequestType getEnum(int value) {
+            RequestType resultEnum = null;
+            RequestType[] enumArray = RequestType.values();
+            for (int i = 0; i < enumArray.length; i++) {
+                if (enumArray[i].value() == value) {
+                    resultEnum = enumArray[i];
+                    break;
+                }
+            }
+            return resultEnum;
+        }
+
+        public int value() {
+            return this.value;
+        }
+    }
+
+    private WeakReference<Activity> contextWeakReference;
+
+    public PhotoHelper(Activity context) {
         this.contextWeakReference = new WeakReference<>(context);
     }
+
     public void scanQrcode(OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_SCAN_QRCODE);
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setRequestType(RequestType.scanQrcode);
+        builder.onTakePhotoResult = onTakePhotoResult;
+        takePhoto2(builder);
     }
 
     /**
      * 调用相机拍照
+     *
      * @param onTakePhotoResult
+     * @param outUri            拍照保存的路径
      */
-    public void takePhoto(OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_TAKE_PHOTO);
+    public void takePhoto(Uri outUri, OnTakePhotoResult onTakePhotoResult) {
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setOutUri(outUri);
+        builder.setRequestType(RequestType.takePhoto);
+        builder.onTakePhotoResult = onTakePhotoResult;
+        takePhoto2(builder);
     }
 
     /**
-     * 图片截取
-     * @param uri 要处理的图片uri
+     * 调用相机拍照并且裁剪
+     *
      * @param onTakePhotoResult
      */
-    public void photoCrop(Uri uri, OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_PHOTO_CROP, uri);
-    }
-
-    /**
-     * 调用图库获取图片
-     * @param onTakePhotoResult
-     */
-    public void selectPhotoFromGallery(OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_SELECT_PHOTO_FROM_GALLERY);
-    }
-
-    /**
-     * 调用自定义图库获取图片
-     * @param onSelectPictureResult
-     */
-    public void selectPhotoFromMyGallery(OnSelectPictureResult onSelectPictureResult) {
-        takePhoto2(onSelectPictureResult, RESULT_CODE_SIMPLE_PICTURE);
-    }
-
-    /**
-     * 调用相册并截取
-     * @param onTakePhotoResult
-     */
-    public void selectPhotoFromGalleryAndCrop(final OnTakePhotoResult onTakePhotoResult) {
-        selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+    public void takePhotoCrop(Uri outUri, OnTakePhotoResult onTakePhotoResult) {
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setOutUri(outUri);
+        builder.setRequestType(RequestType.takePhoto);
+        builder.onTakePhotoResult = new OnTakePhotoResult() {
             @Override
             public void onSuccess(Intent data, String path) {
-                photoCrop(data.getData(), onTakePhotoResult);
+                builder.setSrcUri(outUri);
+                builder.setOnTakePhotoResult(onTakePhotoResult);
+                photoCrop(builder);
             }
 
             @Override
             public void onFailure(String error) {
-                onTakePhotoResult.onFailure(error);
+
             }
-        });
+        };
+        takePhoto2(builder);
+    }
+
+    /**
+     * 图片截取
+     */
+    public void photoCrop(Builder builder) {
+        if (builder == null) {
+            return;
+        }
+        builder.setRequestType(RequestType.photoCrop);
+        takePhoto2(builder);
+    }
+
+    /**
+     * 调用图库获取图片
+     *
+     * @param onTakePhotoResult
+     */
+    public void selectPhotoFromGallery(OnTakePhotoResult onTakePhotoResult) {
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setOnTakePhotoResult(onTakePhotoResult);
+        builder.setRequestType(RequestType.selectFromGallery);
+        takePhoto2(builder);
+    }
+
+    /**
+     * 调用自定义图库获取图片
+     *
+     * @param onSelectPictureResult
+     */
+    public void selectPhotoFromMyGallery(OnSelectPictureResult onSelectPictureResult) {
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setRequestType(RequestType.selectFromMyGallery);
+        builder.setOnSelectPictureResult(onSelectPictureResult);
+        takePhoto2(builder);
+    }
+
+    /**
+     * 调用相册并截取
+     *
+     * @param onTakePhotoResult
+     */
+    public void selectPhotoFromGalleryAndCrop(Uri outUri, final OnTakePhotoResult onTakePhotoResult) {
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setOutUri(outUri);
+        builder.setRequestType(RequestType.selectFromGallery);
+        builder.onTakePhotoResult = new OnTakePhotoResult() {
+            @Override
+            public void onSuccess(Intent data, String path) {
+                QDLogger.e("selectPhotoFromGalleryAndCrop 2 =" + data + "," + path);
+                if (data != null) {
+                    builder.setSrcUri(data.getData());
+                } else {
+                    builder.setSrcUri(Uri.parse(path));
+                }
+                builder.setOutUri(outUri);
+                builder.setOnTakePhotoResult(onTakePhotoResult);
+                photoCrop(builder);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        };
+        takePhoto2(builder);
     }
 
     /**
      * 拍摄身份证
+     *
      * @param onTakePhotoResult
      */
     public void takePhotoForIDCard(OnTakePhotoResult onTakePhotoResult) {
-        takePhoto2(onTakePhotoResult, RESULT_CODE_TAKE_PHOTO_FOR_IDCARD);
+        Builder builder = new Builder(contextWeakReference.get());
+        builder.setOnTakePhotoResult(onTakePhotoResult);
+        builder.setRequestType(RequestType.takePhotoForIDCard);
+        takePhoto2(builder);
     }
 
-    private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto) {
+   /* private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto) {
         takePhoto2(onTakePhotoResult, resultCodeTakePhoto, null);
+    }*/
+
+    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    Builder currentBuilder;
+    private int mRequestCode = 1111;
+
+    /**
+     * 设置请求码，防止请求码冲突的情况
+     *
+     * @param mRequestCode
+     */
+    public void setRequestCode(int mRequestCode) {
+        this.mRequestCode = mRequestCode;
     }
 
-    private void takePhoto2(final Object onTakePhotoResult, final int resultCodeTakePhoto, final Uri uri) {
-        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    private void takePhoto2(Builder builder) {
+        if (builder.requestCode == -1) {
+            builder.requestCode = mRequestCode;
+        }
+        // final Object onTakePhotoResult,
         PermissionHelper.getInstance().requestPermission(contextWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                photoResultMap.put(resultCodeTakePhoto, onTakePhotoResult);
-                switch (resultCodeTakePhoto) {
-                    case RESULT_CODE_TAKE_PHOTO:
-                        takePhoto(resultCodeTakePhoto);
+                final RequestType requestType = builder.requestType;
+                currentBuilder = builder;
+                Uri uri1 = builder.outUri;
+                switch (requestType) {
+                    case takePhoto: //PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO://拍照
+                        uri1 = takePhoto(builder);
                         break;
-                    case RESULT_CODE_PHOTO_CROP:
-                        cropPhoto(uri, resultCodeTakePhoto);
+                    case photoCrop:// PHOTOHELPER_REQUEST_CODE_PHOTO_CROP://图片截取
+                        cropPhotoImp(builder);
                         break;
-                    case RESULT_CODE_TAKE_PHOTO_FOR_IDCARD:
-                        takePhotoForIDCard(resultCodeTakePhoto);
+                    case takePhotoForIDCard://PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO_FOR_IDCARD://拍身份证
+                        takePhotoForIDCardImp(builder);
                         break;
-                    case RESULT_CODE_SELECT_PHOTO_FROM_GALLERY:
-                        selectPhotoFromGallery(resultCodeTakePhoto);
+                    case selectFromGallery:// PHOTOHELPER_REQUEST_CODE_GALLERY://从相册选取照片
+                        selectPhotoFromGalleryImp(builder);
                         break;
-                    case RESULT_CODE_SCAN_QRCODE:
-                        scanQrcode(resultCodeTakePhoto);
+                    case scanQrcode:// PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE://扫描二维码
+                        scanQrcodeImp(builder);
                         break;
-                    case RESULT_CODE_SIMPLE_PICTURE:
-                        startSimplePictureActivity(resultCodeTakePhoto,onTakePhotoResult);
+                    case selectFromMyGallery://PHOTOHELPER_REQUEST_CODE_GALLERY2://从自定义图库选择
+                        startSimplePictureActivityImp(builder);
                         break;
+                }
+
+                if (builder != null && builder.onTakePhotoResult != null && builder.onTakePhotoResult instanceof OnTakePhotoResult) {
+                    ((OnTakePhotoResult) builder.onTakePhotoResult).setTag(uri1);
+                    currentBuilder = builder;
                 }
             }
 
             @Override
             public void onRefused() {
-                if(onTakePhotoResult instanceof OnTakePhotoResult )
-                    ((OnTakePhotoResult)onTakePhotoResult).onFailure("权限不足");
+                if (builder != null && builder.onTakePhotoResult != null && builder.onTakePhotoResult instanceof OnTakePhotoResult) {
+                    ((OnTakePhotoResult) builder.onTakePhotoResult).onFailure("权限不足");
+                }
             }
         });
     }
 
-    private Map<Integer, Object> photoResultMap = new HashMap<>();
-    private void takePhoto(int resultCodeTakePhoto) {
-        Uri fileUri;
-        Intent intent = null;
-        // 判断存储卡是否可以用，可用进行存储
-//        if (StorageUtils.hasSdcard()) {
-        //设定拍照存放到自己指定的目录,可以先建好
-//            File file = new File(savePath);
-        String savePath = Environment.getExternalStorageDirectory().getPath() ;
-        File file_Uri = new File(savePath + "/photo.jpg");
-        if (!file_Uri.exists()) {
-            file_Uri.mkdirs();
-        }
-        File pictureFile = new File(savePath, "photo.jpg");
-        if (!file_Uri.exists()) {
-            try {
-                file_Uri.createNewFile();
-            } catch (IOException e) {
-                QDLogger.e(e);
+    //private Map<Integer, Object> photoResultMap = new HashMap<>();
+
+    private Uri takePhoto(Builder builder) {
+        Uri fileUri = builder.outUri;
+        if (fileUri == null) {
+            // 判断存储卡是否可以用，可用进行存储
+            // if (StorageUtils.hasSdcard()) {
+            String savePath = Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + contextWeakReference.get().getPackageName() + "/photo";
+            File file = new File(savePath, System.currentTimeMillis() + ".jpg");
+            if (!file.exists()) {
+                QDFileUtil.createFile(file);
+            }
+            fileUri = QDFileUtil.getUrifromFile(contextWeakReference.get(), file);
+        } else {
+            File file = new File(fileUri.getPath());
+            if (!file.exists()) {
+                QDFileUtil.createFile(file);
             }
         }
-
-        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put(MediaStore.Images.Media.DATA, pictureFile.getAbsolutePath());
-            fileUri = ((Activity) contextWeakReference.get()).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
-            //fileUri = FileProvider.getUriForFile(context, "cn.demomaster.huan.quickdeveloplibrary.fileprovider", pictureFile);
-
-        } else {
-            fileUri = Uri.fromFile(pictureFile);
-        }
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//如果此处指定，返回值的data为null
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
+        return fileUri;
     }
 
-    private void cropPhoto(Uri uri, int resultCodeTakePhoto) {
-        if (uri == null) {
-            return;
-        }
+    /**
+     * 图片裁剪功能
+     */
+    private static void cropPhotoImp(Builder builder) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", new File(uri.getPath()));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        intent.setDataAndType(uri, "image/*");
-        // ���òü�
+        intent.setDataAndType(builder.srcUri, "image/*");
+        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", "true");
-        // aspectX aspectY �ǿ�ߵı���
-        intent.putExtra("aspectX", 16);
-        intent.putExtra("aspectY", 10);
-        // outputX outputY �ǲü�ͼƬ���
-        intent.putExtra("outputX", 320);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("return-data", true);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_PHOTO_CROP);
-        //startActivityForResult(CameraIDCardActivity.class,resultCodeTakePhoto);
+        intent.putExtra("scale", true);// 去黑边
+        intent.putExtra("scaleUpIfNeeded", true);// 去黑边
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", builder.aspectX);//输出是X方向的比例
+        intent.putExtra("aspectY", builder.aspectY);
+        // outputX outputY 是裁剪图片宽高，切忌不要再改动下列数字，会卡死
+        intent.putExtra("outputX", builder.outputX);//输出X方向的像素
+        intent.putExtra("outputY", builder.outputY);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        if (builder.outUri != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, builder.outUri);
+        } else {
+            if (Build.VERSION.SDK_INT < 30) {
+                //intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
+            } else {
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+                //storage/emulated/0/Pictures
+                File mOnputFile = new File(path, System.currentTimeMillis() + ".png");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse("file://" + mOnputFile.getAbsolutePath()));
+            }
+        }
+        intent.putExtra("return-data", false);//如果此处指定，返回值的data为null
+        builder.context.startActivityForResult(intent, builder.requestCode);
     }
 
-    private void takePhotoForIDCard(int resultCodeTakePhoto) {
-        startActivityForResult(CameraIDCardActivity.class, resultCodeTakePhoto);
+    private void takePhotoForIDCardImp(Builder builder) {
+        startActivityForResult(CameraIDCardActivity.class, builder.requestCode);
     }
 
-    private void selectPhotoFromGallery(int resultCodeTakePhoto) {
+    private void selectPhotoFromGalleryImp(Builder builder) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_GALLERY);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        //intent.setType("image/*");
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
     }
 
-    private void scanQrcode(int resultCodeTakePhoto) {
+    private void scanQrcodeImp(Builder builder) {
         Intent intent = new Intent(contextWeakReference.get(), MyCaptureActivity.class);
         /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
@@ -227,49 +357,52 @@ public class PhotoHelper {
         //config.setShowAlbum(true);//是否显示相册
         //config.setShowFlashLight(true);//是否显示闪光灯
         //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
     }
 
-    private void startSimplePictureActivity(int resultCodeTakePhoto, Object onTakePhotoResult) {
-        OnSelectPictureResult onSelectPictureResult = (OnSelectPictureResult) onTakePhotoResult;
+    /**
+     * 打开图片选择器页面
+     */
+    private void startSimplePictureActivityImp(Builder builder) {
+        OnSelectPictureResult onSelectPictureResult = builder.onSelectPictureResult;
         Intent intent = new Intent(contextWeakReference.get(), SimplePictureActivity.class);
-        intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+        //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
         intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
     }
 
-
-    private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int resultCodeTakePhoto) {
+    private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int requestCode) {
         Intent intent = new Intent(contextWeakReference.get(), cameraIDCardActivityClass);
-        intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, PHOTOHELPER_REQUEST_CODE_CAMERA);
+        //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+        ((Activity) contextWeakReference.get()).startActivityForResult(intent, requestCode);
     }
 
-    public final static int RESULT_CODE_TAKE_PHOTO = 2001;
+ /*   public final static int RESULT_CODE_TAKE_PHOTO = 2001;
     public final static int RESULT_CODE_CUSTOM_CAMERA = 2001;
     public final static int RESULT_CODE_PHOTO_CROP = 2002;
     public final static int RESULT_CODE_TAKE_PHOTO_FOR_IDCARD = 2003;
     public final static int RESULT_CODE_SELECT_PHOTO_FROM_GALLERY = 2004;
     public final static int RESULT_CODE_SELECT_PHOTO_FROM_GALLERY_AND_CROP = 2005;
     public final static int RESULT_CODE_SIMPLE_PICTURE = 2020;
-    public final static int RESULT_CODE_SCAN_QRCODE = 2006;
+    public final static int RESULT_CODE_SCAN_QRCODE = 2006;*/
+
+/*    public final static int PHOTOHELPER_REQUEST_CODE_CAMERA = 1000;//拍照
+    public final static int PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO = 1001;//拍照
+    public final static int PHOTOHELPER_REQUEST_CODE_PHOTO_CROP = 1002;//图片裁剪
+    public final static int PHOTOHELPER_REQUEST_CODE_GALLERY = 1003;//从图库选择
+    public final static int PHOTOHELPER_REQUEST_CODE_GALLERY2 = 1004;//从自定义图库选择
+    public final static int PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP = 1005;
+    public final static int PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE = 1006;//扫描二维码
+    public final static int PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO_FOR_IDCARD = 1007;//拍身份证*/
 
 
-    public final static int PHOTOHELPER_REQUEST_CODE_CAMERA = 1000;
-    public final static int PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO = 1001;
-    public final static int PHOTOHELPER_REQUEST_CODE_PHOTO_CROP = 1002;
-    public final static int PHOTOHELPER_REQUEST_CODE_GALLERY = 1003;
-    public final static int PHOTOHELPER_REQUEST_CODE_GALLERY_AND_CROP = 1004;
-    public final static int PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE = 1005;
-
-    public final static int PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE = 1020;
-
-    public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
+    //public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
     public final static String PHOTOHELPER_RESULT_PATH = "PHOTOHELPER_RESULT_PATH";
     public final static String PHOTOHELPER_RESULT_PATHES = "PHOTOHELPER_RESULT_PATHES";
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
+        onActivityResultImp(requestCode, resultCode, data);
+        /*switch (requestCode) {
             case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SCAN_QRCODE://扫描
                 onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SCAN_QRCODE, data);
                 break;
@@ -291,62 +424,165 @@ public class PhotoHelper {
             case PhotoHelper.PHOTOHELPER_REQUEST_CODE_SIMPLE_PICTURE://自定义的图片选择器
                 onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SIMPLE_PICTURE, data);//偷梁换柱
                 break;
-        }
+        }*/
     }
 
     public void onActivityResultImp(int requestCode, int resultCode, Intent data) {
+        if (currentBuilder == null || currentBuilder.requestCode != requestCode) {
+            return;
+        }
+        Builder builder = currentBuilder;
+        currentBuilder = null;
         String path = null;
         OnTakePhotoResult onTakePhotoResult = null;
         OnSelectPictureResult onSelectPictureResult = null;
-        if (data != null) {
-            switch (resultCode) {
-                case RESULT_CODE_TAKE_PHOTO:
-                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
-                    break;
-                case RESULT_CODE_PHOTO_CROP:
-                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
-                    break;
-                case RESULT_CODE_TAKE_PHOTO_FOR_IDCARD:
-                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
-                    break;
-                case RESULT_CODE_SELECT_PHOTO_FROM_GALLERY:
-                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
-                    break;
-                case RESULT_CODE_SIMPLE_PICTURE:
-                    onSelectPictureResult = (OnSelectPictureResult) photoResultMap.get(resultCode);
-                    break;
-                default:
-                    onTakePhotoResult = (OnTakePhotoResult) photoResultMap.get(resultCode);
-                    break;
-            }
+        switch (builder.requestType) {
+            case takePhoto: //PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO:
+            case photoCrop: //PHOTOHELPER_REQUEST_CODE_PHOTO_CROP:
+            case takePhotoForIDCard://PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO_FOR_IDCARD:
+            case selectFromGallery://PHOTOHELPER_REQUEST_CODE_GALLERY:
+                onTakePhotoResult = builder.onTakePhotoResult;
+                break;
+            case selectFromMyGallery://PHOTOHELPER_REQUEST_CODE_GALLERY2:
+                onSelectPictureResult = builder.onSelectPictureResult;
+                break;
+            default:
+                onTakePhotoResult = builder.onTakePhotoResult;
+                break;
+        }
 
-            if (onTakePhotoResult != null) {
-                if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
-                    path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
-                } else if (data.getExtras() != null && data.getExtras().containsKey(CODED_CONTENT)) {
-                    path = data.getStringExtra(CODED_CONTENT);
-                } else if (data.getData() != null) {
-                    path = data.getData().toString();
+        if (onTakePhotoResult != null) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    if (data.getExtras() != null && data.getExtras().containsKey(PHOTOHELPER_RESULT_PATH)) {
+                        path = data.getStringExtra(PHOTOHELPER_RESULT_PATH);
+                    } else if (data.getExtras() != null && data.getExtras().containsKey(CODED_CONTENT)) {
+                        path = data.getStringExtra(CODED_CONTENT);
+                    } else if (data.getData() != null) {
+                        path = data.getData().getPath();
+                    }
+                    onTakePhotoResult.onSuccess(data, path);
+                } else {
+                    onTakePhotoResult.onSuccess(data, QDFileUtil.getFilePathByUri(contextWeakReference.get(), (Uri) onTakePhotoResult.tag));
                 }
-                onTakePhotoResult.onSuccess(data, path);
+            } else {
+                onTakePhotoResult.onFailure("resultCode=" + resultCode + ",data=null");
             }
-            if (onSelectPictureResult != null) {
+        }
+        if (resultCode == RESULT_OK && onSelectPictureResult != null) {
+            if (data != null) {
                 Bundle bundle = data.getExtras();
                 ArrayList<Image> images = (ArrayList<Image>) bundle.getSerializable(PHOTOHELPER_RESULT_PATHES);
                 onSelectPictureResult.onSuccess(data, images);
+            } else {
+                onSelectPictureResult.onFailure("resultCode=" + resultCode + ",data=null");
             }
         }
     }
 
-    public static interface OnTakePhotoResult {
+    public static interface OnTakePhotoResultInterface {
         void onSuccess(Intent data, String path);
+
         void onFailure(String error);
+    }
+
+    public static abstract class OnTakePhotoResult implements OnTakePhotoResultInterface {
+        private Object tag;
+
+        public Object getTag() {
+            return tag;
+        }
+
+        public void setTag(Object tag) {
+            this.tag = tag;
+        }
     }
 
     public static interface OnSelectPictureResult {
         void onSuccess(Intent data, ArrayList<Image> images);
+
         void onFailure(String error);
+
         int getImageCount();
+    }
+
+
+    public static class Builder {
+        RequestType requestType;//请求类型
+        float aspectX = 1;
+        float aspectY = 1;
+        int outputX = 800;
+        int outputY = 800;
+        Uri srcUri = null;//源文件存放uri
+        Uri outUri = null;//输出文件存放位置
+        int requestCode = -1;
+        Activity context;
+        OnTakePhotoResult onTakePhotoResult;
+        OnSelectPictureResult onSelectPictureResult;
+
+        public Builder(Activity context) {
+            this.context = context;
+        }
+
+        Builder(Activity context, RequestType requestType) {
+            this.requestType = requestType;
+        }
+
+
+        public Builder setRequestType(RequestType requestType) {
+            this.requestType = requestType;
+            return this;
+        }
+
+        public Builder setAspectX(float aspectX) {
+            this.aspectX = aspectX;
+            return this;
+        }
+
+        public Builder setAspectY(float aspectY) {
+            this.aspectY = aspectY;
+            return this;
+        }
+
+        public Builder setOutputX(int outputX) {
+            this.outputX = outputX;
+            return this;
+        }
+
+        public Builder setOutputY(int outputY) {
+            this.outputY = outputY;
+            return this;
+        }
+
+        public Builder setSrcUri(Uri srcUri) {
+            this.srcUri = srcUri;
+            return this;
+        }
+
+        public Builder setOutUri(Uri outUri) {
+            this.outUri = outUri;
+            return this;
+        }
+
+        public Builder setRequestCode(int requestCode) {
+            this.requestCode = requestCode;
+            return this;
+        }
+
+        public Builder setContext(Activity context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder setOnTakePhotoResult(OnTakePhotoResult onTakePhotoResult) {
+            this.onTakePhotoResult = onTakePhotoResult;
+            return this;
+        }
+
+        public Builder setOnSelectPictureResult(OnSelectPictureResult onSelectPictureResult) {
+            this.onSelectPictureResult = onSelectPictureResult;
+            return this;
+        }
     }
 
 }

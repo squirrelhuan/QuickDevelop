@@ -2,7 +2,9 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 
 import android.content.Context;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +35,12 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
 
     private static int mMaxCount;
     private THEME themeType = THEME.number;
-    enum THEME{
+
+    enum THEME {
         number,
         normal
     }
+
     //保存选中的图片
     private static LinkedHashMap<Integer, Image> map;
     private boolean useCamera;
@@ -73,7 +77,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
             public void onClick(View v) {
                 checkedImage(holder, (int) v.getTag());
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v,  (int) v.getTag(),map);
+                    onItemClickListener.onItemClick(v, (int) v.getTag(), map);
                 }
             }
         });
@@ -84,20 +88,18 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
                 int p = holder.getAdapterPosition();
                 if (isViewImage) {
                     if (onItemClickListener != null) {
-                        onItemClickListener.onItemPreview(v,  p,mImages.get(p));
+                        onItemClickListener.onItemPreview(v, p, mImages.get(p));
                     }
                 } else {
                     checkedImage(holder, p);
                     if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(v,  p,map);
+                        onItemClickListener.onItemClick(v, p, map);
                     }
                 }
             }
         });
         holder.setCheckSelf();
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -105,9 +107,9 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     }
 
     public ArrayList<Image> getImages() {
-        ArrayList<Image> images =  new ArrayList<>();
+        ArrayList<Image> images = new ArrayList<>();
         Object[] objects = map.entrySet().toArray();
-        for(int i=0;i<map.size();i++){
+        for (int i = 0; i < map.size(); i++) {
             Map.Entry entry = (Map.Entry) objects[i];
             images.add((Image) entry.getValue());
         }
@@ -153,12 +155,11 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         this.onItemClickListener = onItemClickListener;
     }
 
-
     public static interface OnItemClickListener {
-        void onItemClick(View view, int position,Map<Integer, Image> map);
-        void onItemPreview(View view, int position,Image image);
-    }
+        void onItemClick(View view, int position, Map<Integer, Image> map);
 
+        void onItemPreview(View view, int position, Image image);
+    }
 
     private void checkedImage(ViewHolder holder, int position) {
         if (map.containsKey(position)) {
@@ -174,7 +175,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     }
 
     private void removeFirst() {
-         Object[] objects = map.entrySet().toArray();
+        Object[] objects = map.entrySet().toArray();
         Map.Entry entry = (Map.Entry) objects[0];
         //int i = (Integer) entry.getKey();
         map.remove(entry.getKey());
@@ -222,7 +223,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
                     holder.ct_select.setRound(true);
                     holder.ct_select.setBackgroundColor(Color.BLUE);
                 }
-                holder.ct_select.setText(mMaxCount == 1?"":(getSort(holder.getImage()) + 1) + "");
+                holder.ct_select.setText(mMaxCount == 1 ? "" : (getSort(holder.getImage()) + 1) + "");
                 holder.iv_masking.setAlpha(0.5f);
             } else {
                 if (mMaxCount == 1) {

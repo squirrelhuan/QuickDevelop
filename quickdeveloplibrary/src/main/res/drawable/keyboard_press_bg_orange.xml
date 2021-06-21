@@ -4,11 +4,7 @@
         <shape android:shape="rectangle">
             <solid android:color="#a5afba" />
             <corners android:radius="@dimen/dp_5" />
-            <stroke
-                android:width="1px"
-                android:color="#8a8b8e"
-                android:dashGap="0dip"
-                android:dashWidth="0dip" />
+            <stroke android:width="1px" android:color="#8a8b8e" android:dashGap="0dip" android:dashWidth="0dip" />
         </shape>
     </item>
     <item>
@@ -21,11 +17,7 @@
             <!--下面两个参数是 把边框变成虚线用-->
             <!--dashGap 虚线中空格的长度-->
             <!--dashWidth 虚线中实线的长度-->
-            <stroke
-                android:width="1px"
-                android:color="#8a8b8e"
-                android:dashGap="0dip"
-                android:dashWidth="0dip" />
+            <stroke android:width="1px" android:color="#8a8b8e" android:dashGap="0dip" android:dashWidth="0dip" />
         </shape>
     </item>
 </selector>

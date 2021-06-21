@@ -3,13 +3,16 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.ViewCompat;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+
 /**
  * Created by Squirrel桓 on 2019/1/29.
  */
@@ -20,7 +23,7 @@ public class QDNestedScrollChild extends LinearLayout implements NestedScrolling
     private final int[] consumed = new int[2]; //消费
     private int lastY;
     private int showHeight;
-
+    
     public QDNestedScrollChild(Context context) {
         super(context);
     }

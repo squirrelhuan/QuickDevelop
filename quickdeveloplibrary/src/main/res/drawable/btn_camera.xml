@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/btn_camera_bg02" android:state_pressed="true"/>
-    <item android:drawable="@drawable/btn_camera_bg01"/>
+    <item android:drawable="@drawable/btn_camera_bg02" android:state_pressed="true" />
+    <item android:drawable="@drawable/btn_camera_bg01" />
 
 </selector>

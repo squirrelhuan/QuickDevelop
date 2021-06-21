@@ -1,5 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.loading;
 
 public enum LoadStateType {
-    COMPLETE, WARNING, ERROR,LOADING,NONE
+    COMPLETE, WARNING, ERROR, LOADING, NONE
 }

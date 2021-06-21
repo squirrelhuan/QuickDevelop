@@ -9,5 +9,5 @@ import androidx.annotation.NonNull;
  */
 public interface BadTokenListener {
 
-  void onBadTokenCaught(@NonNull Toast toast);
+    void onBadTokenCaught(@NonNull Toast toast);
 }

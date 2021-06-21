@@ -27,6 +27,6 @@ public class DeviceModel {
 
     @Override
     public String toString() {
-        return "name="+name+",alias="+alias ;
+        return "name=" + name + ",alias=" + alias;
     }
 }

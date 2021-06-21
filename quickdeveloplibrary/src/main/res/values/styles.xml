@@ -7,6 +7,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
+
     <style name="NotitleBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryDark">@color/white</item>
@@ -97,23 +98,19 @@
         <item name="android:textSize">@dimen/quickdev_middle_text_size</item>
     </style>
 
-
     <style name="QDCompat" parent="AppThemeNoActionBar">
         <item name="qd_btn_text_size">@dimen/qd_btn_text_size</item>
         <item name="qd_btn_border_width">@dimen/qd_btn_border_width</item>
         <item name="qd_btn_bg_color">@color/qd_btn_bg</item>
         <item name="qd_btn_border_color">@color/qd_btn_bg</item>
         <item name="qd_btn_text_color">@color/qd_button_textcolor</item>
-
         <item name="QDButtonStyle">@style/QDButtonStyle</item>
-
         <item name="pointPadding">@dimen/dp_3</item>
-
     </style>
 
     <declare-styleable name="QdActionBarContainer">
-        <attr name="android:colorBackground" format="color"/>
-        <attr name="android:text"/>
+        <attr name="android:colorBackground" format="color" />
+        <attr name="android:text" />
     </declare-styleable>
 
     <style name="qd_option_menu_pop_animation" parent="android:Animation">
@@ -122,7 +119,8 @@
     </style>
 
     <style name="qd_dialog_animation_center_scale" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/qd_dialog_animation_center_scale_enter</item>
+        <item name="android:windowEnterAnimation">@anim/qd_dialog_animation_center_scale_enter
+        </item>
         <item name="android:windowExitAnimation">@anim/qd_dialog_animation_center_scale_exit</item>
     </style>
 
@@ -140,14 +138,13 @@
         <item name="android:windowExitAnimation">@anim/keybored_hide</item>
     </style>
 
-   <!-- ************************************************** -->
+    <!-- ************************************************** -->
 
     <style name="quick_actionbar_common">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/qd_tab_textcolor</item>
         <item name="android:paddingLeft">@dimen/dp_4</item>
         <item name="android:paddingRight">@dimen/dp_4</item>
-
         <!--<item name="android:paddingTop">@android:dimen/status_bar_height</item>-->
     </style>
 

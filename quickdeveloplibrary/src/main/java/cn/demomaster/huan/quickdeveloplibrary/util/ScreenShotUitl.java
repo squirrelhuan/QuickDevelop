@@ -14,7 +14,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+
 import androidx.core.app.ActivityCompat;
+
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,13 +40,15 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class ScreenShotUitl {
 
-    public static View getContentView(Activity context){
+    public static View getContentView(Activity context) {
         return context.findViewById(android.R.id.content);
     }
+
     public static void shot(final Activity context) {
         View anchor = getContentView(context);
-        shot(context,anchor);
+        shot(context, anchor);
     }
+
     public static void shot(final Activity context, View anchor) {
         // 用于PopupWindow的View
         View contentView = LayoutInflater.from(context).inflate(R.layout.layout_screen_shot, null, false);
@@ -75,7 +79,7 @@ public class ScreenShotUitl {
         String codeStr = "http://weixin.qq.com/r/E0M1LcDE6Z2WrYRO9xYB";
         try {
             //////////iv_code.setImageBitmap(BarcodeUtil.createCode(codeStr,bitmap_app));
-        }catch (Exception e){
+        } catch (Exception e) {
             QDLogger.e(e);
         }
 
@@ -113,14 +117,14 @@ public class ScreenShotUitl {
         Rect rect = new Rect();
         view.getWindowVisibleDisplayFrame(rect);
         int statusBarHeights = rect.top;
-        return shotActivity(activity,statusBarHeights);
+        return shotActivity(activity, statusBarHeights);
     }
 
     public static Bitmap shotActivity(Activity activity) {
-        return shotActivity(activity,0);
+        return shotActivity(activity, 0);
     }
 
-    public static Bitmap shotActivity(Activity activity,int top) {
+    public static Bitmap shotActivity(Activity activity, int top) {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
         view.buildDrawingCache();
@@ -143,14 +147,15 @@ public class ScreenShotUitl {
 
     /**
      * 区域截图
+     *
      * @param activity
-     * @param x0 左上角的x
-     * @param y0 左上角的y
-     * @param x1 右下角的x
-     * @param y1 右下角的y
+     * @param x0       左上角的x
+     * @param y0       左上角的y
+     * @param x1       右下角的x
+     * @param y1       右下角的y
      * @return
      */
-    public static Bitmap shotActivity(Activity activity,int x0,int y0,int x1,int y1) {
+    public static Bitmap shotActivity(Activity activity, int x0, int y0, int x1, int y1) {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
         view.buildDrawingCache();
@@ -163,7 +168,7 @@ public class ScreenShotUitl {
         // 允许当前窗口保存缓存信息
         view.setDrawingCacheEnabled(true);
         // 去掉状态栏
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), x0, y0, x1-x0, y1-y0);
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), x0, y0, x1 - x0, y1 - y0);
 
         // 销毁缓存信息
         view.destroyDrawingCache();
@@ -172,6 +177,7 @@ public class ScreenShotUitl {
 
     /**
      * 获取一个 View 的缓存视图
+     *
      * @return
      */
     public static Bitmap getCacheBitmapFromView(View v) {
@@ -203,7 +209,7 @@ public class ScreenShotUitl {
             v.setDrawingCacheEnabled(false);
             v.destroyDrawingCache();
             return b;
-        }catch (Exception e){
+        } catch (Exception e) {
             QDLogger.e(e);
         }
         return null;
@@ -218,21 +224,22 @@ public class ScreenShotUitl {
             /** 如果不设置canvas画布为白色，则生成透明 */
             view.layout(0, 0, view.getWidth(), view.getHeight());
             view.draw(c);
-        }catch (Exception e){
+        } catch (Exception e) {
             QDLogger.e(e);
         }
         return drawingCache;
     }
 
-    public static Bitmap getCacheBitmapFromViewTop(View view,int height){
-        return getCacheBitmapFromViewTop( view, height, 0);
+    public static Bitmap getCacheBitmapFromViewTop(View view, int height) {
+        return getCacheBitmapFromViewTop(view, height, 0);
     }
-    public static Bitmap getCacheBitmapFromViewTop(View view,int height,int width) {
+
+    public static Bitmap getCacheBitmapFromViewTop(View view, int height, int width) {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
-        if(width==0){
+        if (width == 0) {
             width = view.getMeasuredWidth();
-            if(width==0){
+            if (width == 0) {
                 return null;
             }
         }
@@ -333,7 +340,7 @@ public class ScreenShotUitl {
         }
     }
 
-    public static int pixel(Activity activity,int x, int y) {
+    public static int pixel(Activity activity, int x, int y) {
         int color = shotActivity(activity).getPixel(x, y);
         int red = (color & 0xff0000) >> 16;
         int green = (color & 0x00ff00) >> 8;

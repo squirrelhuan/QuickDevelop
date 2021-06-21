@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left|center"
         android:orientation="horizontal">
+
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/it_actionbar_back"
             style="@style/quick_actionbar_common_weight"
@@ -22,6 +23,7 @@
             android:gravity="center_vertical"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp"
             tools:ignore="VectorDrawableCompat" />
+
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/it_actionbar_title"
             style="@style/quick_actionbar_common_weight"
@@ -30,7 +32,7 @@
             android:padding="@dimen/dp_6"
             android:textSize="@dimen/quickdev_title_text_size"
             android:text="1234656"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,7 +64,7 @@
             android:layout_height="match_parent"
             android:background="@color/transparent_light_55"
             android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_5"/>
+            android:layout_marginBottom="@dimen/dp_5" />
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
             android:id="@+id/it_actionbar_close"
@@ -75,7 +77,6 @@
             android:gravity="center_vertical"
             app:srcCompat="@mipmap/ic_close_circle" />
     </LinearLayout>
-
 
 
 </FrameLayout>

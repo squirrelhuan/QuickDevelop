@@ -69,7 +69,7 @@ public class LifecycleView extends View {
 
     LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> linePoints;
 
-    public LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>>  getLinePoints() {
+    public LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> getLinePoints() {
         return linePoints;
     }
 
@@ -131,7 +131,7 @@ public class LifecycleView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(axisColor);
         paint.setStrokeWidth(2);
-        int i=0;
+        int i = 0;
         for (Map.Entry entry : linePoints.entrySet()) {
             Path pathX = new Path();
             float h = (i + 1) / (linePoints.size() + 1f) * getHeight();
@@ -162,8 +162,8 @@ public class LifecycleView extends View {
         long leftX = 0;
         long rightX = System.currentTimeMillis();
         for (Map.Entry entry : linePoints.entrySet()) {
-            for (LifeCycleEvent lifeCycleEvent : (List<LifeCycleEvent>)entry.getValue()) {
-                if(leftX==0){
+            for (LifeCycleEvent lifeCycleEvent : (List<LifeCycleEvent>) entry.getValue()) {
+                if (leftX == 0) {
                     leftX = lifeCycleEvent.time;
                 }
                 if (leftX > lifeCycleEvent.time) {
@@ -176,11 +176,11 @@ public class LifecycleView extends View {
         }
 
         //System.out.println("leftX=" + leftX + ",rightX=" + rightX);
-        float widthX = rightX-leftX;
-        int i=0;
+        float widthX = rightX - leftX;
+        int i = 0;
         for (Map.Entry entry : linePoints.entrySet()) {
             //drawLine(canvas, linePoints.get(i));
-            List<LifeCycleEvent> lifeCycleEvents = (List<LifeCycleEvent>)entry.getValue();
+            List<LifeCycleEvent> lifeCycleEvents = (List<LifeCycleEvent>) entry.getValue();
             centerY = getHeight() / 2;
             Paint paint = new Paint();
             paint.setColor(lineColor);
@@ -190,41 +190,41 @@ public class LifecycleView extends View {
             Path path = null;
             int y = getHeight() / (linePoints.size() + 1) * (i + 1);
 
-            LifeCycleEvent lastLifeCycleEvent = lifeCycleEvents.get(lifeCycleEvents.size()-1);//最後一個狀態值
+            LifeCycleEvent lastLifeCycleEvent = lifeCycleEvents.get(lifeCycleEvents.size() - 1);//最後一個狀態值
 
-            if(lastLifeCycleEvent.lifecycleType==LifecycleType.onActivityResumed||lastLifeCycleEvent.lifecycleType==LifecycleType.onFragmentResumed){
+            if (lastLifeCycleEvent.lifecycleType == LifecycleType.onActivityResumed || lastLifeCycleEvent.lifecycleType == LifecycleType.onFragmentResumed) {
                 paint.setColor(lineColorActive);
             }
 
-            for (LifeCycleEvent lifeCycleEvent: lifeCycleEvents) {
-                if(path==null){
+            for (LifeCycleEvent lifeCycleEvent : lifeCycleEvents) {
+                if (path == null) {
                     path = new Path();
                     path.moveTo((lifeCycleEvent.time - leftX) / widthX * getWidth(), y);
-                }else {
+                } else {
                     path.lineTo((lifeCycleEvent.time - leftX) / widthX * getWidth(), y);
                 }
             }
-            if(lastLifeCycleEvent.lifecycleType!=LifecycleType.onActivityDestroyed&&lastLifeCycleEvent.lifecycleType!=LifecycleType.onFragmentDestroyed){
+            if (lastLifeCycleEvent.lifecycleType != LifecycleType.onActivityDestroyed && lastLifeCycleEvent.lifecycleType != LifecycleType.onFragmentDestroyed) {
                 path.lineTo(getWidth(), y);
             }
 
             //path.close();
             canvas.drawPath(path, paint);
 
-            int textSize_current = Math.min(textSize,y);
+            int textSize_current = Math.min(textSize, y);
             //画点
             Paint pointPaint = new Paint();
             pointPaint.setColor(pointColor);
-            for (LifeCycleEvent lifeCycleEvent: lifeCycleEvents) {
+            for (LifeCycleEvent lifeCycleEvent : lifeCycleEvents) {
                 float x = (lifeCycleEvent.time - leftX) / widthX * getWidth();
                 //System.out.println("time="+lifeCycleEvent.time+",widthX="+widthX+",x=" + x);
                 canvas.drawCircle(x, y, pointRadius, pointPaint);
-                if(lifeCycleEvent.lifecycleType==LifecycleType.onActivityCreated||lifeCycleEvent.lifecycleType==LifecycleType.onFragmentCreated){
+                if (lifeCycleEvent.lifecycleType == LifecycleType.onActivityCreated || lifeCycleEvent.lifecycleType == LifecycleType.onFragmentCreated) {
                     Paint textPaint = new Paint();
                     textPaint.setTextSize(textSize_current);
                     textPaint.setColor(textColor);
-                    float textLeft = Math.min(x+pointRadius,getWidth()-200);
-                    canvas.drawText(((LifeCycleClassInfo)entry.getKey()).getClazz().getSimpleName()+"("+((LifeCycleClassInfo)entry.getKey()).getClazzHashCode()+")",textLeft,y-pointRadius,textPaint);
+                    float textLeft = Math.min(x + pointRadius, getWidth() - 200);
+                    canvas.drawText(((LifeCycleClassInfo) entry.getKey()).getClazz().getSimpleName() + "(" + ((LifeCycleClassInfo) entry.getKey()).getClazzHashCode() + ")", textLeft, y - pointRadius, textPaint);
                 }
             }
             i++;

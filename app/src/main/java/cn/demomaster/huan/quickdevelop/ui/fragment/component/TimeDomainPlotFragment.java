@@ -31,11 +31,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotVie
 @ActivityPager(name = "时域图", preViewClass = TextView.class, resType = ResType.Custome)
 public class TimeDomainPlotFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

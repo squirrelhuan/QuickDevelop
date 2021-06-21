@@ -73,7 +73,6 @@ public class PictureSelectActivity extends BaseActivity {
 
         recyclerView4.getImages();
 
-
         /*mLayoutManager = new GridLayoutManager(mContext, 4);
         mAdapter = new PictureAdapter(mContext, imageList, true,true);
         mAdapter.setOnItemClickListener(new PictureAdapter.OnItemClickListener() {

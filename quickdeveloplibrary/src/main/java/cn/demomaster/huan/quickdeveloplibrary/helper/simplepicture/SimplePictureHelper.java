@@ -6,5 +6,4 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 public class SimplePictureHelper {
 
 
-
 }

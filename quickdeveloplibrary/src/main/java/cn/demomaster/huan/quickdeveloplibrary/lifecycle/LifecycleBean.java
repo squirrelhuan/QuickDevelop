@@ -49,12 +49,12 @@ public class LifecycleBean {
     public String toString() {
         //return super.toString();
         String activity = null;
-        if(!TextUtils.isEmpty(activityClass)){
-           String[] strs = activityClass.split("\\.");
-           if(strs!=null&&strs.length>2) {
-               activity = strs[strs.length - 1];
-           }
+        if (!TextUtils.isEmpty(activityClass)) {
+            String[] strs = activityClass.split("\\.");
+            if (strs != null && strs.length > 2) {
+                activity = strs[strs.length - 1];
+            }
         }
-        return activity+"@"+activityHashCode+"-"+lifecycleType+"-"+time;
+        return activity + "@" + activityHashCode + "-" + lifecycleType + "-" + time;
     }
 }

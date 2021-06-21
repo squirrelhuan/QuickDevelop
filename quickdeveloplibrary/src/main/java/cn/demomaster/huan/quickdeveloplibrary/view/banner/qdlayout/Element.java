@@ -15,15 +15,17 @@ public class Element {
     private String cssClass;
     private String android_view_class;
     private List<Element> nodes;
-    private Map<String,Object> propertyMap;
+    private Map<String, Object> propertyMap;
 
     public Element() {
         this.propertyMap = new HashMap<>();
     }
-    public void addProperty(String key,Object object){
-        propertyMap.put(key,object);
+
+    public void addProperty(String key, Object object) {
+        propertyMap.put(key, object);
     }
-    public Object getProperty(String key,Object object){
+
+    public Object getProperty(String key, Object object) {
         return propertyMap.get(key);
     }
 
@@ -59,8 +61,8 @@ public class Element {
         this.nodes = nodes;
     }
 
-    public void addNode(Element node){
-        if(nodes==null){
+    public void addNode(Element node) {
+        if (nodes == null) {
             nodes = new ArrayList<>();
         }
         node.setParent(this);
@@ -86,13 +88,14 @@ public class Element {
     }
 
     public String getText() {
-        if(propertyMap.containsKey("text")) {
+        if (propertyMap.containsKey("text")) {
             return (String) propertyMap.get("text");
         }
         return "";
     }
+
     public String getSrc() {
-        if(propertyMap.containsKey("src")) {
+        if (propertyMap.containsKey("src")) {
             return (String) propertyMap.get("src");
         }
         return "";
@@ -100,23 +103,23 @@ public class Element {
 
     public float getWidth() {
         float width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        String widthStr = ""+width;
-        if(propertyMap.containsKey("width")) {
+        String widthStr = "" + width;
+        if (propertyMap.containsKey("width")) {
             widthStr = (String) propertyMap.get("width");
         }
-        if(!TextUtils.isEmpty(widthStr)) {
+        if (!TextUtils.isEmpty(widthStr)) {
             if (widthStr.endsWith("px")) {
                 width = Integer.valueOf(widthStr.replace("px", ""));
             } else if (widthStr.endsWith("dp")) {
                 width = Integer.valueOf(widthStr.replace("dp", ""));
-            }else if(widthStr.contains("%")||widthStr.contains(".")||widthStr.contains("f")){
+            } else if (widthStr.contains("%") || widthStr.contains(".") || widthStr.contains("f")) {
                 widthStr = widthStr.replace("%", "");
                 widthStr = widthStr.replace("f", "");
                 width = Float.valueOf(widthStr);
-            }else {
+            } else {
                 try {
                     width = Integer.valueOf(widthStr);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -125,38 +128,38 @@ public class Element {
     }
 
     public float getHeight() {
-        float height =ViewGroup.LayoutParams.WRAP_CONTENT;
-        String heightStr = ""+height;
-        if(propertyMap.containsKey("height")) {
+        float height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        String heightStr = "" + height;
+        if (propertyMap.containsKey("height")) {
             heightStr = (String) propertyMap.get("height");
         }
-         if(!TextUtils.isEmpty(heightStr)) {
-             if (heightStr.endsWith("px")) {
-                 height = Integer.valueOf(heightStr.replace("px", ""));
-             } else if (heightStr.endsWith("dp")) {
-                 height = Integer.valueOf(heightStr.replace("dp", ""));
-             }else if(heightStr.contains("%")||heightStr.contains(".")||heightStr.contains("f")){
-                 heightStr = heightStr.replace("%", "");
-                 heightStr = heightStr.replace("f", "");
-                 height = Float.valueOf(heightStr);
-             }else {
-                 try {
-                     height = Integer.valueOf(heightStr);
-                 }catch (Exception e){
-                     e.printStackTrace();
-                 }
-             }
-         }
-         return height;
+        if (!TextUtils.isEmpty(heightStr)) {
+            if (heightStr.endsWith("px")) {
+                height = Integer.valueOf(heightStr.replace("px", ""));
+            } else if (heightStr.endsWith("dp")) {
+                height = Integer.valueOf(heightStr.replace("dp", ""));
+            } else if (heightStr.contains("%") || heightStr.contains(".") || heightStr.contains("f")) {
+                heightStr = heightStr.replace("%", "");
+                heightStr = heightStr.replace("f", "");
+                height = Float.valueOf(heightStr);
+            } else {
+                try {
+                    height = Integer.valueOf(heightStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return height;
     }
 
     public int getOrientation() {
         int orientation = LinearLayout.HORIZONTAL;
-        if(propertyMap.containsKey("orientation")) {
+        if (propertyMap.containsKey("orientation")) {
             String orientationStr = (String) propertyMap.get("orientation");
-            if(orientationStr.equals("vertical")){
+            if (orientationStr.equals("vertical")) {
                 orientation = LinearLayout.VERTICAL;
-            }else if(orientationStr.equals("horizontal")){
+            } else if (orientationStr.equals("horizontal")) {
                 orientation = LinearLayout.HORIZONTAL;
             }
         }
@@ -174,17 +177,17 @@ public class Element {
     }
 
     public String getOnClickMethodStr() {
-        if(propertyMap.containsKey("onclick")) {
-            return  (String) propertyMap.get("onclick");
+        if (propertyMap.containsKey("onclick")) {
+            return (String) propertyMap.get("onclick");
         }
         return null;
     }
 
     public String getAttribute(String attributeName) {
-        if(TextUtils.isEmpty(attributeName)){
+        if (TextUtils.isEmpty(attributeName)) {
             return null;
         }
-        if(propertyMap.containsKey(attributeName.toLowerCase())) {
+        if (propertyMap.containsKey(attributeName.toLowerCase())) {
             return (String) propertyMap.get(attributeName.toLowerCase());
         }
         return null;

@@ -58,6 +58,7 @@ public class QDScrollView extends ScrollView {
     }
 
     private View convertView;
+
     //获取初始控件
     @Override
     protected void onFinishInflate() {
@@ -67,21 +68,23 @@ public class QDScrollView extends ScrollView {
     }
 
     Rect originalRect = new Rect();
+
     //记录初始位置
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if(convertView!=null) {
+        if (convertView != null) {
             //用rect记录 scrollview的子控件的上下左右
             originalRect.set(convertView.getLeft(), convertView.getTop(), convertView.getRight(), convertView.getBottom());
         }
     }
 
-  //  事件分发
-    float startY,startX;
+    //  事件分发
+    float startY, startX;
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(convertView!=null) {
+        if (convertView != null) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     startY = (int) ev.getY();

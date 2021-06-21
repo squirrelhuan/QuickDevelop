@@ -346,23 +346,20 @@ public class QDActionDialog extends Dialog {
 
     @Override
     public void dismiss() {
-        if (isShowing()) {
-            super.dismiss();
-        }
-        if (isShowing()) {
+        if (isShowing()&&getContext()!=null) {
             Context context = ((ContextWrapper) getContext()).getBaseContext();
             if (context instanceof Activity) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                        dismiss();
+                        super.dismiss();
                     }
                 } else {
                     if (!((Activity) context).isFinishing()) {
-                        dismiss();
+                        super.dismiss();
                     }
                 }
             } else {
-                dismiss();
+                super.dismiss();
             }
         }
     }

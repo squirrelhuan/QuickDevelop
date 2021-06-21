@@ -71,7 +71,8 @@ public class LoadingCircleView extends View {
         postInvalidate();
     }
 
-    private int pointCount =4;
+    private int pointCount = 4;
+
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -83,17 +84,17 @@ public class LoadingCircleView extends View {
         int maxRadius = Math.min(width, height) / 14;
         int r = Math.min(width, height) / 2 - maxRadius;
         //centerX centerY 圆的中心点
-        float angle = progress/2;
+        float angle = progress / 2;
         for (int i = 0; i < pointCount; i++) {
-            float c = (angle-i*12);
-            if(c<0||c>360){
-                c=0;
-            }else {
-                c = (float) (Math.sin(Math.toRadians(c/2))*360);
+            float c = (angle - i * 12);
+            if (c < 0 || c > 360) {
+                c = 0;
+            } else {
+                c = (float) (Math.sin(Math.toRadians(c / 2)) * 360);
             }
-            mPaint.setAlpha((int)(255*(.75f-(i+1)/pointCount*.3f)));
+            mPaint.setAlpha((int) (255 * (.75f - (i + 1) / pointCount * .3f)));
             PointF p = getPointByAngle(a, b, r, c);
-            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f,i)*maxRadius, mPaint);
+            canvas.drawCircle(p.x, p.y, (float) Math.pow(.85f, i) * maxRadius, mPaint);
         }
 
     }
@@ -107,6 +108,7 @@ public class LoadingCircleView extends View {
     private float progress;
     private boolean isForward = true;
     ValueAnimator animator;
+
     public void startAnimation() {
         isPlaying = true;
         final int end = 360;
@@ -134,10 +136,11 @@ public class LoadingCircleView extends View {
         //animator.setInterpolator(new CycleInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null) {
+        if (animator != null) {
             animator.cancel();
         }
     }

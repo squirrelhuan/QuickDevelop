@@ -19,10 +19,10 @@ public class GuiderModel {
     private int textBackgroundColor = -1;//文字框背景色
     private int lineColor = -1;
     private int lineWidth = -1;
-    private int imgResourceId =-1;//图片
-    private int imgWidth =-1;//图片
-    private int imgHeight =-1;//图片
-    private float imgScale=1;//图片缩放比例
+    private int imgResourceId = -1;//图片
+    private int imgWidth = -1;//图片
+    private int imgHeight = -1;//图片
+    private float imgScale = 1;//图片缩放比例
     private GuidActionType complateType;//结束触发类型
     private GuidActionType startType;//开始触发类型
     private TouchType touchType = TouchType.Other;
@@ -56,7 +56,7 @@ public class GuiderModel {
     }
 
     public void setImgResourceId(int imgResourceId) {
-        if(imgResourceId!=0&&imgResourceId!=-1){
+        if (imgResourceId != 0 && imgResourceId != -1) {
             shape = SHAPE.img;
         }
         this.imgResourceId = imgResourceId;
@@ -158,21 +158,22 @@ public class GuiderModel {
         this.lineWidth = lineWidth;
     }
 
-    public enum LINETYPE{
-        straight,curve//直线/曲线
-    }
-    public enum SHAPE{
-        roundedrectangle,rectangle,oval,img
+    public enum LINETYPE {
+        straight, curve//直线/曲线
     }
 
-    public static enum GuidActionType{
-        TOUCH,MOVE,CLICK,LONGCLICK
+    public enum SHAPE {
+        roundedrectangle, rectangle, oval, img
+    }
+
+    public static enum GuidActionType {
+        TOUCH, MOVE, CLICK, LONGCLICK
     }
 
     /**
      * 目标触摸事件
      */
-    public static enum TouchType{
-        TargetView,TipView,Other
+    public static enum TouchType {
+        TargetView, TipView, Other
     }
 }

@@ -15,10 +15,10 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.cache.CacheMap.strin
 
 public class QuickCache {
     private static CacheMap quickCacheMap;
-    private static String cacheFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() +"/qdlogger/cache/";
+    private static String cacheFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qdlogger/cache/";
     static Context applicationContext;
 
-    public static void init(Context context,String cacheFolder) {
+    public static void init(Context context, String cacheFolder) {
         cacheFolderPath = cacheFolder;
         applicationContext = context.getApplicationContext();
         if (quickCacheMap == null) {
@@ -29,11 +29,13 @@ public class QuickCache {
 
     /**
      * 是否启用了缓存
+     *
      * @return
      */
-    public static boolean enable(){
-        return quickCacheMap!=null;
+    public static boolean enable() {
+        return quickCacheMap != null;
     }
+
     /**
      * 添加文件到缓存
      *
@@ -55,6 +57,7 @@ public class QuickCache {
 
     /**
      * 缓存图片
+     *
      * @param url
      * @param bitmap
      */
@@ -91,7 +94,7 @@ public class QuickCache {
         CacheInfo cacheInfo = getCacheInfoByUrl(url);
         if (cacheInfo != null) {
             cacheInfo.setFilePath(filePath);
-            System.out.println("添加到缓存url="+url+",filePath="+filePath);
+            System.out.println("添加到缓存url=" + url + ",filePath=" + filePath);
             quickCacheMap.put(url, cacheInfo);
         }
     }
@@ -101,7 +104,7 @@ public class QuickCache {
         UrlHelper.analyUrl(url, new UrlHelper.AnalyResult() {
             @Override
             public void success(String url, String fileType, int fileLength) {
-                downCacheFile(url,fileType);
+                downCacheFile(url, fileType);
             }
 
             @Override
@@ -111,29 +114,30 @@ public class QuickCache {
         });
     }
 
-    public static void downCacheFile(String url,String fileType) {
-        String fileTypeStr=fileType;
-        if(fileType.contains("/")){
+    public static void downCacheFile(String url, String fileType) {
+        String fileTypeStr = fileType;
+        if (fileType.contains("/")) {
             String[] strings = fileType.split("/");
-            fileTypeStr = strings[strings.length-1];
+            fileTypeStr = strings[strings.length - 1];
         }
-        String key = stringToMD5(url) +"."+ fileTypeStr;
+        String key = stringToMD5(url) + "." + fileTypeStr;
         String fileName = key;
-        downCacheFile2(url,fileName);
+        downCacheFile2(url, fileName);
     }
 
     static int downloadState = 0;
-    private static void downCacheFile2(String url,String fileName) {
+
+    private static void downCacheFile2(String url, String fileName) {
         if (containsUrl(url)) {
             CacheInfo cacheInfo = getCacheInfoByUrl(url);
-            if(cacheInfo!=null){
-                if(!TextUtils.isEmpty(cacheInfo.getFilePath())){
+            if (cacheInfo != null) {
+                if (!TextUtils.isEmpty(cacheInfo.getFilePath())) {
                     return;
                 }
                 System.out.println("缓存文件不存在，重新下载");
             }
         }
-        if(downloadState==0) {
+        if (downloadState == 0) {
             new DownloadHelper.DownloadBuilder(applicationContext).setUrl(url)
                     .setFileName(fileName)
                     .setDirectoryPath(cacheFolderPath)
@@ -150,7 +154,7 @@ public class QuickCache {
                                 public void onDownloadSuccess(DownloadTask downloadTask) {
                                     downloadState = 0;
                                     QDLogger.i("1下载完成" + downloadTask.getSavePath());
-                                    updateFilePath(url,downloadTask.getSavePath());
+                                    updateFilePath(url, downloadTask.getSavePath());
                                 }
 
                                 @Override

@@ -34,6 +34,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -170,7 +171,7 @@ public class QDKeyboard_back {
     private Runnable hideRunnable = new Runnable() {
         @Override
         public void run() {
-            View v = getActivityFromView( mEditText).getCurrentFocus();
+            View v = getActivityFromView(mEditText).getCurrentFocus();
             //v=((Activity) mEditText.getContext()).getWindow().getDecorView().findFocus();
             //QDLogger.d(v ==null?"null":v.toString()+ v.getId());
             if (v != null) {
@@ -267,6 +268,7 @@ public class QDKeyboard_back {
     }
 
     public QDPopup qdTipPopup;
+
     @SuppressLint("ClickableViewAccessibility")
     private void initKeyboard() {
         //解决onresume系统输入法重新弹出，遗留的问题就是不能根据焦点自动弹出输入框了
@@ -323,10 +325,10 @@ public class QDKeyboard_back {
         qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                WindowManager.LayoutParams lp = getActivityFromView( mEditText).getWindow().getAttributes();
+                WindowManager.LayoutParams lp = getActivityFromView(mEditText).getWindow().getAttributes();
                 lp.alpha = 1f;
-                getActivityFromView( mEditText).getWindow().setAttributes(lp);
-                contentView = getActivityFromView( mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
+                getActivityFromView(mEditText).getWindow().setAttributes(lp);
+                contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
                 mDecorView = (View) contentView.getParent();
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
                 layoutParams.bottomMargin = (int) 0;
@@ -467,14 +469,14 @@ public class QDKeyboard_back {
         List<Keyboard.Key> keyList = keyboardLetter.getKeys();
         if (isCapes) {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isUpCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isUpCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toLowerCase();
                     key.codes[0] += 32;
                 }
             }
         } else {
             for (Keyboard.Key key : keyList) {
-                if (key.label != null && isLowCaseLetter(key.label.toString())) {
+                if (key.label != null && StringUtil.isLowCaseLetter(key.label.toString())) {
                     key.label = key.label.toString().toUpperCase();
                     key.codes[0] -= 32;
                 }
@@ -509,9 +511,9 @@ public class QDKeyboard_back {
         layoutParams.topMargin = -getEditorBottomY();
         mDecorView.setLayoutParams(layoutParams);
         IBinder iBinder = mEditText.getWindowToken();
-        if (iBinder != null && !getActivityFromView( mEditText).isFinishing()) {
-            if (!getActivityFromView( mEditText).isFinishing()) {
-                qdTipPopup.showAtLocation(getActivityFromView( mEditText).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
+        if (iBinder != null && !getActivityFromView(mEditText).isFinishing()) {
+            if (!getActivityFromView(mEditText).isFinishing()) {
+                qdTipPopup.showAtLocation(getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
                         0);
             }
         }
@@ -538,18 +540,8 @@ public class QDKeyboard_back {
         mEditText.getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
-        int d = DisplayUtil.getScreenHeight(getActivityFromView( mEditText)) - y - mEditText.getHeight();
+        int d = DisplayUtil.getScreenHeight(getActivityFromView(mEditText)) - y - mEditText.getHeight();
         return d > keyContainerHeight ? 0 : (int) (keyContainerHeight - d);
-    }
-
-    private boolean isLowCaseLetter(String str) {
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        return letters.contains(str);
-    }
-
-    private boolean isUpCaseLetter(String str) {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return letters.contains(str);
     }
 
     public boolean isShow() {
@@ -612,6 +604,7 @@ public class QDKeyboard_back {
     }
 
     View.OnTouchListener onTouchKeyboardListener;
+
     public void dispatchTouchEvent(MotionEvent me) {
         //QDLogger.i("me.getAction()=" + me.getAction());
        /* if(keyContainer==null||keyContainer.getHeight()==0){

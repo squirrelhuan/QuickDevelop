@@ -15,12 +15,17 @@
                             android:id="@+id/btn_send_connect"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="https"/>
+                            android:text="okhttp請求"/>
+                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                            android:id="@+id/btn_retrofit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="retrofit請求"/>
                         <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                             android:id="@+id/btn_send_tcp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="发送tcp消息"/>
+                            android:text="tcp請求"/>
 
 
 

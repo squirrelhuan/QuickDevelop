@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -37,9 +38,27 @@ public class WrapLayout extends FrameLayout {
 
     boolean mMeasureAllChildren = false;
     private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+
+        //根据提供的测量值提取模式
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        //根据提供的测量值提取大小
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        //MATCH_PARENT=-1;WRAP_CONTENT=-2;
+        if (layoutParams != null && layoutParams.height > 0) {
+            heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(layoutParams.height,
+                    View.MeasureSpec.EXACTLY);
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            //QDLogger.e("WrapLayout heightMode="+heightMode+",layoutParams.height="+layoutParams.height+",height="+getMeasuredHeight());
+            return;
+        }
 
         int count = getChildCount();
 
@@ -104,7 +123,7 @@ public class WrapLayout extends FrameLayout {
                             width, MeasureSpec.EXACTLY);
                 } else {
                     childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec,
-                                    lp.leftMargin + lp.rightMargin,
+                            lp.leftMargin + lp.rightMargin,
                             lp.width);
                 }
 
@@ -116,7 +135,7 @@ public class WrapLayout extends FrameLayout {
                             height, MeasureSpec.EXACTLY);
                 } else {
                     childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec,
-                                    lp.topMargin + lp.bottomMargin,
+                            lp.topMargin + lp.bottomMargin,
                             lp.height);
                 }
 

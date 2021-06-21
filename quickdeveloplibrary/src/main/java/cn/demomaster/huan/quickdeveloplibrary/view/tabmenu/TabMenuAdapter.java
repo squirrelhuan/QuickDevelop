@@ -34,15 +34,15 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     private Context context;
     private LayoutInflater inflater;
     private boolean isSingle;//单个tab中的状态集合（多选则为list,单选则为int）
-    private int color_selected=Color.RED;
-    private int color_normal=Color.BLACK;
+    private int color_selected = Color.RED;
+    private int color_normal = Color.BLACK;
 
-    public void setColors(int color_selected,int color_normal) {
+    public void setColors(int color_selected, int color_normal) {
         this.color_selected = color_selected;
         this.color_normal = color_normal;
     }
 
-    public TabMenuAdapter(Context context, List<TabMenuModel> tabMenuModels, int tabIndex){
+    public TabMenuAdapter(Context context, List<TabMenuModel> tabMenuModels, int tabIndex) {
         this.context = context;
         this.tabIndex = tabIndex;
         this.tabMenuModels = tabMenuModels;
@@ -65,9 +65,9 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
                 QDLogger.e(TAG.DEF, "默认选中个数不能超过最大个数");
                 return;
             }
-            if (tabMenuModel.getSelectDeftData() != null ) {
-                for (int j=0 ;j< tabMenuModel.getSelectDeftData().size();j++) {
-                    if (tabMenuModel.getSelectDeftData().get(j)!=null&&item.getPosition() == tabMenuModel.getSelectDeftData().get(j)) {
+            if (tabMenuModel.getSelectDeftData() != null) {
+                for (int j = 0; j < tabMenuModel.getSelectDeftData().size(); j++) {
+                    if (tabMenuModel.getSelectDeftData().get(j) != null && item.getPosition() == tabMenuModel.getSelectDeftData().get(j)) {
                         item.setSelected(true);
                     }
                 }
@@ -79,7 +79,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu, parent, false);
         return new ViewHolder(view);
     }
 
@@ -95,11 +95,11 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onItemClickListener!=null){
-                    int p = (int)v.getTag();
-                    onItemClickListener.onItemClick(v,p);
+                if (onItemClickListener != null) {
+                    int p = (int) v.getTag();
+                    onItemClickListener.onItemClick(v, p);
                 }
-                QDLogger.e("这里是点击每一行item的响应事件",""+position);
+                QDLogger.e("这里是点击每一行item的响应事件", "" + position);
             }
         });
     }
@@ -109,7 +109,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         return this.tabListViewItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_title;
 
@@ -121,12 +121,13 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     }
 
     private OnItemClickListener onItemClickListener;
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public static interface OnItemClickListener{
-        void onItemClick(View view,int position);
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     public List<TabMenuModel> getTabMenuModels() {
@@ -138,7 +139,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
         List<Integer> current = tabMenuModel.getSelectDeftData();
         if (current.contains(position)) {//如果存在则remove
-            current.remove((Object)position);
+            current.remove((Object) position);
         } else {//如果不存在
             if (current.size() + 1 > tabMenuModel.getSelectCount()) {//判断个数是否超出，没超出则追加，超出则remove第一个
                 tabListViewItems.get(current.get(0)).setSelected(false);

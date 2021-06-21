@@ -53,7 +53,7 @@ public class TipPopDialog {
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setClippingEnabled(false);*/
 
-        QDActionDialog.Builder builder = new QDActionDialog.Builder(context).setContentViewLayout( R.layout.item_pop_dialog_tip);
+        QDActionDialog.Builder builder = new QDActionDialog.Builder(context).setContentViewLayout(R.layout.item_pop_dialog_tip);
         customDialog = builder.setCancelable(true).create();
         View ccustomDialogView = customDialog.getContentView();
         contentView = ccustomDialogView.findViewById(R.id.tv_content);
@@ -82,11 +82,12 @@ public class TipPopDialog {
         customDialog.show();
     }
 
-    public void dismiss(){
-        if(customDialog!=null&& customDialog.isShowing()){
-        customDialog.dismiss();
+    public void dismiss() {
+        if (customDialog != null && customDialog.isShowing()) {
+            customDialog.dismiss();
         }
     }
+
     public static View getContentView(Context context) {
         if (context instanceof Activity) {
             return ((Activity) context).findViewById(android.R.id.content);

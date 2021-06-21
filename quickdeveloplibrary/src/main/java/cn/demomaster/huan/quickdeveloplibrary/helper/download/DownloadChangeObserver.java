@@ -33,6 +33,7 @@ public class DownloadChangeObserver extends ContentObserver {
 
     Context mContext;
     private static DownloadChangeObserver instance;
+
     public static DownloadChangeObserver getInstance(Context context, DownloadHelper downloadHelper) {
         if (instance == null) {
             instance = new DownloadChangeObserver(context, new DownloadHandler(context));
@@ -75,6 +76,7 @@ public class DownloadChangeObserver extends ContentObserver {
 
     /**
      * 通过query查询下载状态，包括已下载数据大小，总大小，下载状态
+     *
      * @param downloadId
      * @return -1下载结束了，1下载进度中，0下载不存在
      */
@@ -219,6 +221,7 @@ public class DownloadChangeObserver extends ContentObserver {
     public static class DownloadHandler extends Handler {
 
         Context mContext;
+
         public DownloadHandler(Context context) {
             mContext = context;
         }
@@ -229,7 +232,6 @@ public class DownloadChangeObserver extends ContentObserver {
                 DownloadProgress downloadProgress = (DownloadProgress) msg.obj;
                 if (DownloadHelper.getInstance(mContext).taskMap.containsKey(downloadProgress.getDownloadId())) {
                     DownloadTask downloadTask = DownloadHelper.getInstance(mContext).taskMap.get(downloadProgress.getDownloadId());
-                    //被除数可以为0，除数必须大于0
                     if (downloadProgress != null) {
                         if (downloadProgress.getDownloadId() == -1) {
                             QDLogger.e("QDdownload", "downloadId = -1");
@@ -258,7 +260,7 @@ public class DownloadChangeObserver extends ContentObserver {
                                     }
                                     if (downloadTask != null) {
                                         downloadTask.setFileName(downloadProgress.getFileName());
-                                        downloadTask.setDownUriStr(downloadProgress.getFileName());
+                                        downloadTask.setDownloadPath(downloadProgress.getFileName());
                                         downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
                                         DownloadHelper.getInstance(mContext).unregisterReceiver(downloadTask.getDownloadId());
                                     }

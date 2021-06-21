@@ -43,6 +43,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
     static TextView tv_title;
     static LifecycleView timeDomainPlotView;
     View view;
+
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         mcontext = context;
@@ -85,10 +86,10 @@ public class LifecycleFloatingService extends QDFloatingService2 {
             layoutParams.x = (int) pointF.x;
             layoutParams.y = (int) pointF.y;
         }
-        layoutParams.width=800;
-        layoutParams.height=500;
+        layoutParams.width = 800;
+        layoutParams.height = 500;
         this.windowManager = windowManager;
-        windowManager.addView(view,layoutParams);
+        windowManager.addView(view, layoutParams);
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
 
@@ -96,7 +97,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
     static Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if(timeDomainPlotView!=null) {
+            if (timeDomainPlotView != null) {
                 LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
                 timeDomainPlotView.setLinePoints(listLinkedHashMap);
                 handler.postDelayed(runnable, 1000);
@@ -130,7 +131,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
                     int height = layoutParams.height + movedY;
                     height = Math.min(DisplayUtil.getScreenHeight(v.getContext()), height);
                     int width = layoutParams.width + movedX;
-                    updateViewLayout(view,width,height);
+                    updateViewLayout(view, width, height);
                     break;
                 case MotionEvent.ACTION_UP:
                     /*endTime = System.currentTimeMillis();

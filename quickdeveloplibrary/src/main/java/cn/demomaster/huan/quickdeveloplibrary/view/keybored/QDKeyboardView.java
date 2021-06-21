@@ -60,7 +60,7 @@ public class QDKeyboardView extends KeyboardView {
         try {
             List<Keyboard.Key> keys = getKeyboard().getKeys();
             for (Keyboard.Key key : keys) {
-                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1|| key.codes[0] == -3)
+                if (key.codes[0] == -5 || key.codes[0] == -2 || key.codes[0] == 100860 || key.codes[0] == -1 || key.codes[0] == -3)
                     drawSpecialKey(canvas, key);
             }
         } catch (Exception e) {
@@ -83,7 +83,7 @@ public class QDKeyboardView extends KeyboardView {
                 drawKeyBackground(R.drawable.keyboard_change, canvas, key);
                 drawTextAndIcon(canvas, key, lowDrawable);
             }
-        }else if (key.codes[0] == -3) {
+        } else if (key.codes[0] == -3) {
             hideDrawable = getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
             if (isCap) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -129,7 +129,7 @@ public class QDKeyboardView extends KeyboardView {
                         labelTextSize = (int) field.get(this);
                     } catch (Exception e) {
                         QDLogger.e(e);
-                        QDLogger.e(e==null?"e=null":e.toString());
+                        QDLogger.e(e == null ? "e=null" : e.toString());
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -141,7 +141,7 @@ public class QDKeyboardView extends KeyboardView {
                         keyTextSize = (int) field.get(this);
                     } catch (Exception e) {
                         QDLogger.e(e);
-                        QDLogger.e(e==null?"e=null":e.toString());
+                        QDLogger.e(e == null ? "e=null" : e.toString());
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -181,7 +181,7 @@ public class QDKeyboardView extends KeyboardView {
             }
         } catch (Exception e) {
             QDLogger.e(e);
-            QDLogger.e(e==null?"e=null":e.toString());
+            QDLogger.e(e == null ? "e=null" : e.toString());
         }
     }
 

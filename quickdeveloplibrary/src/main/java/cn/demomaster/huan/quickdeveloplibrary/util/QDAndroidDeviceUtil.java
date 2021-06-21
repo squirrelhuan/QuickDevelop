@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -116,7 +118,7 @@ public class QDAndroidDeviceUtil {
     public static String getBTMACAddress(Context mContext) {
         BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
         m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(m_BluetoothAdapter==null){
+        if (m_BluetoothAdapter == null) {
             return null;
         }
         String m_szBTMAC = m_BluetoothAdapter.getAddress();
@@ -172,6 +174,56 @@ public class QDAndroidDeviceUtil {
         return false;
     }
 
+    /**
+     * 判断是否开启了root权限
+     * @return
+     */
+    public static boolean isRootSystem() {
+        if(isRootSystem1()||isRootSystem2()){
+            //TODO 可加其他判断 如是否装了权限管理的apk，大多数root 权限 申请需要app配合，也有不需要的，这个需要改su源码。因为管理su权限的app太多，无法列举所有的app，特别是国外的，暂时不做判断是否有root权限管理app
+            //多数只要su可执行就是root成功了，但是成功后用户如果删掉了权限管理的app，就会造成第三方app无法申请root权限，此时是用户删root权限管理app造成的。
+            //市场上常用的的权限管理app的包名   com.qihoo.permmgr  com.noshufou.android.su  eu.chainfire.supersu   com.kingroot.kinguser  com.kingouser.com  com.koushikdutta.superuser
+            //com.dianxinos.superuser  com.lbe.security.shuame com.geohot.towelroot 。。。。。。
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private static boolean isRootSystem1() {
+        File f = null;
+        final String kSuSearchPaths[] = { "/system/bin/", "/system/xbin/",
+                "/system/sbin/", "/sbin/", "/vendor/bin/" };
+        try {
+            for (int i = 0; i < kSuSearchPaths.length; i++) {
+                f = new File(kSuSearchPaths[i] + "su");
+                if (f != null && f.exists()&&f.canExecute()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
+    private static boolean isRootSystem2() {
+        List<String> pros = getPath();
+        File f = null;
+        try {
+            for (int i = 0; i < pros.size(); i++) {
+                f = new File(pros.get(i),"su");
+                System.out.println("f.getAbsolutePath():"+f.getAbsolutePath());
+                if (f != null && f.exists()&&f.canExecute()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    private static List<String> getPath() {
+        return Arrays.asList(System.getenv("PATH").split(":"));
+    }
+
     private static boolean isCanExecute(String filePath) {
         java.lang.Process process = null;
         try {
@@ -194,11 +246,12 @@ public class QDAndroidDeviceUtil {
     }
 
     public static boolean isSimulator(Context context) {
-        return notHasBlueTooth()||BooleannotHasLightSensorManager(context)||checkIsNotRealPhone();
+        return notHasBlueTooth() || BooleannotHasLightSensorManager(context) || checkIsNotRealPhone();
     }
 
     /**
      * 判断蓝牙是否有效来判断是否为模拟器
+     *
      * @return true 为模拟器
      */
     public static boolean notHasBlueTooth() {
@@ -219,6 +272,7 @@ public class QDAndroidDeviceUtil {
     /**
      * 判断是否存在光传感器来判断是否为模拟器
      * 部分真机也不存在温度和压力传感器。其余传感器模拟器也存在。
+     *
      * @return true 为模拟器
      */
     public static boolean BooleannotHasLightSensorManager(Context context) {
@@ -226,17 +280,18 @@ public class QDAndroidDeviceUtil {
         Sensor sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); //光
         if (null == sensor8) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     /**
      * 判断cpu是否为电脑来判断 模拟器
+     *
      * @return true 为模拟器
      */
     public static boolean checkIsNotRealPhone() {
-        String cpuInfo =readCpuInfo();
+        String cpuInfo = readCpuInfo();
         if ((cpuInfo.contains("intel") || cpuInfo.contains("amd"))) {
             return true;
         }
@@ -244,20 +299,20 @@ public class QDAndroidDeviceUtil {
     }
 
     public static String readCpuInfo() {
-        String result ="";
+        String result = "";
         try {
             String[] args = {"/system/bin/cat", "/proc/cpuinfo"};
-            ProcessBuilder cmd =new ProcessBuilder(args);
+            ProcessBuilder cmd = new ProcessBuilder(args);
             Process process = cmd.start();
-            StringBuffer sb =new StringBuffer();
-            String readLine ="";
-            BufferedReader responseReader =new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
-            while ((readLine = responseReader.readLine()) !=null) {
+            StringBuffer sb = new StringBuffer();
+            String readLine = "";
+            BufferedReader responseReader = new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
+            while ((readLine = responseReader.readLine()) != null) {
                 sb.append(readLine);
             }
             responseReader.close();
             result = sb.toString().toLowerCase();
-        }catch (IOException ex) {
+        } catch (IOException ex) {
         }
         return result;
     }
@@ -265,6 +320,7 @@ public class QDAndroidDeviceUtil {
     /**
      * 获取运营商sim卡的ICCID号
      * Manifest.permission.READ_PHONE_STATE)
+     *
      * @return ICCID号
      */
     public static String getICCID(Context context) {

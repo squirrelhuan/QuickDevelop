@@ -42,9 +42,6 @@ public class StackSlidingLayoutFragment extends BaseFragment {
     private List<String> items_A, items_B, items_C, items_D, items_E;
 
     public void initView(View rootView) {
-        // actionBarLayout.setActionBarType(ACTIONBAR_TYPE.ACTION_TRANSPARENT);
-        // actionBarLayout.setHeaderBackgroundColor(Color.WHITE);
-
         //A
         recyclerView_A = rootView.findViewById(R.id.list_A);
         header_A = rootView.findViewById(R.id.header_A);

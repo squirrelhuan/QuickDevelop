@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class QDSheetDialog extends QDDialog2 {
     private OnDialogActionListener onDialogActionListener;
     private int gravity;
     private int boxColor;
+
     public QDSheetDialog(Context context, Builder builder) {
         super(context);
         data = builder.data;
@@ -78,7 +80,7 @@ public class QDSheetDialog extends QDDialog2 {
 
     private void initData() {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity =gravity;
+        layoutParams.gravity = gravity;
         setBackgroundColor(backgroundColor);
 
         RecyclerView recyclerView = new RecyclerView(getContext());
@@ -98,14 +100,14 @@ public class QDSheetDialog extends QDDialog2 {
         adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                onDialogActionListener.onItemClick(QDSheetDialog.this,position,data);
+                onDialogActionListener.onItemClick(QDSheetDialog.this, position, data);
             }
         });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setBackgroundColor(boxColor);
         RelativeLayout relativeLayout = new RelativeLayout(getContext());
-        relativeLayout.addView(recyclerView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        relativeLayout.addView(recyclerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setContentView(relativeLayout, layoutParams);
     }
 
@@ -206,7 +208,7 @@ public class QDSheetDialog extends QDDialog2 {
     }
 
     public static interface OnDialogActionListener {
-          void onItemClick(QDSheetDialog dialog, int position, List<String> data);
+        void onItemClick(QDSheetDialog dialog, int position, List<String> data);
     }
 
     public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
@@ -240,10 +242,10 @@ public class QDSheetDialog extends QDDialog2 {
             vhItem.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   int position = vhItem.getAdapterPosition();
-                   if(onItemClickListener!=null){
-                       onItemClickListener.onItemClick(v,position);
-                   }
+                    int position = vhItem.getAdapterPosition();
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(v, position);
+                    }
                 }
             });
             vhItem.onbind(i);
@@ -256,6 +258,7 @@ public class QDSheetDialog extends QDDialog2 {
 
         public class VHItem extends RecyclerView.ViewHolder {
             QDTextView textView;
+
             public VHItem(@NonNull View itemView) {
                 super(itemView);
                 textView = new QDTextView(itemView.getContext());
@@ -270,8 +273,9 @@ public class QDSheetDialog extends QDDialog2 {
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 ((ViewGroup) itemView).addView(textView, layoutParams);
             }
-            public void onbind(int position){
-                textView.setText(data.get(position)+"");
+
+            public void onbind(int position) {
+                textView.setText(data.get(position) + "");
             }
         }
     }

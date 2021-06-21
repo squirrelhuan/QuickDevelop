@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -9,12 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,28 +24,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.qdlogger_library.QDLogger;
-
-import static android.bluetooth.BluetoothAdapter.ACTION_SCAN_MODE_CHANGED;
-import static android.bluetooth.BluetoothAdapter.EXTRA_STATE;
-import static android.bluetooth.BluetoothAdapter.SCAN_MODE_NONE;
 
 
 /**
@@ -61,10 +46,6 @@ import static android.bluetooth.BluetoothAdapter.SCAN_MODE_NONE;
 @ActivityPager(name = "蓝牙", preViewClass = TextView.class, resType = ResType.Custome)
 public class BluetoothFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.tv_info)
     TextView tv_info;

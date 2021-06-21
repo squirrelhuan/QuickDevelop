@@ -2,10 +2,16 @@
 
 <set xmlns:Android="http://schemas.android.com/apk/res/android"
     Android:interpolator="@android:anim/decelerate_interpolator">
-    <scale Android:fromXScale="1.0" Android:toXScale="1"
-        Android:fromYScale="1.0" Android:toYScale="0"
-        Android:pivotX="100%p" Android:pivotY="0%p"
+    <scale
+        Android:fromXScale="1.0"
+        Android:toXScale="1"
+        Android:fromYScale="1.0"
+        Android:toYScale="0"
+        Android:pivotX="100%p"
+        Android:pivotY="0%p"
         Android:duration="200" />
-    <alpha Android:fromAlpha="1" Android:toAlpha="0"
+    <alpha
+        Android:fromAlpha="1"
+        Android:toAlpha="0"
         Android:duration="200" />
 </set>

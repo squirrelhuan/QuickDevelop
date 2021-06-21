@@ -19,9 +19,11 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
 import android.view.TouchDelegate;
@@ -86,6 +88,7 @@ public class QMUIViewHelper {
 
     /**
      * 扩展点击区域的范围
+     *
      * @param view       需要扩展的元素，此元素必需要有父级元素
      * @param expendSize 需要扩展的尺寸（以sp为单位的）
      */
@@ -108,9 +111,7 @@ public class QMUIViewHelper {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public static void setBackground(View view, Drawable drawable){
+    public static void setBackground(View view, Drawable drawable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             view.setBackground(drawable);
         } else {
@@ -149,6 +150,7 @@ public class QMUIViewHelper {
 
     /**
      * 对 View 做背景色变化的动作
+     *
      * @param v            做背景色变化的View
      * @param bgColor      背景色
      * @param alphaArray   背景色变化的alpha数组，如 int[]{255,0} 表示从纯色变化到透明
@@ -358,8 +360,8 @@ public class QMUIViewHelper {
     public static void clearValueAnimator(Animator animator) {
         if (animator != null) {
             animator.removeAllListeners();
-            if(animator instanceof ValueAnimator){
-                ((ValueAnimator)animator).removeAllUpdateListeners();
+            if (animator instanceof ValueAnimator) {
+                ((ValueAnimator) animator).removeAllUpdateListeners();
             }
 
             if (Build.VERSION.SDK_INT >= 19) {
@@ -526,7 +528,7 @@ public class QMUIViewHelper {
      * @param value 设置的值
      */
     public static void setPaddingLeft(View view, int value) {
-        if(value != view.getPaddingLeft()){
+        if (value != view.getPaddingLeft()) {
             view.setPadding(value, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
         }
     }
@@ -538,7 +540,7 @@ public class QMUIViewHelper {
      * @param value 设置的值
      */
     public static void setPaddingTop(View view, int value) {
-        if(value != view.getPaddingTop()){
+        if (value != view.getPaddingTop()) {
             view.setPadding(view.getPaddingLeft(), value, view.getPaddingRight(), view.getPaddingBottom());
         }
     }
@@ -550,7 +552,7 @@ public class QMUIViewHelper {
      * @param value 设置的值
      */
     public static void setPaddingRight(View view, int value) {
-        if(value != view.getPaddingRight()){
+        if (value != view.getPaddingRight()) {
             view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), value, view.getPaddingBottom());
         }
     }
@@ -562,7 +564,7 @@ public class QMUIViewHelper {
      * @param value 设置的值
      */
     public static void setPaddingBottom(View view, int value) {
-        if(value != view.getPaddingBottom()){
+        if (value != view.getPaddingBottom()) {
             view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), value);
         }
     }
@@ -631,20 +633,20 @@ public class QMUIViewHelper {
         return view;
     }
 
-    public static void safeSetImageViewSelected(ImageView imageView, boolean selected){
+    public static void safeSetImageViewSelected(ImageView imageView, boolean selected) {
         // imageView setSelected 实现有问题。
         // resizeFromDrawable 中判断 drawable size 是否改变而调用 requestLayout，看似合理，但不会被调用
         // 因为 super.setSelected(selected) 会调用 refreshDrawableState
         // 而从 android 6 以后， ImageView 会重载refreshDrawableState，并在里面处理了 drawable size 改变的问题,
         // 从而导致 resizeFromDrawable 的判断失效
         Drawable drawable = imageView.getDrawable();
-        if(drawable == null){
+        if (drawable == null) {
             return;
         }
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
         imageView.setSelected(selected);
-        if(drawable.getIntrinsicWidth() != drawableWidth || drawable.getIntrinsicHeight() != drawableHeight){
+        if (drawable.getIntrinsicWidth() != drawableWidth || drawable.getIntrinsicHeight() != drawableHeight) {
             imageView.requestLayout();
         }
     }
@@ -718,7 +720,7 @@ public class QMUIViewHelper {
 
         static void offsetDescendantMatrix(ViewParent target, View view, Matrix m) {
             final ViewParent parent = view.getParent();
-            if (parent instanceof View && parent != target) {
+            if (parent!=null&&parent instanceof View && parent != target) {
                 final View vp = (View) parent;
                 offsetDescendantMatrix(target, vp, m);
                 m.preTranslate(-vp.getScrollX(), -vp.getScrollY());

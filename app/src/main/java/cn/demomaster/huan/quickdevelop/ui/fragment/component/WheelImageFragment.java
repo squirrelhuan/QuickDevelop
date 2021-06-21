@@ -24,10 +24,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 
 @ActivityPager(name = "WheelImage", preViewClass = TextView.class, resType = ResType.Custome)
 public class WheelImageFragment extends BaseFragment {
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

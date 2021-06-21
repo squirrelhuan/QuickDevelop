@@ -51,6 +51,7 @@ import cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordPopup;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.quickaudiorecorderlib.AudioUtil.calculateVolume;
+import static cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordPopup.fitPopupWindowOverStatusBar;
 
 
 /**
@@ -60,11 +61,6 @@ import static cn.demomaster.quickaudiorecorderlib.AudioUtil.calculateVolume;
  */
 @ActivityPager(name = "音频录制", preViewClass = TextView.class, resType = ResType.Custome)
 public class AudioRecordFragment extends BaseFragment {
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     View mView;
 
@@ -200,7 +196,7 @@ public class AudioRecordFragment extends BaseFragment {
         adapter.setOnItemClickListener(new AudioAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                playAudio(fileOutputPath+"/"+audioFiles.get(position));
+                playAudio(fileOutputPath + "/" + audioFiles.get(position));
             }
 
             @Override
@@ -215,12 +211,12 @@ public class AudioRecordFragment extends BaseFragment {
                         //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
                         //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                         //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
-                        .setText_color_body(Color.BLUE)
+                        //.setText_color_body(Color.BLUE)
                         .addAction("确定", new OnClickActionListener() {
                             @Override
-                            public void onClick(Dialog dialog, Object tag) {
-                                String f = (fileOutputPath+"/"+audioFiles.get(position));
-                                QDLogger.e("删除："+(fileOutputPath+"/"+audioFiles.get(position)));
+                            public void onClick(Dialog dialog, View view, Object tag) {
+                                String f = (fileOutputPath + "/" + audioFiles.get(position));
+                                QDLogger.e("删除：" + (fileOutputPath + "/" + audioFiles.get(position)));
                                 QDFileUtil.delete(f);
                                 refreshUI();
                                 dialog.dismiss();
@@ -230,8 +226,7 @@ public class AudioRecordFragment extends BaseFragment {
                         .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
                         //.setPadding_foot((int) getResources().getDimension(R.dimen.sp_6))
                         //.setActionButtonPadding((int) getResources().getDimension(R.dimen.sp_6))
-                        .setText_color_foot(Color.GREEN)
-                        .setLineColor(Color.RED).create();
+                        .setText_color_foot(Color.BLACK).create();
                 qdDialog.show();
             }
         });
@@ -279,10 +274,12 @@ public class AudioRecordFragment extends BaseFragment {
         audioRecorder.stopRecord();
         refreshUI();
     }
+
     String fileOutputPath;
+
     private void refreshUI() {
         audioFiles.clear();
-        fileOutputPath = mContext.getFilesDir().getAbsolutePath()+"/wav";
+        fileOutputPath = mContext.getFilesDir().getAbsolutePath() + "/wav";
         File file = new File(fileOutputPath);
         if (file.exists()) {
             if (file.isDirectory()) {
@@ -324,11 +321,17 @@ public class AudioRecordFragment extends BaseFragment {
         }
 
         @Override
-        public void onStop() {
-            btn_start_record.setVisibility(View.VISIBLE);
-            btn_pause_record.setVisibility(View.GONE);
-            btn_stop_record.setVisibility(View.GONE);
-            waveLineView.stopAnim();
+        public void onStop(boolean isSuccess, String filePath) {
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btn_start_record.setVisibility(View.VISIBLE);
+                    btn_pause_record.setVisibility(View.GONE);
+                    btn_stop_record.setVisibility(View.GONE);
+                    waveLineView.stopAnim();
+                    refreshUI();
+                }
+            });
         }
 
         @Override

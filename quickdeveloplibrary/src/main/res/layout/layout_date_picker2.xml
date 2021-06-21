@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent_dark_33">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_dark_33">
 
     <LinearLayout
         android:id="@+id/container_picker"
@@ -23,7 +23,7 @@
             app:initPosition="3"
             app:lineColor="@color/white"
             app:textSize="@dimen/sp_10"
-            app:topBottomTextColor="@color/white"/>
+            app:topBottomTextColor="@color/white" />
     </LinearLayout>
 
 </RelativeLayout>

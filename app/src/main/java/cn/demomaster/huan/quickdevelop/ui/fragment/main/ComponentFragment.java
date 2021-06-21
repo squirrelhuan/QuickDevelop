@@ -38,6 +38,7 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BaseFragmentA
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BasePaperActivity;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.AnimitionFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AudioRecordFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlurFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.ColorPickerFragment;
@@ -121,6 +122,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(ToggleButtonActivity.class);
         classList.add(TimeDomainPlotFragment.class);
         classList.add(lifecycleTimerFragment.class);
+        classList.add(AnimitionFragment.class);
 
         classList.add(CenterHorizontalActivity.class);
         classList.add(LoadingActivity.class);

@@ -41,7 +41,7 @@ public class LifeCycleClassInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LifeCycleClassInfo that = (LifeCycleClassInfo) o;
-        return  clazzHashCode == that.clazzHashCode &&
+        return clazzHashCode == that.clazzHashCode &&
                 Objects.equals(clazz, that.clazz);
     }
 

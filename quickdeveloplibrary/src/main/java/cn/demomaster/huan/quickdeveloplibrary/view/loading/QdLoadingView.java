@@ -145,7 +145,7 @@ public class QdLoadingView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mSize = Math.min(w,h);
+        mSize = Math.min(w, h);
     }
     /*   @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

@@ -216,7 +216,7 @@ public class ColorPicker extends View {
 
             //绘制游标line
             paint.setColor(Color.WHITE);
-            float left = valueAngleX * valueSliderRect.width()+valueSliderRect.left;
+            float left = valueAngleX * valueSliderRect.width() + valueSliderRect.left;
             canvas.drawLine(left, valueSliderRect.top, left,
                     valueSliderRect.bottom, paint);
             //绘制三角游标
@@ -224,11 +224,11 @@ public class ColorPicker extends View {
             paint.setStyle(Style.FILL);
             Path path = new Path();
             int ArrowHeight = 10;
-            path.moveTo(left,valueSliderRect.top);
-            path.lineTo(left-ArrowHeight,valueSliderRect.top-ArrowHeight);
-            path.lineTo(left+ArrowHeight,valueSliderRect.top-ArrowHeight);
+            path.moveTo(left, valueSliderRect.top);
+            path.lineTo(left - ArrowHeight, valueSliderRect.top - ArrowHeight);
+            path.lineTo(left + ArrowHeight, valueSliderRect.top - ArrowHeight);
             path.close();
-            canvas.drawPath(path,paint);
+            canvas.drawPath(path, paint);
         }
 
         if (alphaSliderRect != null) {
@@ -265,18 +265,18 @@ public class ColorPicker extends View {
 
             //绘制游标line
             paint.setColor(Color.WHITE);
-            float left = alphaValue * alphaSliderRect.width()+alphaSliderRect.left;
-            canvas.drawLine(left, alphaSliderRect.top, left,alphaSliderRect.bottom, paint);
+            float left = alphaValue * alphaSliderRect.width() + alphaSliderRect.left;
+            canvas.drawLine(left, alphaSliderRect.top, left, alphaSliderRect.bottom, paint);
             //绘制三角游标
             paint.setColor(Color.BLACK);
             paint.setStyle(Style.FILL);
             Path path = new Path();
             int ArrowHeight = 10;
-            path.moveTo(left,alphaSliderRect.top);
-            path.lineTo(left-ArrowHeight,alphaSliderRect.top-ArrowHeight);
-            path.lineTo(left+ArrowHeight,alphaSliderRect.top-ArrowHeight);
+            path.moveTo(left, alphaSliderRect.top);
+            path.lineTo(left - ArrowHeight, alphaSliderRect.top - ArrowHeight);
+            path.lineTo(left + ArrowHeight, alphaSliderRect.top - ArrowHeight);
             path.close();
-            canvas.drawPath(path,paint);
+            canvas.drawPath(path, paint);
         }
     }
 
@@ -376,6 +376,7 @@ public class ColorPicker extends View {
     }
 
     float alphaValue;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
@@ -392,9 +393,9 @@ public class ColorPicker extends View {
                     colorHSV[0] = (float) (Math.toDegrees(Math.atan2(cy, cx)) + 180f);
                     colorHSV[1] = Math.max(0f, Math.min(1f, (float) (d / colorWheelRadius)));
                     invalidate();
-                } else if (x>=alphaSliderRect.left&&x<=(alphaSliderRect.left+alphaSliderRect.width())&&y>alphaSliderRect.top&&y<alphaSliderRect.top+alphaSliderRect.height()) {//设置透明度
-                    alphaValue = (x-alphaSliderRect.left)/alphaSliderRect.width();
-                    colorHSV[2] = (float) Math.max(0, Math.min(1,alphaValue));
+                } else if (x >= alphaSliderRect.left && x <= (alphaSliderRect.left + alphaSliderRect.width()) && y > alphaSliderRect.top && y < alphaSliderRect.top + alphaSliderRect.height()) {//设置透明度
+                    alphaValue = (x - alphaSliderRect.left) / alphaSliderRect.width();
+                    colorHSV[2] = (float) Math.max(0, Math.min(1, alphaValue));
                     invalidate();
                 }
 

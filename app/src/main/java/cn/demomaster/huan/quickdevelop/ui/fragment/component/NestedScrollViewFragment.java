@@ -33,11 +33,6 @@ public class NestedScrollViewFragment extends BaseFragment {
 
     int headHeight;
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

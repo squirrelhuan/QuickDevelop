@@ -3,7 +3,10 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.download;
 import android.Manifest;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
+
+import java.io.File;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 
@@ -12,7 +15,7 @@ import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
  */
 public class DownloadTask {
 
-    public static enum  DownloadType{
+    public static enum DownloadType {
         DownloadManager,
         Okhttp
     }
@@ -26,7 +29,8 @@ public class DownloadTask {
     private String fileName;//文件名带格式名
     private String downloadUrl;//下载路径
     private Uri downloadUri;
-    private String downUriStr;
+    private String downloadPath;
+    private String downFilePath;
     private DownloadType downloadType;
     private String savePath;
 
@@ -46,7 +50,8 @@ public class DownloadTask {
     }
 
     //默认下载路径
-    private String directoryPath = AppConfig.getInstance().getConfig("DownloadFilePath").toString();
+    private String directoryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();//AppConfig.getInstance().getConfig("DownloadFilePath").toString()
+
     public DownloadTask(Context context) {
         this.context = context;
     }
@@ -88,9 +93,6 @@ public class DownloadTask {
     }
 
     public Uri getDownloadUri() {
-        if(downloadUri==null&& !TextUtils.isEmpty(downUriStr)){
-            downloadUri= Uri.parse(downUriStr);
-        }
         return downloadUri;
     }
 
@@ -106,16 +108,14 @@ public class DownloadTask {
         this.context = context;
     }
 
-    public String getDownUriStr() {
-        if(downloadUri!=null&& TextUtils.isEmpty(downUriStr)){
-            downUriStr = downloadUri.getPath();
-        }
-        return downUriStr;
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
+        downloadUri = Uri.parse(downloadPath);
     }
 
-    public void setDownUriStr(String downUriStr) {
-        this.downUriStr = downUriStr;
-        downloadUri= Uri.parse(downUriStr);
+    public void setDownloadFilePath(String downFilePath) {
+        this.downFilePath = downFilePath;
+        downloadUri = Uri.fromFile(new File(downFilePath));
     }
 
     public DownloadType getDownloadType() {

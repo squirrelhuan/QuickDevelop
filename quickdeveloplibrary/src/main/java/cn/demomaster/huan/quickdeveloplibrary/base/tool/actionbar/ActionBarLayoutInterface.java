@@ -9,7 +9,7 @@ public interface ActionBarLayoutInterface {
 
     void setTitle(CharSequence string);
 
-    void setStateBarColorAuto(boolean b);
+    //void setStateBarColorAuto(boolean b);
 
     void setLeftOnClickListener(View.OnClickListener onClickListener);
 

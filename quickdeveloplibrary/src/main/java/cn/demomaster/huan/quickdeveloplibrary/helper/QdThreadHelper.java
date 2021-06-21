@@ -7,27 +7,30 @@ public class QdThreadHelper {
 
     /**
      * 运行在主线程即ui线程
+     *
      * @param runnable
      */
     public static void runOnUiThread(Runnable runnable) {
-        if(isMainThread()){
+        if (isMainThread()) {
             runnable.run();
-        }else {
+        } else {
             new Handler(Looper.getMainLooper()).post(runnable);
         }
     }
 
     /**
      * 运行在子线程
+     *
      * @param runnable
      */
     public static void runOnSubThread(Runnable runnable) {
-        if(isMainThread()){
+        if (isMainThread()) {
             new Thread(runnable).start();
-        }else {
+        } else {
             runnable.run();
         }
     }
+
     public static boolean isMainThread() {
         return Looper.getMainLooper() == Looper.myLooper();
     }

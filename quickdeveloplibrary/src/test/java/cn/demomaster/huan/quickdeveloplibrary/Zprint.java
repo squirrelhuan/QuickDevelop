@@ -12,9 +12,9 @@ import androidx.annotation.Nullable;
 public class Zprint {
 
     /**
-     * @param object  传入Class类型 可以用getClass()得到
-     * @param key  要输出数据的标识
-     * @param out   动态参数，这里是要输出的数据
+     * @param object 传入Class类型 可以用getClass()得到
+     * @param key    要输出数据的标识
+     * @param out    动态参数，这里是要输出的数据
      */
     public static void log(Class<?> object, @Nullable String key, Object... out) {
         if (!BuildConfig.DEBUG) {
@@ -70,7 +70,7 @@ public class Zprint {
             } else {
                 parameter = "方法method ：" + methodName + "  输出： " + "\"" + key + "\"" + " ::" + temp;
             }
-           //QDLogger.println(TAG+parameter);
+            //QDLogger.println(TAG+parameter);
             Log.d(TAG, parameter);
         }
     }
@@ -78,7 +78,8 @@ public class Zprint {
 
     /**
      * 和上面方法功能相同，少了 key
-     * @param object  传入Class类型 可以用getClass()得到
+     *
+     * @param object 传入Class类型 可以用getClass()得到
      * @param out    动态参数，这里是要输出的数据
      */
     public static void log(Class<?> object, Object... out) {

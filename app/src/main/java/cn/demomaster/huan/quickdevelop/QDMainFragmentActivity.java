@@ -17,8 +17,11 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.getAppName;
 
 /**
  *
@@ -87,22 +90,6 @@ public class QDMainFragmentActivity extends QDActivity {
         //DebugFloatingService.showConsole(mContext);
         PermissionHelper.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
         QDLogger.d("getAppName="+getAppName(this));
-    }
-    /**
-     * 获取应用程序名称
-     */
-    public static String getAppName(Context context) {
-        try {
-            Log.i(TAG, "getAppName=" + context.getApplicationContext().getPackageName());
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
-            int labelRes = packageInfo.applicationInfo.labelRes;
-            return context.getResources().getString(labelRes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

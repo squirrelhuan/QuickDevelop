@@ -32,13 +32,13 @@ public class QDDeviceHelper {
     }
 
     //1.设置通话音量
-    public static void setVioceVolume(Context context,int level) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_VOICE_CALL,level,flagDef);
+    public static void setVioceVolume(Context context, int level) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_VOICE_CALL, level, flagDef);
     }
 
     //1.设置通话音量
-    public static void setVioceVolume(Context context,int level,int flag) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_VOICE_CALL,level,flag);
+    public static void setVioceVolume(Context context, int level, int flag) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_VOICE_CALL, level, flag);
     }
 
     //2.最大系统音量
@@ -52,13 +52,13 @@ public class QDDeviceHelper {
     }
 
     //2.设置系统音量
-    public static void setSystemVolume(Context context,int level) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_SYSTEM,level,flagDef);
+    public static void setSystemVolume(Context context, int level) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_SYSTEM, level, flagDef);
     }
 
     //2.设置系统音量
-    public static void setSystemVolume(Context context,int level,int flag) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_SYSTEM,level,flag);
+    public static void setSystemVolume(Context context, int level, int flag) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_SYSTEM, level, flag);
     }
 
     //3.最大铃声音量
@@ -72,13 +72,13 @@ public class QDDeviceHelper {
     }
 
     //3.设置铃声音量
-    public static void setRingVolume(Context context,int level) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_RING,level,flagDef);
+    public static void setRingVolume(Context context, int level) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_RING, level, flagDef);
     }
 
     //3.设置铃声音量
-    public static void setRingVolume(Context context,int level,int flag) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_RING,level,flag);
+    public static void setRingVolume(Context context, int level, int flag) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_RING, level, flag);
     }
 
     //4.最大音乐音量
@@ -92,13 +92,13 @@ public class QDDeviceHelper {
     }
 
     //4.设置音乐音量 FLAG_PLAY_SOUND
-    public static void setMusicVolume(Context context,int level) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_MUSIC,level,flagDef);
+    public static void setMusicVolume(Context context, int level) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_MUSIC, level, flagDef);
     }
 
     //4.设置音乐音量
-    public static void setMusicVolume(Context context,int level,int flag) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_MUSIC,level,flag);
+    public static void setMusicVolume(Context context, int level, int flag) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_MUSIC, level, flag);
     }
 
     //5.最大提示声音音量
@@ -112,8 +112,8 @@ public class QDDeviceHelper {
     }
 
     //5.设置提示声音音量
-    public static void setAlarmVolume(Context context,int level) {
-        getAudioManager(context).setStreamVolume(AudioManager.STREAM_ALARM,level,flagDef);
+    public static void setAlarmVolume(Context context, int level) {
+        getAudioManager(context).setStreamVolume(AudioManager.STREAM_ALARM, level, flagDef);
     }
 
 }

@@ -1,28 +1,17 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -64,7 +53,7 @@ public class CompressLayout extends ViewGroup {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // compressLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                //compressLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 //QdToast.show(getContext(),"height="+getMeasuredHeight());
                 //QDLogger.e("getViewTreeObserver height=" + getMeasuredHeight());
                 //PopToastUtil.ShowToast((Activity) getContext(),"height="+getMeasuredHeight());
@@ -79,7 +68,7 @@ public class CompressLayout extends ViewGroup {
 
                     if (oldHeight > getMeasuredHeight()) {//键盘展开
                         hideView();
-                    }else {//键盘关闭
+                    } else {//键盘关闭
                         showView();
                         reLayout();
                     }
@@ -90,9 +79,10 @@ public class CompressLayout extends ViewGroup {
 
     /**
      * 布局是否被软键盘占用或压缩
+     *
      * @return
      */
-    public boolean isCompressed(){
+    public boolean isCompressed() {
         return originalHeight > getMeasuredHeight();
     }
 
@@ -112,15 +102,17 @@ public class CompressLayout extends ViewGroup {
             getChildAt(i).setVisibility(View.VISIBLE);
         }
     }
-    /**隐藏软键盘**/
-    private void hideKeyboard(Activity activity) {
+
+    /**
+     * 隐藏软键盘
+     **/
+    /*private void hideKeyboard(Activity activity) {
         View view = activity.getWindow().peekDecorView();
         if (view != null) {
             InputMethodManager inputmanger = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
+    }*/
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -148,24 +140,17 @@ public class CompressLayout extends ViewGroup {
         //然后调用自setMeasuredDimension()方法将测量好的宽高保存
         //setMeasuredDimension(widthMeasureSpec,heightMeasureSpec);
 
-        int maxHeight = heightSize;
-        int maxWidth = widthSize;
-        int childState = 0;
         switch (gravity) {
             case Gravity.LEFT:
             case Gravity.RIGHT:
                 widthMeasureSpec -= (int) (-panel_width * progress);
-                //maxWidth = (int) (getWidth() - panel_width * progress);
                 break;
             case Gravity.TOP:
             case Gravity.BOTTOM:
-                //maxHeight =
                 heightMeasureSpec -= (int) (-panel_height * progress);
                 break;
         }
-
         measureChildren(widthMeasureSpec, heightMeasureSpec);
-
         if (getChildCount() > 1) {
             panel_height = getChildAt(1).getMeasuredHeight();
             panel_width = getChildAt(1).getMeasuredWidth();
@@ -200,17 +185,18 @@ public class CompressLayout extends ViewGroup {
     private void reLayout() {
         int childCount = getChildCount();
 
-        if(childCount>1){
+        if (childCount > 1) {
             int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(getMeasuredWidth(),
                     View.MeasureSpec.EXACTLY);
             getChildAt(1).measure(widthMeasureSpec,
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            panel_height = Math.max(panel_height,getChildAt(1).getMeasuredHeight());
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            panel_height = Math.max(panel_height, getChildAt(1).getMeasuredHeight());
             panel_width = getChildAt(1).getMeasuredWidth();
         }
         int childMaxHeight = (int) panel_height;
-        //QDLogger.e("控件初始高度=" + originalHeight + ",键盘高度=" + (originalHeight - getMeasuredHeight()));
-        QDLogger.e("表情栏高度=" + panel_height);
+        //QDLogger.d("控件初始高度=" + originalHeight + ",键盘高度=" + (originalHeight - getMeasuredHeight()));
+        //QDLogger.d("表情栏高度=" + panel_height);
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             int left = 0;
@@ -221,22 +207,22 @@ public class CompressLayout extends ViewGroup {
                 switch (gravity) {
                     case Gravity.LEFT:
                         left = (int) (panel_width * progress);
-                        right = left+child.getMeasuredWidth();
-                        bottom = top+child.getMeasuredHeight();
+                        right = left + child.getMeasuredWidth();
+                        bottom = top + child.getMeasuredHeight();
                         break;
                     case Gravity.RIGHT:
-                        right = getMeasuredWidth()-(int) (panel_width * progress);
-                        left = right-child.getMeasuredWidth();
-                        bottom = top+child.getMeasuredHeight();
+                        right = getMeasuredWidth() - (int) (panel_width * progress);
+                        left = right - child.getMeasuredWidth();
+                        bottom = top + child.getMeasuredHeight();
                         break;
                     case Gravity.TOP:
-                        right = left+child.getMeasuredWidth();
+                        right = left + child.getMeasuredWidth();
                         top = (int) (panel_height * progress);
                         bottom = (top + child.getMeasuredHeight());
                         break;
                     case Gravity.BOTTOM:
-                        right = left+child.getMeasuredWidth();
-                        bottom = (int) (originalHeight - Math.max(originalHeight-getMeasuredHeight(), panel_height * progress));
+                        right = left + child.getMeasuredWidth();
+                        bottom = (int) (originalHeight - Math.max(originalHeight - getMeasuredHeight(), panel_height * progress));
                         break;
                 }
                 //child.requestLayout();
@@ -246,30 +232,33 @@ public class CompressLayout extends ViewGroup {
                 switch (gravity) {
                     case Gravity.LEFT:
                         right = (int) (panel_width * progress);
-                        left = (int) (right -panel_width);
-                        bottom = top+childMaxHeight;
+                        left = (int) (right - panel_width);
+                        bottom = top + childMaxHeight;
                         break;
                     case Gravity.RIGHT:
-                        left = getMeasuredWidth()-(int) (panel_width * progress);
-                        right = (int) (left +panel_width);
-                        bottom = top+childMaxHeight;
+                        left = getMeasuredWidth() - (int) (panel_width * progress);
+                        right = (int) (left + panel_width);
+                        bottom = top + childMaxHeight;
                         break;
                     case Gravity.TOP:
                         bottom = (int) (panel_height * progress);
-                        top= (int) (bottom-panel_height);
+                        top = (int) (bottom - panel_height);
                         break;
                     case Gravity.BOTTOM:
                         //top = (int) (getMeasuredHeight() - Math.max(0, panel_height * progress));
-                        top = (int) (originalHeight - Math.max(0, panel_height * progress));
+                        top = (int) (originalHeight - Math.max(0, childMaxHeight * progress));
                         bottom = top + childMaxHeight;
                         break;
                 }
             }
             ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
-            layoutParams.height = bottom - top;
-            layoutParams.width = right - left;
-            child.setLayoutParams(layoutParams);
-            QDLogger.d("onLayout(" + i + "),left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom + ",w=" + child.getMeasuredWidth() + ",h=" + child.getMeasuredHeight());
+            if (child.getMeasuredHeight() != (bottom - top) || child.getMeasuredWidth() != (right - left)) {
+                layoutParams.height = bottom - top;
+                layoutParams.width = right - left;
+                child.setLayoutParams(layoutParams);
+            }
+
+            //QDLogger.d("onLayout(" + i + "),left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom + ",w=" + child.getMeasuredWidth() + ",h=" + child.getMeasuredHeight());
             child.layout(left, top, right, bottom);
         }
     }
@@ -290,11 +279,11 @@ public class CompressLayout extends ViewGroup {
             reLayout();
             return;
         }
-        int h = (originalHeight-getMeasuredHeight());
-        float startValue = Math.min(h/panel_height,1);
+        int h = (originalHeight - getMeasuredHeight());
+        float startValue = Math.min(h / panel_height, 1);
         //QDLogger.d( "showPanelWithSorftKeyBoard startValue=" + startValue+",progress="+progress);
         animator = QDValueAnimator.ofFloat(startValue, 1f);
-        animator.setDuration((long) (mDuration*(1-startValue)+5));
+        animator.setDuration((long) (mDuration * (1 - startValue) + 5));
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -320,7 +309,7 @@ public class CompressLayout extends ViewGroup {
             return;
         }
         animator = QDValueAnimator.ofFloat(progress, 0);
-        animator.setDuration((long) ((mDuration/2)*(progress)));
+        animator.setDuration((long) ((mDuration / 2) * (progress)));
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -335,17 +324,19 @@ public class CompressLayout extends ViewGroup {
 
     /**
      * 是否已经展开
+     *
      * @return
      */
     public boolean isExpanded() {
-        return progress ==1;
+        return progress == 1;
     }
 
     /**
      * 是否隐藏了
+     *
      * @return
      */
     public boolean isHide() {
-        return progress ==0;
+        return progress == 0;
     }
 }

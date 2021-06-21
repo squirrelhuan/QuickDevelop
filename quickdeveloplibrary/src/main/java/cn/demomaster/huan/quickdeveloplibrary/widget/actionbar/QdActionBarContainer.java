@@ -18,7 +18,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 @CoordinatorLayout.DefaultBehavior(QdActionBarBehavior.class)
 public class QdActionBarContainer extends FrameLayout {
     private RecyclerView recyclerView;
-
+    
     public QdActionBarContainer(@NonNull Context context) {
         super(context);
         init(null);
@@ -51,6 +51,7 @@ public class QdActionBarContainer extends FrameLayout {
 
     /**
      * 查找唯一的一个RecyclerView
+     *
      * @param child
      */
     private void findRecyclerView(View child) {

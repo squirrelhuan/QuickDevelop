@@ -1,11 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,7 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PreviewFragment;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
-
 
 /**
  *
@@ -41,7 +42,7 @@ public class PreviewActivity extends QDActivity {
         //pv_image = (PhotoView) findViewById(R.id.pv_image);
         initV();
     }
-    
+
     private void initV() {
         //pv_image = findViewById(R.id.pv_image);
         Bundle mBundle = getIntent().getExtras();
@@ -77,12 +78,12 @@ public class PreviewActivity extends QDActivity {
         vp_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-               // getActionBarTool().getActionBarLayoutHeaderView().refreshStateBarColor();
+                // getActionBarTool().getActionBarLayoutHeaderView().refreshStateBarColor();
             }
 
             @Override
             public void onPageSelected(int position) {
-                getActionBarTool().setTitle(((position + 1) +"")+ ("/" + imageCount));
+                getActionBarTool().setTitle(((position + 1) + "") + ("/" + imageCount));
             }
 
             @Override

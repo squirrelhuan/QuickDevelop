@@ -12,9 +12,9 @@ public class ActionModel {
     private String tip;//操作文字提示
     private ActionType actionType;
     private View targetView;
-    
-    enum ActionType{
-        ClICK,TOUCH,MOVE
+
+    enum ActionType {
+        ClICK, TOUCH, MOVE
     }
 
 }

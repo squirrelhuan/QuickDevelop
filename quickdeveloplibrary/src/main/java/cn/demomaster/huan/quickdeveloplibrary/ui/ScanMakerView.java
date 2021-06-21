@@ -86,7 +86,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         possibleResultPoints = new ArrayList<>(5);
         lastPossibleResultPoints = null;
 
-        Display defaultDisplay = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
+        Display defaultDisplay = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point point = new Point();
         defaultDisplay.getSize(point);
         screenWidth = point.x;
@@ -96,17 +96,19 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         windowWidth = 300;
         windowHeight = 300;
     }
+
     int screenWidth;
     int screenHeight;
     int windowWidth;
     int windowHeight;
 
     float roundRadius = 5f;
+
     @SuppressLint("DrawAllocation")
     @Override
     public void onDraw(Canvas canvas) {
         drawMark(canvas);
-        if (animator==null||(!animator.isRunning()&&!animator.isStarted())) {
+        if (animator == null || (!animator.isRunning() && !animator.isStarted())) {
             startAnimation();
         }
     }
@@ -116,13 +118,16 @@ public final class ScanMakerView extends View implements ResultPointCallback {
 
     /**
      * 设置marker宽度
+     *
      * @param markerWidth
      */
     public void setMarkerWidth(int markerWidth) {
         this.markerWidth = markerWidth;
     }
+
     /**
      * 设置marker高度
+     *
      * @param markerHeight
      */
     public void setMarkerHeight(int markerHeight) {
@@ -131,6 +136,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
 
     /**
      * marker颜色
+     *
      * @param maskColor
      */
     public void setMaskColor(int maskColor) {
@@ -139,6 +145,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
 
     /**
      * 绘制遮罩层
+     *
      * @param canvas
      */
     private void drawMark(Canvas canvas) {
@@ -157,15 +164,15 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
-        float centerX = width/2;
-        float centerY = height/2;
+        float centerX = width / 2;
+        float centerY = height / 2;
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         canvas.drawColor(maskColor);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         paint.setColor(Color.BLACK);
-        RectF rectF = new RectF(centerX-markerWidth/2, centerY-markerHeight/2, centerX+markerWidth/2, centerY+markerHeight/2);
-        Rect frame = new Rect((int) rectF.left,(int)rectF.top,(int)rectF.right,(int)rectF.bottom);
+        RectF rectF = new RectF(centerX - markerWidth / 2, centerY - markerHeight / 2, centerX + markerWidth / 2, centerY + markerHeight / 2);
+        Rect frame = new Rect((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
         Rect previewFrame = frame;
         canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
         paint.setXfermode(null);
@@ -179,23 +186,23 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         */
 
         int al = 50;
-        int aw = DisplayUtil.dip2px(getContext(),3);
+        int aw = DisplayUtil.dip2px(getContext(), 3);
         paint.setColor(laserColor);
         paint.setStrokeWidth(aw);
         paint.setStyle(Paint.Style.STROKE);
-       // canvas.drawLines(new float[]{rectF.left,rectF.top+al,rectF.left,rectF.top,rectF.left,rectF.top,rectF.left+al,rectF.top},paint);
+        // canvas.drawLines(new float[]{rectF.left,rectF.top+al,rectF.left,rectF.top,rectF.left,rectF.top,rectF.left+al,rectF.top},paint);
 
-        canvas.drawLine(rectF.left,rectF.top+al,rectF.left,rectF.top-aw/2,paint);
-        canvas.drawLine(rectF.left,rectF.top,rectF.left+al,rectF.top,paint);
+        canvas.drawLine(rectF.left, rectF.top + al, rectF.left, rectF.top - aw / 2, paint);
+        canvas.drawLine(rectF.left, rectF.top, rectF.left + al, rectF.top, paint);
 
-        canvas.drawLine(rectF.right,rectF.top,rectF.right-al,rectF.top,paint);
-        canvas.drawLine(rectF.right,rectF.top+al,rectF.right,rectF.top-aw/2,paint);
+        canvas.drawLine(rectF.right, rectF.top, rectF.right - al, rectF.top, paint);
+        canvas.drawLine(rectF.right, rectF.top + al, rectF.right, rectF.top - aw / 2, paint);
 
-        canvas.drawLine(rectF.left,rectF.bottom+aw/2,rectF.left,rectF.bottom-al,paint);
-        canvas.drawLine(rectF.left,rectF.bottom,rectF.left+al,rectF.bottom,paint);
+        canvas.drawLine(rectF.left, rectF.bottom + aw / 2, rectF.left, rectF.bottom - al, paint);
+        canvas.drawLine(rectF.left, rectF.bottom, rectF.left + al, rectF.bottom, paint);
 
-        canvas.drawLine(rectF.right,rectF.bottom,rectF.right-al,rectF.bottom,paint);
-        canvas.drawLine(rectF.right,rectF.bottom-al,rectF.right,rectF.bottom+aw/2,paint);
+        canvas.drawLine(rectF.right, rectF.bottom, rectF.right - al, rectF.bottom, paint);
+        canvas.drawLine(rectF.right, rectF.bottom - al, rectF.right, rectF.bottom + aw / 2, paint);
 
         paint.setAntiAlias(true);//使用抗锯齿功能
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
@@ -204,28 +211,28 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         canvas.save();
         canvas.clipRect(rectF);
         RectF rectf_head;//确定外切矩形范围
-        int lineHeight=100;
+        int lineHeight = 100;
         Shader mShader;
-        if(isForward){
-            canvas.translate(0,progress*(markerHeight+lineHeight));
-            rectf_head=new RectF(centerX-markerWidth/3*2, rectF.top-lineHeight, centerX+markerWidth/3*2, rectF.top);//确定外切矩形范围
+        if (isForward) {
+            canvas.translate(0, progress * (markerHeight + lineHeight));
+            rectf_head = new RectF(centerX - markerWidth / 3 * 2, rectF.top - lineHeight, centerX + markerWidth / 3 * 2, rectF.top);//确定外切矩形范围
             rectf_head.offset(0, 0);//使rectf_head所确定的矩形向右偏移0像素，向下偏移0像素
 
-            mShader = new LinearGradient(centerX,rectf_head.top,centerX,(rectf_head.top+rectf_head.bottom)/2,new int[] {0x1300ff00,0xaa00ff00},null, Shader.TileMode.REPEAT);
+            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2, new int[]{0x1300ff00, 0xaa00ff00}, null, Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
 
-        }else {
-            canvas.translate(0,-(1-progress)*(markerHeight+lineHeight));
-            rectf_head=new RectF(centerX-markerWidth/3*2, rectF.bottom-lineHeight, centerX+markerWidth/3*2, rectF.bottom);//确定外切矩形范围
-            mShader = new LinearGradient(centerX,rectf_head.top,centerX,(rectf_head.top+rectf_head.bottom)/2,new int[] {0xaa00ff00,0x1300ff00},null, Shader.TileMode.REPEAT);
+        } else {
+            canvas.translate(0, -(1 - progress) * (markerHeight + lineHeight));
+            rectf_head = new RectF(centerX - markerWidth / 3 * 2, rectF.bottom - lineHeight, centerX + markerWidth / 3 * 2, rectF.bottom);//确定外切矩形范围
+            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2, new int[]{0xaa00ff00, 0x1300ff00}, null, Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
         }
 
-           //mShader = new RadialGradient(centerX,centerY,markerHeight,new int[] {0xaa00ff00,0x1100ff00},null, Shader.TileMode.REPEAT);
+        //mShader = new RadialGradient(centerX,centerY,markerHeight,new int[] {0xaa00ff00,0x1100ff00},null, Shader.TileMode.REPEAT);
         paint.setShader(mShader);
-        if(isForward) {
+        if (isForward) {
             canvas.drawArc(rectf_head, 0, -180, false, paint);//绘制圆弧，不含圆心
-        }else {
+        } else {
             canvas.drawArc(rectf_head, 0, 180, false, paint);//绘制圆弧，不含圆心
         }
         canvas.restore();
@@ -296,6 +303,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
     }
 
     private int centerX, centerY, width, height;
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -304,12 +312,13 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         height = h;
         //QDLogger.println("sw="+w+",sh="+h);
         centerX = width / 2;
-        centerY = height/2;
+        centerY = height / 2;
     }
 
     private float progress;
     private boolean isForward = true;
     QDValueAnimator animator;
+
     public void startAnimation() {
         final float start = 0f;
         final float end = 1f;
@@ -345,7 +354,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
             public void onClosing(Object value) {
                 isForward = false;
                 if (getVisibility() == VISIBLE) {
-                    progress =(float) value;
+                    progress = (float) value;
                     //QDLogger.println( "progress=" + progress+",value="+value);
                     invalidate();
                 }
@@ -361,10 +370,11 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         animator.setInterpolator(new LinearInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null) {
+        if (animator != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 animator.cancel();
             }

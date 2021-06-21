@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.SharedPreferences;
+
 import androidx.appcompat.widget.SwitchCompat;
 
 import java.lang.ref.WeakReference;

@@ -6,5 +6,5 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model;
  * description：
  */
 public enum UrlType {
-    url,file
+    url, file
 }

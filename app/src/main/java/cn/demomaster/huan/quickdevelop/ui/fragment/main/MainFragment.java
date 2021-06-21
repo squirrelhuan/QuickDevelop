@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.main;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
@@ -30,7 +33,9 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -83,7 +88,6 @@ public class MainFragment extends BaseFragment {
         actionBarLayout.setActionBarType(ACTIONBAR_TYPE.NORMAL);
         actionBarLayout.setHeaderBackgroundColor(getResources().getColor(R.color.colorPrimary));
         actionBarLayout.getLeftView().setVisibility(View.GONE);*/
-
         List<Class> list = new ArrayList<>();
         list.add(ComponentFragment.class);
         list.add(HelperFragment.class);
@@ -103,10 +107,9 @@ public class MainFragment extends BaseFragment {
         /*ImageView iv_store_pic = rootView.findViewById(R.id.iv_store_pic);
         Glide.with(mContext).load("https://baekteoriappimg.s3.ap-northeast-2.amazonaws.com/charge/158633285847768584298").into(iv_store_pic);
         iv_store_pic.setVisibility(View.VISIBLE);*/
-
         getActionBarTool().setTitle(getString(R.string.title_home));
-        getActionBarTool().setStateBarColorAuto(true);//状态栏文字颜色自动
-        getActionBarTool().setActionBarThemeColors(Color.WHITE, Color.BLACK);
+        //getActionBarTool().setStateBarColorAuto(true);//状态栏文字颜色自动
+        //getActionBarTool().setActionBarThemeColors(Color.WHITE, Color.BLACK);
         getActionBarTool().setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +132,6 @@ public class MainFragment extends BaseFragment {
     }
 
     OptionsMenu optionsMenu;
-
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
         String[] menuNames = {"我的二维码", "扫描", "截图分享"};
@@ -168,6 +170,7 @@ public class MainFragment extends BaseFragment {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 QdToast.show(mContext, path + "");
+                                showScanDialog(path);
                             }
 
                             @Override
@@ -203,6 +206,35 @@ public class MainFragment extends BaseFragment {
         getOptionsMenu().setBackgroundRadiu(20);
         getOptionsMenu().setBackgroundColor(Color.RED);
         getOptionsMenu().setAnchor(getActionBarTool().getRightView());
+    }
+
+    private void showScanDialog(String url) {
+        QDDialog qdDialog = new QDDialog.Builder(mContext)
+                .setTitle("要跳转到指定页面吗？")
+                .setMessage("扫描结果："+url)
+                //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
+                //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
+                //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
+                .setText_color_body(Color.BLUE)
+                .addAction("跳转", new OnClickActionListener() {
+                    @Override
+                    public void onClick(Dialog dialog, View view, Object tag) {
+                        dialog.dismiss();
+                        WebViewFragment webViewFragment = new WebViewFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("URL", url);
+                        webViewFragment.setArguments(bundle);
+                        getFragmentHelper().startFragment(webViewFragment);
+                    }
+                })//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
+                //.setPadding_foot((int) getResources().getDimension(R.dimen.sp_6))
+                //.setActionButtonPadding((int) getResources().getDimension(R.dimen.sp_6))
+                .setText_color_foot(Color.GREEN)
+                .setLineColor(Color.RED)
+                //.setBackgroundRadius(backgroundRadio)
+                .create();
+        qdDialog.show();
     }
 
     /**

@@ -25,7 +25,7 @@ public class ZoomOutPageTransformer2 implements ViewPager2.PageTransformer {
             view.setScaleX(scaleFactorX);
             view.setScaleY(scaleFactorY);
             if (position > 0) { //(0,1]
-                view.setTranslationX(-scaleFactorX );
+                view.setTranslationX(-scaleFactorX);
             } else if (position < 0) { //[-1,0)
                 view.setTranslationX(scaleFactorX);
             }

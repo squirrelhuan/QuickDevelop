@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.service.WifiTimerService2;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 
 import static android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING;
@@ -63,13 +65,13 @@ public class WifiUtil {
         return state;
     }
 
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    //private SharedPreferences preferences;
+    //private SharedPreferences.Editor editor;
 
     public boolean saveWifiInfo(String wifi, String pwd) {
-        editor.putString(WifiTimerService2.WIFI_NAME_KEY, wifi);
-        editor.putString(WifiTimerService2.WIFI_PWD_KEY, pwd);
-        return editor.commit();
+        QDSharedPreferences.getInstance().getSharedPreferences().edit().putString(WifiTimerService2.WIFI_NAME_KEY, wifi);
+        QDSharedPreferences.getInstance().getSharedPreferences().edit().putString(WifiTimerService2.WIFI_PWD_KEY, pwd);
+        return QDSharedPreferences.getInstance().getSharedPreferences().edit().commit();
     }
 
     ConnectAsyncTask mConnectAsyncTask;
@@ -110,8 +112,8 @@ public class WifiUtil {
     public void init(Context context) {
         mContext = context.getApplicationContext();
         this.wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        preferences = mContext.getSharedPreferences(WIFI_SETTING_KEY, MODE_ENABLE_WRITE_AHEAD_LOGGING);
-        editor = preferences.edit();
+        //preferences = mContext.getSharedPreferences(WIFI_SETTING_KEY, MODE_ENABLE_WRITE_AHEAD_LOGGING);
+        //editor = preferences.edit();
 
         initSearchWifi();
         initConnectWifi();
@@ -168,12 +170,28 @@ public class WifiUtil {
             mWifiSearchBroadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Log.d(TAG, "====== mWifiSearchBroadcastReceiver onReceive ======");
+                    if(intent==null){
+                        Log.d(TAG, "====== mWifi 变化监听 ======");
+                    }else {
                     String action = intent.getAction();
+                    Log.d(TAG, "====== mWifi 变化监听:"+action);
                     if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {// 扫描结果改表
                         if (onWifiChangeListener != null) {
                             onWifiChangeListener.onScanResult(WifiUtil.getInstance().getScanResults());
                         }
+                    }
+                    if(action.equals(WifiManager.RSSI_CHANGED_ACTION)) {
+                        //有可能是正在获取，或者已经获取了
+                        if (isWifiContected(mContext) == WIFI_CONNECTED) {
+                            Log.d(TAG, "====== 连接成功 onReceive ======");
+                        } else if (isWifiContected(mContext) == WIFI_CONNECT_FAILED) {
+                            Log.d(TAG, "====== 连接失败 onReceive ======");
+                        } else if (isWifiContected(mContext) == WIFI_CONNECTING) {
+                            Log.d(TAG, "====== 连接ing onReceive ======");
+                        } else {
+                            Log.d(TAG, " intent is " + WifiManager.RSSI_CHANGED_ACTION);
+                        }
+                    }
                     }
                 }
 
@@ -184,6 +202,34 @@ public class WifiUtil {
             mWifiSearchIntentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
             mContext.registerReceiver(mWifiSearchBroadcastReceiver, mWifiSearchIntentFilter);
             Log.e("wifidemo", "扫描监听");
+        }
+    }
+    public static final int WIFI_CONNECTED = 0x01;
+    public static final int WIFI_CONNECT_FAILED = 0x02;
+    public static final int WIFI_CONNECTING = 0x03;
+    /**
+     * 判断wifi是否连接成功,不是network
+     *
+     * @param context
+     * @return
+     */
+    public static int isWifiContected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetworkInfo = connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        Log.v(TAG, "isConnectedOrConnecting = " + wifiNetworkInfo.isConnectedOrConnecting());
+        Log.d(TAG, "wifiNetworkInfo.getDetailedState() = " + wifiNetworkInfo.getDetailedState());
+        Log.d(TAG, "wifiNetworkInfo = " + wifiNetworkInfo.toString());
+        if (wifiNetworkInfo.getDetailedState() == NetworkInfo.DetailedState.OBTAINING_IPADDR
+                || wifiNetworkInfo.getDetailedState() == NetworkInfo.DetailedState.CONNECTING) {
+            return WIFI_CONNECTING;
+        } else if (wifiNetworkInfo.getDetailedState() == NetworkInfo.DetailedState.CONNECTED) {
+            return WIFI_CONNECTED;
+        } else {
+            Log.d(TAG, "getDetailedState() == " + wifiNetworkInfo.getDetailedState());
+            return WIFI_CONNECT_FAILED;
         }
     }
 
@@ -236,8 +282,8 @@ public class WifiUtil {
     String ssid;
 
     public String[] getWifiInfo() {
-        ssid = preferences.getString(WifiTimerService2.WIFI_NAME_KEY, "cgq");
-        password = preferences.getString(WifiTimerService2.WIFI_PWD_KEY, "1234567890");
+        ssid = QDSharedPreferences.getInstance().getSharedPreferences().getString(WifiTimerService2.WIFI_NAME_KEY, "cgq");
+        password = QDSharedPreferences.getInstance().getSharedPreferences().getString(WifiTimerService2.WIFI_PWD_KEY, "1234567890");
         return new String[]{ssid, password};
     }
 

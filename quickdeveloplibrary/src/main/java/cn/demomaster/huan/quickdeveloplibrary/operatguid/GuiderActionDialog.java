@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
  */
 public class GuiderActionDialog extends Dialog {
 
-   // private Builder builder;
+    // private Builder builder;
     private boolean hasStateBar = true;
     private Activity context;
     private String message;
@@ -79,7 +79,7 @@ public class GuiderActionDialog extends Dialog {
                 dismiss();
             }
         };
-        GuiderView guiderSurfaceView = new GuiderView(context, guiderModel,hasStateBar,onActionFinishListener);
+        GuiderView guiderSurfaceView = new GuiderView(context, guiderModel, hasStateBar, onActionFinishListener);
         contentView.addView(guiderSurfaceView, layoutParams);
         //contentView.setBackgroundResource(R.color.red);
         ViewGroup layout = new RelativeLayout(getContext());
@@ -89,7 +89,8 @@ public class GuiderActionDialog extends Dialog {
     }
 
     private OnActionFinishListener onActionFinishListener;
-    public interface OnActionFinishListener{
+
+    public interface OnActionFinishListener {
         void onFinish();
     }
 

@@ -9,7 +9,7 @@
 
     <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView
         android:layout_width="@dimen/dp_72"
-        android:layout_height="@dimen/dp_54"/>
+        android:layout_height="@dimen/dp_54" />
     <!--<cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
         android:layout_width="@dimen/dp_72"
         android:layout_height="90dp"/>-->
@@ -23,6 +23,6 @@
         android:textSize="14sp"
         android:layout_marginTop="@dimen/dp_4"
         android:singleLine="true"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
 </LinearLayout>

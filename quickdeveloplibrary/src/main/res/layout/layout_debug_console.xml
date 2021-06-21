@@ -18,6 +18,7 @@
             android:minHeight="@dimen/dp_22"
             android:gravity="center"
             android:orientation="horizontal">
+
             <cn.demomaster.huan.quickdeveloplibrary.widget.CircleImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="@dimen/dp_20"
@@ -28,6 +29,7 @@
                 android:paddingLeft="@dimen/dp_5"
                 android:textSize="@dimen/sp_10"
                 android:textColor="@color/colorPrimary" />
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
@@ -38,6 +40,7 @@
                 android:paddingLeft="@dimen/dp_2"
                 android:textSize="@dimen/sp_10"
                 android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/tv_close"
                 android:layout_width="wrap_content"
@@ -91,15 +94,16 @@
                 android:paddingRight="@dimen/dp_5"
                 android:textSize="@dimen/sp_10"
                 android:text="debug"
-                android:textColor="@color/green"/>
-             <ImageView
+                android:textColor="@color/green" />
+
+            <ImageView
                 android:id="@+id/iv_drag"
                 android:layout_width="@dimen/dp_18"
                 android:layout_height="@dimen/dp_18"
                 android:padding="@dimen/dp_3"
                 app:tint="@color/white"
-                 app:srcCompat="@drawable/ic_expend"
-                 tools:ignore="VectorDrawableCompat" />
+                app:srcCompat="@drawable/ic_expend"
+                tools:ignore="VectorDrawableCompat" />
         </LinearLayout>
     </LinearLayout>
 

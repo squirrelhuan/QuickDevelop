@@ -31,6 +31,7 @@ public class GroundGlassUtil implements OnReleaseListener {
     private View backgroundViewParent;
 
     Context context;
+
     public GroundGlassUtil(Context context) {
         this.context = context;
     }
@@ -42,6 +43,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         this.backgroundColor = backgroundColor;
         invalidate();
     }
+
     public View getTargetView() {
         return targetView;
     }
@@ -167,13 +169,15 @@ public class GroundGlassUtil implements OnReleaseListener {
 
     public void invalidate() {
         Bitmap bitmap = generateBackgroundBitmap();
-
         if (bitmap == null) {
             return;
         }
         if (getBackgroundView() != null && targetView != null) {
             //模糊背景
             long t1 = System.currentTimeMillis();
+            QDLogger.println("bitmap w1=：" + bitmap.getWidth());
+            bitmap = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3);
+            QDLogger.println("bitmap w2=：" + bitmap.getWidth());
             bitmap = BlurUtil.doBlur(bitmap, radius, 0.2f);
             if (bitmap == null) {
                 return;
@@ -269,11 +273,13 @@ public class GroundGlassUtil implements OnReleaseListener {
     }
 
     public int radius = 30;
+
     public void setRadius(int radius) {
         this.radius = radius;
     }
 
     Bitmap mBackgroundBitmap;
+
     /**
      * 对比两张图片是否一致
      *
@@ -284,13 +290,13 @@ public class GroundGlassUtil implements OnReleaseListener {
     private boolean compare2Image(Bitmap bmp1, Bitmap bmp2) {
         int width = bmp1.getWidth();
         int height = bmp1.getHeight();
-        if (width != bmp2.getWidth()||height != bmp2.getHeight()) {
+        if (width != bmp2.getWidth() || height != bmp2.getHeight()) {
             return false;
         }
-        if(bmp1==null&&bmp2==null){
+        if (bmp1 == null && bmp2 == null) {
             return true;
         }
-        if(bmp1==null||bmp2==null){
+        if (bmp1 == null || bmp2 == null) {
             return false;
         }
 /*
@@ -305,13 +311,13 @@ public class GroundGlassUtil implements OnReleaseListener {
         int[] pixels2 = new int[pixelCount];
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float density = displayMetrics.density;
-        int setp = (int) Math.max(density,1);
-        QDLogger.e("density="+density+",setp="+setp);
+        int setp = (int) Math.max(density, 1);
+        QDLogger.e("density=" + density + ",setp=" + setp);
 
         bmp1.getPixels(pixels1, 0, width, 0, 0, width, height);
         bmp2.getPixels(pixels2, 0, width, 0, 0, width, height);
-        boolean result1 =true;
-        for (int i = 0; i < pixelCount; i=i+setp*setp) {
+        boolean result1 = true;
+        for (int i = 0; i < pixelCount; i = i + setp * setp) {
             if (pixels1[i] != pixels2[i]) {
                 result1 = false;
                 break;
@@ -342,6 +348,7 @@ public class GroundGlassUtil implements OnReleaseListener {
 
     /**
      * 合并图层
+     *
      * @param background
      * @param foreground
      * @return

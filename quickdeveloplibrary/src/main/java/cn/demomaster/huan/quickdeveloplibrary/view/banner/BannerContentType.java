@@ -14,6 +14,7 @@ public enum BannerContentType {
     public int value() {
         return this.value;
     }
+
     BannerContentType(int value) {
         this.value = value;
     }

@@ -61,35 +61,37 @@ public class BannerCursorView extends View implements Banner.BannerIndicator {
 
     float radius = 7;
     float radius_actived = 7;
-    float w =30;
+    float w = 30;
     Paint mPaint;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //QDLogger.e("indicatorCount="+indicatorCount+",tabIndex="+tabIndex);
-        float x1 = getWidth()/2-(indicatorCount+1)*w/2;
-        for(int i=0;i<indicatorCount;i++){
-            float x = w*(i+1);
-            float y = getHeight()/2;
+        float x1 = getWidth() / 2 - (indicatorCount + 1) * w / 2;
+        for (int i = 0; i < indicatorCount; i++) {
+            float x = w * (i + 1);
+            float y = getHeight() / 2;
             float radius_c = radius;
-            if(tabIndex==i){
+            if (tabIndex == i) {
                 radius_c = radius_actived;
                 mPaint.setColor(Color.GREEN);
-            }else {
+            } else {
                 mPaint.setColor(Color.WHITE);
             }
-            canvas.drawCircle(x1+x, y, radius_c, mPaint);
+            canvas.drawCircle(x1 + x, y, radius_c, mPaint);
         }
     }
 
     int indicatorCount;
 
     int tabIndex;//当前所属index
+
     @Override
     public void selecte(int position) {
         //确定当前位置和目标位置
         tabIndex = position;
-        startTransPositonAnimation(currentX, getWidth()/(indicatorCount+1)*position);
+        startTransPositonAnimation(currentX, getWidth() / (indicatorCount + 1) * position);
     }
 
     public void setIndicatorCount(int indicatorCount) {
@@ -102,6 +104,7 @@ public class BannerCursorView extends View implements Banner.BannerIndicator {
     ValueAnimator animator;
     private Interpolator mInterpolator = new FastOutSlowInInterpolator();
     private int mDuration = 300;
+
     private void startTransPositonAnimation(int current, int target) {
         animator = ValueAnimator.ofInt((int) current, (int) target);
         animator.setInterpolator(mInterpolator);

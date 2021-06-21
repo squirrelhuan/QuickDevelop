@@ -6,129 +6,197 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-       <ScrollView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
+    <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:gravity="center_horizontal"
-                  android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextViewPoint
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="15dp"
-                         android:background="@drawable/btn_green_small"
-                         android:gravity="center"
-                         android:paddingLeft="20dp"
-                         android:paddingTop="10dp"
-                         android:paddingRight="20dp"
-                         android:paddingBottom="5dp"
-                         android:text="消息"
-                         android:textColor="@color/white"
-                         app:pointBackgroundColor="@color/red"
-                         app:pointGravity="rightTop"
-                         app:pointMarginRight="0dp"
-                         app:pointMarginTop="0dp"
-                         app:pointPaddingBottom="5dp"
-                         app:pointPaddingLeft="5dp"
-                         app:pointPaddingRight="5dp"
-                         app:pointPaddingTop="5dp"
-                         app:pointRadius="5dp"
-                         app:pointText="12"
-                         app:pointTextColor="@color/white"
-                         app:pointTextSize="12sp"
-                         app:pointWidth="18dp"
-                         app:showPoint="true" />
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextViewPoint
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/btn_green_small"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="消息"
+                android:textColor="@color/white"
+                app:pointBackgroundColor="@color/red"
+                app:pointGravity="rightTop"
+                app:pointMarginRight="0dp"
+                app:pointMarginTop="0dp"
+                app:pointPaddingBottom="5dp"
+                app:pointPaddingLeft="5dp"
+                app:pointPaddingRight="5dp"
+                app:pointPaddingTop="5dp"
+                app:pointRadius="5dp"
+                app:pointText="12"
+                app:pointTextColor="@color/white"
+                app:pointTextSize="12sp"
+                app:pointWidth="18dp"
+                app:showPoint="true" />
 
-                     <Button
-                         android:id="@+id/btn_play1"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="20dp"
-                         android:text="普通 button"/>
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                         android:id="@+id/btn_play2"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="20dp"
-                         app:qd_isRadiusAdjustBounds="false"
-                         app:qd_btn_internal_width="20dp"
-                         android:textColor="@color/qd_button_textcolor"
-                         android:text="普通 QdButtun"/>
+            <Button
+                android:id="@+id/btn_play1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="普通 button" />
 
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="20dp"
-                         app:qd_backgroundColor="@color/qd_btn_test_textcolor"
-                         android:textColor="@color/qd_actionbar_textcolor"
-                         android:text="自定义背景色"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_play2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="普通 QdButtun"
+                android:textColor="@color/qd_button_textcolor"
+                app:qd_btn_internal_width="20dp"
+                app:qd_isRadiusAdjustBounds="false" />
 
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="20dp"
-                         app:qd_borderColor="@color/red"
-                         android:textColor="@color/red"
-                         android:text="边框颜色"/>
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         app:qd_borderColor="@color/colorPrimary"
-                         android:layout_margin="20dp"
-                         app:qd_borderWidth="5dp"
-                         android:text="边框粗细"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="自定义背景色"
+                android:textColor="@color/qd_actionbar_textcolor"
+                app:qd_backgroundColor="@color/qd_btn_test_textcolor" />
 
-                     <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_margin="20dp"
-                         app:qd_radius="20dp"
-                         app:qd_borderColor="@color/colorPrimary"
-                         android:text="指定圆角"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="边框颜色"
+                android:textColor="@color/red"
+                app:qd_borderColor="@color/red" />
 
-                     <LinearLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:gravity="center">
-                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:qd_radius="5dp"
-                                app:qd_radiusTopLeft="20dp"
-                                app:qd_borderColor="@color/colorPrimary"
-                                android:text="左上角圆角"/>
-                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:qd_radiusTopRight="20dp"
-                                app:qd_borderColor="@color/colorPrimary"
-                                android:text="右上角圆角"/>
-                     </LinearLayout>
-                     <LinearLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:gravity="center">
-                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:qd_radiusBottomLeft="20dp"
-                                app:qd_borderColor="@color/colorPrimary"
-                                android:text="左下角圆角"/>
-                            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:qd_radiusBottomRight="20dp"
-                                app:qd_borderColor="@color/colorPrimary"
-                                android:text="右下角圆角"/>
-                     </LinearLayout>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="边框粗细"
+                app:qd_borderColor="@color/colorPrimary"
+                app:qd_borderWidth="5dp" />
 
-              </LinearLayout>
-       </ScrollView>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="指定圆角"
+                app:qd_borderColor="@color/colorPrimary"
+                app:qd_radius="20dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="左上角圆角"
+                    app:qd_borderColor="@color/colorPrimary"
+                    app:qd_radius="5dp"
+                    app:qd_radiusTopLeft="20dp" />
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="右上角圆角"
+                    app:qd_borderColor="@color/colorPrimary"
+                    app:qd_radiusTopRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="左下角圆角"
+                    app:qd_borderColor="@color/colorPrimary"
+                    app:qd_radiusBottomLeft="20dp" />
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="右下角圆角"
+                    app:qd_borderColor="@color/colorPrimary"
+                    app:qd_radiusBottomRight="20dp" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg_bottom_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/red"
+                    android:button="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:minHeight="@dimen/dp_0"
+                    android:padding="@dimen/dp_0"
+                    android:text="首页"
+                    android:textSize="@dimen/sp_18"
+                    app:srcHeight="@dimen/dp_30"
+                    app:srcTop="@mipmap/ic_launcher"
+                    app:srcWidth="@dimen/dp_30" />
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/greenyellow"
+                    android:button="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="首页1234567890-"
+                    android:textSize="@dimen/sp_18"
+                    app:srcHeight="@dimen/dp_30"
+                    app:srcLeft="@mipmap/ic_launcher"
+                    app:srcWidth="@dimen/dp_30" />
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/orange"
+                    android:button="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical|right"
+                    android:text="订单"
+                    android:textSize="@dimen/sp_8"
+                    app:srcHeight="@dimen/dp_40"
+                    app:srcRight="@mipmap/ic_launcher"
+                    app:srcWidth="@dimen/dp_40" />
+
+                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:button="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="我的"
+                    app:srcBottom="@mipmap/ic_launcher" />
+            </RadioGroup>
+
+        </LinearLayout>
+    </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 
 </LinearLayout>

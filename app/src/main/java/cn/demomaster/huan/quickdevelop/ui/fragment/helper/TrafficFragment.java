@@ -33,11 +33,6 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
 @ActivityPager(name = "流量", preViewClass = TextView.class, resType = ResType.Custome)
 public class TrafficFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_start)
     QDButton btn_start;
     @BindView(R.id.btn_stop)

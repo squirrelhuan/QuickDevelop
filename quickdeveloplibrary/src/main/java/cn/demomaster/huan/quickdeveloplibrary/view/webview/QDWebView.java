@@ -7,14 +7,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -23,6 +26,9 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class QDWebView extends WebView {
     private Context mContext;
@@ -65,14 +71,28 @@ public class QDWebView extends WebView {
 
     private void init() {
         mContext = getContext();
-        progressHeight = DisplayUtil.dip2px(mContext, 3);//进度条默认高度
+        progressHeight = DisplayUtil.dip2px(mContext, 2);//进度条默认高度
         QDWebChromeClient qdWebCromeClient = new QDWebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 if (onStateChangedListener != null) {
                     onStateChangedListener.onReceivedTitle(view, title);
+                }else {//缺省设置
+                    QDLogger.e("网络请求异常L:"+title);
+                    if (title.contains("404") || title.contains("500") || title.contains("Error")) {
+                        //view.loadUrl("about:blank");//避免出现默认的错误界面
+                        view.loadDataWithBaseURL(null, "^_^暂无内容", "text/html", "UTF-8", null);
+                    }
                 }
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                QdToast.show(getContext(),"选择图片");
+                uploadFiles = filePathCallback;
+                openFileChooseProcess();
+                return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
             }
         };
         qdWebCromeClient.setOnProgressChanged(new QDWebChromeClient.OnProgressChanged() {
@@ -159,7 +179,38 @@ public class QDWebView extends WebView {
             }
         });
     }
+    private ValueCallback<Uri> uploadFile;
+    private ValueCallback<Uri[]> uploadFiles;
+    private void openFileChooseProcess() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("*/*");
+        ((Activity)getContext()).startActivityForResult(Intent.createChooser(i, "上传文件"), 0);
+    }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                if (null != uploadFile) {
+                    Uri result = data == null ? null
+                            : data.getData();
+                    uploadFile.onReceiveValue(result);
+                    uploadFile = null;
+                }
+                if (null != uploadFiles) {
+                    Uri result = data == null ? null
+                            : data.getData();
+                    uploadFiles.onReceiveValue(new Uri[]{result});
+                    uploadFiles = null;
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                if (null != uploadFile) {
+                    uploadFile.onReceiveValue(null);
+                    uploadFile = null;
+                }
+            }
+        }
+    }
     private boolean shouldOverrideUrlLoading1(WebView view, String url) {
         if (url.startsWith("newtab:")) {
             //对新的URL进行截取，去掉前面的newtab:
@@ -212,6 +263,7 @@ public class QDWebView extends WebView {
     public void loadUrl(String url) {
         super.loadUrl(url);
     }
+
 
     // 继承自Object类
     public class AndroidtoJs extends Object {

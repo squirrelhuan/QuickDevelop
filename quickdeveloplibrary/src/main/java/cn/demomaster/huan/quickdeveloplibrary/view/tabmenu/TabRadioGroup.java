@@ -27,13 +27,14 @@ public class TabRadioGroup extends LinearLayout {
     private List<TabRadioButton> tabRadioButtons = new ArrayList<>();
 
     LayoutInflater mInflater;
+
     public void setTabRadioButtons(List<TabRadioButton> tabRadioButtons) {
         removeAllViews();
         this.tabRadioButtons = tabRadioButtons;
         for (int i = 0; i < tabRadioButtons.size(); i++) {
             addView(tabRadioButtons.get(i));
-            if (tabDividerResId != -1 && i< tabRadioButtons.size() - 1) {
-               View view =  mInflater.inflate(tabDividerResId,null);
+            if (tabDividerResId != -1 && i < tabRadioButtons.size() - 1) {
+                View view = mInflater.inflate(tabDividerResId, null);
                 view.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 addView(view);
             }
@@ -41,6 +42,7 @@ public class TabRadioGroup extends LinearLayout {
     }
 
     private int tabDividerResId = -1;//分割符
+
     public void setTabDividerResId(int layoutId) {
         this.tabDividerResId = layoutId;
         if (tabRadioButtons != null) {

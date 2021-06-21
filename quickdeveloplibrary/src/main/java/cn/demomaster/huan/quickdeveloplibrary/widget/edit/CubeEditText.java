@@ -49,21 +49,21 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(watcher!=null)
-                watcher.beforeTextChanged(s,start,count,after);
+                if (watcher != null)
+                    watcher.beforeTextChanged(s, start, count, after);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(watcher!=null)
-                watcher.onTextChanged(s,start,before,count);
+                if (watcher != null)
+                    watcher.onTextChanged(s, start, before, count);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(watcher!=null)
-                watcher.afterTextChanged(s);
-               // postInvalidate();
+                if (watcher != null)
+                    watcher.afterTextChanged(s);
+                // postInvalidate();
             }
         };
         super.addTextChangedListener(textWatcher);
@@ -93,27 +93,27 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
             RectF rectF2 = null;
             float letterSpacing = getLetterSpacing();
             mPaint.setLetterSpacing(letterSpacing);
-            float cw = (letterSpacing+1)* getTextSize();
-            int count = (int) (mLayout.getWidth()/getTextSize());
-            if(cw!=0){
-                count= (int) Math.min(Math.floor(mLayout.getWidth()/cw),30);
+            float cw = (letterSpacing + 1) * getTextSize();
+            int count = (int) (mLayout.getWidth() / getTextSize());
+            if (cw != 0) {
+                count = (int) Math.min(Math.floor(mLayout.getWidth() / cw), 30);
             }
-            int[] colors = new int[]{Color.RED,Color.LTGRAY,Color.YELLOW,Color.GREEN,Color.BLUE,Color.BLACK,Color.CYAN};
+            int[] colors = new int[]{Color.RED, Color.LTGRAY, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.CYAN};
             for (int i = 0; i < count; i++) {
-                mPaint.setColor(colors[i%7]);
+                mPaint.setColor(colors[i % 7]);
                 mPaint.setStrokeWidth(5);
-                float textWidth = (i+1) * getTextSize();
+                float textWidth = (i + 1) * getTextSize();
                 float charWidth = getTextSize();
                 float left = 0;
-                if(!TextUtils.isEmpty(getText())&&getText().length()>i) {
-                    textWidth = getPaint().measureText(getText().toString(), 0, i+1);
+                if (!TextUtils.isEmpty(getText()) && getText().length() > i) {
+                    textWidth = getPaint().measureText(getText().toString(), 0, i + 1);
                     charWidth = getPaint().measureText(getText().toString(), i, i + 1);
-                    left = (float) (compoundPaddingLeft+textWidth-charWidth);
-                }else {
-                    left = (float) (compoundPaddingLeft+textWidth-charWidth+letterSpacing*(i+0.5)*getTextSize());
+                    left = (float) (compoundPaddingLeft + textWidth - charWidth);
+                } else {
+                    left = (float) (compoundPaddingLeft + textWidth - charWidth + letterSpacing * (i + 0.5) * getTextSize());
                 }
-               // QDLogger.i("textWidth="+textWidth+",charWidth="+charWidth+",left="+left);
-                rectF2 = new RectF(left, compoundPaddingTop, left+charWidth, mLayout.getHeight() + compoundPaddingTop);
+                // QDLogger.i("textWidth="+textWidth+",charWidth="+charWidth+",left="+left);
+                rectF2 = new RectF(left, compoundPaddingTop, left + charWidth, mLayout.getHeight() + compoundPaddingTop);
                 canvas.drawRoundRect(rectF2, 5, 5, mPaint);
             }
         }

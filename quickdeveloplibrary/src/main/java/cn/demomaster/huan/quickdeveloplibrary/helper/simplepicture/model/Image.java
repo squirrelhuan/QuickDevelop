@@ -7,15 +7,16 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model;
 import java.io.Serializable;
 
 /**
- *图片实体类
+ * 图片实体类
  */
 public class Image implements Serializable {
 
     private String path;
     private long time;
     private String name;
-    private UrlType urlType= UrlType.file;
-    public Image(String path,UrlType urlType) {
+    private UrlType urlType = UrlType.file;
+
+    public Image(String path, UrlType urlType) {
         this.path = path;
         this.urlType = urlType;
     }

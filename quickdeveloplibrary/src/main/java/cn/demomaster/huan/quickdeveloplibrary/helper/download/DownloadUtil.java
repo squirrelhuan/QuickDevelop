@@ -27,7 +27,7 @@ public class DownloadUtil {
                     mContext.startActivity(intent);
                 } catch (ActivityNotFoundException e) {
                     QDLogger.e(e);
-                    Intent intent = new  Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
                     mContext.startActivity(intent);
                 }
                 return false;

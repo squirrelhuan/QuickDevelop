@@ -29,11 +29,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 @ActivityPager(name = "终端", preViewClass = StateView.class, resType = ResType.Custome)
 public class QDTerminalFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_execute)
     QDButton btn_execute;
     @BindView(R.id.tv_execute_content)

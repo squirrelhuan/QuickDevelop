@@ -6,8 +6,10 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,9 +51,11 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private View contentView;
+
     public View getContentView() {
         return contentView;
     }
+
     public void setContentView(View contentView) {
         this.contentView = contentView;
         this.addView(contentView);
@@ -63,6 +67,7 @@ public class ActionBarTip extends FrameLayout {
     int contentViewResID;
     private ActionBarState.OnLoadingStateListener loadingStateListener;
     private ActionBarState.Loading retry;
+
     public void setLoadingStateListener(ActionBarState.OnLoadingStateListener onLoadingStateListener) {
         if (onLoadingStateListener == null) {
             return;
@@ -82,7 +87,7 @@ public class ActionBarTip extends FrameLayout {
         this.textView = contentView.findViewById(R.id.textView);
         this.itv_retry = contentView.findViewById(R.id.itv_retry);
         this.itv_retry.setTextSize(14);
-        this.itv_retry.setText("重试");
+        this.itv_retry.setText(getResources().getString(R.string.retry));
         itv_retry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +110,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private ActionBarState actionBarState;
+
     public void setActionBarState(ActionBarState actionBarState) {
         this.actionBarState = actionBarState;
     }
@@ -216,7 +222,7 @@ public class ActionBarTip extends FrameLayout {
                         if (top_c > topMin && top_c < topMax) {
                             layoutParams_tip.topMargin = top_c;
                         }
-                        QDLogger.i( "topMax=" + topMax+",topMin=" + topMin);
+                        QDLogger.i("topMax=" + topMax + ",topMin=" + topMin);
                         setLayoutParams(layoutParams_tip);
                         break;
                     case MotionEvent.ACTION_CANCEL:
@@ -234,7 +240,7 @@ public class ActionBarTip extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        setActionBarHeight(bottom-top);
+        setActionBarHeight(bottom - top);
 
         /*
         QDLogger.i( "onLayout max="+max+",height=" +(bottom-top)+","+ (-max+top)+",top="+top+", getHeight()=" +  getHeight());*/
@@ -248,7 +254,7 @@ public class ActionBarTip extends FrameLayout {
     ValueAnimator animator;
 
     public void startAnimation() {
-        animator = ValueAnimator.ofFloat(topMin,topMax);
+        animator = ValueAnimator.ofFloat(topMin, topMax);
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -308,11 +314,12 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private int actionBarHeight;
+
     public void setActionBarHeight(int height) {
         this.actionBarHeight = height;
         topMin = actionBarHeight - getHeight();
         topMax = actionBarHeight;
-        QDLogger.e("setActionBarHeight="+height+", getHeight()="+ getHeight()+",topMin="+topMin+",topMax="+topMax);
+        QDLogger.e("setActionBarHeight=" + height + ", getHeight()=" + getHeight() + ",topMin=" + topMin + ",topMax=" + topMax);
     }
 
     /**
@@ -343,6 +350,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private int delayedTime = 5000;
+
     public void showDelayed(int time) {
         delayedTime = time;
         startAnimation();
@@ -353,6 +361,7 @@ public class ActionBarTip extends FrameLayout {
     public void hideDelayed() {
         hideDelayed(5000);
     }
+
     public void hideDelayed(int time) {
         delayedTime = time;
         handler.removeCallbacks(myRunnable);
@@ -360,6 +369,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     private LoadStateType stateType = LoadStateType.COMPLETE;
+
     public void showWarning(String message) {
         stateType = LoadStateType.WARNING;
         stateView.setStateType(stateType);
@@ -393,6 +403,7 @@ public class ActionBarTip extends FrameLayout {
     }
 
     public ACTIONBARTIP_TYPE mActionbartip_type = ACTIONBARTIP_TYPE.NORMAL;
+
     public void setActionTipType(ACTIONBARTIP_TYPE actionbartip_type) {
         mActionbartip_type = actionbartip_type;
     }
@@ -412,18 +423,19 @@ public class ActionBarTip extends FrameLayout {
         super.setLayoutParams(params);
 
         LayoutParams layoutParams = (LayoutParams) getLayoutParams();
-        Rect rect = new Rect(0, (int) (-layoutParams.topMargin+topMax),getWidth(), getHeight());
+        Rect rect = new Rect(0, (int) (-layoutParams.topMargin + topMax), getWidth(), getHeight());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             setClipBounds(rect);
         }
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null) {
+        if (animator != null) {
             animator.cancel();
         }
-        actionBarState=null;
+        actionBarState = null;
         retry = null;
     }
 }

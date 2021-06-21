@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.modle.Baller;
 
 /**
  * 汇入动画
+ *
  * @author squirrel桓
  * @date 2018/11/8.
  * description：加载动画
@@ -42,41 +43,45 @@ public class AbouchementView extends View {
         super(context, attrs, defStyleAttr);
         //init();
     }
+
     int radius;
+
     private void init() {
-        centerY = getHeight()/2;
-        radius = Math.min(getWidth(),getHeight())/2;
+        centerY = getHeight() / 2;
+        radius = Math.min(getWidth(), getHeight()) / 2;
         //int r2 = r*10/8;// (int) (r*progress/360f);
         ballers.clear();
         degrees = 0;
-        W:while (true){
-            double r1 = random.nextDouble()*radius*2/10+radius/10*6;
-            generate(degrees,r1,0,false);
-            generate(degrees,radius,r1,true);
-            if(degrees>360){
+        W:
+        while (true) {
+            double r1 = random.nextDouble() * radius * 2 / 10 + radius / 10 * 6;
+            generate(degrees, r1, 0, false);
+            generate(degrees, radius, r1, true);
+            if (degrees > 360) {
                 break W;
             }
         }
     }
 
-    double degrees=0;
+    double degrees = 0;
     Random random = new Random();
 
     /**
      * 生成外围点
+     *
      * @param degrees
      * @param r
      * @param refrenceMode 贝塞尔曲线的中间参考点
      */
-    public void generate( double degrees,double r,double r1,boolean refrenceMode){
+    public void generate(double degrees, double r, double r1, boolean refrenceMode) {
         Baller baller = new Baller();
-        double degreesX = random.nextDouble()*30+(refrenceMode?3:1);
-        degrees = degrees+ degreesX;
+        double degreesX = random.nextDouble() * 30 + (refrenceMode ? 3 : 1);
+        degrees = degrees + degreesX;
 
         double radians = Math.toRadians(degrees);
-        int r0 = Math.min(getWidth(),getHeight())/2;
-        if(refrenceMode){
-            r = random.nextDouble()*2/10*r0+r1;
+        int r0 = Math.min(getWidth(), getHeight()) / 2;
+        if (refrenceMode) {
+            r = random.nextDouble() * 2 / 10 * r0 + r1;
         }
         int x = (int) (centerX + r * Math.cos(radians));
         int y = (int) (centerY + r * Math.sin(radians));
@@ -86,7 +91,7 @@ public class AbouchementView extends View {
         baller.setRadiusLocal(r);
         baller.setDegreesLocal(degrees);
         baller.setRadius(5);
-        if(degrees<=360){
+        if (degrees <= 360) {
             ballers.add(baller);
         }
 
@@ -102,16 +107,17 @@ public class AbouchementView extends View {
         width = w;
         height = h;
         centerX = width / 2;
-        centerY = height/2;
+        centerY = height / 2;
         init();
     }
 
     List<Baller> ballers = new ArrayList<>();
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawView(canvas);
-        if (animator==null||(!animator.isRunning()&&!animator.isStarted())) {
+        if (animator == null || (!animator.isRunning() && !animator.isStarted())) {
             startAnimation();
         }
     }
@@ -126,10 +132,10 @@ public class AbouchementView extends View {
         mPaint.setColor(Color.RED);
 
         if (isForward) {
-            for(int i=0;i<ballers.size();i++){
+            for (int i = 0; i < ballers.size(); i++) {
                 Baller baller = ballers.get(i);
-                resetRadius(i,baller);
-               // canvas.drawRoundRect(mRecF5, 5, 5, mPaint);
+                resetRadius(i, baller);
+                // canvas.drawRoundRect(mRecF5, 5, 5, mPaint);
                 /*int x1 = Math.abs(baller.x-centerX);
                 int y1 = Math.abs(baller.y-centerY);
                 int dx =0;
@@ -178,31 +184,31 @@ public class AbouchementView extends View {
                 }
                 baller.setRadius(5);
                 ballers.set(i,baller);*/
-                RectF mRecF5 = new RectF(baller.getLeft() , baller.getTop(), baller.getRight(), baller.getBottom());
+                RectF mRecF5 = new RectF(baller.getLeft(), baller.getTop(), baller.getRight(), baller.getBottom());
                 canvas.drawOval(mRecF5, mPaint);
             }
-            mPaint.setColor(QDColorUtil.getCurrentColor(1-progress,Color.parseColor("#4876FF"),Color.parseColor("#483D8B")));
+            mPaint.setColor(QDColorUtil.getCurrentColor(1 - progress, Color.parseColor("#4876FF"), Color.parseColor("#483D8B")));
             Path path = new Path();
-            for(int i=0;i<ballers.size()/2;i++){
-                if(i==0) {
+            for (int i = 0; i < ballers.size() / 2; i++) {
+                if (i == 0) {
                     path.moveTo(ballers.get(0).x, ballers.get(0).y);
-                }else if(i==ballers.size()/2){
+                } else if (i == ballers.size() / 2) {
                     int x = ballers.get(0).x;
-                    int y =  ballers.get(0).y;
-                    int x1 = ballers.get(ballers.size()-1).x;
-                    int y1 =  ballers.get(ballers.size()-1).y;
-                    path.quadTo(x1,y1,x,y);
-                }else {
-                    int x = ballers.get(i*2).x;
-                    int y =  ballers.get(i*2).y;
-                    int x1 = ballers.get(i*2-1).x;
-                    int y1 =  ballers.get(i*2-1).y;
-                    path.quadTo(x1,y1,x,y);
+                    int y = ballers.get(0).y;
+                    int x1 = ballers.get(ballers.size() - 1).x;
+                    int y1 = ballers.get(ballers.size() - 1).y;
+                    path.quadTo(x1, y1, x, y);
+                } else {
+                    int x = ballers.get(i * 2).x;
+                    int y = ballers.get(i * 2).y;
+                    int x1 = ballers.get(i * 2 - 1).x;
+                    int y1 = ballers.get(i * 2 - 1).y;
+                    path.quadTo(x1, y1, x, y);
                     //path.lineTo(ballers.get(i*2).x, ballers.get(i*2).y);
                 }
             }
             path.close();
-            canvas.drawPath(path,mPaint);
+            canvas.drawPath(path, mPaint);
             /*path = new Path();
             for(int i=0;i<ballers.size();i++){
                 if(i==0) {
@@ -232,20 +238,21 @@ public class AbouchementView extends View {
     private void resetRadius(int i, Baller baller) {
         //在原点中的半径和角度
         double radians = Math.toRadians(baller.getDegreesLocal());
-        double r1 = baller.getRadiusLocal()*progress;
-        if(r1<radius/5){
-            r1 = radius/5;
+        double r1 = baller.getRadiusLocal() * progress;
+        if (r1 < radius / 5) {
+            r1 = radius / 5;
         }
         int x = (int) (centerX + r1 * Math.cos(radians));
         int y = (int) (centerY + r1 * Math.sin(radians));
         baller.setX(x);
         baller.setY(y);
-        ballers.set(i,baller);
+        ballers.set(i, baller);
     }
 
     private float progress;
     private boolean isForward = true;
     QDValueAnimator animator;
+
     public void startAnimation() {
         final float start = 1f;
         final float end = 0f;
@@ -295,10 +302,11 @@ public class AbouchementView extends View {
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(animator!=null) {
+        if (animator != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 animator.cancel();
             }

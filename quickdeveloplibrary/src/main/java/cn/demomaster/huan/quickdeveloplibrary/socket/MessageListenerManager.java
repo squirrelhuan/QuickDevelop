@@ -35,7 +35,7 @@ public class MessageListenerManager {
     private void dealTimeOut() {
         //处理当前listener
         if (getFirstTime() != null) {
-            long time1 = getFirstTime().getKey() + connectTime*1000;
+            long time1 = getFirstTime().getKey() + connectTime * 1000;
             if (time1 - System.currentTimeMillis() <= 0) {
                 getFirstTime().getValue().onError("请求超时");
                 receiveListenerMap.remove(getFirstTime().getKey());
@@ -47,7 +47,7 @@ public class MessageListenerManager {
     private void dealNext() {
         //准备下一个计时
         if (receiveListenerMap.size() > 0) {
-            long time1 = getFirstTime().getKey() + connectTime*1000;
+            long time1 = getFirstTime().getKey() + connectTime * 1000;
             long offsetTime = Math.max(time1 - System.currentTimeMillis(), 10);
             if (offsetTime > 0) {
                 timerRunnable.setDelyTime(offsetTime);

@@ -37,9 +37,11 @@ public class BannerFrameLayout extends FrameLayout {
     private void init() {
     }
 
-    float[]  mBannerRadius = new float[]{25f,25f,0f,0f,25,25,25,25};
+    float[] mBannerRadius = new float[]{25f, 25f, 0f, 0f, 25, 25, 25, 25};
+
     /**
      * 设置矩形圆角
+     *
      * @param mBannerRadius
      */
     public void setBannerRadius(float[] mBannerRadius) {
@@ -50,12 +52,12 @@ public class BannerFrameLayout extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         //if (mBannerRadius[0]!=0||mBannerRadius[1]!=0||mBannerRadius[2]!=0||mBannerRadius[3]!=0) {
-            Path path = new Path();
+        Path path = new Path();
            /* path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
                     mBannerRadius[0], mBannerRadius[1], Path.Direction.CW);*/
-            path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
-                    mBannerRadius, Path.Direction.CW);
-            canvas.clipPath(path);
+        path.addRoundRect(new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()),
+                mBannerRadius, Path.Direction.CW);
+        canvas.clipPath(path);
         //}
         super.dispatchDraw(canvas);
     }

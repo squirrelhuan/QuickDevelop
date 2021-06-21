@@ -1,42 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--files-path  相当于 getFilesDir（）-->
-    <files-path name="my_images" path="images"/>
-    <!--cache-path  相当于 getCacheDir（）-->
-    <cache-path name="lalala" path="cache_image"/>
-    <!--external-path  相当于 Environment.getExternalStorageDirectory()-->
-    <external-path name="images" path="test"/>
-    <!--external-files-path  相当于 getExternalFilesDir("") -->
-    <external-files-path name="paly" path="freeSoft"/>
-    <!--external-cache-path  相当于 getExternalCacheDir（） -->
-    <external-cache-path  name="lei" path="."/>
+    <path>
+        <root-path
+            name="root_path"
+            path="." />
+    </path>
 
+    <!--files-path  相当于 getFilesDir（）-->
+    <files-path
+        name="my_images"
+        path="images" />
+    <!--cache-path  相当于 getCacheDir（）-->
+    <cache-path
+        name="lalala"
+        path="cache_image" />
+    <!--external-path  相当于 Environment.getExternalStorageDirectory()-->
+    <external-path
+        name="images"
+        path="test" />
+    <!--external-files-path  相当于 getExternalFilesDir("") -->
+    <external-files-path
+        name="paly"
+        path="freeSoft" />
+    <!--external-cache-path  相当于 getExternalCacheDir（） -->
+    <external-cache-path
+        name="lei"
+        path="." />
+    <external-path name="external" path=""/>
 
     <!-- /storage/emulated/0/Download/${applicationId}/.beta/apk-->
-    <external-path name="beta_external_path" path="Download/"/>
+    <external-path
+        name="beta_external_path"
+        path="Download/" />
     <!--/storage/emulated/0/Android/data/${applicationId}/files/apk/-->
-    <external-path name="beta_external_files_path" path="Android/data/"/>
+    <external-path
+        name="beta_external_files_path"
+        path="Android/data/" />
 
 </resources>
 
-<!--
-<files-path/> //代表的根目录： Context.getFilesDir()
-<external-path/> //代表的根目录: Environment.getExternalStorageDirectory()
-<cache-path/> //代表的根目录: getCacheDir()-->
+    <!--
+    <files-path/> //代表的根目录： Context.getFilesDir()
+    <external-path/> //代表的根目录: Environment.getExternalStorageDirectory()
+    <cache-path/> //代表的根目录: getCacheDir()-->
 
-<!--
+    <!--
 
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-&lt;!&ndash;files-path  相当于 getFilesDir（）&ndash;&gt;
-<files-path name="my_images" path="images"/>
-&lt;!&ndash;cache-path  相当于 getCacheDir（）&ndash;&gt;
-<cache-path name="lalala" path="cache_image"/>
-&lt;!&ndash;external-path  相当于 Environment.getExternalStorageDirectory()&ndash;&gt;
-< external-path  name="hahaha" path="comeOn"/>
-&lt;!&ndash;external-files-path  相当于 getExternalFilesDir("") &ndash;&gt;
-<external-files-path name="paly" path="freeSoft"/>
-&lt;!&ndash;external-cache-path  相当于 getExternalCacheDir（） &ndash;&gt;
-<external-cache-path  name="lei" path="."/>
-...
-</paths>
--->
+    <paths xmlns:android="http://schemas.android.com/apk/res/android">
+    &lt;!&ndash;files-path  相当于 getFilesDir（）&ndash;&gt;
+    <files-path name="my_images" path="images"/>
+    &lt;!&ndash;cache-path  相当于 getCacheDir（）&ndash;&gt;
+    <cache-path name="lalala" path="cache_image"/>
+    &lt;!&ndash;external-path  相当于 Environment.getExternalStorageDirectory()&ndash;&gt;
+    < external-path  name="hahaha" path="comeOn"/>
+    &lt;!&ndash;external-files-path  相当于 getExternalFilesDir("") &ndash;&gt;
+    <external-files-path name="paly" path="freeSoft"/>
+    &lt;!&ndash;external-cache-path  相当于 getExternalCacheDir（） &ndash;&gt;
+    <external-cache-path  name="lei" path="."/>
+    ...
+    </paths>
+    -->

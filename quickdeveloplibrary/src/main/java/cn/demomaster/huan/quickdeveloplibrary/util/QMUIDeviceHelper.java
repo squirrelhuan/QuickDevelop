@@ -8,7 +8,9 @@ import android.content.res.Configuration;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
+
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 
 import java.io.File;
@@ -50,7 +52,7 @@ public class QMUIDeviceHelper {
                 fileInputStream = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
                 properties.load(fileInputStream);
             } catch (Exception e) {
-                QDLogger.e(e.toString()+ "read file error");
+                QDLogger.e(e.toString() + "read file error");
             } finally {
                 QMUILangHelper.close(fileInputStream);
             }
@@ -65,7 +67,7 @@ public class QMUIDeviceHelper {
             //flyme
             sFlymeVersionName = getLowerCaseName(properties, getMethod, KEY_FLYME_VERSION_NAME);
         } catch (Exception e) {
-            QDLogger.e(e.toString()+ "read SystemProperties error");
+            QDLogger.e(e.toString() + "read SystemProperties error");
         }
     }
 
@@ -180,20 +182,21 @@ public class QMUIDeviceHelper {
         return BRAND.contains("huawei") || BRAND.contains("honor");
     }
 
-    public static boolean isEssentialPhone(){
+    public static boolean isEssentialPhone() {
         return BRAND.contains("essential");
     }
 
     public static boolean isSamsung() {
-        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("samsung");
+        return Build.BRAND != null && Build.BRAND.toLowerCase().equals("samsung");
     }
+
     //乐视
     public static boolean isLeTV() {
-        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("letv");
+        return Build.BRAND != null && Build.BRAND.toLowerCase().equals("letv");
     }
 
     public static boolean isSmartisan() {
-        return Build.BRAND != null&& Build.BRAND.toLowerCase().equals("smartisan");
+        return Build.BRAND != null && Build.BRAND.toLowerCase().equals("smartisan");
     }
 
     /**

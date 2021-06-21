@@ -41,7 +41,7 @@ public class CustomCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setKeepScreenOn(true);
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
     }

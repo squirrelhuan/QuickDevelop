@@ -57,12 +57,11 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
-     *
      * @param context
      * @param orientation
      * @param dividerColor 颜色
      */
-    public QDDividerItemDecoration(Context context, int orientation,int dividerColor) {
+    public QDDividerItemDecoration(Context context, int orientation, int dividerColor) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         this.dividerColor = dividerColor;
         mDivider = a.getDrawable(0);
@@ -73,6 +72,7 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
         a.recycle();
         setOrientation(orientation);
     }
+
     /**
      * Sets the orientation for this divider. This should be called if
      * {@link RecyclerView.LayoutManager} changes orientation.
@@ -130,8 +130,8 @@ public class QDDividerItemDecoration extends RecyclerView.ItemDecoration {
             left = 0;
             right = parent.getWidth();
         }
-        mDivider.setColorFilter(dividerColor,PorterDuff.Mode.DST_OVER);
-        final int childCount = Math.max(parent.getChildCount()-1,0);//处理最后一条分割线
+        mDivider.setColorFilter(dividerColor, PorterDuff.Mode.DST_OVER);
+        final int childCount = Math.max(parent.getChildCount() - 1, 0);//处理最后一条分割线
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             parent.getDecoratedBoundsWithMargins(child, mBounds);

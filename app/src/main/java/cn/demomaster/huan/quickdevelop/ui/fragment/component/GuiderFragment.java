@@ -29,11 +29,6 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
 @ActivityPager(name = "操作引导", preViewClass = TextView.class, resType = ResType.Custome)
 public class GuiderFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

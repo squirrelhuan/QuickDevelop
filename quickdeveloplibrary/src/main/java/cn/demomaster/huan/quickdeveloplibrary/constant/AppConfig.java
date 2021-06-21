@@ -12,6 +12,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * app xml配置信息
+ *
  * @author squirrel桓
  * @date 2018/12/10.
  * description：
@@ -19,7 +20,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class AppConfig {
 
     private String configPath;
-    private  Context mContext;
+    private Context mContext;
     private static AppConfig instance;
     private Map<String, Object> configMap;
 
@@ -31,17 +32,17 @@ public class AppConfig {
     }
 
     public Map<String, Object> getConfigMap() {
-        if(configMap==null){
+        if (configMap == null) {
             initConfigMap();
         }
         return configMap;
     }
 
-    public void initConfigMap(){
+    public void initConfigMap() {
         String conf = QDFileUtil.getFromAssets(mContext, configPath);
-        if(TextUtils.isEmpty(conf)){
+        if (TextUtils.isEmpty(conf)) {
             configMap = null;
-            QDLogger.e( new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径："+configPath));
+            QDLogger.e(new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径：" + configPath));
         }
 
         configMap = JSON.parseObject(conf, Map.class);
@@ -64,8 +65,8 @@ public class AppConfig {
         return instance;
     }
 
-    public  Class getClassFromClassMap(String classNameKey) {
-        if(configMap==null){
+    public Class getClassFromClassMap(String classNameKey) {
+        if (configMap == null) {
             return null;
         }
         String className = (String) configMap.get(classNameKey);

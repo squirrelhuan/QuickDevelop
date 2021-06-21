@@ -19,7 +19,7 @@
         <Key
             android:codes="-5"
             android:keyLabel=""
-            android:isRepeatable="true"/>
+            android:isRepeatable="true" />
     </Row>
 
     <Row>
@@ -54,7 +54,7 @@
             android:keyHeight="@dimen/dp_102"
             android:keyLabel="@string/complete" />
     </Row>
-    <Row >
+    <Row>
         <Key
             android:codes="46"
             android:keyLabel="." />

@@ -26,7 +26,7 @@ import static android.os.Looper.getMainLooper;
 
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
-    private Class<?extends Activity> mErrorReportClass;
+    private Class<? extends Activity> mErrorReportClass;
     private Context mContext;
     private CrashDealType mCrashDealType = CrashDealType.showError;//异常结果处理方式
     private OnCrashListener mOnCrashListener;
@@ -42,7 +42,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private CrashHandler() {
     }
 
-    public void init(Context context, Class<?extends Activity> errorReportClass) {
+    public void init(Context context, Class<? extends Activity> errorReportClass) {
         //QDLogger.println("初始化异常捕获");
         mContext = context.getApplicationContext();
         this.mErrorReportClass = errorReportClass;
@@ -51,6 +51,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 设置异常处理方式
+     *
      * @param crashDealType
      */
     public void setCrashDealType(CrashDealType crashDealType) {
@@ -59,26 +60,29 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 设置异常监听
+     *
      * @param mOnCrashListener
      */
     public void setmOnCrashListener(OnCrashListener mOnCrashListener) {
         this.mOnCrashListener = mOnCrashListener;
     }
+
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-            QDLogger.e(TAG, ex);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    dealError(thread,ex);
-                    Looper.loop();
-                }
-            }).start();
+        QDLogger.e(TAG, ex);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                dealError(thread, ex);
+                Looper.loop();
+            }
+        }).start();
     }
 
     /**
      * 处理异常
+     *
      * @param thread
      * @param ex
      */
@@ -92,7 +96,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                     case shutdown:
                         break;
                     case showError:
-                        if (mErrorReportClass != null &&!isMainLooper) {//子线程异常，可以展示异常详情
+                        if (mErrorReportClass != null && !isMainLooper) {//子线程异常，可以展示异常详情
                             Intent intent = new Intent(mContext, mErrorReportClass);
                             intent.putExtra("message", tipMessage);
                             intent.putExtra("error", throwableToString(ex));
@@ -101,14 +105,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
                                 mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
                             }
                             mContext.startActivity(intent);
-                        }else {//主线程可以错误提示,并关闭app
+                        } else {//主线程可以错误提示,并关闭app
                             Toast.makeText(mContext, tipMessage, Toast.LENGTH_LONG).show();
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     System.exit(0);
                                 }
-                            },5000);
+                            }, 5000);
                         }
                         break;
                     case reboot:

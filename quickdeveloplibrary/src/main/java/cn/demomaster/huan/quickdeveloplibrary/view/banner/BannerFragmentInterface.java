@@ -7,6 +7,7 @@ public interface BannerFragmentInterface {
 
     /**
      * 激活状态变化
+     *
      * @param activedHash
      */
     void onActiveChanged(int activedHash);

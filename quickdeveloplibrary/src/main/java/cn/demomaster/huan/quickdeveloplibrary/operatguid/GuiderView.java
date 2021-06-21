@@ -536,7 +536,7 @@ public class GuiderView extends View {
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                QDLogger.println("引导",motionEvent.getX()+","+motionEvent.getY());
+                QDLogger.println("引导", motionEvent.getX() + "," + motionEvent.getY());
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isAnimationFinished) {//动画加载完成并且为点击操作
                     switch (guiderModel.getComplateType()) {
                         case CLICK:

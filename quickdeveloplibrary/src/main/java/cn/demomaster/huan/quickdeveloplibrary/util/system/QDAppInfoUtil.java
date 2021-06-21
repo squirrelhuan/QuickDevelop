@@ -10,17 +10,17 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper.checkAppInstalled;
-
 public class QDAppInfoUtil {
 
     /**
      * 根据包名获取版本信息
+     *
      * @param context
      * @param packageName
      * @return
@@ -33,19 +33,18 @@ public class QDAppInfoUtil {
         try {
             return pm.getPackageInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            QDLogger.e("未找到安裝包："+packageName);
+            QDLogger.e("未找到安裝包：" + packageName);
         }
         return null;
     }
 
     /**
      * 判断是否存在pckName包
-     *
      * @param pckName
      * @return
      */
     public static boolean isPackageExist(Context context, String pckName) {
-        return getPackageInfoByPackageName(context,pckName)!=null;
+        return getPackageInfoByPackageName(context, pckName) != null;
     }
 
     public static String getVersionName(Context context) {
@@ -54,7 +53,7 @@ public class QDAppInfoUtil {
 
     public static String getVersionName(Context context, String packageName) {
         PackageInfo pi = getPackageInfoByPackageName(context, packageName);
-        return pi != null?pi.versionName:null;
+        return pi != null ? pi.versionName : null;
     }
 
     // 获取本地的版本号
@@ -74,18 +73,17 @@ public class QDAppInfoUtil {
 
     /**
      * 根据包名判断应用是否已经安装
+     *
      * @param context
      * @param pkgName
      * @return
      */
     public static boolean checkAppInstalled(Context context, String pkgName) {
-        if (TextUtils.isEmpty(pkgName)) {
-            return false;
-        }
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> info = packageManager.getInstalledPackages(0);
-        if (info == null || info.isEmpty())
+        if (info == null || info.isEmpty()) {
             return false;
+        }
         for (int i = 0; i < info.size(); i++) {
             if (pkgName.equals(info.get(i).packageName)) {
                 return true;
@@ -93,6 +91,7 @@ public class QDAppInfoUtil {
         }
         return false;
     }
+
     /**
      * 判断当前应用是否是debug状态
      */
@@ -115,27 +114,24 @@ public class QDAppInfoUtil {
                 ApplicationInfo info = pkginfo.applicationInfo;
                 return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return false;
     }
 
-
     /**
      * 获取图标 bitmap
-     *
      * @param context
      */
-
     public static Bitmap getAppIconBitmap(Context context) {
         Drawable d = getAppIconDrawable(context); //xxx根据自己的情况获取drawable
         BitmapDrawable bd = (BitmapDrawable) d;
         Bitmap bm = bd.getBitmap();
         return bm;
     }
-    public static  Drawable getAppIconDrawable(Context context) {
+
+    public static Drawable getAppIconDrawable(Context context) {
         PackageManager packageManager = null;
         ApplicationInfo applicationInfo = null;
         try {
@@ -153,11 +149,12 @@ public class QDAppInfoUtil {
 
     /**
      * 根据包名启动app
+     *
      * @param context
      * @param packageName
      */
     public static void startApp(Context context, String packageName) {
-        if (checkAppInstalled(context,packageName)) {
+        if (checkAppInstalled(context, packageName)) {
             Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
             if (intent != null) {
                 //intent.putExtra("type", "110");
@@ -165,5 +162,33 @@ public class QDAppInfoUtil {
                 context.startActivity(intent);
             }
         }
+    }
+
+    /**
+     * 获取应用程序名称
+     */
+    public static String getAppName(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            int labelRes = packageInfo.applicationInfo.labelRes;
+            return context.getResources().getString(labelRes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getAppName2(context);
+        }
+    }
+
+    public static String getAppName2(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return (String) packageManager.getApplicationLabel(applicationInfo);
     }
 }

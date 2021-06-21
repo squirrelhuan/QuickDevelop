@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
+
 import androidx.core.view.NestedScrollingParent;
 import androidx.core.view.NestedScrollingParentHelper;
 
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import cn.demomaster.qdlogger_library.QDLogger;
-
 
 
 /**
@@ -22,7 +22,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
     private NestedScrollingParentHelper mNestedScrollingParentHelper;
     //private int hideHeight;//即将要隐藏部分的高度
     //private int minHeight;//顶部或者底部空余的最小距离
-
+    
     public QDNestedScrollParent(Context context) {
         super(context);
     }
@@ -83,7 +83,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
             if (fixedView != null && fixedView.getOnVisibleHeightChangeListener() != null) {
                 fixedView.getOnVisibleHeightChangeListener().onChange(dx, dy);
             }
-        }else {
+        } else {
 
         }
     }
@@ -113,7 +113,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
 
     //下拉的时候是否要向下滚动以显示图片
     public boolean showImg(int dy) {
-        if(dy+fixedView.getMeasuredHeight()>fixedView.getMaxHeight()){
+        if (dy + fixedView.getMeasuredHeight() > fixedView.getMaxHeight()) {
             return false;
         }
         if (dy > 0) {
@@ -127,13 +127,13 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
 
     //上拉的时候，是否要向上滚动，隐藏图片
     public boolean hideImg(int dy) {
-        if(dy+fixedView.getMeasuredHeight()<fixedView.getMinHeight()){
+        if (dy + fixedView.getMeasuredHeight() < fixedView.getMinHeight()) {
             return false;
         }
         if (dy < 0) {
-            int toTop = fixedView.getMeasuredHeight()- fixedView.getMinHeight();
-            toTop = toTop>0?toTop:0;
-            QDLogger.println( "getScrollY="+getScrollY()+"hideImg toTop: "+toTop );
+            int toTop = fixedView.getMeasuredHeight() - fixedView.getMinHeight();
+            toTop = toTop > 0 ? toTop : 0;
+            QDLogger.println("getScrollY=" + getScrollY() + "hideImg toTop: " + toTop);
             //toTop = fixedView.getMinHeight();
             if (getScrollY() <= toTop) {
                 return true;
@@ -155,8 +155,8 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
         if (y > toTop) {
             y = toTop;
         }*/
-        if(fixedView.getMeasuredHeight()<fixedView.getMaxHeight()&&fixedView.getMeasuredHeight()>fixedView.getMinHeight()){
-            y=0;
+        if (fixedView.getMeasuredHeight() < fixedView.getMaxHeight() && fixedView.getMeasuredHeight() > fixedView.getMinHeight()) {
+            y = 0;
         }
 
         super.scrollTo(x, y);

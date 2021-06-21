@@ -35,11 +35,6 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
 @ActivityPager(name = "无障碍服务", preViewClass = TextView.class, resType = ResType.Custome)
 public class AccessibilityServiceFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.btn_01)
     Button btn_01;
 

@@ -53,6 +53,7 @@ public class DebugFloatingService extends QDFloatingService2 {
     static TextView tv_title;
     static TextView tv_log_tag;
     View view;
+
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         mcontext = context;
@@ -98,10 +99,10 @@ public class DebugFloatingService extends QDFloatingService2 {
             layoutParams.x = (int) pointF.x;
             layoutParams.y = (int) pointF.y;
         }
-        layoutParams.width=800;
-        layoutParams.height=500;
+        layoutParams.width = 800;
+        layoutParams.height = 500;
         this.windowManager = windowManager;
-        windowManager.addView(view,layoutParams);
+        windowManager.addView(view, layoutParams);
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
 
@@ -127,6 +128,7 @@ public class DebugFloatingService extends QDFloatingService2 {
     static int strMaxLen = 20000;
     static List<QDLogBean> logList = new ArrayList<>();
     static String logStr = "";
+
     private static void initLog() {
         tv_log.setText(logStr);
         scrollView.post(new Runnable() {
@@ -194,7 +196,7 @@ public class DebugFloatingService extends QDFloatingService2 {
                     int width = layoutParams.width + movedX;
                     width = Math.min(DisplayUtil.getScreenWidth(view.getContext()), width);
                     //QDLogger.i("movedX="+movedX+",movedY="+movedY+",width="+ width+",height="+ height);
-                    updateViewLayout(view,width,height);
+                    updateViewLayout(view, width, height);
                     break;
                 case MotionEvent.ACTION_UP:
                     /*endTime = System.currentTimeMillis();
@@ -223,7 +225,7 @@ public class DebugFloatingService extends QDFloatingService2 {
         if (QDAppInfoUtil.isApkInDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //DebugFloatingService.showWindow(context, DebugFloatingService.class);
-                ServiceHelper.showWindow(context,DebugFloatingService.class);
+                ServiceHelper.showWindow(context, DebugFloatingService.class);
             } else {
                 //QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);
                 if (debugFloating2 == null) {

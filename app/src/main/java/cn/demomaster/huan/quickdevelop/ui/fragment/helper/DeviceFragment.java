@@ -32,7 +32,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -53,11 +53,6 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
 
 @ActivityPager(name = "DeviceHelper", preViewClass = TextView.class, resType = ResType.Custome)
 public class DeviceFragment extends BaseFragment {
-
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @BindView(R.id.sb_MusicVolume)
     SeekBar sb_MusicVolume;
@@ -83,7 +78,7 @@ public class DeviceFragment extends BaseFragment {
         View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_device, null);
         return (ViewGroup) mView;
     }
-
+    NetworkHelper networkHelper;
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
@@ -190,8 +185,8 @@ public class DeviceFragment extends BaseFragment {
                 QDLogger.e("WIFI default");
                 break;
         }
-
-        NetworkUtil.registerNetworkStatusChangedListener(getContext(),new NetWorkChangReceiver.OnNetStateChangedListener() {
+        networkHelper = new NetworkHelper(getContext());
+        networkHelper.registerListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
                 QDLogger.i("wifi onConnected");

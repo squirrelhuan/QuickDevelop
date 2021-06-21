@@ -10,11 +10,15 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ActivityPager {
     String name() default "";
+
     Class activityClass() default void.class;
+
     //预览类型
     ResType resType() default ResType.Resource;
+
     //预览view
     Class preViewClass() default void.class;
+
     //预览资源
     int iconRes() default 0;
 

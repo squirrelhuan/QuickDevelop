@@ -39,6 +39,7 @@ public class CircleTextView extends TextView {
         height = h;
         center_x = width / 2;
     }
+
     private boolean isRound = true;
 
     public boolean isRound() {
@@ -63,16 +64,16 @@ public class CircleTextView extends TextView {
         //this.setTextColor(textColor);
         if (isRound) {
             Path path = new Path();
-            double raduis = Math.min(getHeight(),getWidth())/2;
+            double raduis = Math.min(getHeight(), getWidth()) / 2;
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
             //path.addCircle(getWidth()/2, getHeight()/2, (float) (raduis ), Path.Direction.CCW);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColor(backgroundColor);
-            RectF rectF = new RectF(0,0,width,height);
-            canvas.drawRoundRect(rectF, height/2, height/2, paint);
-            path.addRoundRect(rectF,height/2, height/2, Path.Direction.CCW);
+            RectF rectF = new RectF(0, 0, width, height);
+            canvas.drawRoundRect(rectF, height / 2, height / 2, paint);
+            path.addRoundRect(rectF, height / 2, height / 2, Path.Direction.CCW);
             //先将canvas保存
             canvas.save();
             //设置为在圆形区域内绘制

@@ -137,9 +137,9 @@ public class IDCardActivity extends BaseActivity {
                 .setBackgroundRadius(50)
                 .addAction("拍照", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         dialog.dismiss();
-                        getPhotoHelper().takePhoto(new PhotoHelper.OnTakePhotoResult() {
+                        getPhotoHelper().takePhoto(null,new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 Log.i(TAG, "map_path=" + path);
@@ -169,7 +169,7 @@ public class IDCardActivity extends BaseActivity {
                     }
                 }).addAction("从相册中选取", new OnClickActionListener() {
                     @Override
-                    public void onClick(Dialog dialog, Object tag) {
+                    public void onClick(Dialog dialog, View view, Object tag) {
                         dialog.dismiss();
                         getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
                             @Override

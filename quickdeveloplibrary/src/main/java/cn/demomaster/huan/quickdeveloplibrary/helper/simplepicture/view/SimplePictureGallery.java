@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
@@ -60,11 +61,8 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                 width = height;
             }
             setMeasuredDimension(width, height);
-
         }*/
     }
-
-    private Context context;
 
     private GridLayoutManager mLayoutManager;
     private PictureAdapter mAdapter;
@@ -91,8 +89,6 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
     public void init() {
         final Context context = getContext();
-        if (context == null) return;
-        this.context = context;
         int spanCount_c = spanCount;
         if (autoWidth) {
             spanCount_c = Math.max((spanCount > imageList.size() ? (imageList.size() + (showAdd ? 1 : 0)) : spanCount), 1);
@@ -146,23 +142,31 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     }
 
     private void showMenuDialog() {
-        String[] menus = {"拍摄", "从相册选择"};
-        new QDSheetDialog.MenuBuilder(context).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
+        String[] menus = getResources().getStringArray(R.array.select_picture_items);
+        new QDSheetDialog.MenuBuilder(getContext()).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();
                 if (position == 0) {
-                    ((QDActivity) context).getPhotoHelper().takePhoto(new PhotoHelper.OnTakePhotoResult() {
+                    ((QDActivity) getContext()).getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
                         @Override
                         public void onSuccess(Intent data, String path) {
-                            Bundle extras = data.getExtras();
-                            if (extras != null) {
-                                Bitmap bitmap = extras.getParcelable("data");
-                                String filePath = QDBitmapUtil.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
-                                imageList.add(new Image(filePath, UrlType.file));
+                            if (data == null) {
+                                imageList.add(new Image(path, UrlType.file));
                                 addImageToView();
                                 if (onPictureChangeListener != null) {
                                     onPictureChangeListener.onChanged(imageList);
+                                }
+                            } else {
+                                Bundle extras = data.getExtras();
+                                if (extras != null) {
+                                    Bitmap bitmap = extras.getParcelable("data");
+                                    String filePath = QDBitmapUtil.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
+                                    imageList.add(new Image(filePath, UrlType.file));
+                                    addImageToView();
+                                    if (onPictureChangeListener != null) {
+                                        onPictureChangeListener.onChanged(imageList);
+                                    }
                                 }
                             }
                         }
@@ -173,7 +177,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                         }
                     });
                 } else {//从相册选择
-                    ((QDActivity) context).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                    ((QDActivity) getContext()).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
                         @Override
                         public void onSuccess(Intent data, ArrayList<Image> images) {
                             imageList.addAll(images);

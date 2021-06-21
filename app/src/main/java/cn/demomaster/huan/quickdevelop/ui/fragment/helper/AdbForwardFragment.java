@@ -40,11 +40,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 @ActivityPager(name = "PC和App通讯", preViewClass = StateView.class, resType = ResType.Custome)
 public class AdbForwardFragment extends BaseFragment {
 
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @BindView(R.id.et_port)
     EditText et_port;
     @BindView(R.id.btn_start_service)

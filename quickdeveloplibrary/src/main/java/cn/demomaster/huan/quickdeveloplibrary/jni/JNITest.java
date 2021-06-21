@@ -10,6 +10,7 @@ public class JNITest {
     static {
         System.loadLibrary("native-lib");
     }
+
     //创建一个 native 方法
     public native static String get();
 

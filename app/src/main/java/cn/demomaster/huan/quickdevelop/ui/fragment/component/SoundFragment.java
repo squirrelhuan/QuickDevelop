@@ -26,10 +26,6 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 
 @ActivityPager(name = "音频播放", preViewClass = TextView.class, resType = ResType.Custome)
 public class SoundFragment extends BaseFragment {
-    @Override
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

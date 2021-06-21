@@ -19,5 +19,5 @@ public enum ACTIONBAR_TYPE {
     //层叠效果，有状态栏、无标题栏，内容不会和导航栏出现覆盖效果
     ACTION_STACK_NO_ACTION,
     //透明导航栏，有状态栏且有标题栏，内容不会和导航栏出现覆盖效果
-    ACTION_TRANSPARENT
+    //ACTION_TRANSPARENT
 }

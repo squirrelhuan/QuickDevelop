@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.PopupWindow;
 
 import java.lang.reflect.Field;
@@ -95,7 +98,6 @@ public class QDActivityManager {
         private void record(LifecycleType lifecycleType, Activity activity) {
             QDLogger.println(TAG.ACTIVITY, lifecycleType + "(" + activity + ")");
             LifecycleRecorder.record(lifecycleType, activity);
-            
         }
     };
 
@@ -106,8 +108,15 @@ public class QDActivityManager {
      * @param obj
      */
     public static void destroyObject(Object obj) {
+        if(obj==null){
+            return;
+        }
+        
+        if (obj instanceof OnReleaseListener) {
+            ((OnReleaseListener) obj).onRelease();
+        }
         Field[] fields = obj.getClass().getDeclaredFields();
-        if(fields!=null) {
+        if (fields != null) {
             //QDLogger.println(obj+"属性个数：" + fields.length);
             for (int i = 0, len = fields.length; i < len; i++) {
                 // 对于每个属性，获取属性名
@@ -130,19 +139,30 @@ public class QDActivityManager {
                             ((Handler) o).removeCallbacksAndMessages(null);
                         } else if (o instanceof Dialog) {
                             // QDLogger.println("释放dialog：" + varName);
-                            ((Dialog) o).dismiss();
+                            if(((Dialog) o).isShowing()) {
+                                ((Dialog) o).dismiss();
+                            }
                         } else if (o instanceof PopupWindow) {
                             //QDLogger.println("释放PopupWindow：" + varName);
                             ((PopupWindow) o).dismiss();
                         } else if (o instanceof Bitmap) {
                             //QDLogger.println("释放Bitmap：" + varName);
-                            ((Bitmap) o).recycle();
+                            if(!((Bitmap) o).isRecycled()){
+                                ((Bitmap) o).recycle();
+                                o = null;
+                            }
+                            //System.gc();
                         } else if (o instanceof View) {
                             //QDLogger.println("释放View：" + varName);
                             ((View) o).clearAnimation();
                         } else if (o instanceof Animator) {
                             //QDLogger.println("释放Animator：" + varName);
                             ((Animator) o).cancel();
+                            if(o instanceof ValueAnimator){
+                                ((ValueAnimator) o).removeAllUpdateListeners();
+                            }
+                        }else if(o instanceof Animation){
+                            ((Animation) o).cancel();
                         }
                     }
                     // 恢复访问控制权限
@@ -177,6 +197,7 @@ public class QDActivityManager {
 
     /**
      * 添加activity到棧中
+     *
      * @param activity
      */
     public void pushActivity(Activity activity) {
@@ -213,6 +234,7 @@ public class QDActivityManager {
 
     /**
      * 把指定activity从栈中移除，并销毁该页面
+     *
      * @param activity 要移除的activity
      */
     public void popActivity(Activity activity) {
@@ -229,6 +251,7 @@ public class QDActivityManager {
 
     /**
      * 从栈中移除activity，但不负责销毁
+     *
      * @param activity
      */
     public void removeActivityFormStack(Activity activity) {
@@ -243,6 +266,7 @@ public class QDActivityManager {
 
     /**
      * 弹出其他所有activity，仅保留指定activity
+     *
      * @param targetActivity 要保留的activity类
      */
     public void popOtherActivityExceptOne(Class targetActivity) {
@@ -259,6 +283,7 @@ public class QDActivityManager {
 
     /**
      * 判断画面栈中是否存在该 activity 对象
+     *
      * @param activity
      * @return 存在返回TRUE ，不存在返回FALSE
      */
@@ -287,6 +312,7 @@ public class QDActivityManager {
 
     /**
      * 弹出其他栈，仅保留某class集合内的activity
+     *
      * @param classList 要保留的 activity 类
      */
     public void popOtherActivityExceptList(List<Class> classList) {
@@ -461,6 +487,7 @@ public class QDActivityManager {
 
     boolean isOnForgroundAvailable = true;
     boolean isOnBackgroundAvailable = true;
+
     /**
      * 设置app前后台切换事件
      */
@@ -502,12 +529,13 @@ public class QDActivityManager {
 
     /**
      * 获取当前前台应用的包名
+     *
      * @param context
      * @return
      */
     public static String getTopPackageName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
-        if (am.getRunningTasks(1) != null && am.getRunningTasks(1).size()>0) {
+        if (am.getRunningTasks(1) != null && am.getRunningTasks(1).size() > 0) {
             ComponentName componentName = am.getRunningTasks(1).get(0).topActivity;
             return componentName.getPackageName();
         }
@@ -543,20 +571,22 @@ public class QDActivityManager {
 
     /**
      * 判断应用是否在前台运行
+     *
      * @param context
      * @return
      */
     public boolean isRunningOnForeground(Context context) {
-        return isRunningOnForeground(context,context.getPackageName());
+        return isRunningOnForeground(context, context.getPackageName());
     }
 
     /**
      * 判断应用是否在前台运行
+     *
      * @param context
      * @param packageName
      * @return
      */
-    public boolean isRunningOnForeground(Context context,String packageName) {
+    public boolean isRunningOnForeground(Context context, String packageName) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         if (activityManager.getRunningTasks(1) != null || activityManager.getRunningTasks(1).size() == 1) {
             ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
@@ -595,6 +625,7 @@ public class QDActivityManager {
 
     /**
      * 设置app前后台运行切换状态监听
+     *
      * @param onAppRunStateChangedListenner
      */
     public void setOnAppRunStateChangedListenner(OnAppRunStateChangedListenner onAppRunStateChangedListenner) {
@@ -690,6 +721,7 @@ public class QDActivityManager {
 
     /**
      * 判断activity是否已经启动
+     *
      * @param activityClass
      * @return true已启动，false未启动
      */
@@ -716,12 +748,12 @@ public class QDActivityManager {
     public void backToApp(Class targetActivityClass) {
         Activity activity = getCurrentActivity();
         Intent intent;
-        if(activity!=null){
+        if (activity != null) {
             QDLogger.i("backToApp 返回到顶层");
             intent = new Intent(activity, targetActivityClass);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
-        }else {
+        } else {
             QDLogger.i("backToApp 开启新的页面");
             intent = new Intent(context, targetActivityClass);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);

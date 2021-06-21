@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,8 +13,13 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
+import android.view.View;
 
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -28,6 +35,89 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * @Description: bitmap、drawable转换工具
  */
 public class QDBitmapUtil {
+
+
+    /**
+     * 按比例缩放图片
+     * @param bitmap 原图
+     * @return 新的bitmap
+     */
+    public static Bitmap scaleBitmap(Bitmap bitmap, float scaleX, float scaleY) {
+        if (bitmap == null||bitmap.getWidth()==0||bitmap.getHeight()==0) {
+            return null;
+        }
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.preScale(scaleX, scaleX);
+        Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+        if (!bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
+        return newBM;
+    }
+    /**
+     * 根据给定的宽和高进行拉伸
+     * @param newWidth  新图的宽
+     * @param newHeight 新图的高
+     * @return new Bitmap
+     */
+    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        if (bitmap == null||bitmap.getWidth()==0||bitmap.getHeight()==0) {
+            return null;
+        }
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        float scaleX = ((float) newWidth) / width;
+        float scaleY = ((float) newHeight) / height;
+        return scaleBitmap(bitmap,scaleX,scaleY);
+    }
+
+    /**
+     * 居中裁剪正方形
+     * @param bitmap 原图
+     * @return 裁剪后的图像
+     */
+    public static Bitmap cropBitmap(Bitmap bitmap) {
+        int w = bitmap.getWidth(); // 得到图片的宽，高
+        int h = bitmap.getHeight();
+        int cropWidth = Math.min(h , w);// 裁切后所取的正方形区域边长
+        return cropBitmap(bitmap, (w-cropWidth) /2, (h-cropWidth)/2, cropWidth, cropWidth);
+    }
+    public static Bitmap cropBitmap(Bitmap bitmap,int centerX,int centerY,int tartgetWidth,int tartgetHeight) {
+        return Bitmap.createBitmap(bitmap, centerX, centerY, tartgetWidth, tartgetHeight, null, false);
+    }
+
+    public static void setBackground(View view, Bitmap bitmap) {
+
+        if (bitmap == null) {
+            view.setBackgroundResource(0);
+            return;
+        }
+
+        int vwidth = view.getWidth();
+        int vheight = view.getHeight();
+        int bwidth = bitmap.getWidth();
+        int bheight = bitmap.getHeight();
+
+        float scalex = (float)vwidth / bwidth;
+        float scaley = (float)vheight / bheight;
+        float scale = Math.max(scalex, scaley) * 1.0f;
+
+        Bitmap.Config config = Bitmap.Config.ARGB_8888;
+        Bitmap background = Bitmap.createBitmap(vwidth, vheight, config);
+
+        Canvas canvas = new Canvas(background);
+
+        Matrix matrix = new Matrix();
+        matrix.setTranslate(-bwidth / 2, -bheight / 2);
+        matrix.postScale(scale, scale);
+        matrix.postTranslate(vwidth / 2, vheight / 2);
+
+        canvas.drawBitmap(bitmap, matrix, null);
+
+        view.setBackgroundDrawable(new BitmapDrawable(view.getResources(), background));
+    }
 
    /* public static Drawable bitmap2Drawable(int resId){
         Drawable d = XBaseApplication.getApplication().getResources().getDrawable(resId);
@@ -54,21 +144,24 @@ public class QDBitmapUtil {
         if (drawable instanceof BitmapDrawable) {//转换成Bitmap
             return ((BitmapDrawable) drawable).getBitmap();
         } else if (drawable instanceof NinePatchDrawable) {//.9图片转换成Bitmap
-            Bitmap bitmap = Bitmap.createBitmap(
-                    drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(),
-                    drawable.getOpacity() != PixelFormat.OPAQUE ?
-                            Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight());
-            drawable.draw(canvas);
-            return bitmap;
+            return getBitmapFormDrawable(drawable);
         } else {
-            return null;
+            return getBitmapFormDrawable(drawable);
         }
     }
 
+    public static Bitmap getBitmapFormDrawable(Drawable drawable){
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity()!= PixelFormat.OPAQUE
+                        ?Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
+        //设置绘画的边界，此处表示完整绘制
+        drawable.draw(canvas);
+        return bitmap;
+    }
 
     /**
      * Matrix 缩放宽高
@@ -79,14 +172,18 @@ public class QDBitmapUtil {
      * @return
      */
     public static Bitmap zoomImage(Bitmap srcBitmap, double targetwidth, double targetheight) {
+        if (srcBitmap == null || targetwidth <= 0 || targetheight <= 0) {
+            return null;
+        }
         // 获取这个图片的宽和高
         float width = srcBitmap.getWidth();
         float height = srcBitmap.getHeight();
         // 创建操作图片用的matrix对象
         Matrix matrix = new Matrix();
         // 计算宽高缩放率
-        float scaleWidth = ((float) targetwidth) / width;
-        float scaleHeight = ((float) targetheight) / height;
+        float scaleWidth = ((float) targetwidth) / (width == 0 ? 1 : width);
+        float scaleHeight = ((float) targetheight) / (height == 0 ? 1 : height);
+        //QDLogger.println("targetwidth="+targetwidth+",targetheight="+targetheight+",width="+width+",height="+height);
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap bitmap = Bitmap.createBitmap(srcBitmap, 0, 0, (int) width,
@@ -276,6 +373,25 @@ public class QDBitmapUtil {
         return bitmap;
     }
 
+    public static Bitmap getBitmapFromFile(File file) {
+        if (file == null || !file.exists()) {
+            return null;
+        }
+        return getBitmapFromPath(file.getAbsolutePath());
+    }
+
+    public static Bitmap getBitmapFromPath(String path) {
+        if (!TextUtils.isEmpty(path)) {
+            try {
+                FileInputStream fis = new FileInputStream(path);
+                return BitmapFactory.decodeStream(fis);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
         final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTintList(wrappedDrawable, colors);
@@ -298,4 +414,51 @@ public class QDBitmapUtil {
             return null;
         }
     }
+
+
+    /**
+     * 图片裁剪功能
+     *
+     * @param context
+     * @param srcUri      源路径
+     * @param targetUri   输出路径
+     * @param requestCode
+     */
+    public static void startPhotoZoom(Activity context, Uri srcUri, Uri targetUri,
+                                      int requestCode) {
+        int dp = 800;
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", new File(uri.getPath()));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        intent.setDataAndType(srcUri, "image/*");
+        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);// 去黑边
+        intent.putExtra("scaleUpIfNeeded", true);// 去黑边
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);//输出是X方向的比例
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高，切忌不要再改动下列数字，会卡死
+        intent.putExtra("outputX", dp);//输出X方向的像素
+        intent.putExtra("outputY", dp);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        if (targetUri != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
+        } else {
+            if (Build.VERSION.SDK_INT < 30) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
+            } else {
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+                //storage/emulated/0/Pictures
+                File mOnputFile = new File(path, System.currentTimeMillis() + ".png");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse("file://" + mOnputFile.getAbsolutePath()));
+            }
+        }
+        intent.putExtra("return-data", false);//如果此处指定，返回值的data为null
+        context.startActivityForResult(intent, requestCode);
+    }
+
 }
