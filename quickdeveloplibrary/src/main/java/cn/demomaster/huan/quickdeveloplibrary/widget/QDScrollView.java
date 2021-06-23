@@ -2,21 +2,16 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
-import android.widget.ScrollView;
 
-import androidx.annotation.RequiresApi;
-
-import java.util.AbstractList;
-import java.util.ArrayList;
-
-public class QDScrollView extends ScrollView {
+/**
+ * 带回弹效果的NestedScrollView
+ */
+public class QDScrollView extends androidx.core.widget.NestedScrollView {
     public QDScrollView(Context context) {
         super(context);
         init();
@@ -32,12 +27,11 @@ public class QDScrollView extends ScrollView {
         init();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public QDScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-
         init();
-    }
+    }*/
 
     private void init() {
         setHorizontalFadingEdgeEnabled(false);

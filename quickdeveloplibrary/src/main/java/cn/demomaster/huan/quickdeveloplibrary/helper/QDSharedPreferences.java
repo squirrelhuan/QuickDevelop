@@ -178,6 +178,7 @@ public class QDSharedPreferences {
             Gson gson = new Gson();
             return gson.fromJson(json, clazz);
         } catch (Exception e) {
+            QDLogger.e(e);
             return null;
         }
     }
