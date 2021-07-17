@@ -6,13 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.NestedScrollingParent2;
-import androidx.core.view.NestedScrollingParentHelper;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.ListViewCompat;
-
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -29,6 +22,12 @@ import android.widget.ListView;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.NestedScrollingParent2;
+import androidx.core.view.NestedScrollingParentHelper;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.ListViewCompat;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -41,7 +40,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
 
     private StateType cardState = StateType.idle;
 
-    public static enum StateType {
+    public enum StateType {
         idle,//空闲
         isToping,//顶部下拉状态
         isToped,//顶部下拉悬停状态
@@ -620,7 +619,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         }
     }
 
-    public static enum DefaultStateType {
+    public enum DefaultStateType {
         normal, top, bottom
     }
 
@@ -779,7 +778,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
             return ListViewCompat.canScrollList((ListView) contentLayout, -1);
         } else if (contentLayout instanceof ScrollView) {
             boolean b = (((ScrollView) contentLayout).getChildAt(0).getHeight() - contentLayout.getHeight()) > contentLayout.getScrollY();
-            QDLogger.e("ScrollView ScrollY=" + contentLayout.getScrollY() + ",是否可以上滑" + b);
+            QDLogger.println("ScrollView ScrollY=" + contentLayout.getScrollY() + ",是否可以上滑" + b);
             return b;
         }
         boolean b = contentLayout.canScrollVertically(-1);
@@ -796,7 +795,6 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
                         .getTop() < absListView.getPaddingTop());
             } else {
-
                 return contentLayout.getScrollY() > 0;
             }
         } else {
@@ -806,7 +804,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 QDLogger.e("ScrollView ScrollY=" + contentLayout.getScrollY() + ",是否可以下滑" + (contentLayout.getScrollY() > 0));
                 return contentLayout.getScrollY() > 0;//;
             }
-            return ViewCompat.canScrollVertically(contentLayout, 1);
+            return contentLayout.canScrollVertically(1);
         }
     }
 

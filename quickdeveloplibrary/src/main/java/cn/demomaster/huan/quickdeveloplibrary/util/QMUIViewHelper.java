@@ -6,7 +6,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,13 +18,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
-import cn.demomaster.huan.quickdeveloplibrary.R;
-
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +31,15 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import cn.demomaster.huan.quickdeveloplibrary.R;
 
 /**
  * @author cginechen
@@ -671,9 +669,7 @@ public class QMUIViewHelper {
 
         if (listView.getLastVisiblePosition() == listView.getAdapter().getCount() - 1) {
             View lastItemView = listView.getChildAt(listView.getChildCount() - 1);
-            if (lastItemView != null && lastItemView.getBottom() == listView.getHeight()) {
-                return true;
-            }
+            return (lastItemView != null && lastItemView.getBottom() == listView.getHeight());
         }
         return false;
     }

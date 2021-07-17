@@ -9,7 +9,6 @@ import android.os.RemoteException;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -86,17 +85,17 @@ public class BaseService extends Service {
         }
 
         @Override
-        public int getQueuePosition() throws RemoteException {
+        public int getQueuePosition() {
             return 0;
         }
 
         @Override
-        public boolean isPlaying() throws RemoteException {
+        public boolean isPlaying(){
             return false;
         }
 
         @Override
-        public void stop() throws RemoteException {
+        public void stop(){
 
         }
     }

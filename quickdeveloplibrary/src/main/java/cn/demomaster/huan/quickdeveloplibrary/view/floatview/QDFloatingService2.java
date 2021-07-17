@@ -81,10 +81,10 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        QDLogger.e("onDestroyService " + this.getClass().getName());
+        QDLogger.e("onDestroyService,this:"+this);
         ServiceHelper.onDestroyService(this);
     }
-
+    
     public void removeView(View view) {
         windowManager.removeView(view);
     }

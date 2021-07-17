@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ public class NestedScrollViewFragment extends BaseFragment {
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_layout_nestedscrollview, null);
-
         return mView;
     }
 

@@ -4,7 +4,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 public class QDWebChromeClient extends WebChromeClient {
-    public static interface OnStateChangedListener {
+    public interface OnStateChangedListener {
         void onProgress(int progress);
 
         void onFinish();
@@ -14,7 +14,7 @@ public class QDWebChromeClient extends WebChromeClient {
         boolean onNewTab(WebView view, String url);
     }
 
-    public static interface OnProgressChanged {
+    public interface OnProgressChanged {
         void onProgress(int progress);
 
         void onFinish();

@@ -15,12 +15,11 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarState;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTip;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.qdlogger_library.QDLogger;
-
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBARTIP_TYPE;
+import cn.demomaster.qdrouter_library.actionbar.ActionBarState;
 
 @ActivityPager(name = "ActionBarTip", preViewClass = TextView.class, resType = ResType.Custome)
 public class ActionBarTipActivity extends QDActivity {
@@ -84,7 +83,7 @@ public class ActionBarTipActivity extends QDActivity {
         cb_001.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                getActionBarTool().setActionBarTipType(isChecked ? ActionBarTip.ACTIONBARTIP_TYPE.NORMAL : ActionBarTip.ACTIONBARTIP_TYPE.STACK);
+                getActionBarTool().setActionBarTipType(isChecked ? ACTIONBARTIP_TYPE.NORMAL : ACTIONBARTIP_TYPE.STACK);
             }
         });
 
@@ -102,7 +101,6 @@ public class ActionBarTipActivity extends QDActivity {
                 //loading.hide();
                 loading.success("加载success");
             }
-
         });
 
         btn_complete.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +128,6 @@ public class ActionBarTipActivity extends QDActivity {
             }
         });
 
-
         sb_background = findViewById(R.id.sb_background);
         sb_background.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -152,13 +149,6 @@ public class ActionBarTipActivity extends QDActivity {
             }
         });
         sb_background.setProgress(50);
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        QDLogger.i("onDestroy：");
-        super.onDestroy();
     }
 
 }

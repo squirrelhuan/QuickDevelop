@@ -3,18 +3,14 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  *

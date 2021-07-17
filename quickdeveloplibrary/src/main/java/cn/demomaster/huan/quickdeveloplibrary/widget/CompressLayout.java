@@ -12,7 +12,6 @@ import android.view.animation.AccelerateInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 压缩布局，适用于左上右下弹出面板，并压缩当前面板
@@ -287,8 +286,7 @@ public class CompressLayout extends ViewGroup {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
+                progress = (float) animation.getAnimatedValue();
                 //QDLogger.d( "showPanelWithSorftKeyBoard progress=" + progress);
                 reLayout();
             }
@@ -313,8 +311,7 @@ public class CompressLayout extends ViewGroup {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
+                progress = (float) animation.getAnimatedValue();
                 reLayout();
             }
         });

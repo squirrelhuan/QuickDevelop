@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdevelop.adapter;
 
-
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +18,15 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 /**
- * Created by  on 14/01/17.
+ * 设计模式
  */
-
 public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.ViewHolder> {
 
     private List<String> data;
     private Context context;
-
     public DesignListAdapter(Context context) {
         this.context = context;
         data = new ArrayList<>();
@@ -84,8 +80,6 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
                 }
             });
         }
-        Looper
-        ThreadLocal
     }
 
 }

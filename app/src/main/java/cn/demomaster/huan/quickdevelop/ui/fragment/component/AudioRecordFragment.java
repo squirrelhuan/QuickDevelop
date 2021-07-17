@@ -3,18 +3,17 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.adapter.AudioAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
@@ -51,7 +48,6 @@ import cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordPopup;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.quickaudiorecorderlib.AudioUtil.calculateVolume;
-import static cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordPopup.fitPopupWindowOverStatusBar;
 
 
 /**
@@ -116,7 +112,8 @@ public class AudioRecordFragment extends BaseFragment {
         pop.setHeight(DisplayUtil.getScreenHeight(mContext));
         //pop.setClippingEnabled(true);
         //pop.setIsClippedToScreen(true);
-        pop.setBackgroundDrawable(new BitmapDrawable());
+        //pop.setBackgroundDrawable(new BitmapDrawable());
+        pop.setBackgroundDrawable(new ColorDrawable());
         pop.setFocusable(true);
         pop.setOutsideTouchable(false);
         //pop.showAtLocation(pop.getContentView(), Gravity.BOTTOM, 0, 0);
@@ -136,7 +133,7 @@ public class AudioRecordFragment extends BaseFragment {
         pop.getTouchableViewGroup().dispatchTouchEvent(event);
 
         //振動
-        Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         long[] patter = {0, 30, 10, 30};
         vibrator.vibrate(patter, -1);
         startRecord();

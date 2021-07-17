@@ -1,15 +1,16 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.cache;
 
-import android.graphics.Bitmap;
-import android.os.Environment;
+import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 
 /**
  * 缓存文件Map管理
@@ -153,14 +153,12 @@ public class CacheMap {
      * @param string
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String stringToMD5(String string) {
         byte[] hash;
         try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes(StandardCharsets.UTF_8));
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
         }

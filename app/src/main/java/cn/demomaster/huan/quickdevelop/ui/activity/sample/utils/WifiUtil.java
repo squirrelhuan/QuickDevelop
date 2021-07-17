@@ -1,13 +1,10 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.utils;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -17,8 +14,6 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.core.app.ActivityCompat;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -30,13 +25,11 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.service.WifiTimerServi
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 
-import static android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
 import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
 import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
-import static cn.demomaster.huan.quickdevelop.ui.activity.sample.service.WifiTimerService2.WIFI_SETTING_KEY;
 
 public class WifiUtil {
 
@@ -87,7 +80,7 @@ public class WifiUtil {
     }
 
     // 定义几种加密方式，一种是WEP，一种是WPA，还有没有密码的情况
-    public static enum WifiCipherType {
+    public enum WifiCipherType {
         WIFICIPHER_WEP, WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
     }
 
@@ -244,7 +237,7 @@ public class WifiUtil {
         this.onWifiChangeListener = onWifiChangeListener;
     }
 
-    public static interface OnWifiChangeListener {
+    public interface OnWifiChangeListener {
         void onWifiStateChanged(NetworkInfo.DetailedState state);
 
         void onScanResult(List<ScanResult> scanResults);
@@ -528,8 +521,7 @@ public class WifiUtil {
             return null;
         }
         WifiInfo info = wifiManager.getConnectionInfo();
-        String ssid = info.getSSID();
-        return ssid;
+        return info.getSSID();
     }
 
     /**

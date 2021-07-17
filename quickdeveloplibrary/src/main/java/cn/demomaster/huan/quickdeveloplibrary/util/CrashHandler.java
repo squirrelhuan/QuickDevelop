@@ -16,13 +16,9 @@ import android.widget.Toast;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.qdlogger_library.QDLogger;
-
-import static android.os.Looper.getMainLooper;
 
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
@@ -138,14 +134,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
         return sw.toString();
     }
 
-    public static enum CrashDealType {
+    public enum CrashDealType {
         reboot,//重启
         shutdown,//关闭
         showError,//显示错误
         custome//自定义
     }
 
-    public static interface OnCrashListener {
+    public interface OnCrashListener {
         void onUncaughtException(Thread thread, Throwable ex);
     }
 }

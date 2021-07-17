@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class LoadLayout extends FrameLayout {
     public LoadLayout(@NonNull Context context) {
@@ -66,7 +65,7 @@ public class LoadLayout extends FrameLayout {
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(loadView, layoutParams);
         }
-        QDLogger.println("count = " + getChildCount());
+        //QDLogger.println("count = " + getChildCount());
     }
 
     @Override
@@ -188,7 +187,7 @@ public class LoadLayout extends FrameLayout {
         this.onLoadListener = onLoadListener;
     }
 
-    public static interface OnLoadListener {
+    public interface OnLoadListener {
         void loadData();
 
         void loadSuccess();

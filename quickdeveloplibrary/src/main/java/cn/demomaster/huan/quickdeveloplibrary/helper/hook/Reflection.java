@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.hook;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.lang.reflect.Method;
 
@@ -44,7 +43,6 @@ public class Reflection {
     private static final int ERROR_EXEMPT_FAILED = -21;
 
     private static int unsealed = UNKNOWN;
-
     public static int unseal(Context context) {
         if (SDK_INT < 28) {
             // Below Android P, ignore

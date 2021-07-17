@@ -91,14 +91,14 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
 
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout parent, @NonNull MultiRecycleContainer child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        QDLogger.d("dy=" + dy + ",consumed x=" + consumed[0] + ",y=" + consumed[1]);
+        QDLogger.println("dy=" + dy + ",consumed x=" + consumed[0] + ",y=" + consumed[1]);
 
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
-        boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
+        boolean canScrollUp = target.canScrollVertically(1);//ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
-        QDLogger.d("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
+        QDLogger.println("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 
         if (child.getTop() == 0 && ((dy > 0 && canScrollUp) || (dy < 0 && canScrollDown))) {
             consumed[1] = scrollChild(parent, child, target, dy);
@@ -182,7 +182,7 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
             View v = parent.getChildAt(i);
             if (v instanceof MultiRecycleContainer) {
                 if (getChildRecyclerView((ViewGroup) v) == null) continue W;
-                boolean canScrollUp = ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
+                boolean canScrollUp = getChildRecyclerView((ViewGroup) v).canScrollVertically(1);//ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
                 if (canScrollUp) {//可上推
                     return (MultiRecycleContainer) v;
                 }
@@ -254,7 +254,7 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
-        boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
+        boolean canScrollUp = target.canScrollVertically(1);//ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
         QDLogger.d("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 
@@ -508,7 +508,7 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
                 eventAddedToVelocityTracker = true;
                 mVelocityTracker.computeCurrentVelocity(1000, mMaxFlingVelocity);
                 float yVelocity = -VelocityTrackerCompat.getYVelocity(mVelocityTracker, mScrollPointerId);
-                Log.i("zhufeng", "速度取值：" + yVelocity);
+                QDLogger.println( "速度取值：" + yVelocity);
                 if (Math.abs(yVelocity) < mMinFlingVelocity) {
                     yVelocity = 0F;
                 } else {

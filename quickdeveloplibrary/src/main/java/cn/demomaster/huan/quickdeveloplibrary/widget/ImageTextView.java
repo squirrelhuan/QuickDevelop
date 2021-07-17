@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import androidx.appcompat.widget.AppCompatImageView;
-
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -19,7 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
  * @date 2018/11/20.
  * description：
  */
-public class ImageTextView extends AppCompatImageView {
+public class ImageTextView extends cn.demomaster.qdrouter_library.view.ImageTextView {
 
     public ImageTextView(Context context) {
         super(context);
@@ -116,7 +113,7 @@ public class ImageTextView extends AppCompatImageView {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
-
+    
     @Override
     protected int getSuggestedMinimumWidth() {
         return (int) textWidth;//super.getSuggestedMinimumWidth();

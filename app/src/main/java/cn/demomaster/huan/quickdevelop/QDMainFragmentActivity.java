@@ -1,31 +1,21 @@
 package cn.demomaster.huan.quickdevelop;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.getAppName;
 
-/**
- *
- */
 public class QDMainFragmentActivity extends QDActivity {
 
     @Override
@@ -41,10 +31,6 @@ public class QDMainFragmentActivity extends QDActivity {
             QDFragment fragment = new MainFragment();
             startFragment(fragment,R.id.container1);
         }
-       /* getActionBarTool().setHeaderBackgroundColor(Color.GRAY);
-        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
-        getActionBarTool().getLeftView().setVisibility(View.GONE);*/
-
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
 
@@ -89,7 +75,7 @@ public class QDMainFragmentActivity extends QDActivity {
         //QdToast.show(mContext, Build.BRAND.toLowerCase());
         //DebugFloatingService.showConsole(mContext);
         PermissionHelper.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
-        QDLogger.d("getAppName="+getAppName(this));
+        QDLogger.i("AppName:"+getAppName(this));
     }
 
     @Override
@@ -122,5 +108,4 @@ public class QDMainFragmentActivity extends QDActivity {
                 break;
         }
     }
-
 }

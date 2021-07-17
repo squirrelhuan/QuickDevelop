@@ -177,7 +177,7 @@ public class QDTcpServer {
         this.onReceiveMessageListener = onReceiveMessageListener;
     }
 
-    public static interface OnReceiveMessageListener {
+    public interface OnReceiveMessageListener {
         void onReceiveMessage(long clientId, QDMessage qdMessage);
     }
 

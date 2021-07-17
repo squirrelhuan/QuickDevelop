@@ -1,12 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.AttributeSet;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 

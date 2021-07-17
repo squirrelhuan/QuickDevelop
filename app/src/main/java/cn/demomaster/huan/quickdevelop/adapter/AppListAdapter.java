@@ -21,7 +21,7 @@ import cn.demomaster.huan.quickdevelop.R;
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
 
     private List<String> appList;
-    private Context context;
+    private final Context context;
 
     public AppListAdapter(Context context) {
         this.context = context;

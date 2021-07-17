@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -23,7 +21,6 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
@@ -124,7 +121,6 @@ public class QMUIDisplayHelper {
                     sLandscapeRealSizeCache = result;
                 }
             }
-            return result;
         } else {
             result = sPortraitRealSizeCache;
             if (result == null) {
@@ -134,8 +130,8 @@ public class QMUIDisplayHelper {
                     sPortraitRealSizeCache = result;
                 }
             }
-            return result;
         }
+        return result;
     }
 
     private static int[] doGetRealScreenSize(Context context) {
@@ -252,12 +248,8 @@ public class QMUIDisplayHelper {
         //通过判断设备是否有返回键、菜单键(不是虚拟键,是手机屏幕外的按键)来确定是否有navigation bar
         boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-
-        if (!hasMenuKey && !hasBackKey) {
-            // 做任何你需要做的,这个设备有一个导航栏
-            return true;
-        }
-        return false;
+// 做任何你需要做的,这个设备有一个导航栏
+        return (!hasMenuKey && !hasBackKey);
     }
 
     /**
@@ -343,8 +335,8 @@ public class QMUIDisplayHelper {
         }
         return -1;
     }
-
-    public static final boolean hasCamera(Context context) {
+    
+    public static boolean hasCamera(Context context) {
         if (sHasCamera == null) {
             PackageManager pckMgr = context.getPackageManager();
             boolean flag = pckMgr
@@ -356,7 +348,7 @@ public class QMUIDisplayHelper {
         }
         return sHasCamera;
     }
-
+    
     /**
      * 是否有硬件menu
      *

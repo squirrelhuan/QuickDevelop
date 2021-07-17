@@ -86,19 +86,15 @@ public class QDKeyboardView extends KeyboardView {
             }
         } else if (key.codes[0] == -3) {
             hideDrawable = getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
-            if (isCap) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (isCap) {
                     hideDrawable.setTint(Color.WHITE);
-                }
-                drawKeyBackground(R.drawable.keyboard_change, canvas, key);
-                drawTextAndIcon(canvas, key, hideDrawable);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                } else {
                     hideDrawable.setTint(Color.BLACK);
                 }
-                drawKeyBackground(R.drawable.keyboard_change, canvas, key);
-                drawTextAndIcon(canvas, key, hideDrawable);
             }
+            drawKeyBackground(R.drawable.keyboard_change, canvas, key);
+            drawTextAndIcon(canvas, key, hideDrawable);
         }
         if (key.codes[0] == 66 || key.codes[0] == -4) {
             //returnDrawable = getResources().getDrawable(R.drawable.ic_keyboard_return_white_24dp);

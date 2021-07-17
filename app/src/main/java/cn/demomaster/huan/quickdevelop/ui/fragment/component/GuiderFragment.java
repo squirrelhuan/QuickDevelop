@@ -131,7 +131,7 @@ public class GuiderFragment extends BaseFragment {
         });
     }
 
-    String tips[] = {"点击按钮关闭引导！", "点击提示框关闭引导", "这里是文本说明区域，点击任意位置关闭提示", "椭圆提示框", "这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
+    String[] tips = {"点击按钮关闭引导！", "点击提示框关闭引导", "这里是文本说明区域，点击任意位置关闭提示", "椭圆提示框", "这是一段很长的文本内容，入乐的叫歌，不入乐的叫诗（或词）。入乐的歌在感情抒发、形象塑造上和诗没有任何区别，但在结构上、节奏上要受音乐的制约。。。"};
 
     private void showGuider(View view, String tip, GuiderModel.TouchType touchType, GuiderModel.SHAPE shape) {
         GuiderModel guiderModel = new GuiderModel();

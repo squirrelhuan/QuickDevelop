@@ -1,7 +1,5 @@
 package cn.demomaster.huan.quickdevelop;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.os.Bundle;
 import android.view.View;

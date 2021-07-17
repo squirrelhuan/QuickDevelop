@@ -22,9 +22,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
+import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.ViewHolder> {
@@ -110,7 +110,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             public void onClick(View v) {
                                 try {
                                     if (Fragment.class.isAssignableFrom(clazz)) {
-                                        ((QDActivity) context).getFragmentHelper().startFragment((QDFragment) clazz.newInstance());
+                                        ((QDActivity) context).getFragmentHelper().startFragment((QuickFragment) clazz.newInstance());
                                     } else if (Activity.class.isAssignableFrom(clazz)) {
                                         ((QDActivity) context).startActivity(clazz);
                                     }

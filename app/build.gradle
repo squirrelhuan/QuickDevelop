@@ -1,5 +1,17 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.didi.dokit'
+ext {
+    DeviceType = "0"//0 是8口机，1是48口机
+    ApkVersionCode_V8 = 3
+    ApkVersionName_V8 = "1.0.3"
+}
+def getApkVersionName() {
+    println("getApkVersionName")
+    return getDeviceType() == "0" ? ApkVersionName_V8 : ApkVersionName_V8
+}
+def getDeviceType() {
+    return DeviceType
+}
 android {
     compileSdkVersion 30
     buildToolsVersion = '30.0.2'
@@ -8,8 +20,8 @@ android {
         applicationId "cn.demomaster.huan.quickdevelop"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode ApkVersionCode_V8
+        versionName ApkVersionName_V8
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         externalNativeBuild {
@@ -28,6 +40,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all {
+                variant -> variant.outputs.all {
+                    /* def apkName = "plugin.apk"
+                     outputFileName = apkName*/
+                    /* outputFileName = "plugin_${defaultConfig.versionName}.apk"*/
+                    outputFileName = "${getApkVersionName()}.apk"
+                }
+            }
         }
         //友盟分享
         debug {

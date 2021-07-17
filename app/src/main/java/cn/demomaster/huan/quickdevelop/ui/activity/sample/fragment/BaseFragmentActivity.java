@@ -8,8 +8,8 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.RouterFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
 @ActivityPager(name = "BaseFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class BaseFragmentActivity extends QDActivity {
@@ -22,7 +22,6 @@ public class BaseFragmentActivity extends QDActivity {
         view.setId(getContentViewId());*/
         setContentView(null);
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        QDLogger.i("BaseFragmentActivity onCreate");
         RouterFragment f1 = new RouterFragment();
         startFragment(f1,getContentViewId());
         //开启事务，fragment的控制是由事务来实现的
@@ -58,13 +57,8 @@ public class BaseFragmentActivity extends QDActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.i("BaseFragmentActivity onKeyDown"+keyCode);
+        QDLogger.i("keyCode="+keyCode);
         return super.onKeyDown(keyCode, event);
     }
 }

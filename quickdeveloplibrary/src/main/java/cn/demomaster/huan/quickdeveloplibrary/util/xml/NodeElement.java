@@ -7,8 +7,6 @@ import org.xml.sax.Attributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.demomaster.qdlogger_library.QDLogger;
-
 public class NodeElement {
     private String nodeName;
     private String uri;

@@ -32,7 +32,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_stack_sliding, null);
+        View mView = inflater.inflate(R.layout.fragment_layout_stack_sliding, null);
         return mView;
     }
 

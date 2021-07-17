@@ -3,8 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.os.Handler;
 
-import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
-import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 //import static cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences.Message_Code_Last_Time;
 
@@ -96,8 +95,7 @@ public class QDTimer implements OnReleaseListener {
     //时间戳转字符串
     public static long getSecond(long diff) {
         //以秒为单位
-        Long second = (diff / 1000);
-        return second;
+        return (diff / 1000);
     }
 
     @Override
@@ -105,7 +103,7 @@ public class QDTimer implements OnReleaseListener {
         handler.removeCallbacksAndMessages(null);
     }
 
-    public static interface OnTimerListener {
+    public interface OnTimerListener {
         //读秒状态不可点击
         void onTimeChange(long time);
     }

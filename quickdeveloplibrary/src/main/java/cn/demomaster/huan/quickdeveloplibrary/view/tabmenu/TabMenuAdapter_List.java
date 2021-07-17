@@ -15,7 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
+
+import static cn.demomaster.qdlogger_library.QDLogger.TAG;
 
 
 /**
@@ -40,11 +41,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
         TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
         //判断单选还是多选
         selectCount = tabMenuModel.getSelectCount();
-        if (selectCount == 1) {
-            isSingle = true;
-        } else {
-            isSingle = false;
-        }
+        isSingle = (selectCount == 1);
 
         //遍历循环初始化viewData
         tabListViewItems.clear();
@@ -53,7 +50,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
             item.setPosition(i);
             item.setItemName(tabMenuModel.getTabItems()[i]);
             if (selectCount < tabMenuModel.getSelectDeftData().size()) {
-                Log.e(TAG.DEF, "默认选中个数不能超过最大个数");
+                Log.e(TAG, "默认选中个数不能超过最大个数");
                 return;
             }
             if (tabMenuModel.getSelectDeftData() != null) {

@@ -36,7 +36,7 @@ public class ToStringConverterFactory extends Converter.Factory {
         if (String.class.equals(type)) {
             return new Converter<String, RequestBody>() {
                 @Override
-                public RequestBody convert(String value) throws IOException {
+                public RequestBody convert(String value) {
                     return RequestBody.create(MEDIA_TYPE, value);
                 }
             };

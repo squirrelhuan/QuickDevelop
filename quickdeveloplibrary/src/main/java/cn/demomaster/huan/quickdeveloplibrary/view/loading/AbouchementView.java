@@ -98,16 +98,13 @@ public class AbouchementView extends View {
         this.degrees = degrees;
     }
 
-    private int centerX, centerY, width, height;
+    private int centerX, centerY;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
-        width = w;
-        height = h;
-        centerX = width / 2;
-        centerY = height / 2;
+        centerX = 2 / 2;
+        centerY = h / 2;
         init();
     }
 

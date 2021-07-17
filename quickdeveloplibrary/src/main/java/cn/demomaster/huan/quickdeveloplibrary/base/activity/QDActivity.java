@@ -1,9 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.base.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -14,146 +12,27 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.FragmentHelper;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ActionBarTool;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
+import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.changeAppLanguageAndRefreshUI;
 
 @ActivityPager(name = "QDActivity", preViewClass = StateView.class, resType = ResType.Custome)
-public class QDActivity extends AppCompatActivity implements QDActivityInterface {
-    public static String TAG = "CGQ";
-    public AppCompatActivity mContext;
-
-    public View getHeaderlayout() {
-        return View.inflate(this,R.layout.qd_activity_actionbar_common,null);
-    }
-
-    @Override
-    public void setContentView(int layoutResID) {
-        initQDContentView(layoutResID);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        initQDContentView(view);
-    }
-
-    private ActionBarTool actionBarTool;
-
-    //获取自定义导航
-    public ActionBarTool getActionBarTool() {
-        if (actionBarTool == null) {
-            actionBarTool = new ActionBarTool(this);
-        }
-        return actionBarTool;
-    }
-
-    private void initQDContentView(View view) {
-        if (isUseActionBarLayout()) {//是否使用自定义导航栏
-            StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
-            //actionBarLayout = getActionBarLayout(view);
-            getActionBarTool().setContentView(view);
-            getActionBarTool().setActionView(getHeaderlayout());
-            View view1 = getActionBarTool().inflateView();
-            ImageTextView imageTextView = getActionBarTool().getLeftView();
-            if (imageTextView != null) {
-                imageTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
-            }
-            super.setContentView(view1);
-        } else {
-            super.setContentView(view);
-        }
-        //bind在setContentView之后
-        //ButterKnife.bind(this);
-    }
-
-    //public LayoutInflater mInflater;
-    private void initQDContentView(int layoutResID) {
-        // mInflater = LayoutInflater.from(this);
-        View view = getLayoutInflater().inflate(layoutResID, null);
-        initQDContentView(view);
-        initContentView();
-    }
-
-    public void initContentView() {
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle(title);
-        if (actionBarTool != null) {
-            actionBarTool.setTitle(title);
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        mContext = this;
-        super.onCreate(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-        if (getApplicationContext() != null && getApplicationContext() instanceof QDApplication) {
-            StatusBarUtil.transparencyBar(new WeakReference<Activity>(mContext));
-        }
-        //changeAppLanguage(this);
-    }
-    
-    private FragmentHelper fragmentHelper;
-    public FragmentHelper getFragmentHelper() {
-        if (fragmentHelper == null) {
-            fragmentHelper = new FragmentHelper(mContext);
-        }
-        return fragmentHelper;
-    }
-
-    public void startFragment(QDFragment fragment, int parentId) {
-        getFragmentHelper().startFragment(fragment, parentId);
-    }
-
-    public void startActivity(Class<?> clazz) {
-        startActivity(clazz, null);
-    }
-
-    public void startActivity(Class<?> clazz, Bundle bundle) {
-        Intent intent = new Intent(this, clazz);
-        if (bundle != null) intent.putExtras(bundle);
-        startActivity(intent);
-        mContext.overridePendingTransition(R.anim.translate_from_right_to_left_enter, R.anim.anim_null);
-    }
-
-    //设置导航栏透明
-    public void transparentBar() {
-        StatusBarUtil.transparencyBar(new WeakReference<Activity>(this));
-    }
+public class QDActivity extends QuickActivity {
 
     /**
      * 动态设置状态栏的显示隐藏
@@ -172,27 +51,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     public int getContentViewId() {
         return android.R.id.content;//R.id.qd_fragment_content_view;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        //QDLogger.d("getAction=" + keyCode + ",event=" + event);
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (fragmentHelper != null) {
-                if (!fragmentHelper.onKeyDown(mContext, keyCode, event)) {
-                    return super.onKeyDown(keyCode, event);
-                } else {
-                    return true;
-                }
-            }
-        }
-        //QDLogger.d("onKeyDown=" + true);
-        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -238,7 +96,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
 
     /**
      * 获取InputMethodManager，隐藏软键盘
-     *
      * @param token
      */
     private void hideKeyboard(IBinder token) {
@@ -246,16 +103,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
-    }
-
-    ///是否使用自定义导航
-    public boolean isUseActionBarLayout() {
-        return true;
-    }
-
-    @Override
-    public void onClickBack() {
-        finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -277,9 +124,6 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
         } catch (Exception e) {
             QDLogger.e(e);
         }*/
-        if(EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 
     /**
@@ -336,11 +180,5 @@ public class QDActivity extends AppCompatActivity implements QDActivityInterface
             photoHelper = new PhotoHelper(mContext);
         }
         return photoHelper;
-    }
-
-    @Override
-    public void finish() {
-        QDActivityManager.destroyObject(this);
-        super.finish();
     }
 }

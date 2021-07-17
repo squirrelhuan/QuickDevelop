@@ -42,7 +42,7 @@ public class TestMappedByteBuffer {
                          DataInputStream dis = new DataInputStream(fis);
                          FileOutputStream fos = new FileOutputStream(
                                  "src/a.txt");
-                         DataOutputStream dos = new DataOutputStream(fos);) {
+                         DataOutputStream dos = new DataOutputStream(fos)) {
 
                         byte b = (byte) 0;
                         for (int i = 0; i < length / 2; i++) {
@@ -81,7 +81,7 @@ public class TestMappedByteBuffer {
             new Tester("Mapped PRIVATE") {
                 public void test() {
                     try (FileChannel channel = FileChannel.open(Paths.get("src/c.txt"),
-                            StandardOpenOption.READ, StandardOpenOption.WRITE);) {
+                            StandardOpenOption.READ, StandardOpenOption.WRITE)) {
                         MappedByteBuffer mapBuffer = channel.map(FileChannel.MapMode.PRIVATE, 0, length);
                         char c = 'C';
                         for (int i = 0; i < length / 2; i++) {

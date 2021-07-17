@@ -30,6 +30,7 @@ public class Application extends QDApplication {
     public void onCreate() {
         super.onCreate();
         QDLogger.init(this, "/qdlogger/");
+        QDLogger.setFouceUseExternalStorage(true);
         quickDb = new QuickDbHelper(this, "quickdev.db", null, 10);
 
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件

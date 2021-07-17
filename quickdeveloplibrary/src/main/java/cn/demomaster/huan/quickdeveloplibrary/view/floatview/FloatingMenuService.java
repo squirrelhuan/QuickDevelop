@@ -8,15 +8,10 @@ import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView;
 
 import static cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageMenuView.SquareImageMenuView_X_SP;

@@ -17,7 +17,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -31,7 +30,6 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class QDWebView extends WebView {
-    private Context mContext;
     private String mUrl = "http://www.demomaster.cn";
 
     public QDWebView(Context context) {
@@ -70,8 +68,7 @@ public class QDWebView extends WebView {
     }
 
     private void init() {
-        mContext = getContext();
-        progressHeight = DisplayUtil.dip2px(mContext, 2);//进度条默认高度
+        progressHeight = DisplayUtil.dip2px(getContext(), 2);//进度条默认高度
         QDWebChromeClient qdWebCromeClient = new QDWebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -114,7 +111,7 @@ public class QDWebView extends WebView {
         // 通过addJavascriptInterface()将Java对象映射到JS对象
         //参数1：Javascript对象名
         //参数2：Java对象名
-        addJavascriptInterface(new AndroidtoJs(mContext), "app");//AndroidtoJS类对象映射到js的test对象
+        addJavascriptInterface(new AndroidtoJs(getContext()), "app");//AndroidtoJS类对象映射到js的test对象
 
         // 设置可以支持缩放
         getSettings().setSupportZoom(true);
@@ -263,10 +260,8 @@ public class QDWebView extends WebView {
     public void loadUrl(String url) {
         super.loadUrl(url);
     }
-
-
-    // 继承自Object类
-    public class AndroidtoJs extends Object {
+    
+    public class AndroidtoJs {
         Context context;
 
         public AndroidtoJs(Context context) {

@@ -12,7 +12,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,8 +111,7 @@ public class AccessibilityHelper {
         AccessibilityServiceInfo serviceInfo = qdAccessibilityService.getServiceInfo();
         if (serviceInfo != null) {
             addPackagesToMap(serviceInfo.packageNames);
-            String[] packageNameNew = getPackagesFromMap();
-            serviceInfo.packageNames = packageNameNew;
+            serviceInfo.packageNames = getPackagesFromMap();
             qdAccessibilityService.setServiceInfo(serviceInfo);
         }
     }
@@ -124,7 +122,7 @@ public class AccessibilityHelper {
         try {
             String targetID = context.getPackageName() + "/" + serviceClassName;
             if (getService() != null) {
-                QDLogger.i(context.getApplicationContext(), "无障碍服务已开启" + targetID);
+                QDLogger.i( "无障碍服务已开启" + targetID);
                 return;
             }
             ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -238,9 +236,6 @@ public class AccessibilityHelper {
                     return true;
                 }
             }
-        } else {
-            //QDLogger.e("【运行中】无障碍服务：null");
-            return false;
         }
         return false;
     }

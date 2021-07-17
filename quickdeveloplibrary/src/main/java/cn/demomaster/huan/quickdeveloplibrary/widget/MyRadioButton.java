@@ -6,24 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Checkable;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-
-import java.lang.reflect.Field;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButton {
     public MyRadioButton(Context context) {

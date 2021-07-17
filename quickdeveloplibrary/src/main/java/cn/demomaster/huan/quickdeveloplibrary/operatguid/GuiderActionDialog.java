@@ -2,26 +2,13 @@ package cn.demomaster.huan.quickdeveloplibrary.operatguid;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.text.TextUtils;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 
 /**
  * Created by Squirrel桓 on 2019/1/7.
@@ -94,13 +81,7 @@ public class GuiderActionDialog extends Dialog {
         void onFinish();
     }
 
-    @Override
-    public void show() {
-        super.show();
-
-    }
-
-    public static enum StateType {
+    public enum StateType {
         COMPLETE, WARNING, ERROR, LOADING, IMAGE, TEXT, TOPIMAGE, LEFTIMAGE
     }
 

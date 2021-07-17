@@ -1,24 +1,19 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import java.nio.IntBuffer;
-
-import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.generateColorBitmap;
 
@@ -49,10 +44,8 @@ public class GroundGlassUtil implements OnReleaseListener {
     }
 
     public void setTargetView(View targetView) {
-
         this.targetView = targetView;
-
-        QDLogger.println("targetViewId=" + targetView.getId());
+        //QDLogger.println("targetViewId=" + targetView.getId());
         if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
             backgroundViewParent = findBackgroundViewParent(backgroundView);
         }
@@ -60,7 +53,7 @@ public class GroundGlassUtil implements OnReleaseListener {
             @Override
             public void onGlobalLayout() {
                 targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                QDLogger.println("OnGlobalLayoutListener targetView");
+                //QDLogger.println("OnGlobalLayoutListener targetView");
                 invalidate();
             }
         });
@@ -68,7 +61,7 @@ public class GroundGlassUtil implements OnReleaseListener {
             @Override
             public void onGlobalLayout() {
                 //targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
+                //QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
                 invalidate();
             }
         });
@@ -115,7 +108,7 @@ public class GroundGlassUtil implements OnReleaseListener {
             @Override
             public void onGlobalLayout() {
                 view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                QDLogger.println("OnGlobalLayoutListener backgroundView");
+                //QDLogger.println("OnGlobalLayoutListener backgroundView");
                 invalidate();
             }
         });
@@ -175,9 +168,9 @@ public class GroundGlassUtil implements OnReleaseListener {
         if (getBackgroundView() != null && targetView != null) {
             //模糊背景
             long t1 = System.currentTimeMillis();
-            QDLogger.println("bitmap w1=：" + bitmap.getWidth());
+            //QDLogger.println("bitmap w1=：" + bitmap.getWidth());
             bitmap = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3);
-            QDLogger.println("bitmap w2=：" + bitmap.getWidth());
+            //QDLogger.println("bitmap w2=：" + bitmap.getWidth());
             bitmap = BlurUtil.doBlur(bitmap, radius, 0.2f);
             if (bitmap == null) {
                 return;
@@ -189,12 +182,12 @@ public class GroundGlassUtil implements OnReleaseListener {
                 Bitmap backgroundBitmap = generateColorBitmap(bitmap.getWidth(), bitmap.getHeight(), backgroundColor);
                 //添加背景色
                 bitmap = mergeBitmap(bitmap, backgroundBitmap);
-                long t3 = System.currentTimeMillis();
-                QDLogger.println("添加背景色用时：" + (t3 - t2));
+                //long t3 = System.currentTimeMillis();
+                //QDLogger.println("添加背景色用时：" + (t3 - t2));
             }
             //bitmap = getAlplaBitmap(bitmap, 80);
             if (bitmap != null) {
-                targetView.setBackground(new BitmapDrawable(bitmap));
+                targetView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
             }
         }
     }
@@ -219,7 +212,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         }
         mBackgroundBitmap = backgroundBitmap;
         long t2 = System.currentTimeMillis();
-        QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
+        //QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
         return b ? null : backgroundBitmap;
     }
 
@@ -237,10 +230,8 @@ public class GroundGlassUtil implements OnReleaseListener {
         //QDLogger.println("x=" + location_background[0] + ",y=" + location_background[1]);
 
         int[] location_target = new int[2];
-        //tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
         targetView.getLocationOnScreen(location_target);//获取在整个屏幕内的绝对坐标
         Rect rect_target = new Rect(location_target[0], location_target[1], location_target[0] + targetView.getWidth(), location_target[1] + targetView.getHeight());
-
         //QDLogger.println("x2=" + location_target[0] + ",y2=" + location_target[1]);
 
         //获取绝对坐标的交集
@@ -288,15 +279,14 @@ public class GroundGlassUtil implements OnReleaseListener {
      * @return
      */
     private boolean compare2Image(Bitmap bmp1, Bitmap bmp2) {
+        if (bmp1 == null && bmp2 == null) {
+            return true;
+        } else if (bmp1 == null || bmp2 == null) {
+            return false;
+        }
         int width = bmp1.getWidth();
         int height = bmp1.getHeight();
         if (width != bmp2.getWidth() || height != bmp2.getHeight()) {
-            return false;
-        }
-        if (bmp1 == null && bmp2 == null) {
-            return true;
-        }
-        if (bmp1 == null || bmp2 == null) {
             return false;
         }
 /*
@@ -311,8 +301,8 @@ public class GroundGlassUtil implements OnReleaseListener {
         int[] pixels2 = new int[pixelCount];
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float density = displayMetrics.density;
-        int setp = (int) Math.max(density, 1);
-        QDLogger.e("density=" + density + ",setp=" + setp);
+        int setp = (int) Math.max(density, 1)*3;
+        //QDLogger.e("density=" + density + ",setp=" + setp);
 
         bmp1.getPixels(pixels1, 0, width, 0, 0, width, height);
         bmp2.getPixels(pixels2, 0, width, 0, 0, width, height);
@@ -414,20 +404,15 @@ public class GroundGlassUtil implements OnReleaseListener {
             view.setDrawingCacheEnabled(true);
             Bitmap bitmap = view.getDrawingCache();
             // QDLogger.e("bitmap寬度=" + bitmap.getWidth() + ",高度=" + bitmap.getHeight());
-            // QDLogger.e("width=" + width + ",height=" + height);
             if (x < 0 || x > bitmap.getWidth()) {
                 return null;
-            }
-            if (y < 0 || y > bitmap.getHeight()) {
+            } else if (y < 0 || y > bitmap.getHeight()) {
+                return null;
+            } else if ((x + width) > bitmap.getWidth()) {
+                return null;
+            } else if ((y + height) > bitmap.getHeight()) {
                 return null;
             }
-            if ((x + width) > bitmap.getWidth()) {
-                return null;
-            }
-            if ((y + height) > bitmap.getHeight()) {
-                return null;
-            }
-            // 去掉状态栏
             Bitmap bmp = Bitmap.createBitmap(bitmap, x, y, width, height);
             // 销毁缓存信息
             view.destroyDrawingCache();

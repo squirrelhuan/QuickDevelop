@@ -31,6 +31,8 @@ import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
+import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
+
 /**
  * 生命周期悬浮窗
  * Created
@@ -157,7 +159,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
     static DebugFloating2 debugFloating2;
 
     public void showConsole(Activity context) {
-        if (QDAppInfoUtil.isApkInDebug(context)) {
+        if (isDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //showWindow(context.getApplicationContext(), DebugFloatingService.class);
             } else {

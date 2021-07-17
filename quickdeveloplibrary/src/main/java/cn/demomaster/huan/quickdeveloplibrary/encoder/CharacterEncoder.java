@@ -25,12 +25,12 @@
 
 package cn.demomaster.huan.quickdeveloplibrary.encoder;
 
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -81,7 +81,7 @@ public abstract class CharacterEncoder
 	 * 88 * Encode the prefix for the entire buffer. By default is simply 89 *
 	 * opens the PrintStream for use by the other functions. 90
 	 */
-	protected void encodeBufferPrefix(OutputStream aStream) throws IOException
+	protected void encodeBufferPrefix(OutputStream aStream) 
 	{
 		pStream = new PrintStream(aStream);
 	}
@@ -89,7 +89,7 @@ public abstract class CharacterEncoder
 	/**
 	 * 96 * Encode the suffix for the entire buffer. 97
 	 */
-	protected void encodeBufferSuffix(OutputStream aStream) throws IOException
+	protected void encodeBufferSuffix(OutputStream aStream) 
 	{
 	}
 
@@ -97,7 +97,6 @@ public abstract class CharacterEncoder
 	 * 102 * Encode the prefix that starts every output line. 103
 	 */
 	protected void encodeLinePrefix(OutputStream aStream, int aLength)
-			throws IOException
 	{
 	}
 
@@ -105,20 +104,20 @@ public abstract class CharacterEncoder
 	 * 109 * Encode the suffix that ends every output line. By default 110 *
 	 * this method just prints a <newline> into the output stream. 111
 	 */
-	protected void encodeLineSuffix(OutputStream aStream) throws IOException
+	protected void encodeLineSuffix(OutputStream aStream)
 	{
 		pStream.println();
 	}
 
 	/** Encode one "atom" of information into characters. */
-	abstract protected void encodeAtom(OutputStream aStream, byte someBytes[],
+	abstract protected void encodeAtom(OutputStream aStream, byte[] someBytes,
 			int anOffset, int aLength) throws IOException;
 
 	/**
 	 * 121 * This method works around the bizarre semantics of
 	 * BufferedInputStream's 122 * read method. 123
 	 */
-	protected int readFully(InputStream in, byte buffer[])
+	protected int readFully(InputStream in, byte[] buffer)
 			throws IOException
 	{
 		for (int i = 0; i < buffer.length; i++)
@@ -142,7 +141,7 @@ public abstract class CharacterEncoder
 	{
 		int j;
 		int numBytes;
-		byte tmpbuffer[] = new byte[bytesPerLine()];
+		byte[] tmpbuffer = new byte[bytesPerLine()];
 
 		encodeBufferPrefix(outStream);
 
@@ -180,7 +179,7 @@ public abstract class CharacterEncoder
 	 * 173 * Encode the buffer in <i>aBuffer</i> and write the encoded 174 *
 	 * result to the OutputStream <i>aStream</i>. 175
 	 */
-	public void encode(byte aBuffer[], OutputStream aStream) throws IOException
+	public void encode(byte[] aBuffer, OutputStream aStream) throws IOException
 	{
 		ByteArrayInputStream inStream = new ByteArrayInputStream(aBuffer);
 		encode(inStream, aStream);
@@ -190,7 +189,7 @@ public abstract class CharacterEncoder
 	 * 183 * A 'streamless' version of encode that simply takes a buffer of 184
 	 * * bytes and returns a string containing the encoded buffer. 185
 	 */
-	public String encode(byte aBuffer[])
+	public String encode(byte[] aBuffer)
 	{
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		ByteArrayInputStream inStream = new ByteArrayInputStream(aBuffer);
@@ -298,7 +297,7 @@ public abstract class CharacterEncoder
 	{
 		int j;
 		int numBytes;
-		byte tmpbuffer[] = new byte[bytesPerLine()];
+		byte[] tmpbuffer = new byte[bytesPerLine()];
 
 		encodeBufferPrefix(outStream);
 
@@ -333,7 +332,7 @@ public abstract class CharacterEncoder
 	 * 306 * Encode the buffer in <i>aBuffer</i> and write the encoded 307 *
 	 * result to the OutputStream <i>aStream</i>. 308
 	 */
-	public void encodeBuffer(byte aBuffer[], OutputStream aStream)
+	public void encodeBuffer(byte[] aBuffer, OutputStream aStream)
 			throws IOException
 	{
 		ByteArrayInputStream inStream = new ByteArrayInputStream(aBuffer);
@@ -344,7 +343,7 @@ public abstract class CharacterEncoder
 	 * 316 * A 'streamless' version of encode that simply takes a buffer of 317
 	 * * bytes and returns a string containing the encoded buffer. 318
 	 */
-	public String encodeBuffer(byte aBuffer[])
+	public String encodeBuffer(byte[] aBuffer)
 	{
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		ByteArrayInputStream inStream = new ByteArrayInputStream(aBuffer);

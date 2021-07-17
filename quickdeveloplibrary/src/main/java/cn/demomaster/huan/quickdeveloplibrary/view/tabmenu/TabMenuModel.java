@@ -130,7 +130,7 @@ public class TabMenuModel {
         this.onCreatTabContentView = onCreatTabContentView;
     }
 
-    public static interface OnCreatTabContentView {
+    public interface OnCreatTabContentView {
         void onCreat(View root);
     }
 }

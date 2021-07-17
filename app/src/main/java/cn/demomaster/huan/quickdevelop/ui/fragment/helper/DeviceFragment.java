@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -226,17 +225,17 @@ public class DeviceFragment extends BaseFragment {
     private void registerPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionHelper.PermissionListener() {
-                @Override
-                public void onPassed() {
-                    print();
-                }
+                PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionHelper.PermissionListener() {
+                    @Override
+                    public void onPassed() {
+                        print();
+                    }
 
-                @Override
-                public void onRefused() {
+                    @Override
+                    public void onRefused() {
 
-                }
-            });
+                    }
+                });
         } else {
             print();
         }

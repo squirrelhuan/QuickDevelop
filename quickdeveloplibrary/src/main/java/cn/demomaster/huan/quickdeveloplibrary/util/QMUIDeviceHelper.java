@@ -8,10 +8,9 @@ import android.content.res.Configuration;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-
-import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +34,7 @@ public class QMUIDeviceHelper {
     private final static String ZTEC2016 = "zte c2016";
     private final static String ZUKZ1 = "zuk z1";
     private final static String ESSENTIAL = "essential";
-    private final static String MEIZUBOARD[] = {"m9", "M9", "mx", "MX"};
+    private final static String[] MEIZUBOARD = {"m9", "M9", "mx", "MX"};
     private static String sMiuiVersionName;
     private static String sFlymeVersionName;
     private static boolean sIsTabletChecked = false;

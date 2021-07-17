@@ -97,8 +97,7 @@ public class LoadingDownLoadView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
+                progress = (float) animation.getAnimatedValue();
                 //Log.d(TAG, "progress=" + progress);
                 if (progress >= end) {
                     isForward = !isForward;

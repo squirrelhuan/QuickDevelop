@@ -1,15 +1,18 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.View;
-import android.widget.ImageView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -18,16 +21,14 @@ import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PreviewFragment;
 
-import static cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS;
-
 /**
  *
  */
 public class PreviewActivity extends QDActivity {
     //private PhotoView pv_image;
-    private QDViewPager vp_image;
+    private ViewPager2 vp_image;
     private FragmentManager mFragmentManager;
-    private FragmentPagerAdapter fragmentAdapter;
+    private FragmentStateAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +66,24 @@ public class PreviewActivity extends QDActivity {
     }
 
     private ArrayList<Image> images;
+    ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+        }
 
+        @Override
+        public void onPageSelected(int position) {
+            super.onPageSelected(position);
+            if(images!=null)
+            getActionBarTool().setTitle(((position + 1) + "") + ("/" + images.size()));
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            super.onPageScrollStateChanged(state);
+        }
+    };
     public void initViewPager(final int index) {
         if (images == null || images.size() == 0) {
             return;
@@ -73,48 +91,36 @@ public class PreviewActivity extends QDActivity {
         final int imageCount = images.size();
         getActionBarTool().setTitle((index + 1) + "/" + images.size());
         mFragmentManager = getSupportFragmentManager();
-        fragmentAdapter = new PictureFragmentAdapter(mFragmentManager, images);
+        fragmentAdapter = new PictureFragmentAdapter(this, images);
 
-        vp_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // getActionBarTool().getActionBarLayoutHeaderView().refreshStateBarColor();
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                getActionBarTool().setTitle(((position + 1) + "") + ("/" + imageCount));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        vp_image.unregisterOnPageChangeCallback(onPageChangeCallback);
+        vp_image.registerOnPageChangeCallback(onPageChangeCallback);
         vp_image.setAdapter(fragmentAdapter);
         vp_image.setCurrentItem(index);
     }
 
-    private class PictureFragmentAdapter extends FragmentPagerAdapter {
+    private class PictureFragmentAdapter extends FragmentStateAdapter {
 
         private ArrayList<Image> images;
 
-        public PictureFragmentAdapter(FragmentManager fm, ArrayList<Image> images) {
-            super(fm);
+        public PictureFragmentAdapter(@NonNull @NotNull FragmentActivity fragmentActivity, ArrayList<Image> images) {
+            super(fragmentActivity);
             this.images = images;
         }
 
+        @NonNull
+        @NotNull
         @Override
-        public Fragment getItem(int i) {
+        public Fragment createFragment(int position) {
             PreviewFragment fragment = new PreviewFragment();
             Bundle bundle = new Bundle();
-            bundle.putSerializable("image", images.get(i));
+            bundle.putSerializable("image", images.get(position));
             fragment.setArguments(bundle);
             return fragment;
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return images.size();
         }
     }

@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
-import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
 import io.reactivex.android.schedulers.AndroidSchedulers;

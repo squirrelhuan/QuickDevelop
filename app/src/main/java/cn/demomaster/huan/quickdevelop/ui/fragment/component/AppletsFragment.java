@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
 /**
@@ -77,7 +77,7 @@ public class AppletsFragment extends BaseFragment {
         }
         ViewGroup ll_menu_right = (ViewGroup) findViewById(R.id.ll_menu_right);
         View view_splitor = (View) findViewById(R.id.view_splitor);
-        if (isRootFragment) {
+        if (isRootFragment()) {
             if (btn_back != null) {
                 btn_back.setVisibility(View.GONE);
             }
@@ -98,7 +98,7 @@ public class AppletsFragment extends BaseFragment {
                 btn_back.setVisibility(View.VISIBLE);
             }
             if (ll_menu_right != null) {
-                ll_menu_right.setBackgroundDrawable(null);
+                ll_menu_right.setBackground(null);
             }
             if (view_splitor != null) {
                 view_splitor.setVisibility(View.GONE);
@@ -133,8 +133,8 @@ public class AppletsFragment extends BaseFragment {
         }
     }
 
-    private String[] titles = {"1", "2", "3", "4"};
-    private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
+    private final String[] titles = {"1", "2", "3", "4"};
+    private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
     private void startFragment() {
         getFragmentHelper().startFragment(new AppletsFragment());
@@ -145,7 +145,7 @@ public class AppletsFragment extends BaseFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (isRootFragment) {
+        if (isRootFragment()) {
             if (System.currentTimeMillis() - firstClickTime > 2000) {
                 QdToast.show(mContext, "再点击退出 activity");
                 firstClickTime = System.currentTimeMillis();

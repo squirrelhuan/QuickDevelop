@@ -172,7 +172,6 @@ public class QDRuntimeHelper {
             processResult.setCode(exitCode);
             if (exitCode == SUCCESS) {
                 QDLogger.i(Tag, SUCCESS_MESSAGE + cmd + ",Result=" + processResult.getResult());
-                return processResult;
             } else {
                 QDLogger.e(Tag, ERROR_MESSAGE + cmd + ",exitCode=" + exitCode + ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError() + "\n\r");
                 switch (exitCode) {
@@ -191,8 +190,8 @@ public class QDRuntimeHelper {
                         }
                         break;
                 }
-                return processResult;
             }
+            return processResult;
         } catch (Exception e) {
             QDLogger.e(Tag, "[" + cmd + "],Cause:" + e.getCause() + ",Message:" + e.getMessage());
             processResult.setCode(-1);
@@ -253,7 +252,6 @@ public class QDRuntimeHelper {
             processResult.setCode(exitCode);
             if (exitCode == SUCCESS) {
                 QDLogger.i(Tag, SUCCESS_MESSAGE + cmd + ",Result=" + processResult.getResult());
-                return processResult;
             } else {
                 QDLogger.e(Tag, ERROR_MESSAGE + cmd + ",exitCode=" + exitCode + ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError() + "\n\r");
                 switch (exitCode) {
@@ -272,8 +270,8 @@ public class QDRuntimeHelper {
                         }
                         break;
                 }
-                return processResult;
             }
+            return processResult;
         } catch (Exception e) {
             QDLogger.e(Tag, "[" + cmd + "],Cause:" + e.getCause() + ",Message:" + e.getMessage());
             processResult = new ProcessResult();
@@ -331,11 +329,11 @@ public class QDRuntimeHelper {
         this.onAdbReceiceListener = onAdbReceiceListener;
     }
 
-    public static interface OnReceiveListener {
+    public interface OnReceiveListener {
         void onReceive(ProcessResult result);
     }
 
-    public static interface OnAdbReceiceListener {
+    public interface OnAdbReceiceListener {
         void onFindDevices(List<DeviceModel> deviceModels);
     }
 

@@ -40,6 +40,6 @@ public class DialogActivityHelper {
     }
 
     public static void onDialogActivityDismiss(long id) {
-
+        
     }
 }

@@ -10,15 +10,14 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
 @ActivityPager(name = "ActionBar",preViewClass = ToggleButton.class,resType = ResType.Custome)
 public class ActionBarActivity extends QDActivity implements View.OnClickListener {
 
     private LinearLayout ll_root;
-    private SeekBar sb_background;
     Button btn_ac_01, btn_ac_02, btn_ac_03, btn_ac_04, btn_ac_05;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
 
 
         ll_root = findViewById(R.id.ll_root);
-        sb_background = findViewById(R.id.sb_background);
+        SeekBar sb_background = findViewById(R.id.sb_background);
         sb_background.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -74,7 +73,6 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
 
         //getActionBarLayout2();
-
 /*
         action_bar = findViewById(R.id.action_bar);
         findViewById(R.id.btn_NORMAL).setOnClickListener(new View.OnClickListener() {

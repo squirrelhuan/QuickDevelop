@@ -65,8 +65,8 @@ public class HookTest {
             ProcInterface other2 = (ProcInterface) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
                     new Class[]{ProcInterface.class}, new InvocationHandler() {
                         @Override
-                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            System.out.println("这是代理的对象呀 method=" + method);
+                        public Object invoke(Object proxy, Method method, Object[] args) {
+                            System.out.println("代理对象 method=" + method);
                             return null;
                         }
                     });

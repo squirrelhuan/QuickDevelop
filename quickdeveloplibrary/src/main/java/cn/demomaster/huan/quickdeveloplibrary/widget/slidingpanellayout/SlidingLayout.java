@@ -264,7 +264,7 @@ public class SlidingLayout extends LinearLayout {
         if (dy > 0) {
             dy2 = Math.min(dy, Math.max(0, (int) (currentY - minMarginTop)));
         } else if (dy < 0) {//往下滑,y的边界为titleHeight + headerHeight
-            if (ViewCompat.canScrollVertically(scrollView, dy)) {//当target能向下滑时
+            if (scrollView.canScrollVertically(dy)) {//当target能向下滑时
                 return;
             }
             dy2 = Math.max(dy, Math.min(0, (int) (currentY - maxMarginTop)));
@@ -288,7 +288,7 @@ public class SlidingLayout extends LinearLayout {
                         return true;
                     }
                 } else if (velocityY < 0) {//向下惯性滚动
-                    if (ViewCompat.canScrollVertically(scrollView, -1)) {//当target能向下滑时
+                    if (scrollView.canScrollVertically(-1)) {//当target能向下滑时
                         return false;
                     } else {
                         if (top < maxMarginTop) {
@@ -375,13 +375,13 @@ public class SlidingLayout extends LinearLayout {
          * @param panel    The child view that was moved
          * @param progress The new offset of this sliding pane within its range, from 0-1
          */
-        public void onScroll(View panel, float progress);
+        void onScroll(View panel, float progress);
 
         /**
          * Called when a sliding panel state changes
          *
          * @param panel The child view that was slid to an collapsed position
          */
-        public void onPanelStateChanged(View panel, PanelState previousState, PanelState newState);
+        void onPanelStateChanged(View panel, PanelState previousState, PanelState newState);
     }
 }

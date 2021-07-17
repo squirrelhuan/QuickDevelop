@@ -100,7 +100,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
      * 其中参数ch记录了这个属性值的内容
      */
     @Override
-    public void characters(char ch[], int start, int length) {
+    public void characters(char[] ch, int start, int length) {
         String content = new String(ch, start, length);
         //QDLogger.i(content);
     }
@@ -232,7 +232,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
         return newElement;
     }
 
-    private static String getMethodName(String fildeName) throws Exception {
+    private static String getMethodName(String fildeName) {
         byte[] items = fildeName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);
@@ -312,7 +312,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
         this.mOnParseCompleteListener = onParseCompleteListener;
     }
 
-    public static interface OnParseCompleteListener<T> {
+    public interface OnParseCompleteListener<T> {
         void onComplete(T result);
     }
 }

@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -11,10 +12,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,11 +26,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,7 +107,7 @@ public class QDFileUtil {
      * @throws IOException
      */
     public static void writeFileSdcardFile(String dirPath, String fileName,
-                                           String write_str, boolean append) throws IOException {
+                                           String write_str, boolean append) {
         //Environment.getExternalStorageDirectory(),
         File file = new File(dirPath + File.separator + fileName);
         writeFileSdcardFile(file, write_str, append);
@@ -149,7 +156,8 @@ public class QDFileUtil {
     }
 
     // 读SD中的文件
-    public static String readFileSdcardFile(File file) throws IOException {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String readFileSdcardFile(File file){
         if (file == null || !file.exists()) {
             return null;
         }
@@ -159,7 +167,7 @@ public class QDFileUtil {
             int length = fin.available();
             byte[] buffer = new byte[length];
             fin.read(buffer);
-            res = new String(buffer, "UTF-8");
+            res = new String(buffer, StandardCharsets.UTF_8);
             //res = EncodingUtils.getString(buffer, "UTF-8");
             fin.close();
         } catch (Exception e) {
@@ -222,7 +230,7 @@ public class QDFileUtil {
             is.close();
 
             // Convert the buffer into a string.
-            text = new String(buffer, "UTF-8");
+            text = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
             QDLogger.e(e);
         }
@@ -533,7 +541,7 @@ public class QDFileUtil {
         return dirPath;
     }
 
-    public static interface OnSearchListener {
+    public interface OnSearchListener {
         void onResult(QDFile qdFile);
     }
 
@@ -652,7 +660,7 @@ public class QDFileUtil {
      * @throws IOException
      */
     public static void writeFileSdcardFile(String filePath, String fileName,
-                                           String write_str) throws IOException {
+                                           String write_str) {
         try {
             File dir = new File(filePath);
             if (!dir.exists()) {
@@ -804,10 +812,7 @@ public class QDFileUtil {
     }
 
     public static boolean isSdcardExit() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            return true;
-        else
-            return false;
+        return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
     }
 
     public static Uri getUrifromFile(Context context, File file) {
@@ -829,4 +834,128 @@ public class QDFileUtil {
         }
     }
 
+    private static DecimalFormat fileIntegerFormat = new DecimalFormat("#0");
+    private static DecimalFormat fileDecimalFormat = new DecimalFormat("#0.#");
+    /**
+     * 单位换算
+     *
+     * @param size 单位为B
+     * @param isInteger 是否返回取整的单位
+     * @return 转换后的单位
+     */
+    public static String formatFileSize(long size, boolean isInteger) {
+        DecimalFormat df = isInteger ? fileIntegerFormat : fileDecimalFormat;
+        String fileSizeString = "0M";
+        if (size < 1024 && size > 0) {
+            fileSizeString = df.format((double) size) + "B";
+        } else if (size < 1024 * 1024) {
+            fileSizeString = df.format((double) size / 1024) + "K";
+        } else if (size < 1024 * 1024 * 1024) {
+            fileSizeString = df.format((double) size / (1024 * 1024)) + "M";
+        } else {
+            fileSizeString = df.format((double) size / (1024 * 1024 * 1024)) + "G";
+        }
+        return fileSizeString;
+    }
+    /**
+     * SDCARD是否存
+     */
+    public static boolean externalMemoryAvailable() {
+        return Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * 获取手机内部剩余存储空间
+     *
+     * @return
+     */
+    public static long getAvailableInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return availableBlocks * blockSize;
+    }
+
+    /**
+     * 获取手机内部总的存储空间
+     *
+     * @return
+     */
+    public static long getTotalInternalMemorySize() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long totalBlocks = stat.getBlockCount();
+        return totalBlocks * blockSize;
+    }
+
+    /**
+     * 获取SDCARD剩余存储空间
+     *
+     * @return
+     */
+    public static long getAvailableExternalMemorySize() {
+        if (externalMemoryAvailable()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long availableBlocks = stat.getAvailableBlocks();
+            return availableBlocks * blockSize;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * 获取SDCARD总的存储空间
+     *
+     * @return
+     */
+    public static long getTotalExternalMemorySize() {
+        if (externalMemoryAvailable()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long totalBlocks = stat.getBlockCount();
+            return totalBlocks * blockSize;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * 获取系统总内存
+     *
+     * @param context 可传入应用程序上下文。
+     * @return 总内存大单位为B。
+     */
+    public static long getTotalMemorySize(Context context) {
+        String dir = "/proc/meminfo";
+        try {
+            FileReader fr = new FileReader(dir);
+            BufferedReader br = new BufferedReader(fr, 2048);
+            String memoryLine = br.readLine();
+            String subMemoryLine = memoryLine.substring(memoryLine.indexOf("MemTotal:"));
+            br.close();
+            return Integer.parseInt(subMemoryLine.replaceAll("\\D+", "")) * 1024l;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取当前可用内存，返回数据以字节为单位。
+     *
+     * @param context 可传入应用程序上下文。
+     * @return 当前可用内存单位为B。
+     */
+    public static long getAvailableMemory(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(memoryInfo);
+        return memoryInfo.availMem;
+    }
 }

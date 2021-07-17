@@ -3,15 +3,14 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.ViewCompat;
-
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.widget.LinearLayout;
 
 /**
  * Created by Squirrel桓 on 2019/1/29.

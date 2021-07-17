@@ -94,7 +94,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
-        boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
+        boolean canScrollUp = target.canScrollVertically(1);//ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
         QDLogger.println("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 
@@ -180,7 +180,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
             View v = parent.getChildAt(i);
             if (v instanceof QdActionBarContainer) {
                 if (getChildRecyclerView((ViewGroup) v) == null) continue W;
-                boolean canScrollUp = ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
+                boolean canScrollUp = getChildRecyclerView((ViewGroup) v).canScrollVertically(1);//ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
                 if (canScrollUp) {//可上推
                     return (QdActionBarContainer) v;
                 }
@@ -252,7 +252,7 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
         //dy>0上推，dy<0下拉
         boolean canScrollDown = target.canScrollVertically(-1);//的值表示是否能向下滚动
         boolean isToped = !canScrollDown;//表示是否已经滚动到顶部
-        boolean canScrollUp = ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
+        boolean canScrollUp = target.canScrollVertically(1);//ViewCompat.canScrollVertically(target, 1);//的值表示是否能向上滚动
         boolean isBottomed = !canScrollUp;//表示已经滚动到底部
         QDLogger.println("isToped=" + isToped + ",isBottomed=" + isBottomed + ",child.getTop()=" + child.getTop());
 

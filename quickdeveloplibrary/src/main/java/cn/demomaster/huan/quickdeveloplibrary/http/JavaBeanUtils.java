@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.http;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 
 public class JavaBeanUtils {

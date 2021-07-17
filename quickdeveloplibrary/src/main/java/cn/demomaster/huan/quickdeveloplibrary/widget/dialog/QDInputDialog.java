@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -248,7 +247,6 @@ public class QDInputDialog extends AppCompatDialog {
         if (title != null) {
             textView = new EditText(getContext());
             //int i = textView.getInputType();
-            textView.setInputType(inputType);
             textView.setText(title);
             textView.setHint(hint);
             textView.setTextColor(color);
@@ -270,6 +268,7 @@ public class QDInputDialog extends AppCompatDialog {
             //
             textView.setGravity((int) viewGroup.getTag());
             viewGroup.addView(textView);
+            textView.setInputType(inputType);
         }
     }
 
@@ -299,11 +298,11 @@ public class QDInputDialog extends AppCompatDialog {
         }
     }
 
-    public static enum ShowType {
+    public enum ShowType {
         normal, noHeader, noFoot, onlyBody
     }
 
-    public static enum DataType {
+    public enum DataType {
         radio, checkbox, text, editor
     }
 
@@ -528,11 +527,16 @@ public class QDInputDialog extends AppCompatDialog {
             return new QDInputDialog(context, this);
         }
 
+        /**
+         *  设置不对可能会失效，有些参数需要组合在一起才生效。https://blog.csdn.net/atm008/article/details/51135069
+         * @param typeNumberFlagSigned
+         * @return
+         */
         public Builder setInputType(int typeNumberFlagSigned) {
             this.inputType = typeNumberFlagSigned;
             return this;
         }
-
+        
         public Builder setHint(String hint) {
             this.hint = hint;
             return this;

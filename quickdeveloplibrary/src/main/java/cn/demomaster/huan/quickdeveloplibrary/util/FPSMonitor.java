@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Choreographer;
@@ -20,7 +19,7 @@ public class FPSMonitor implements Choreographer.FrameCallback, Runnable {
 
     }
 
-    public static interface OnFramChangedListener {
+    public interface OnFramChangedListener {
         void onChanged(float frame);
     }
 

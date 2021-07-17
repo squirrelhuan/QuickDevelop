@@ -23,9 +23,4 @@ public class QDGridLayoutManager extends GridLayoutManager {
     public QDGridLayoutManager(Context context, int spanCount, int orientation, boolean reverseLayout) {
         super(context, spanCount, orientation, reverseLayout);
     }
-
-    @Override
-    public int getWidth() {
-        return super.getWidth();
-    }
 }

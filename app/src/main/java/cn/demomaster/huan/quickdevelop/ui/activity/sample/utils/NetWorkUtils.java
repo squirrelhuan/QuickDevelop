@@ -1,6 +1,9 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.utils;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 public class NetWorkUtils {
 	
@@ -32,6 +36,7 @@ public class NetWorkUtils {
 		return false;
 	}
 	
+	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	public static boolean isNetWork(){
 		 HttpURLConnection connection = null;
 	        InputStream is = null;
@@ -54,7 +59,7 @@ public class NetWorkUtils {
 	            if (connection.getResponseCode() == 200) {
 	                is = connection.getInputStream();
 	                // 封装输入流is，并指定字符集
-	                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+	                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 	                // 存放数据
 	                StringBuffer sbf = new StringBuffer();
 	                String temp = null;

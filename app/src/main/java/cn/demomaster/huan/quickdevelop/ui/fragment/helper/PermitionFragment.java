@@ -1,10 +1,7 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.quickpermission_library.PermissionHelper;
-import cn.demomaster.quickpermission_library.model.PermissionModel;
-import cn.demomaster.quickpermission_library.model.PermissionRequest;
 
 
 /**

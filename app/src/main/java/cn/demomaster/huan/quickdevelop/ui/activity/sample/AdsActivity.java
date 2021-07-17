@@ -5,24 +5,23 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
-import cn.demomaster.huan.quickdeveloplibrary.util.xml.NodeElement;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.AjsLayoutInflater;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.Element;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.NormalPageTransformer;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.ZoomOutPageTransformer;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.ZoomOutPageTransformer2;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.util.xml.NodeElement;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.Banner;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.NormalPageTransformer;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.ZoomOutPageTransformer;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.ZoomOutPageTransformer2;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.AjsLayoutInflater;
+import cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.Element;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.qdlayout.AjsLayoutInflater.generateLayout;
 

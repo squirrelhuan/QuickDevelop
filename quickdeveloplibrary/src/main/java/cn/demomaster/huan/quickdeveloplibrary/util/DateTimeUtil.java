@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -171,8 +170,7 @@ public class DateTimeUtil {
             throws ParseException {
         Date dateOld = new Date(currentTime); // 根据long类型的毫秒数生命一个date类型的时间
         String sDateTime = dateToString(dateOld, formatType); // 把date类型的时间转换为string
-        Date date = stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
-        return date;
+        return stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
     }
 
     // formatType格式为yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
@@ -226,8 +224,7 @@ public class DateTimeUtil {
         time.clear();
         time.set(Calendar.YEAR, year);
         time.set(Calendar.MONTH, month - 1);//注意,Calendar对象默认一月为0                 
-        int day = time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
-        return day;
+        return time.getActualMaximum(Calendar.DAY_OF_MONTH);//本月份的天数
     }
 
 
@@ -370,8 +367,7 @@ public class DateTimeUtil {
 
         //my_time_1 = year + "-" + month + "-" + day;
         //my_time_2 = hour + "-" + minute + "-" + second;
-        MyDate myDate = new MyDate(year, month, day, hour, minute, second);
-        return myDate;
+        return new MyDate(year, month, day, hour, minute, second);
     }
 
     public static class MyDate {

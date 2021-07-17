@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
-import android.app.Activity;
 import android.text.TextUtils;
 
 import java.util.regex.Matcher;
@@ -18,10 +17,7 @@ public class StringVerifyUtil {
      * @return
      */
     public static boolean validateTelePhone(String telephone) {
-        if (TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone)) {
-            return false;
-        }
-        return true;
+        return !(TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone));
     }
 
     /**
@@ -31,10 +27,7 @@ public class StringVerifyUtil {
      * @return
      */
     public static boolean validateMobilePhone(String telephone) {
-        if (TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone)) {
-            return false;
-        }
-        return true;
+        return !(TextUtils.isEmpty(telephone) || !isTelePhoneValid(telephone));
     }
 
     /**
@@ -44,10 +37,7 @@ public class StringVerifyUtil {
      * @return
      */
     public static boolean validateIdCard(String idNumber) {
-        if (TextUtils.isEmpty(idNumber) || !isIdCardValid(idNumber)) {
-            return false;
-        }
-        return true;
+        return !(TextUtils.isEmpty(idNumber) || !isIdCardValid(idNumber)) ;
     }
 
     /**
@@ -57,21 +47,15 @@ public class StringVerifyUtil {
      * @return
      */
     public static boolean validatePassword(String password) {
-        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
-            return false;
-        }
-        return true;
+        return !(TextUtils.isEmpty(password) || !isPasswordValid(password));
     }
 
     //手机格式验证
-    public static boolean validatelength(String telephone,int min,int max) {
-       if(TextUtils.isEmpty(telephone)){
-           return false;
-       }
-       if(telephone.length()>min&&telephone.length()<max){
-           return true;
-       }
-        return false;
+    public static boolean validatelength(String telephone, int min, int max) {
+        if (TextUtils.isEmpty(telephone)) {
+            return false;
+        }
+        return (telephone.length() > min && telephone.length() < max);
     }
 
     //手机格式验证
@@ -96,10 +80,10 @@ public class StringVerifyUtil {
     public static boolean isEmailValid(String email) {
         // 邮箱验证规则
         String regEx = "[a-zA-Z_]{0,}[0-9]{0,}@(([a-zA-z0-9]-*){1,}\\.){1,3}[a-zA-z\\-]{1,}";
-// 编译正则表达式
+        // 编译正则表达式
         Pattern pattern = Pattern.compile(regEx);
-// 忽略大小写的写法
-// Pattern pat = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE);
+        // 忽略大小写的写法
+        // Pattern pat = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE);
         Matcher m = pattern.matcher(email);
         return m.matches();
     }

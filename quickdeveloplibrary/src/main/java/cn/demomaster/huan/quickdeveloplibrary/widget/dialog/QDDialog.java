@@ -9,10 +9,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,7 +26,6 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2019/1/6.
@@ -334,11 +331,6 @@ public class QDDialog extends QDDialog2 {
         super.setCanceledOnTouchOutside(cancel);
     }
 
-    @Override
-    public void show() {
-        super.show();
-    }
-
     View mContentView;
 
     public View getContentView() {
@@ -384,11 +376,11 @@ public class QDDialog extends QDDialog2 {
         }
     }
 
-    public static enum ShowType {
+    public enum ShowType {
         normal, noHeader, noFoot, onlyBody, contentView, contentLayout
     }
 
-    public static enum DataType {
+    public enum DataType {
         radio, checkbox, text, editor
     }
 

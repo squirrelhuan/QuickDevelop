@@ -24,9 +24,8 @@
    24    */
 package cn.demomaster.huan.quickdeveloplibrary.encoder;
 
- import java.io.OutputStream;
-import java.io.PushbackInputStream;
- import java.io.PrintStream;
+  import java.io.OutputStream;
+  import java.io.PushbackInputStream;
 
  /**
    32    * This class implements a BASE64 Character decoder as specified in RFC1521.
@@ -74,7 +73,7 @@ import java.io.PushbackInputStream;
    74        * This character array provides the character to value map
    75        * based on RFC1521.
    76        */
-      private final static char pem_array[] = {
+      private final static char[] pem_array = {
          //       0   1   2   3   4   5   6   7
                     'A','B','C','D','E','F','G','H', // 0
                   'I','J','K','L','M','N','O','P', // 1
@@ -86,7 +85,7 @@ import java.io.PushbackInputStream;
                 '4','5','6','7','8','9','+','/'  // 7
         };
  
-    private final static byte pem_convert_array[] = new byte[256];
+    private final static byte[] pem_convert_array = new byte[256];
 
     static {
      for (int i = 0; i < 255; i++) {
@@ -96,7 +95,7 @@ import java.io.PushbackInputStream;
           pem_convert_array[pem_array[i]] = (byte) i;
      }
      }
-   byte decode_buffer[] = new byte[4];
+   byte[] decode_buffer = new byte[4];
    /**
   103        * Decode one BASE64 atom into 1, 2, or 3 bytes of data.
   104        */

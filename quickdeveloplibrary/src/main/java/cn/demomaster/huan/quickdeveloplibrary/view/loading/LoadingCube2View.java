@@ -74,7 +74,6 @@ public class LoadingCube2View extends View {
         RectF mRecF3 = new RectF(margin_left, margin_top + r / 2 + spacing / 2, margin_left + r / 2 - spacing / 2, margin_top + r);
         RectF mRecF4 = new RectF(margin_left + r / 2 + spacing / 2, margin_top + r / 2 + spacing / 2, margin_left + r, margin_top + r);
         //isDrawed = true;
-        if (isForward) {
             mPaint.setColor(colors[0]);
             canvas.drawRoundRect(mRecF1, 5, 5, mPaint);
             mPaint.setColor(colors[1]);
@@ -84,17 +83,6 @@ public class LoadingCube2View extends View {
             mPaint.setColor(colors[3]);
             canvas.drawRoundRect(mRecF4, 5, 5, mPaint);
             //canvas.drawArc(mRecF, 0, progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
-        } else {
-            mPaint.setColor(colors[0]);
-            canvas.drawRoundRect(mRecF1, 5, 5, mPaint);
-            mPaint.setColor(colors[1]);
-            canvas.drawRoundRect(mRecF2, 5, 5, mPaint);
-            mPaint.setColor(colors[2]);
-            canvas.drawRoundRect(mRecF3, 5, 5, mPaint);
-            mPaint.setColor(colors[3]);
-            canvas.drawRoundRect(mRecF4, 5, 5, mPaint);
-            //canvas.drawArc(mRecF, progress, 360 - progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
-        }
 
      /*   Path path = new Path();
         path.moveTo(0,0);
@@ -126,8 +114,7 @@ public class LoadingCube2View extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 if (getVisibility() == VISIBLE) {
-                    int value = (int) animation.getAnimatedValue();
-                    progress = value;
+                    progress = (int) animation.getAnimatedValue();
                     //Log.d(TAG, "progress=" + progress);
                     if (progress >= end) {
                         isForward = !isForward;

@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"></ListView>
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
     <FrameLayout

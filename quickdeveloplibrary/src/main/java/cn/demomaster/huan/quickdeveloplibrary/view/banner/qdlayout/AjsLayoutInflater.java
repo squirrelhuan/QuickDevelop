@@ -48,10 +48,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.tex
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textSizeDefault;
 
 public class AjsLayoutInflater {
-    
-    public static void parseXmlFilePath(String path) {
-
-    }
 
     public static NodeElement parseXmlFile(Context context, File file, DomSaxHandler.OnParseCompleteListener onParseCompleteListener) {
         XMLReader xr = null;
@@ -85,7 +81,7 @@ public class AjsLayoutInflater {
     }
 
     public static void parseXmlString(String txt) {
-
+        
     }
 
     // 泛型方法 printArray
@@ -440,7 +436,7 @@ public class AjsLayoutInflater {
                 }
                 view = banner;
             } else if (element.getTag().equalsIgnoreCase("video")) {
-                QdVideo videoView = new QdVideo(context);
+                view = new QdVideo(context);
                 //videoView.setBackgroundColor(Color.GREEN);
                 /*String url = element.getAttribute("url");
                 System.out.println("url="+url);
@@ -448,7 +444,6 @@ public class AjsLayoutInflater {
                     videoView.setVideoPath(url);
                     videoView.start();
                 }*/
-                view = videoView;
             } else if (element.getTag().equalsIgnoreCase("web")) {
                 QDWebView qdWebView = new QDWebView(context);
                 qdWebView.setTouchAble(false);

@@ -242,11 +242,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
                 case MotionEvent.ACTION_UP:
                     endTime = System.currentTimeMillis();
                     //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
-                    if ((endTime - startTime) > 0.15 * 1000L) {
-                        isclick = true;
-                    } else {
-                        isclick = false;
-                    }
+                    isclick = ((endTime - startTime) > 0.15 * 1000L);
                     break;
                 default:
                     break;

@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
+import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 /**
  * @author squirrel桓

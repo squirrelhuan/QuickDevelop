@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;

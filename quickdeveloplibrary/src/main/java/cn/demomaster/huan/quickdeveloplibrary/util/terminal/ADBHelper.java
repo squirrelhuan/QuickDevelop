@@ -2,8 +2,16 @@ package cn.demomaster.huan.quickdeveloplibrary.util.terminal;
 
 import android.text.TextUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -27,7 +35,7 @@ public class ADBHelper {
     OnAdbReceiceListener onAdbReceiceListener;
     List<DeviceModel> deviceModels = new ArrayList<>();
     private String directory_path;
-    private Map<String, DeviceModel> deviceMap = new HashMap<>();
+    private final Map<String, DeviceModel> deviceMap = new HashMap<>();
     private DeviceModel currentDevice;
     Runnable runnable = new Runnable() {
         @Override
@@ -352,15 +360,15 @@ public class ADBHelper {
         execute(" adb connect " + ip);
     }
 
-    public static interface OnScreenChangeListener {
+    public interface OnScreenChangeListener {
         void onRefresh(String path);
     }
 
-    public static interface OnReceiveListener {
+    public interface OnReceiveListener {
         void onReceive(ProcessResult result);
     }
 
-    public static interface OnAdbReceiceListener {
+    public interface OnAdbReceiceListener {
         void onFindDevices(List<DeviceModel> deviceModels);
     }
 

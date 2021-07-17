@@ -249,7 +249,7 @@ public class QDTcpClient {
     public Boolean isServerClose(Socket socket) {
         try {
             if (socket == null) return true;
-            if (socket == null || socket.isClosed() || !client.isConnected()) {
+            if (socket.isClosed() || !client.isConnected()) {
                 return true;
             }
             socket.sendUrgentData(0xFF);//发送1个字节的紧急数据，默认情况下，服务器端没有开启紧急数据处理，不影响正常通信

@@ -17,14 +17,13 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
-
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 
@@ -38,6 +37,7 @@ public class ScrollableTabView extends HorizontalScrollView implements
         ViewPager.OnPageChangeListener {
 
     private ViewPager mPager = null;
+    private ViewPager2 mPager2 = null;
 
     private TabAdapter mAdapter = null;
 
@@ -78,54 +78,111 @@ public class ScrollableTabView extends HorizontalScrollView implements
 
     public void setViewPager(ViewPager pager) {
         this.mPager = pager;
-        mPager.setOnPageChangeListener(this);
+        mPager.removeOnPageChangeListener(this);
+        mPager.addOnPageChangeListener(this);
+        //mPager.setOnPageChangeListener(this);
         if (mPager != null && mAdapter != null)
+            initTabs();
+    }
+
+    public void setViewPager(ViewPager2 pager) {
+        this.mPager2 = pager;
+        mPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                selectTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
+        if (mPager2 != null && mAdapter != null)
             initTabs();
     }
 
     private void initTabs() {
         mContainer.removeAllViews();
         mTabs.clear();
-        if (mAdapter == null)
+        if (mAdapter == null) {
             return;
-        for (int i = 0; i < mPager.getAdapter().getCount(); i++) {
-            final int index = i;
-            View tab = mAdapter.getView(i, mContainer);
-            if (tab == null) {
-                return;
-            }
-            if (tab.getParent() == null) {
-                mContainer.addView(tab);
-            }
-            tab.setFocusable(true);
-            mTabs.add(tab);
-            tab.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPager.getCurrentItem() == index) {
-                        selectTab(index);
-                    } else {
-                        mPager.setCurrentItem(index, true);
-                    }
-                }
-            });
         }
+        if (mPager != null) {
+            for (int i = 0; i < mPager.getAdapter().getCount(); i++) {
+                final int index = i;
+                View tab = mAdapter.getView(i, mContainer);
+                if (tab == null) {
+                    return;
+                }
+                if (tab.getParent() == null) {
+                    mContainer.addView(tab);
+                }
+                tab.setFocusable(true);
+                mTabs.add(tab);
+                tab.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mPager.getCurrentItem() == index) {
+                            selectTab(index);
+                        } else {
+                            mPager.setCurrentItem(index, true);
+                        }
+                    }
+                });
+            }
 
-        selectTab(mPager.getCurrentItem());
+            selectTab(mPager.getCurrentItem());
+        }else if (mPager2 != null) {
+            for (int i = 0; i < mPager2.getAdapter().getItemCount(); i++) {
+                final int index = i;
+                View tab = mAdapter.getView(i, mContainer);
+                if (tab == null) {
+                    return;
+                }
+                if (tab.getParent() == null) {
+                    mContainer.addView(tab);
+                }
+                tab.setFocusable(true);
+                mTabs.add(tab);
+                tab.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mPager2.getCurrentItem() == index) {
+                            selectTab(index);
+                        } else {
+                            mPager2.setCurrentItem(index, true);
+                        }
+                    }
+                });
+            }
+            
+            selectTab(mPager2.getCurrentItem());
+        }
     }
 
+    //viewpaper1 的方法
     @Override
     public void onPageScrollStateChanged(int state) {
     }
 
+    //viewpaper1 的方法
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
+    //viewpaper1 的方法
     @Override
     public void onPageSelected(int position) {
         selectTab(position);
     }
+
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -136,7 +193,6 @@ public class ScrollableTabView extends HorizontalScrollView implements
     }
 
     private void selectTab(int position) {
-
         for (int i = 0, pos = 0; i < mContainer.getChildCount(); i++, pos++) {
             View tab = mContainer.getChildAt(i);
             tab.setSelected(pos == position);
@@ -147,7 +203,6 @@ public class ScrollableTabView extends HorizontalScrollView implements
         final int l = selectedTab.getLeft();
         final int x = l - this.getWidth() / 2 + w / 2;
         smoothScrollTo(x, this.getScrollY());
-
     }
 
 }

@@ -2,15 +2,11 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
-
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
 import cn.demomaster.qdlogger_library.QDLogger;
-import retrofit2.http.PUT;
 
 /**
  * @author squirrel桓
@@ -73,8 +69,7 @@ public class StringUtil {
      */
     public static String hidePartString(String str, int len) {
         if (str != null && !TextUtils.isEmpty(str)) {
-            String p = str;
-            int length = p.length();
+            int length = str.length();
             if (len >= length) {
                 return "";
             }
@@ -82,7 +77,7 @@ public class StringUtil {
             for (int i = 0; i < len; i++) {
                 t += "*";
             }
-            return p.replace(p.substring(len, length - len), t);
+            return str.replace(str.substring(len, length - len), t);
         }
         return "";
     }
@@ -241,8 +236,7 @@ public class StringUtil {
      * @return String 每个unicode之间无分隔符
      * @throws Exception
      */
-    public static String strToUnicode(String strText)
-            throws Exception {
+    public static String strToUnicode(String strText){
         char c;
         StringBuilder str = new StringBuilder();
         int intAsc;

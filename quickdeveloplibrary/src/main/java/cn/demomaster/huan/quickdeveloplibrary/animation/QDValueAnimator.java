@@ -3,23 +3,16 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.Nullable;
-
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDValueAnimator extends ValueAnimator {
 
-    public static enum AnimationState {
+    public enum AnimationState {
         idle,
         isOpened,
         isOpening,
@@ -293,7 +286,7 @@ public class QDValueAnimator extends ValueAnimator {
         this.animationListener = listener;
     }
 
-    public static interface AnimationListenerInterface {
+    public interface AnimationListenerInterface {
         void onStartOpen(Object value);
 
         void onOpening(Object value);

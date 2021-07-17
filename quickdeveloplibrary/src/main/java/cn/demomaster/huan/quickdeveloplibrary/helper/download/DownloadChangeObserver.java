@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -223,6 +222,7 @@ public class DownloadChangeObserver extends ContentObserver {
         Context mContext;
 
         public DownloadHandler(Context context) {
+            super();
             mContext = context;
         }
 

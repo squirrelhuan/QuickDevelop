@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,11 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.quickpermission_library.PermissionHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -115,7 +111,7 @@ public class DownloadHelper {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
                 int len = 0;
@@ -303,7 +299,7 @@ public class DownloadHelper {
     /**
      * 下载状态监听器
      */
-    public static interface OnDownloadStateChangeListener {
+    public interface OnDownloadStateChangeListener {
         void onComplete(long downId, Uri downIdUri);
     }
 

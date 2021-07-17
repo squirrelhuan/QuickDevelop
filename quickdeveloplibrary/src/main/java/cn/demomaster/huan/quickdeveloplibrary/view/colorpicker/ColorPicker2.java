@@ -261,8 +261,8 @@ public class ColorPicker2 extends View {
 
         int colorCount = 12;
         int colorAngleStep = 360 / 12;
-        int colors[] = new int[colorCount + 1];
-        float hsv[] = new float[]{0f, 1f, 1f};
+        int[] colors = new int[colorCount + 1];
+        float[] hsv = new float[]{0f, 1f, 1f};
         for (int i = 0; i < colors.length; i++) {
             hsv[0] = (i * colorAngleStep + 180) % 360;
             colors[i] = Color.HSVToColor(hsv);

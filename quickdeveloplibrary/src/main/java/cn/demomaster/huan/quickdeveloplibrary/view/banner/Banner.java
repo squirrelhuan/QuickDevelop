@@ -58,7 +58,7 @@ public class Banner extends FrameLayout {
     /**
      * 指示器的样式
      */
-    public static enum IndicatorStyle {
+    public enum IndicatorStyle {
         None,
         Circle,
         Rectangle,
@@ -400,7 +400,7 @@ public class Banner extends FrameLayout {
         mViewPager.setOrientation(orientation);//ViewPager2.ORIENTATION_HORIZONTAL
     }
 
-    public static interface BannerIndicator {
+    public interface BannerIndicator {
         void selecte(int position);
 
         void setIndicatorCount(int count);

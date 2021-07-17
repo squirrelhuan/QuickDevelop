@@ -14,14 +14,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 汇入动画
@@ -33,21 +31,14 @@ public class LoopStateView extends View {
 
     public LoopStateView(Context context) {
         super(context);
-        init();
     }
 
     public LoopStateView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public LoopStateView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-
     }
 
     private int centerX, centerY, width, height;

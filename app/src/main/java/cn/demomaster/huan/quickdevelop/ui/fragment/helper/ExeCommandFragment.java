@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;

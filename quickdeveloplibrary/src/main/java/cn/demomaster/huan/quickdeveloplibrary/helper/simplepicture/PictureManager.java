@@ -8,13 +8,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;

@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.IDCardActivity;
-import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AccessibilityServiceFragment;

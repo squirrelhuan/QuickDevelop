@@ -292,7 +292,7 @@ public class QDKeyboard_back {
         keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                keyContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                keyContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 if (keyContainerHeight == -1) {
                     //获取键盘的高度
                     int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -353,12 +353,8 @@ public class QDKeyboard_back {
                 keyboardView.setPreviewEnabled(false);
             } else {
                 keyboardView.setPreviewEnabled(true);
-                if (primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
-                        || primaryCode == 100860 || primaryCode == -35) {
-                    keyboardView.setPreviewEnabled(false);
-                } else {
-                    keyboardView.setPreviewEnabled(true);
-                }
+                    keyboardView.setPreviewEnabled(!(primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
+                            || primaryCode == 100860 || primaryCode == -35));
             }
             //关闭所有按压预览
             keyboardView.setPreviewEnabled(false);

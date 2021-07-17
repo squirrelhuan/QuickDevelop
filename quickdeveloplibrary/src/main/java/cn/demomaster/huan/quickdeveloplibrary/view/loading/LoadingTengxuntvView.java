@@ -96,8 +96,7 @@ public class LoadingTengxuntvView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
+                progress = (float) animation.getAnimatedValue();
                 //QDLogger.d(TAG, "progress=" + progress);
                 //postInvalidate();
                 invalidate();

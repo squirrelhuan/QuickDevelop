@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -41,7 +41,7 @@ public class SlidingLayout extends FrameLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item, this);
         RecyclerView list = (RecyclerView) findViewById(R.id.list);
         TextView header = findViewById(R.id.header);
-        int colors[] = {Color.RED, Color.GREEN, Color.YELLOW};
+        int[] colors = {Color.RED, Color.GREEN, Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random() * 10 % 3)]);
         header.setText(Math.random() * 10 + "");
         QDLogger.println("StackSlidingLayout", header.getText());

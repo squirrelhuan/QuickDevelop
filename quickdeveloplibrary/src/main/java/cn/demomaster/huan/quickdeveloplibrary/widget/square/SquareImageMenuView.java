@@ -30,7 +30,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AccelerateInterpolator;
@@ -269,12 +268,8 @@ public class SquareImageMenuView extends View {
                 case MotionEvent.ACTION_UP:
                     endTime = System.currentTimeMillis();
                     //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
-                    if ((endTime - startTime) > 0.15 * 1000L) {
-                        isclick = true;
-                        // onClickListener.onClick(event);
-                    } else {
-                        isclick = false;
-                    }
+                    isclick = ((endTime - startTime) > 0.15 * 1000L) ;
+                    // onClickListener.onClick(event);
                     break;
                 default:
                     break;

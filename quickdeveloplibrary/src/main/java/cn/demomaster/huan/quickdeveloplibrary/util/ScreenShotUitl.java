@@ -14,9 +14,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-
-import androidx.core.app.ActivityCompat;
-
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -159,17 +158,10 @@ public class ScreenShotUitl {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
         view.buildDrawingCache();
-
-        Display display = activity.getWindowManager().getDefaultDisplay();
-
-        // 获取屏幕宽和高
-        int widths = display.getWidth();
-        int heights = display.getHeight();
         // 允许当前窗口保存缓存信息
         view.setDrawingCacheEnabled(true);
         // 去掉状态栏
         Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), x0, y0, x1 - x0, y1 - y0);
-
         // 销毁缓存信息
         view.destroyDrawingCache();
         return bmp;

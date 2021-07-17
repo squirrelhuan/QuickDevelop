@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.ActionBarActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.AdsActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.CenterHorizontalActivity;
@@ -36,7 +37,6 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.ToggleButton
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.AppletsFragmentActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BaseFragmentActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BasePaperActivity;
-import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AnimitionFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AudioRecordFragment;
@@ -95,10 +95,6 @@ public class ComponentFragment extends BaseFragment {
         initView(view);
         return view;
     }*/
-
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);

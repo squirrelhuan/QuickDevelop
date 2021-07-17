@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -165,7 +166,8 @@ public class TimePickerPopWin extends PopupWindow implements View.OnClickListene
 
         this.setTouchable(true);
         this.setFocusable(true);
-        this.setBackgroundDrawable(new BitmapDrawable());
+        this.setBackgroundDrawable(new ColorDrawable());
+        //this.setBackgroundDrawable(new BitmapDrawable());
         this.setAnimationStyle(R.style.FadeInPopWin);
         this.setContentView(this.contentView);
         this.setWidth(-1);

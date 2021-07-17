@@ -2,8 +2,11 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
@@ -114,6 +117,7 @@ public class QuickCache {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void downCacheFile(String url, String fileType) {
         String fileTypeStr = fileType;
         if (fileType.contains("/")) {
@@ -121,8 +125,7 @@ public class QuickCache {
             fileTypeStr = strings[strings.length - 1];
         }
         String key = stringToMD5(url) + "." + fileTypeStr;
-        String fileName = key;
-        downCacheFile2(url, fileName);
+        downCacheFile2(url, key);
     }
 
     static int downloadState = 0;

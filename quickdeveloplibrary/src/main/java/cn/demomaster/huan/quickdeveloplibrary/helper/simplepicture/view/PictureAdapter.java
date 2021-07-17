@@ -2,13 +2,12 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view;
 
 import android.content.Context;
 import android.os.Vibrator;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -43,7 +42,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     private boolean saturated = false;//饱和（图片数量达到上限）
     private MODEL modelType = MODEL.normal;//状态
 
-    public static enum MODEL {
+    public enum MODEL {
         edit,
         normal
     }
@@ -223,7 +222,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         this.onItemClickListener = onItemClickListener;
     }
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
         //void onItemLongClick(View view, int position, Map<Integer, Image> map);
 
         void onItemClick(View view, int position, Image image);

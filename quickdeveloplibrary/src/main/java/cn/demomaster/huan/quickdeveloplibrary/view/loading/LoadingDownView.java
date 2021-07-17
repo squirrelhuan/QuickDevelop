@@ -105,7 +105,7 @@ public class LoadingDownView extends View {
         }
     }
 
-    public static interface OnProgressChanged {
+    public interface OnProgressChanged {
         void onProgress(float progress);
     }
 
@@ -127,8 +127,7 @@ public class LoadingDownView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
+                progress = (float) animation.getAnimatedValue();
                 if (onProgressChanged != null) {
                     onProgressChanged.onProgress(progress);
                 }

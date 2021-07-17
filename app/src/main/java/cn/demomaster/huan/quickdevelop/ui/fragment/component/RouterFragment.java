@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -64,10 +66,11 @@ public class RouterFragment extends BaseFragment {
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
 
     private void opentFragment() {
-        // ((QDActivity)getContext()).getFragmentHelper().addElement(new RouterFragment());
+         ((QuickActivity)getContext()).getFragmentHelper().startFragment(new RouterFragment());
     }
 
     private void startFragment() {
+        ((QuickActivity)getContext()).getFragmentHelper().startFragment(new GuiderFragment());
         // ((QDActivity)getContext()).getFragmentHelper().addElement( new GuiderFragment());
     }
 
@@ -76,7 +79,7 @@ public class RouterFragment extends BaseFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (isRootFragment) {
+        if (isRootFragment()) {
             if (System.currentTimeMillis() - firstClickTime > 2000) {
                 QdToast.show(mContext, "再点击退出 activity");
                 firstClickTime = System.currentTimeMillis();

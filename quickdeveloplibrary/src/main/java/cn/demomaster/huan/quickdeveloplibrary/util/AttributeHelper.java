@@ -42,8 +42,7 @@ public class AttributeHelper {
             return null;
         }
 
-        String string = mAttrs.getAttributeValue(ANDROID_NAMESPACE, attribute);
-        return string;
+        return mAttrs.getAttributeValue(ANDROID_NAMESPACE, attribute);
     }
 
     /**

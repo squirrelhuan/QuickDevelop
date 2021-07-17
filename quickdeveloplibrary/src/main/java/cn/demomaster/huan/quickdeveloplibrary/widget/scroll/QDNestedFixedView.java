@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -82,7 +81,7 @@ public class QDNestedFixedView extends FrameLayout {
     /**
      * 可视高度改变时触发
      */
-    public static interface OnVisibleHeightChangeListener {
+    public interface OnVisibleHeightChangeListener {
         void onChange(int px, int py);
     }
 }

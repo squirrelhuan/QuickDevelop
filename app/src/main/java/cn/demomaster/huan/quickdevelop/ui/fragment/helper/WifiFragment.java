@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,9 +32,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
-import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -287,7 +286,7 @@ public class WifiFragment extends BaseFragment {
 
     static WifiManager mWifiManager;
 
-    public static interface OnScanListener {
+    public interface OnScanListener {
         void onScanResultAvailable();
 
         void onNetWorkStateChanged(NetworkInfo.DetailedState state, int mSSID);
@@ -349,13 +348,7 @@ public class WifiFragment extends BaseFragment {
      */
     public boolean isWifiConnected() {
         NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo.isConnected()) {
-            return true;
-        } else if (wifiNetworkInfo.isAvailable()) {
-            return true;
-        }
-
-        return false;
+        return (wifiNetworkInfo.isConnected()||wifiNetworkInfo.isAvailable());
     }
 
     //断开指定ID的网络

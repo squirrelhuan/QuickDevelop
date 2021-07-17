@@ -151,7 +151,7 @@ public class test {
         int i=Integer.valueOf(str);
         String a = intToHex(i);
        System.out.println(a);
-        String arr[] = {};
+        String[] arr = {};
         if(a.length()>2){
             arr[0] = a.substring(1,a.length()-1);
             arr[1] = a.substring(0,1);

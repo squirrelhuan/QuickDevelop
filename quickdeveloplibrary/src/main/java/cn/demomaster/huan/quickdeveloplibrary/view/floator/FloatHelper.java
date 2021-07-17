@@ -12,8 +12,8 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.internal.FlowLayout;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 
 
 /**

@@ -37,10 +37,6 @@ public class DesignPatternFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private DesignListAdapter designListAdapter;
 
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @Override
     public boolean isUseActionBarLayout() {
         return false;//不带导航栏
@@ -48,14 +44,14 @@ public class DesignPatternFragment extends BaseFragment {
 
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = (ViewGroup) inflater.inflate(R.layout.fragment_layout_component, null);
+        View view = inflater.inflate(R.layout.fragment_layout_component, null);
         return view;
     }
 
     private String linksPath = "designHtmls.json";
 
     public void initView(View rootView) {
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
         //设置为垂直布局，这也是默认的

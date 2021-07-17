@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
@@ -32,6 +31,7 @@ import cn.demomaster.qdlogger_library.QDLogBean;
 import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdlogger_library.QDLoggerType;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 
 /**
  * 调试日志输出

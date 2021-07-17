@@ -1,25 +1,25 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -146,7 +146,7 @@ public class QDAndroidDeviceUtil {
         }
         m.update(m_szLongID.getBytes(), 0, m_szLongID.length());
         // get md5 bytes
-        byte p_md5Data[] = m.digest();
+        byte[] p_md5Data = m.digest();
         // create a hex string
         String m_szUniqueID = new String();
         for (int i = 0; i < p_md5Data.length; i++) {
@@ -168,10 +168,7 @@ public class QDAndroidDeviceUtil {
         if (new File(binPath).exists() && isCanExecute(binPath)) {
             return true;
         }
-        if (new File(xBinPath).exists() && isCanExecute(xBinPath)) {
-            return true;
-        }
-        return false;
+        return (new File(xBinPath).exists() && isCanExecute(xBinPath));
     }
 
     /**
@@ -179,19 +176,14 @@ public class QDAndroidDeviceUtil {
      * @return
      */
     public static boolean isRootSystem() {
-        if(isRootSystem1()||isRootSystem2()){
-            //TODO 可加其他判断 如是否装了权限管理的apk，大多数root 权限 申请需要app配合，也有不需要的，这个需要改su源码。因为管理su权限的app太多，无法列举所有的app，特别是国外的，暂时不做判断是否有root权限管理app
-            //多数只要su可执行就是root成功了，但是成功后用户如果删掉了权限管理的app，就会造成第三方app无法申请root权限，此时是用户删root权限管理app造成的。
-            //市场上常用的的权限管理app的包名   com.qihoo.permmgr  com.noshufou.android.su  eu.chainfire.supersu   com.kingroot.kinguser  com.kingouser.com  com.koushikdutta.superuser
-            //com.dianxinos.superuser  com.lbe.security.shuame com.geohot.towelroot 。。。。。。
-            return true;
-        }else{
-            return false;
-        }
+        //多数只要su可执行就是root成功了，但是成功后用户如果删掉了权限管理的app，就会造成第三方app无法申请root权限，此时是用户删root权限管理app造成的。
+        //市场上常用的的权限管理app的包名   com.qihoo.permmgr  com.noshufou.android.su  eu.chainfire.supersu   com.kingroot.kinguser  com.kingouser.com  com.koushikdutta.superuser
+        //com.dianxinos.superuser  com.lbe.security.shuame com.geohot.towelroot 。。。。。。
+        return isRootSystem1()||isRootSystem2();
     }
     private static boolean isRootSystem1() {
         File f = null;
-        final String kSuSearchPaths[] = { "/system/bin/", "/system/xbin/",
+        final String[] kSuSearchPaths = { "/system/bin/", "/system/xbin/",
                 "/system/sbin/", "/sbin/", "/vendor/bin/" };
         try {
             for (int i = 0; i < kSuSearchPaths.length; i++) {
@@ -261,11 +253,7 @@ public class QDAndroidDeviceUtil {
         } else {
 // 如果有蓝牙不一定是有效的。获取蓝牙名称，若为null 则默认为模拟器
             String name = ba.getName();
-            if (TextUtils.isEmpty(name)) {
-                return true;
-            } else {
-                return false;
-            }
+            return  (TextUtils.isEmpty(name));
         }
     }
 
@@ -278,11 +266,7 @@ public class QDAndroidDeviceUtil {
     public static boolean BooleannotHasLightSensorManager(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         Sensor sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); //光
-        if (null == sensor8) {
-            return true;
-        } else {
-            return false;
-        }
+        return (null == sensor8);
     }
 
     /**
@@ -292,12 +276,10 @@ public class QDAndroidDeviceUtil {
      */
     public static boolean checkIsNotRealPhone() {
         String cpuInfo = readCpuInfo();
-        if ((cpuInfo.contains("intel") || cpuInfo.contains("amd"))) {
-            return true;
-        }
-        return false;
+        return  ((cpuInfo.contains("intel") || cpuInfo.contains("amd")));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String readCpuInfo() {
         String result = "";
         try {
@@ -306,7 +288,7 @@ public class QDAndroidDeviceUtil {
             Process process = cmd.start();
             StringBuffer sb = new StringBuffer();
             String readLine = "";
-            BufferedReader responseReader = new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
+            BufferedReader responseReader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
             while ((readLine = responseReader.readLine()) != null) {
                 sb.append(readLine);
             }

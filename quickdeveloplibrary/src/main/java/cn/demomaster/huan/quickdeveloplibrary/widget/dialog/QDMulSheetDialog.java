@@ -124,7 +124,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         setPanelMaginTop(DisplayUtil.getStatusBarHeight(getContext()) + DisplayUtil.getActionBarHeight(getContext()));
     }
 
-    public static enum ShowType {
+    public enum ShowType {
         List, Grid
     }
 
@@ -221,7 +221,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         }
     }
 
-    public static interface OnDialogActionListener {
+    public interface OnDialogActionListener {
         void onItemClick(QDMulSheetDialog dialog, int position, List<String> data);
     }
 

@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * https://www.cnblogs.com/hbtmwangjin/articles/8135200.html
@@ -75,7 +76,7 @@ public class NetPrinter {
         try {
             command = pcmd.CMD_SetPos();
             OutputStream stream = socket.getOutputStream();
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -94,22 +95,17 @@ public class NetPrinter {
         try {
             OutputStream stream = socket.getOutputStream();
             command = pcmd.CMD_TextAlign(nFontAlign);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             if (ifzhenda == 1) {
                 command = pcmd.CMD_FontSize_BTP_M280(nFontSize);
-                outbytes = command.getBytes(Charset.forName("ASCII"));
-                stream.write(outbytes);
-
-                command = pcmd.CMD_FontSize_BTP_M2801(nFontSize);
-                outbytes = command.getBytes(Charset.forName("ASCII"));
-                stream.write(outbytes);
-            } else {
-                command = pcmd.CMD_FontSize(nFontSize);
-                outbytes = command.getBytes(Charset.forName("ASCII"));
+                outbytes = command.getBytes(StandardCharsets.US_ASCII);
                 stream.write(outbytes);
             }
+            command = pcmd.CMD_FontSize(nFontSize);
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
+            stream.write(outbytes);
 
             command = pszString;// +CMD_Enter();
             outbytes = command.getBytes(Charset.forName("GB2312")); //Charset.defaultCharset()); //forName("UTF-8")
@@ -129,7 +125,7 @@ public class NetPrinter {
         try {
             command = pcmd.CMD_Enter();
             OutputStream stream = socket.getOutputStream();
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -147,11 +143,11 @@ public class NetPrinter {
             OutputStream stream = socket.getOutputStream();
 
             command = pcmd.CMD_PageGO(pagenum) + pcmd.CMD_Enter();
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_CutPage() + pcmd.CMD_Enter();
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
         } catch (IOException e) {
@@ -169,11 +165,11 @@ public class NetPrinter {
             OutputStream stream = socket.getOutputStream();
 
             command = pcmd.CMD_FontSize(0);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
             for (int i = 0; i < lines; i++) {
                 command = "" + pcmd.CMD_Enter();
-                outbytes = command.getBytes(Charset.forName("ASCII"));
+                outbytes = command.getBytes(StandardCharsets.US_ASCII);
                 stream.write(outbytes);
             }
         } catch (IOException e) {
@@ -189,7 +185,7 @@ public class NetPrinter {
         try {
             OutputStream stream = socket.getOutputStream();
             command = "" + pcmd.CMC_QianXiang();
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -211,27 +207,27 @@ public class NetPrinter {
         try {
             OutputStream stream = socket.getOutputStream();
             command = pcmd.CMD_TiaoMaHeight(height);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_TiaoMaWidth(width);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_TiaoMaWeiZi(numweizi);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_TextAlign(fontalign);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_FontSize(fontsize);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
 
             command = pcmd.CMD_TiaoMaPrint(numstr);
-            outbytes = command.getBytes(Charset.forName("ASCII"));
+            outbytes = command.getBytes(StandardCharsets.US_ASCII);
             stream.write(outbytes);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -344,9 +340,7 @@ class PrinterCMD {
     public String CMD_FontSize_BTP_M280(int size) {
         String _cmdstr = "";
         //只有0和1两种模式
-        int fontsize = size;
-
-        switch (fontsize) {
+        switch (size) {
             case 1:
                 _cmdstr = new StringBuffer().append((char) 28).append((char) 33).append((char) 8).toString();
                 break;
@@ -372,9 +366,7 @@ class PrinterCMD {
     public String CMD_FontSize_BTP_M2801(int size) {
         String _cmdstr = "";
         //只有0和1两种模式
-        int fontsize = size;
-
-        switch (fontsize) {
+        switch (size) {
             case 1:
                 _cmdstr = new StringBuffer().append((char) 27).append((char) 33).append((char) 17).toString();
                 break;

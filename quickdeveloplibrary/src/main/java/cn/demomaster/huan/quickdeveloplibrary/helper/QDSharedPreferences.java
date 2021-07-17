@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
-import java.util.Map;
 import java.util.Set;
 
 import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;

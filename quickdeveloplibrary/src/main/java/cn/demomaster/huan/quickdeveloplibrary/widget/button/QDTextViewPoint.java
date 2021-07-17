@@ -16,7 +16,6 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

@@ -9,19 +9,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
-
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 /**
  * @author squirrel桓

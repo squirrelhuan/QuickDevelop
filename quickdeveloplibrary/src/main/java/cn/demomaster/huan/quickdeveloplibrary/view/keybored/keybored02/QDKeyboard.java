@@ -319,12 +319,8 @@ public class QDKeyboard {
                 keyboardView.setPreviewEnabled(false);
             } else {
                 keyboardView.setPreviewEnabled(true);
-                if (primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
-                        || primaryCode == 100860 || primaryCode == -35) {
-                    keyboardView.setPreviewEnabled(false);
-                } else {
-                    keyboardView.setPreviewEnabled(true);
-                }
+                    keyboardView.setPreviewEnabled(!(primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
+                            || primaryCode == 100860 || primaryCode == -35));
             }
             //关闭所有按压预览
             keyboardView.setPreviewEnabled(false);

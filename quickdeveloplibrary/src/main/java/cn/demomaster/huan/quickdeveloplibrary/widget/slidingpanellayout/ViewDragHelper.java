@@ -65,7 +65,7 @@ public class ViewDragHelper {
     /**
      * Edge flag indicating that the left edge should be affected.
      */
-    public static final int EDGE_LEFT = 1 << 0;
+    public static final int EDGE_LEFT = 1;
 
     /**
      * Edge flag indicating that the right edge should be affected.
@@ -90,7 +90,7 @@ public class ViewDragHelper {
     /**
      * Indicates that a check should occur along the horizontal axis
      */
-    public static final int DIRECTION_HORIZONTAL = 1 << 0;
+    public static final int DIRECTION_HORIZONTAL = 1;
 
     /**
      * Indicates that a check should occur along the vertical axis
@@ -1067,7 +1067,7 @@ public class ViewDragHelper {
                     }
 
                     final View toCapture = findTopChildUnder((int) mInitialMotionX[pointerId], (int) mInitialMotionY[pointerId]);
-                    if (toCapture != null && checkTouchSlop(toCapture, dx, dy) &&
+                    if (checkTouchSlop(toCapture, dx, dy) &&
                             tryCaptureViewForDrag(toCapture, pointerId)) {
                         break;
                     }
@@ -1171,8 +1171,6 @@ public class ViewDragHelper {
                     final int idy = (int) (y - mLastMotionY[mActivePointerId]);
 
                     dragTo(mCapturedView.getLeft() + idx, mCapturedView.getTop() + idy, idx, idy);
-
-                    saveLastMotion(ev);
                 } else {
                     // Check to see if any pointer is now over a draggable view.
                     final int pointerCount = MotionEventCompat.getPointerCount(ev);
@@ -1195,8 +1193,8 @@ public class ViewDragHelper {
                             break;
                         }
                     }
-                    saveLastMotion(ev);
                 }
+                saveLastMotion(ev);
                 break;
             }
 

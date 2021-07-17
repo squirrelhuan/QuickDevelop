@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +15,12 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.quicksticker_annotations.BindView;
 
 @ActivityPager(name = "导航栏", preViewClass = TextView.class, resType = ResType.Custome)
 public class ActionBarActivity extends BaseActivity implements View.OnClickListener {
 
-    private CheckBox cb_use_background;
     private RadioGroup rg_action, rg_action_color;
     private SeekBar sb_color;
 
@@ -137,7 +135,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.btn_color_green).setOnClickListener(this);
         findViewById(R.id.btn_color_white).setOnClickListener(this);
 
-        cb_use_background = findViewById(R.id.cb_use_background);
+        CheckBox cb_use_background = findViewById(R.id.cb_use_background);
         cb_use_background.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

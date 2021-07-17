@@ -4,8 +4,6 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
-
 /**
  * @author squirrel桓
  * @date 2019/1/24.

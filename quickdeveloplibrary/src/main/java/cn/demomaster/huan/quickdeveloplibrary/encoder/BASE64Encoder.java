@@ -24,10 +24,8 @@
   24    */
 package cn.demomaster.huan.quickdeveloplibrary.encoder;
 
-import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * This class implements a BASE64 Character encoder as specified in RFC1521.
@@ -61,7 +59,7 @@ public class BASE64Encoder extends CharacterEncoder
 	}
 
 	/** This array maps the characters to their 6 bit values */
-	private final static char pem_array[] =
+	private final static char[] pem_array =
 	{
 			// 0 1 2 3 4 5 6 7
 			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', // 0
@@ -79,7 +77,7 @@ public class BASE64Encoder extends CharacterEncoder
 	 * characters. Note that if the length in len is less than three is encodes
 	 * either one or two '=' signs to indicate padding characters.
 	 */
-	protected void encodeAtom(OutputStream outStream, byte data[], int offset,
+	protected void encodeAtom(OutputStream outStream, byte[] data, int offset,
 			int len) throws IOException
 	{
 		byte a, b, c;

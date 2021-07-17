@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.operatguid;
 
-import android.graphics.Color;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -166,14 +165,14 @@ public class GuiderModel {
         roundedrectangle, rectangle, oval, img
     }
 
-    public static enum GuidActionType {
+    public enum GuidActionType {
         TOUCH, MOVE, CLICK, LONGCLICK
     }
 
     /**
      * 目标触摸事件
      */
-    public static enum TouchType {
+    public enum TouchType {
         TargetView, TipView, Other
     }
 }

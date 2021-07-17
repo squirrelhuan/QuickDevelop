@@ -9,8 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.List;
 
@@ -95,13 +93,10 @@ public class QDAppInfoUtil {
     /**
      * 判断当前应用是否是debug状态
      */
-    public static boolean isApkInDebug(Context context) {
-        try {
-            ApplicationInfo info = context.getApplicationInfo();
-            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-        } catch (Exception e) {
-            return false;
-        }
+    public static boolean isDebug(Context context){
+        boolean isDebug = context.getApplicationInfo()!=null&&
+                (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)!=0;
+        return isDebug;
     }
 
     /**

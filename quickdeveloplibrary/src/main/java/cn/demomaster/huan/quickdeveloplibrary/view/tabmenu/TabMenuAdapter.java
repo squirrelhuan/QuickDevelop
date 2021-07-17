@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.constant.TAG;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 
@@ -49,11 +48,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         TabMenuModel tabMenuModel = tabMenuModels.get(tabIndex);
         //判断单选还是多选
         selectCount = tabMenuModel.getSelectCount();
-        if (selectCount == 1) {
-            isSingle = true;
-        } else {
-            isSingle = false;
-        }
+        isSingle = (selectCount == 1);
 
         //遍历循环初始化viewData
         tabListViewItems.clear();
@@ -62,7 +57,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             item.setPosition(i);
             item.setItemName(tabMenuModel.getTabItems()[i]);
             if (selectCount < tabMenuModel.getSelectDeftData().size()) {
-                QDLogger.e(TAG.DEF, "默认选中个数不能超过最大个数");
+                QDLogger.e("默认选中个数不能超过最大个数");
                 return;
             }
             if (tabMenuModel.getSelectDeftData() != null) {
@@ -126,7 +121,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         this.onItemClickListener = onItemClickListener;
     }
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 

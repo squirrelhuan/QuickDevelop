@@ -15,8 +15,8 @@ import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.QdLoadingView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 public class EmptyLayout extends FrameLayout {
     public EmptyLayout(@NonNull Context context) {

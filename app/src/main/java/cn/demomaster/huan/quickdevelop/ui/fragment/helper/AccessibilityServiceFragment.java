@@ -1,14 +1,11 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
-import android.Manifest;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
-import cn.demomaster.quickpermission_library.PermissionHelper;
 
 
 /**

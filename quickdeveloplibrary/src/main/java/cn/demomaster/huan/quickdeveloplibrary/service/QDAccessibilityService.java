@@ -2,34 +2,19 @@ package cn.demomaster.huan.quickdeveloplibrary.service;
 
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
-import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
 
 /**
  * 无障碍辅助服务
@@ -45,7 +30,7 @@ public class QDAccessibilityService extends AccessibilityService {
         AccessibilityHelper.onServiceConnected(this);
     }
 
-    public static interface OnAccessibilityListener {
+    public interface OnAccessibilityListener {
         void onServiceConnected(QDAccessibilityService qdAccessibilityService);
 
         void onAccessibilityEvent(AccessibilityService accessibilityService, AccessibilityEvent event);

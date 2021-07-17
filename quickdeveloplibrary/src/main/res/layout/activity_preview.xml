@@ -4,12 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-
-    <cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.QDViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.QDViewPager>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

@@ -7,12 +7,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.view.LayoutInflaterFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.view.LayoutInflaterFactory;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 

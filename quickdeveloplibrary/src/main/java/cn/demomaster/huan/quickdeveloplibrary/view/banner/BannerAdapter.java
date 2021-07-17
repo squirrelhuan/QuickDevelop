@@ -16,8 +16,8 @@ import cn.demomaster.qdlogger_library.QDLogger;
 
 public class BannerAdapter extends FragmentStateAdapter {
 
-    OnPlayingListener onloadingListener;
-    List<AdsResource> mAdsResourceList;
+    final OnPlayingListener onloadingListener;
+    final List<AdsResource> mAdsResourceList;
     ViewPager2 viewPager2;
 
     public BannerAdapter(@NonNull FragmentActivity fragmentActivity, List<AdsResource> adsResourceList, ViewPager2 viewPager2, OnPlayingListener onloadingListener) {
@@ -150,7 +150,7 @@ public class BannerAdapter extends FragmentStateAdapter {
         }
     }
 
-    public static interface OnPlayingListener {
+    public interface OnPlayingListener {
         void onVideoComplete();//視頻播放完成
     }
 }

@@ -3,23 +3,23 @@ package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdevelop.adapter.AppListAdapter;
 import cn.demomaster.huan.quickdevelop.adapter.HorizontalAdapter;
+import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.view.SlidingTabLayout;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
@@ -120,7 +120,7 @@ public class CenterHorizontalActivity extends BaseActivity {
         snapHelperCenter.attachToRecyclerView(centerSnapRecyclerView);
 
     }
-    ViewPager view_pager_tag;
+    ViewPager2 view_pager_tag;
     private SampleFragmentAdapter adapter;
     private void init() {
         //view_pager_tag = findViewById(R.id.view_pager_hor);
@@ -129,25 +129,26 @@ public class CenterHorizontalActivity extends BaseActivity {
         for (int i=0;i<30;i++){
             list.add("第"+i+"个");
         }
-        adapter = new SampleFragmentAdapter(getSupportFragmentManager(),list);
+        //getSupportFragmentManager()
+        adapter = new SampleFragmentAdapter(this,list);
         view_pager_tag.setAdapter(adapter);
         view_pager_tag.setOffscreenPageLimit(10); //缓存页面数
-        view_pager_tag.setPageMargin(DisplayUtil.getScreenWidth(mContext) +DisplayUtil.dip2px(mContext,60)); //每页的间隔
+        view_pager_tag.setPadding(0,0,0,0);
+        //view_pager_tag.setPageMargin(DisplayUtil.getScreenWidth(mContext) +DisplayUtil.dip2px(mContext,60)); //每页的间隔
         //view_pager_tag.setPadding(QMUIDisplayHelper.getScreenWidth(mContext)/2,0,0,0);
     }
 
-    private class SampleFragmentAdapter extends FragmentPagerAdapter {
+    private class SampleFragmentAdapter extends FragmentStateAdapter {
         private List<String> data;
-        public SampleFragmentAdapter(FragmentManager fm) {
-            super(fm);
-        }
-        public SampleFragmentAdapter(FragmentManager fm,List<String> data) {
-            super(fm);
+
+        public SampleFragmentAdapter(@NonNull FragmentActivity fragmentActivity,List<String> data) {
+            super(fragmentActivity);
             this.data = data;
         }
 
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             Fragment fragment;
             Bundle bundle = new Bundle();
             fragment = new BlankFragment();
@@ -156,13 +157,8 @@ public class CenterHorizontalActivity extends BaseActivity {
         }
 
         @Override
-        public int getCount() {
-            return data.size();//
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return PagerAdapter.POSITION_NONE;
+        public int getItemCount() {
+            return data.size();
         }
     }
 }

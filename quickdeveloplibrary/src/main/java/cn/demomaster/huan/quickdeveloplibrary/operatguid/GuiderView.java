@@ -28,7 +28,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel.TouchType.TargetView;
-import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
 /**
  * Created by Squirrel桓 on 2019/1/12.
@@ -106,7 +105,7 @@ public class GuiderView extends View {
     private boolean isPlaying = false;
 
     private int duration = 1200;
-    private float durations[] = {.0f, .4f, .65f, .95f, 1f};//%百分比叠加
+    private float[] durations = {.0f, .4f, .65f, .95f, 1f};//%百分比叠加
     private int animationIndex = 0;
     private float progress = 0;
     private ValueAnimator animator;
@@ -720,7 +719,7 @@ public class GuiderView extends View {
         return new GuiderRectF(l - textPadding, t - textPadding, r + textPadding, b + textPadding, screenWidth, screenHeight);
     }
 
-    public static enum Gravity {
+    public enum Gravity {
         LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTOM, TOP, LEFT, RIGHT, BOTTOM
     }
 

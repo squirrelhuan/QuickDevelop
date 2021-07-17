@@ -5,13 +5,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import androidx.annotation.Nullable;
-
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Squirrel桓 on 2018/9/1.
@@ -194,9 +192,7 @@ public class Saleng extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                //percent = value;
-                rotationX = value;
+                rotationX = (float) animation.getAnimatedValue();
                 postInvalidate();
             }
         });

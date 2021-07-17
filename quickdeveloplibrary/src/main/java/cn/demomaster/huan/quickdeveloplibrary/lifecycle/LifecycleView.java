@@ -58,7 +58,7 @@ public class LifecycleView extends View {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 isLoadComplete = true;
                 mScaleGestureDetector = new ScaleGestureDetector(context,
                         new ScaleGestureListener());
@@ -404,7 +404,7 @@ public class LifecycleView extends View {
         postInvalidate();
     }
 
-    public static enum ScaleType {
+    public enum ScaleType {
         scaleX//x轴缩放
         , scaleY//y轴缩放
         , scaleXY//xy轴都缩放
@@ -414,7 +414,7 @@ public class LifecycleView extends View {
     /**
      * 移动类型
      */
-    public static enum TransitionType {
+    public enum TransitionType {
         horizontal//横向滚动
         , vertical//纵向滚动
         , transitionXY//任意移动

@@ -13,10 +13,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +48,6 @@ import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.LoadLayout;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -384,7 +380,7 @@ public class WifiFragment2 extends BaseFragment {
 
     static WifiManager mWifiManager;
 
-    public static interface OnScanListener {
+    public interface OnScanListener {
         void onScanResultAvailable();
 
         void onNetWorkStateChanged(NetworkInfo.DetailedState state, int mSSID);
@@ -446,13 +442,7 @@ public class WifiFragment2 extends BaseFragment {
      */
     public boolean isWifiConnected() {
         NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo.isConnected()) {
-            return true;
-        } else if (wifiNetworkInfo.isAvailable()) {
-            return true;
-        }
-
-        return false;
+        return (wifiNetworkInfo.isConnected()||wifiNetworkInfo.isAvailable());
     }
 
     //断开指定ID的网络

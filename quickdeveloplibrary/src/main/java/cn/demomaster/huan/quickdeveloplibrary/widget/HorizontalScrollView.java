@@ -40,13 +40,13 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         this.onSelectChangeListener = onSelectChangeListener;
     }
 
-    public static interface OnSelectChangeListener {
+    public interface OnSelectChangeListener {
         void onSelectChange(int position);
     }
 
     private HAdapter adapter;
 
-    public static interface HAdapter {
+    public interface HAdapter {
         int getCount();
 
         View getItemView(int position);
@@ -259,24 +259,12 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         Log.i(tag, "onOverScrolled clampedX=" + clampedX);
         Log.i(tag, "onOverScrolled clampedY=" + clampedY);*/
         super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
-
-
-    }
-
-    String tag = "AutoCenter";
-
-    @Override
-    public void computeScroll() {
-        super.computeScroll();
-        //Log.i(tag, "computeScroll");
-
     }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         //Log.i(tag, "left=" + l);
-
         // 更新ScrollView的滑动时间
         nowScrollLeft = l;
 
@@ -396,14 +384,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         Log.i(tag, "onLayout b：" + b);*/
         super.onLayout(changed, l, t, r, b);
     }
-
-
-    @Override
-    protected boolean awakenScrollBars() {
-        return super.awakenScrollBars();
-    }
-
-
+    
     @Override
     public boolean pageScroll(int direction) {
         //Log.i(tag, "pageScroll direction= " + direction);

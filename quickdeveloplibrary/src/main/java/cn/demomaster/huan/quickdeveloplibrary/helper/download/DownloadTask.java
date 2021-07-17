@@ -4,18 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
-import android.text.TextUtils;
 
 import java.io.File;
-
-import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 
 /**
  * 下载任务
  */
 public class DownloadTask {
 
-    public static enum DownloadType {
+    public enum DownloadType {
         DownloadManager,
         Okhttp
     }

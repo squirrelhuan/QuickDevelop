@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class SpannableUtil {
     public static void addTextView(TextView tv_content) {
@@ -85,7 +82,7 @@ public class SpannableUtil {
         //2.获取特殊文本的样式和响应
     }
 
-    public static interface SpannableFactory {
+    public interface SpannableFactory {
         List<SpanModel> getSpans(String content);
         // void onClick();
 

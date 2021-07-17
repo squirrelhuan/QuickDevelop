@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
 
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private final SlidingTabView mTabStrip;
 
     private int mWidth ;
@@ -59,9 +59,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         DisplayMetrics displayMetrics = new DisplayMetrics() ;
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        mWidth = (int) (displayMetrics.widthPixels) ;
+        mWidth = (displayMetrics.widthPixels) ;
     }
-    public void setViewPager(ViewPager viewPager) {
+    public void setViewPager(ViewPager2 viewPager) {
         mTabStrip.removeAllViews();
         populateTabStrip();
     }
@@ -105,10 +105,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
     protected TextView createDefaultTabView(Context context) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);;
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-
             TypedValue outValue = new TypedValue();
             getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
                     outValue, true);
@@ -154,14 +153,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 /*计算出正在的偏移量*/
                 targetScrollX -= mTitleOffset;
             }
-            QDLogger.v("zgy","==================mWidth======="+mWidth) ;
+            QDLogger.println("Width="+mWidth); ;
             /*这个时候偏移的量就是屏幕的正中间*/
             scrollTo(targetScrollX, 0);
         }
     }
 
 
-    private class InternalViewPagerListener implements ViewPager.OnPageChangeListener {
+    private class InternalViewPagerListener extends ViewPager2.OnPageChangeCallback {
         private int mScrollState;
 
         @Override
@@ -178,8 +177,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                     ? (int) (positionOffset * selectedTitle.getWidth())
                     : 0;
             scrollToTab(position, extraOffset);
-
-
         }
 
         @Override
@@ -190,11 +187,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
-            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+            if (mScrollState == ViewPager2.SCROLL_STATE_IDLE) {
                 mTabStrip.viewPagerChange(position, 0f);
                 scrollToTab(position, 0);
             }
-
         }
 
     }

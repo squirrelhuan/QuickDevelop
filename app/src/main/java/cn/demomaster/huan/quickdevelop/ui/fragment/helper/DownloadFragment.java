@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.app.DownloadManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;

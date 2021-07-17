@@ -67,11 +67,7 @@ public class SettingFragment extends BaseFragment {
         btn_send_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSyncStatus(mContext)) {
-                    setSyncStatus(false);
-                } else {
-                    setSyncStatus(true);
-                }
+                setSyncStatus(!getSyncStatus(mContext));
             }
         });
         btn_send_tcp.setOnClickListener(new View.OnClickListener() {

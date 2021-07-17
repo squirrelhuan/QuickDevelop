@@ -89,7 +89,6 @@ public class QDBitmapUtil {
     }
 
     public static void setBackground(View view, Bitmap bitmap) {
-
         if (bitmap == null) {
             view.setBackgroundResource(0);
             return;
@@ -108,15 +107,13 @@ public class QDBitmapUtil {
         Bitmap background = Bitmap.createBitmap(vwidth, vheight, config);
 
         Canvas canvas = new Canvas(background);
-
         Matrix matrix = new Matrix();
         matrix.setTranslate(-bwidth / 2, -bheight / 2);
         matrix.postScale(scale, scale);
         matrix.postTranslate(vwidth / 2, vheight / 2);
 
         canvas.drawBitmap(bitmap, matrix, null);
-
-        view.setBackgroundDrawable(new BitmapDrawable(view.getResources(), background));
+        view.setBackground(new BitmapDrawable(view.getResources(), background));//setBackgroundDrawable
     }
 
    /* public static Drawable bitmap2Drawable(int resId){
@@ -130,8 +127,8 @@ public class QDBitmapUtil {
      * @param bitmap
      * @return
      */
-    public static Drawable bitmap2Drawable(Bitmap bitmap) {
-        return new BitmapDrawable(bitmap);
+    public static Drawable bitmap2Drawable(Context context,Bitmap bitmap) {
+        return new BitmapDrawable(context.getResources(),bitmap);
     }
 
     /**

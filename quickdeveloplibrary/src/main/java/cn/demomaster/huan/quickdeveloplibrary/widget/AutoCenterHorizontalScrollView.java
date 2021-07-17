@@ -3,12 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Handler;
-
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -18,6 +12,11 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,7 +159,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
     }
 
-    public static interface HAdapter {
+    public interface HAdapter {
         void setData(List<String> data);
 
         int getCount();//获取子view个数
@@ -450,7 +449,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         setCurrent(currentIndex);
     }
 
-    public static interface OnSelectChangeListener {
+    public interface OnSelectChangeListener {
         void onSelectChange(int position);
     }
 

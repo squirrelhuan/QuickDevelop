@@ -15,14 +15,11 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 
-import cn.demomaster.qdlogger_library.QDLogger;
-
 public class BlurUtil {
 
     public static Bitmap getBlurBackground(Activity activity) {
         Bitmap originBitmap = getBackground(activity);
-        Bitmap blurBitmap = BlurUtil.apply(activity, originBitmap, 25);
-        return blurBitmap;
+        return BlurUtil.apply(activity, originBitmap, 25);
     }
 
     private static Bitmap getBackground(Activity activity) {
@@ -30,8 +27,7 @@ public class BlurUtil {
         decorView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         decorView.setDrawingCacheEnabled(true);
         decorView.buildDrawingCache();
-        Bitmap image = decorView.getDrawingCache();
-        return image;
+        return decorView.getDrawingCache();
     }
 
     private static Bitmap apply(Context context, Bitmap sentBitmap) {
@@ -73,15 +69,15 @@ public class BlurUtil {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }
@@ -332,15 +328,15 @@ public class BlurUtil {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }

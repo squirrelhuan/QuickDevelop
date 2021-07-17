@@ -1,13 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.scroll;
 
 import android.content.Context;
-
-import androidx.core.view.NestedScrollingParent;
-import androidx.core.view.NestedScrollingParentHelper;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParentHelper;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -56,10 +55,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
     //在此可以判断参数target是哪一个子view以及滚动的方向，然后决定是否要配合其进行嵌套滚动
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        if (target instanceof QDNestedScrollChild) {
-            return true;
-        }
-        return false;
+        return (target instanceof QDNestedScrollChild);
     }
 
 
@@ -117,11 +113,8 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
             return false;
         }
         if (dy > 0) {
-            if (getScrollY() >= 0 && myNestedScrollChild.getScrollY() == 0) {
-                return true;
-            }
+            return  (getScrollY() >= 0 && myNestedScrollChild.getScrollY() == 0);
         }
-
         return false;
     }
 
@@ -135,9 +128,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
             toTop = toTop > 0 ? toTop : 0;
             QDLogger.println("getScrollY=" + getScrollY() + "hideImg toTop: " + toTop);
             //toTop = fixedView.getMinHeight();
-            if (getScrollY() <= toTop) {
-                return true;
-            }
+            return (getScrollY() <= toTop);
         }
         return false;
     }

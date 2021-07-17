@@ -81,7 +81,7 @@ public class DomSaxHandler<T> extends DefaultHandler {
      * 其中参数ch记录了这个属性值的内容
      */
     @Override
-    public void characters(char ch[], int start, int length) {
+    public void characters(char[] ch, int start, int length) {
         String content = new String(ch, start, length);
         //QDLogger.i("属性值===>"+ content);
     }
@@ -92,7 +92,7 @@ public class DomSaxHandler<T> extends DefaultHandler {
         this.mOnParseCompleteListener = onParseCompleteListener;
     }
 
-    public static interface OnParseCompleteListener<T> {
+    public interface OnParseCompleteListener<T> {
         void onComplete(Context context, NodeElement nodeElements);
     }
 

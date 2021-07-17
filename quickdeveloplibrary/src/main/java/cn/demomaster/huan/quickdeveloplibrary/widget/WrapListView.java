@@ -1,13 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * 自适应宽度的RecyclerView（仅供单列）

@@ -21,21 +21,14 @@ public class FlowLayout extends ViewGroup {
 
     public FlowLayout(Context context) {
         this(context, null);
-        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
-    }
-
-    public void init() {
-
     }
 
     @Override
@@ -49,7 +42,6 @@ public class FlowLayout extends ViewGroup {
         List<View> lineViewList = new ArrayList<>();//单行
         for (int i = 0; i < count; i++) {
             View chid = getChildAt(i);
-            View textView = chid;
             // QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
             if (lineViewList.size() == 0) {//空行
                 lineViewList.add(chid);
@@ -390,7 +382,7 @@ public class FlowLayout extends ViewGroup {
     }
 
 
-    public static interface FlowAdapter {
+    public interface FlowAdapter {
 
         int getCount();
 
@@ -402,7 +394,7 @@ public class FlowLayout extends ViewGroup {
 
     }
 
-    public static interface ViewHolder {
+    public interface ViewHolder {
 
         View getItemView(int position);
 

@@ -7,8 +7,6 @@ import android.content.Intent;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.demomaster.qdlogger_library.QDLogger;
-
 public class ServiceHelper {
     public static void dissmissWindow(Class serviceClass) {
         Service service = getServiceByKey(serviceClass.getName());
@@ -70,7 +68,7 @@ public class ServiceHelper {
         removeService(qdFloatingService);
     }
 
-    public static interface ServiceListener {
+    public interface ServiceListener {
         void onCreateService();
 
         void onDestroyService();

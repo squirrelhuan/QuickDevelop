@@ -6,15 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-//import com.umeng.commonsdk.UMConfigure;
-//import com.umeng.socialize.PlatformConfig;
-//import com.didichuxing.doraemonkit.DoraemonKit;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleType;
-import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleTimerData;
-
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
@@ -23,11 +15,12 @@ import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
 import cn.demomaster.quickdatabaselibrary.listener.UpgradeInterface;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
-import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.isApkInDebug;
+import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
 
 public class QDApplication extends Application implements UpgradeInterface {
 
@@ -44,8 +37,10 @@ public class QDApplication extends Application implements UpgradeInterface {
         QdToast.setContext(this);
         AppConfig.getInstance().load(this, "config/project.conf");
         String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");
-        QDLogger.init(this, logPath);
-        QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid());
+        if(!TextUtils.isEmpty(logPath)) {
+            QDLogger.init(this, logPath);
+            QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid());
+        }
 
         //初始化全局SharedPreferences
         QDSharedPreferences.init(this);
@@ -72,7 +67,7 @@ public class QDApplication extends Application implements UpgradeInterface {
         //处理崩溃日志
         initCrash();
         //DoraemonKit.install(this);
-        if (isApkInDebug(this)) {
+        if (isDebug(this)) {
             // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
         }
     }

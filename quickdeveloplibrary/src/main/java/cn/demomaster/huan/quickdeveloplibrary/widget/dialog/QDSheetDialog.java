@@ -1,31 +1,24 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
 import java.util.Arrays;
 import java.util.List;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
 
@@ -111,7 +104,7 @@ public class QDSheetDialog extends QDDialog2 {
         setContentView(relativeLayout, layoutParams);
     }
 
-    public static enum ShowType {
+    public enum ShowType {
         List, Grid
     }
 
@@ -207,7 +200,7 @@ public class QDSheetDialog extends QDDialog2 {
         }
     }
 
-    public static interface OnDialogActionListener {
+    public interface OnDialogActionListener {
         void onItemClick(QDSheetDialog dialog, int position, List<String> data);
     }
 

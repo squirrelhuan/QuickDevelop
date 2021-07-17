@@ -7,10 +7,9 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.square;
  */
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
-
-import android.util.AttributeSet;
 
 /**
  * 正方形的ImageView

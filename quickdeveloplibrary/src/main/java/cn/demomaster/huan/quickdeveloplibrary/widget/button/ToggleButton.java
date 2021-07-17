@@ -7,12 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-
-import androidx.annotation.Nullable;
-
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Squirrel桓 on 2018/12/17.
@@ -36,7 +34,7 @@ public class ToggleButton extends View {
     }
 
     private boolean isCheckedDef = false;
-
+    
     public void init() {
         setOnClickListener(new OnClickListener() {
             @Override
@@ -177,7 +175,7 @@ public class ToggleButton extends View {
         /**
          * @param on = =
          */
-        public void onToggle(View view, boolean on);
+        void onToggle(View view, boolean on);
     }
 
     private OnToggleChangeListener onToggleChangeListener;

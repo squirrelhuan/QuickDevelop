@@ -1,10 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -309,7 +306,7 @@ public class AnimationUtil {
     }
 
     //触发listener类型
-    public static enum ListenerTriggerType {
+    public enum ListenerTriggerType {
         onAnimationFinished,//当前动画结束后执行
         onAnimationReverseed,//关闭（回滚）动画结束后执行
         onAnimationStarted,//开启动画结束后执行

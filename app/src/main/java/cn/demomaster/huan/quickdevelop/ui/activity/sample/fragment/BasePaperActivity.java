@@ -9,8 +9,8 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.RouterPaper;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.qdrouter_library.paper.PaperManager;
 
 @ActivityPager(name = "BasePaper",preViewClass = TextView.class,resType = ResType.Custome)
@@ -30,18 +30,12 @@ public class BasePaperActivity extends QDActivity {
         myPayerManager.addElement(new RouterPaper());
         RouterFragment f1 = new RouterFragment();
         startFragment(f1,getContentViewId());
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         //FragmentActivityHelper.getInstance().unBindActivity(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     @Override

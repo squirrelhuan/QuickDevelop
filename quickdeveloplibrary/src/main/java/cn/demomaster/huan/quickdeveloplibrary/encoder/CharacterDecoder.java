@@ -25,12 +25,12 @@
 
 package cn.demomaster.huan.quickdeveloplibrary.encoder;
 
-import java.io.OutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PushbackInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -89,13 +89,13 @@ public abstract class CharacterDecoder
 
 	/** decode the beginning of the buffer, by default this is a NOP. */
 	protected void decodeBufferPrefix(PushbackInputStream aStream,
-			OutputStream bStream) throws IOException
+			OutputStream bStream) 
 	{
 	}
 
 	/** decode the buffer suffix, again by default it is a NOP. */
 	protected void decodeBufferSuffix(PushbackInputStream aStream,
-			OutputStream bStream) throws IOException
+			OutputStream bStream) 
 	{
 	}
 
@@ -106,7 +106,7 @@ public abstract class CharacterDecoder
 	 * been encoded on the line. 107
 	 */
 	protected int decodeLinePrefix(PushbackInputStream aStream,
-			OutputStream bStream) throws IOException
+			OutputStream bStream) 
 	{
 		return (bytesPerLine());
 	}
@@ -118,7 +118,7 @@ public abstract class CharacterDecoder
 	 * (newline) character. 117
 	 */
 	protected void decodeLineSuffix(PushbackInputStream aStream,
-			OutputStream bStream) throws IOException
+			OutputStream bStream) 
 	{
 	}
 
@@ -138,7 +138,7 @@ public abstract class CharacterDecoder
 	 * 130 * This method works around the bizarre semantics of
 	 * BufferedInputStream's 131 * read method. 132
 	 */
-	protected int readFully(InputStream in, byte buffer[], int offset, int len)
+	protected int readFully(InputStream in, byte[] buffer, int offset, int len)
 			throws IOException
 	{
 		for (int i = 0; i < len; i++)
@@ -201,12 +201,12 @@ public abstract class CharacterDecoder
 	 * encoded 183 * buffer and returns a byte array containing the data. 184 * @exception
 	 * CEFormatException An error has occured while decoding 185
 	 */
-	public byte decodeBuffer(String inputString)[] throws IOException
+	public byte[] decodeBuffer(String inputString) throws IOException
 	{
-		byte inputBuffer[] = new byte[inputString.length()];
+		byte[] inputBuffer = new byte[inputString.length()];
 		ByteArrayInputStream inStream;
 		ByteArrayOutputStream outStream;
-
+		//inputBuffer = inputString.getBytes();
 		inputString.getBytes(0, inputString.length(), inputBuffer, 0);
 		inStream = new ByteArrayInputStream(inputBuffer);
 		outStream = new ByteArrayOutputStream();
@@ -217,7 +217,7 @@ public abstract class CharacterDecoder
 	/**
 	 * 199 * Decode the contents of the inputstream into a buffer. 200
 	 */
-	public byte decodeBuffer(InputStream in)[] throws IOException
+	public byte[] decodeBuffer(InputStream in) throws IOException
 	{
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		decodeBuffer(in, outStream);

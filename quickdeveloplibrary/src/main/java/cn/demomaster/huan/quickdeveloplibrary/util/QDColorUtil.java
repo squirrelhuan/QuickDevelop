@@ -11,7 +11,7 @@ public class QDColorUtil {
         int blueCurrent;
         int greenCurrent;
         int alphaCurrent;
-
+        
         int redStart = Color.red(startColor);
         int blueStart = Color.blue(startColor);
         int greenStart = Color.green(startColor);

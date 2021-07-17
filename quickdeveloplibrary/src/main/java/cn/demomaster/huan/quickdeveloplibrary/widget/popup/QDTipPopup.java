@@ -121,19 +121,16 @@ public class QDTipPopup extends QDPopup {
         }
         if (mGravity == GuiderView.Gravity.LEFT || mGravity == GuiderView.Gravity.RIGHT) {
             popupWidth = popupWidth + arrowWidht;
-            if (mGravity == GuiderView.Gravity.LEFT) {
-                if (popupWidth >= maxWidth) {
+            if (popupWidth >= maxWidth) {
+                if (mGravity == GuiderView.Gravity.LEFT) {
                     layoutParams.width = location[0] - padding1;
-                    getContentView().setLayoutParams(layoutParams);
-                }
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            } else {
-                if (popupWidth >= maxWidth) {
+                } else {
                     layoutParams.width = location[0] + mAnchor.getWidth();
-                    getContentView().setLayoutParams(layoutParams);
                 }
-                showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                getContentView().setLayoutParams(layoutParams);
             }
+            showAtLocation(mAnchor, Gravity.NO_GRAVITY, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         }
         // 自动调整箭头的位置
         updatePosition();
@@ -191,7 +188,7 @@ public class QDTipPopup extends QDPopup {
             public void onGlobalLayout() {
                 // 自动调整箭头的位置
                 updatePosition();
-                contentView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                contentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         //内部类调用setContentView先设置isCustomView = false;
@@ -284,7 +281,7 @@ public class QDTipPopup extends QDPopup {
         setContentView(rootLayout);
     }
 
-    public static enum Direction {
+    public enum Direction {
         top, left, right, bottom
     }
 

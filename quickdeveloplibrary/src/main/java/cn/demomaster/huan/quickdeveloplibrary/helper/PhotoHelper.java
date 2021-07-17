@@ -2,8 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.helper;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,18 +11,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.banner.BannerFileType;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
@@ -42,7 +36,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
 public class PhotoHelper {
 
 
-    public static enum RequestType {
+    public enum RequestType {
         takePhoto(0),//拍照
         scanQrcode(1),//扫描二维码
         photoCrop(2),//图片裁剪
@@ -480,7 +474,7 @@ public class PhotoHelper {
         }
     }
 
-    public static interface OnTakePhotoResultInterface {
+    public interface OnTakePhotoResultInterface {
         void onSuccess(Intent data, String path);
 
         void onFailure(String error);
@@ -498,7 +492,7 @@ public class PhotoHelper {
         }
     }
 
-    public static interface OnSelectPictureResult {
+    public interface OnSelectPictureResult {
         void onSuccess(Intent data, ArrayList<Image> images);
 
         void onFailure(String error);

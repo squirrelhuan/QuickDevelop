@@ -14,7 +14,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import cn.demomaster.huan.quickdeveloplibrary.BuildConfig;
 import cn.demomaster.qdlogger_library.QDLogger;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,14 +31,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * http工具类
  */
 public class HttpUtils {
-    public static String TAG = "HttpUtils";
+    public static String TAG = HttpUtils.class.getSimpleName();
     private static HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
     //新建log拦截器
     private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
         public void log(String message) {
             if (!TextUtils.isEmpty(message)) {
-                QDLogger.println(TAG, message);
+                QDLogger.i(TAG, message);
             }
         }
     }).setLevel(level);
@@ -162,9 +161,6 @@ public class HttpUtils {
         return instance;
     }
 
-    private void HttpUtils() {
-    }
-
     public static final MediaType FROM_DATA = MediaType.parse("multipart/form-data");
 
     public void uploadFile(String name, String url, String filePath, Callback callback) {
@@ -228,12 +224,12 @@ public class HttpUtils {
     
    public static final X509TrustManager trustManager = new X509TrustManager() {
         @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkClientTrusted(X509Certificate[] chain, String authType) {
 
         }
 
         @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] chain, String authType) {
 
         }
 

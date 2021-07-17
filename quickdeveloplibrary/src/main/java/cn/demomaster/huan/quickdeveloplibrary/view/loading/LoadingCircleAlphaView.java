@@ -127,8 +127,7 @@ public class LoadingCircleAlphaView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                progress = value;
+                progress = (int) animation.getAnimatedValue();
                 //Log.d(TAG, "progress=" + progress);
                 if (progress >= end) {
                     isForward = !isForward;

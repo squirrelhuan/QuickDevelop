@@ -12,7 +12,6 @@ import android.util.DisplayMetrics;
 import java.util.Locale;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -41,10 +40,8 @@ public class QDLanguageUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             configuration.setLocales(new LocaleList(locale));
             context.createConfigurationContext(configuration);
-            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        } else {
-            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         }
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         //QDLogger.println("修改后语言类型："+getLanguageLocal(context).getLanguage());
         //setLanguageLocal(context,locale.toString());
     }

@@ -13,8 +13,8 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.AppletsFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
 @ActivityPager(name = "小程序",preViewClass = TextView.class,resType = ResType.Custome)
 public class AppletsFragmentActivity extends QDActivity {
@@ -33,7 +33,8 @@ public class AppletsFragmentActivity extends QDActivity {
         startFragment(this,f1,getContentViewId());*/
        // startFragment(new AppletsFragment(),getContentViewId());
 
-        getFragmentHelper().build(this,AppletsFragment.class.getName()).setContainerViewId(view.getId()).putExtras(new Bundle())
+        getFragmentHelper().build(this,AppletsFragment.class.getName())
+                .setContainerViewId(view.getId()).putExtras(new Bundle())
                 .putExtra("password", 666666)
                 .putExtra("name", "小三").navigation();
         //开启事务，fragment的控制是由事务来实现的
@@ -69,13 +70,8 @@ public class AppletsFragmentActivity extends QDActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.i("BaseFragmentActivity onKeyDown"+keyCode);
+        QDLogger.println("keyCode="+keyCode);
         return super.onKeyDown(keyCode, event);
     }
 }

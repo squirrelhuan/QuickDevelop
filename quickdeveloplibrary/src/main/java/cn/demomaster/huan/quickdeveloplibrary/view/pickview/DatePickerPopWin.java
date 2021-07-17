@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -195,7 +196,8 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
 
         this.setTouchable(true);
         this.setFocusable(true);
-        this.setBackgroundDrawable(new BitmapDrawable());
+        //this.setBackgroundDrawable(new BitmapDrawable());
+        this.setBackgroundDrawable(new ColorDrawable());
         this.setAnimationStyle(R.style.FadeInPopWin);
         contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         this.setContentView(this.contentView);

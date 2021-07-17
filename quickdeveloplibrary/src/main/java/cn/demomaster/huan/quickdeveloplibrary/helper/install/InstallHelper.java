@@ -16,12 +16,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import java.io.BufferedReader;
@@ -31,17 +28,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
-import static cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper.PERMISSIONS_STORAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper.isAccessBilityOn;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.uriToFile;
 
@@ -54,17 +48,7 @@ public class InstallHelper {
      * @return
      */
     public static boolean checkDownloadPermission(Context context) {
-        PermissionHelper.requestPermission((Activity) context, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, new PermissionHelper.PermissionListener() {
-            @Override
-            public void onPassed() {
-                
-            }
-
-            @Override
-            public void onRefused() {
-                
-            }
-        });
+        PermissionHelper.requestPermission((Activity) context, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, null);
         //兼容8.0 安装权限
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
@@ -285,17 +269,17 @@ public class InstallHelper {
 
                     @Override
                     public void onBadgingChanged(int sessionId) {
-                        QDLogger.i("install onBadgingChanged sessionId=" + sessionId);
+                        QDLogger.i("onBadgingChanged sessionId=" + sessionId);
                     }
 
                     @Override
                     public void onActiveChanged(int sessionId, boolean active) {
-                        QDLogger.i("install onActiveChanged sessionId=" + sessionId + ",active =" + active);
+                        QDLogger.i("onActiveChanged sessionId=" + sessionId + ",active =" + active);
                     }
 
                     @Override
                     public void onProgressChanged(int sessionId, float progress) {
-                        QDLogger.i("install onProgressChanged sessionId=" + sessionId + ",progress =" + progress);
+                        QDLogger.i("onProgressChanged sessionId=" + sessionId + ",progress =" + progress);
                     }
 
                     @Override

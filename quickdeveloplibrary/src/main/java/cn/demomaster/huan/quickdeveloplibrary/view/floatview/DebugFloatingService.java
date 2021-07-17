@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDActivityManager;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
@@ -34,11 +33,13 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogBean;
 import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.tagFilter;
+import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
 
 /**
  * Created
@@ -222,7 +223,7 @@ public class DebugFloatingService extends QDFloatingService2 {
     static DebugFloating2 debugFloating2;
 
     public static void showConsole(Activity context) {
-        if (QDAppInfoUtil.isApkInDebug(context)) {
+        if (isDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //DebugFloatingService.showWindow(context, DebugFloatingService.class);
                 ServiceHelper.showWindow(context, DebugFloatingService.class);

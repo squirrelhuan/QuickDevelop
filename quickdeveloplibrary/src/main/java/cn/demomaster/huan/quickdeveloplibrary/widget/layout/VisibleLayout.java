@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.OnReleaseListener;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 /**
  * 显示隐藏布局,当子空间显示或者隐藏状态改变时触发动画
@@ -292,7 +292,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         this.onVisiableChangedListener = onVisiableChangedListener;
     }
 
-    public static interface OnVisiableChangedListener {
+    public interface OnVisiableChangedListener {
         void onVisiableChanaged(int visibility, float progress);
     }
 

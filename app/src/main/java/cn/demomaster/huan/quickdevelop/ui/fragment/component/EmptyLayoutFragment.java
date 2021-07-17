@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ public class EmptyLayoutFragment extends BaseFragment {
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_emptylayout, null);
+        View mView = inflater.inflate(R.layout.fragment_layout_emptylayout, null);
         return mView;
     }
 

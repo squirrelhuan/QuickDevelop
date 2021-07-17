@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,6 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
@@ -93,9 +94,9 @@ public class MainFragment extends BaseFragment {
         list.add(HelperFragment.class);
         list.add(DesignPatternFragment.class);
         FragmentManager fragmentManager = getChildFragmentManager();
-        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(fragmentManager, list);
+        MainFragmentAdapter mPagerAdapter1 = new MainFragmentAdapter(getActivity(), list);
         // Initiate ViewPager
-        ViewPager mViewPager = rootView.findViewById(R.id.viewPager);
+        ViewPager2 mViewPager = rootView.findViewById(R.id.viewPager);
         //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
         //mViewPager.setPageMarginDrawable(R.drawable.viewpager_margin);
         mViewPager.setOffscreenPageLimit(1);
@@ -240,27 +241,25 @@ public class MainFragment extends BaseFragment {
     /**
      * Initiate the tabs
      */
-    public void initScrollableTabs(View rootView, ViewPager mViewPager) {
-        ScrollableTabView mScrollingTabs = (ScrollableTabView) rootView.findViewById(R.id.scrollingTabs);
+    public void initScrollableTabs(View rootView, ViewPager2 mViewPager) {
+        ScrollableTabView mScrollingTabs = rootView.findViewById(R.id.scrollingTabs);
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(getActivity());
         mScrollingTabs.setScrollingTabsAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
     }
 
-    private static class MainFragmentAdapter extends FragmentPagerAdapter {
+    private static class MainFragmentAdapter extends FragmentStateAdapter {
         private List<Class> data;
 
-        public MainFragmentAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public MainFragmentAdapter(FragmentManager fm, List<Class> data) {
-            super(fm);
+        public MainFragmentAdapter(@NonNull @NotNull FragmentActivity fragmentActivity, List<Class> data) {
+            super(fragmentActivity);
             this.data = data;
         }
 
+        @NonNull
+        @NotNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             Fragment fragment;
             Bundle bundle = new Bundle();
             String className = "";
@@ -283,13 +282,8 @@ public class MainFragment extends BaseFragment {
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return data.size();
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return PagerAdapter.POSITION_NONE;
         }
     }
 
@@ -299,8 +293,8 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.e(mContext, "main onKeyDown " + isRootFragment);
-        if (isRootFragment) {
+        QDLogger.e( "main onKeyDown " + isRootFragment());
+        if (isRootFragment()) {
             if (System.currentTimeMillis() - firstClickTime > 2000) {
                 QdToast.show(mContext, "再点击退出app");
                 firstClickTime = System.currentTimeMillis();
@@ -309,7 +303,7 @@ public class MainFragment extends BaseFragment {
             }
             return true;
         }
-        QdToast.show(mContext, "onKeyDown isRootFragment=" + isRootFragment);
+        QdToast.show(mContext, "onKeyDown isRootFragment=" + isRootFragment());
         return super.onKeyDown(keyCode, event);
     }
 }

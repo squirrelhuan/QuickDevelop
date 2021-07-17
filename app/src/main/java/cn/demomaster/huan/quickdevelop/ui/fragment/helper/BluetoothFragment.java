@@ -1,5 +1,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -157,7 +158,7 @@ public class BluetoothFragment extends BaseFragment {
         Intent discoverableIntent = new
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, time);//最多可以设置3600秒，如果将值设置为0就表示设备永远进入可被发现模式。任何小于0或者大于3600的值都会自动设置为120秒
-        startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);//REQUEST_DISCOVERABLE为自定义的requestcode值
+        ((Activity)getContext()).startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);//REQUEST_DISCOVERABLE为自定义的requestcode值
     }
 
     BluetoothStateReceiver stateChangeReceiver = new BluetoothStateReceiver();
@@ -264,7 +265,7 @@ public class BluetoothFragment extends BaseFragment {
         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         // 这个可以用来设置时间
         intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
-        startActivityForResult(intent, 2);
+        ((Activity)getContext()).startActivityForResult(intent, 2);
     }
 
     private class AcceptThread extends Thread {

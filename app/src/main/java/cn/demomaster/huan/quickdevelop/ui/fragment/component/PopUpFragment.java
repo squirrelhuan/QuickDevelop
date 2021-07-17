@@ -1,6 +1,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,7 +50,8 @@ public class PopUpFragment extends BaseFragment {
                 null);
         pop.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         pop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        pop.setBackgroundDrawable(new BitmapDrawable());
+        //pop.setBackgroundDrawable(new BitmapDrawable());
+        pop.setBackgroundDrawable(new ColorDrawable());
         pop.setFocusable(true);
         pop.setOutsideTouchable(true);
         pop.setContentView(view);

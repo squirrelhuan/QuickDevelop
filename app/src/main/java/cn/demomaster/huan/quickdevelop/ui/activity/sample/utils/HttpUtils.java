@@ -1,5 +1,9 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +12,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +22,8 @@ public class HttpUtils {
 
 	private static final String SERVER_URL = "";
 	
-	public static String doPost(String httpUrl,HashMap<String,String> params) {
+	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String doPost(String httpUrl, HashMap<String,String> params) {
 
 		String param = getParamString(params);
         HttpURLConnection connection = null;
@@ -53,7 +59,7 @@ public class HttpUtils {
 
                 is = connection.getInputStream();
                 // 对输入流对象进行包装:charset根据工作项目组的要求来设置
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
                 StringBuffer sbf = new StringBuffer();
                 String temp = null;

@@ -149,11 +149,11 @@ public class HierarchyView extends View {
         this.onClickListener2 = onClickListener;
     }
 
-    public static interface OnHierarchtClickListener {
+    public interface OnHierarchtClickListener {
         void onClick(float x, float y);
     }
 
-    public static interface OnNodeInfoClickListener {
+    public interface OnNodeInfoClickListener {
         void onClick(ViewNodeInfo nodeInfo);
     }
 

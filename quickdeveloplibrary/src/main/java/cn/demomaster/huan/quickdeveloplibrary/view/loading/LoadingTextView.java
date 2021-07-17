@@ -75,7 +75,6 @@ public class LoadingTextView extends View {
         RectF mRecF4 = new RectF(margin_left + r / 2 + spacing / 2, margin_top + r / 2 + spacing / 2, margin_left + r, margin_top + r);
         if (!isDrawed) {
             //isDrawed = true;
-            if (isForward) {
                 mPaint.setColor(colors[0]);
                 canvas.drawRoundRect(mRecF1, 5, 5, mPaint);
                 mPaint.setColor(colors[1]);
@@ -85,17 +84,6 @@ public class LoadingTextView extends View {
                 mPaint.setColor(colors[3]);
                 canvas.drawRoundRect(mRecF4, 5, 5, mPaint);
                 //canvas.drawArc(mRecF, 0, progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
-            } else {
-                mPaint.setColor(colors[0]);
-                canvas.drawRoundRect(mRecF1, 5, 5, mPaint);
-                mPaint.setColor(colors[1]);
-                canvas.drawRoundRect(mRecF2, 5, 5, mPaint);
-                mPaint.setColor(colors[2]);
-                canvas.drawRoundRect(mRecF3, 5, 5, mPaint);
-                mPaint.setColor(colors[3]);
-                canvas.drawRoundRect(mRecF4, 5, 5, mPaint);
-                //canvas.drawArc(mRecF, progress, 360 - progress, true, mPaint);//以斜上45度为起点，顺时针扫过135度
-            }
         }
     }
 
@@ -111,8 +99,7 @@ public class LoadingTextView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                progress = value;
+                progress = (int) animation.getAnimatedValue();
                 //Log.d(TAG, "progress=" + progress);
                 if (progress >= end) {
                     isForward = !isForward;

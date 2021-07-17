@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +100,7 @@ public class WifiTimerService2 extends Service {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void checkWifi() {
         try {
             WifiUtil.getInstance().openWifi();
@@ -106,19 +110,19 @@ public class WifiTimerService2 extends Service {
                 WifiUtil.getInstance().getWifiInfo();
                 //重连wifi
                 Log.d(TAG, "=== checkWifi:无网络....");
-                Log.d(TAG, "==========currentWifi=" + currentWifi);
-                Log.d(TAG, "==========checkWifi=========password=" + password);
+                Log.d(TAG, "=currentWifi=" + currentWifi);
+                Log.d(TAG, "=checkWifi=password=" + password);
 
                 ScanResult srResult = findWifi();
                 if (srResult == null) {
-                    Log.d(TAG, "=== checkWifi,ScanResult=null ===");
+                    Log.d(TAG, "== checkWifi,ScanResult=null ==");
                     return;
                 }
 
                 ssid = srResult.SSID;
-                Log.d(TAG, "====== checkWifi:ssid=" + ssid);
+                Log.d(TAG, "checkWifi:ssid=" + ssid);
                 type = WifiUtil.getInstance().getCipherType(ssid);
-                Log.d(TAG, "=== findWifi:ssid=" + ssid);
+                Log.d(TAG, "findWifi:ssid=" + ssid);
                 /*if (mConnectAsyncTask != null) {
                     mConnectAsyncTask.cancel(true);
                     mConnectAsyncTask = null;

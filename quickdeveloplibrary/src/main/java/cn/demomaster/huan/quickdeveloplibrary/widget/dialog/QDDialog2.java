@@ -10,13 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.view.ScrollingView;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;

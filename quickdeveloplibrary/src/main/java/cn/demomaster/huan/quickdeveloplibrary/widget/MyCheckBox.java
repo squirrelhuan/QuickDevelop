@@ -5,17 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import org.jetbrains.annotations.NotNull;
-
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class MyCheckBox extends AppCompatImageView {
     public MyCheckBox(@NonNull @NotNull Context context) {
@@ -157,7 +152,7 @@ public class MyCheckBox extends AppCompatImageView {
         return mChecked;
     }
 
-    public static interface OnCheckedChangeListener {
+    public interface OnCheckedChangeListener {
         void onCheckedChanged(View buttonView, boolean isChecked);
     }
 }

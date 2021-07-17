@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 
 import androidx.core.content.ContextCompat;
-
-import android.util.TypedValue;
 
 
 /**

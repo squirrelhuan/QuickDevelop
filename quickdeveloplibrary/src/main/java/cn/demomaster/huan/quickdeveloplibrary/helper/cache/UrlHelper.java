@@ -1,18 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.cache;
 
-import android.graphics.Bitmap;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 
 /**
  * 广告帮助类
@@ -66,7 +60,7 @@ public class UrlHelper {
         });
     }
 
-    public static interface AnalyResult {
+    public interface AnalyResult {
         void success(String url, String fileType, int fileLength);
 
         void error();
