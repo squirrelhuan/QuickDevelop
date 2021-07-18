@@ -11,7 +11,7 @@ include ':app',
         ':quickpermission_library'
 
 project(':app').projectDir = new File('app')
-project (':quickdeveloplibrary').projectDir = new File('D:\\Android\\work\\QuickDevelop\\quickdeveloplibrary')
+project (':quickdeveloplibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickDevelop\\quickdeveloplibrary')
 project (':qdzxinglibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QdZxing\\qdzxinglibrary')
 project (':qdlogger_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QDLogger\\qdlogger_library')
 project (':quickpermission_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickPermission\\quickpermission_library')
