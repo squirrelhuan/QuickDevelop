@@ -129,7 +129,6 @@ public class H5Fragment extends BaseFragment {
 
     public void initView(View rootView) {
         int i = (int) (Math.random() * 10 % 4);
-        setTitle(titles[i]);
         getActionBarTool().setHeaderBackgroundColor(colors[i]);
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
         if (button != null) {
@@ -152,7 +151,6 @@ public class H5Fragment extends BaseFragment {
         }
     }
 
-    private final String[] titles = {"1", "2", "3", "4"};
     private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void startFragment() {
         getFragmentHelper().startFragment(new H5Fragment());
