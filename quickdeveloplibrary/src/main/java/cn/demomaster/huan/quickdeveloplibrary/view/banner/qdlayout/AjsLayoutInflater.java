@@ -50,14 +50,13 @@ import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.tex
 public class AjsLayoutInflater {
 
     public static NodeElement parseXmlFile(Context context, File file, DomSaxHandler.OnParseCompleteListener onParseCompleteListener) {
-        XMLReader xr = null;
         try {
             //使用工厂方法初始化SAXParserFactory变量spf
             SAXParserFactory spf = SAXParserFactory.newInstance();
             //通过SAXParserFactory得到SAXParser的实例
             SAXParser sp = spf.newSAXParser();
             //通过SAXParser得到XMLReader的实例
-            xr = sp.getXMLReader();
+            XMLReader xr = sp.getXMLReader();
 
             DomSaxHandler handler = new DomSaxHandler(context, onParseCompleteListener);
             //handler.setUseLowerCase(true);//使用小写转换
@@ -396,27 +395,22 @@ public class AjsLayoutInflater {
                             descStr = descArray[i];
                         }
                         if (backgroundColorsArray.length > i) {
-                            int backgroundColor = backgroundColorDefault;
-                            backgroundColor = backgroundColorsArray[i];
+                            int backgroundColor = backgroundColorsArray[i];
                             adsResource.setBackgroundColor(backgroundColor);
                         }
 
-
                         if (textSizesArray.length > i) {
-                            float textSize = textSizeDefault;
-                            textSize = textSizesArray[i];
+                            float textSize = textSizesArray[i];
                             adsResource.setTextSize(textSize);
                         }
 
                         if (textColorsArray.length > i) {
-                            int textColor = textColorDefault;
-                            textColor = textColorsArray[i];
+                            int textColor = textColorsArray[i];
                             adsResource.setTextColor(textColor);
                         }
 
                         if (textBackgroundColorsArray.length > i) {
-                            int textBackgroundColor = textBackgroundColorDefault;
-                            textBackgroundColor = textBackgroundColorsArray[i];
+                            int textBackgroundColor = textBackgroundColorsArray[i];
                             adsResource.setTextBackgroundColor(textBackgroundColor);
                         }
 

@@ -52,7 +52,7 @@ public class WebViewFragment extends AppletsFragment {
             });
         }
         Bundle bundle = getArguments();
-        if (bundle.containsKey("URL")) {
+        if (bundle!=null&&bundle.containsKey("URL")) {
             webView.setOnStateChangedListener(new QDWebChromeClient.OnStateChangedListener() {
                 @Override
                 public void onProgress(int progress) {

@@ -87,7 +87,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
     public String FormetFileSize(long fileS) {// 转换文件大小
         DecimalFormat df = new DecimalFormat("#.00");
-        String fileSizeString = "";
+        String fileSizeString;
         if (fileS < 1024) {
             fileSizeString = df.format((double) fileS) + "B";
         } else if (fileS < 1048576) {

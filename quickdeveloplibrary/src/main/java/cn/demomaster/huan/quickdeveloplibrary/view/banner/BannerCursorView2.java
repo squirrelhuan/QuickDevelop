@@ -67,9 +67,7 @@ public class BannerCursorView2 extends View implements Banner.BannerIndicator {
         for (int i = 0; i < indicatorCount; i++) {
             float x = w * (i * 2 + 1);
             float y = getHeight() / 2 - w / 4;
-            float radius_c = radius;
             if (tabIndex == i) {
-                radius_c = radius_actived;
                 mPaint.setColor(Color.GREEN);
             } else {
                 mPaint.setColor(Color.WHITE);

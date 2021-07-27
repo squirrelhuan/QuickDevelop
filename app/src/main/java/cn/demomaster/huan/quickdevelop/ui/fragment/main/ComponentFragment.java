@@ -45,6 +45,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.ColorPickerFragment
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.EmptyLayoutFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.FramelayoutFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.GuiderFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.H5Fragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.NdkTestFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.NestedScrollViewFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.PopUpFragment;
@@ -123,6 +124,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(QDActionDialogActivity.class);
         classList.add(PopUpFragment.class);
 
+        classList.add(H5Fragment.class);
         classList.add(AppletsFragmentActivity.class);
         classList.add(BaseFragmentActivity.class);
 

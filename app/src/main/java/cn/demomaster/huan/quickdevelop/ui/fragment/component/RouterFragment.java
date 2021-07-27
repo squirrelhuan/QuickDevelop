@@ -29,7 +29,6 @@ public class RouterFragment extends BaseFragment {
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // return super.onCreateView(inflater, container, savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_layout_router, null);
-        initView(mView);
         return mView;
     }
 

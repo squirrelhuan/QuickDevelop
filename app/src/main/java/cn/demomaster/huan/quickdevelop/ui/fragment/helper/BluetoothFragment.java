@@ -281,10 +281,9 @@ public class BluetoothFragment extends BaseFragment {
         }
 
         public void run() {
-            BluetoothSocket socket = null;
             while (true) {
                 try {
-                    socket = mServerSocket.accept();
+                    BluetoothSocket socket = mServerSocket.accept();
                     if (socket != null) {
                         manageConnectedSocket(socket);
                         mServerSocket.close();

@@ -160,18 +160,16 @@ public class AccessibilityHelper {
         String name = clazz.getCanonicalName();
         String targetId = context.getPackageName() + "/" + name;
         AccessibilityManager am = (AccessibilityManager) context.getApplicationContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> enableServices = null;
         int accessibilityEnabled = 0;
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String enabledServices = null;
         try {
-            enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            String enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
             Log.i(TAG, "已开启的无障碍服务：" + enabledServices);
             accessibilityEnabled = Settings.Secure.getInt(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED);//"1开启":"0关闭"
         } catch (Settings.SettingNotFoundException e) {
             QDLogger.e(e);
         }
-        enableServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        List<AccessibilityServiceInfo> enableServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         if (accessibilityEnabled == 1) {
             if (enableServices != null) {
                 for (AccessibilityServiceInfo enableService : enableServices) {
@@ -195,10 +193,9 @@ public class AccessibilityHelper {
      * @return
      */
     public static boolean isAccessBilityOn(Context context) {
-        int i = 0;
         String service = context.getPackageName() + "/" + InstallService.class.getCanonicalName();
         try {
-            i = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
+            int i = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
             if (i == 1) {
                 String settingVlue = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
                 String[] arr = settingVlue.split(":");

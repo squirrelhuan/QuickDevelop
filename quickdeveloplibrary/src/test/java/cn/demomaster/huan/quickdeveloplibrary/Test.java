@@ -526,12 +526,8 @@ public class Test {
         String lastState = "-1";//上次的状态（1/2）
         int position = -1;//上次状态的位置
 
-
-        List<Result> results = new ArrayList<>();
-        results = JSON.parseArray(str, Result.class);
-
+        List<Result> results = JSON.parseArray(str, Result.class);
         for (int i = 0; i < results.size(); i++) {
-
             System.out.println("" + i);
             if (position == -1) {//初始化
                 position = 0;
