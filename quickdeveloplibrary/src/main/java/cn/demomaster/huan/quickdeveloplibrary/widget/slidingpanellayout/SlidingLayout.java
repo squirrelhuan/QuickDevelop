@@ -126,7 +126,7 @@ public class SlidingLayout extends LinearLayout {
             if(scrollView.getTop() == maxMarginTop){
                 this.mSlideState = slideState;
             }else {
-                QDLogger.println("slideState="+mSlideState+", top=" + scrollView.getTop()+",maxMarginTop="+maxMarginTop);
+                //QDLogger.println("slideState="+mSlideState+", top=" + scrollView.getTop()+",maxMarginTop="+maxMarginTop);
                 mSlideState = PanelState.DRAGGING;
                 smoothTo(maxMarginTop);
             }
@@ -134,7 +134,7 @@ public class SlidingLayout extends LinearLayout {
             if(scrollView.getTop() == minMarginTop){
                 this.mSlideState = slideState;
             }else {
-                QDLogger.println("slideState="+mSlideState+", top=" + scrollView.getTop()+",maxMarginTop="+maxMarginTop);
+                //QDLogger.println("slideState="+mSlideState+", top=" + scrollView.getTop()+",maxMarginTop="+maxMarginTop);
                 mSlideState = PanelState.DRAGGING;
                 smoothTo(minMarginTop);
             }
@@ -156,13 +156,13 @@ public class SlidingLayout extends LinearLayout {
      */
     boolean smoothTo(int offsetTop) {
         if (mDragHelper.smoothSlideViewTo(scrollView, scrollView.getLeft(), offsetTop)) {
-            QDLogger.d("smoothSlideTo panelTop=" + offsetTop + "," + scrollView.getTop());
+            //QDLogger.d("smoothSlideTo panelTop=" + offsetTop + "," + scrollView.getTop());
             isFling = false;
             isAutoScrolling = true;
             invalidate();
             return true;
         } else {
-            QDLogger.e("smoothTo="+offsetTop);
+            //QDLogger.e("smoothTo="+offsetTop);
             scrollView.setTop(offsetTop);
         }
         return false;

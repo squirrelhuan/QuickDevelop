@@ -12,6 +12,7 @@ public class QDWebChromeClient extends WebChromeClient {
         void onReceivedTitle(WebView view, String title);
 
         boolean onNewTab(WebView view, String url);
+        
     }
 
     public interface OnProgressChanged {

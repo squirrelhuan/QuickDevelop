@@ -87,15 +87,6 @@ public class ComponentFragment extends BaseFragment {
         return view;
     }
 
-  /*  @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_layout_component, null);
-        initView(view);
-        return view;
-    }*/
-
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         recyclerView = rootView.findViewById(R.id.recyclerView);

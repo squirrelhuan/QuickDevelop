@@ -94,9 +94,18 @@ public class EmptyLayout extends FrameLayout {
     public void showRetry() {
         btn_retry.setVisibility(VISIBLE);
     }
+    String mRetryText;//重试按钮文字
+    public void setRetryText(String retryText) {
+        this.mRetryText = retryText;
+        if(btn_retry!=null) {
+            btn_retry.setText(mRetryText);
+        }
+    }
 
+    String mTitle;
     public void showTitle(String title) {
-        it_empty_title.setText(title);
+        this.mTitle = title;
+        it_empty_title.setText(mTitle);
         it_empty_title.setVisibility(VISIBLE);
     }
 

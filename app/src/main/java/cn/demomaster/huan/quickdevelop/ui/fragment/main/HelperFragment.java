@@ -64,11 +64,6 @@ public class HelperFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;
-
-    public int getBackgroundColor() {
-        return Color.WHITE;
-    }
-
     @Override
     public boolean isUseActionBarLayout() {
         return false;//不带导航栏

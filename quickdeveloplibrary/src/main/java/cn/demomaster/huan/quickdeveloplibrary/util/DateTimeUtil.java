@@ -203,8 +203,6 @@ public class DateTimeUtil {
      * @return
      */
     public static String StringData() {
-
-
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份

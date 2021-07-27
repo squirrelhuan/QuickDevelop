@@ -197,7 +197,6 @@ public class ScreenShotUitl {
                 v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
             }
             Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-
             v.setDrawingCacheEnabled(false);
             v.destroyDrawingCache();
             return b;

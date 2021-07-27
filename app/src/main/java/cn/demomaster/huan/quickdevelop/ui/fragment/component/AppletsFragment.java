@@ -42,8 +42,7 @@ public class AppletsFragment extends BaseFragment {
     @Override
     public void setTitle(String title) {
         super.setTitle(title);
-
-        ImageTextView imageTextView = ((ImageTextView) findViewById(R.id.it_actionbar_title));
+        ImageTextView imageTextView = findViewById(R.id.it_actionbar_title);
         if (imageTextView != null) {
             imageTextView.setText(getTitle());
         }
@@ -53,11 +52,11 @@ public class AppletsFragment extends BaseFragment {
     public void initCreatView(View mView) {
         super.initCreatView(mView);
 
-        ImageTextView btn_title = (ImageTextView) findViewById(R.id.it_actionbar_title);
+        ImageTextView btn_title = findViewById(R.id.it_actionbar_title);
         if (btn_title != null) {
             btn_title.setText(getTitle());
         }
-        ImageTextView btn_back = (ImageTextView) findViewById(R.id.it_actionbar_back);
+        ImageTextView btn_back = findViewById(R.id.it_actionbar_back);
         if (btn_back != null) {
             btn_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,7 +65,7 @@ public class AppletsFragment extends BaseFragment {
                 }
             });
         }
-        ImageTextView btn_close = (ImageTextView) findViewById(R.id.it_actionbar_close);
+        ImageTextView btn_close = findViewById(R.id.it_actionbar_close);
         if (btn_close != null) {
             btn_close.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,8 +74,8 @@ public class AppletsFragment extends BaseFragment {
                 }
             });
         }
-        ViewGroup ll_menu_right = (ViewGroup) findViewById(R.id.ll_menu_right);
-        View view_splitor = (View) findViewById(R.id.view_splitor);
+        ViewGroup ll_menu_right = findViewById(R.id.ll_menu_right);
+        View view_splitor = findViewById(R.id.view_splitor);
         if (isRootFragment()) {
             if (btn_back != null) {
                 btn_back.setVisibility(View.GONE);
@@ -108,10 +107,8 @@ public class AppletsFragment extends BaseFragment {
 
     public void initView(View rootView) {
         int i = (int) (Math.random() * 10 % 4);
-        setTitle(titles[i] + "sss");
+        setTitle(titles[i]);
         getActionBarTool().setHeaderBackgroundColor(colors[i]);
-
-        QDLogger.d("initView =" + getTitle() + "," + i + ",FragmentHelper=" + getFragmentHelper().hashCode());
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +132,6 @@ public class AppletsFragment extends BaseFragment {
 
     private final String[] titles = {"1", "2", "3", "4"};
     private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-
     private void startFragment() {
         getFragmentHelper().startFragment(new AppletsFragment());
     }

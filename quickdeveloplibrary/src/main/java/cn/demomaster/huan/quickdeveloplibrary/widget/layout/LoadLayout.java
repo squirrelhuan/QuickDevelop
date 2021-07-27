@@ -50,14 +50,7 @@ public class LoadLayout extends FrameLayout {
         }
         if (loadViewLayoutId == 0) {
             loadView = new EmptyLayout(getContext());
-            ((EmptyLayout) loadView).btn_retry.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((EmptyLayout) loadView).hideAll();
-                    ((EmptyLayout) loadView).showLodding();
-                    loadData();
-                }
-            });
+            resetRetryButton();
         } else {
             loadView = mInflater.inflate(loadViewLayoutId, this, false);
         }
@@ -66,6 +59,17 @@ public class LoadLayout extends FrameLayout {
             addView(loadView, layoutParams);
         }
         //QDLogger.println("count = " + getChildCount());
+    }
+
+    public void resetRetryButton() {
+        ((EmptyLayout) loadView).btn_retry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((EmptyLayout) loadView).hideAll();
+                ((EmptyLayout) loadView).showLodding();
+                loadData();
+            }
+        });
     }
 
     @Override
@@ -140,6 +144,18 @@ public class LoadLayout extends FrameLayout {
         }
     }
 
+    public void setRetryText(String text){
+        if (loadView!=null && loadView instanceof EmptyLayout) {
+            ((EmptyLayout) loadView).setRetryText(text);
+        }
+    }
+
+    public void loadFailWithRetry(String retryText, String msg,OnClickListener onClickListener) {
+        setRetryText(retryText);
+        ((EmptyLayout) loadView).btn_retry.setOnClickListener(onClickListener);
+        loadFail(msg, null);
+    }
+
     public void loadFail() {
         loadFail(null, null);
     }
@@ -152,11 +168,13 @@ public class LoadLayout extends FrameLayout {
         if (contentView != null) {
             contentView.setVisibility(INVISIBLE);
         }
-        loadView.setVisibility(VISIBLE);
+        if (loadView!=null) {
+            loadView.setVisibility(VISIBLE);
+        }
         if (onLoadListener != null) {
             onLoadListener.loadFail();
         }
-        if (loadView instanceof EmptyLayout) {
+        if (loadView!=null && loadView instanceof EmptyLayout) {
             ((EmptyLayout) loadView).hideAll();
             if (!TextUtils.isEmpty(title)) {
                 ((EmptyLayout) loadView).showTitle(title);
@@ -176,12 +194,15 @@ public class LoadLayout extends FrameLayout {
         if (contentView != null) {
             contentView.setVisibility(INVISIBLE);
         }
-
-        ((EmptyLayout) loadView).hideAll();
-        ((EmptyLayout) loadView).showMessage(msg);
-        loadView.setVisibility(VISIBLE);
+        if(loadView!=null) {
+            if(loadView instanceof EmptyLayout) {
+                ((EmptyLayout) loadView).hideAll();
+                ((EmptyLayout) loadView).showMessage(msg);
+            }
+            loadView.setVisibility(VISIBLE);
+        }
     }
-
+    
     OnLoadListener onLoadListener;
     public void setOnLoadListener(OnLoadListener onLoadListener) {
         this.onLoadListener = onLoadListener;

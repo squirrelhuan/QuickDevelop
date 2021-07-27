@@ -39,7 +39,6 @@ public abstract class QDFragment extends QuickFragment {
     public boolean dispatchTouchEvent(MotionEvent me) {
         return false;
     }
-
     public PhotoHelper photoHelper;
     
     //实例化各种帮助类
@@ -56,7 +55,7 @@ public abstract class QDFragment extends QuickFragment {
         }
         return optionsMenu;
     }
-
+    
     //获取自定义菜单
     public OptionsMenu.Builder getOptionsMenuBuilder() {
         if (optionsMenubuilder == null) {

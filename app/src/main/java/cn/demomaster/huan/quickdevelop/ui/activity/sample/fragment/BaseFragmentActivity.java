@@ -13,7 +13,7 @@ import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
 @ActivityPager(name = "BaseFragment",preViewClass = TextView.class,resType = ResType.Custome)
 public class BaseFragmentActivity extends QDActivity {
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

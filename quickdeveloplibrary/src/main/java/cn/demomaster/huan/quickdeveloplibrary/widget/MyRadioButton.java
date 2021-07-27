@@ -32,7 +32,6 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
     Drawable srcLeftDrawable, srcTopDrawable, srcRightDrawable, srcBottomDrawable;
     int drawableHeight, drawableWidth, drawableMargin;
     Drawable mDrawable;
-
     private void handleCustomAttrs(Context context, AttributeSet attrs) {
         if (attrs == null) {
             return;
@@ -64,6 +63,12 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
 
         typedArray.recycle();
     }
+
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
+    }
+
     /*OnClickListener mOnClickListener ;
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
@@ -126,6 +131,9 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
     @Override
     protected void onDraw(Canvas canvas) {
         if (mDrawable != null) {
+            if (mDrawable.isStateful()) {
+                mDrawable.setState(getDrawableState());
+            }
             textWidth = (int) getPaint().measureText(getText().toString());
             int widht = Math.min(drawableWidth, getMeasuredWidth());
             int height = Math.min(drawableHeight, getMeasuredHeight()) * widht / drawableWidth;
@@ -216,7 +224,6 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
                 top_1 = bottom_1 - height;
             }
             Rect rect1 = new Rect(left_1, top_1, right_1, bottom_1);
-
             /*float marginX = 0,marginY = 0;
             if (mDrawable==srcLeftDrawable){
                 marginX = getPaddingLeft();

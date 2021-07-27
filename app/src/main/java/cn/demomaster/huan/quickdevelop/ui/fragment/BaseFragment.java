@@ -32,7 +32,4 @@ public abstract class BaseFragment extends QDFragment {
         }
     }
 
-    public void onFragmentResume(){
-
-    }
 }

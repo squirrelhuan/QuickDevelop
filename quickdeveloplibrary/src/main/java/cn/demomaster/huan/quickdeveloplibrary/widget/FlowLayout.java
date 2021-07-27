@@ -45,9 +45,16 @@ public class FlowLayout extends ViewGroup {
             // QDLogger.println("text=" + textView.getText() + ",s=" + lineViewList.size());
             if (lineViewList.size() == 0) {//空行
                 lineViewList.add(chid);
-
-                MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
-                int viewWith = chid.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                int leftMargin = 0;
+                int rightMargin = 0;
+                if(chid.getLayoutParams()!=null){
+                    if(chid.getLayoutParams()instanceof MarginLayoutParams){
+                        MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
+                        leftMargin = layoutParams.leftMargin;
+                        rightMargin = layoutParams.rightMargin;
+                    }
+                }
+                int viewWith = chid.getMeasuredWidth() + leftMargin + rightMargin;
                 if (viewWith > lineWidth) {//单个元素占用一行的情况
                     //QDLogger.e("换行=" + viewWith);
                     QDLogger.println("单个元素占用一行：" + lineViewList.size());
@@ -60,12 +67,28 @@ public class FlowLayout extends ViewGroup {
                 int currentWidth = 0;
                 for (int j = 0; j < lineViewList.size(); j++) {
                     View v = lineViewList.get(j);
-                    MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
-                    currentWidth += v.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                    int leftMargin = 0;
+                    int rightMargin = 0;
+                    if(v.getLayoutParams()!=null){
+                        if(v.getLayoutParams()instanceof MarginLayoutParams){
+                            MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
+                            leftMargin = layoutParams.leftMargin;
+                            rightMargin = layoutParams.rightMargin;
+                        }
+                    }
+                    currentWidth += v.getMeasuredWidth() + leftMargin + rightMargin;
                 }
 
-                MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
-                int viewWith = chid.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                int leftMargin = 0;
+                int rightMargin = 0;
+                if(chid.getLayoutParams()!=null){
+                    if(chid.getLayoutParams()instanceof MarginLayoutParams){
+                        MarginLayoutParams layoutParams = (MarginLayoutParams) chid.getLayoutParams();
+                        leftMargin = layoutParams.leftMargin;
+                        rightMargin = layoutParams.rightMargin;
+                    }
+                }
+                int viewWith = chid.getMeasuredWidth() + leftMargin + rightMargin;
                 if (currentWidth + viewWith > lineWidth) {//再追加一个元素会超出最大宽度
                     //QDLogger.println("换行追加=" + lineViewList.size());
                     List<View> viewList = new ArrayList<>();
@@ -89,8 +112,16 @@ public class FlowLayout extends ViewGroup {
             int maxLineHeight = 0;
             for (int j = 0; j < lineViews.size(); j++) {
                 View v = lineViews.get(j);
-                MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
-                maxLineHeight = Math.max(maxLineHeight, v.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin);
+                int topMargin = 0;
+                int bottomMargin = 0;
+                if(v.getLayoutParams()!=null){
+                    if(v.getLayoutParams()instanceof MarginLayoutParams){
+                        MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
+                        topMargin = layoutParams.topMargin;
+                        bottomMargin = layoutParams.bottomMargin;
+                    }
+                }
+                maxLineHeight = Math.max(maxLineHeight, v.getMeasuredHeight() + topMargin + bottomMargin);
             }
             mLineHeight.add(maxLineHeight);
         }
@@ -204,16 +235,28 @@ public class FlowLayout extends ViewGroup {
                 if (child.getVisibility() == View.GONE) {
                     continue;
                 }
-                MarginLayoutParams layoutParams = (MarginLayoutParams) child.getLayoutParams();
-                int left = left_last + layoutParams.leftMargin;
-                int top = top_last + layoutParams.topMargin;
+
+                int leftMargin = 0;
+                int topMargin = 0;
+                int rightMargin =0;
+                if(child.getLayoutParams()!=null){
+                    if(child.getLayoutParams()instanceof MarginLayoutParams){
+                        MarginLayoutParams layoutParams = (MarginLayoutParams) child.getLayoutParams();
+                        leftMargin = layoutParams.leftMargin;
+                        topMargin = layoutParams.topMargin;
+                        rightMargin = layoutParams.rightMargin;
+                    }
+                }
+
+                int left = left_last + leftMargin;
+                int top = top_last + topMargin;
                 //if (child.getLayoutParams() instanceof MarginLayoutParams) {
                 //}
                 // 进行子View进行布局
                 child.layout(left, top, left + child.getMeasuredWidth(), top + child.getMeasuredHeight());
 
                 //QDLogger.println("进行子View进行布局:" + left + "," + top + "," + (left + child.getMeasuredWidth()) + "," + (top + child.getMeasuredHeight()));
-                left_last += layoutParams.leftMargin + child.getMeasuredWidth() + layoutParams.rightMargin;
+                left_last += leftMargin + child.getMeasuredWidth() + rightMargin;
             }
         }
     }

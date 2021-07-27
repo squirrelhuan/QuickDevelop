@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,8 +21,12 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -32,6 +37,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.treeviewlibrary.Node;
 
 /**
  * 页面视图结构查看
@@ -42,7 +48,9 @@ public class HierarchyFlotingService extends QDFloatingService2 {
     TextView button, tv_title;
     String currentActivityName;
     FrameLayout linearLayout;
-
+    RecyclerView recyclerView;
+    List<Node> mDatas = new ArrayList<Node>();
+    SimpleTreeRecyclerAdapter mAdapter;
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         linearLayout = new FrameLayout(context.getApplicationContext());
@@ -90,6 +98,19 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         dialogView = LayoutInflater.from(context).inflate(cn.demomaster.huan.quickdeveloplibrary.R.layout.layout_floating_hierachy, null);
         dialogView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_55));
         dialogView.setVisibility(View.GONE);
+
+        recyclerView = dialogView.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //第一个参数  RecyclerView
+        //第二个参数  上下文
+        //第三个参数  数据集
+        //第四个参数  默认展开层级数 0为不展开
+        //第五个参数  展开的图标
+        //第六个参数  闭合的图标
+        mAdapter = new SimpleTreeRecyclerAdapter(recyclerView, context,
+                mDatas, 1);
+        recyclerView.setAdapter(mAdapter);
+
         tv_title = dialogView.findViewById(R.id.tv_title);
         TextView tv_copy = dialogView.findViewById(R.id.tv_copy);
         tv_copy.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +164,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         QDLogger.i("HierarchyFlotingService");
     }
 
+
     public Point getPosition() {
         layoutParams = (WindowManager.LayoutParams) linearLayout.getLayoutParams();
         return new Point(layoutParams.x, layoutParams.y);
@@ -164,7 +186,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         button.setBackgroundColor(Color.GREEN);
         button.setText("捕获");
     }
-
+    QDAccessibilityService qdAccessibilityService;
     private void hideDetailInfo() {
         Point point = getPosition();
         hierarchyView.setVisibility(View.VISIBLE);
@@ -173,7 +195,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         button.setBackgroundColor(Color.RED);
         button.setText("结束");
 
-        QDAccessibilityService qdAccessibilityService = AccessibilityHelper.getService();
+        qdAccessibilityService = AccessibilityHelper.getService();
         if (qdAccessibilityService != null) {
             currentActivityName = qdAccessibilityService.getCurrentActivityName();
             hierarchyView.setAccessibilityNodeInfo(qdAccessibilityService.getRootInActiveWindow());
@@ -238,6 +260,43 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             //row.addView(linearLayout,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             tableLayout.addView(row);
             i++;
+        }
+        setTreeData(qdAccessibilityService.getRootInActiveWindow());
+        //mAdapter.notifyDataSetChanged();
+
+        mAdapter = new SimpleTreeRecyclerAdapter(recyclerView, dialogView.getContext(),
+                mDatas, 1);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    /**
+     * 設置树状结构视图数据
+     * @param nodeInfo
+     */
+    private void setTreeData(AccessibilityNodeInfo nodeInfo) {
+        mDatas.clear();
+        String pid = "-1";
+        String id = "1";
+        //添加根节点
+        mDatas.add(new Node(id, pid, ""+nodeInfo.getClassName()));
+        int childCount = nodeInfo.getChildCount();
+        for(int i=0;i<childCount;i++){
+            addTreeData(i,id,nodeInfo.getChild(i));
+        }
+    }
+
+    /**
+     * 遍历节点添加
+     * @param index 当前节点在父节点中索引
+     * @param pid   父节点id
+     * @param nodeInfo 父节点实例
+     */
+    private void addTreeData(int index, String pid, AccessibilityNodeInfo nodeInfo) {
+        String id = pid+"_"+index;
+        mDatas.add(new Node(id, pid, ""+nodeInfo.getClassName()));
+        int childCount = nodeInfo.getChildCount();
+        for(int i=0;i<childCount;i++){
+            addTreeData(i,id,nodeInfo.getChild(i));
         }
     }
 

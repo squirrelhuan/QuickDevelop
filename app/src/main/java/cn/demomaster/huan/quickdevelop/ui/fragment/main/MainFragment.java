@@ -170,7 +170,7 @@ public class MainFragment extends BaseFragment {
                         photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
-                                QdToast.show(mContext, path + "");
+                                //QdToast.show(mContext, path + "");
                                 showScanDialog(path);
                             }
 
@@ -212,7 +212,7 @@ public class MainFragment extends BaseFragment {
     private void showScanDialog(String url) {
         QDDialog qdDialog = new QDDialog.Builder(mContext)
                 .setTitle("要跳转到指定页面吗？")
-                .setMessage("扫描结果："+url)
+                .setMessage(""+url)
                 //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                 //.setWidth((int) getResources().getDimension(R.dimen.dp_120))

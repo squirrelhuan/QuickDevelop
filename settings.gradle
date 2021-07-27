@@ -8,15 +8,17 @@ include ':app',
         ':qdRouter_library',
         ":quickdatabaselibrary",
         ":quickAudioRecorderlib",
-        ':quickpermission_library'
+        ':quickpermission_library',
+        ':treeviewlibrary'
 
 project(':app').projectDir = new File('app')
-project (':quickdeveloplibrary').projectDir = new File('D:\\Android\\work\\QuickDevelop\\quickdeveloplibrary')
+project (':quickdeveloplibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickDevelop\\quickdeveloplibrary')
 project (':qdzxinglibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QdZxing\\qdzxinglibrary')
 project (':qdlogger_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QDLogger\\qdlogger_library')
 project (':quickpermission_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickPermission\\quickpermission_library')
 project(':quickdatabaselibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickDataBase\\quickdatabaselibrary')
 project(':qdRouter_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickRouter\\qdRouter_library')
+project (':treeviewlibrary').projectDir = new File('D:\\Android\\work\\QuickTreeView\\treeviewlibrary')
 
 //butterknife替代品
 project (':quicksticker-compiler').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickSticker\\quicksticker-compiler')

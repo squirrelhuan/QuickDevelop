@@ -264,7 +264,6 @@ public class QDValueAnimator extends ValueAnimator {
         state = AnimationState.isClosed;
         if (animationListener != null) {
             //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
-
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -282,7 +281,7 @@ public class QDValueAnimator extends ValueAnimator {
     private AnimationListener animationListener;
 
     public void setAnimationListener(AnimationListener listener) {
-        QDLogger.e("hash=" + hashCode() + ",listener=" + listener.hashCode());
+        //QDLogger.e("hash=" + hashCode() + ",listener=" + listener.hashCode());
         this.animationListener = listener;
     }
 
