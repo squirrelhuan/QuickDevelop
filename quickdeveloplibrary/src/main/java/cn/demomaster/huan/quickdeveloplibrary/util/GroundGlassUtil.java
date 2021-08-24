@@ -69,17 +69,15 @@ public class GroundGlassUtil implements OnReleaseListener {
                 //targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 //QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
                 isReady = true;
-                if(!isSelfDraw) {
+               /* if(!isSelfDraw) {
                    // QDLogger.println("isSelfDraw1 =" +isSelfDraw);
                     invalidate();
                 }else {
                     isSelfDraw = false;
-                }
+                }*/
 
                 long timeMillis = (long) targetView.getTag();
-                if(timeMillis==refreshTime){
-
-                }else {
+                if(timeMillis!=refreshTime){
                     invalidate();
                 }
                 targetView.setTag(System.currentTimeMillis());
