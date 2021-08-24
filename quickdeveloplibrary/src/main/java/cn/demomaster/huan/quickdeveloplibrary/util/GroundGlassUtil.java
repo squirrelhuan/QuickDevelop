@@ -76,11 +76,13 @@ public class GroundGlassUtil implements OnReleaseListener {
                     isSelfDraw = false;
                 }*/
 
-                long timeMillis = (long) targetView.getTag();
-                if(timeMillis!=refreshTime){
-                    invalidate();
+                if(targetView.getTag()!=null) {
+                    long timeMillis = (long) targetView.getTag();
+                    if (timeMillis != refreshTime) {
+                        invalidate();
+                    }
+                    targetView.setTag(System.currentTimeMillis());
                 }
-                targetView.setTag(System.currentTimeMillis());
                // QDLogger.println("isSelfDraw2 =" +isSelfDraw);
             }
         };
