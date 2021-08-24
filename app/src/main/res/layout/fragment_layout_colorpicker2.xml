@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/meizi"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_image1"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:src="@color/beige"
+        android:background="@color/black"/>
+    <ImageView
+        android:id="@+id/iv_image2"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:background="@color/black"/>
+    <cn.demomaster.huan.quickdevelop.view.ColorMixView
+        android:id="@+id/iv_image3"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"/>
+    <ImageView
+        android:id="@+id/iv_image4"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_margin="@dimen/dp_6"/>
+    <TextView
+        android:id="@+id/tv_lable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_margin="@dimen/dp_6"
+        android:gravity="center"
+        android:text="text 123"
+        android:textSize="@dimen/sp_24"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

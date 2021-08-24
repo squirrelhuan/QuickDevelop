@@ -41,6 +41,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AnimitionFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AudioRecordFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlurFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.ColorPicker2Fragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.ColorPickerFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.EmptyLayoutFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.FramelayoutFragment;
@@ -135,6 +136,7 @@ public class ComponentFragment extends BaseFragment {
         classList.add(NestedScrollViewFragment.class);
         classList.add(SoundFragment.class);
         classList.add(ColorPickerFragment.class);
+        classList.add(ColorPicker2Fragment.class);
         classList.add(BlurFragment.class);
         classList.add(PushCardFragment.class);
         classList.add(QDTipPopupFragment.class);

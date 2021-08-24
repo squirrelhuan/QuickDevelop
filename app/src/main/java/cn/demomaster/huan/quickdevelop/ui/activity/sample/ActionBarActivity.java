@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.quicksticker_annotations.BindView;
 
@@ -144,6 +145,8 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
         });
         //getActionBarTool().getActionBarTip().setActionBarState();
         setTitle("导航栏");
+        GroundGlassUtil glassUtil = new GroundGlassUtil(mContext);
+        glassUtil.setTargetView(rg_action);
     }
 
     @Override

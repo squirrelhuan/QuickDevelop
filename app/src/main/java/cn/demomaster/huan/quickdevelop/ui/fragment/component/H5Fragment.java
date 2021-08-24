@@ -128,30 +128,9 @@ public class H5Fragment extends BaseFragment {
     }
 
     public void initView(View rootView) {
-        int i = (int) (Math.random() * 10 % 4);
-        getActionBarTool().setHeaderBackgroundColor(colors[i]);
-        Button button = rootView.findViewById(R.id.btn_open_new_fragment);
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startFragment();
-                }
-            });
-        }
-        Button btn_set_title = rootView.findViewById(R.id.btn_set_title);
-        if (btn_set_title != null) {
-            btn_set_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int i = (int) (Math.random() * 10 % 4);
-                    getActionBarTool().setTitle(titles[i] + "");
-                }
-            });
-        }
+
     }
 
-    private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void startFragment() {
         getFragmentHelper().startFragment(new H5Fragment());
     }

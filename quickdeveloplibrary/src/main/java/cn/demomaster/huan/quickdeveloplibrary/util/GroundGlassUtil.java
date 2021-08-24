@@ -23,7 +23,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.generateC
 public class GroundGlassUtil implements OnReleaseListener {
     private View targetView;
     private View backgroundView;
-    private View backgroundViewParent;
+    //private View backgroundViewParent;
 
     Context context;
 
@@ -33,6 +33,11 @@ public class GroundGlassUtil implements OnReleaseListener {
 
     private int backgroundColor = 0xabffffff;
     private boolean useBackgroundColor = true;
+
+    public void setUseBackgroundColor(boolean useBackgroundColor) {
+        this.useBackgroundColor = useBackgroundColor;
+        invalidate();
+    }
 
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
@@ -46,9 +51,9 @@ public class GroundGlassUtil implements OnReleaseListener {
     public void setTargetView(View targetView) {
         this.targetView = targetView;
         //QDLogger.println("targetViewId=" + targetView.getId());
-        if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
-            backgroundViewParent = findBackgroundViewParent(backgroundView);
-        }
+        //if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
+            backgroundView = targetView.getRootView();//findBackgroundViewParent(backgroundView);
+       // }
         targetView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -57,18 +62,41 @@ public class GroundGlassUtil implements OnReleaseListener {
                 invalidate();
             }
         });
-        targetView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+        targetOnDrawListener = new ViewTreeObserver.OnDrawListener () {
             @Override
-            public void onGlobalLayout() {
+            public void onDraw() {
                 //targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 //QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
-                invalidate();
-            }
-        });
-    }
+                isReady = true;
+                if(!isSelfDraw) {
+                   // QDLogger.println("isSelfDraw1 =" +isSelfDraw);
+                    invalidate();
+                }else {
+                    isSelfDraw = false;
+                }
 
+                long timeMillis = (long) targetView.getTag();
+                if(timeMillis==refreshTime){
+
+                }else {
+                    invalidate();
+                }
+                targetView.setTag(System.currentTimeMillis());
+               // QDLogger.println("isSelfDraw2 =" +isSelfDraw);
+            }
+        };
+
+        targetView.getViewTreeObserver().addOnDrawListener(targetOnDrawListener);
+    }
+    boolean isSelfDraw;
+    ViewTreeObserver.OnDrawListener targetOnDrawListener;
     public View getBackgroundView() {
-        return backgroundViewParent == null ? backgroundView : backgroundViewParent;
+        //View view = backgroundViewParent == null ? backgroundView : backgroundViewParent;
+        //if(view==null){
+           return targetView.getRootView();
+       // }
+       // return view;
     }
 
     boolean autoFindBackgroundView;//自动寻找待截图对象
@@ -78,7 +106,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         autoFindBackgroundView = autoFind;
 
         if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
-            backgroundViewParent = findBackgroundViewParent(backgroundView);
+          //  backgroundViewParent = findBackgroundViewParent(backgroundView);
         }
         addViewTreeObserver(backgroundView);
 
@@ -159,8 +187,12 @@ public class GroundGlassUtil implements OnReleaseListener {
         }
         return false;
     }
-
+    long refreshTime;
+    boolean isReady;
     public void invalidate() {
+        if(!isReady){
+            return;
+        }
         Bitmap bitmap = generateBackgroundBitmap();
         if (bitmap == null) {
             return;
@@ -187,17 +219,26 @@ public class GroundGlassUtil implements OnReleaseListener {
             }
             //bitmap = getAlplaBitmap(bitmap, 80);
             if (bitmap != null) {
+                refreshTime = System.currentTimeMillis();
+                targetView.setTag(refreshTime);
                 targetView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
+                isSelfDraw = true;
+                //targetView.setBackground(new BitmapDrawable(context.getResources(),getBackgroundBitmap()));
             }
         }
     }
 
+    boolean compareBitmap = false;//对比图片是否有变化
     /**
      * 获取待模糊的图片
      *
      * @return
      */
     private Bitmap generateBackgroundBitmap() {
+        if(!compareBitmap){
+            mBackgroundBitmap = getBackgroundBitmap();
+            return mBackgroundBitmap;
+        }
         //截取背景色
         Bitmap backgroundBitmap = getBackgroundBitmap();
         if (backgroundBitmap == null) {
@@ -212,7 +253,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         }
         mBackgroundBitmap = backgroundBitmap;
         long t2 = System.currentTimeMillis();
-        //QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
+        QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
         return b ? null : backgroundBitmap;
     }
 
@@ -243,7 +284,15 @@ public class GroundGlassUtil implements OnReleaseListener {
         //QDLogger.println("left=" + rect3.left + ",top=" + rect3.top + ",right=" + rect3.right + ",bottom=" + rect3.bottom+",width="+rect3.width()+",height="+rect3.height());
         //绝对位置改为以backgroundView的内部的相对位置
         Rect rect4 = new Rect(rect3.left - location_background[0], rect3.top - location_background[1], rect3.right - location_background[0], rect3.bottom - location_background[1]);
+        boolean isVisible = false;
+        if(targetView.getVisibility()==View.VISIBLE) {
+            isVisible = true;
+            targetView.setVisibility(View.INVISIBLE);
+        }
         Bitmap bitmap = shot(getBackgroundView(), rect4.left, rect4.top, rect4.width(), rect4.height());
+        if(isVisible) {
+            targetView.setVisibility(View.VISIBLE);
+        }
         return bitmap;
     }
 
@@ -263,7 +312,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         return both;
     }
 
-    public int radius = 30;
+    public int radius = 20;
 
     public void setRadius(int radius) {
         this.radius = radius;
