@@ -62,13 +62,13 @@ public class QDRoundArrowDrawable extends QDividerDrawable {
                     mDrawView.getLocationOnScreen(location);
                     int[] location2 = new int[2];
                     mAnchor.getLocationOnScreen(location2);
-                    centerPointF = new PointF(-location[0] + location2[0] + mAnchor.getWidth() / 2, 0);
+                    centerPointF = new PointF(-location[0] + location2[0] + mAnchor.getWidth() / 2f, 0);
                 } else {
-                    centerPointF = new PointF(bounds.width() / 2, 0);
+                    centerPointF = new PointF(bounds.width() / 2f, 0);
                 }
                 mArrow.moveTo(centerPointF.x, mRect.bottom);
-                mArrow.lineTo(centerPointF.x - valueW / 2, mRect.bottom - valueH * r);
-                mArrow.lineTo(centerPointF.x + valueW / 2, mRect.bottom - valueH * r);
+                mArrow.lineTo(centerPointF.x - valueW / 2f, mRect.bottom - valueH * r);
+                mArrow.lineTo(centerPointF.x + valueW / 2f, mRect.bottom - valueH * r);
                 break;
             case BOTTOM:
                 if (bounds.width() > mAnchor.getWidth()) {
@@ -77,26 +77,26 @@ public class QDRoundArrowDrawable extends QDividerDrawable {
                     mDrawView.getLocationOnScreen(location);
                     int[] location2 = new int[2];
                     mAnchor.getLocationOnScreen(location2);
-                    centerPointF = new PointF(-location[0] + location2[0] + mAnchor.getWidth() / 2, 0);
+                    centerPointF = new PointF(-location[0] + location2[0] + mAnchor.getWidth() / 2f, 0);
                 } else {
-                    centerPointF = new PointF(bounds.width() / 2, 0);
+                    centerPointF = new PointF(bounds.width() / 2f, 0);
                 }
                 //centerPointF = new PointF(bounds.width()/2,mAnchor.getHeight());
                 mArrow.moveTo(centerPointF.x, mRect.top);
-                mArrow.lineTo(centerPointF.x - valueW / 2, mRect.top + valueH * r);
-                mArrow.lineTo(centerPointF.x + valueW / 2, mRect.top + valueH * r);
+                mArrow.lineTo(centerPointF.x - valueW / 2f, mRect.top + valueH * r);
+                mArrow.lineTo(centerPointF.x + valueW / 2f, mRect.top + valueH * r);
                 break;
             case LEFT:
-                centerPointF = new PointF(bounds.width(), mAnchor.getHeight() / 2);
+                centerPointF = new PointF(bounds.width(), mAnchor.getHeight() / 2f);
                 mArrow.moveTo(centerPointF.x, centerPointF.y);
-                mArrow.lineTo(centerPointF.x - valueW * r, centerPointF.y - valueH / 2);
-                mArrow.lineTo(centerPointF.x - valueW * r, centerPointF.y + valueH / 2);
+                mArrow.lineTo(centerPointF.x - valueW * r, centerPointF.y - valueH / 2f);
+                mArrow.lineTo(centerPointF.x - valueW * r, centerPointF.y + valueH / 2f);
                 break;
             case RIGHT:
-                centerPointF = new PointF(0, mAnchor.getHeight() / 2);
+                centerPointF = new PointF(0, mAnchor.getHeight() / 2f);
                 mArrow.moveTo(centerPointF.x, centerPointF.y);
-                mArrow.lineTo(centerPointF.x + valueW * r, centerPointF.y - valueH / 2);
-                mArrow.lineTo(centerPointF.x + valueW * r, centerPointF.y + valueH / 2);
+                mArrow.lineTo(centerPointF.x + valueW * r, centerPointF.y - valueH / 2f);
+                mArrow.lineTo(centerPointF.x + valueW * r, centerPointF.y + valueH / 2f);
                 break;
         }
         mArrow.close();

@@ -80,7 +80,6 @@ public class QDMulSheetDialog extends QDDialog2 {
     }
 
     private void initData() {
-
         Window win = getWindow();
         if (animationStyleID != -1) {
             win.setWindowAnimations(animationStyleID);
@@ -121,7 +120,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         relativeLayout.addView(recyclerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setContentView(relativeLayout, layoutParams);
 
-        setPanelMaginTop(DisplayUtil.getStatusBarHeight(getContext()) + DisplayUtil.getActionBarHeight(getContext()));
+        //setPanelMaginTop(DisplayUtil.getStatusBarHeight(getContext()) + DisplayUtil.getActionBarHeight(getContext()));
     }
 
     public enum ShowType {
@@ -279,7 +278,7 @@ public class QDMulSheetDialog extends QDDialog2 {
                 textView.setText("");
                 int p = DisplayUtil.dip2px(itemView.getContext(), 15);
                 textView.setPadding(p, p, p, p);
-                textView.setTextSize(18);
+                textView.setTextSize(16);
                 textView.setTextColor(Color.BLACK);
                 if (Build.VERSION.SDK_INT >= 19) {
                     textView.setBackgroundResource(R.drawable.ripple_bg);
@@ -293,5 +292,4 @@ public class QDMulSheetDialog extends QDDialog2 {
             }
         }
     }
-
 }

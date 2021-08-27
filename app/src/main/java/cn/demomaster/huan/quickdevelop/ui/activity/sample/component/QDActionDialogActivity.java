@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.component;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -36,7 +34,7 @@ public class QDActionDialogActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdaction_dialog);
-        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
         getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,10 +61,10 @@ public class QDActionDialogActivity extends BaseActivity {
                 "背景色提示框",
                 "透明度提示框"
         };
-        List<String> data = new ArrayList<>();
+       /* List<String> data = new ArrayList<>();
 
-        Collections.addAll(data, listItems);
-        mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, data));
+        Collections.addAll(data, listItems);*/
+        mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, listItems));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -169,11 +167,9 @@ public class QDActionDialogActivity extends BaseActivity {
                         });
                         break;
                     case 2:
-                        ScreenShotUitl.shot((Activity) mContext);
+                        ScreenShotUitl.shot(mContext);
                         break;
                 }
-
-
             }
         });
     }

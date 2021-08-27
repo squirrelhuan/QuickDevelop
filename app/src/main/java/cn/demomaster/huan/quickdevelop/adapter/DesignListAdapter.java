@@ -76,7 +76,7 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
                     Bundle bundle = new Bundle();
                     bundle.putString("URL", (String) jsonObject.get("url"));
                     webViewFragment.setArguments(bundle);
-                    ((QDActivity)v.getContext()).getFragmentHelper().startFragment(webViewFragment);
+                    ((QDActivity)v.getContext()).startFragment(webViewFragment,R.id.container1,null);
                 }
             });
         }

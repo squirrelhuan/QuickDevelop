@@ -90,7 +90,7 @@ public class LoadingCircleAlphaView extends View {
                 }
 
                 circlePoint.setAngle(circlePoint.angle + t);
-                circlePoint.setRadius(circlePoint.radius + maxRadius / 3 * t / 360);
+                circlePoint.setRadius(circlePoint.radius + maxRadius / 3f * t / 360);
                 circlePoint.setAlpha(circlePoint.alpha - (int) (t / 360f * 255f));
                 progress_old = progress;
             }

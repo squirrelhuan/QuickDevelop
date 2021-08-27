@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -73,6 +74,12 @@ public class QDFileUtil {
         return QDFileUtil.saveBitmap(b, imgPath);
     }
 
+    public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener)//filename是我们的文件全名，包括后缀哦
+    {
+        MediaScannerConnection.scanFile(context,
+                new String[] { filename }, null,listener);
+    }
+    
     /**
      * 根据图片文件路径获取bitmap
      *
@@ -541,6 +548,13 @@ public class QDFileUtil {
         return dirPath;
     }
 
+    public static void renameFile(String oldPath, String newPath) {
+        File oleFile = new File(oldPath);
+        File newFile = new File(newPath);
+        //执行重命名
+        oleFile.renameTo(newFile);
+    }
+
     public interface OnSearchListener {
         void onResult(QDFile qdFile);
     }
@@ -721,7 +735,6 @@ public class QDFileUtil {
                 String selection = MediaStore.Images.Media._ID + "=?";
                 String[] selectionArgs = {id};
 
-                //
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -939,7 +952,7 @@ public class QDFileUtil {
             String memoryLine = br.readLine();
             String subMemoryLine = memoryLine.substring(memoryLine.indexOf("MemTotal:"));
             br.close();
-            return Integer.parseInt(subMemoryLine.replaceAll("\\D+", "")) * 1024l;
+            return Integer.parseInt(subMemoryLine.replaceAll("\\D+", "")) * 1024L;
         } catch (IOException e) {
             e.printStackTrace();
         }

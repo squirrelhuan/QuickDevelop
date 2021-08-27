@@ -124,6 +124,12 @@
         <item name="android:windowExitAnimation">@anim/qd_dialog_animation_center_scale_exit</item>
     </style>
 
+    <style name="qd_dialog_animation_fade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_win_content_fade_in
+        </item>
+        <item name="android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
+    </style>
+
     <style name="Dialog_Fullscreen">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>

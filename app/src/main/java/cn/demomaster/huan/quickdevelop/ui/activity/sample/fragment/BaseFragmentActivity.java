@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
-import cn.demomaster.huan.quickdevelop.ui.fragment.component.AppletsFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.RouterFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;

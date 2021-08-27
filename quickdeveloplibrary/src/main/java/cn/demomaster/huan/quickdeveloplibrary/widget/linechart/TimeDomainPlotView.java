@@ -132,8 +132,8 @@ public class TimeDomainPlotView extends View {
      */
     private void drawAxis(Canvas canvas) {
         Path pathX = new Path();
-        pathX.moveTo(0, getHeight() / 2 + offsetY);
-        pathX.lineTo(getWidth(), getHeight() / 2 + offsetY);
+        pathX.moveTo(0, getHeight() / 2f + offsetY);
+        pathX.lineTo(getWidth(), getHeight() / 2f + offsetY);
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(axisColor);
@@ -180,7 +180,7 @@ public class TimeDomainPlotView extends View {
     }
 
     private void drawLine(Canvas canvas) {
-        centerY = getHeight() / 2;
+        centerY = getHeight() / 2f;
         int startP = 0;
         int endP = linePoints.size();
         Paint paint = new Paint();
@@ -224,7 +224,7 @@ public class TimeDomainPlotView extends View {
             for (int i = startP; i < endP; i++) {
                 if (i % s == 0) {
                     float startX = i * w + offsetX;
-                    float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY + (linePoints.get(i).getY() > 0 ? -textSize / 2 - pointRadius : textSize + pointRadius);
+                    float startY = -linePoints.get(i).getY() * h / maxY * getHeight() / 2 + centerY - baselineY + offsetY + (linePoints.get(i).getY() > 0 ? -textSize / 2f - pointRadius : textSize + pointRadius);
                     String text = linePoints.get(i).getY() + "";
                     // 文字宽
                     float textWidth1 = textPaint.measureText(text);

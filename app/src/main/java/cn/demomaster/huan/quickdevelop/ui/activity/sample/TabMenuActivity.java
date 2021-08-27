@@ -122,7 +122,7 @@ public class TabMenuActivity extends BaseActivity {
         return list;
     }
 
-    public class TButton extends TabRadioGroup.TabRadioButton {
+    public static class TButton extends TabRadioGroup.TabRadioButton {
         private TextView tv_tab_name;
         private View view;
 

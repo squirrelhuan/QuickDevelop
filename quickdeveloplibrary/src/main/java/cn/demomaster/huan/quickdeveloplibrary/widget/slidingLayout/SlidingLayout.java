@@ -24,7 +24,6 @@ public class SlidingLayout extends FrameLayout {
     public SlidingLayout(@NonNull Context context) {
         super(context);
         init();
-
     }
 
     public SlidingLayout(@NonNull Context context, @Nullable AttributeSet attrs) {

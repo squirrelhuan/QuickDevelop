@@ -1,7 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,9 +9,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
 
+import cn.demomaster.huan.quickdeveloplibrary.bamboo.Bamboo;
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
@@ -22,16 +24,14 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.generateC
  */
 public class GroundGlassUtil implements OnReleaseListener {
     private View targetView;
-    private View backgroundView;
-    //private View backgroundViewParent;
-
+    private View parentView;
     Context context;
 
     public GroundGlassUtil(Context context) {
         this.context = context;
     }
 
-    private int backgroundColor = 0xabffffff;
+    private int backgroundColor = 0x55ffffff;
     private boolean useBackgroundColor = true;
 
     public void setUseBackgroundColor(boolean useBackgroundColor) {
@@ -52,8 +52,8 @@ public class GroundGlassUtil implements OnReleaseListener {
         this.targetView = targetView;
         //QDLogger.println("targetViewId=" + targetView.getId());
         //if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
-            backgroundView = targetView.getRootView();//findBackgroundViewParent(backgroundView);
-       // }
+        setBackgroundView(targetView.getRootView());
+        // }
         targetView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -62,84 +62,34 @@ public class GroundGlassUtil implements OnReleaseListener {
                 invalidate();
             }
         });
-
-        targetOnDrawListener = new ViewTreeObserver.OnDrawListener () {
-            @Override
-            public void onDraw() {
-                //targetView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                //QDLogger.println("OnGlobalLayoutListener " + targetView.getWidth() + "," + targetView.getHeight());
-                isReady = true;
-               /* if(!isSelfDraw) {
-                   // QDLogger.println("isSelfDraw1 =" +isSelfDraw);
-                    invalidate();
-                }else {
-                    isSelfDraw = false;
-                }*/
-
-                if(targetView.getTag()!=null) {
-                    long timeMillis = (long) targetView.getTag();
-                    if (timeMillis != refreshTime) {
-                        invalidate();
-                    }
-                    targetView.setTag(System.currentTimeMillis());
-                }
-               // QDLogger.println("isSelfDraw2 =" +isSelfDraw);
-            }
-        };
-
-        targetView.getViewTreeObserver().addOnDrawListener(targetOnDrawListener);
-    }
-    boolean isSelfDraw;
-    ViewTreeObserver.OnDrawListener targetOnDrawListener;
-    public View getBackgroundView() {
-        //View view = backgroundViewParent == null ? backgroundView : backgroundViewParent;
-        //if(view==null){
-           return targetView.getRootView();
-       // }
-       // return view;
     }
 
     boolean autoFindBackgroundView;//自动寻找待截图对象
 
-    public void setBackgroundView(View backgroundView, boolean autoFind) {
-        this.backgroundView = backgroundView;
-        autoFindBackgroundView = autoFind;
-
-        if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
-          //  backgroundViewParent = findBackgroundViewParent(backgroundView);
-        }
+    public void setBackgroundView(View backgroundView) {
+        this.parentView = backgroundView;
+        /*if (backgroundView != null && targetView.getId() != View.NO_ID && autoFindBackgroundView) {
+            //  backgroundViewParent = findBackgroundViewParent(backgroundView);
+        }*/
         addViewTreeObserver(backgroundView);
-
     }
 
-    ViewTreeObserver.OnDrawListener onDrawListener;
-    View lastBackgroundView;
-
+    ViewTreeObserver.OnDrawListener onParentViewDrawListener;
     private void addViewTreeObserver(View view) {
-        if (lastBackgroundView != null) {
-            if (onDrawListener != null) {
-                lastBackgroundView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
-                onDrawListener = null;
-            }
+        if (onParentViewDrawListener != null) {
+            view.getViewTreeObserver().removeOnDrawListener(onParentViewDrawListener);
+            onParentViewDrawListener = null;
         }
-        onDrawListener = new ViewTreeObserver.OnDrawListener() {
+        onParentViewDrawListener = new ViewTreeObserver.OnDrawListener() {
             @Override
             public void onDraw() {
-                //QDLogger.d("QDScrollView", "view重绘重新模糊处理");
+                QDLogger.println("viewParent重绘重新模糊处理");
+                parentBitmap=null;
                 invalidate();
             }
         };
-        lastBackgroundView = view;
         //view重绘时回调
-        view.getViewTreeObserver().addOnDrawListener(onDrawListener);
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                //QDLogger.println("OnGlobalLayoutListener backgroundView");
-                invalidate();
-            }
-        });
+        view.getViewTreeObserver().addOnDrawListener(onParentViewDrawListener);
     }
 
     /**
@@ -148,7 +98,7 @@ public class GroundGlassUtil implements OnReleaseListener {
      * @param v
      * @return
      */
-    public View findBackgroundViewParent(Object v) {
+    /*public View findBackgroundViewParent(Object v) {
         if (v != null && v instanceof ViewGroup && targetView != null) {
             ViewGroup view = ((ViewGroup) v);
             if (!containsView(view, targetView)) {
@@ -186,75 +136,171 @@ public class GroundGlassUtil implements OnReleaseListener {
             }
         }
         return false;
-    }
-    long refreshTime;
-    boolean isReady;
+    }*/
+
+    boolean isBluring;//正在模糊处理
+    boolean hasResidue;//遗留的任务
+
     public void invalidate() {
-        if(!isReady){
+        if (isBluring) {
+            hasResidue = true;
             return;
         }
-        Bitmap bitmap = generateBackgroundBitmap();
-        if (bitmap == null) {
+        hasResidue = false;
+        if (targetView == null || targetView.getVisibility() == View.GONE) {
+            releaseRuning();
             return;
         }
-        if (getBackgroundView() != null && targetView != null) {
-            //模糊背景
-            long t1 = System.currentTimeMillis();
-            //QDLogger.println("bitmap w1=：" + bitmap.getWidth());
-            bitmap = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3);
-            //QDLogger.println("bitmap w2=：" + bitmap.getWidth());
-            bitmap = BlurUtil.doBlur(bitmap, radius, 0.2f);
-            if (bitmap == null) {
-                return;
+        isBluring = true;
+
+        Bamboo bamboo = new Bamboo();
+        bamboo.add(new Bamboo.Node() {
+            @Override
+            public void doJob(Bamboo.Node node, Object... result) {
+                QdThreadHelper.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //方案1
+                        Bitmap backgroundBitmap = shootBackgroundBitmap();
+
+                        /* 方案2
+                        getBackGroundViewBitmap();
+                        Bitmap backgroundBitmap = parentBitmap;*/
+                        node.submit(backgroundBitmap);
+                    }
+                });
             }
-            long t2 = System.currentTimeMillis();
-            QDLogger.println("模糊用时：" + (t2 - t1));
-            //添加背景色
-            if (useBackgroundColor) {
-                Bitmap backgroundBitmap = generateColorBitmap(bitmap.getWidth(), bitmap.getHeight(), backgroundColor);
-                //添加背景色
-                bitmap = mergeBitmap(bitmap, backgroundBitmap);
-                //long t3 = System.currentTimeMillis();
-                //QDLogger.println("添加背景色用时：" + (t3 - t2));
+        })
+        .add(new Bamboo.Node() {
+            @Override
+            public void doJob(Bamboo.Node node, Object... result) {
+                if (result[0] != null) {
+                    QdThreadHelper.runOnSubThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //方案1
+                            Bitmap bitmap = generateBackgroundBitmap((Bitmap) result[0]);
+                            //方案2
+                            //Bitmap bitmap = generateBackgroundBitmap2(backgroundBitmap);
+                            if (bitmap == null) {
+                                releaseRuning();
+                                return;
+                            }
+
+                            setViewBackground(bitmap);
+                            releaseRuning();
+                        }
+                    });
+                }
             }
-            //bitmap = getAlplaBitmap(bitmap, 80);
-            if (bitmap != null) {
-                refreshTime = System.currentTimeMillis();
-                targetView.setTag(refreshTime);
-                targetView.setBackground(new BitmapDrawable(context.getResources(),bitmap));
-                isSelfDraw = true;
-                //targetView.setBackground(new BitmapDrawable(context.getResources(),getBackgroundBitmap()));
+        });
+        bamboo.start();
+    }
+
+    private void getBackGroundViewBitmap() {
+        QdThreadHelper.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(parentBitmap==null) {
+                    boolean isVisible = false;
+                    if (targetView.getVisibility() == View.VISIBLE) {
+                        isVisible = true;
+                        targetView.setVisibility(View.INVISIBLE);
+                    }
+                    parentBitmap = ScreenShotUitl.shotActivity((Activity) targetView.getContext(), true);
+                    if (isVisible) {
+                        targetView.setVisibility(View.VISIBLE);
+                    }
+                    parentBitmap = QDBitmapUtil.zoomImage(parentBitmap, parentBitmap.getWidth() / 4f, parentBitmap.getHeight() / 4f);
+                    //QDLogger.println("bitmap w2=：" + bitmap.getWidth());
+                    parentBitmap = BlurUtil.doBlur(parentBitmap, radius, 0.2f);
+                }
             }
+        });
+    }
+
+    private void setViewBackground(Bitmap bitmap) {
+        QdThreadHelper.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                targetView.setBackground(new BitmapDrawable(context.getResources(), bitmap));
+            }
+        });
+    }
+
+    private void releaseRuning() {
+        isBluring = false;
+        if (hasResidue) {
+            invalidate();
         }
     }
 
     boolean compareBitmap = false;//对比图片是否有变化
+    Bitmap mBackgroundBitmap;
     /**
      * 获取待模糊的图片
      *
      * @return
      */
-    private Bitmap generateBackgroundBitmap() {
-        if(!compareBitmap){
-            mBackgroundBitmap = getBackgroundBitmap();
-            return mBackgroundBitmap;
-        }
-        //截取背景色
-        Bitmap backgroundBitmap = getBackgroundBitmap();
+    private Bitmap generateBackgroundBitmap(Bitmap backgroundBitmap) {
         if (backgroundBitmap == null) {
-            mBackgroundBitmap = backgroundBitmap;
             return null;
         }
         long t1 = System.currentTimeMillis();
         boolean b = false;
-        if (backgroundBitmap != null && mBackgroundBitmap != null) {
+        if (compareBitmap&&mBackgroundBitmap != null) {
             //对比两张图片是否一致
             b = compare2Image(backgroundBitmap, mBackgroundBitmap);
+            long t2 = System.currentTimeMillis();
+            QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
         }
         mBackgroundBitmap = backgroundBitmap;
-        long t2 = System.currentTimeMillis();
-        QDLogger.println("图片对比：" + b + ",用时" + (t2 - t1));
-        return b ? null : backgroundBitmap;
+        Bitmap bitmap= b ? null : backgroundBitmap;
+        //long t1 = System.currentTimeMillis();
+        //缩放尺寸
+        bitmap = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() / 4f, bitmap.getHeight() / 4f);
+        //模糊背景
+        bitmap = BlurUtil.doBlur(bitmap, radius, 0.2f);
+        //long t2 = System.currentTimeMillis();
+        //QDLogger.println("模糊用时：" + (t2 - t1));
+        //添加背景色
+        if (useBackgroundColor) {
+            Bitmap colorBitmap = generateColorBitmap(bitmap.getWidth(), bitmap.getHeight(), backgroundColor);
+            bitmap = QDBitmapUtil.mergeBitmap(bitmap, colorBitmap);
+            //long t3 = System.currentTimeMillis();
+            //QDLogger.println("添加背景色用时：" + (t3 - t2));
+        }
+        //bitmap = getAlplaBitmap(bitmap, 80);
+        return bitmap;
+    }
+
+    Bitmap parentBitmap;
+    /**
+     * 方案2获取背景图做模糊处理
+     *
+     * @return
+     */
+    private Bitmap generateBackgroundBitmap2(Bitmap backgroundBitmap) {
+        //获取覆盖区域
+        int[] location_background = new int[2];
+        //tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
+        targetView.getLocationOnScreen(location_background);//获取在整个屏幕内的绝对坐标
+        Rect rect_background = new Rect(location_background[0], location_background[1], location_background[0] + targetView.getWidth(), location_background[1] + targetView.getHeight());
+        //QDLogger.println("x=" + location_background[0] + ",y=" + location_background[1]);
+        int left = (int)(rect_background.left/4f);
+        int top = (int)(rect_background.top/4f);
+        int width = (int)(rect_background.width()/4f);
+        int height = (int)(rect_background.height()/4f);
+        if(backgroundBitmap==null){
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(backgroundBitmap,left ,top,width,height);
+        if (useBackgroundColor) {
+            Bitmap colorBitmap = generateColorBitmap(bitmap.getWidth(), bitmap.getHeight(), backgroundColor);
+            //添加背景色
+            bitmap = QDBitmapUtil.mergeBitmap(bitmap, colorBitmap);
+        }
+        return bitmap;
     }
 
     /**
@@ -262,18 +308,17 @@ public class GroundGlassUtil implements OnReleaseListener {
      *
      * @return
      */
-    private Bitmap getBackgroundBitmap() {
+    private Bitmap shootBackgroundBitmap() {
         //获取覆盖区域
         int[] location_background = new int[2];
         //tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-        getBackgroundView().getLocationOnScreen(location_background);//获取在整个屏幕内的绝对坐标
-        Rect rect_background = new Rect(location_background[0], location_background[1], location_background[0] + getBackgroundView().getWidth(), location_background[1] + getBackgroundView().getHeight());
+        parentView.getLocationOnScreen(location_background);//获取在整个屏幕内的绝对坐标
+        Rect rect_background = new Rect(location_background[0], location_background[1], location_background[0] + parentView.getWidth(), location_background[1] + parentView.getHeight());
         //QDLogger.println("x=" + location_background[0] + ",y=" + location_background[1]);
 
         int[] location_target = new int[2];
         targetView.getLocationOnScreen(location_target);//获取在整个屏幕内的绝对坐标
         Rect rect_target = new Rect(location_target[0], location_target[1], location_target[0] + targetView.getWidth(), location_target[1] + targetView.getHeight());
-        //QDLogger.println("x2=" + location_target[0] + ",y2=" + location_target[1]);
 
         //获取绝对坐标的交集
         Rect rect3 = getBothArea(rect_background, rect_target);
@@ -285,15 +330,26 @@ public class GroundGlassUtil implements OnReleaseListener {
         //绝对位置改为以backgroundView的内部的相对位置
         Rect rect4 = new Rect(rect3.left - location_background[0], rect3.top - location_background[1], rect3.right - location_background[0], rect3.bottom - location_background[1]);
         boolean isVisible = false;
-        if(targetView.getVisibility()==View.VISIBLE) {
+        if (targetView.getVisibility() == View.VISIBLE) {
             isVisible = true;
             targetView.setVisibility(View.INVISIBLE);
         }
-        Bitmap bitmap = shot(getBackgroundView(), rect4.left, rect4.top, rect4.width(), rect4.height());
-        if(isVisible) {
+        Bitmap bitmap = shot(parentView, rect4.left, rect4.top, rect4.width(), rect4.height());
+        if (isVisible) {
             targetView.setVisibility(View.VISIBLE);
         }
         return bitmap;
+    }
+
+    private Animation getAnimation(View targetView) {
+        Animation animation = targetView.getAnimation();
+        if (animation == null) {
+            if (targetView.getParent() != null && targetView.getParent() instanceof View) {
+                return getAnimation((View) targetView.getParent());
+            }
+            return null;
+        }
+        return animation;
     }
 
     /**
@@ -318,7 +374,6 @@ public class GroundGlassUtil implements OnReleaseListener {
         this.radius = radius;
     }
 
-    Bitmap mBackgroundBitmap;
 
     /**
      * 对比两张图片是否一致
@@ -350,7 +405,7 @@ public class GroundGlassUtil implements OnReleaseListener {
         int[] pixels2 = new int[pixelCount];
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float density = displayMetrics.density;
-        int setp = (int) Math.max(density, 1)*3;
+        int setp = (int) Math.max(density, 1) * 3;
         //QDLogger.e("density=" + density + ",setp=" + setp);
 
         bmp1.getPixels(pixels1, 0, width, 0, 0, width, height);
@@ -383,36 +438,6 @@ public class GroundGlassUtil implements OnReleaseListener {
         canvas.drawRect(0, 0, bt.getWidth(), bt.getHeight(), paint);
         canvas.drawBitmap(bt, 0, 0, paint);
         return bt;
-    }
-
-    /**
-     * 合并图层
-     *
-     * @param background
-     * @param foreground
-     * @return
-     */
-    private Bitmap mergeBitmap(Bitmap background, Bitmap foreground) {
-        if (background == null) {
-            return null;
-        }
-
-        int bgWidth = background.getWidth();
-        int bgHeight = background.getHeight();
-        //int fgWidth = foreground.getWidth();
-        //int fgHeight = foreground.getHeight();
-        //create the new blank bitmap 创建一个新的和SRC长度宽度一样的位图
-        Bitmap newbmp = Bitmap.createBitmap(bgWidth, bgHeight, Bitmap.Config.ARGB_8888);
-        Canvas cv = new Canvas(newbmp);
-        //draw bg into
-        cv.drawBitmap(background, 0, 0, null);//在 0，0坐标开始画入bg
-        //draw fg into
-        cv.drawBitmap(foreground, 0, 0, null);//在 0，0坐标开始画入fg ，可以从任意位置画入
-        //save all clip
-        //cv.save(Canvas.ALL_SAVE_FLAG);//保存
-        //store
-        //cv.restore();//存储
-        return newbmp;
     }
 
     /**
@@ -474,11 +499,9 @@ public class GroundGlassUtil implements OnReleaseListener {
 
     @Override
     public void onRelease() {
-        if (lastBackgroundView != null) {
-            if (onDrawListener != null) {
-                lastBackgroundView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
-                onDrawListener = null;
-            }
+        if (onParentViewDrawListener != null) {
+            parentView.getViewTreeObserver().removeOnDrawListener(onParentViewDrawListener);
+            onParentViewDrawListener = null;
         }
     }
 }

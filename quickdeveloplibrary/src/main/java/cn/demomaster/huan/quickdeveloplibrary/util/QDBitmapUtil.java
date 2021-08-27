@@ -9,7 +9,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
@@ -21,6 +26,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.io.File;
@@ -36,56 +42,80 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class QDBitmapUtil {
 
-
     /**
      * 按比例缩放图片
+     *
      * @param bitmap 原图
      * @return 新的bitmap
      */
     public static Bitmap scaleBitmap(Bitmap bitmap, float scaleX, float scaleY) {
-        if (bitmap == null||bitmap.getWidth()==0||bitmap.getHeight()==0) {
+        if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
             return null;
         }
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         Matrix matrix = new Matrix();
-        matrix.preScale(scaleX, scaleX);
+        matrix.preScale(scaleX, scaleY);
         Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
         if (!bitmap.isRecycled()) {
             bitmap.recycle();
         }
         return newBM;
     }
+
     /**
      * 根据给定的宽和高进行拉伸
+     *
      * @param newWidth  新图的宽
      * @param newHeight 新图的高
      * @return new Bitmap
      */
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-        if (bitmap == null||bitmap.getWidth()==0||bitmap.getHeight()==0) {
+        if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
             return null;
         }
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
         float scaleX = ((float) newWidth) / width;
         float scaleY = ((float) newHeight) / height;
-        return scaleBitmap(bitmap,scaleX,scaleY);
+        return scaleBitmap(bitmap, scaleX, scaleY);
     }
 
     /**
      * 居中裁剪正方形
+     *
      * @param bitmap 原图
      * @return 裁剪后的图像
      */
     public static Bitmap cropBitmap(Bitmap bitmap) {
         int w = bitmap.getWidth(); // 得到图片的宽，高
         int h = bitmap.getHeight();
-        int cropWidth = Math.min(h , w);// 裁切后所取的正方形区域边长
-        return cropBitmap(bitmap, (w-cropWidth) /2, (h-cropWidth)/2, cropWidth, cropWidth);
+        int cropWidth = Math.min(h, w);// 裁切后所取的正方形区域边长
+        return cropBitmap(bitmap, (w - cropWidth) / 2, (h - cropWidth) / 2, cropWidth, cropWidth);
     }
-    public static Bitmap cropBitmap(Bitmap bitmap,int centerX,int centerY,int tartgetWidth,int tartgetHeight) {
+
+    public static Bitmap cropBitmap(Bitmap bitmap, int centerX, int centerY, int tartgetWidth, int tartgetHeight) {
         return Bitmap.createBitmap(bitmap, centerX, centerY, tartgetWidth, tartgetHeight, null, false);
+    }
+
+    public static Bitmap cropBitmap(Bitmap bitmap, int width, int height) {
+        float aspectRatio = width / (height * 1f);//宽高比
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        float aspectRatio2 = w / (h * 1f);//宽高比
+        int x = 0;
+        int y = 0;
+        int new_width = w;
+        int new_height = h;
+        if (aspectRatio > aspectRatio2) {//宽度不足裁剪高度
+            new_height = (int) (w / (aspectRatio * 1f));
+            y = (h - new_height) / 2;
+        } else if (aspectRatio < aspectRatio2) {//高度不足裁剪宽度
+            new_width = (int) (h * (aspectRatio * 1f));
+            x = (w - new_width) / 2;
+        }
+
+        return Bitmap.createBitmap(bitmap, x, y, new_width, new_height, null, false);
     }
 
     public static void setBackground(View view, Bitmap bitmap) {
@@ -99,8 +129,8 @@ public class QDBitmapUtil {
         int bwidth = bitmap.getWidth();
         int bheight = bitmap.getHeight();
 
-        float scalex = (float)vwidth / bwidth;
-        float scaley = (float)vheight / bheight;
+        float scalex = (float) vwidth / bwidth;
+        float scaley = (float) vheight / bheight;
         float scale = Math.max(scalex, scaley) * 1.0f;
 
         Bitmap.Config config = Bitmap.Config.ARGB_8888;
@@ -108,9 +138,9 @@ public class QDBitmapUtil {
 
         Canvas canvas = new Canvas(background);
         Matrix matrix = new Matrix();
-        matrix.setTranslate(-bwidth / 2, -bheight / 2);
+        matrix.setTranslate(-bwidth / 2f, -bheight / 2f);
         matrix.postScale(scale, scale);
-        matrix.postTranslate(vwidth / 2, vheight / 2);
+        matrix.postTranslate(vwidth / 2f, vheight / 2f);
 
         canvas.drawBitmap(bitmap, matrix, null);
         view.setBackground(new BitmapDrawable(view.getResources(), background));//setBackgroundDrawable
@@ -127,8 +157,8 @@ public class QDBitmapUtil {
      * @param bitmap
      * @return
      */
-    public static Drawable bitmap2Drawable(Context context,Bitmap bitmap) {
-        return new BitmapDrawable(context.getResources(),bitmap);
+    public static Drawable bitmap2Drawable(Context context, Bitmap bitmap) {
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     /**
@@ -147,17 +177,51 @@ public class QDBitmapUtil {
         }
     }
 
-    public static Bitmap getBitmapFormDrawable(Drawable drawable){
+    public static Bitmap getBitmapFormDrawable(Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(
                 drawable.getIntrinsicWidth(),
                 drawable.getIntrinsicHeight(),
-                drawable.getOpacity()!= PixelFormat.OPAQUE
-                        ?Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565);
+                drawable.getOpacity() != PixelFormat.OPAQUE
+                        ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         //设置绘画的边界，此处表示完整绘制
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * 通过Uir获取bitmap
+     *
+     * @param uri
+     * @param mContext
+     * @return
+     */
+    public static Bitmap getBitmapFromUri(Uri uri, Context mContext) {
+        try {
+            // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), uri);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Bitmap zoomImageWithWidth(Bitmap srcBitmap, int width) {
+        float scale = width / (srcBitmap.getWidth() * 1.f);
+        return zoomImage(srcBitmap, scale);
+    }
+
+    /**
+     * 等比例缩放
+     *
+     * @param srcBitmap
+     * @param scale
+     * @return
+     */
+    public static Bitmap zoomImage(Bitmap srcBitmap, double scale) {
+        return zoomImage(srcBitmap, srcBitmap.getWidth() * scale, srcBitmap.getHeight() * scale);
     }
 
     /**
@@ -169,7 +233,7 @@ public class QDBitmapUtil {
      * @return
      */
     public static Bitmap zoomImage(Bitmap srcBitmap, double targetwidth, double targetheight) {
-        if (srcBitmap == null || targetwidth <= 0 || targetheight <= 0) {
+        if (srcBitmap == null) {
             return null;
         }
         // 获取这个图片的宽和高
@@ -186,6 +250,36 @@ public class QDBitmapUtil {
         Bitmap bitmap = Bitmap.createBitmap(srcBitmap, 0, 0, (int) width,
                 (int) height, matrix, true);
         return bitmap;
+    }
+
+    /**
+     * 合并图层
+     *
+     * @param background
+     * @param foreground
+     * @return
+     */
+    public static Bitmap mergeBitmap(Bitmap background, Bitmap foreground) {
+        if (background == null) {
+            return null;
+        }
+
+        int bgWidth = background.getWidth();
+        int bgHeight = background.getHeight();
+        //int fgWidth = foreground.getWidth();
+        //int fgHeight = foreground.getHeight();
+        //create the new blank bitmap 创建一个新的和SRC长度宽度一样的位图
+        Bitmap newbmp = Bitmap.createBitmap(bgWidth, bgHeight, Bitmap.Config.ARGB_8888);
+        Canvas cv = new Canvas(newbmp);
+        //draw bg into
+        cv.drawBitmap(background, 0, 0, null);//在 0，0坐标开始画入bg
+        //draw fg into
+        cv.drawBitmap(foreground, 0, 0, null);//在 0，0坐标开始画入fg ，可以从任意位置画入
+        //save all clip
+        //cv.save(Canvas.ALL_SAVE_FLAG);//保存
+        //store
+        //cv.restore();//存储
+        return newbmp;
     }
 
     /**
@@ -339,7 +433,7 @@ public class QDBitmapUtil {
 
     public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
+            Drawable vectorDrawable = ResourcesCompat.getDrawable(context.getResources(), vectorDrawableId, null);
             return getBitmapByDrawable(vectorDrawable);
         } else {
             return BitmapFactory.decodeResource(context.getResources(), vectorDrawableId);
@@ -358,7 +452,7 @@ public class QDBitmapUtil {
     public static Bitmap getBitmapByDrawableId(Context context, int vectorDrawableId, int apha) {
         Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
+            Drawable vectorDrawable = ResourcesCompat.getDrawable(context.getResources(), vectorDrawableId, null);
             bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
                     vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
@@ -456,6 +550,56 @@ public class QDBitmapUtil {
         }
         intent.putExtra("return-data", false);//如果此处指定，返回值的data为null
         context.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * getRoundBiemap
+     *
+     * @param bitmap ����Bitmap����
+     * @return
+     */
+    public static Bitmap toRoundBitmap(Bitmap bitmap, float roundPx) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
+        int min = Math.min(width, height);
+
+        left = 0;
+        right = 0;
+        top = 0;
+        bottom = min;
+        width = min;
+
+        dst_left = 0;
+        dst_top = 0;
+        dst_right = min;
+        dst_bottom = min;
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect src = new Rect((int) left, (int) top, (int) right,
+                (int) bottom);
+        final Rect dst = new Rect((int) dst_left, (int) dst_top,
+                (int) dst_right, (int) dst_bottom);
+        final RectF rectF = new RectF(dst);
+
+        paint.setAntiAlias(true);// ���û����޾��
+        canvas.drawARGB(0, 0, 0, 0); // �������Canvas
+        paint.setColor(color);
+
+        if (roundPx != -1) {
+            canvas.drawRoundRect(rectF, roundPx, roundPx, paint);//
+        } else {
+            canvas.drawCircle(roundPx, roundPx, roundPx, paint);
+        }
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));// ��������ͼƬ�ཻʱ��ģʽ,�ο�http://trylovecatch.iteye.com/blog/1189452
+        canvas.drawBitmap(bitmap, src, dst, paint); // ��Mode.SRC_INģʽ�ϲ�bitmap���Ѿ�draw�˵�Circle
+        return output;
     }
 
 }

@@ -153,7 +153,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 /*计算出正在的偏移量*/
                 targetScrollX -= mTitleOffset;
             }
-            QDLogger.println("Width="+mWidth); ;
+            QDLogger.println("Width="+mWidth);
             /*这个时候偏移的量就是屏幕的正中间*/
             scrollTo(targetScrollX, 0);
         }

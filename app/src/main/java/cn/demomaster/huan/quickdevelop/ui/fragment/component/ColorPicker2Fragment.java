@@ -16,7 +16,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.colorpicker.ColorPicker;
 
 @ActivityPager(name = "颜色锥", preViewClass = TextView.class, resType = ResType.Custome)
 public class ColorPicker2Fragment extends BaseFragment {
@@ -42,16 +41,20 @@ public class ColorPicker2Fragment extends BaseFragment {
             @Override
             public void run() {
 
-                glassUtil = new GroundGlassUtil(getContext());
-                glassUtil.setTargetView(tv_lable);
-                glassUtil.setUseBackgroundColor(false);
-                glassUtil = new GroundGlassUtil(getContext());
-                glassUtil.setTargetView(iv_image4);
-                glassUtil.setUseBackgroundColor(false);
                 // glassUtil.setBackgroundView(rootView, false);
             }
         });
 
+        glassUtil = new GroundGlassUtil(getContext());
+        glassUtil.setTargetView(tv_lable);
+        GroundGlassUtil glassUtil2 = new GroundGlassUtil(getContext());
+        glassUtil2.setTargetView(iv_image4);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     Handler handler = new Handler();

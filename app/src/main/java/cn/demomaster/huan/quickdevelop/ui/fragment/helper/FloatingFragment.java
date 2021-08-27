@@ -1,16 +1,10 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Service;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +18,6 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.dialog.DialogWindowActivity;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
@@ -58,6 +51,7 @@ public class FloatingFragment extends BaseFragment {
     Button btn_floating_05;
     @BindView(R.id.btn_floating_06)
     Button btn_floating_06;
+
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +76,6 @@ public class FloatingFragment extends BaseFragment {
         btn_floating_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOverlayPermission(mContext);
                 PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
                     @Override
                     public void onPassed() {
@@ -224,7 +217,7 @@ public class FloatingFragment extends BaseFragment {
             }
         });
     }
-
+/*
     //跳转到设置-请求悬浮窗权限
     @TargetApi(Build.VERSION_CODES.M)
     public static void getOverlayPermission(Activity context) {
@@ -242,5 +235,5 @@ public class FloatingFragment extends BaseFragment {
                 context.overridePendingTransition(R.anim.fade_in, 0);
             }
         });
-    }
+    }*/
 }

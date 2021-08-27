@@ -243,13 +243,13 @@ public class ImageTextView extends cn.demomaster.qdrouter_library.view.ImageText
         float y = 0;
         if(textGravity==Gravity.LEFT){
             x = getPaddingLeft();
-            y = height / 2 + baseLineY;
+            y = height / 2f + baseLineY;
         }else if(textGravity==Gravity.CENTER){
-            x = width / 2 - textWidth / 2;
-            y = height / 2 + baseLineY;
+            x = width / 2f - textWidth / 2f;
+            y = height / 2f + baseLineY;
         }else if(textGravity==Gravity.RIGHT){
-            x = width / 2 - textWidth / 2;
-            y = height / 2 + baseLineY;
+            x = width / 2f - textWidth / 2f;
+            y = height / 2f + baseLineY;
         }
         canvas.drawText(text, x, y, mPaint);
         //canvas.drawLine( 0,  height/2,  width,  height/2, mPaint);

@@ -237,16 +237,16 @@ public class RatingBar extends androidx.appcompat.widget.AppCompatRatingBar {
             if (!useCustomDrable) {
                 //一个五角星需要10个定点
                 //最上面的顶点开始
-                PointF p1 = new PointF(x1 + cell / 2, y1);
-                PointF p2 = new PointF(x1 + cell / 2 + cell * .14f, y1 + cell * .35f);
-                PointF p3 = new PointF(x1 + cell / 2 + cell * .5f, y1 + cell * .35f);
-                PointF p4 = new PointF(x1 + cell / 2 + cell * .22f, y1 + cell * .6f);
-                PointF p5 = new PointF(x1 + cell / 2 + cell * .35f, y1 + cell * 1f);
-                PointF p6 = new PointF(x1 + cell / 2, y1 + cell * .72f);
-                PointF p7 = new PointF(x1 + cell / 2 - cell * .35f, y1 + cell * 1f);
-                PointF p8 = new PointF(x1 + cell / 2 - cell * .22f, y1 + cell * .6f);
-                PointF p9 = new PointF(x1 + cell / 2 - cell * .5f, y1 + cell * .35f);
-                PointF p10 = new PointF(x1 + cell / 2 - cell * .14f, y1 + cell * .35f);
+                PointF p1 = new PointF(x1 + cell / 2f, y1);
+                PointF p2 = new PointF(x1 + cell / 2f + cell * .14f, y1 + cell * .35f);
+                PointF p3 = new PointF(x1 + cell / 2f + cell * .5f, y1 + cell * .35f);
+                PointF p4 = new PointF(x1 + cell / 2f + cell * .22f, y1 + cell * .6f);
+                PointF p5 = new PointF(x1 + cell / 2f + cell * .35f, y1 + cell * 1f);
+                PointF p6 = new PointF(x1 + cell / 2f, y1 + cell * .72f);
+                PointF p7 = new PointF(x1 + cell / 2f - cell * .35f, y1 + cell * 1f);
+                PointF p8 = new PointF(x1 + cell / 2f - cell * .22f, y1 + cell * .6f);
+                PointF p9 = new PointF(x1 + cell / 2f - cell * .5f, y1 + cell * .35f);
+                PointF p10 = new PointF(x1 + cell / 2f - cell * .14f, y1 + cell * .35f);
 
                 Path path = null;
                 PointF[] points = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10};

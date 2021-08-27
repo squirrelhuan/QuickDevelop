@@ -365,6 +365,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
                 mSlideState = PanelState.values()[ta.getInt(R.styleable.SlidingUpPanelLayout_umanoInitialState, DEFAULT_SLIDE_STATE.ordinal())];
 
+                slidePaneAlignBottom = ta.getBoolean(R.styleable.SlidingUpPanelLayout_slidePaneAlignBottom, false);
                 int interpolatorResId = ta.getResourceId(R.styleable.SlidingUpPanelLayout_umanoScrollInterpolator, -1);
                 if (interpolatorResId != -1) {
                     scrollerInterpolator = AnimationUtils.loadInterpolator(context, interpolatorResId);
@@ -414,7 +415,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (mScrollableViewResId != -1) {
             setScrollableView(findViewById(mScrollableViewResId));
         }
-
     }
 
     public void setGravity(int gravity) {
@@ -707,7 +707,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
     }
 
-
     void dispatchOnPanelStateChanged(View panel, PanelState previousState, PanelState newState) {
         synchronized (mPanelSlideListeners) {
             for (PanelSlideListener l : mPanelSlideListeners) {
@@ -982,7 +981,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
                     mIsUnableToDrag = true;
                     return false;
                 }
-
                 break;
             }
 
@@ -1174,7 +1172,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * @param state - new panel state
      */
     public void setPanelState(PanelState state) {
-
         // Abort any running animation, to allow state change
         if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_SETTLING) {
             Log.d(TAG, "View is settling. Aborting animation.");

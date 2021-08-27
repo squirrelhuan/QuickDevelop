@@ -134,7 +134,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
 
                 int w1 = r * 3 / 5;
                 int w2 = r;
-                PointF pointF = new PointF(width / 2 - r / 12, height / 2 + r * 2 / 5);
+                PointF pointF = new PointF(width / 2f - r / 12f, height / 2f + r * 2 / 5f);
                 double degrees_start = 315.0;
                 double radians1 = Math.toRadians(degrees_start);
                 PointF pointF1 = new PointF((float) (pointF.x + Math.sin(radians1) * w1), (float) (pointF.y - Math.cos(radians1) * w1));
@@ -164,7 +164,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                     canvas.drawCircle(a, b, r0, mPaint);
 
                 int width_error = r * 5 / 7;
-                PointF pointF_error = new PointF(width / 2, height / 2);
+                PointF pointF_error = new PointF(width / 2f, height / 2f);
                 double degrees_error_01 = 315.0;
                 double radians_error_01 = Math.toRadians(degrees_error_01);
                 PointF pointF_error_01 = new PointF((float) (pointF_error.x - Math.sin(radians_error_01) * width_error), (float) (pointF_error.y + Math.cos(radians_error_01) * width_error));
@@ -193,7 +193,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 int height_warning = r * 9 / 7;
                 float weight1 = .6f;
                 float weight2 = .8f;
-                PointF pointF_warning = new PointF(width / 2, height / 2);
+                PointF pointF_warning = new PointF(width / 2f, height / 2f);
 
                 PointF pointF_warning_01 = new PointF(pointF_warning.x, (float) (pointF_warning.y - 0.5 * height_warning));
                 PointF pointF_warning_02 = new PointF(pointF_warning.x, (float) (pointF_warning.y + (weight1 - .5) * height_warning));
@@ -219,8 +219,8 @@ public class StateView extends ImageTextView implements OnReleaseListener {
 
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
-                RectF oval = new RectF((width - r0) / 2, (height - r0) / 2, (width - r0) / 2 + r0, (height - r0) / 2 + r0);
-                canvas.rotate((float) progress * 360, width / 2, height / 2);
+                RectF oval = new RectF((width - r0) / 2f, (height - r0) / 2f, (width - r0) / 2f + r0, (height - r0) / 2f + r0);
+                canvas.rotate((float) progress * 360, width / 2f, height / 2f);
                 canvas.drawArc(oval, 0, 90 + Math.abs(progress - 0.5f) * 140, false, mPaint);
                 //canvas.save();
                 //canvas.translate(0,0);

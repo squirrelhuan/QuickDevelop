@@ -308,21 +308,21 @@ public class SquareImageMenuView extends View {
             int count = images.length;
             for (int i = 0; i < count; i++) {
                 int r = (int) (progress2 * (rectWidth / 2 - button_width / 3 * 2));
-                double a = Math.toRadians(i * 360 / count - 90);
+                double a = Math.toRadians(i * 360f / count - 90);
                 int x1 = (int) (centX + r * Math.cos(a));
                 int y1 = (int) (centY + r * Math.sin(a));
                 pointMap.put(i, new Point(x1, y1));
             }
             for (int i = 0; i < pointMap.entrySet().size(); i++) {
                 Point point = pointMap.get(i);
-                RectF rectF = new RectF(point.x - button_width / 2, point.y - button_width / 2, point.x + button_width / 2, point.y + button_width / 2);
+                RectF rectF = new RectF(point.x - button_width / 2f, point.y - button_width / 2f, point.x + button_width / 2f, point.y + button_width / 2f);
                 Paint paint = new Paint();
                 paint.setColor(Color.WHITE);
                 paint.setAlpha((int) (180 * (progress2)));
                 paint.setAntiAlias(true);
                 paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
                 //canvas.rotate(360 / count, centX, centY);
-                canvas.drawRoundRect(rectF, button_width / 2, button_width / 2, paint);
+                canvas.drawRoundRect(rectF, button_width / 2f, button_width / 2f, paint);
                 paint.setAlpha((int) (10 + 200 * (progress2)));
                 Bitmap bitmap = QDBitmapUtil.getBitmapByDrawableId(getContext(), images[i]);
                 //bitmap = QDBitmapUtil.setBitmapLight(bitmap, (int) (100+progress2*150));
@@ -341,14 +341,14 @@ public class SquareImageMenuView extends View {
             paint.setAntiAlias(true);
             int r = (int) ((1 - progress2) * maxWith / 3);
             RectF rectF = new RectF(centX - r, centY - r, centX + r, centY + r);
-            canvas.drawRoundRect(rectF, maxWith / 2, maxWith / 2, paint);
+            canvas.drawRoundRect(rectF, maxWith / 2f, maxWith / 2f, paint);
             paint.setXfermode(null);
         }
     }
 
     public void setSize() {
         ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.width = (int) ((maxWith) * (progress / 360) + miniWidth);
+        lp.width = (int) ((maxWith) * (progress / 360f) + miniWidth);
         lp.height = lp.width;
         //setLayoutParams(lp);
         //requestLayout();

@@ -41,7 +41,7 @@ public class TimeDomainPlotFragment extends BaseFragment {
         TimeDomainPlotView timeDomainPlotView = rootView.findViewById(R.id.timeDomainPlotView);
         List<LinePoint> linePoints = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
-            linePoints.add(new LinePoint(i * 20, ((i % 2) == 1) ? Math.round((float) (Math.random() * 100) * 100) / 100 : Math.round(-(float) (Math.random() * 100) * 100) / 100));
+            linePoints.add(new LinePoint(i * 20, ((i % 2) == 1) ? Math.round((float) (Math.random() * 100) * 100) / 100f : Math.round(-(float) (Math.random() * 100) * 100) / 100f));
         }
         timeDomainPlotView.setLinePoints(linePoints);
         //timeDomainPlotView.setBaselineY(0);

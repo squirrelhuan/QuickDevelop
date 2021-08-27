@@ -29,7 +29,7 @@ public class QDMainFragmentActivity extends QDActivity {
         setContentView(R.layout.activity_qdmain);
         if (savedInstanceState == null) {
             QDFragment fragment = new MainFragment();
-            startFragment(fragment,R.id.container1);
+            startFragment(fragment,R.id.container1,null);
         }
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
@@ -81,11 +81,6 @@ public class QDMainFragmentActivity extends QDActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

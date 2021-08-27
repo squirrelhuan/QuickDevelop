@@ -149,7 +149,6 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
      * 伸缩方向
      */
     int gravity = Gravity.LEFT;
-
     public void setGravity(int gravity) {
         this.gravity = gravity;
     }
@@ -169,13 +168,47 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                     child.setTranslationX(animatedValue);
                     break;
                 case Gravity.TOP:
-                    child.setTranslationY(animatedValue);
+                    child.setTranslationY(-animatedValue);
                     break;
                 case Gravity.BOTTOM:
-                    child.setTranslationY(-animatedValue);
+                    child.setTranslationY(animatedValue);
                     break;
             }
         }
+    }
+
+    public void setProgress(float progress) {
+         View childView = getChildAt(0);
+        if (childView == null) {
+            return;
+        }
+        float start = 0;
+        float end = 0;
+        switch (gravity) {
+            case Gravity.LEFT:
+                start = -childView.getMeasuredWidth();
+                end = 0;
+                animatedValue = start + (end - start) * progress;
+                break;
+            case Gravity.RIGHT:
+                start = childView.getMeasuredWidth();
+                end = 0;
+                animatedValue = start + (end - start) * progress;
+                break;
+            case Gravity.TOP:
+                start = -childView.getMeasuredHeight();
+                end = 0;
+                animatedValue = start + (end - start) * progress;
+                break;
+            case Gravity.BOTTOM:
+                start = childView.getMeasuredHeight();
+                end = 0;
+                animatedValue = start + (end - start) * progress;
+                break;
+        }
+
+        //QDLogger.i("progress=" + progress + ",animatedValue=" + animatedValue);
+        requestLayout();
     }
 
     ValueAnimator animator;
@@ -193,48 +226,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         childView.setVisibility(VISIBLE);
         //QDLogger.e("执行"+(visibility==VISIBLE?"显示":"隐藏"+"动画"));
         isRunning = true;
-        float start = 0;
-        float end = 0;
-        if (visibility == VISIBLE) {
-            switch (gravity) {
-                case Gravity.LEFT:
-                    start = -childView.getTranslationX();
-                    end = 0;
-                    break;
-                case Gravity.RIGHT:
-                    start = childView.getTranslationX();
-                    end = 0;
-                    break;
-                case Gravity.TOP:
-                    start = childView.getTranslationY();
-                    end = 0;
-                    break;
-                case Gravity.BOTTOM:
-                    start = -childView.getTranslationY();
-                    end = 0;
-                    break;
-            }
-        } else {
-            animator = ValueAnimator.ofInt(getChildMaxWidth(), 0);
-            switch (gravity) {
-                case Gravity.LEFT:
-                    end = getChildMaxWidth();
-                    start = childView.getTranslationX();
-                    break;
-                case Gravity.RIGHT:
-                    start = childView.getTranslationX();
-                    end = getWidth();
-                    break;
-                case Gravity.TOP:
-                    start = childView.getTranslationY();
-                    end = -getChildMaxHeight();
-                    break;
-                case Gravity.BOTTOM:
-                    start = childView.getTranslationY();
-                    end = -getChildMaxHeight();
-                    break;
-            }
-        }
+        measureLimitValue(childView, visibility);
         String str = null;
         switch (gravity) {
             case Gravity.LEFT:
@@ -251,9 +243,9 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 break;
         }
         // QDLogger.e("动画"+str+",start="+start+",end="+end);
-        final int m1 = (int) start;
-        final int m2 = (int) end;
-        animator = ValueAnimator.ofInt((int) start, (int) end);
+        final int m1 = (int) startTranslationValue;
+        final int m2 = (int) endTranslationValue;
+        animator = ValueAnimator.ofInt((int) startTranslationValue, (int) endTranslationValue);
         animator.setInterpolator(mInterpolator);
         animator.setDuration(mDuration).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -284,6 +276,58 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                 VisibilityMap.put(childView.hashCode(), visibility);
             }
         });
+    }
+
+    float startTranslationValue;
+    float endTranslationValue;
+
+    private void measureLimitValue(View childView, int visibility) {
+        if (childView == null) {
+            return;
+        }
+        float start = 0;
+        float end = 0;
+        if (visibility == VISIBLE) {
+            switch (gravity) {
+                case Gravity.LEFT:
+                    start = -childView.getTranslationX();
+                    end = 0;
+                    break;
+                case Gravity.RIGHT:
+                    start = childView.getTranslationX();
+                    end = 0;
+                    break;
+                case Gravity.TOP:
+                    start = childView.getTranslationY();
+                    end = 0;
+                    break;
+                case Gravity.BOTTOM:
+                    start = -childView.getTranslationY();
+                    end = 0;
+                    break;
+            }
+        } else {
+            switch (gravity) {
+                case Gravity.LEFT:
+                    end = getChildMaxWidth();
+                    start = childView.getTranslationX();
+                    break;
+                case Gravity.RIGHT:
+                    start = childView.getTranslationX();
+                    end = getWidth();
+                    break;
+                case Gravity.TOP:
+                    start = childView.getTranslationY();
+                    end = -getChildMaxHeight();
+                    break;
+                case Gravity.BOTTOM:
+                    start = childView.getTranslationY();
+                    end = -getChildMaxHeight();
+                    break;
+            }
+        }
+        startTranslationValue = start;
+        endTranslationValue = end;
     }
 
     OnVisiableChangedListener onVisiableChangedListener;

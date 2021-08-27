@@ -34,7 +34,6 @@ public class QDDialog extends QDDialog2 {
 
     // private Builder builder;
     public int actionButtonPadding;
-    private Context context;
     private String title;
     private String message;
     private int icon;
@@ -63,7 +62,6 @@ public class QDDialog extends QDDialog2 {
     private int text_size_header = 18;
     private int text_size_body = 16;
     private int text_size_foot = 16;
-    private View contentView;
     private int contentViewLayoutID;
 
     private int backgroundColor = Color.WHITE;
@@ -76,11 +74,11 @@ public class QDDialog extends QDDialog2 {
         super(context);
 
     }
+    View contentLayout;
     public QDDialog(Context context, Builder builder) {
         super(context);
         //this.builder = builder;
         actionButtonPadding = builder.actionButtonPadding;
-        this.context = builder.context;
         title = builder.title;
         message = builder.message;
         icon = builder.icon;
@@ -105,7 +103,7 @@ public class QDDialog extends QDDialog2 {
         text_size_header = builder.text_size_header;
         text_size_body = builder.text_size_body;
         text_size_foot = builder.text_size_foot;
-        contentView = builder.contentView;
+        contentLayout = builder.contentView;
         contentViewLayoutID = builder.contentViewLayoutID;
 
         backgroundColor = builder.backgroundColor;
@@ -155,7 +153,7 @@ public class QDDialog extends QDDialog2 {
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
-        contentLinearView = new LinearLayout(context);
+        contentLinearView = new LinearLayout(getContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             contentLinearView.setId(View.generateViewId());
         }
@@ -177,34 +175,34 @@ public class QDDialog extends QDDialog2 {
         int padding_body = padding_body;*/
         switch (showType) {
             case normal:
-                headerView = new LinearLayout(context);
-                bodyView = new LinearLayout(context);
-                footView = new LinearLayout(context);
+                headerView = new LinearLayout(getContext());
+                bodyView = new LinearLayout(getContext());
+                footView = new LinearLayout(getContext());
                 headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
                 bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
             case noHeader:
-                bodyView = new LinearLayout(context);
-                footView = new LinearLayout(context);
+                bodyView = new LinearLayout(getContext());
+                footView = new LinearLayout(getContext());
                 bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case onlyBody:
-                bodyView = new LinearLayout(context);
+                bodyView = new LinearLayout(getContext());
                 bodyView.setPadding(padding_body, padding_body, padding_body, padding_body);
                 break;
             case noFoot:
-                headerView = new LinearLayout(context);
-                bodyView = new LinearLayout(context);
+                headerView = new LinearLayout(getContext());
+                bodyView = new LinearLayout(getContext());
                 headerView.setPadding(padding_header, padding_header, padding_header, padding_header);
                 bodyView.setPadding(padding_body, 0, padding_body, padding_body);
                 break;
             case contentView:
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                contentLinearView.addView(contentView, layoutParams1);
+                contentLinearView.addView(contentLayout, layoutParams1);
                 break;
             case contentLayout:
                 ViewGroup.LayoutParams layoutParams2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
+                View view = LayoutInflater.from(getContext()).inflate(contentViewLayoutID, null, false);
                 contentLinearView.addView(view, layoutParams2);
                 break;
         }
@@ -220,8 +218,7 @@ public class QDDialog extends QDDialog2 {
             contentLinearView.addView(bodyView);
             bodyView.setMinimumHeight(minHeight_body);
             bodyView.setBackgroundColor(color_body);
-            
-            bodyView.setGravity(gravity_body);
+                        bodyView.setGravity(gravity_body);
             bodyView.setTag(gravity_body);
             addBodyTextView(bodyView, message, text_color_body, text_size_body);
         }
@@ -303,13 +300,11 @@ public class QDDialog extends QDDialog2 {
             });
         }
         setContentView(layout, layoutParams);
-        mContentView = layout;
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
-        
         for(Map.Entry entry: clickListenerMap.entrySet()){
             View view1 = view.findViewById((Integer) entry.getKey());
             if(view1!=null){
@@ -329,12 +324,6 @@ public class QDDialog extends QDDialog2 {
     public void setCanceledOnTouchOutside(boolean cancel) {
         canceledOnTouchOutside = cancel;
         super.setCanceledOnTouchOutside(cancel);
-    }
-
-    View mContentView;
-
-    public View getContentView() {
-        return mContentView;
     }
 
     public LinearLayout getContentLinearView() {

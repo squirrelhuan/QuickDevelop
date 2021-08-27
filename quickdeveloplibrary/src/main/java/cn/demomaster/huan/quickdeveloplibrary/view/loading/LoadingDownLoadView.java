@@ -66,20 +66,20 @@ public class LoadingDownLoadView extends View {
 
         if (!isDrawed) {
             mPaint.setColor(Color.BLACK);
-            canvas.drawCircle(center_x, -currentY + height / 2, width / 2, mPaint);
+            canvas.drawCircle(center_x, -currentY + height / 2f, width / 2f, mPaint);
             Path path1 = new Path();
             path1.addRoundRect(new RectF(0, 0, width, height), center_x, center_y, Path.Direction.CCW);
             canvas.clipPath(path1);
             mPaint.setColor(Color.RED);
             Path path = new Path();
-            path.moveTo(center_x - lineWidth / 2, 0);
-            path.lineTo(center_x + lineWidth / 2, 0);
-            path.lineTo(center_x + lineWidth / 2, height - lineWidth * 3 / 2);
-            path.lineTo(center_x + lineWidth * 4 / 3, height - lineWidth * 3 / 2);
+            path.moveTo(center_x - lineWidth / 2f, 0);
+            path.lineTo(center_x + lineWidth / 2f, 0);
+            path.lineTo(center_x + lineWidth / 2f, height - lineWidth * 3 / 2f);
+            path.lineTo(center_x + lineWidth * 4 / 3f, height - lineWidth * 3 / 2f);
             path.lineTo(center_x, height);
-            path.lineTo(center_x - lineWidth * 4 / 3, height - lineWidth * 3 / 2);
-            path.lineTo(center_x - lineWidth / 2, height - lineWidth * 3 / 2);
-            path.lineTo(center_x - lineWidth / 2, 0);
+            path.lineTo(center_x - lineWidth * 4 / 3f, height - lineWidth * 3 / 2f);
+            path.lineTo(center_x - lineWidth / 2f, height - lineWidth * 3 / 2f);
+            path.lineTo(center_x - lineWidth / 2f, 0);
             canvas.drawPath(path, mPaint);
         }
 

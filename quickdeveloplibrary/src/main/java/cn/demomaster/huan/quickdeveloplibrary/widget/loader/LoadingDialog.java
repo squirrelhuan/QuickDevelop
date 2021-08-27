@@ -28,7 +28,7 @@ public class LoadingDialog extends Dialog {
 
         public final static int Loading_Builer_Only_Image = 0;
         public final static int Loading_Builer_Image_And_Text = 1;
-
+        
         public Builder(Context context) {
             //这里传入自定义的style，直接影响此Dialog的显示效果。style具体实现见style.xml
             dialog = new LoadingDialog(context);

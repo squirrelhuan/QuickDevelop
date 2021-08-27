@@ -41,12 +41,10 @@ import okhttp3.RequestBody;
 
 import static cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils.FROM_DATA;
 
-
 /**
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "网络请求", preViewClass = TextView.class, resType = ResType.Custome)
 public class HttpFragment extends BaseFragment {
 

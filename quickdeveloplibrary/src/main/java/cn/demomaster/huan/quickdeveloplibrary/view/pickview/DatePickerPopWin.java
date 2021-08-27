@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -217,9 +216,9 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
             this.monthList.add(StringUtil.formatNumberToStr(j + 1, 2));
         }
 
-        this.yearLoopView.setDataList((ArrayList) this.yearList);
+        this.yearLoopView.setDataList(this.yearList);
         this.yearLoopView.setInitPosition(this.yearPos);
-        this.monthLoopView.setDataList((ArrayList) this.monthList);
+        this.monthLoopView.setDataList(this.monthList);
         this.monthLoopView.setInitPosition(this.monthPos);
     }
 
@@ -234,7 +233,7 @@ public class DatePickerPopWin extends PopupWindow implements OnClickListener {
             this.dayList.add(StringUtil.formatNumberToStr(i + 1, 2));
         }
 
-        this.dayLoopView.setDataList((ArrayList) this.dayList);
+        this.dayLoopView.setDataList(this.dayList);
         this.dayLoopView.setInitPosition(this.dayPos);
     }
 

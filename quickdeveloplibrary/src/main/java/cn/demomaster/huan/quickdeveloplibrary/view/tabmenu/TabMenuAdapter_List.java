@@ -144,7 +144,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
         return tabMenuModels;
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
         TextView tv_title;
 
         private ViewHolder() {

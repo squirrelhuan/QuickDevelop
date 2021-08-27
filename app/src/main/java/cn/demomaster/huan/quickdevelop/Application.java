@@ -53,7 +53,6 @@ public class Application extends QDApplication {
         PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
         PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
 
-
         DoraemonKit.install(this);
         //初始化缓存目录
         QuickCache.init(this,"/qdlogger/cache/");
@@ -64,6 +63,22 @@ public class Application extends QDApplication {
         super.attachBaseContext(base);
         Log.i(TAG, "attachBaseContext");
         MultiDex.install(base);
+    }
+
+    @Override
+    public QuickDbHelper getDbHelper() {
+        if (dbHelper == null) {
+            dbHelper = new QuickDbHelper(this, "quick_db.db", "quick_db.db", null, 10, this);
+            //quick_db1.db 在data/data/下生成对应的db文件
+            //quick_db2.db 在assets下的db文件
+            /*try {
+                dbHelper.createTable(KsnetPayModel.class);
+                dbHelper.updateTable(KsnetPayModel.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+        }
+        return dbHelper;
     }
 
     public SerialPortFinder mSerialPortFinder = new SerialPortFinder();

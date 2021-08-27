@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -73,9 +72,9 @@ public class QDialogActivity extends BaseActivity {
                 "带输入框的对话框",
                 "高度适应键盘升降的对话框"
         };
-        List<String> data = new ArrayList<>();
-        Collections.addAll(data, listItems);
-        mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, data));
+        /*List<String> data = new ArrayList<>();
+        Collections.addAll(data, listItems);*/
+        mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, listItems));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -224,8 +223,7 @@ public class QDialogActivity extends BaseActivity {
                 .setBackgroundRadius(backgroundRadio)
                 .setGravity_foot(gravity).create();
 
-        GroundGlassUtil glassUtil = null;
-        glassUtil = new GroundGlassUtil(qdDialog.getContext());
+        GroundGlassUtil glassUtil = new GroundGlassUtil(qdDialog.getContext());
         qdDialog.getContentLinearView().setLayoutAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -249,10 +247,10 @@ public class QDialogActivity extends BaseActivity {
             }
         });
 
-        //glassUtil.setTargetView(qdDialog.getContentLinearView());
-        //glassUtil.setBackgroundView(mListView, false);
-        //glassUtil.setRadius(100);
-       // glassUtil.invalidate();
+        glassUtil.setTargetView(qdDialog.getContentLinearView());
+        glassUtil.setBackgroundView(mListView);
+        glassUtil.setRadius(100);
+        glassUtil.invalidate();
         qdDialog.show();
         //glassUtil.setTargetView(qdDialog.getContentLinearView());
     }
@@ -295,7 +293,9 @@ public class QDialogActivity extends BaseActivity {
 
     private void showMulMenuDialog() {
         String[] menus = {"item1", "item2", "234", "6565", "656456", "56656", "8888", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "234", "6565", "656456", "56656", "8888", "item2",};
-        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
+        new QDMulSheetDialog.MenuBuilder(mContext)
+                .setData(menus)
+                .setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
             @Override
             public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
                 dialog.dismiss();

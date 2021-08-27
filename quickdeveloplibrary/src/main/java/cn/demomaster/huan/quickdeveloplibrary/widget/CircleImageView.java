@@ -52,9 +52,9 @@ public class CircleImageView extends AppCompatImageView {
     protected void onDraw(Canvas canvas) {
         if (isRound) {
             Path path = new Path();
-            float raduis = (Math.min(getHeight(), getWidth())-circle_background_padding)/2;
-            int centerX = getWidth() / 2;
-            int centerY = getHeight() / 2;
+            float raduis = (Math.min(getHeight(), getWidth())-circle_background_padding)/2f;
+            int centerX = (int) (getWidth() / 2f);
+            int centerY = (int) (getHeight() / 2f);
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
             path.addCircle(centerX, centerY, (float) (raduis), Path.Direction.CCW);

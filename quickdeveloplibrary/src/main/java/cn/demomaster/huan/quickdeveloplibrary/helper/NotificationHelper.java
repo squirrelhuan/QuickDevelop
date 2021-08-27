@@ -214,7 +214,7 @@ public class NotificationHelper {
         notificationManager.cancelAll();
     }
 
-    public static void sendNotifiication(Builer builder) {
+    public static Notification sendNotifiication(Builer builder) {
         NotificationManager manager = (NotificationManager) builder.context.getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationBuiler = null;
         PendingIntent pendingIntent = null;
@@ -239,6 +239,8 @@ public class NotificationHelper {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+
+        notificationBuiler.setOngoing(builder.ongoing);
         if (builder.pattern != null) {
             notificationBuiler.setVibrate(builder.pattern);
         }
@@ -256,6 +258,7 @@ public class NotificationHelper {
             AudioAttributes.Builder attrs = new AudioAttributes.Builder();
             attrs.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION);
             attrs.setUsage(AudioAttributes.USAGE_ALARM);
+            //attrs.setUsage(AudioAttributes.USAGE_MEDIA);
             //manager.deleteNotificationChannel(channelId);
             /**
              * Oreo不用Priority了，用importance
@@ -266,7 +269,7 @@ public class NotificationHelper {
              * IMPORTANCE_HIGH 开启通知，会弹出，发出提示音，状态栏中显示
              */
             NotificationChannel channel = new NotificationChannel(channelId, "消息",
-                    NotificationManager.IMPORTANCE_HIGH);
+                    builder.importance);
             channel.enableLights(builder.enableLights);//闪光
             channel.enableVibration(builder.enableVibration);
             if (builder.pattern != null) {
@@ -279,12 +282,14 @@ public class NotificationHelper {
             } else {
                 channel.setSound(null, null);
             }
+            channel.setDescription("Description");
             manager.createNotificationChannel(channel);
             notificationBuiler.setChannelId(channelId);
         }
 
         Notification notification = notificationBuiler.build();
         manager.notify(builder.id, notification);
+        return notification;
     }
 
     public static class Builer {
@@ -299,10 +304,24 @@ public class NotificationHelper {
         String title;
         String contentText;
         int smallIcon;
+        String channelName;
+        int importance=NotificationManager.IMPORTANCE_HIGH;//优先级
+        boolean ongoing = false;
+        String ticker;
 
         public Builer(Context context) {
             this.context = context;
             smallIcon = context.getApplicationInfo().icon;
+        }
+
+        public Builer setChannelName(String channelName) {
+            this.channelName = channelName;
+            return this;
+        }
+
+        public Builer setImportance(int importance) {
+            this.importance = importance;
+            return this;
         }
 
         public Builer setTitle(String title) {
@@ -360,12 +379,22 @@ public class NotificationHelper {
             return this;
         }
 
-        public void send() {
-            NotificationHelper.sendNotifiication(this);
+        public Notification send() {
+           return NotificationHelper.sendNotifiication(this);
         }
 
         public String getChannelId() {
             return enableLights + "_" + enableVibration + "_" + enableSound + "_" + soundUri;
+        }
+
+        public Builer setTicker(String ticker) {
+            this.ticker = ticker;
+            return this;
+        }
+
+        public Builer setOngoing(boolean ongoing) {
+            this.ongoing = ongoing;
+            return this;
         }
     }
 

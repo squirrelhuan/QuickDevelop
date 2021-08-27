@@ -29,7 +29,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "截图", preViewClass = TextView.class, resType = ResType.Custome)
 public class ScreenShotFragment extends BaseFragment {
 
@@ -57,14 +56,13 @@ public class ScreenShotFragment extends BaseFragment {
     }
 
     Bitmap bitmap;
-
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
         btn_shot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bitmap = ScreenShotUitl.shotActivityNoBar((Activity) v.getContext());
+                bitmap = ScreenShotUitl.shotActivity((Activity) v.getContext(),false);
                 QDFileUtil.saveBitmap(bitmap);
                 iv_prev.setImageBitmap(bitmap);
                 tv_size.setText("原图大小:" + QDBitmapUtil.getBitmapSize(bitmap) / 1024 / 8 + "kb");

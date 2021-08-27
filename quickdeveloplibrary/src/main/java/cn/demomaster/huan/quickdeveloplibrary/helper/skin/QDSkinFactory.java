@@ -110,7 +110,7 @@ public class QDSkinFactory implements LayoutInflaterFactory {
     /**
      * 皮肤类
      */
-    class SkinItem {
+    static class SkinItem {
         String attrName;  //background
         int refId;  //R 文件标示的id
         String attrValueType;  //资源类型，@drawable  、@color
@@ -124,7 +124,7 @@ public class QDSkinFactory implements LayoutInflaterFactory {
         }
     }
 
-    class SkinView {
+   public static class SkinView {
         private View view;
         private List<SkinItem> lists;
 

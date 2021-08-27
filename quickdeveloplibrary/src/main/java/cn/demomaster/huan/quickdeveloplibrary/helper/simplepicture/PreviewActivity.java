@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -99,7 +98,7 @@ public class PreviewActivity extends QDActivity {
         vp_image.setCurrentItem(index);
     }
 
-    private class PictureFragmentAdapter extends FragmentStateAdapter {
+    private static class PictureFragmentAdapter extends FragmentStateAdapter {
 
         private ArrayList<Image> images;
 

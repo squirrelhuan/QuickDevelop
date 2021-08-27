@@ -68,7 +68,7 @@ public class LoadingTengxuntvView extends View {
         for (int i = 0; i < childCount; i++) {
             float progress_c = Math.abs(progress - (float) (i + 1) / (childCount));
             progress_c = progress_c > 1 ? 1 - (progress_c - 1) : progress_c;
-            float left = width / (childCount + 1) * (i + 1) - width * maxWidth * progress_c / 2f;
+            float left = width / (childCount + 1f) * (i + 1f) - width * maxWidth * progress_c / 2f;
             float right = left + progress_c * maxWidth * width;
             float top = (float) (height * (0.5 - maxHeight * progress_c / 2f));
             float bottom = top + height * maxHeight * progress_c;

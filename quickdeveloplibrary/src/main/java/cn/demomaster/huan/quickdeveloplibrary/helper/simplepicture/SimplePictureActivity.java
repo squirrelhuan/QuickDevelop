@@ -59,7 +59,7 @@ public class SimplePictureActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_picture);
 
-        getActionBarTool().setTitle(getResources().getString(R.string.image_selector));
+        setTitle(getResources().getString(R.string.image_selector));
         getActionBarTool().getRightView().setText(getResources().getString(R.string.send));
         getActionBarTool().getRightView().setImageResource(0);
         getActionBarTool().getRightView().setTextSize(16);

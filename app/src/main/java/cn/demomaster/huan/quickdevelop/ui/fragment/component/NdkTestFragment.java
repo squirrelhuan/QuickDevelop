@@ -18,7 +18,6 @@ import cn.demomaster.huan.quickdevelop.service.SimpleService;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.jni.JNITest;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
 
@@ -57,7 +56,7 @@ public class NdkTestFragment extends BaseFragment {
     public void initView(View rootView) {
         // Example of a call to a native method
         TextView tv = (TextView) rootView.findViewById(R.id.sample_text);
-        tv.setText(JNITest.stringFromJNI());
+//        tv.setText(JNITest.stringFromJNI());
 
         Button btn_start = rootView.findViewById(R.id.btn_start);
         btn_start.setOnClickListener(new View.OnClickListener() {

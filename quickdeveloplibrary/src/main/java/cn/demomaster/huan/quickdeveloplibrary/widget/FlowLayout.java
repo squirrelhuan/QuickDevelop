@@ -363,8 +363,6 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    private View convertView;
-
     //@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setAdapter(FlowAdapter adapter) {
         if (adapter == null) {
@@ -411,7 +409,7 @@ public class FlowLayout extends ViewGroup {
                 if (ii > 5) ii = 0;
             }
         }*/
-        setOnItemClickListener(onItemClickedListener);
+        //setOnItemClickListener(onItemClickedListener);
         postInvalidate();
     }
 

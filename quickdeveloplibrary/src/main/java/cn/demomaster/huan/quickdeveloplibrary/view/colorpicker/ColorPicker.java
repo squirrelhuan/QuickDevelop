@@ -147,14 +147,10 @@ public class ColorPicker extends View {
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
-
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-
         // drawing color wheel
-
         canvas.drawBitmap(colorWheelBitmap, centerX - colorWheelRadius, centerY - colorWheelRadius, null);
-
         // drawing color view
 
         /*colorViewPaint.setColor(Color.HSVToColor(colorHSV));
@@ -199,7 +195,6 @@ public class ColorPicker extends View {
         if (arrowPointerSize > 0) {
             drawPointerArrow(canvas);
         }*/
-
 
         double valueAngle = (colorHSV[2] - 0.5f) * Math.PI;
         float valueAngleX = (float) Math.cos(valueAngle);
@@ -333,7 +328,7 @@ public class ColorPicker extends View {
         colorWheelBitmap = createColorWheelBitmap(colorWheelRadius * 2, colorWheelRadius * 2);
 
         gradientRotationMatrix = new Matrix();
-        gradientRotationMatrix.preRotate(270, width / 2, height / 2);
+        gradientRotationMatrix.preRotate(270, width / 2f, height / 2f);
 
         colorViewPath.arcTo(outerWheelRect, 270, -180);
         colorViewPath.arcTo(innerWheelRect, 90, 180);
@@ -363,14 +358,14 @@ public class ColorPicker extends View {
         }
         colors[colorCount] = colors[0];
 
-        SweepGradient sweepGradient = new SweepGradient(width / 2, height / 2, colors, null);
-        RadialGradient radialGradient = new RadialGradient(width / 2, height / 2, colorWheelRadius, 0xFFFFFFFF, 0x00FFFFFF, TileMode.CLAMP);
+        SweepGradient sweepGradient = new SweepGradient(width / 2f, height / 2f, colors, null);
+        RadialGradient radialGradient = new RadialGradient(width / 2f, height / 2f, colorWheelRadius, 0xFFFFFFFF, 0x00FFFFFF, TileMode.CLAMP);
         ComposeShader composeShader = new ComposeShader(sweepGradient, radialGradient, PorterDuff.Mode.SRC_OVER);
 
         colorWheelPaint.setShader(composeShader);
 
         Canvas canvas = new Canvas(bitmap);
-        canvas.drawCircle(width / 2, height / 2, colorWheelRadius, colorWheelPaint);
+        canvas.drawCircle(width / 2f, height / 2f, colorWheelRadius, colorWheelPaint);
 
         return bitmap;
     }
@@ -398,7 +393,9 @@ public class ColorPicker extends View {
                     colorHSV[2] = (float) Math.max(0, Math.min(1, alphaValue));
                     invalidate();
                 }
-
+                if(onSelectChangeListener!=null){
+                    onSelectChangeListener.onSelectChange(getColor());
+                }
                 /*else if (x >= getWidth() / 2 && d >= innerWheelRadius) {
                     colorHSV[2] = (float) Math.max(0, Math.min(1, Math.atan2(cy, cx) / Math.PI + 0.5f));
                     invalidate();
@@ -407,6 +404,15 @@ public class ColorPicker extends View {
                 return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    public interface OnSelectChangeListener {
+        void onSelectChange(int color);
+    }
+
+    OnSelectChangeListener onSelectChangeListener;
+    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
+        this.onSelectChangeListener = onSelectChangeListener;
     }
 
     public void setColor(int color) {

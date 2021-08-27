@@ -99,8 +99,12 @@ public class SettingFragment extends BaseFragment {
 
     public void setAutoTime(boolean autoEnabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.AUTO_TIME,
-                    autoEnabled ? 1 : 0);
+            try {
+                Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.AUTO_TIME,
+                        autoEnabled ? 1 : 0);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

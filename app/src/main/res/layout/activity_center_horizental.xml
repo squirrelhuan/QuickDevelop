@@ -60,7 +60,6 @@
 
         </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
 
-
     </LinearLayout>
     <TextView
         android:id="@+id/tv_index2"

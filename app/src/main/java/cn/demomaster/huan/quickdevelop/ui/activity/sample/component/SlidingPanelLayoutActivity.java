@@ -63,7 +63,7 @@ public class SlidingPanelLayoutActivity extends BaseActivity {
 
         lv.setAdapter(arrayAdapter);
 
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout = findViewById(R.id.sliding_layout);
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -82,9 +82,9 @@ public class SlidingPanelLayoutActivity extends BaseActivity {
             }
         });
 
-        TextView t = (TextView) findViewById(R.id.name);
+        TextView t = findViewById(R.id.name);
         t.setText(Html.fromHtml("上拉"));
-        Button f = (Button) findViewById(R.id.follow);
+        Button f = findViewById(R.id.follow);
         f.setText(Html.fromHtml("follow"));
         f.setMovementMethod(LinkMovementMethod.getInstance());
         f.setOnClickListener(new View.OnClickListener() {

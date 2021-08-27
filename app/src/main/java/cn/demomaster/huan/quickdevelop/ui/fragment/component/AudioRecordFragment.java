@@ -349,7 +349,7 @@ public class AudioRecordFragment extends BaseFragment {
                         waveView.addData(data1[i]);
                     }
 
-                    if (count % 1 == 0) {
+                   // if (count % 1 == 0) {
                         int volume = (calculateVolume(data1));
                         double myVolume = (volume - 40) * 4;
                         //Log.d("MainActivity", "current volume=" + volume + ",myVolume=" + myVolume);
@@ -360,7 +360,7 @@ public class AudioRecordFragment extends BaseFragment {
                             pop.setVolume(Math.max(0, volume - 40));
                         }
                         //Log.d("MainActivity", "current volume is " + volume);
-                    }
+                    //}
                     count++;
                 }
             });

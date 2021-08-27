@@ -55,7 +55,7 @@ public class Saleng extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        offet = bigRadius / 3;
+        offet = bigRadius / 3f;
         //绘制背景
         drawBackground(canvas);
         if (!isPlaying) {
@@ -84,7 +84,7 @@ public class Saleng extends View {
 
             //第一个点动态
             if (percent < step1) {
-                canvas.drawCircle(width / 2, -pointRadius * 2 + height * percent + paddingTop, pointRadius, p);
+                canvas.drawCircle(width / 2f, -pointRadius * 2 + height * percent + paddingTop, pointRadius, p);
             } else { //第一个点到达终点
                 float c1 = 1;
             /*
@@ -93,39 +93,39 @@ public class Saleng extends View {
                 从step2到step2+2radio变小
             */
                 //大小控制，产生第一个点变小一圈
-                if (percent > step1 && percent < (step1 + pointRadius * 2 / height)) {
+                if (percent > step1 && percent < (step1 + pointRadius * 2f / height)) {
                     c1 = (float) (1 - 0.15 * ((step1 + pointRadius * 2 / height) - percent));//在step1与step2之间产生在step2时达到最终状态
                 } else if (percent > step1) {
                     c1 = 0.85f;
                 }
-                if (percent < (step1 + pointRadius * 2 / height) && percent > step2) {
+                if (percent < (step1 + pointRadius * 2f / height) && percent > step2) {
                     c1 = (float) (1 - 0.4);//在step1与step2之间产生在step2时达到最终状态
                 } else if (percent > step2) {
                     c1 = 0.6f;
                 }
                 y1 = -pointRadius * 2 + height * step1;
-                canvas.drawCircle(width / 2, y1 + paddingTop, pointRadius * c1, p);
+                canvas.drawCircle(width / 2f, y1 + paddingTop, pointRadius * c1, p);
             }
             //p.setColor(Color.GREEN);
             //第二个产生的点动态（实际排在最下边）
             if (percent < step3 && percent > step1) {
                 float c2 = .6f;//在step1与step2之间产生在step2时达到最终状态
-                canvas.drawCircle(width / 2, -pointRadius * 2 + height * percent + paddingTop, pointRadius * c2, p);
+                canvas.drawCircle(width / 2f, -pointRadius * 2 + height * percent + paddingTop, pointRadius * c2, p);
             } else if (percent > step3) {//第二个点到达终点
                 float c2 = .6f;//在step1与step2之间产生在step2时达到最终状态
                 y3 = -pointRadius * 2 + height * step3;
-                canvas.drawCircle(width / 2, y3 + paddingTop, pointRadius * c2, p);
+                canvas.drawCircle(width / 2f, y3 + paddingTop, pointRadius * c2, p);
             }
 
             //p.setColor(Color.YELLOW);
             //第三个产生的点动态(实际是中间那个)
             if (percent < step3 && percent > step2) {
                 float c3 = .6f;//在step1与step2之间产生在step2时达到最终状态
-                canvas.drawCircle(width / 2, -pointRadius * 2 + height * (percent - (step2 - step1)) + paddingTop, pointRadius * c3, p);
+                canvas.drawCircle(width / 2f, -pointRadius * 2 + height * (percent - (step2 - step1)) + paddingTop, pointRadius * c3, p);
             } else if (percent > step3) {//第二个点到达终点
                 float c3 = .6f;//在step1与step2之间产生在step2时达到最终状态
                 y2 = -pointRadius * 2 + height * step2;
-                canvas.drawCircle(width / 2, y2 + paddingTop, pointRadius * c3, p);
+                canvas.drawCircle(width / 2f, y2 + paddingTop, pointRadius * c3, p);
             }
            /* canvas.drawCircle(width/2,height/5,pointRadius,p);
             canvas.drawCircle(width/2,height/5*2,pointRadius,p);*/
@@ -137,37 +137,37 @@ public class Saleng extends View {
                 y1 = y2;
                 y2 =y3;
                 y3 = */
-                canvas.drawCircle(width / 2, y1 + (y2 - y1) * (percent - .5f) / .1f + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2, y2 + (y3 - y2) * (percent - .5f) / .1f + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f, y1 + (y2 - y1) * (percent - .5f) / .1f + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f, y2 + (y3 - y2) * (percent - .5f) / .1f + paddingTop, pointRadius * c0, p);
                 float s1 = 1;
                 float s2 = (float) Math.sqrt(3);
-                canvas.drawCircle(width / 2 + (percent - .5f) / .1f * offet * s1, y3 + offet * (percent - .5f) / .1f * s2 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f + (percent - .5f) / .1f * offet * s1, y3 + offet * (percent - .5f) / .1f * s2 + paddingTop, pointRadius * c0, p);
             }
             if (percent > .6f && percent <= .7f) {//最下面的球右移，上面两个球下来
                 float c0 = .6f;
                 float s1 = 1;
                 float s2 = (float) Math.sqrt(3);
-                canvas.drawCircle(width / 2, y2 + (y3 - y2) * (percent - .6f) / .1f + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 + (percent - .6f) / .1f * offet * s1, y3 + offet * s2 * (percent - .6f) / .1f + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 + offet - offet * 2 * s1 * (percent - .6f) / .1f, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f, y2 + (y3 - y2) * (percent - .6f) / .1f + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f + (percent - .6f) / .1f * offet * s1, y3 + offet * s2 * (percent - .6f) / .1f + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f + offet - offet * 2 * s1 * (percent - .6f) / .1f, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
             }
         } else {//处理自转
             if (percent != 1) {
                 float c0 = .6f;
                 float s1 = 1;
                 float s2 = (float) Math.sqrt(3);
-                canvas.rotate((percent - .7f) / .3f * 2 * 360, width / 2, y3 + s2 * offet - offet / s2 + paddingTop);
-                canvas.drawCircle(width / 2, y3 + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 + offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 - offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
+                canvas.rotate((percent - .7f) / .3f * 2 * 360, width / 2f, y3 + s2 * offet - offet / s2 + paddingTop);
+                canvas.drawCircle(width / 2f, y3 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f + offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f - offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
             } else {
                 float c0 = .6f;
                 float s1 = 1;
                 float s2 = (float) Math.sqrt(3);
-                canvas.rotate(rotationX * 360, width / 2, y3 + s2 * offet - offet / s2 + paddingTop);
-                canvas.drawCircle(width / 2, y3 + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 + offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
-                canvas.drawCircle(width / 2 - offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
+                canvas.rotate(rotationX * 360, width / 2f, y3 + s2 * offet - offet / s2 + paddingTop);
+                canvas.drawCircle(width / 2f, y3 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f + offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
+                canvas.drawCircle(width / 2f - offet * s1, y3 + offet * s2 + paddingTop, pointRadius * c0, p);
             }
         }
     }

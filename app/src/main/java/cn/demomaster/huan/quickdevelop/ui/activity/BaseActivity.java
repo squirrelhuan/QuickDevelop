@@ -28,12 +28,6 @@ public class BaseActivity extends QDActivity {
     }
 
     @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        setTitle(getTitleFromAnnotation());
-    }
-
-    @Override
     public void setContentView(View view) {
         super.setContentView(view);
         setTitle(getTitleFromAnnotation());

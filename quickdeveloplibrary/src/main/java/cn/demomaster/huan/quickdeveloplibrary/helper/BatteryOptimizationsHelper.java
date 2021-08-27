@@ -111,7 +111,11 @@ public class BatteryOptimizationsHelper {
         intent.setComponent(new ComponentName(packageName, activityDir));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     private static void goHuaweiSetting() {
@@ -127,9 +131,15 @@ public class BatteryOptimizationsHelper {
                 Log.e("", "goHuaweiSetting 2");
             } catch (Exception e1) {
                 e1.printStackTrace();
-                showActivity("com.huawei.systemmanager",
-                        "com.huawei.systemmanager.mainscreen.MainActivity");
-                Log.e("", "goHuaweiSetting 3");
+                try {
+                    showActivity("com.huawei.systemmanager",
+                            "com.huawei.systemmanager.mainscreen.MainActivity");
+                    Log.e("", "goHuaweiSetting 3");
+                }catch (Exception e2){
+                    showActivity("com.huawei.systemmanager",
+                            "com.huawei.systemmanager.mainscreen.MainScreenActivity");
+                    Log.e("", "goHuaweiSetting 4");
+                }
             }
         }
     }

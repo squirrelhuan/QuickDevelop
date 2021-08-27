@@ -139,7 +139,7 @@ public class QDividerDrawable extends GradientDrawable {
         super.onBoundsChange(r);
         if (isRadiusAuto) {
             // 修改圆角为短边的一半
-            setCornerRadius(Math.min(r.width(), r.height()) / 2);
+            setCornerRadius(Math.min(r.width(), r.height()) / 2f);
         }
     }
 

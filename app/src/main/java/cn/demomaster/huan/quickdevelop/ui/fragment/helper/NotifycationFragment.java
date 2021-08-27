@@ -38,6 +38,8 @@ public class NotifycationFragment extends BaseFragment {
     QDButton btn_04;
     @BindView(R.id.btn_05)
     QDButton btn_05;
+    @BindView(R.id.btn_06)
+    QDButton btn_06;
 
     @NonNull
     @Override
@@ -90,6 +92,17 @@ public class NotifycationFragment extends BaseFragment {
             public void onClick(View v) {
                 NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
                 builer.setTitle("消息通知（静音不震动）").setContentText(""+((TextView)v).getText()).setEnableVibration(false).setEnableSound(false).send();
+            }
+        });
+
+        btn_06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+                builer.setTitle("消息通知（自定义视图）")
+                        .setEnableVibration(false)
+                        .setEnableSound(false)
+                        .setContentText("").send();
             }
         });
     }

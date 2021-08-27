@@ -12,9 +12,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +65,7 @@ public class ScreenShotUitl {
         //window.showAsDropDown(anchor);
 
         PopupWindow popupWindow = new PopupWindow();
-        ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivityNoBar(context));
+        ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivity(context,false));
         popupWindow.setContentView(contentView);
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -109,59 +107,34 @@ public class ScreenShotUitl {
         });
     }
 
-    public static Bitmap shotActivityNoBar(Activity activity) {
-        // 获取windows中最顶层的view
-        View view = activity.getWindow().getDecorView();
-        // 获取状态栏高度
-        Rect rect = new Rect();
-        view.getWindowVisibleDisplayFrame(rect);
-        int statusBarHeights = rect.top;
+    public static Bitmap shotActivity(Activity activity,boolean withStatusBar) {
+        int statusBarHeights = 0;
+        if(!withStatusBar){
+            // 获取windows中最顶层的view
+            View view = activity.getWindow().getDecorView().getRootView();
+            // 获取状态栏高度
+            Rect rect = new Rect();
+            view.getWindowVisibleDisplayFrame(rect);
+            statusBarHeights = rect.top;
+        }
         return shotActivity(activity, statusBarHeights);
-    }
-
-    public static Bitmap shotActivity(Activity activity) {
-        return shotActivity(activity, 0);
     }
 
     public static Bitmap shotActivity(Activity activity, int top) {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
-        view.buildDrawingCache();
-
-        Display display = activity.getWindowManager().getDefaultDisplay();
-
-        // 获取屏幕宽和高
-        int widths = display.getWidth();
-        int heights = display.getHeight();
         // 允许当前窗口保存缓存信息
         view.setDrawingCacheEnabled(true);
         // 去掉状态栏
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
-                top, widths, heights - top);
-
-        // 销毁缓存信息
-        view.destroyDrawingCache();
-        return bmp;
-    }
-
-    /**
-     * 区域截图
-     *
-     * @param activity
-     * @param x0       左上角的x
-     * @param y0       左上角的y
-     * @param x1       右下角的x
-     * @param y1       右下角的y
-     * @return
-     */
-    public static Bitmap shotActivity(Activity activity, int x0, int y0, int x1, int y1) {
-        // 获取windows中最顶层的view
-        View view = activity.getWindow().getDecorView();
-        view.buildDrawingCache();
-        // 允许当前窗口保存缓存信息
-        view.setDrawingCacheEnabled(true);
-        // 去掉状态栏
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), x0, y0, x1 - x0, y1 - y0);
+        /*Bitmap bmp = Bitmap.createBitmap(bitmap, 0,
+                top, bitmap.getWidth(), bitmap.getHeight());*/
+        Bitmap bitmap = view.getDrawingCache();
+        Bitmap bmp =null;
+        if(bitmap!=null) {
+            bmp = Bitmap.createBitmap(bitmap);
+        }
+        //Bitmap bmp1=bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+        view.setDrawingCacheEnabled(false);
         // 销毁缓存信息
         view.destroyDrawingCache();
         return bmp;
@@ -175,31 +148,17 @@ public class ScreenShotUitl {
     public static Bitmap getCacheBitmapFromView(View v) {
         try {
            /* view.setDrawingCacheEnabled(true);
-            view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
-            bitmap = Bitmap.createBitmap(view.getDrawingCache(), 0, 0, view.getMeasuredWidth(), view.getMeasuredHeight() - view.getPaddingBottom());
-            view.setDrawingCacheEnabled(false);
-            view.destroyDrawingCache();*/
+            view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()*/
             if (null == v) {
                 return null;
             }
             v.setDrawingCacheEnabled(true);
             v.buildDrawingCache();
-            if (Build.VERSION.SDK_INT >= 11) {
-                v.measure(View.MeasureSpec.makeMeasureSpec(v.getWidth(),
-                        View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(
-                        v.getHeight(), View.MeasureSpec.EXACTLY));
-                v.layout((int) v.getX(), (int) v.getY(),
-                        (int) v.getX() + v.getMeasuredWidth(),
-                        (int) v.getY() + v.getMeasuredHeight());
-            } else {
-                v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-                v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-            }
-            Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+            Bitmap bitmap = v.getDrawingCache();
+            //Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, w, h);
             v.setDrawingCacheEnabled(false);
             v.destroyDrawingCache();
-            return b;
+            return bitmap;
         } catch (Exception e) {
             QDLogger.e(e);
         }
@@ -221,11 +180,7 @@ public class ScreenShotUitl {
         return drawingCache;
     }
 
-    public static Bitmap getCacheBitmapFromViewTop(View view, int height) {
-        return getCacheBitmapFromViewTop(view, height, 0);
-    }
-
-    public static Bitmap getCacheBitmapFromViewTop(View view, int height, int width) {
+    public static Bitmap getCacheBitmapFromView(View view, int height, int width) {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();//这句话可加可不加，因为getDrawingCache()执行的主体就是buildDrawingCache()
         if (width == 0) {
@@ -332,7 +287,7 @@ public class ScreenShotUitl {
     }
 
     public static int pixel(Activity activity, int x, int y) {
-        int color = shotActivity(activity).getPixel(x, y);
+        int color = shotActivity(activity,true).getPixel(x, y);
         int red = (color & 0xff0000) >> 16;
         int green = (color & 0x00ff00) >> 8;
         int blue = (color & 0x0000ff);

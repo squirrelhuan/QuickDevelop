@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.webview;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -8,28 +9,31 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.net.Uri;
-import android.os.Build;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
-import android.webkit.WebResourceRequest;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.StatusBarUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class QDWebView extends WebView {
+public class QDWebView extends WebView implements QuickWebViewInterface{
     private String mUrl = "http://www.demomaster.cn";
 
     public QDWebView(Context context) {
@@ -61,58 +65,42 @@ public class QDWebView extends WebView {
     private float mProgress;
     /*private boolean isSupportZoom = true;
     private boolean isSupportZoomTool = true;*/
-    QDWebChromeClient.OnStateChangedListener onStateChangedListener;
-
-    public void setOnStateChangedListener(QDWebChromeClient.OnStateChangedListener onStateChangedListener) {
+    QuickWebChromeClient.OnStateChangedListener onStateChangedListener;
+    public void setOnStateChangedListener(QuickWebChromeClient.OnStateChangedListener onStateChangedListener) {
         this.onStateChangedListener = onStateChangedListener;
     }
 
     private void init() {
         progressHeight = DisplayUtil.dip2px(getContext(), 2);//进度条默认高度
-        QDWebChromeClient qdWebCromeClient = new QDWebChromeClient() {
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                if (onStateChangedListener != null) {
-                    onStateChangedListener.onReceivedTitle(view, title);
-                }else {//缺省设置
-                    QDLogger.e("网络请求异常L:"+title);
-                    if (title.contains("404") || title.contains("500") || title.contains("Error")) {
-                        //view.loadUrl("about:blank");//避免出现默认的错误界面
-                        view.loadDataWithBaseURL(null, "^_^暂无内容", "text/html", "UTF-8", null);
-                    }
-                }
-            }
-
-            @Override
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                QdToast.show(getContext(),"选择图片");
-                uploadFiles = filePathCallback;
-                openFileChooseProcess();
-                return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
-            }
-        };
-        qdWebCromeClient.setOnProgressChanged(new QDWebChromeClient.OnProgressChanged() {
-            @Override
-            public void onProgress(int progress) {
-                mProgress = progress / 100f;
-                postInvalidate();
-            }
-
-            @Override
-            public void onFinish() {
-                mProgress = 0;
-                postInvalidate();
-            }
-        });
-        setWebChromeClient(qdWebCromeClient);
+        setWebChromeClient(new QuickWebChromeClient(this));
+        // 修改ua使得web端正确判断
+        /*String chrome_ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36";
+        getSettings().setUserAgentString(chrome_ua);*/
+        /*String ua = getSettings().getUserAgentString();
+        QDLogger.i("webview agent:"+ua);*/
         // 设置WebView属性，能够执行JavaScript脚本
         getSettings().setJavaScriptEnabled(true);
+        getSettings().setDatabaseEnabled(true);
+        getSettings().setDomStorageEnabled(true);
         // 通过addJavascriptInterface()将Java对象映射到JS对象
         //参数1：Javascript对象名
         //参数2：Java对象名
         addJavascriptInterface(new AndroidtoJs(getContext()), "app");//AndroidtoJS类对象映射到js的test对象
 
+        super.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                if(downloadListener!=null) {
+                    downloadListener.onDownloadStart(url, userAgent, contentDisposition, mimetype, contentLength);
+                }else {
+                    QDLogger.e("userAgent="+userAgent+",contentDisposition="+contentDisposition+",mimetype="+mimetype+",contentLength="+contentLength);
+                    showDownloadDialog(url,contentDisposition,contentLength);
+                }
+            }
+        });
+
+        getSettings().setSupportMultipleWindows(true);
+        getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         // 设置可以支持缩放
         getSettings().setSupportZoom(true);
         // 设置出现缩放工具
@@ -120,21 +108,7 @@ public class QDWebView extends WebView {
         // 为图片添加放大缩小功能
         getSettings().setUseWideViewPort(true);
         setInitialScale(100);   //100代表不缩放
-        setWebViewClient(new WebViewClient() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                QDLogger.println("shouldOverrideUrlLoading1:" + request.getUrl().toString());
-                String url = request.getUrl().toString();
-                return shouldOverrideUrlLoading1(view, url);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                QDLogger.println("shouldOverrideUrlLoading2:" + url);
-                return shouldOverrideUrlLoading1(view, url);
-            }
-        });
+        setMyWebViewClient(new QuickWebViewClient(this));
         //loadUrl(mUrl);
         setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -176,6 +150,47 @@ public class QDWebView extends WebView {
             }
         });
     }
+
+    @Override
+    public void reload() {
+        //super.reload();
+        loadUrl(mUrl);
+    }
+
+    private void showDownloadDialog(String url, String contentDisposition, long contentLength) {
+        QDDialog qdDialog = new QDDialog.Builder(getContext())
+                .setTitle("确定要下载"+contentDisposition+"("+ QDFileUtil.formatFileSize(contentLength,false) +")"+"吗？")
+                .setMessage(url)
+                .addAction("取消")
+                .addAction("确定", new OnClickActionListener() {
+                    @Override
+                    public void onClick(Dialog dialog, View view, Object tag) {
+                        dialog.dismiss();
+                        downloadByBrowser(url);
+                    }
+                })
+                .create();
+        qdDialog.show();
+    }
+    //跳转到系统浏览器下载
+    private void downloadByBrowser(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse(url));
+        getContext().startActivity(intent);
+    }
+
+    DownloadListener downloadListener;
+    public void setDownloadListener(DownloadListener listener) {
+        this.downloadListener = listener;
+    }
+    public void setMyWebViewClient(@NonNull QuickWebViewClient myClient) {
+        super.setWebViewClient(myClient);
+    }
+    public void setMyWebChromeClient(@Nullable QuickWebChromeClient client) {
+        super.setWebChromeClient(client);
+    }
+
     private ValueCallback<Uri> uploadFile;
     private ValueCallback<Uri[]> uploadFiles;
     private void openFileChooseProcess() {
@@ -208,10 +223,12 @@ public class QDWebView extends WebView {
             }
         }
     }
-    private boolean shouldOverrideUrlLoading1(WebView view, String url) {
-        if (url.startsWith("newtab:")) {
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        view.loadUrl(url);
+        return true;
+        /*if (url.startsWith("newtab:")) {
             //对新的URL进行截取，去掉前面的newtab:
-            /*String realUrl=url.substring(7,url.length());*/
+            *//*String realUrl=url.substring(7,url.length());*//*
             if (onStateChangedListener != null) {
                 return onStateChangedListener.onNewTab(view, url);
             }
@@ -219,7 +236,49 @@ public class QDWebView extends WebView {
             view.loadUrl(url);
             return true;
         }
+        return false;*/
+    }
+
+    @Override
+    public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+        if(onWindowViewInflate==null){
+            return false;
+        }else {
+            WebView newWebView = onWindowViewInflate.onWindowOpen();
+            if(newWebView==null){
+                return false;
+            }
+            QDWebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+            transport.setWebView(newWebView);
+            resultMsg.sendToTarget();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onCloseWindow(WebView window) {
+        if(onWindowViewInflate==null||window==null||window.getParent()==null){
+            return false;
+        }else {
+            onWindowViewInflate.onCloseWindow(window);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onInterceptLoadResource(WebView view, String url) {
+        //是否拦截资源加载
         return false;
+    }
+
+    WindowViewInflate onWindowViewInflate;
+    public void setOnWindowViewInflate(WindowViewInflate onWindowViewInflate) {
+        this.onWindowViewInflate = onWindowViewInflate;
+    }
+
+    public static interface WindowViewInflate{
+        WebView onWindowOpen();
+        void onCloseWindow(WebView window);
     }
 
     private void dealUrlLoading(WebView view, String url) {
@@ -258,12 +317,45 @@ public class QDWebView extends WebView {
 
     @Override
     public void loadUrl(String url) {
+        mUrl = url;
         super.loadUrl(url);
     }
-    
-    public class AndroidtoJs {
-        Context context;
 
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        if (onStateChangedListener != null) {
+            onStateChangedListener.onReceivedTitle(view, title);
+        }else {//缺省设置
+            /*if (title.contains("404") || title.contains("500") || title.contains("Error")) {
+                QDLogger.e("网络请求异常L:"+title);
+                //view.loadUrl("about:blank");//避免出现默认的错误界面
+                view.loadDataWithBaseURL(null, "^_^暂无内容", "text/html", "UTF-8", null);
+            }*/
+        }
+    }
+
+    @Override
+    public boolean onShowFileChooser(QuickWebChromeClient qdWebChromeClient, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+            //QdToast.show(getContext(),"选择图片");
+            uploadFiles = filePathCallback;
+            openFileChooseProcess();
+            return qdWebChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+    }
+
+    @Override
+    public void onProgress(int progress) {
+        mProgress = progress / 100f;
+        postInvalidate();
+    }
+
+    @Override
+    public void onFinish() {
+        mProgress = 0;
+        postInvalidate();
+    }
+
+    public static class AndroidtoJs {
+        Context context;
         public AndroidtoJs(Context context) {
             this.context = context;
         }
@@ -280,7 +372,6 @@ public class QDWebView extends WebView {
         public void back(String msg) {
             QDLogger.println(msg);
             ((Activity) context).finish();
-
         }
 
         @JavascriptInterface
@@ -301,24 +392,18 @@ public class QDWebView extends WebView {
 
         @JavascriptInterface
         public void MoveUp(String msg) {
-            ((Activity) context).runOnUiThread(new Runnable() {
+            /*((Activity) context).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     StatusBarUtil.setStatusBarMode((Activity) context, false);
                     //StatusBarUtil.transparencyBar((Activity) context);
                 }
-            });
+            });*/
         }
 
         @JavascriptInterface
         public void MoveDown(String msg) {
-            ((Activity) context).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    StatusBarUtil.setStatusBarMode((Activity) context, true);
-                    //StatusBarUtil.transparencyBar((Activity) context);
-                }
-            });
+            
         }
     }
 
@@ -356,5 +441,11 @@ public class QDWebView extends WebView {
             mpaint2.setColor(progressBarColor);
             canvas.drawRoundRect(rectF2, 0, 0, mpaint2);
         }
+    }
+
+    @Override
+    public void destroy() {
+        removeAllViews();
+        super.destroy();
     }
 }

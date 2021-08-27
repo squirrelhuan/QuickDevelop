@@ -207,7 +207,7 @@ public class WifiTestActivity2 extends BaseActivity implements View.OnClickListe
     /**
      * wifi列表适配器
      */
-    class WifiListAdapter extends BaseAdapter {
+     static class WifiListAdapter extends BaseAdapter {
         private List<ScanResult> mWifiList;
         private LayoutInflater mLayoutInflater;
 

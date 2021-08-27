@@ -48,7 +48,7 @@ public class RatingBarFragment extends BaseFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int max = 200;
-                int w = DisplayUtil.dip2px(mContext, max * progress / 100);
+                int w = DisplayUtil.dip2px(mContext, max * progress / 100f);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w, w);
                 ratingBar.setLayoutParams(layoutParams);
             }

@@ -79,25 +79,25 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_color_01:
-                        getActionBarTool().setHeaderBackgroundColor(Color.WHITE);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.WHITE);
                         break;
                     case R.id.rb_color_02:
-                        getActionBarTool().setHeaderBackgroundColor(Color.GREEN);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GREEN);
                         break;
                     case R.id.rb_color_03:
-                        getActionBarTool().setHeaderBackgroundColor(Color.YELLOW);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.YELLOW);
                         break;
                     case R.id.rb_color_04:
-                        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
                         break;
                     case R.id.rb_color_05:
-                        getActionBarTool().setHeaderBackgroundColor(Color.GRAY);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GRAY);
                         break;
                     case R.id.rb_color_06:
-                        getActionBarTool().setHeaderBackgroundColor(Color.BLACK);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.BLACK);
                         break;
                     case R.id.rb_color_07:
-                        getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
+                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.TRANSPARENT);
                         break;
                 }
             }
@@ -107,7 +107,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int max = 0xff000000 + 0xffffff * progress / 100;
-                getActionBarTool().setHeaderBackgroundColor(max);
+                getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(max);
             }
 
             @Override

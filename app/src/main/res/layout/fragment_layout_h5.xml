@@ -12,7 +12,7 @@
            android:layout_height="@dimen/dp_100"
            android:layout_margin="@dimen/dp_10"
            android:layout_gravity="start"
-           android:text="http:www.baidu.com"
+           android:text="http://www.baidu.com"
            android:background="@drawable/umeng_socialize_edit_bg"/>
 
 
@@ -22,6 +22,15 @@
            android:layout_height="wrap_content"
            android:layout_margin="@dimen/dp_10"
            android:text="点击跳转"/>
-
+       <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+           android:id="@+id/btn_jump2"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_10"
+           android:text="点击跳转2"/>
+       <ListView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/list_view"/>
 
 </LinearLayout>

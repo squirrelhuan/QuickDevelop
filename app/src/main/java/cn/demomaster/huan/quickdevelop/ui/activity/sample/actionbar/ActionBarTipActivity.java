@@ -17,7 +17,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
-import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBARTIP_TYPE;
 import cn.demomaster.qdrouter_library.actionbar.ActionBarState;
 
@@ -48,7 +47,7 @@ public class ActionBarTipActivity extends QDActivity {
         setContentView(R.layout.activity_action_bar_tip);
         //getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         ButterKnife.bind(this);
-        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
 
         btn_emui_halo.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -234,13 +234,41 @@ public class DateTimeUtil {
      */
     public static int getWeek(String time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
         try {
-            c.setTime(format.parse(time));
+           return getWeek(format.parse(time));
         } catch (ParseException e) {
             QDLogger.e(e);
         }
+        return 1;
+    }
+
+    /**
+     * 1 #SUNDAY
+     * 2 #MONDAY
+     * 3 #TUESDAY
+     * 4 #WEDNESDAY
+     * 5 #THURSDAY
+     * 6 #FRIDAY
+     * 7 #SATURDAY
+     * @param date
+     * @return
+     */
+    public static int getWeek(Date date) {
+        //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
         return c.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static String getWeekName(Date date) {
+        String[] weeknames ={"周日","周一","周二","周三","周四","周五","周六"};
+        //国际上是以星期日为一周第一天
+        return weeknames[getWeek(date)-1];
+    }
+    public static String getWeekName(String time) {
+        String[] weeknames ={"周日","周一","周二","周三","周四","周五","周六"};
+        //国际上是以星期日为一周第一天
+        return weeknames[getWeek(time)-1];
     }
 
     /**

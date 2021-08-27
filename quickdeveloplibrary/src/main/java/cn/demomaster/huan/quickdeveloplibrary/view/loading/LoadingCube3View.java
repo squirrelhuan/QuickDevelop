@@ -58,7 +58,7 @@ public class LoadingCube3View extends View {
     private void drawView(Canvas canvas) {
 
         //QDLogger.e("progress=" + progress + "");
-        canvas.rotate((progress / 360) * 90 + 45 + (index) * 90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
+        canvas.rotate((progress / 360f) * 90 + 45 + (index) * 90, getMeasuredWidth() / 2f, getMeasuredHeight() / 2f);
         //canvas.drawColor(Color.BLACK);
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -66,13 +66,13 @@ public class LoadingCube3View extends View {
         int r = (int) (Math.min(width, height) / 1.44);
 
         int r2 = (Math.min(width, height));
-        canvas.translate((r2 - r) / 2, (r2 - r) / 2);
-        int margin_left = width > height ? (width - height) / 2 : 0;
-        int margin_top = width < height ? (height - width) / 2 : 0;
-        RectF mRecF1 = new RectF(margin_left, margin_top, margin_left + r / 2 - spacing / 2, margin_top + r / 2 - spacing / 2);
-        RectF mRecF2 = new RectF(margin_left + r / 2 + spacing / 2, margin_top, margin_left + r, margin_top + r / 2 - spacing / 2);
-        RectF mRecF3 = new RectF(margin_left, margin_top + r / 2 + spacing / 2, margin_left + r / 2 - spacing / 2, margin_top + r);
-        RectF mRecF4 = new RectF(margin_left + r / 2 + spacing / 2, margin_top + r / 2 + spacing / 2, margin_left + r, margin_top + r);
+        canvas.translate((r2 - r) / 2f, (r2 - r) / 2f);
+        int margin_left = width > height ? (int) ((width - height) / 2f) : 0;
+        int margin_top = width < height ? (int) ((height - width) / 2f) : 0;
+        RectF mRecF1 = new RectF(margin_left, margin_top, margin_left + r / 2f - spacing / 2f, margin_top + r / 2f - spacing / 2f);
+        RectF mRecF2 = new RectF(margin_left + r / 2f + spacing / 2f, margin_top, margin_left + r, margin_top + r / 2f - spacing / 2f);
+        RectF mRecF3 = new RectF(margin_left, margin_top + r / 2f + spacing / 2f, margin_left + r / 2f - spacing / 2f, margin_top + r);
+        RectF mRecF4 = new RectF(margin_left + r / 2f + spacing / 2f, margin_top + r / 2f + spacing / 2f, margin_left + r, margin_top + r);
         //isDrawed = true;
         mPaint.setColor(colors[0]);
         canvas.drawRoundRect(mRecF1, 5, 5, mPaint);

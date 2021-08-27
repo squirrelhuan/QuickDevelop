@@ -164,14 +164,14 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
-        float centerX = width / 2;
-        float centerY = height / 2;
+        float centerX = width / 2f;
+        float centerY = height / 2f;
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         canvas.drawColor(maskColor);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         paint.setColor(Color.BLACK);
-        RectF rectF = new RectF(centerX - markerWidth / 2, centerY - markerHeight / 2, centerX + markerWidth / 2, centerY + markerHeight / 2);
+        RectF rectF = new RectF(centerX - markerWidth / 2f, centerY - markerHeight / 2f, centerX + markerWidth / 2f, centerY + markerHeight / 2f);
         Rect frame = new Rect((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
         Rect previewFrame = frame;
         canvas.drawRoundRect(rectF, roundRadius, roundRadius, paint);
@@ -192,17 +192,17 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         paint.setStyle(Paint.Style.STROKE);
         // canvas.drawLines(new float[]{rectF.left,rectF.top+al,rectF.left,rectF.top,rectF.left,rectF.top,rectF.left+al,rectF.top},paint);
 
-        canvas.drawLine(rectF.left, rectF.top + al, rectF.left, rectF.top - aw / 2, paint);
+        canvas.drawLine(rectF.left, rectF.top + al, rectF.left, rectF.top - aw / 2f, paint);
         canvas.drawLine(rectF.left, rectF.top, rectF.left + al, rectF.top, paint);
 
         canvas.drawLine(rectF.right, rectF.top, rectF.right - al, rectF.top, paint);
-        canvas.drawLine(rectF.right, rectF.top + al, rectF.right, rectF.top - aw / 2, paint);
+        canvas.drawLine(rectF.right, rectF.top + al, rectF.right, rectF.top - aw / 2f, paint);
 
-        canvas.drawLine(rectF.left, rectF.bottom + aw / 2, rectF.left, rectF.bottom - al, paint);
+        canvas.drawLine(rectF.left, rectF.bottom + aw / 2f, rectF.left, rectF.bottom - al, paint);
         canvas.drawLine(rectF.left, rectF.bottom, rectF.left + al, rectF.bottom, paint);
 
         canvas.drawLine(rectF.right, rectF.bottom, rectF.right - al, rectF.bottom, paint);
-        canvas.drawLine(rectF.right, rectF.bottom - al, rectF.right, rectF.bottom + aw / 2, paint);
+        canvas.drawLine(rectF.right, rectF.bottom - al, rectF.right, rectF.bottom + aw / 2f, paint);
 
         paint.setAntiAlias(true);//使用抗锯齿功能
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
@@ -215,16 +215,16 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         Shader mShader;
         if (isForward) {
             canvas.translate(0, progress * (markerHeight + lineHeight));
-            rectf_head = new RectF(centerX - markerWidth / 3 * 2, rectF.top - lineHeight, centerX + markerWidth / 3 * 2, rectF.top);//确定外切矩形范围
+            rectf_head = new RectF(centerX - markerWidth / 3f * 2, rectF.top - lineHeight, centerX + markerWidth / 3f * 2, rectF.top);//确定外切矩形范围
             rectf_head.offset(0, 0);//使rectf_head所确定的矩形向右偏移0像素，向下偏移0像素
 
-            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2, new int[]{0x1300ff00, 0xaa00ff00}, null, Shader.TileMode.REPEAT);
+            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2f, new int[]{0x1300ff00, 0xaa00ff00}, null, Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
 
         } else {
             canvas.translate(0, -(1 - progress) * (markerHeight + lineHeight));
-            rectf_head = new RectF(centerX - markerWidth / 3 * 2, rectF.bottom - lineHeight, centerX + markerWidth / 3 * 2, rectF.bottom);//确定外切矩形范围
-            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2, new int[]{0xaa00ff00, 0x1300ff00}, null, Shader.TileMode.REPEAT);
+            rectf_head = new RectF(centerX - markerWidth / 3f * 2, rectF.bottom - lineHeight, centerX + markerWidth / 3f * 2, rectF.bottom);//确定外切矩形范围
+            mShader = new LinearGradient(centerX, rectf_head.top, centerX, (rectf_head.top + rectf_head.bottom) / 2f, new int[]{0xaa00ff00, 0x1300ff00}, null, Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
         }
 

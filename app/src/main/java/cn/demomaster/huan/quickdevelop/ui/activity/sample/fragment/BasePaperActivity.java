@@ -29,7 +29,7 @@ public class BasePaperActivity extends QDActivity {
         myPayerManager = new PaperManager(this,android.R.id.content);
         myPayerManager.addElement(new RouterPaper());
         RouterFragment f1 = new RouterFragment();
-        startFragment(f1,getContentViewId());
+        startFragment(f1,getContentViewId(),null);
     }
 
     @Override

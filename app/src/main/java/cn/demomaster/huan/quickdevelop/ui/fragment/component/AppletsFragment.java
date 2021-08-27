@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
@@ -108,7 +107,7 @@ public class AppletsFragment extends BaseFragment {
     public void initView(View rootView) {
         int i = (int) (Math.random() * 10 % 4);
         setTitle(titles[i]);
-        getActionBarTool().setHeaderBackgroundColor(colors[i]);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(colors[i]);
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +132,7 @@ public class AppletsFragment extends BaseFragment {
     private final String[] titles = {"1", "2", "3", "4"};
     private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void startFragment() {
-        getFragmentHelper().startFragment(new AppletsFragment());
+        startFragment(new AppletsFragment(),R.id.container1,null);
     }
 
     //记录用户首次点击返回键的时间
@@ -141,6 +140,7 @@ public class AppletsFragment extends BaseFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //QDLogger.e("onKeyDown1");
         if (isRootFragment()) {
             if (System.currentTimeMillis() - firstClickTime > 2000) {
                 QdToast.show(mContext, "再点击退出 activity");
@@ -150,7 +150,7 @@ public class AppletsFragment extends BaseFragment {
             }
             return true;
         }
-        // QdToast.show(mContext, "onKeyDown isRootFragment="+isRootFragment());
+        //QDLogger.d("onKeyDown2");
         return super.onKeyDown(keyCode, event);
     }
 

@@ -131,8 +131,8 @@ public class SafeKeyboardView extends KeyboardView {
                 }
 
                 paint.getTextBounds(key.label.toString(), 0, key.label.toString().length(), bounds);
-                canvas.drawText(key.label.toString(), key.x + (key.width / 2),
-                        (key.y + key.height / 2) + bounds.height() / 2, paint);
+                canvas.drawText(key.label.toString(), key.x + (key.width / 2f),
+                        (key.y + key.height / 2f) + bounds.height() / 2f, paint);
             }
             if (drawable == null) return;
             // 约定: 最终图标的宽度和高度都需要在按键的宽度和高度的二分之一以内

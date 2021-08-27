@@ -20,7 +20,7 @@ public class QDMainActivity extends QDActivity {
 
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
         getActionBarTool().getLeftView().setVisibility(View.GONE);
-        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
 
      /*   List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ComponentFragment());

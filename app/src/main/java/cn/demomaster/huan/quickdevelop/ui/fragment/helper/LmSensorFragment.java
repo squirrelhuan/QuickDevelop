@@ -56,7 +56,7 @@ public class LmSensorFragment extends BaseFragment implements SensorEventListene
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("陀螺仪");
-        getActionBarTool().setHeaderBackgroundColor(Color.RED);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
 
         LmSensorManager = (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
         LmSensor = LmSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -69,8 +69,8 @@ public class LmSensorFragment extends BaseFragment implements SensorEventListene
         Lwm.getDefaultDisplay().getMetrics(Ldm);
         Lwidth = Ldm.widthPixels;         // 设备屏幕宽度
         Lheight = Ldm.heightPixels;       // 设备屏幕高度
-        LPointX = Lwidth / 2;              //默认设置当前 "焦点位置"在屏幕的中心位置
-        LPointY = Lheight / 2;
+        LPointX = Lwidth / 2f;              //默认设置当前 "焦点位置"在屏幕的中心位置
+        LPointY = Lheight / 2f;
     }
 
     @Override
@@ -102,18 +102,18 @@ public class LmSensorFragment extends BaseFragment implements SensorEventListene
 
             //通过1和3参数得到Y轴位置
             if (x >= 0.1 && (z >= 0.1 || z <= -0.1)) {
-                LPointY = Lheight / 2 + Lheight / 20 * z;
+                LPointY = Lheight / 2f + Lheight / 20f * z;
             }
             //通过2参数得到X轴坐标
             if ((y >= 0.1 || y <= -0.1) && z >= 0.1) {
-                LPointX = Lwidth / 2 + Lwidth / 20 * -y;
+                LPointX = Lwidth / 2f + Lwidth / 20f * -y;
             } else if ((y >= 0.1 || y <= -0.1) && z <= -0.1) {
-                LPointX = Lwidth / 2 + Lwidth / 20 * -y;
+                LPointX = Lwidth / 2f + Lwidth / 20f * -y;
             }
             if (0 == LPointX) //这里做了保护措施，如果超过了设定范围自动回到X轴中心位置
-                LPointX = Lwidth / 2;
+                LPointX = Lwidth / 2f;
             if (0 == LPointY)//如果超过了设定范围自动回到Y轴中心位置
-                LPointY = Lheight / 2;
+                LPointY = Lheight / 2f;
 
             SetScreenPoint(LPointX, LPointY);
         }

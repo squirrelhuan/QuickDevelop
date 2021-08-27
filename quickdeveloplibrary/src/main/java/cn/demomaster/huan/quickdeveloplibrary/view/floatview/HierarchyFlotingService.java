@@ -24,7 +24,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -319,7 +318,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
 
     @Override
     public PointF getOriginPoint() {
-        return new PointF(0, DisplayUtil.getScreenHeight(getApplicationContext()) / 2);
+        return new PointF(0, DisplayUtil.getScreenHeight(getApplicationContext()) / 2f);
     }
 
     @Override

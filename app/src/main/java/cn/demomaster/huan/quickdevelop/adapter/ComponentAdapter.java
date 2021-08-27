@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,7 +22,6 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
@@ -104,13 +104,22 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             view.setClickable(false);
                             view.setOnTouchListener(null);
                             rl_preview.addView(view);
+                        } else if (resType == ResType.Resource) {
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            //int m = DisplayUtil.dp2px(context, context.getResources().getDimensionPixelSize(R.dimen.dp_5));
+                            //layoutParams.setMargins(m, m, m, m);
+                            ImageView imageView = new ImageTextView(context);
+                            imageView.setLayoutParams(layoutParams);
+                            int id = ((ActivityPager) a).iconRes();
+                            imageView.setImageResource(id);
+                            rl_preview.addView(imageView);
                         }
                         itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try {
                                     if (Fragment.class.isAssignableFrom(clazz)) {
-                                        ((QDActivity) context).getFragmentHelper().startFragment((QuickFragment) clazz.newInstance());
+                                        ((QDActivity) context).startFragment((QuickFragment) clazz.newInstance(),R.id.container1,null);
                                     } else if (Activity.class.isAssignableFrom(clazz)) {
                                         ((QDActivity) context).startActivity(clazz);
                                     }

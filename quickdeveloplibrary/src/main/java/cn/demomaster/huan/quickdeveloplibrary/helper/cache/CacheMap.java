@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi;
 import com.alibaba.fastjson.JSON;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

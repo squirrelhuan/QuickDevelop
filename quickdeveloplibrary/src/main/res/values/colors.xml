@@ -129,6 +129,7 @@
     <color name="lightskyblue">#87CEFA</color> <!--亮天蓝色 -->
     <color name="skyblue">#87CEEB</color> <!--天蓝色 -->
     <color name="gray">#808080</color> <!--灰色 -->
+    <color name="gray_bg">#ffF4F4F4</color><!--灰色背景-->
     <color name="grey">#808080</color> <!--灰色 -->
     <color name="olive">#808000</color> <!--橄榄色 -->
     <color name="purple">#800080</color> <!--紫色 -->

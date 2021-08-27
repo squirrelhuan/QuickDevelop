@@ -43,7 +43,7 @@ public class FramelayoutFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_framelayout, null);
+        View mView = inflater.inflate(R.layout.fragment_layout_framelayout, null);
         return mView;
     }
 

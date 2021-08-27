@@ -5,16 +5,12 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
-import androidx.core.view.ViewCompat;
-
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class SlidingLayout extends LinearLayout {
 
@@ -70,12 +66,13 @@ public class SlidingLayout extends LinearLayout {
                 scroll_marginTop = ta.getDimensionPixelSize(R.styleable.SlidingLayout_scroll_marginTop, 0);
                 scroll_marginBottom = ta.getDimensionPixelSize(R.styleable.SlidingLayout_scroll_marginBottom, 0);
                 mSlideState = PanelState.values()[ta.getInt(R.styleable.SlidingLayout_initialState, DEFAULT_SLIDE_STATE.ordinal())];
-                int interpolatorResId = ta.getResourceId(R.styleable.SlidingUpPanelLayout_umanoScrollInterpolator, -1);
+               /* int interpolatorResId = ta.getResourceId(R.styleable.SlidingUpPanelLayout_umanoScrollInterpolator, -1);
                 if (interpolatorResId != -1) {
                     scrollerInterpolator = AnimationUtils.loadInterpolator(getContext(), interpolatorResId);
                 }else {
                     scrollerInterpolator = new LinearInterpolator();
-                }
+                }*/
+                scrollerInterpolator = new LinearInterpolator();
                 ta.recycle();
             }
         }

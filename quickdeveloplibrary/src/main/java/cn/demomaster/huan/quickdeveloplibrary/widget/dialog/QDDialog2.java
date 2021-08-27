@@ -18,6 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDDialog2 extends AppCompatDialog {
 
@@ -54,11 +55,15 @@ public class QDDialog2 extends AppCompatDialog {
     }
 
     boolean hasPadding = false;
-
     public boolean isHasPadding() {
         return hasPadding;
     }
-
+    /*public <T extends View> T findViewById(int id) {
+        if (contentView == null) {
+            return null;
+        }
+        return contentView.findViewById(id);
+    }*/
     private void init() {
         Window win = getWindow();
         if (animationStyleID != -1) {
@@ -82,7 +87,6 @@ public class QDDialog2 extends AppCompatDialog {
     }
 
     int panelMarginTop;
-
     public void setPanelMaginTop(int maginTop) {
         panelMarginTop = maginTop;
         if (slidingUpPanelLayout != null) {
@@ -90,45 +94,17 @@ public class QDDialog2 extends AppCompatDialog {
         }
     }
 
-    SlidingUpPanelLayout slidingUpPanelLayout;
-
-    @Override
-    public void setContentView(View view) {
-        contentView = view;
-        if (isCanSliding()) {
-            slidingUpPanelLayout = (SlidingUpPanelLayout) getLayoutInflater().inflate(R.layout.qd_layout_dialog, null);
-            slidingUpPanelLayout.setShowBackground(false);
-            slidingUpPanelLayout.setPanelMaginTop(panelMarginTop);
-            ViewGroup view1 = slidingUpPanelLayout.findViewById(R.id.dragView);
-            view1.addView(contentView);
-            setScrollView(slidingUpPanelLayout, contentView);
-            super.setContentView(slidingUpPanelLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        } else {
-            FrameLayout contentViewTmp = new FrameLayout(getContext());
-            contentViewTmp.addView(contentView);
-            super.setContentView(contentViewTmp, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-    }
-
     @Override
     public void setContentView(int layoutResID) {
-        contentView = getLayoutInflater().inflate(layoutResID, null);
-        if (isCanSliding()) {
-            slidingUpPanelLayout = (SlidingUpPanelLayout) getLayoutInflater().inflate(R.layout.qd_layout_dialog, null);
-            slidingUpPanelLayout.setShowBackground(false);
-            slidingUpPanelLayout.setPanelMaginTop(panelMarginTop);
-            ViewGroup view1 = slidingUpPanelLayout.findViewById(R.id.dragView);
-            view1.addView(contentView);
-            setScrollView(slidingUpPanelLayout, contentView);
-            //FrameLayout fl_bg = container.findViewById(R.id.fl_bg);
-            super.setContentView(slidingUpPanelLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        } else {
-            FrameLayout contentViewTmp = new FrameLayout(getContext());
-            contentViewTmp.addView(contentView);
-            super.setContentView(contentViewTmp, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
+        setContentView(getLayoutInflater().inflate(layoutResID, null),new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
+    @Override
+    public void setContentView(View contentView) {
+        setContentView(contentView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    SlidingUpPanelLayout slidingUpPanelLayout;
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         contentView = view;
@@ -137,7 +113,7 @@ public class QDDialog2 extends AppCompatDialog {
             slidingUpPanelLayout.setShowBackground(false);
             slidingUpPanelLayout.setPanelMaginTop(panelMarginTop);
             ViewGroup view1 = slidingUpPanelLayout.findViewById(R.id.dragView);
-            view1.addView(contentView, params);
+            view1.addView(contentView,params);
             setScrollView(slidingUpPanelLayout, contentView);
             super.setContentView(slidingUpPanelLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
@@ -145,6 +121,10 @@ public class QDDialog2 extends AppCompatDialog {
             contentViewTmp.addView(contentView, params);
             super.setContentView(contentViewTmp, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
+    }
+
+    public View getContentView() {
+        return contentView;
     }
 
     /**
@@ -186,7 +166,11 @@ public class QDDialog2 extends AppCompatDialog {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         this.getWindow().getDecorView().setSystemUiVisibility(uiOptions);*/
+
         if (slidingUpPanelLayout != null) {
+           int h = contentView.getMeasuredHeight();
+            QDLogger.e("h="+h+",panelMarginTop="+panelMarginTop);
+            slidingUpPanelLayout.setPanelMaginTop(panelMarginTop);
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             (slidingUpPanelLayout).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,23 +207,27 @@ public class QDDialog2 extends AppCompatDialog {
         }
     }
 
+    @Override
+    public void dismiss() {
+        if(isShowing()) {
+            super.dismiss();
+        }
+    }
+
     SlidingUpPanelLayout.PanelSlideListener panelSlideListener;
-
     boolean cancelable = true;
-
     @Override
     public void setCancelable(boolean flag) {
         cancelable = flag;
         super.setCancelable(flag);
     }
 
-    boolean canSliding = false;//可滑动布局
-
+    //可滑动布局
     public boolean isCanSliding() {
-        return canSliding;
+        return false;
     }
 
-    public View contentView;
+    private View contentView;
     public int contentViewLayoutID;
     public int backgroundColor = Color.TRANSPARENT;
     public float[] backgroundRadius = new float[8];

@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.designer;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.AppletsFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebChromeClient;
 import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebView;
-import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
+import cn.demomaster.huan.quickdeveloplibrary.view.webview.QuickWebChromeClient;
+import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
@@ -53,7 +54,7 @@ public class WebViewFragment extends AppletsFragment {
         }
         Bundle bundle = getArguments();
         if (bundle!=null&&bundle.containsKey("URL")) {
-            webView.setOnStateChangedListener(new QDWebChromeClient.OnStateChangedListener() {
+            webView.setOnStateChangedListener(new QuickWebChromeClient.OnStateChangedListener() {
                 @Override
                 public void onProgress(int progress) {
 
@@ -69,14 +70,22 @@ public class WebViewFragment extends AppletsFragment {
                     setTitle(title);
                 }
 
-                @Override
-                public boolean onNewTab(WebView view, String url) {
-                    return false;
-                }
             });
             url = (String) bundle.get("URL");
             webView.loadUrl(url);
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {//默认只处理回退事件
+            if (webView!=null&&webView.canGoBack()){
+                webView.goBack();
+                return true;
+            }
+            //当返回true时，表示已经完整地处理了这个事件，并不希望其他的回调方法再次进行处理，而当返回false时，表示并没有完全处理完该事件，更希望其他回调方法继续对其进行处理
+        }
+        QDLogger.e("onKeyDown false");
+        return super.onKeyDown(keyCode,event);
+    }
 }

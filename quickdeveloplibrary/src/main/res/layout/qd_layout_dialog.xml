@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp"
-    sothree:umanoShadowHeight="4dp"
+    sothree:umanoPanelHeight="0dp"
+    sothree:umanoShadowHeight="0dp"
     sothree:umanoParallaxOffset="0dp"
     sothree:umanoDragView="@+id/dragView"
     sothree:umanoOverlay="true"
@@ -21,13 +21,13 @@
     </FrameLayout>
 
     <!-- SLIDING LAYOUT -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="false"
         android:id="@+id/dragView">
 
-    </FrameLayout>
+    </LinearLayout>
 </cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout>

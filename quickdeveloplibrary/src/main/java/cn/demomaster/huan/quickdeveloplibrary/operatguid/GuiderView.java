@@ -745,7 +745,7 @@ public class GuiderView extends View {
         return new GuiderRectF(l, t, r, b, screenWidth, screenHeight);
     }
 
-    public class GuiderRectF extends RectF {
+    public static class GuiderRectF extends RectF {
         private float centerX;
         private float centerY;
         private float toTop;

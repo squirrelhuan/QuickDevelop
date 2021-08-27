@@ -75,14 +75,19 @@ public class AnimationUtil {
     }
 
     public static ValueAnimator addScaleAnimition(final View targetView, final View.OnClickListener listener) {
-        return new AnimationUtil.Builder().setView(targetView).setValue(1, 0.8f).setOnClickListener(listener).setDuration(200).setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
-            @Override
-            void onAnimationUpdate(View view, ValueAnimator animation) {
-                float curValue = (float) animation.getAnimatedValue();
-                view.setScaleX(curValue);
-                view.setScaleY(curValue);
-            }
-        }).apply();
+        return new AnimationUtil.Builder()
+                .setView(targetView).setValue(1, 0.8f)
+                .setOnClickListener(listener)
+                .setDuration(200)
+                .setAnimatorUpdateListener(new MyAnimatorUpdateListener() {
+                    @Override
+                    void onAnimationUpdate(View view, ValueAnimator animation) {
+                        float curValue = (float) animation.getAnimatedValue();
+                        view.setScaleX(curValue);
+                        view.setScaleY(curValue);
+                    }
+                })
+                .apply();
     }
 
     /**

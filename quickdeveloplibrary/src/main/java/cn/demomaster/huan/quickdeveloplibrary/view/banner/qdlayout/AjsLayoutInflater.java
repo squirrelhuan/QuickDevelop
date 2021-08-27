@@ -45,7 +45,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.lay
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textBackgroundColorDefault;
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textColorDefault;
 import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textGravityDefault;
-import static cn.demomaster.huan.quickdeveloplibrary.view.banner.AdsResource.textSizeDefault;
 
 public class AjsLayoutInflater {
 

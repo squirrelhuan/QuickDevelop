@@ -663,7 +663,7 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 int value = (int) animation.getAnimatedValue();
                 scrollCardLayoutTo(value);
                 if (animationListener != null) {
-                    animationListener.onRuning(isUpper, (value - start) / (start - end));
+                    animationListener.onRuning(isUpper, (value - start) /((start - end)*1f));
                 }
                 // postInvalidate();
             }

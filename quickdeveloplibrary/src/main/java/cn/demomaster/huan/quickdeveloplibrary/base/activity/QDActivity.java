@@ -2,8 +2,8 @@ package cn.demomaster.huan.quickdeveloplibrary.base.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,7 +38,6 @@ public class QDActivity extends QuickActivity {
 
     /**
      * 动态设置状态栏的显示隐藏
-     *
      * @param enable
      */
     public void setFullScreen(boolean enable) {
@@ -49,9 +50,6 @@ public class QDActivity extends QuickActivity {
         getWindow().setAttributes(attrs);
     }
 
-    public int getContentViewId() {
-        return android.R.id.content;//R.id.qd_fragment_content_view;
-    }
 
     /**
      * 点击空白区域隐藏键盘.
@@ -119,6 +117,9 @@ public class QDActivity extends QuickActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1&&!this.isDestroyed()) {
+            Glide.with(this).pauseRequests();
+        }
         /*try {
             NetworkUtil.unRegisterListener(this);
         } catch (Exception e) {
@@ -134,8 +135,13 @@ public class QDActivity extends QuickActivity {
     }
 
     private PhotoHelper photoHelper;
+    public PhotoHelper getPhotoHelper() {
+        if (photoHelper == null) {
+            photoHelper = new PhotoHelper(mContext);
+        }
+        return photoHelper;
+    }
     private OptionsMenu optionsMenu;
-
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {
@@ -173,12 +179,5 @@ public class QDActivity extends QuickActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //QDLogger.d(requestCode + permissions.toString() + grantResults.toString());
         PermissionHelper.onRequestPermissionsResult(mContext, requestCode, permissions, grantResults);
-    }
-
-    public PhotoHelper getPhotoHelper() {
-        if (photoHelper == null) {
-            photoHelper = new PhotoHelper(mContext);
-        }
-        return photoHelper;
     }
 }

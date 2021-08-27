@@ -47,14 +47,14 @@ public class AbouchementView extends View {
     int radius;
 
     private void init() {
-        centerY = getHeight() / 2;
-        radius = Math.min(getWidth(), getHeight()) / 2;
+        centerY = (int) (getHeight() / 2f);
+        radius = (int) (Math.min(getWidth(), getHeight()) / 2f);
         //int r2 = r*10/8;// (int) (r*progress/360f);
         ballers.clear();
         degrees = 0;
         W:
         while (true) {
-            double r1 = random.nextDouble() * radius * 2 / 10 + radius / 10 * 6;
+            double r1 = random.nextDouble() * radius * 2 / 10f + radius / 10f * 6f;
             generate(degrees, r1, 0, false);
             generate(degrees, radius, r1, true);
             if (degrees > 360) {
@@ -103,7 +103,7 @@ public class AbouchementView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        centerX = 2 / 2;
+        centerX = w / 2;
         centerY = h / 2;
         init();
     }
@@ -236,8 +236,8 @@ public class AbouchementView extends View {
         //在原点中的半径和角度
         double radians = Math.toRadians(baller.getDegreesLocal());
         double r1 = baller.getRadiusLocal() * progress;
-        if (r1 < radius / 5) {
-            r1 = radius / 5;
+        if (r1 < radius / 5f) {
+            r1 = radius / 5f;
         }
         int x = (int) (centerX + r1 * Math.cos(radians));
         int y = (int) (centerY + r1 * Math.sin(radians));

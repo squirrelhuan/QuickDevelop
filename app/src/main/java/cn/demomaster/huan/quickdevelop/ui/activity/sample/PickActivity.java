@@ -7,11 +7,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
+import cn.demomaster.huan.quickdevelop.view.picktime.CommonPickerPop;
+import cn.demomaster.huan.quickdevelop.view.picktime.DateTimePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
@@ -88,7 +91,6 @@ public class PickActivity extends BaseActivity {
             }
         });
 
-
         findViewById(R.id.province).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +102,55 @@ public class PickActivity extends BaseActivity {
 //                }
             }
         });
+
+        findViewById(R.id.timepick2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DateTimePickerPopWin timePickerPopWin=new DateTimePickerPopWin.Builder(mContext, new DateTimePickerPopWin.OnTimePickListener(){
+                    @Override
+                    public void onTimePickCompleted(String ymd, String hour, String minute, String datetime) {
+
+                        Toast.makeText(mContext, ymd+","+hour+":"+minute+",datetime="+datetime, Toast.LENGTH_SHORT).show();
+                    }
+                }).textConfirm("CONFIRM")
+                        .textCancel("CANCEL")
+                        .btnTextSize(16)
+                        .viewTextSize(25)
+                        .colorCancel(Color.parseColor("#11DDAF"))
+                        .colorConfirm(Color.parseColor("#11DDAF"))
+                        .colorSignText(Color.RED)
+                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
+                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
+                        .build();
+                timePickerPopWin.showPopWin(mContext);
+            }
+        });
+
+        findViewById(R.id.common_pick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> data = new ArrayList<>();
+                data.add("1");
+                data.add("2");
+                data.add("3");
+                CommonPickerPop timePickerPopWin=new CommonPickerPop.Builder(mContext, new CommonPickerPop.OnPickListener() {
+                    @Override
+                    public void onPickCompleted(List<String> stringList, String value, int position) {
+
+                    }
+                }).textConfirm("CONFIRM")
+                        .textCancel("CANCEL")
+                        .setDate(data)
+                        .btnTextSize(16)
+                        .viewTextSize(25)
+                        .colorCancel(Color.parseColor("#11DDAF"))
+                        .colorConfirm(Color.parseColor("#11DDAF"))
+                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
+                        .build();
+                timePickerPopWin.showPopWin(mContext);
+            }
+        });
+
 
        // loopView = (LoopView) findViewById(R.id.loop_view);
         loopView.setInitPosition(2);
@@ -129,7 +180,7 @@ public class PickActivity extends BaseActivity {
     public ArrayList<String> getList(int c){
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < c; i++) {
-            list.add("DAY TEST:" + i);
+            list.add("DAY :" + i);
         }
         return list;
     }

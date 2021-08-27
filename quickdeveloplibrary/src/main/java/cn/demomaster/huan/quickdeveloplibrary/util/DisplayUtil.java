@@ -25,6 +25,11 @@ public class DisplayUtil {
      * @return
      */
     public static int getStatusBarHeight(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(((Activity)context).isInMultiWindowMode()){//小窗模式隐藏状态栏
+                return  0;
+            }
+        }
         if (status_bar_height != 0) {
             return status_bar_height;
         }

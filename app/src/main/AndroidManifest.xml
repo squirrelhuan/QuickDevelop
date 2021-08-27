@@ -65,7 +65,8 @@
         <activity android:name=".QDMainFragmentActivity2"/>
         <activity
             android:name=".ui.activity.sample.AdsActivity"
-            android:label="@string/title_activity_ads" /> <!-- 声明service组件 -->
+            android:label="@string/title_activity_ads" />
+        <!-- 声明service组件 -->
         <!--
   <service
             android:name="com.baidu.location.f"

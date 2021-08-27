@@ -34,7 +34,6 @@ public class ToggleButton extends View {
     }
 
     private boolean isCheckedDef = false;
-    
     public void init() {
         setOnClickListener(new OnClickListener() {
             @Override
@@ -42,7 +41,6 @@ public class ToggleButton extends View {
                 setChecked(!checked);
             }
         });
-        setChecked(isCheckedDef);
     }
 
     public boolean isChecked() {
@@ -110,7 +108,7 @@ public class ToggleButton extends View {
 
         //绘制底色
         circle_padding = r / 8;
-        RectF mRecF = new RectF(lineWidth / 2, height / 2 - r, width - lineWidth / 2, height / 2 + r);
+        RectF mRecF = new RectF(lineWidth / 2f, height / 2f - r, width - lineWidth / 2f, height / 2f + r);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(backColor);
         canvas.drawRoundRect(mRecF, w, w, mPaint);
@@ -119,21 +117,21 @@ public class ToggleButton extends View {
         mPaint.setColor(lineColor);
         canvas.drawRoundRect(mRecF, w, w, mPaint);
 
-        PointF pointF = new PointF(r + (width - 2 * r) * (1 - progress), height / 2);
-        RectF mRecF_left = new RectF(lineWidth2, height / 2 - r + lineWidth2, pointF.x + r, height / 2 + r - lineWidth2);
+        PointF pointF = new PointF(r + (width - 2 * r) * (1 - progress), height / 2f);
+        RectF mRecF_left = new RectF(lineWidth2, height / 2f - r + lineWidth2, pointF.x + r, height / 2f + r - lineWidth2);
         mPaint.setStyle(Paint.Style.FILL);
         //绘制动态区域
         mPaint.setColor(toogleColor);
         canvas.drawRoundRect(mRecF_left, Math.min(r, mRecF_left.right), Math.min(r, mRecF_left.right), mPaint);
         //画圆
         mPaint.setColor(spotColor);
-        canvas.drawCircle((1 - progress) * (width - 2 * w) + w, height / 2, r - circle_padding * (1 - progress), mPaint);
+        canvas.drawCircle((1 - progress) * (width - 2 * w) + w, height / 2f, r - circle_padding * (1 - progress), mPaint);
         mPaint.setColor(lineColor);
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.save();
         mPaint.setAlpha((int) ((progress) * 255));
         //描边w
-        canvas.drawCircle((1 - progress) * (width - 2 * w) + r + lineWidth / 2, height / 2, r - (circle_padding) * (1 - progress), mPaint);
+        canvas.drawCircle((1 - progress) * (width - 2 * w) + r + lineWidth / 2f, height / 2f, r - (circle_padding) * (1 - progress), mPaint);
     }
 
     @Override

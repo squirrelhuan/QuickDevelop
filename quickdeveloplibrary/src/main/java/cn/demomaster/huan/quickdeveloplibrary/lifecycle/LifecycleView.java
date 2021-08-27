@@ -181,7 +181,7 @@ public class LifecycleView extends View {
         for (Map.Entry entry : linePoints.entrySet()) {
             //drawLine(canvas, linePoints.get(i));
             List<LifeCycleEvent> lifeCycleEvents = (List<LifeCycleEvent>) entry.getValue();
-            centerY = getHeight() / 2;
+            centerY = getHeight() / 2f;
             Paint paint = new Paint();
             paint.setColor(lineColor);
             paint.setStyle(Paint.Style.STROKE);

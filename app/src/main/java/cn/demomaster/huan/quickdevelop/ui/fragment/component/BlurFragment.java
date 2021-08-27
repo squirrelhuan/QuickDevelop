@@ -55,7 +55,7 @@ public class BlurFragment extends BaseFragment implements SeekBar.OnSeekBarChang
         QuickStickerBinder.getInstance().bind(this, rootView);
         glassUtil = new GroundGlassUtil(getContext());
         glassUtil.setTargetView(iv_marker);
-        glassUtil.setBackgroundView(rootView.findViewById(R.id.scrollView), false);
+        glassUtil.setBackgroundView(rootView.findViewById(R.id.scrollView));
 
         imageView = rootView.findViewById(R.id.img);
         seekBarone = rootView.findViewById(R.id.one);
@@ -76,7 +76,7 @@ public class BlurFragment extends BaseFragment implements SeekBar.OnSeekBarChang
         super.onResume();
         if(glassUtil!=null) {
             glassUtil.setTargetView(iv_marker);
-            glassUtil.setBackgroundView(rootView.findViewById(R.id.scrollView), false);
+            glassUtil.setBackgroundView(rootView.findViewById(R.id.scrollView));
         }
     }
 

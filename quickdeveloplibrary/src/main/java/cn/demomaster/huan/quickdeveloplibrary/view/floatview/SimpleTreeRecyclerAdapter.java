@@ -60,7 +60,7 @@ public class SimpleTreeRecyclerAdapter extends TreeRecyclerAdapter {
         holder.itemView.setPadding(node.getLevel() * 10, 3, 3, 3);
     }
 
-    class MyHoder extends RecyclerView.ViewHolder{
+    static class MyHoder extends RecyclerView.ViewHolder{
         public CheckBox cb;
         public TextView label;
         public ImageView icon;

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import java.io.File;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
         viewHolder.tv_title.setText(lists.get(i).getTitle());
         Drawable drawable = null;
         if (lists.get(i).getIconId() != 0) {
-            drawable = context.getResources().getDrawable(lists.get(i).getIconId());
+            drawable = ResourcesCompat.getDrawable(context.getResources(),lists.get(i).getIconId(),null);
             if (lists.get(i).getIconWidth() != 0) {
                 //设置大小，注意默认的是 px, UI 图上的 dp 单位需要转换
                 drawable.setBounds(0, 0, lists.get(i).getIconWidth(), lists.get(i).getIconWidth());
@@ -100,7 +101,7 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
         return lists.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
 
         public void setTextColor(int textColor) {

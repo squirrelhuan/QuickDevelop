@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 public class LoopView extends View {
     private static final String TAG = LoopView.class.getSimpleName();
@@ -153,7 +154,8 @@ public class LoopView extends View {
 
     private void initData() {
         if (this.mDataList == null) {
-            throw new IllegalArgumentException("data list must not be null!");
+            QDLogger.e("data list must not be null!");
+            return;
         } else {
             this.mTopBottomTextPaint.setColor(this.mTopBottomTextColor);
             this.mTopBottomTextPaint.setAntiAlias(true);

@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
-import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -35,12 +33,12 @@ public class RouterFragment extends BaseFragment {
     public void initView(View rootView) {
         int i = (int) (Math.random() * 10 % 4);
         getActionBarTool().setTitle(titles[i]+"sss");
-        getActionBarTool().setHeaderBackgroundColor(colors[i]);
+        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(colors[i]);
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                opentFragment();
+                startFragment(new RouterFragment(),R.id.container1,null);
             }
         });
         Button btn_set_title = rootView.findViewById(R.id.btn_set_title);
@@ -48,31 +46,20 @@ public class RouterFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 int i = (int) (Math.random() * 10 % 4);
-                // actionBarLayout.setTitle(titles[i]+"");
+                setTitle(titles[i]+"");
             }
         });
         Button btn_guider = rootView.findViewById(R.id.btn_guider);
         btn_guider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startFragment();
+                startFragment(new GuiderFragment(),R.id.container1,null);
             }
         });
-
     }
 
     private String[] titles = {"1", "2", "3", "4"};
     private int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
-
-    private void opentFragment() {
-         ((QuickActivity)getContext()).getFragmentHelper().startFragment(new RouterFragment());
-    }
-
-    private void startFragment() {
-        ((QuickActivity)getContext()).getFragmentHelper().startFragment(new GuiderFragment());
-        // ((QDActivity)getContext()).getFragmentHelper().addElement( new GuiderFragment());
-    }
-
     //记录用户首次点击返回键的时间
     private long firstClickTime = 0;
 

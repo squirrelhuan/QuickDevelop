@@ -142,7 +142,9 @@ public class TextSpanFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("URL", url);
                     webViewFragment.setArguments(bundle);
-                    getFragmentHelper().startFragment(webViewFragment);
+                    Intent intent = new Intent();
+                    intent.putExtras(bundle);
+                   startFragment(webViewFragment,R.id.container1,intent);
                 }
             });
             builder.addAction("浏览器打开", new OnClickActionListener() {

@@ -70,7 +70,7 @@ public class LoopStateView extends View {
         mPaint.setAntiAlias(true);
 
         float[] hsv = new float[]{0, 1, 1f};
-        RadialGradient mRadialGradient = new RadialGradient(this.getWidth()/2, this.getHeight()/2, (getWidth()+getHeight())/2, new int[]{getResources().getColor(R.color.transparent_dark_99), getResources().getColor(R.color.transparent_dark_55)},null,Shader.TileMode.CLAMP);
+        RadialGradient mRadialGradient = new RadialGradient(this.getWidth()/2f, this.getHeight()/2f, (getWidth()+getHeight())/2f, new int[]{getResources().getColor(R.color.transparent_dark_99), getResources().getColor(R.color.transparent_dark_55)},null,Shader.TileMode.CLAMP);
         mPaint.setShader(mRadialGradient);
         canvas.drawRoundRect(rectF, radius1, radius1, mPaint);
 

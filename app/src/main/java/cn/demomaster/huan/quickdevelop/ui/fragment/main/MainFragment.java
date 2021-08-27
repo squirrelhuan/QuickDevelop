@@ -31,6 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
+import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
@@ -133,6 +134,7 @@ public class MainFragment extends BaseFragment {
     }
 
     OptionsMenu optionsMenu;
+    private OptionsMenu.Builder optionsMenubuilder;
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
         String[] menuNames = {"我的二维码", "扫描", "截图分享"};
@@ -145,7 +147,8 @@ public class MainFragment extends BaseFragment {
             menu.setIconWidth(80);
             menus.add(menu);
         }
-        getOptionsMenuBuilder().setMenus(menus)
+        optionsMenubuilder = new OptionsMenu.Builder(mContext);
+        optionsMenubuilder.setMenus(menus)
                 .setAlpha(.6f)
                 .setUsePadding(true)
                 .setBackgroundColor(getResources().getColor(R.color.blueviolet))
@@ -159,7 +162,7 @@ public class MainFragment extends BaseFragment {
                 .setGravity(GuiderView.Gravity.BOTTOM)
                 .setDividerColor(getResources().getColor(R.color.transparent))
                 .setAnchor(getActionBarTool().getRightView());
-        getOptionsMenuBuilder().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
+        optionsMenubuilder.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
             @Override
             public void onItemClick(int position, View view) {
                 switch (position) {
@@ -167,7 +170,7 @@ public class MainFragment extends BaseFragment {
                         optionsMenu.dismiss();
                         break;
                     case 1:
-                        photoHelper.scanQrcode(new PhotoHelper.OnTakePhotoResult() {
+                        getPhotoHelper().scanQrcode(new PhotoHelper.OnTakePhotoResult() {
                             @Override
                             public void onSuccess(Intent data, String path) {
                                 //QdToast.show(mContext, path + "");
@@ -199,14 +202,14 @@ public class MainFragment extends BaseFragment {
                 }
             }
         });
-        optionsMenu = getOptionsMenuBuilder().creat();
-        getOptionsMenu().setMenus(menus);
-        getOptionsMenu().setAlpha(.6f);
-        getOptionsMenu().setMargin(80);
-        getOptionsMenu().setUsePadding(true);
-        getOptionsMenu().setBackgroundRadiu(20);
-        getOptionsMenu().setBackgroundColor(Color.RED);
-        getOptionsMenu().setAnchor(getActionBarTool().getRightView());
+        optionsMenu = optionsMenubuilder.creat();
+        optionsMenu.setMenus(menus);
+        optionsMenu.setAlpha(.6f);
+        optionsMenu.setMargin(80);
+        optionsMenu.setUsePadding(true);
+        optionsMenu.setBackgroundRadiu(20);
+        optionsMenu.setBackgroundColor(Color.RED);
+        optionsMenu.setAnchor(getActionBarTool().getRightView());
     }
 
     private void showScanDialog(String url) {
@@ -217,6 +220,14 @@ public class MainFragment extends BaseFragment {
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                 //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
                 .setText_color_body(Color.BLUE)
+                .addAction("复制", new OnClickActionListener() {
+                    @Override
+                    public void onClick(Dialog dialog, View view, Object tag) {
+                        ClipboardUtil.setClip(getContext(),""+url);
+                        QdToast.show("copy success");
+                        dialog.dismiss();
+                    }
+                })
                 .addAction("跳转", new OnClickActionListener() {
                     @Override
                     public void onClick(Dialog dialog, View view, Object tag) {
@@ -225,9 +236,12 @@ public class MainFragment extends BaseFragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("URL", url);
                         webViewFragment.setArguments(bundle);
-                        getFragmentHelper().startFragment(webViewFragment);
+                        Intent intent =new Intent();
+                        intent.putExtras(bundle);
+                        startFragment(webViewFragment,R.id.container1,intent);
                     }
-                })//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                })
+                //.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
                 //.setPadding_foot((int) getResources().getDimension(R.dimen.sp_6))
                 //.setActionButtonPadding((int) getResources().getDimension(R.dimen.sp_6))

@@ -24,7 +24,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.view.SlidingTabLayout;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView;
 
 @ActivityPager(name = "横向滚动居中",preViewClass = TextView.class,resType = ResType.Custome)
@@ -138,7 +137,7 @@ public class CenterHorizontalActivity extends BaseActivity {
         //view_pager_tag.setPadding(QMUIDisplayHelper.getScreenWidth(mContext)/2,0,0,0);
     }
 
-    private class SampleFragmentAdapter extends FragmentStateAdapter {
+    public static class SampleFragmentAdapter extends FragmentStateAdapter {
         private List<String> data;
 
         public SampleFragmentAdapter(@NonNull FragmentActivity fragmentActivity,List<String> data) {

@@ -217,7 +217,7 @@ public class TabMenuLayout extends LinearLayout {
                     @Override
                     public void onGlobalLayout() {
                         recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        recy_tab_content.setX(locationTab[0] + tabButton.getWidth() / 2 - recy_tab_content.getWidth() / 2);//QMUIDisplayHelper.getScreenWidth(context)
+                        recy_tab_content.setX(locationTab[0] + tabButton.getWidth() / 2f - recy_tab_content.getWidth() / 2f);//QMUIDisplayHelper.getScreenWidth(context)
                     }
                 });
             } else if (columnCount > 1) {
@@ -227,7 +227,7 @@ public class TabMenuLayout extends LinearLayout {
                     @Override
                     public void onGlobalLayout() {
                         recy_tab_content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        recy_tab_content.setX((DisplayUtil.getScreenWidth(context) - recy_tab_content.getWidth()) / 2);//
+                        recy_tab_content.setX((DisplayUtil.getScreenWidth(context) - recy_tab_content.getWidth()) / 2f);//
                     }
                 });
             }

@@ -81,8 +81,8 @@ public class CameraCropView extends View {
         // 文字宽
         float textWidth = mPaint.measureText(tip);
         // 文字baseline在y轴方向的位置
-        float baseLineY = Math.abs(mPaint.ascent() + mPaint.descent()) / 2;
-        canvas.drawText(tip, getWidth() / 2 - textWidth / 2, realBottom + 4 * baseLineY, mPaint);
+        float baseLineY = Math.abs(mPaint.ascent() + mPaint.descent()) / 2f;
+        canvas.drawText(tip, getWidth() / 2f - textWidth / 2f, realBottom + 4 * baseLineY, mPaint);
     }
 
     private String tip = "请将卡片边缘对齐方框以便扫描";//提示语

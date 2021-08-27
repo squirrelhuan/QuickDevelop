@@ -93,14 +93,14 @@ public class LoadingDownView extends View {
             int arrowHeight = lineWidthc * 3 / 2;
             int arrowHeightc = (int) (arrowHeight / 2 + arrowHeight / 2 * (1 - progress));
             Path path = new Path();
-            path.moveTo(center_x - lineWidthc / 2, top);
-            path.lineTo(center_x + lineWidthc / 2, top);
-            path.lineTo(center_x + lineWidthc / 2, top + currentHeight - arrowHeightc);
+            path.moveTo(center_x - lineWidthc / 2f, top);
+            path.lineTo(center_x + lineWidthc / 2f, top);
+            path.lineTo(center_x + lineWidthc / 2f, top + currentHeight - arrowHeightc);
             path.lineTo(center_x + arrowWidth, top + currentHeight - arrowHeightc);
             path.lineTo(center_x, top + currentHeight);
             path.lineTo(center_x - arrowWidth, top + currentHeight - arrowHeightc);
-            path.lineTo(center_x - lineWidthc / 2, top + currentHeight - arrowHeightc);
-            path.lineTo(center_x - lineWidthc / 2, top);
+            path.lineTo(center_x - lineWidthc / 2f, top + currentHeight - arrowHeightc);
+            path.lineTo(center_x - lineWidthc / 2f, top);
             canvas.drawPath(path, mPaint);
         }
     }

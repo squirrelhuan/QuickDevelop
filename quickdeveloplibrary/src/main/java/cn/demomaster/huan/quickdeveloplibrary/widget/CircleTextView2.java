@@ -103,8 +103,6 @@ public class CircleTextView2 extends TextView {
             int line_w = DisplayUtil.dp2px(getContext(), line_width);
 
             Path path = new Path();
-            double raduis = Math.min(getHeight(), getWidth()) / 2;
-            //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
             //path.addCircle(getWidth()/2, getHeight()/2, (float) (raduis ), Path.Direction.CCW);
             Paint paint = new Paint();
@@ -115,15 +113,15 @@ public class CircleTextView2 extends TextView {
             paint.setStyle(Paint.Style.STROKE);
             RectF rectF = new RectF(padding_l, padding_t, rel_width + padding_l, rel_height + padding_t);
             rectF = new RectF(padding_l + line_w, padding_t + line_w, width - line_w - padding_r, height - line_w - padding_b);
-            canvas.drawRoundRect(rectF, rel_height / 2, rel_height / 2, paint);
+            canvas.drawRoundRect(rectF, rel_height / 2f, rel_height / 2f, paint);
 
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(backgroundColor);
             RectF rectF2 = new RectF(padding_l + line_w, padding_t + line_w, width - line_w - padding_r, height - line_w - padding_b);
-            canvas.drawRoundRect(rectF2, rel_height / 2 - line_w, rel_height / 2 - line_w, paint);
+            canvas.drawRoundRect(rectF2, rel_height / 2f - line_w, rel_height / 2f - line_w, paint);
 
 
-            path.addRoundRect(rectF, rel_height / 2, rel_height / 2, Path.Direction.CCW);
+            path.addRoundRect(rectF, rel_height / 2f, rel_height / 2f, Path.Direction.CCW);
             //先将canvas保存
             canvas.save();
             //设置为在圆形区域内绘制

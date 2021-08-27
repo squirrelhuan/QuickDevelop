@@ -18,7 +18,7 @@ project (':qdlogger_library').projectDir = new File('D:\\Android\\AndroidStudioP
 project (':quickpermission_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickPermission\\quickpermission_library')
 project(':quickdatabaselibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickDataBase\\quickdatabaselibrary')
 project(':qdRouter_library').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickRouter\\qdRouter_library')
-project (':treeviewlibrary').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickTreeView\\treeviewlibrary')
+project (':treeviewlibrary').projectDir = new File('D:\\Android\\work\\QuickTreeView\\treeviewlibrary')
 
 //butterknife替代品
 project (':quicksticker-compiler').projectDir = new File('D:\\Android\\AndroidStudioProjects\\QuickSticker\\quicksticker-compiler')

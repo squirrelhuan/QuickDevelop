@@ -297,7 +297,7 @@ public class LoopView2 extends View {
                 canvas.drawText(text, (float) this.getWidth() / 2 - textWidth / 2, y + lineHeight / 2 + baseLineY, this.mTextPaint);
             }
 
-            RectF rectF = new RectF(0, this.mWidgetHeight / 2 - lineHeight / 2, this.mWidgetWidth, this.mWidgetHeight / 2 + lineHeight / 2);
+            RectF rectF = new RectF(0, this.mWidgetHeight / 2f - lineHeight / 2f, this.mWidgetWidth, this.mWidgetHeight / 2f + lineHeight / 2f);
             //使用CLEAR作为PorterDuffXfermode绘制蓝色的矩形
             mTextPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
             mTextPaint.setColor(selectColor);

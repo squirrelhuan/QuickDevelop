@@ -40,6 +40,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="消息通知（静音不震动）" />
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_06"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="消息通知（自定义视图）" />
         </LinearLayout>
     </ScrollView>
 

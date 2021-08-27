@@ -42,6 +42,13 @@ public class BannerCursorView extends View implements Banner.BannerIndicator {
     }
 
     int cursorPointColor = Color.WHITE;
+    int cursorPointActivedColor = Color.GREEN;
+
+    public void setCursorPointColor(int cursorPointColor,int cursorPointActivedColor) {
+        this.cursorPointColor = cursorPointColor;
+        this.cursorPointActivedColor = cursorPointActivedColor;
+        postInvalidate();
+    }
 
     public void setLineColor(int lineColor) {
         this.cursorPointColor = lineColor;
@@ -61,23 +68,29 @@ public class BannerCursorView extends View implements Banner.BannerIndicator {
 
     float radius = 7;
     float radius_actived = 7;
-    float w = 30;
     Paint mPaint;
+
+    public void setRadius(float radius,float radius_actived) {
+        this.radius = radius;
+        this.radius_actived = radius_actived;
+        postInvalidate();
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //QDLogger.e("indicatorCount="+indicatorCount+",tabIndex="+tabIndex);
-        float x1 = getWidth() / 2 - (indicatorCount + 1) * w / 2;
+        int w = (int) (Math.max(radius,radius_actived)*4);
+        float x1 = getWidth() / 2f - (indicatorCount + 1) * w / 2f;
         for (int i = 0; i < indicatorCount; i++) {
             float x = w * (i + 1);
-            float y = getHeight() / 2;
+            float y = getHeight() / 2f;
             float radius_c = radius;
             if (tabIndex == i) {
                 radius_c = radius_actived;
-                mPaint.setColor(Color.GREEN);
+                mPaint.setColor(cursorPointActivedColor);
             } else {
-                mPaint.setColor(Color.WHITE);
+                mPaint.setColor(cursorPointColor);
             }
             canvas.drawCircle(x1 + x, y, radius_c, mPaint);
         }

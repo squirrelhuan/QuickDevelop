@@ -46,6 +46,19 @@
         <attr name="qd_btn_internal_width" />
 
     </declare-styleable>
+    <declare-styleable name="QDTextView">
+        <attr name="qd_backgroundColor" />
+        <attr name="qd_borderColor" />
+        <attr name="qd_borderWidth" />
+        <attr name="qd_isRadiusAdjustBounds" />
+        <attr name="qd_radius" />
+        <attr name="qd_radiusTopLeft" />
+        <attr name="qd_radiusTopRight" />
+        <attr name="qd_radiusBottomLeft" />
+        <attr name="qd_radiusBottomRight" />
+        <attr name="qd_btn_internal_width" />
+
+    </declare-styleable>
 
 
     <!--**********************************************
@@ -138,6 +151,9 @@
             <enum name="hidden" value="3" />
         </attr>
         <attr name="umanoScrollInterpolator" format="reference" />
+
+        <!--设置动态布局高度是否根据拖动，动态调整。保持底部和屏幕底部对齐 还有个bug拖动时底部会暴漏 待修复-->
+        <attr name="slidePaneAlignBottom" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="PushCardLayout">

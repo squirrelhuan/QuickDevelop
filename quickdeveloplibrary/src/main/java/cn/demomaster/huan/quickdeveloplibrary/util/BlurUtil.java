@@ -7,7 +7,6 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.Build.VERSION;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -258,14 +257,14 @@ public class BlurUtil {
      * @return
      */
     public static Bitmap doBlur(Bitmap bitmap, int radius, float scalequality) {
-        Matrix matrix = new Matrix();
-
+        if(bitmap==null)return null;
+         /* Matrix matrix = new Matrix();
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
-     /*   if(w==0||h==0||targetWidth==0||targetHeight==0){
+      if(w==0||h==0||targetWidth==0||targetHeight==0){
             return null;
         }*/
-        float sX = scalequality;///Math.min(w/(float)targetWidth,h/(float)targetHeight);
+        //float sX = scalequality;///Math.min(w/(float)targetWidth,h/(float)targetHeight);
         //Bitmap bitmap1 = BitmapUtil.scaleBitmap(bitmap,1);
         // QDLogger.println("Bitmap width=" + w + ",Bitmap height=" + h + ",sX=" + sX);
         // QDLogger.d("Bitmap width2=" + bitmap1.getWidth() + ",Bitmap height2=" + bitmap1.getHeight());

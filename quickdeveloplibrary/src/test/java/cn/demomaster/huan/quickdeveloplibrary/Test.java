@@ -639,7 +639,7 @@ public class Test {
     @org.junit.Test
     public void fomatTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.KOREA);// HH:mm:ss
-        System.out.println(simpleDateFormat.format(1574931387065l));
+        System.out.println(simpleDateFormat.format(1574931387065L));
     }
 
     @org.junit.Test

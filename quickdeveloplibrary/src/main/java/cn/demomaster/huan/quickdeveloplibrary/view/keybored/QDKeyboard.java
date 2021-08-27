@@ -23,6 +23,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -109,7 +111,7 @@ public class QDKeyboard {
         });*/
 
         ImageView iv_keyboardDone = keyContainer.findViewById(R.id.iv_keyboardDone);
-        Drawable hideDrawable = mContext.getResources().getDrawable(R.drawable.ic_keyboard_hide_black_24dp);
+        Drawable hideDrawable = ResourcesCompat.getDrawable(mContext.getResources(),R.drawable.ic_keyboard_hide_black_24dp,null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             hideDrawable.setTint(mContext.getResources().getColor(R.color.transparent_light_cc));
         }

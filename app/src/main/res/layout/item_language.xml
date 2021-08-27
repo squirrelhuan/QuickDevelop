@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:orientation="horizontal">
+
+    <CheckBox
+            android:id="@+id/cb_checkBox"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:checked="true"
+            android:text="主任医师"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"/>
+
+    <!-- <CheckBox
+             android:id="@+id/rb_doctor_type_01"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:gravity="center"
+             android:paddingLeft="160dp"
+             android:drawablePadding="100dp"
+             android:checked="true"
+             android:clickable="false"
+             android:button="@drawable/checkbox_cube"
+             android:text="主任医师"/>-->
+
+</LinearLayout>

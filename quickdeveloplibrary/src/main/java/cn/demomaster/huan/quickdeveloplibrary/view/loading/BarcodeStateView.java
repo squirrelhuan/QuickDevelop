@@ -88,7 +88,7 @@ public class BarcodeStateView extends View {
         canvas.drawRoundRect(rectF, radius1, radius1, mPaint);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
-        RectF rectF3 = new RectF(-width / 2, -height / 2, width + width / 2, height + height / 2);
+        RectF rectF3 = new RectF(-width / 2f, -height / 2f, width + width / 2f, height + height / 2f);
         mPaint.setColor(color1);
         canvas.drawArc(rectF3, 0, (1 - progress) * 360, true, mPaint);//以斜上45度为起点，顺时针扫过135度
 

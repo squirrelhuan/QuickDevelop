@@ -59,7 +59,7 @@ public class MessageListenerManager {
         }
     }
 
-    public abstract class TimerRunnable implements Runnable {
+    public static abstract class TimerRunnable implements Runnable {
         private long delyTime;
 
         public long getDelyTime() {

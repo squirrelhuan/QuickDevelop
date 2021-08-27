@@ -158,6 +158,7 @@ public class OptionsMenu implements OnReleaseListener {
     OptionsMenuAdapter.OnItemClickListener onItemClickListener = new OptionsMenuAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position, Menu menu) {
+            if(onMenuItemClicked!=null)
             onMenuItemClicked.onItemClick(position, null);
             //popupWindow.dismiss();
         }
@@ -200,7 +201,6 @@ public class OptionsMenu implements OnReleaseListener {
             //右侧的算法
             //这是旧的处理方式 popupWindow.showAsDropDown(anchor, -rcv_options_width + anchor.getWidth() - margin, margin);
             //popupWindow.showAtLocation(anchor,Gravity.LEFT,anchorLoc);
-
             qdTipPopup.showTip(anchor, gravity);
         }
     }

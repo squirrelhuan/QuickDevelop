@@ -63,10 +63,10 @@ public class BannerCursorView2 extends View implements Banner.BannerIndicator {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float x1 = getWidth() / 2 - (indicatorCount + 1) * w;
+        float x1 = getWidth() / 2f - (indicatorCount + 1) * w;
         for (int i = 0; i < indicatorCount; i++) {
             float x = w * (i * 2 + 1);
-            float y = getHeight() / 2 - w / 4;
+            float y = getHeight() / 2f - w / 4;
             if (tabIndex == i) {
                 mPaint.setColor(Color.GREEN);
             } else {

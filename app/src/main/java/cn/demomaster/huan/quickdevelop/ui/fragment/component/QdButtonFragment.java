@@ -33,19 +33,7 @@ public class QdButtonFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         Button button = rootView.findViewById(R.id.btn_play1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         Button button2 = rootView.findViewById(R.id.btn_play2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
 }
