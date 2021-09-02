@@ -13,7 +13,7 @@
            android:layout_margin="@dimen/dp_10"
            android:layout_gravity="start"
            android:text="http://www.baidu.com"
-           android:background="@drawable/umeng_socialize_edit_bg"/>
+           android:background="@drawable/folder_bg"/>
 
 
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton

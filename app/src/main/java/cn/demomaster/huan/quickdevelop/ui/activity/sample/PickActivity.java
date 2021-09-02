@@ -2,30 +2,33 @@ package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
-import cn.demomaster.huan.quickdevelop.view.picktime.CommonPickerPop;
-import cn.demomaster.huan.quickdevelop.view.picktime.DateTimePickerPopWin;
+import cn.demomaster.huan.quickdevelop.view.picktime.LanguageAdapter;
+import cn.demomaster.huan.quickdevelop.view.picktime.LanguagePickerPop;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerListener;
-import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopWin;
-import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.AreaPickerPopBuilder;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.CommonPickerPop;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopBuilder;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DateTimePickerPopBuilder;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.PickerPopWindow;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
+import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimerPickerPopBuilder;
 
-@ActivityPager(name = "多级选择器",preViewClass = TextView.class,resType = ResType.Custome)
+@ActivityPager(name = "多级选择器", preViewClass = TextView.class, resType = ResType.Custome)
 public class PickActivity extends BaseActivity {
 
 
@@ -42,142 +45,128 @@ public class PickActivity extends BaseActivity {
         setContentView(R.layout.activity_pick);
         ButterKnife.bind(this);
 
-        findViewById(R.id.date).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerPopWin pickerPopWin = new DatePickerPopWin.Builder(mContext, new DatePickerListener.OnDateSelectListener() {
-                    @Override
-                    public void onDateSelect(int year, int month, int day, int hour, int minute, int sencond) {
-                        Toast.makeText(mContext, year+"-"+month+"-"+day, Toast.LENGTH_SHORT).show();
-                    }
-                }).textConfirm("确定") //text of confirm button
-                        .textCancel("取消") //text of cancel button
-                        .btnTextSize(16) // button text size
-                        .viewTextSize(35) // pick view text size
-                        .colorCancel(Color.parseColor("#11DDAF")) //color of cancel button
-                        .colorConfirm(Color.parseColor("#11DDAF"))//color of confirm button
-                        .colorSignText(Color.RED)
-                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
-                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
-                        .minYear(1900) //min year in loop
-                        .maxYear(2030) // max year in loop
-                        .dateChose("1980-01-01") // date chose when init popwindow
-                        .build();
-                pickerPopWin.showPopWin(mContext);
-            }
+        findViewById(R.id.date).setOnClickListener(v -> {
+           /* new DatePickerListener.OnDateSelectListener() {
+                @Override
+                public void onDateSelect(int year, int month, int day, int hour, int minute, int sencond) {
+                    Toast.makeText(mContext, year+"-"+month+"-"+day, Toast.LENGTH_SHORT).show();
+                }
+            })*/
+            CommonPickerPop pickerPopWin = new DatePickerPopBuilder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
+                    Toast.makeText(mContext, Arrays.toString(args), Toast.LENGTH_SHORT).show();
+                }
+            }).textConfirm("确定") //text of confirm button
+                    .textCancel("取消") //text of cancel button
+                    .colorContentText(Color.GRAY, Color.RED, Color.GRAY)
+                    .build();
+            pickerPopWin.showWithView(mContext);
         });
 
-        findViewById(R.id.timepick).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerPopWin timePickerPopWin=new TimePickerPopWin.Builder(mContext, new DatePickerListener.OnDateSelectListener() {
-                    @Override
-                    public void onDateSelect(int year, int month, int day, int hour, int minute, int sencond) {
+        findViewById(R.id.timepick).setOnClickListener(v -> {
+            TimePickerPopWin timePickerPopWin = new TimePickerPopWin.Builder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
+                    Toast.makeText(mContext, Arrays.toString(args), Toast.LENGTH_SHORT).show();
+                }
+            }).textConfirm("CONFIRM")
+                    .textCancel("CANCEL")
+                    .btnTextSize(16)
+                    .colorCancel(Color.parseColor("#11DDAF"))
+                    .colorConfirm(Color.parseColor("#11DDAF"))
+                    .colorContentText(Color.GRAY, Color.RED, Color.GRAY)
+                    .build();
+            // timePickerPopWin.showWithView(mContext);
+            new TimerPickerPopBuilder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
 
-                        Toast.makeText(mContext, hour+":"+minute+":"+sencond, Toast.LENGTH_SHORT).show();
-                    }
-                }).textConfirm("CONFIRM")
-                        .textCancel("CANCEL")
-                        .btnTextSize(16)
-                        .viewTextSize(25)
-                        .colorCancel(Color.parseColor("#11DDAF"))
-                        .colorConfirm(Color.parseColor("#11DDAF"))
-                        .colorSignText(Color.RED)
-                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
-                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
-                        .build();
-                timePickerPopWin.showPopWin(mContext);
-
-            }
+                }
+            }).build().showWithView(mContext);
         });
 
-        findViewById(R.id.province).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "Working on...", Toast.LENGTH_SHORT).show();
-//                if(null != mProvinceList) {
-//                    ProvincePickPopWin pickPopWin = new ProvincePickPopWin(mContext,
-//                            mProvince, mCity, mProvinceList, mContext);
-//                    pickPopWin.showPopWin(mContext);
-//                }
-            }
+        findViewById(R.id.province).setOnClickListener(v -> {
+            CommonPickerPop pickerPopWin = new AreaPickerPopBuilder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
+                    Toast.makeText(mContext, Arrays.toString(args), Toast.LENGTH_SHORT).show();
+                }
+            }).textConfirm("确定") //text of confirm button
+                    .textCancel("取消") //text of cancel button
+                    .btnTextSize(16) // button text size
+                    .viewTextSize(35) // pick view text size
+                    .colorCancel(Color.parseColor("#11DDAF")) //color of cancel button
+                    .colorConfirm(Color.parseColor("#11DDAF"))//color of confirm button
+                    .colorContentText(Color.GRAY, Color.RED, Color.GRAY)
+                    .build();
+            pickerPopWin.showWithView(mContext);
         });
 
-        findViewById(R.id.timepick2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DateTimePickerPopWin timePickerPopWin=new DateTimePickerPopWin.Builder(mContext, new DateTimePickerPopWin.OnTimePickListener(){
-                    @Override
-                    public void onTimePickCompleted(String ymd, String hour, String minute, String datetime) {
+        findViewById(R.id.timepick2).setOnClickListener(v -> {
+            CommonPickerPop datePickerPopWindow = new DateTimePickerPopBuilder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
 
-                        Toast.makeText(mContext, ymd+","+hour+":"+minute+",datetime="+datetime, Toast.LENGTH_SHORT).show();
-                    }
-                }).textConfirm("CONFIRM")
-                        .textCancel("CANCEL")
-                        .btnTextSize(16)
-                        .viewTextSize(25)
-                        .colorCancel(Color.parseColor("#11DDAF"))
-                        .colorConfirm(Color.parseColor("#11DDAF"))
-                        .colorSignText(Color.RED)
-                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
-                        .setSignText(getResources().getString(R.string.year),getResources().getString(R.string.month),getResources().getString(R.string.day))
-                        .build();
-                timePickerPopWin.showPopWin(mContext);
-            }
+                }
+            }).viewTextSize(25)
+                    .build();
+            datePickerPopWindow.showWithView(mContext);
         });
 
-        findViewById(R.id.common_pick).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> data = new ArrayList<>();
-                data.add("1");
-                data.add("2");
-                data.add("3");
-                CommonPickerPop timePickerPopWin=new CommonPickerPop.Builder(mContext, new CommonPickerPop.OnPickListener() {
-                    @Override
-                    public void onPickCompleted(List<String> stringList, String value, int position) {
+        findViewById(R.id.common_pick).setOnClickListener(v -> {
+            CommonPickerPop timePickerPopWin = new CommonPickerPop.Builder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
 
-                    }
-                }).textConfirm("CONFIRM")
-                        .textCancel("CANCEL")
-                        .setDate(data)
-                        .btnTextSize(16)
-                        .viewTextSize(25)
-                        .colorCancel(Color.parseColor("#11DDAF"))
-                        .colorConfirm(Color.parseColor("#11DDAF"))
-                        .colorContentText(Color.GRAY,Color.RED,Color.GRAY)
-                        .build();
-                timePickerPopWin.showPopWin(mContext);
+                }
+            })
+                    .viewTextSize(25)
+                    .colorContentText(Color.GRAY, Color.RED, Color.GRAY)
+                    .build();
+            timePickerPopWin.showWithView(mContext);
+        });
+        findViewById(R.id.btn_launge_selector).setOnClickListener(v -> {
+            List<LanguageAdapter.LanguageModel> data = new ArrayList<>();
+            for(int i=0;i<10;i++){
+                LanguageAdapter.LanguageModel model = new LanguageAdapter.LanguageModel();
+                model.setName("china"+i);
+                data.add(model);
             }
+            LanguagePickerPop timePickerPopWin = new LanguagePickerPop.Builder(mContext, new PickerPopWindow.OnPickListener() {
+                @Override
+                public void onSelect(PickerPopWindow pickerPopWindow, Object[] args, int[] positions) {
+
+                }
+            })
+                    .viewTextSize(25)
+                    .setDate(data)
+                    .colorCancel(Color.parseColor("#11DDAF"))
+                    .colorConfirm(Color.parseColor("#11DDAF"))
+                    .colorContentText(Color.GRAY, Color.RED, Color.GRAY)
+                    .build();
+            timePickerPopWin.showWithView(mContext);
         });
 
 
-       // loopView = (LoopView) findViewById(R.id.loop_view);
+        // loopView = (LoopView) findViewById(R.id.loop_view);
         loopView.setInitPosition(2);
         loopView.setCanLoop(false);
-        loopView.setLoopListener(new LoopScrollListener() {
-            @Override
-            public void onItemSelect(int item) {
+        loopView.setLoopListener(item -> {
 
-            }
         });
         loopView.setTextSize(25);//must be called before setDateList
         loopView.setDataList(getList(50));
 
-        loopView2 = (LoopView2) findViewById(R.id.loop_view2);
-        loopView2.setLoopListener(new LoopScrollListener() {
-            @Override
-            public void onItemSelect(int item) {
-                PopToastUtil.showToast(mContext,"item="+item);
-            }
-        });
+        loopView2 = findViewById(R.id.loop_view2);
+        loopView2.setLoopListener(item -> PopToastUtil.showToast(mContext, "item=" + item));
         loopView2.setTextSize(25);//must be called before setDateList
         loopView2.setDataList(getList(20));
         loopView2.setCurrentIndex(10);
 //        ((new ProvinceInfoParserTask(this, mHandler))).execute();// 解析本地地址信息文件
     }
 
-    public ArrayList<String> getList(int c){
+    public ArrayList<String> getList(int c) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < c; i++) {
             list.add("DAY :" + i);

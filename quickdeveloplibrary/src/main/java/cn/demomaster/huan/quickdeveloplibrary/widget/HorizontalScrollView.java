@@ -60,15 +60,12 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
             LinearLayout linearLayout1 = new LinearLayout(getContext());
             linearLayout1.addView(adapter.getItemView(i));
             linearLayout1.setTag(i);
-            linearLayout1.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int index = (int) view.getTag();
-                    if (onSelectChangeListener != null) {
-                        onSelectChangeListener.onSelectChange(index);
-                    }
-                    smoothScrollTo(getChildCenterPosition(index), 0);
+            linearLayout1.setOnClickListener(view -> {
+                int index = (int) view.getTag();
+                if (onSelectChangeListener != null) {
+                    onSelectChangeListener.onSelectChange(index);
                 }
+                smoothScrollTo(getChildCenterPosition(index), 0);
             });
             linearLayout.addView(linearLayout1);
         }
@@ -100,23 +97,20 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         return 0;
     }
 
-    private int paddingLeft_origenal = 0;
-    private int paddingRight_origenal = 0;
+    private final int paddingLeft_origenal = 0;
+    private final int paddingRight_origenal = 0;
     private int paddingLeft = 0;
     private int paddingRight = 0;
 
 
     void init() {
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    handler.removeCallbacks(scrollerTask);
-                    handler.postDelayed(scrollerTask, delayMillis);
-                    //postDelayed(scrollerTask, delayMillis);
-                }
-                return false;
+        this.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                handler.removeCallbacks(scrollerTask);
+                handler.postDelayed(scrollerTask, delayMillis);
+                //postDelayed(scrollerTask, delayMillis);
             }
+            return false;
         });
 
         if (getChildCount() <= 0) {
@@ -222,14 +216,14 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     /**
      * Runnable延迟执行的时间
      */
-    private long delayMillis = 100;
+    private final long delayMillis = 100;
 
     /**
      * 上次滑动的时间
      */
     private long lastScrollLeft = -1;
     private long nowScrollLeft = -1;
-    private Runnable scrollerTask = new Runnable() {
+    private final Runnable scrollerTask = new Runnable() {
         @Override
         public void run() {
             if ((nowScrollLeft == lastScrollLeft)) {
@@ -250,7 +244,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         }
     };
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {

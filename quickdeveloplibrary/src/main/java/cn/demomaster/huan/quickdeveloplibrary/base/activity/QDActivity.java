@@ -73,20 +73,16 @@ public class QDActivity extends QuickActivity {
      * @return
      */
     private boolean isShouldHideKeyboard(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {  //判断得到的焦点控件是否包含EditText
+        if ((v instanceof EditText)) {  //判断得到的焦点控件是否包含EditText
             int[] l = {0, 0};
             v.getLocationInWindow(l);
             int left = l[0],    //得到输入框在屏幕中上下左右的位置
                     top = l[1],
                     bottom = top + v.getHeight(),
                     right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击位置如果是EditText的区域，忽略它，不收起键盘。
-                return false;
-            } else {
-                return true;
-            }
+            // 点击位置如果是EditText的区域，忽略它，不收起键盘。
+            return !(event.getX() > left) || !(event.getX() < right)
+                    || !(event.getY() > top) || !(event.getY() < bottom);
         }
         // 如果焦点不是EditText则忽略
         return false;

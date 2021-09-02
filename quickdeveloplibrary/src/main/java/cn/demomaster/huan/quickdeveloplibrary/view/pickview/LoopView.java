@@ -1,9 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.pickview;
 
-/**
- * Created by Squirrel桓 on 2018/11/13.
- */
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -14,8 +10,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build.VERSION;
 import android.os.Handler;
-import android.os.Handler.Callback;
-import android.os.Message;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -74,7 +68,7 @@ public class LoopView extends View {
     public Handler mHandler;
 
     public LoopView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public LoopView(Context context, AttributeSet attrs) {
@@ -84,20 +78,18 @@ public class LoopView extends View {
     public LoopView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mExecutor = Executors.newSingleThreadScheduledExecutor();
-        this.mHandler = new Handler(new Callback() {
-            public boolean handleMessage(Message msg) {
-                if (msg.what == 1000) {
-                    LoopView.this.invalidate();
-                }
-
-                if (msg.what == 2000) {
-                    LoopView.this.startSmoothScrollTo();
-                } else if (msg.what == 3000) {
-                    LoopView.this.itemSelected();
-                }
-
-                return false;
+        this.mHandler = new Handler(msg -> {
+            if (msg.what == 1000) {
+                LoopView.this.invalidate();
             }
+
+            if (msg.what == 2000) {
+                LoopView.this.startSmoothScrollTo();
+            } else if (msg.what == 3000) {
+                LoopView.this.itemSelected();
+            }
+
+            return false;
         });
         this.initView(context, attrs);
     }
@@ -106,20 +98,18 @@ public class LoopView extends View {
     public LoopView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.mExecutor = Executors.newSingleThreadScheduledExecutor();
-        this.mHandler = new Handler(new Callback() {
-            public boolean handleMessage(Message msg) {
-                if (msg.what == 1000) {
-                    LoopView.this.invalidate();
-                }
-
-                if (msg.what == 2000) {
-                    LoopView.this.startSmoothScrollTo();
-                } else if (msg.what == 3000) {
-                    LoopView.this.itemSelected();
-                }
-
-                return false;
+        this.mHandler = new Handler(msg -> {
+            if (msg.what == 1000) {
+                LoopView.this.invalidate();
             }
+
+            if (msg.what == 2000) {
+                LoopView.this.startSmoothScrollTo();
+            } else if (msg.what == 3000) {
+                LoopView.this.itemSelected();
+            }
+
+            return false;
         });
         this.initView(context, attrs);
     }
@@ -145,7 +135,7 @@ public class LoopView extends View {
         this.mCenterTextPaint = new Paint();
         this.mCenterLinePaint = new Paint();
         if (VERSION.SDK_INT >= 11) {
-            this.setLayerType(1, (Paint) null);
+            this.setLayerType(1, null);
         }
 
         this.mGestureDetector = new GestureDetector(context, this.mOnGestureListener);
@@ -155,7 +145,6 @@ public class LoopView extends View {
     private void initData() {
         if (this.mDataList == null) {
             QDLogger.e("data list must not be null!");
-            return;
         } else {
             this.mTopBottomTextPaint.setColor(this.mTopBottomTextColor);
             this.mTopBottomTextPaint.setAntiAlias(true);
@@ -276,7 +265,7 @@ public class LoopView extends View {
             for (templateItem = (int) ((float) this.mTotalScrollY % this.mItemHeight); count < this.mDrawItemsCount; ++count) {
                 canvas.save();
                 float itemHeight = (float) this.mMaxTextHeight * this.lineSpacingMultiplier;
-                double radian = (double) ((itemHeight * (float) count - (float) templateItem) / (float) this.mCircularRadius);
+                double radian = (itemHeight * (float) count - (float) templateItem) / (float) this.mCircularRadius;
                 float angle = (float) (radian * 180.0D / 3.141592653589793D);
                 if (angle < 180.0F && angle > 0.0F) {
                     int translateY = (int) ((double) this.mCircularRadius - Math.cos(radian) * (double) this.mCircularRadius - Math.sin(radian) * (double) this.mMaxTextHeight / 2.0D) + this.mPaddingTopBottom;
@@ -347,7 +336,7 @@ public class LoopView extends View {
             int offset = (int) ((float) LoopView.this.mTotalScrollY / LoopView.this.mItemHeight);
             if (offset_current != offset) {
                 offset_current = offset;
-                Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
+                Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(8);
                 //long[] patter = {10, 10, 20, 5};
                 //vibrator.vibrate(patter, 0);
@@ -429,7 +418,7 @@ public class LoopView extends View {
     private void startSmoothScrollTo(float velocityY) {
         this.cancelSchedule();
         int velocityFling = 20;
-        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.FlingRunnable(velocityY), 0L, (long) velocityFling, TimeUnit.MILLISECONDS);
+        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.FlingRunnable(velocityY), 0L, velocityFling, TimeUnit.MILLISECONDS);
     }
 
     public int sp2px(Context context, float spValue) {

@@ -93,7 +93,7 @@ public class QDLanguageUtil {
         if (conf.locale == null || TextUtils.isEmpty(conf.locale.toString())) {
             return false;
         }
-        return currentLanguage.equals(conf.locale);
+        return currentLanguage.equals(conf.locale.toString());
     }
 
     public static void changeAppLanguage(Context context, Locale locale) {

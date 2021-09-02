@@ -53,15 +53,12 @@ public class TabRadioGroup extends LinearLayout {
     public void setOnCheckedChangeListener(final OnCheckedChangeListener onCheckedChangeListener) {
         for (int i = 0; i < tabRadioButtons.size(); i++) {
             tabRadioButtons.get(i).setTag(i);
-            tabRadioButtons.get(i).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onCheckedChangeListener.onCheckedChanged(view, (int) (view.getTag()));
-                    for (TabRadioButton button : tabRadioButtons) {
-                        button.setState(false);
-                    }
-                    ((TabRadioButton) view).setState(true);
+            tabRadioButtons.get(i).setOnClickListener(view -> {
+                onCheckedChangeListener.onCheckedChanged(view, (int) (view.getTag()));
+                for (TabRadioButton button : tabRadioButtons) {
+                    button.setState(false);
                 }
+                ((TabRadioButton) view).setState(true);
             });
         }
     }

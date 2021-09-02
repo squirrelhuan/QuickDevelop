@@ -9,11 +9,10 @@ public class Bamboo {
     public Bamboo add(Node node){
         if(rootNode==null){
             rootNode = node;
-            currentNode = node;
         }else {
             currentNode.setNextNode(node);
-            currentNode = node;
         }
+        currentNode = node;
         return this;
     }
 
@@ -45,7 +44,7 @@ public class Bamboo {
         }
     }
 
-    public static interface OnCompleteListener{
+    public interface OnCompleteListener{
         void doJob(Node node,Object... result);
     }
 }

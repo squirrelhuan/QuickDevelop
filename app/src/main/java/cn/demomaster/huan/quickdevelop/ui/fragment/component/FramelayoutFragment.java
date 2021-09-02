@@ -49,42 +49,33 @@ public class FramelayoutFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        btn_show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = rootView.findViewById(R.id.tv_content);
-                if (view.getVisibility() == View.VISIBLE) {
-                    rootView.findViewById(R.id.tv_content).setVisibility(View.GONE);
-                    btn_show.setText("显示");
-                } else {
-                    rootView.findViewById(R.id.tv_content).setVisibility(View.VISIBLE);
-                    btn_show.setText("隐藏");
-                }
+        btn_show.setOnClickListener(v -> {
+            View view = rootView.findViewById(R.id.tv_content);
+            if (view.getVisibility() == View.VISIBLE) {
+                rootView.findViewById(R.id.tv_content).setVisibility(View.GONE);
+                btn_show.setText("显示");
+            } else {
+                rootView.findViewById(R.id.tv_content).setVisibility(View.VISIBLE);
+                btn_show.setText("隐藏");
             }
         });
 
-
-
         VisibleLayout vl_layout = rootView.findViewById(R.id.vl_layout);
-
         RadioGroup rg_positon = rootView.findViewById(R.id.rg_positon);
-        rg_positon.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.btn_left:
-                        vl_layout.setGravity(Gravity.LEFT);
-                        break;
-                    case R.id.btn_right:
-                        vl_layout.setGravity(Gravity.RIGHT);
-                        break;
-                    case R.id.btn_top:
-                        vl_layout.setGravity(Gravity.TOP);
-                        break;
-                    case R.id.btn_bottom:
-                        vl_layout.setGravity(Gravity.BOTTOM);
-                        break;
-                }
+        rg_positon.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.btn_left:
+                    vl_layout.setGravity(Gravity.LEFT);
+                    break;
+                case R.id.btn_right:
+                    vl_layout.setGravity(Gravity.RIGHT);
+                    break;
+                case R.id.btn_top:
+                    vl_layout.setGravity(Gravity.TOP);
+                    break;
+                case R.id.btn_bottom:
+                    vl_layout.setGravity(Gravity.BOTTOM);
+                    break;
             }
         });
 

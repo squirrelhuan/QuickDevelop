@@ -53,9 +53,9 @@ public class PhotoHelper {
         public static RequestType getEnum(int value) {
             RequestType resultEnum = null;
             RequestType[] enumArray = RequestType.values();
-            for (int i = 0; i < enumArray.length; i++) {
-                if (enumArray[i].value() == value) {
-                    resultEnum = enumArray[i];
+            for (RequestType requestType : enumArray) {
+                if (requestType.value() == value) {
+                    resultEnum = requestType;
                     break;
                 }
             }
@@ -67,8 +67,7 @@ public class PhotoHelper {
         }
     }
 
-    private WeakReference<Activity> contextWeakReference;
-
+    private final WeakReference<Activity> contextWeakReference;
     public PhotoHelper(Activity context) {
         this.contextWeakReference = new WeakReference<>(context);
     }
@@ -219,7 +218,7 @@ public class PhotoHelper {
             builder.requestCode = mRequestCode;
         }
         // final Object onTakePhotoResult,
-        PermissionHelper.getInstance().requestPermission(contextWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
+        PermissionHelper.requestPermission(contextWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 final RequestType requestType = builder.requestType;
@@ -246,16 +245,16 @@ public class PhotoHelper {
                         break;
                 }
 
-                if (builder != null && builder.onTakePhotoResult != null && builder.onTakePhotoResult instanceof OnTakePhotoResult) {
-                    ((OnTakePhotoResult) builder.onTakePhotoResult).setTag(uri1);
+                if (builder.onTakePhotoResult instanceof OnTakePhotoResult) {
+                    builder.onTakePhotoResult.setTag(uri1);
                     currentBuilder = builder;
                 }
             }
 
             @Override
             public void onRefused() {
-                if (builder != null && builder.onTakePhotoResult != null && builder.onTakePhotoResult instanceof OnTakePhotoResult) {
-                    ((OnTakePhotoResult) builder.onTakePhotoResult).onFailure("权限不足");
+                if (builder.onTakePhotoResult instanceof OnTakePhotoResult) {
+                    builder.onTakePhotoResult.onFailure("权限不足");
                 }
             }
         });
@@ -283,7 +282,7 @@ public class PhotoHelper {
         }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//如果此处指定，返回值的data为null
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
+        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
         return fileUri;
     }
 
@@ -312,10 +311,11 @@ public class PhotoHelper {
         if (builder.outUri != null) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, builder.outUri);
         } else {
-            if (Build.VERSION.SDK_INT < 30) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 //intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
             } else {
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+                String path = builder.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath();
+                //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
                 //storage/emulated/0/Pictures
                 File mOnputFile = new File(path, System.currentTimeMillis() + ".png");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse("file://" + mOnputFile.getAbsolutePath()));
@@ -334,7 +334,7 @@ public class PhotoHelper {
         intent.setAction(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         //intent.setType("image/*");
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
+        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
     }
 
     private void scanQrcodeImp(Builder builder) {
@@ -351,7 +351,7 @@ public class PhotoHelper {
         //config.setShowAlbum(true);//是否显示相册
         //config.setShowFlashLight(true);//是否显示闪光灯
         //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
+        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
     }
 
     /**
@@ -362,13 +362,13 @@ public class PhotoHelper {
         Intent intent = new Intent(contextWeakReference.get(), SimplePictureActivity.class);
         //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
         intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, builder.requestCode);
+        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
     }
 
     private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int requestCode) {
         Intent intent = new Intent(contextWeakReference.get(), cameraIDCardActivityClass);
         //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-        ((Activity) contextWeakReference.get()).startActivityForResult(intent, requestCode);
+        contextWeakReference.get().startActivityForResult(intent, requestCode);
     }
 
  /*   public final static int RESULT_CODE_TAKE_PHOTO = 2001;
@@ -435,13 +435,11 @@ public class PhotoHelper {
             case photoCrop: //PHOTOHELPER_REQUEST_CODE_PHOTO_CROP:
             case takePhotoForIDCard://PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO_FOR_IDCARD:
             case selectFromGallery://PHOTOHELPER_REQUEST_CODE_GALLERY:
+            default:
                 onTakePhotoResult = builder.onTakePhotoResult;
                 break;
             case selectFromMyGallery://PHOTOHELPER_REQUEST_CODE_GALLERY2:
                 onSelectPictureResult = builder.onSelectPictureResult;
-                break;
-            default:
-                onTakePhotoResult = builder.onTakePhotoResult;
                 break;
         }
 

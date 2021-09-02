@@ -13,7 +13,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -276,7 +275,7 @@ public class RatingBar extends androidx.appcompat.widget.AppCompatRatingBar {
             } else {
                 if (backbitmap != null) {
                     //绘制背景
-                    Rect rect = new Rect(x1, y1, (int) (width), y1 + cell);
+                    Rect rect = new Rect(x1, y1, width, y1 + cell);
                     canvas.clipRect(rect);
                     canvas.drawBitmap(backbitmap, x1, y1, mPaint);
                     canvas.save();
@@ -299,14 +298,11 @@ public class RatingBar extends androidx.appcompat.widget.AppCompatRatingBar {
     }
     
     private void setTouch() {
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (canTouch) {
-                    progress = (float) motionEvent.getX() / width;
-                }
-                return true;
+        this.setOnTouchListener((view, motionEvent) -> {
+            if (canTouch) {
+                progress = motionEvent.getX() / width;
             }
+            return true;
         });
     }
 }

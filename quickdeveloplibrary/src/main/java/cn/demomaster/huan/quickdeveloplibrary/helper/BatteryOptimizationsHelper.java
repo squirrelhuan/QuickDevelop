@@ -114,7 +114,7 @@ public class BatteryOptimizationsHelper {
         try {
             context.startActivity(intent);
         } catch (Exception e) {
-            throw e;
+            e.printStackTrace();
         }
     }
 

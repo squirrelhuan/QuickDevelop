@@ -51,16 +51,15 @@ public class KeyboardFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_keyboard, null);
-
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_keyboard, null);
+        return mView;
     }
 
     private QDKeyboard qdKeyboard;
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        getActionBarTool().setTitle("键盘");
+        setTitle("键盘");
 
         qdKeyboard = new QDKeyboard(mContext);
         qdKeyboard.addEditText(et_custom_none);

@@ -41,45 +41,27 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDFileUtil {
 
-    private static final String FOLDER_NAME = "gxj";
-
-    /**
-     * 初始化保存路径
-     *
-     * @return
-     */
-    private static String makeAppPath() {
-        String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + FOLDER_NAME;
-        File f = new File(storagePath);
-        if (!f.exists()) {
-            f.mkdir();
-        }
-        return storagePath;
-    }
-
     /**
      * 保存Bitmap到sdcard
-     *
      * @param b 得到的图片
      */
-    public static String saveBitmap(Bitmap b) {
-        String path = makeAppPath();
+    public static String saveBitmap(Context context,Bitmap b) {
+        String path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         long dataTake = System.currentTimeMillis();
-        String imgPath = path + "/" + dataTake + ".jpg";
+        String imgPath = path + File.separator + dataTake + ".jpg";
         return QDFileUtil.saveBitmap(b, imgPath);
     }
 
     public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener)//filename是我们的文件全名，包括后缀哦
     {
         MediaScannerConnection.scanFile(context,
-                new String[] { filename }, null,listener);
+                new String[]{filename}, null, listener);
     }
-    
+
     /**
      * 根据图片文件路径获取bitmap
      *
@@ -157,14 +139,13 @@ public class QDFileUtil {
         }
     }
 
-
     public static String readFileSdcardFile(String fileName) throws IOException {
         return readFileSdcardFile(new File(fileName));
     }
 
     // 读SD中的文件
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String readFileSdcardFile(File file){
+    public static String readFileSdcardFile(File file) {
         if (file == null || !file.exists()) {
             return null;
         }
@@ -181,18 +162,6 @@ public class QDFileUtil {
             QDLogger.e(e);
         }
         return res;
-    }
-
-    public static void makeRootDirectory(String filePath) {
-        File file = null;
-        try {
-            file = new File(filePath);
-            if (!file.exists()) {
-                file.mkdir();
-            }
-        } catch (Exception e) {
-
-        }
     }
 
     /**
@@ -230,7 +199,6 @@ public class QDFileUtil {
         try {
             is = context.getResources().getAssets().open(fileName);
             int size = is.available();
-
             // Read the entire asset into a local byte buffer.
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -243,7 +211,6 @@ public class QDFileUtil {
         }
         return text;
     }
-
 
     /**
      * 删除文件，可以是文件或文件夹
@@ -278,7 +245,7 @@ public class QDFileUtil {
                 //Log.e("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
                 return true;
             } else {
-                File tmp = new File("tmp123");
+                File tmp = new File("tmp123756743543");
                 file.renameTo(tmp);
                 return tmp.delete();
             }
@@ -295,8 +262,9 @@ public class QDFileUtil {
      */
     private static boolean deleteDirectory(String filePath) {
         // 如果dir不以文件分隔符结尾，自动添加文件分隔符
-        if (!filePath.endsWith(File.separator))
+        if (!filePath.endsWith(File.separator)){
             filePath = filePath + File.separator;
+        }
         File dirFile = new File(filePath);
         // 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
@@ -323,7 +291,7 @@ public class QDFileUtil {
         }
         // 删除当前目录
         if (dirFile.delete()) {
-            Log.e("--Method--", "Copy_Delete.deleteDirectory: 删除目录" + filePath + "成功！");
+            QDLogger.i(" 除目录:" + filePath + "成功！");
             return true;
         } else {
             return false;
@@ -335,9 +303,9 @@ public class QDFileUtil {
         //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);
         if (file.isDirectory()) {
-            QDLogger.d("正在读取:" + file.getPath());
+            QDLogger.println("正在读取:" + file.getPath());
             if (file.listFiles().length == 0) {
-                QDLogger.d("空文件夹:" + file.getPath());
+                QDLogger.println("空文件夹:" + file.getPath());
                 files.add(file);
             } else {
                 for (File file1 : file.listFiles()) {
@@ -377,9 +345,14 @@ public class QDFileUtil {
             if (path != null) {
                 path = Uri.decode(path);
                 ContentResolver cr = context.getContentResolver();
-                StringBuffer buff = new StringBuffer();
-                buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=").append("'" + path + "'").append(")");
-                Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA}, buff.toString(), null, null);
+                String buff = "(" +
+                        MediaStore.Images.ImageColumns.DATA +
+                        "=" +
+                        "'" +
+                        path +
+                        "'" +
+                        ")";
+                Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA}, buff, null, null);
                 int index = 0;
                 int dataIdx = 0;
                 for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {
@@ -446,20 +419,17 @@ public class QDFileUtil {
         final StringBuilder sb = new StringBuilder();
         Process p = null;
         final ADBHelper adbHelper = ADBHelper.getInstance();
-        adbHelper.execute(String.format("stat -t %s ", file.getAbsolutePath()), new ADBHelper.OnReceiveListener() {
-            @Override
-            public void onReceive(ProcessResult result) {
-                if (result != null && result.getResult() != null) {
-                    String r = result.getResult();
-                    QDLogger.i(r);
-                    String[] arr = r.split(" ");
-                    QDFile qdFile = new QDFile(file);
-                    qdFile.setModifyTime(Integer.valueOf(arr[arr.length - 2]));
-                    listener.onResult(qdFile);
-                    return;
-                }
-                listener.onResult(null);
+        adbHelper.execute(String.format("stat -t %s ", file.getAbsolutePath()), result -> {
+            if (result != null && result.getResult() != null) {
+                String r = result.getResult();
+                QDLogger.i(r);
+                String[] arr = r.split(" ");
+                QDFile qdFile = new QDFile(file);
+                qdFile.setModifyTime(Integer.valueOf(arr[arr.length - 2]));
+                listener.onResult(qdFile);
+                return;
             }
+            listener.onResult(null);
         });
         if (0 != sb.length()) {
             rs = sb.toString();
@@ -478,28 +448,25 @@ public class QDFileUtil {
         final StringBuilder sb = new StringBuilder();
         Process p = null;
         final ADBHelper adbHelper = ADBHelper.getInstance();
-        adbHelper.execute(String.format("ls -l %s ", file.getParentFile().getAbsolutePath()), new ADBHelper.OnReceiveListener() {
-            @Override
-            public void onReceive(ProcessResult result) {
-                QDLogger.i(result.getResult());
-                if (result != null && result.getResult() != null) {
-                    String r = result.getResult();
-                    if (r.contains("\n\r")) {
-                        String[] arr = r.split("\n\r");
-                        List<String> list = Arrays.asList(arr);
-                        for (int i = 1; i < list.size(); i++) {
-                            String name = list.get(i);
-                            if (name.endsWith(file.getName())) {
-                                //QDLogger.e("-------------------------"+name);
-                                if (name.contains(" ")) {
-                                    String[] strings = name.split(" ");
-                                    if (strings != null && strings.length >= 2) {
-                                        if (strings[strings.length - 1].equals(file.getName())) {
-                                            QDFile qdFile = new QDFile(file);
-                                            qdFile.setCreatTimeStr(strings[strings.length - 3] + " " + strings[strings.length - 2]);
-                                            listener.onResult(qdFile);
-                                            break;
-                                        }
+        adbHelper.execute(String.format("ls -l %s ", file.getParentFile().getAbsolutePath()), result -> {
+            QDLogger.i(result.getResult());
+            if (result != null && result.getResult() != null) {
+                String r = result.getResult();
+                if (r.contains("\n\r")) {
+                    String[] arr = r.split("\n\r");
+                    List<String> list = Arrays.asList(arr);
+                    for (int i = 1; i < list.size(); i++) {
+                        String name = list.get(i);
+                        if (name.endsWith(file.getName())) {
+                            //QDLogger.e("-------------------------"+name);
+                            if (name.contains(" ")) {
+                                String[] strings = name.split(" ");
+                                if (strings != null && strings.length >= 2) {
+                                    if (strings[strings.length - 1].equals(file.getName())) {
+                                        QDFile qdFile = new QDFile(file);
+                                        qdFile.setCreatTimeStr(strings[strings.length - 3] + " " + strings[strings.length - 2]);
+                                        listener.onResult(qdFile);
+                                        break;
                                     }
                                 }
                             }
@@ -608,7 +575,7 @@ public class QDFileUtil {
      * @return 所有可用于存储的不同的卡的位置，用一个List来保存
      */
     public static List<String> getExtSDCardPathList() {
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         String extFileStatus = Environment.getExternalStorageState();
         File extFile = Environment.getExternalStorageDirectory();
         //首先判断一下外置SD卡的状态，处于挂载状态才能获取的到
@@ -692,7 +659,6 @@ public class QDFileUtil {
         }
     }
 
-    /***************************************************************/
     /**
      * 根据URI获取文件真实路径（兼容多张机型）
      *
@@ -849,10 +815,11 @@ public class QDFileUtil {
 
     private static DecimalFormat fileIntegerFormat = new DecimalFormat("#0");
     private static DecimalFormat fileDecimalFormat = new DecimalFormat("#0.#");
+
     /**
      * 单位换算
      *
-     * @param size 单位为B
+     * @param size      单位为B
      * @param isInteger 是否返回取整的单位
      * @return 转换后的单位
      */
@@ -870,6 +837,7 @@ public class QDFileUtil {
         }
         return fileSizeString;
     }
+
     /**
      * SDCARD是否存
      */

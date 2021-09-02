@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 
 import androidx.customview.widget.ViewDragHelper;
 
+/**
+ * 可拖动子布局
+ */
 public class QDViewDrag extends LinearLayout {
 
     private static final String TAG = QDViewDrag.class.getSimpleName();
@@ -47,7 +50,6 @@ public class QDViewDrag extends LinearLayout {
 
     private void initDragCallBack() {
         mDragCallback = new ViewDragHelper.Callback() {
-
             /**
              * 返回true，表示传入的View可以被拖动
              */

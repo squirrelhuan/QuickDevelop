@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
@@ -46,12 +44,7 @@ public class EmptyLayoutFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        getActionBarTool().getRightView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMulMenuDialog();
-            }
-        });
+        getActionBarTool().getRightView().setOnClickListener(v -> showMulMenuDialog());
         emptylayout = rootView.findViewById(R.id.emptylayout);
         emptylayout.hideAll();
         emptylayout.showTitle("标题");
@@ -60,49 +53,46 @@ public class EmptyLayoutFragment extends BaseFragment {
 
     private void showMulMenuDialog() {
         String[] menus = {"单行提示", "标题+描述", "单行文字+重试按钮", "标题+描述+重试按钮", "加载动画", "加载动画+加载提示", "加载动画+加载提示+加载描述",};
-        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                //PopToastUtil.ShowToast(mContext,data.get(position));
-                switch (position) {
-                    case 0://单行提示
-                        emptylayout.hideAll();
-                        emptylayout.showTitle("单行提示");
-                        break;
-                    case 1:
-                        emptylayout.hideAll();
-                        emptylayout.showTitle("标题");
-                        emptylayout.showMessage("单行提示");
-                        break;
-                    case 2:
-                        emptylayout.hideAll();
-                        emptylayout.showMessage("单行提示");
-                        emptylayout.showRetry();
-                        break;
-                    case 3:
-                        emptylayout.hideAll();
-                        emptylayout.showTitle("标题");
-                        emptylayout.showMessage("单行提示");
-                        emptylayout.showRetry();
-                        break;
-                    case 4:
-                        emptylayout.hideAll();
-                        emptylayout.showLodding();
-                        break;
-                    case 5:
-                        emptylayout.hideAll();
-                        emptylayout.showLodding();
-                        emptylayout.showTitle("加载中");
-                        break;
-                    case 6:
-                        emptylayout.hideAll();
-                        emptylayout.showLodding();
-                        emptylayout.showTitle("加载中");
-                        emptylayout.showMessage("请耐心等待");
-                        emptylayout.showRetry();
-                        break;
-                }
+        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
+            dialog.dismiss();
+            //PopToastUtil.ShowToast(mContext,data.get(position));
+            switch (position) {
+                case 0://单行提示
+                    emptylayout.hideAll();
+                    emptylayout.showTitle("单行提示");
+                    break;
+                case 1:
+                    emptylayout.hideAll();
+                    emptylayout.showTitle("标题");
+                    emptylayout.showMessage("单行提示");
+                    break;
+                case 2:
+                    emptylayout.hideAll();
+                    emptylayout.showMessage("单行提示");
+                    emptylayout.showRetry();
+                    break;
+                case 3:
+                    emptylayout.hideAll();
+                    emptylayout.showTitle("标题");
+                    emptylayout.showMessage("单行提示");
+                    emptylayout.showRetry();
+                    break;
+                case 4:
+                    emptylayout.hideAll();
+                    emptylayout.showLodding();
+                    break;
+                case 5:
+                    emptylayout.hideAll();
+                    emptylayout.showLodding();
+                    emptylayout.showTitle("加载中");
+                    break;
+                case 6:
+                    emptylayout.hideAll();
+                    emptylayout.showLodding();
+                    emptylayout.showTitle("加载中");
+                    emptylayout.showMessage("请耐心等待");
+                    emptylayout.showRetry();
+                    break;
             }
         }).create().show();
     }

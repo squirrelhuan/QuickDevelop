@@ -75,7 +75,6 @@ public class QMUIViewHelper {
     /**
      * 触发window的insets的广播，使得view的fitSystemWindows得以生效
      */
-    @SuppressWarnings("deprecation")
     public static void requestApplyInsets(Window window) {
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             window.getDecorView().requestFitSystemWindows();
@@ -94,17 +93,14 @@ public class QMUIViewHelper {
         if (view != null) {
             final View parentView = (View) view.getParent();
 
-            parentView.post(new Runnable() {
-                @Override
-                public void run() {
-                    Rect rect = new Rect();
-                    view.getHitRect(rect); //如果太早执行本函数，会获取rect失败，因为此时UI界面尚未开始绘制，无法获得正确的坐标
-                    rect.left -= expendSize;
-                    rect.top -= expendSize;
-                    rect.right += expendSize;
-                    rect.bottom += expendSize;
-                    parentView.setTouchDelegate(new TouchDelegate(rect, view));
-                }
+            parentView.post(() -> {
+                Rect rect = new Rect();
+                view.getHitRect(rect); //如果太早执行本函数，会获取rect失败，因为此时UI界面尚未开始绘制，无法获得正确的坐标
+                rect.left -= expendSize;
+                rect.top -= expendSize;
+                rect.right += expendSize;
+                rect.bottom += expendSize;
+                parentView.setTouchDelegate(new TouchDelegate(rect, view));
             });
         }
     }
@@ -124,7 +120,6 @@ public class QMUIViewHelper {
         view.setPadding(padding[0], padding[1], padding[2], padding[3]);*/
     }
 
-    @SuppressWarnings("deprecation")
     public static void setBackgroundKeepingPadding(View view, int backgroundResId) {
         setBackgroundKeepingPadding(view, ContextCompat.getDrawable(view.getContext(), backgroundResId));
     }
@@ -220,12 +215,7 @@ public class QMUIViewHelper {
         anim.setRepeatCount(repeatCount);
         anim.setRepeatMode(ValueAnimator.REVERSE);
         anim.setEvaluator(new ArgbEvaluator());
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                QMUIViewHelper.setBackgroundColorKeepPadding(v, (Integer) animation.getAnimatedValue());
-            }
-        });
+        anim.addUpdateListener(animation -> QMUIViewHelper.setBackgroundColorKeepPadding(v, (Integer) animation.getAnimatedValue()));
         if (setAnimTagId != 0) {
             v.setTag(setAnimTagId, anim);
         }
@@ -594,7 +584,7 @@ public class QMUIViewHelper {
         }
         View view = parentView.findViewById(inflatedViewId);
         if (null == view) {
-            ViewStub vs = (ViewStub) parentView.findViewById(viewStubId);
+            ViewStub vs = parentView.findViewById(viewStubId);
             if (null == vs) {
                 return null;
             }
@@ -616,7 +606,7 @@ public class QMUIViewHelper {
         }
         View view = parentView.findViewById(inflatedViewId);
         if (null == view) {
-            ViewStub vs = (ViewStub) parentView.findViewById(viewStubId);
+            ViewStub vs = parentView.findViewById(viewStubId);
             if (null == vs) {
                 return null;
             }
@@ -716,7 +706,7 @@ public class QMUIViewHelper {
 
         static void offsetDescendantMatrix(ViewParent target, View view, Matrix m) {
             final ViewParent parent = view.getParent();
-            if (parent!=null&&parent instanceof View && parent != target) {
+            if (parent instanceof View && parent != target) {
                 final View vp = (View) parent;
                 offsetDescendantMatrix(target, vp, m);
                 m.preTranslate(-vp.getScrollX(), -vp.getScrollY());

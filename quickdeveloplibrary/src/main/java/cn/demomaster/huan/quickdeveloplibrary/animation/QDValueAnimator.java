@@ -37,18 +37,15 @@ public class QDValueAnimator extends ValueAnimator {
     public QDValueAnimator(Class dataType) {
         this.dataType = dataType;
         handler = new Handler(Looper.getMainLooper());
-        AnimatorUpdateListener animatorUpdateListener = new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                value = animation.getAnimatedValue();
-                //QDLogger.i("value="+value);
-                if (isFrward) {
-                    onOpening(value);
-                } else {
-                    onClosing(value);
-                }
-                lastValue = value;
+        AnimatorUpdateListener animatorUpdateListener = animation -> {
+            value = animation.getAnimatedValue();
+            //QDLogger.i("value="+value);
+            if (isFrward) {
+                onOpening(value);
+            } else {
+                onClosing(value);
             }
+            lastValue = value;
         };
         addUpdateListener(animatorUpdateListener);
         mAnimatorListener = new AnimatorListener() {
@@ -100,15 +97,15 @@ public class QDValueAnimator extends ValueAnimator {
         // Field filed = class1.getDeclaredField("name");
         if (fields != null) {
             //QDLogger.println(clazz.getName()+":fields.length =" + fields.length);
-            for (int i = 0, len = fields.length; i < len; i++) {
-                String varName = fields[i].getName();
+            for (Field field : fields) {
+                String varName = field.getName();
                 //QDLogger.println("varName =" + varName);
                 if (varName.equals("mReversing")) {
                     try {
-                        boolean accessFlag = fields[i].isAccessible();
-                        fields[i].setAccessible(true);
-                        Object o = fields[i].get(animator);
-                        fields[i].setAccessible(accessFlag);
+                        boolean accessFlag = field.isAccessible();
+                        field.setAccessible(true);
+                        Object o = field.get(animator);
+                        field.setAccessible(accessFlag);
                         //QDLogger.println("isReversing =" + o);
                         return (boolean) o;
                     } catch (IllegalArgumentException | IllegalAccessException ex) {
@@ -264,12 +261,7 @@ public class QDValueAnimator extends ValueAnimator {
         state = AnimationState.isClosed;
         if (animationListener != null) {
             //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    animationListener.onEndClose(startValue);
-                }
-            });
+            handler.post(() -> animationListener.onEndClose(startValue));
         }
     }
 

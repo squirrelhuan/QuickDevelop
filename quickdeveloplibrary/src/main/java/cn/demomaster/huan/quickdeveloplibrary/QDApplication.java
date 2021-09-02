@@ -12,7 +12,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
-import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxHandler;
+import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
@@ -41,6 +41,7 @@ public class QDApplication extends Application implements UpgradeInterface {
             QDLogger.init(this, logPath);
             QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid());
         }
+        QDLogger.i("uid="+QDAppInfoUtil.getUidByPackageName(this,getPackageName()));
 
         //初始化全局SharedPreferences
         QDSharedPreferences.init(this);
@@ -57,13 +58,8 @@ public class QDApplication extends Application implements UpgradeInterface {
         //NotifycationHelper.getInstance().init(this);
         //QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
         //QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
-        QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, new QDSaxHandler.OnParseCompleteListener() {
-            @Override
-            public void onComplete(Object result) {
-                QDLogger.println("配置文件初始化完成" + result);
-            }
-        });
-
+        QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, result -> QDLogger.println("配置文件初始化完成" + result));
+        
         //处理崩溃日志
         initCrash();
         //DoraemonKit.install(this);
@@ -79,10 +75,9 @@ public class QDApplication extends Application implements UpgradeInterface {
     }
 
     public QuickDbHelper dbHelper;
-
+    
     /**
      * 初始化本地数据库
-     *
      * @return
      */
     public QuickDbHelper getDbHelper() {
@@ -99,7 +94,7 @@ public class QDApplication extends Application implements UpgradeInterface {
         }
         return dbHelper;
     }
-
+    
     /**
      * 处理异常捕获
      */
@@ -111,6 +106,9 @@ public class QDApplication extends Application implements UpgradeInterface {
                 return;
             }
             CrashHandler.getInstance().init(this, errorReportActivity);
+        }else {
+            CrashHandler.getInstance().init(this, null);
+            CrashHandler.getInstance().setCrashDealType(CrashHandler.CrashDealType.savelog);
         }
     }
 

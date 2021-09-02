@@ -51,30 +51,16 @@ public class GuiderView extends View {
         screenWidth = getHeight();
     }
 
-    private ViewGroup windowView;
 
     public GuiderView(Context context, GuiderModel guiderModel, ViewGroup windowView, GuiderActionDialog.OnActionFinishListener onActionFinishListener) {
         super(context);
         this.guiderModel = guiderModel;
-        this.windowView = windowView;
         this.onActionFinishListener = onActionFinishListener;
 
         screenHeight = QMUIDisplayHelper.getScreenHeight(getContext());
         screenWidth = DisplayUtil.getScreenWidth(getContext());
-
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        this.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
+        setClickable(true);
+        this.setOnLongClickListener(v -> false);
     }
 
     public GuiderView(Context context, @Nullable AttributeSet attrs) {
@@ -104,8 +90,8 @@ public class GuiderView extends View {
 
     private boolean isPlaying = false;
 
-    private int duration = 1200;
-    private float[] durations = {.0f, .4f, .65f, .95f, 1f};//%百分比叠加
+    private final int duration = 1200;
+    private final float[] durations = {.0f, .4f, .65f, .95f, 1f};//%百分比叠加
     private int animationIndex = 0;
     private float progress = 0;
     private ValueAnimator animator;
@@ -177,28 +163,24 @@ public class GuiderView extends View {
         //value值0-1
         animator = ValueAnimator.ofFloat(0f, 1);
         animator.setDuration(duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                W:
-                for (int i = durations.length - 1; i >= 0; i--) {
-                    if (value >= durations[i]) {
-                        float next = 0;
-                        if ((i - 1) < 0) {
-                            next = 0;
-                        } else {
-                            next = durations[i - 1];
-                        }
-                        progress = (value - durations[i]) / (durations[i] - next);
-                        animationIndex = i;
-                        break W;
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            for (int i = durations.length - 1; i >= 0; i--) {
+                if (value >= durations[i]) {
+                    float next = 0;
+                    if ((i - 1) < 0) {
+                        next = 0;
+                    } else {
+                        next = durations[i - 1];
                     }
+                    progress = (value - durations[i]) / (durations[i] - next);
+                    animationIndex = i;
+                    break;
                 }
-                postInvalidate();
-                if (value >= 1) {
-                    isAnimationFinished = true;
-                }
+            }
+            postInvalidate();
+            if (value >= 1) {
+                isAnimationFinished = true;
             }
         });
         //animator.setRepeatMode(ValueAnimator.RESTART);
@@ -532,27 +514,24 @@ public class GuiderView extends View {
                 break;
         }
 
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                QDLogger.println("引导", motionEvent.getX() + "," + motionEvent.getY());
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isAnimationFinished) {//动画加载完成并且为点击操作
-                    switch (guiderModel.getComplateType()) {
-                        case CLICK:
-                            if (motionEvent.getX() > rectF_touch.left && motionEvent.getX() < rectF_touch.right && motionEvent.getY() > rectF_touch.top && motionEvent.getY() < rectF_touch.bottom) {
-                                if (onActionFinishListener != null) {
-                                    onActionFinishListener.onFinish();
-                                    // windowView.removeView(GuiderView.this);
-                                    if (animator.isRunning()) {
-                                        animator.cancel();
-                                    }
+        this.setOnTouchListener((view, motionEvent) -> {
+            QDLogger.println("引导", motionEvent.getX() + "," + motionEvent.getY());
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isAnimationFinished) {//动画加载完成并且为点击操作
+                switch (guiderModel.getComplateType()) {
+                    case CLICK:
+                        if (motionEvent.getX() > rectF_touch.left && motionEvent.getX() < rectF_touch.right && motionEvent.getY() > rectF_touch.top && motionEvent.getY() < rectF_touch.bottom) {
+                            if (onActionFinishListener != null) {
+                                onActionFinishListener.onFinish();
+                                // windowView.removeView(GuiderView.this);
+                                if (animator.isRunning()) {
+                                    animator.cancel();
                                 }
                             }
-                            break;
-                    }
+                        }
+                        break;
                 }
-                return false;
             }
+            return false;
         });
     }
 

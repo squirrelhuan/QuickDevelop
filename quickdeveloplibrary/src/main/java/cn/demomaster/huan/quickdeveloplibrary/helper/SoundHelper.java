@@ -29,13 +29,13 @@ public class SoundHelper {
         if (autoLoaded) {//自动加载raw下的资源
             Class a = (Class) rawClass;
             Field[] fields = a.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true);
+            for (Field field : fields) {
+                field.setAccessible(true);
                 try {
                     //得到资源id
-                    int id = Integer.valueOf((int) fields[i].get(rawClass));
+                    int id = Integer.valueOf((int) field.get(rawClass));
                     //添加到音频集合中
-                    soundMap.put(id, fields[i].getName());
+                    soundMap.put(id, field.getName());
                 } catch (IllegalArgumentException e) {
                     QDLogger.e(e);
                 } catch (IllegalAccessException e) {
@@ -116,7 +116,7 @@ public class SoundHelper {
             try {
                 soundPool.load(context, (Integer) key, 1);
             } catch (Exception e) {
-                e.getMessage();
+                e.printStackTrace();
             }
         }
     }

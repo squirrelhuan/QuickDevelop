@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,11 +50,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder1.cb_checkBox.setClickable(false);
             }else {
                 holder1.cb_checkBox.setClickable(true);
-                if (mDatas.get(position).isSelected()) {
-                    holder1.cb_checkBox.setChecked(true);
-                } else {
-                    holder1.cb_checkBox.setChecked(false);
-                }
+                holder1.cb_checkBox.setChecked(mDatas.get(position).isSelected());
             }
         /*    holder1.itemView.setTag(position);
             holder1.itemView.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +63,11 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });*/
         holder1.cb_checkBox.setTag(position);
-        holder1.cb_checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //item 点击事件
-                LanguageModel languageModel = mDatas.get((int) buttonView.getTag());
-                languageModel.setSelected(isChecked);
-                onItemClicked.onItemClicked(buttonView, (int) buttonView.getTag(), languageModel);
-            }
+        holder1.cb_checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //item 点击事件
+            LanguageModel languageModel = mDatas.get((int) buttonView.getTag());
+            languageModel.setSelected(isChecked);
+            onItemClicked.onItemClicked(buttonView, (int) buttonView.getTag(), languageModel);
         });
 
     }
@@ -101,7 +93,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return new VH(v);
     }
 
-    public static interface OnItemClicked {
+    public interface OnItemClicked {
         void onItemClicked(View view, int position, LanguageModel languageModel);
     }
 

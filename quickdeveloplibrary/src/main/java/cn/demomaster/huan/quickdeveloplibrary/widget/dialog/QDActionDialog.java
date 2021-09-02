@@ -9,7 +9,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -199,7 +198,7 @@ public class QDActionDialog extends Dialog {
                         //无参数 imageView = (View) builder.leftViewClass.newInstance();
                         //有参数需要使用Constructor类对象
                         //这种方式和下面这种方式都行，注意这里的参数类型是 new Class[]
-                        Constructor ct = leftViewClass.getDeclaredConstructor(new Class[]{Context.class});
+                        Constructor ct = leftViewClass.getDeclaredConstructor(Context.class);
                         ct.setAccessible(true);
                         imageView = (View) ct.newInstance(new Object[]{context});
                         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(l / 2, l / 2);
@@ -224,7 +223,7 @@ public class QDActionDialog extends Dialog {
                         //无参数 imageView = (View) builder.leftViewClass.newInstance();
                         //有参数需要使用Constructor类对象
                         //这种方式和下面这种方式都行，注意这里的参数类型是 new Class[]
-                        Constructor ct = topViewClass.getDeclaredConstructor(new Class[]{Context.class});
+                        Constructor ct = topViewClass.getDeclaredConstructor(Context.class);
                         ct.setAccessible(true);
                         imageView = (View) ct.newInstance(new Object[]{context});
                         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(l, l);
@@ -253,11 +252,8 @@ public class QDActionDialog extends Dialog {
             if (stateType == QDActionStateType.CONTENTVIEWID) {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                view.setOnClickListener(v -> {
 
-                    }
                 });
                 contentLinearView.addView(view, layoutParams1);
                 contentLinearView.setBackgroundColor(Color.TRANSPARENT);
@@ -278,17 +274,14 @@ public class QDActionDialog extends Dialog {
         }
         contentLinearView.setPadding(p, p, p, p);
 
-        ViewGroup layout = new RelativeLayout(getContext());
-        ((RelativeLayout) layout).setGravity(gravity);
+        RelativeLayout layout = new RelativeLayout(getContext());
+        layout.setGravity(gravity);
         layout.addView(contentLinearView, layoutParams);
         layout.setBackgroundColor(backgroundColor);
         if (mCancelable) {
-            layout.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    dismiss();
-                    return false;
-                }
+            layout.setOnTouchListener((v, event) -> {
+                dismiss();
+                return false;
             });
         }
         setContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -335,12 +328,7 @@ public class QDActionDialog extends Dialog {
 
         super.show();
         if (delayMillis != -1) {
-            contentLinearView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dismiss();
-                }
-            }, delayMillis);
+            contentLinearView.postDelayed(() -> dismiss(), delayMillis);
         }
     }
 

@@ -1,11 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.square;
 
-/**
- * @author squirrel桓
- * @date 2018/11/29.
- * description：
- */
-
 import android.content.Context;
 import android.util.AttributeSet;
 

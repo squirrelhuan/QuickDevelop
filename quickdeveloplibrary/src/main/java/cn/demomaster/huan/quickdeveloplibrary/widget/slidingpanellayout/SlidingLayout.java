@@ -338,7 +338,7 @@ public class SlidingLayout extends LinearLayout {
         isFling = true;
         isAutoScrolling = false;
         //mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), 0, 1000, 2000);
-        mScroller.fling(0, (int) scrollView.getTop(), 0, (int) -velocityY / 2, 0, 0, minMarginTop, maxMarginTop);
+        mScroller.fling(0, scrollView.getTop(), 0, (int) -velocityY / 2, 0, 0, minMarginTop, maxMarginTop);
         invalidate();
     }
 

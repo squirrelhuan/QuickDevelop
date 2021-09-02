@@ -41,7 +41,7 @@ public class SerialPortFinder {
 
         public Vector<File> getDevices() {
             if (mDevices == null) {
-                mDevices = new Vector<File>();
+                mDevices = new Vector<>();
                 File dev = new File("/dev");
                 File[] files = dev.listFiles();
                 int i;
@@ -66,7 +66,7 @@ public class SerialPortFinder {
 
     Vector<Driver> getDrivers() throws IOException {
         if (mDrivers == null) {
-            mDrivers = new Vector<Driver>();
+            mDrivers = new Vector<>();
             LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
             String l;
             while ((l = r.readLine()) != null) {
@@ -85,7 +85,7 @@ public class SerialPortFinder {
     }
 
     public String[] getAllDevices() {
-        Vector<String> devices = new Vector<String>();
+        Vector<String> devices = new Vector<>();
         // Parse each driver
         Iterator<Driver> itdriv;
         try {
@@ -102,11 +102,11 @@ public class SerialPortFinder {
         } catch (IOException e) {
             QDLogger.e(e);
         }
-        return devices.toArray(new String[devices.size()]);
+        return devices.toArray(new String[0]);
     }
 
     public String[] getAllDevicesPath() {
-        Vector<String> devices = new Vector<String>();
+        Vector<String> devices = new Vector<>();
         // Parse each driver
         Iterator<Driver> itdriv;
         try {
@@ -122,6 +122,6 @@ public class SerialPortFinder {
         } catch (IOException e) {
             QDLogger.e(e);
         }
-        return devices.toArray(new String[devices.size()]);
+        return devices.toArray(new String[0]);
     }
 }

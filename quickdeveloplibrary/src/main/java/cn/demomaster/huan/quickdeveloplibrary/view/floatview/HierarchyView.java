@@ -47,27 +47,21 @@ public class HierarchyView extends View {
     }
 
     private void init() {
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (onClickListener2 != null) {
-                    onClickListener2.onClick(event.getX(), event.getY());
-                }
-                return true;
+        setOnTouchListener((v, event) -> {
+            if (onClickListener2 != null) {
+                onClickListener2.onClick(event.getX(), event.getY());
             }
+            return true;
         });
 
-        setOnClickListener2(new OnHierarchtClickListener() {
-            @Override
-            public void onClick(float x, float y) {
-                if (viewNodeInfo != null) {
-                    List<ViewNodeInfo> nodeInfoList = findNodeInfoByPosition(x, y);
-                    selectedNodeInfo = getMiniNodeInfo(nodeInfoList);
-                    if (selectedNodeInfo != null && onNodeInfoClickListener != null) {
-                        onNodeInfoClickListener.onClick(selectedNodeInfo);
-                    }
-                    postInvalidate();
+        setOnClickListener2((x, y) -> {
+            if (viewNodeInfo != null) {
+                List<ViewNodeInfo> nodeInfoList = findNodeInfoByPosition(x, y);
+                selectedNodeInfo = getMiniNodeInfo(nodeInfoList);
+                if (selectedNodeInfo != null && onNodeInfoClickListener != null) {
+                    onNodeInfoClickListener.onClick(selectedNodeInfo);
                 }
+                postInvalidate();
             }
         });
     }

@@ -22,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
  */
 public class BluetoothAdapter extends RecyclerView.Adapter<BluetoothAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
 
     public BluetoothAdapter(Context context) {
         this.context = context;
@@ -75,13 +75,10 @@ public class BluetoothAdapter extends RecyclerView.Adapter<BluetoothAdapter.View
             tv_title.setText(device.getName());
             tv_wifi_type.setText(device.getAddress());
             itemView.setTag(position);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int p = getAdapterPosition();
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(v,  p);
-                    }
+            itemView.setOnClickListener(v -> {
+                int p = getAdapterPosition();
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(v,  p);
                 }
             });
         }

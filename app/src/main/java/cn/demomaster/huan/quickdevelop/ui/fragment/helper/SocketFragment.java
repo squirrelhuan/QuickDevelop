@@ -46,29 +46,21 @@ public class SocketFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, mView);
         getActionBarTool().setTitle("socket");
-        btn_send_connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDTcpClient.getInstance().connect("118.25.63.138", 10101);
-                //QDTcpClient.getInstance().connect("10.0.2.2",10101);
-            }
+        btn_send_connect.setOnClickListener(v -> {
+            QDTcpClient.getInstance().connect("118.25.63.138", 10101);
+            //QDTcpClient.getInstance().connect("10.0.2.2",10101);
         });
-        btn_send_tcp.setOnClickListener(new View.OnClickListener() {
+        btn_send_tcp.setOnClickListener(v -> QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
             @Override
-            public void onClick(View v) {
-                QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
-                    @Override
-                    public void onReceived(QDMessage qdMessage) {
+            public void onReceived(QDMessage qdMessage) {
 
-                    }
-
-                    @Override
-                    public void onError(String err) {
-
-                    }
-                });
             }
-        });
+
+            @Override
+            public void onError(String err) {
+
+            }
+        }));
         //QDTcpClient.setStateListener();
     }
 

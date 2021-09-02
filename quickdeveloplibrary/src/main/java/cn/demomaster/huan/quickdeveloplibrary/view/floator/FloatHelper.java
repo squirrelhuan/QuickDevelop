@@ -232,7 +232,6 @@ public class FloatHelper {
 
         private long startTime = 0;
         private long endTime = 0;
-        private boolean isclick;
         FloatHelper floatHelper;
 
         public FloatingOnTouchListener(FloatHelper floatHelper) {
@@ -246,7 +245,7 @@ public class FloatHelper {
                 case MotionEvent.ACTION_DOWN:
                     x = (int) event.getRawX();
                     y = (int) event.getRawY();
-                    isclick = false;//当按下的时候设置isclick为false
+                    boolean isclick = false;//当按下的时候设置isclick为false
                     startTime = System.currentTimeMillis();
                     //System.out.println("执行顺序down");
                     break;
@@ -274,11 +273,7 @@ public class FloatHelper {
                 case MotionEvent.ACTION_UP:
                     endTime = System.currentTimeMillis();
                     //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
-                    if ((endTime - startTime) > 0.15 * 1000L) {
-                        isclick = true;
-                    } else {
-                        isclick = false;
-                    }
+                    isclick = (endTime - startTime) > 0.15 * 1000L;
                     break;
                 default:
                     break;

@@ -59,134 +59,120 @@ public class DownloadFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_download, null);
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_download, null);
+        return mView;
     }
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         //actionBarLayoutOld.setTitle("文件下载");
-        btn_download_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DownloadHelper.DownloadBuilder(mContext).setUrl("https://baekteori.s3.ap-northeast-2.amazonaws.com/charge/app/app-release-legu-20191220001.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191224T041244Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=AKIA2AOAUOJY3RLCJN6J%2F20191224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=6a0a8f6e078b5c5f07f048aac0e43f600ca45d8d0ab526a770c66590de9936fc")
-                        .setFileName("抖音.png")
-                        .setDownloadType(DownloadTask.DownloadType.Okhttp)
-                        .setOnProgressListener(
-                                new OnDownloadProgressListener() {
-                                    @Override
-                                    public void onDownloadRunning(long downloadId, String name, float progress) {
-                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
-                                    }
+        btn_download_01.setOnClickListener(v -> {
+            new DownloadHelper.DownloadBuilder(mContext).setUrl("https://baekteori.s3.ap-northeast-2.amazonaws.com/charge/app/app-release-legu-20191220001.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191224T041244Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=AKIA2AOAUOJY3RLCJN6J%2F20191224%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=6a0a8f6e078b5c5f07f048aac0e43f600ca45d8d0ab526a770c66590de9936fc")
+                    .setFileName("抖音.png")
+                    .setDownloadType(DownloadTask.DownloadType.Okhttp)
+                    .setOnProgressListener(
+                            new OnDownloadProgressListener() {
+                                @Override
+                                public void onDownloadRunning(long downloadId, String name, float progress) {
+                                    QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
+                                }
 
-                                    @Override
-                                    public void onDownloadSuccess(DownloadTask downloadTask) {
-                                        QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
-                                    }
+                                @Override
+                                public void onDownloadSuccess(DownloadTask downloadTask) {
+                                    QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
+                                }
 
-                                    @Override
-                                    public void onDownloadFail() {
+                                @Override
+                                public void onDownloadFail() {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onDownloadPaused() {
+                                @Override
+                                public void onDownloadPaused() {
 
-                                    }
-                                }).start();
-               /* new DownloadHelper.DownloadBuilder(mContext).setUrl("http://wap.apk.anzhi.com/data5/apk/201907/19/941a15c7bdcc39a9ef33e22cb8dd7680_70536400.apk")
-                        .setFileName("抖音.apk")
-                        .setOnProgressListener(
-                                new OnDownloadProgressListener() {
-                                    @Override
-                                    public void onDownloadRunning(long downloadId, String name, float progress) {
-                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
-                                    }
+                                }
+                            }).start();
+           /* new DownloadHelper.DownloadBuilder(mContext).setUrl("http://wap.apk.anzhi.com/data5/apk/201907/19/941a15c7bdcc39a9ef33e22cb8dd7680_70536400.apk")
+                    .setFileName("抖音.apk")
+                    .setOnProgressListener(
+                            new OnDownloadProgressListener() {
+                                @Override
+                                public void onDownloadRunning(long downloadId, String name, float progress) {
+                                    QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
+                                }
 
-                                    @Override
-                                    public void onDownloadSuccess(DownloadTask downloadTask) {
-                                        QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
-                                    }
+                                @Override
+                                public void onDownloadSuccess(DownloadTask downloadTask) {
+                                    QDLogger.i("1下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
+                                }
 
-                                    @Override
-                                    public void onDownloadFail() {
+                                @Override
+                                public void onDownloadFail() {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onDownloadPaused() {
+                                @Override
+                                public void onDownloadPaused() {
 
-                                    }
-                                }).start();
+                                }
+                            }).start();
 
-                new DownloadHelper.DownloadBuilder(mContext).setUrl("https://alissl.ucdl.pp.uc.cn/fs08/2019/07/05/6/2_b0cfb9e044477a4a1ea8ef8656fb69c9.apk?yingid=wdj_web&fname=%E5%BD%B1%E9%9F%B3%E5%85%88%E9%94%8B&pos=wdj_web%2Fdetail_normal_dl%2F0&appid=296927&packageid=800798582&apprd=296927&iconUrl=http%3A%2F%2Fandroid-artworks.25pp.com%2Ffs08%2F2019%2F07%2F08%2F4%2F2_41f75e4a7e71a2c47497e01a3c24ca43_con.png&pkg=com.xfplay.play&did=18c032fc0601f7543599f3bb2b4e65da&vcode=500730&md5=caa800e0c2c0575641d001377f12e3a1")
-                        .setFileName("影音.apk")
-                        .setOnProgressListener(
-                                new OnDownloadProgressListener() {
-                                    @Override
-                                    public void onDownloadRunning(long downloadId, String name, float progress) {
-                                        QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
-                                    }
+            new DownloadHelper.DownloadBuilder(mContext).setUrl("https://alissl.ucdl.pp.uc.cn/fs08/2019/07/05/6/2_b0cfb9e044477a4a1ea8ef8656fb69c9.apk?yingid=wdj_web&fname=%E5%BD%B1%E9%9F%B3%E5%85%88%E9%94%8B&pos=wdj_web%2Fdetail_normal_dl%2F0&appid=296927&packageid=800798582&apprd=296927&iconUrl=http%3A%2F%2Fandroid-artworks.25pp.com%2Ffs08%2F2019%2F07%2F08%2F4%2F2_41f75e4a7e71a2c47497e01a3c24ca43_con.png&pkg=com.xfplay.play&did=18c032fc0601f7543599f3bb2b4e65da&vcode=500730&md5=caa800e0c2c0575641d001377f12e3a1")
+                    .setFileName("影音.apk")
+                    .setOnProgressListener(
+                            new OnDownloadProgressListener() {
+                                @Override
+                                public void onDownloadRunning(long downloadId, String name, float progress) {
+                                    QDLogger.d("下载状态：" + downloadId + "," + name + "," + progress);
+                                }
 
-                                    @Override
-                                    public void onDownloadSuccess(DownloadTask downloadTask) {
-                                        QDLogger.i("2下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
-                                    }
+                                @Override
+                                public void onDownloadSuccess(DownloadTask downloadTask) {
+                                    QDLogger.i("2下载完成" + downloadTask.getFileName() + "->" + downloadTask.getDownloadUri().getPath());
+                                }
 
-                                    @Override
-                                    public void onDownloadFail() {
+                                @Override
+                                public void onDownloadFail() {
 
-                                    }
+                                }
 
-                                    @Override
-                                    public void onDownloadPaused() {
+                                @Override
+                                public void onDownloadPaused() {
 
-                                    }
-                                }).start();*/
+                                }
+                            }).start();*/
 
-            }
         });
 
-        btn_download_thread.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDownloading();
-            }
-        });
+        btn_download_thread.setOnClickListener(v -> getDownloading());
 
-        btn_upload_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File file = new File(Environment.getExternalStorageDirectory(), "ShareBattery/log/2019-11-26.txt");
-                QDLogger.i("上传路径：" + file.getAbsolutePath());
-                //uploadFile(file);
-                //http://web.baekteori.com:18088/mange-web/log/upload
-                sendFromDataPostRequest("http://web.baekteori.com:18088/mange-web/log/upload", file, "file");
-            }
+        btn_upload_file.setOnClickListener(v -> {
+            File file = new File(Environment.getExternalStorageDirectory(), "ShareBattery/log/2019-11-26.txt");
+            QDLogger.i("上传路径：" + file.getAbsolutePath());
+            //uploadFile(file);
+            //http://web.baekteori.com:18088/mange-web/log/upload
+            sendFromDataPostRequest("http://web.baekteori.com:18088/mange-web/log/upload", file, "file");
         });
     }
 
     private static final MediaType FROM_DATA = MediaType.parse("multipart/form-data");
 
     public void sendFromDataPostRequest(String url, File file, String typeName) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-                MultipartBody body = new MultipartBody.Builder()
-                        .setType(FROM_DATA)
-                        .addFormDataPart(typeName, "测试上传日志文件.txt", fileBody)
-                        .build();
-                Request request = new Request.Builder()
-                        .post(body)
-                        .url(url)
-                        .build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    QDLogger.println(client.newCall(request).execute().body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+            MultipartBody body = new MultipartBody.Builder()
+                    .setType(FROM_DATA)
+                    .addFormDataPart(typeName, "测试上传日志文件.txt", fileBody)
+                    .build();
+            Request request = new Request.Builder()
+                    .post(body)
+                    .url(url)
+                    .build();
+            OkHttpClient client = new OkHttpClient();
+            try {
+                QDLogger.println(client.newCall(request).execute().body().string());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -196,9 +182,7 @@ public class DownloadFragment extends BaseFragment {
     private void getDownloading() {
         this.downloadManager = (DownloadManager) mContext.getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Query query = new DownloadManager.Query();//.setFilterByStatus(DownloadManager.STATUS_RUNNING);//.setFilterById(downloadId);//
-        Cursor cursor = null;
-        try {
-            cursor = downloadManager.query(query);
+        try (Cursor cursor = downloadManager.query(query)) {
             //遍历游标
             while (cursor != null && cursor.moveToNext()) {
                 //下载文件的总大小
@@ -227,13 +211,12 @@ public class DownloadFragment extends BaseFragment {
                     }
                 }
 
-                QDLogger.e(fileName + ",state=" + task_status);
-                QDLogger.e(fileName + ",STATUS_PENDING=" + STATUS_PENDING);
-                QDLogger.e(fileName + ",STATUS_FAILED=" + STATUS_FAILED);
-                QDLogger.e(fileName + ",STATUS_PAUSED=" + STATUS_PAUSED);
-                QDLogger.e(fileName + ",STATUS_RUNNING=" + STATUS_RUNNING);
-                QDLogger.e(fileName + ",STATUS_SUCCESSFUL=" + STATUS_SUCCESSFUL);
-
+                QDLogger.i(fileName + ",state=" + task_status);
+                QDLogger.i(fileName + ",STATUS_PENDING=" + STATUS_PENDING);
+                QDLogger.i(fileName + ",STATUS_FAILED=" + STATUS_FAILED);
+                QDLogger.i(fileName + ",STATUS_PAUSED=" + STATUS_PAUSED);
+                QDLogger.i(fileName + ",STATUS_RUNNING=" + STATUS_RUNNING);
+                QDLogger.i(fileName + ",STATUS_SUCCESSFUL=" + STATUS_SUCCESSFUL);
                 if (task_status == STATUS_FAILED) {
                     long column_id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
                     downloadManager.remove(column_id);
@@ -256,10 +239,6 @@ public class DownloadFragment extends BaseFragment {
                     message.obj = downloadProgress;
                     downLoadHandler.sendMessage(message);*/
                 //}
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
             }
         }
     }

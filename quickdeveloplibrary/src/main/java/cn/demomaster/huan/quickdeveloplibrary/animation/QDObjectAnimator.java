@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.animation;
 
-import android.animation.ValueAnimator;
 import android.view.View;
 
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -11,20 +10,17 @@ public class QDObjectAnimator extends QDValueAnimator {
 
     public QDObjectAnimator(Class dataType) {
         super(dataType);
-        addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                //print("QDObjectAnimator doo");
-                if (targetView != null) {
-                    switch (propertyName) {
-                        case "rotation":
-                            //print("rotation =" + (Float) animation.getAnimatedValue());
-                            targetView.setRotation((Float) animation.getAnimatedValue());
-                            break;
-                    }
-                } else {
-                    print("targetView = null");
+        addUpdateListener(animation -> {
+            //print("QDObjectAnimator doo");
+            if (targetView != null) {
+                switch (propertyName) {
+                    case "rotation":
+                        //print("rotation =" + (Float) animation.getAnimatedValue());
+                        targetView.setRotation((Float) animation.getAnimatedValue());
+                        break;
                 }
+            } else {
+                print("targetView = null");
             }
         });
     }

@@ -51,59 +51,39 @@ public class NotifycationFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("消息通知");
-        btn_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BatteryOptimizationsHelper.request(getContext());
-            }
+        btn_01.setOnClickListener(v -> BatteryOptimizationsHelper.request(getContext()));
+        btn_02.setOnClickListener(v -> {
+            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+            builer.setTitle("消息通知（系统默认）").setContentText(""+((TextView)v).getText()).send();
         });
-        btn_02.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
-                builer.setTitle("消息通知（系统默认）").setContentText(""+((TextView)v).getText()).send();
-            }
+        btn_03.setOnClickListener(v -> {
+            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+            String soundResourceName = "beep";
+            String soundResourceName2 = "audio/beep.ogg";
+            String path = "file:///android_asset/"+ soundResourceName;
+            Uri soundUri = null;
+            //访问Resource
+            //soundUri = NotificationHelper2.getUriFromResource(mContext,soundResourceName);
+            //访问Assets
+            soundUri = NotificationHelper.getUriFromAssets(mContext,soundResourceName2);
+            builer.setTitle("消息通知（自定义音频）").setContentText(""+((TextView)v).getText()).setSoundUri(soundUri).send();
         });
-        btn_03.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
-                String soundResourceName = "beep";
-                String soundResourceName2 = "audio/beep.ogg";
-                String path = "file:///android_asset/"+ soundResourceName;
-                Uri soundUri = null;
-                //访问Resource
-                //soundUri = NotificationHelper2.getUriFromResource(mContext,soundResourceName);
-                //访问Assets
-                soundUri = NotificationHelper.getUriFromAssets(mContext,soundResourceName2);
-                builer.setTitle("消息通知（自定义音频）").setContentText(""+((TextView)v).getText()).setSoundUri(soundUri).send();
-            }
-        });
-        btn_04.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
-                builer.setTitle("消息通知（静音+震动）").setContentText(""+((TextView)v).getText()).setEnableSound(false).send();
-            }
+        btn_04.setOnClickListener(v -> {
+            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+            builer.setTitle("消息通知（静音+震动）").setContentText(""+((TextView)v).getText()).setEnableSound(false).send();
         });
 
-        btn_05.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
-                builer.setTitle("消息通知（静音不震动）").setContentText(""+((TextView)v).getText()).setEnableVibration(false).setEnableSound(false).send();
-            }
+        btn_05.setOnClickListener(v -> {
+            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+            builer.setTitle("消息通知（静音不震动）").setContentText(""+((TextView)v).getText()).setEnableVibration(false).setEnableSound(false).send();
         });
 
-        btn_06.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
-                builer.setTitle("消息通知（自定义视图）")
-                        .setEnableVibration(false)
-                        .setEnableSound(false)
-                        .setContentText("").send();
-            }
+        btn_06.setOnClickListener(v -> {
+            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+            builer.setTitle("消息通知（自定义视图）")
+                    .setEnableVibration(false)
+                    .setEnableSound(false)
+                    .setContentText("").send();
         });
     }
 

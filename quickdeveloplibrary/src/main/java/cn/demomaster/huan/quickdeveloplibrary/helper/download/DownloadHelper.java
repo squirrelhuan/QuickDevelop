@@ -102,12 +102,7 @@ public class DownloadHelper {
                 // 下载失败
                 QDLogger.e(e);
                 taskHanderMap.remove(downloadId);
-                QdThreadHelper.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloadTask.getOnProgressListener().onDownloadFail();
-                    }
-                });
+                QdThreadHelper.runOnUiThread(() -> downloadTask.getOnProgressListener().onDownloadFail());
             }
 
             @Override
@@ -131,22 +126,14 @@ public class DownloadHelper {
                     }
                     fos.flush();
                     downloadTask.setDownloadFilePath(file.getAbsolutePath());
-                    QdThreadHelper.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 下载完成
-                            downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
-                        }
+                    QdThreadHelper.runOnUiThread(() -> {
+                        // 下载完成
+                        downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
                     });//在子线程中直接去new 一个handler
                     Log.i("DOWNLOAD", "下载完成 用时：" + (System.currentTimeMillis() - startTime)+","+file.getAbsolutePath());
                 } catch (Exception e) {
                     QDLogger.e(e);
-                    QdThreadHelper.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            downloadTask.getOnProgressListener().onDownloadFail();
-                        }
-                    });
+                    QdThreadHelper.runOnUiThread(() -> downloadTask.getOnProgressListener().onDownloadFail());
                 } finally {
                     taskHanderMap.remove(downloadId);
                     try {
@@ -225,7 +212,7 @@ public class DownloadHelper {
      */
     private void registerBroadcast(Context context) {
         try {
-            /**注册service 广播 1.任务完成时 2.进行中的任务被点击*/
+            //注册service 广播 1.任务完成时 2.进行中的任务被点击
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
             intentFilter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
@@ -400,7 +387,7 @@ public class DownloadHelper {
      */
     private void cancelTask(int downloadId) {
         Object call = taskHanderMap.get(downloadId);
-        if (call != null && call instanceof Call) {
+        if (call instanceof Call) {
             QDLogger.d("取消下载 cancelTask downloadId=" + downloadId);
             ((Call) call).cancel();
         }

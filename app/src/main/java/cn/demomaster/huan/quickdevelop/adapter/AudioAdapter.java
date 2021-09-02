@@ -21,7 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
 
     private List<String> appList;
-    private Context context;
+    private final Context context;
 
     public AudioAdapter(Context context) {
         this.context = context;
@@ -63,20 +63,14 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         public void onBind(final int position) {
             if(appList!=null&&position<appList.size()) {
                 tv_title.setText(appList.get(position));
-                iv_play.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(onItemClickListener!=null){
-                            onItemClickListener.onItemClick(v,position);
-                        }
+                iv_play.setOnClickListener(v -> {
+                    if(onItemClickListener!=null){
+                        onItemClickListener.onItemClick(v,position);
                     }
                 });
-                iv_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(onItemClickListener!=null){
-                            onItemClickListener.onDelete(v,position);
-                        }
+                iv_delete.setOnClickListener(v -> {
+                    if(onItemClickListener!=null){
+                        onItemClickListener.onDelete(v,position);
                     }
                 });
                 File file = new File(tv_size.getContext().getFilesDir().getAbsolutePath()+"/wav"+"/"+appList.get(position));

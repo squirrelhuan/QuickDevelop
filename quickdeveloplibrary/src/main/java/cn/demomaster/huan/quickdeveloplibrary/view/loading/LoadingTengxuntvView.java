@@ -93,14 +93,11 @@ public class LoadingTengxuntvView extends View {
         float end = 2f;
         animator = ValueAnimator.ofFloat(0f, end);
         animator.setDuration(1200);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                //QDLogger.d(TAG, "progress=" + progress);
-                //postInvalidate();
-                invalidate();
-            }
+        animator.addUpdateListener(animation -> {
+            progress = (float) animation.getAnimatedValue();
+            //QDLogger.d(TAG, "progress=" + progress);
+            //postInvalidate();
+            invalidate();
         });
         animator.setRepeatMode(ValueAnimator.RESTART);
         animator.setRepeatCount(ValueAnimator.INFINITE);

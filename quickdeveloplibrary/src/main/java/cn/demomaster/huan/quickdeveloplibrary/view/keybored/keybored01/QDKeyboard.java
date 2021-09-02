@@ -21,7 +21,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -111,57 +110,47 @@ public class QDKeyboard {
         mEditText = editText;
         for (int i = 0; i < editTextList.size(); i++) {
             if (editTextList.get(i) == editText) {
-                editTextList.get(i).setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        hideSystemKeyBoard((EditText) v);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if ((isClosed || isClosing)) {
-                                currentEditKey = v.getId();
-                                showKeyboard();
-                            }
+                editTextList.get(i).setOnTouchListener((v, event) -> {
+                    hideSystemKeyBoard((EditText) v);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if ((isClosed || isClosing)) {
+                            currentEditKey = v.getId();
+                            showKeyboard();
                         }
-                        return false;
                     }
+                    return false;
                 });
-                editTextList.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        hideSystemKeyBoard((EditText) v);
-                        //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
-                        if (hasFocus) {
-                            if ((isClosed || isClosing)) {
-                                currentEditKey = v.getId();
-                                showKeyboard();
-                            }
-                        } else {//如果新的焦点不使用自定义键盘则隐藏
-                            QDLogger.d(v + ",currentEditKey=" + currentEditKey);
-                            if (currentEditKey == 0 || currentEditKey == v.getId()) {
-                                waitHideKeyboard();
-                            }
+                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                    hideSystemKeyBoard((EditText) v);
+                    //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
+                    if (hasFocus) {
+                        if ((isClosed || isClosing)) {
+                            currentEditKey = v.getId();
+                            showKeyboard();
+                        }
+                    } else {//如果新的焦点不使用自定义键盘则隐藏
+                        QDLogger.d(v + ",currentEditKey=" + currentEditKey);
+                        if (currentEditKey == 0 || currentEditKey == v.getId()) {
+                            waitHideKeyboard();
                         }
                     }
                 });
             } else {
                 editTextList.get(i).setOnTouchListener(null);
-                editTextList.get(i).setOnFocusChangeListener(new View.
-                        OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        hideSystemKeyBoard((EditText) v);
-                        //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
-                        if (hasFocus) {
-                            // 此处为得到焦点时的处理内容
-                            setCurrentFocus((EditText) v);
-                            if ((isClosed || isClosing)) {
-                                currentEditKey = v.getId();
-                                showKeyboard();
-                            }
-                        } else {//如果新的焦点不使用自定义键盘则隐藏
-                            QDLogger.d(v + ",currentEditKey=" + currentEditKey);
-                            if (currentEditKey == 0 || currentEditKey == v.getId()) {
-                                waitHideKeyboard();
-                            }
+                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                    hideSystemKeyBoard((EditText) v);
+                    //QDLogger.d("id=" + v.getId() + ",currentEditKey=" + currentEditKey + (hasFocus ? "得到焦点" : "失去焦点"));
+                    if (hasFocus) {
+                        // 此处为得到焦点时的处理内容
+                        setCurrentFocus((EditText) v);
+                        if ((isClosed || isClosing)) {
+                            currentEditKey = v.getId();
+                            showKeyboard();
+                        }
+                    } else {//如果新的焦点不使用自定义键盘则隐藏
+                        QDLogger.d(v + ",currentEditKey=" + currentEditKey);
+                        if (currentEditKey == 0 || currentEditKey == v.getId()) {
+                            waitHideKeyboard();
                         }
                     }
                 });
@@ -175,7 +164,7 @@ public class QDKeyboard {
      * @return
      */
     private void waitHideKeyboard() {
-        View v = ((Activity) getActivityFromView(mEditText)).getCurrentFocus();
+        View v = getActivityFromView(mEditText).getCurrentFocus();
         //v=((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findFocus();
         QDLogger.d(v == null ? "null" : v.toString() + v.getId());
         if (v == null || !editTextList.contains(v)) {
@@ -196,18 +185,10 @@ public class QDKeyboard {
         //数字 case 3: keyboardView.setKeyboard(keyboardNumber);
         switch (mEditText.getInputType()) {
             case InputType.TYPE_CLASS_NUMBER://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_CLASS_PHONE://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_VARIATION_PASSWORD://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_VARIATION_NORMAL://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_FLAG_DECIMAL://数字
+            case InputType.TYPE_CLASS_PHONE:
+            case InputType.TYPE_NUMBER_VARIATION_PASSWORD:
+            case InputType.TYPE_NUMBER_VARIATION_NORMAL:
+            case InputType.TYPE_NUMBER_FLAG_DECIMAL:
                 keyboardView.setKeyboard(keyboardNumber_Only);
                 break;
             default:
@@ -274,19 +255,16 @@ public class QDKeyboard {
         qdTipPopup.setFocusable(false);
         qdTipPopup.setTouchable(true);
         qdTipPopup.setAnimationStyle(R.style.keybored_anim);
-        qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = ((Activity) getActivityFromView(mEditText)).getWindow().getAttributes();
-                lp.alpha = 1f;
-                ((Activity) getActivityFromView(mEditText)).getWindow().setAttributes(lp);
-                contentView = ((Activity) getActivityFromView(mEditText)).getWindow().getDecorView().findViewById(android.R.id.content);
-                mDecorView = (View) contentView.getParent();
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
-                layoutParams.bottomMargin = (int) 0;
-                layoutParams.topMargin = 0;
-                mDecorView.setLayoutParams(layoutParams);
-            }
+        qdTipPopup.setOnDismissListener(() -> {
+            WindowManager.LayoutParams lp = getActivityFromView(mEditText).getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivityFromView(mEditText).getWindow().setAttributes(lp);
+            contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
+            mDecorView = (View) contentView.getParent();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
+            layoutParams.bottomMargin = 0;
+            layoutParams.topMargin = 0;
+            mDecorView.setLayoutParams(layoutParams);
         });
 
         setDelDrawable(mContext.getResources().getDrawable(R.drawable.icon_del));

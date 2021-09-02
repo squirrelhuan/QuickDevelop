@@ -3,47 +3,63 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
+    <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_error_01"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="除以零错误"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_error_01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="除以零错误" />
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_error_02"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="空指针错误"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_error_02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="空指针错误" />
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_error_03"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="类型转换错误"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_error_03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="类型转换错误" />
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_double_click"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="双击我"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_error_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="查看日志" />
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_file_browser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="沙盒浏览" />
 
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_three_click"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="3击我"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_double_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="双击我" />
 
-                </LinearLayout>
-        </ScrollView>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_three_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="3击我" />
 
+        </LinearLayout>
+    </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 </RelativeLayout>

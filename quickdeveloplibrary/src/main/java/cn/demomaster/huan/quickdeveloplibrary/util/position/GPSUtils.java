@@ -22,7 +22,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class GPSUtils {
 
     private static GPSUtils instance;
-    private Context mContext;
+    private final Context mContext;
     private LocationManager locationManager;
 
     private GPSUtils(Context context) {
@@ -38,10 +38,9 @@ public class GPSUtils {
 
     /**
      * 获取经纬度
-     *
      * @return
      */
-    public String getLngAndLat(OnLocationResultListener onLocationResultListener) {
+    public void getLngAndLat(OnLocationResultListener onLocationResultListener) {
         mOnLocationListener = onLocationResultListener;
 
         String locationProvider = null;
@@ -61,7 +60,7 @@ public class GPSUtils {
             Intent i = new Intent();
             i.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             mContext.startActivity(i);
-            return null;
+            return ;
         }
         Location location = null;
         //获取Location
@@ -82,7 +81,6 @@ public class GPSUtils {
         }
         //监视地理位置变化
         locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
-        return null;
     }
 
 

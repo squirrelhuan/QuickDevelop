@@ -20,7 +20,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "按钮", preViewClass = QDButton.class, resType = ResType.Custome)
 public class QdButtonFragment extends BaseFragment {
 

@@ -1,5 +1,7 @@
 package cn.demomaster.huan.quickdevelop.util;
 
+import java.util.Arrays;
+
 public class PasswordGenarator {
 
     public PasswordGenarator(){
@@ -8,9 +10,10 @@ public class PasswordGenarator {
 
     public void init(){
         char[] chars = new char[startLenth];
-        for(int i=0;i<chars.length;i++){
+        Arrays.fill(chars, (char) startAscii);
+        /*for(int i=0;i<chars.length;i++){
             chars[i]=(char)startAscii;
-        }
+        }*/
         password = new String(chars);
         time =0;
     }

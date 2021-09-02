@@ -45,12 +45,7 @@ public class WebViewFragment extends AppletsFragment {
         ButterKnife.bind(this,rootView);
         ImageTextView rightView = findViewById(R.id.it_actionbar_menu);
         if(rightView!=null){
-            rightView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    webView.loadUrl(url);
-                }
-            });
+            rightView.setOnClickListener(v -> webView.loadUrl(url));
         }
         Bundle bundle = getArguments();
         if (bundle!=null&&bundle.containsKey("URL")) {

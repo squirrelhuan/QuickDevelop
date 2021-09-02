@@ -57,21 +57,11 @@ public class AppletsFragment extends BaseFragment {
         }
         ImageTextView btn_back = findViewById(R.id.it_actionbar_back);
         if (btn_back != null) {
-            btn_back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickBack();
-                }
-            });
+            btn_back.setOnClickListener(v -> onClickBack());
         }
         ImageTextView btn_close = findViewById(R.id.it_actionbar_close);
         if (btn_close != null) {
-            btn_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().finish();
-                }
-            });
+            btn_close.setOnClickListener(v -> getActivity().finish());
         }
         ViewGroup ll_menu_right = findViewById(R.id.ll_menu_right);
         View view_splitor = findViewById(R.id.view_splitor);
@@ -110,21 +100,13 @@ public class AppletsFragment extends BaseFragment {
         getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(colors[i]);
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
         if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startFragment();
-                }
-            });
+            button.setOnClickListener(view -> startFragment());
         }
         Button btn_set_title = rootView.findViewById(R.id.btn_set_title);
         if (btn_set_title != null) {
-            btn_set_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int i = (int) (Math.random() * 10 % 4);
-                    getActionBarTool().setTitle(titles[i] + "");
-                }
+            btn_set_title.setOnClickListener(view -> {
+                int i1 = (int) (Math.random() * 10 % 4);
+                getActionBarTool().setTitle(titles[i1] + "");
             });
         }
     }

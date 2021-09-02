@@ -19,7 +19,6 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper.serialport.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -40,35 +39,19 @@ public class SerialportMain extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serialport_main);
 
-        final Button buttonSetup = (Button) findViewById(R.id.ButtonSetup);
-        buttonSetup.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(SerialportMain.this, SerialPortPreferences.class));
-            }
-        });
+        final Button buttonSetup = findViewById(R.id.ButtonSetup);
+        buttonSetup.setOnClickListener(v -> startActivity(new Intent(SerialportMain.this, SerialPortPreferences.class)));
 
-        final Button buttonConsole = (Button) findViewById(R.id.ButtonConsole);
-        buttonConsole.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(SerialportMain.this, ConsoleActivity.class));
-            }
-        });
+        final Button buttonConsole = findViewById(R.id.ButtonConsole);
+        buttonConsole.setOnClickListener(v -> startActivity(new Intent(SerialportMain.this, ConsoleActivity.class)));
 
-        final Button buttonLoopback = (Button) findViewById(R.id.ButtonLoopback);
-        buttonLoopback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(SerialportMain.this, LoopbackActivity.class));
-            }
-        });
+        final Button buttonLoopback = findViewById(R.id.ButtonLoopback);
+        buttonLoopback.setOnClickListener(v -> startActivity(new Intent(SerialportMain.this, LoopbackActivity.class)));
 
-        final Button button01010101 = (Button) findViewById(R.id.Button01010101);
-        button01010101.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(SerialportMain.this, Sending01010101Activity.class));
-            }
-        });
+        final Button button01010101 = findViewById(R.id.Button01010101);
+        button01010101.setOnClickListener(v -> startActivity(new Intent(SerialportMain.this, Sending01010101Activity.class)));
 
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionHelper.getInstance().requestPermission(mContext, permissions, null);
+        PermissionHelper.requestPermission(mContext, permissions, null);
     }
 }

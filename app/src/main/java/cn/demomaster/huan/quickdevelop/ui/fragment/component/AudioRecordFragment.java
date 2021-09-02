@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -37,7 +36,6 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.audio.ByteUtils;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickaudiorecorderlib.AudioRecorder;
@@ -70,25 +68,22 @@ public class AudioRecordFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         Button btn_record = rootView.findViewById(R.id.btn_record);
-        btn_record.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                PermissionHelper.getInstance().requestPermission(mContext, new String[]{
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        showPopWindow(v, event);
-                    }
+        btn_record.setOnTouchListener((v, event) -> {
+            PermissionHelper.requestPermission(mContext, new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHelper.PermissionListener() {
+                @Override
+                public void onPassed() {
+                    showPopWindow(v, event);
+                }
 
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return false;
-            }
+                @Override
+                public void onRefused() {
+                    Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
+                }
+            });
+            return false;
         });
 
         initDatas();
@@ -162,26 +157,11 @@ public class AudioRecordFragment extends BaseFragment {
     //初始化UI
     private void initUI() {
         btn_start_record = mView.findViewById(R.id.btn_start_record);
-        btn_start_record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRecord();
-            }
-        });
+        btn_start_record.setOnClickListener(v -> startRecord());
         btn_pause_record = mView.findViewById(R.id.btn_pause_record);
-        btn_pause_record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseRecord();
-            }
-        });
+        btn_pause_record.setOnClickListener(v -> pauseRecord());
         btn_stop_record = mView.findViewById(R.id.btn_stop_record);
-        btn_stop_record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopRecord();
-            }
-        });
+        btn_stop_record.setOnClickListener(v -> stopRecord());
 
         waveView = mView.findViewById(R.id.waveView);
         waveLineView = mView.findViewById(R.id.waveLineView);
@@ -209,15 +189,12 @@ public class AudioRecordFragment extends BaseFragment {
                         //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                         //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
                         //.setText_color_body(Color.BLUE)
-                        .addAction("确定", new OnClickActionListener() {
-                            @Override
-                            public void onClick(Dialog dialog, View view, Object tag) {
-                                String f = (fileOutputPath + "/" + audioFiles.get(position));
-                                QDLogger.e("删除：" + (fileOutputPath + "/" + audioFiles.get(position)));
-                                QDFileUtil.delete(f);
-                                refreshUI();
-                                dialog.dismiss();
-                            }
+                        .addAction("确定", (dialog, view1, tag) -> {
+                            String f = (fileOutputPath + "/" + audioFiles.get(position));
+                            QDLogger.e("删除：" + (fileOutputPath + "/" + audioFiles.get(position)));
+                            QDFileUtil.delete(f);
+                            refreshUI();
+                            dialog.dismiss();
                         })
                         .addAction("取消")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
                         .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
@@ -244,7 +221,7 @@ public class AudioRecordFragment extends BaseFragment {
 
     //开始录音
     public void startRecord() {
-        PermissionHelper.getInstance().requestPermission(mContext, new String[]{
+        PermissionHelper.requestPermission(mContext, new String[]{
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionHelper.PermissionListener() {
@@ -319,15 +296,12 @@ public class AudioRecordFragment extends BaseFragment {
 
         @Override
         public void onStop(boolean isSuccess, String filePath) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    btn_start_record.setVisibility(View.VISIBLE);
-                    btn_pause_record.setVisibility(View.GONE);
-                    btn_stop_record.setVisibility(View.GONE);
-                    waveLineView.stopAnim();
-                    refreshUI();
-                }
+            mContext.runOnUiThread(() -> {
+                btn_start_record.setVisibility(View.VISIBLE);
+                btn_pause_record.setVisibility(View.GONE);
+                btn_stop_record.setVisibility(View.GONE);
+                waveLineView.stopAnim();
+                refreshUI();
             });
         }
 
@@ -341,28 +315,25 @@ public class AudioRecordFragment extends BaseFragment {
 
         @Override
         public void recordOfByte(byte[] data, int begin, int end) {
-            ((Activity) getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    short[] data1 = ByteUtils.toShorts(data);
-                    for (int i = 0; i < data1.length; i += 60) {
-                        waveView.addData(data1[i]);
-                    }
-
-                   // if (count % 1 == 0) {
-                        int volume = (calculateVolume(data1));
-                        double myVolume = (volume - 40) * 4;
-                        //Log.d("MainActivity", "current volume=" + volume + ",myVolume=" + myVolume);
-                        if (waveLineView != null) {
-                            waveLineView.setVolume((int) myVolume);
-                        }
-                        if (pop != null) {
-                            pop.setVolume(Math.max(0, volume - 40));
-                        }
-                        //Log.d("MainActivity", "current volume is " + volume);
-                    //}
-                    count++;
+            ((Activity) getContext()).runOnUiThread(() -> {
+                short[] data1 = ByteUtils.toShorts(data);
+                for (int i = 0; i < data1.length; i += 60) {
+                    waveView.addData(data1[i]);
                 }
+
+               // if (count % 1 == 0) {
+                    int volume = (calculateVolume(data1));
+                    double myVolume = (volume - 40) * 4;
+                    //Log.d("MainActivity", "current volume=" + volume + ",myVolume=" + myVolume);
+                    if (waveLineView != null) {
+                        waveLineView.setVolume((int) myVolume);
+                    }
+                    if (pop != null) {
+                        pop.setVolume(Math.max(0, volume - 40));
+                    }
+                    //Log.d("MainActivity", "current volume is " + volume);
+                //}
+                count++;
             });
         }
     };

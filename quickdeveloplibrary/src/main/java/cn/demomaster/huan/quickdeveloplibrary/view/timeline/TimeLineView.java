@@ -105,12 +105,7 @@ public class TimeLineView extends View {
         targetId = id;
         if (viewGroup instanceof RecyclerView)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                viewGroup.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        updateState();
-                    }
-                });
+                viewGroup.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> updateState());
             }
         updateState();
     }
@@ -131,12 +126,7 @@ public class TimeLineView extends View {
             updateState();
         }
     };
-    ViewTreeObserver.OnDrawListener onDrawListener = new ViewTreeObserver.OnDrawListener() {
-        @Override
-        public void onDraw() {
-            updateState();
-        }
-    };
+    ViewTreeObserver.OnDrawListener onDrawListener = () -> updateState();
 
     /**
      * 非滚动式布局

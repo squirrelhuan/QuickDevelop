@@ -20,12 +20,11 @@ import java.util.Map;
 
 public class HttpUtils {
 
-	private static final String SERVER_URL = "";
-	
-	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String doPost(String httpUrl, HashMap<String,String> params) {
+    private static final String SERVER_URL = "";
 
-		String param = getParamString(params);
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String doPost(String httpUrl, HashMap<String, String> params) {
+        String param = getParamString(params);
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
@@ -103,33 +102,36 @@ public class HttpUtils {
         return result;
     }
 
-	
-    public static String getParamString(HashMap<String,String> params){
-    	StringBuilder sbBuilder = new StringBuilder();
-    	for (Map.Entry<String,String> entry : params.entrySet()) {
-    		sbBuilder.append(entry.getKey()+"="+entry.getValue()+"&");
-			//System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-		}
-    	String temp = sbBuilder.toString();
-    	return temp.substring(0,temp.length()-1);
+
+    public static String getParamString(HashMap<String, String> params) {
+        StringBuilder sbBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sbBuilder.append(entry.getKey())
+                    .append("=")
+                    .append(entry.getValue())
+                    .append("&");
+            //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+        }
+        String temp = sbBuilder.toString();
+        return temp.substring(0, temp.length() - 1);
     }
 
-    
-    public static void submitData(String content){
-    	HashMap<String,String> params = new HashMap<String,String>();
-    	
-    	params.put("store_no", "0");
-    	params.put("exception_type", "0");
-    	params.put("uid", "0");
-    	params.put("scanning_time", getCurrentTime());
-    	params.put("exception_title", content);
-    	 
-    	doPost(SERVER_URL, params);
+
+    public static void submitData(String content) {
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put("store_no", "0");
+        params.put("exception_type", "0");
+        params.put("uid", "0");
+        params.put("scanning_time", getCurrentTime());
+        params.put("exception_title", content);
+
+        doPost(SERVER_URL, params);
     }
-    
-    public static String getCurrentTime(){
-    	
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+
+    public static String getCurrentTime() {
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         return df.format(new Date());
     }
 

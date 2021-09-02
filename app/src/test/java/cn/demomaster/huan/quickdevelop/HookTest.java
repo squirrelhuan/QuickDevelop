@@ -3,8 +3,6 @@ package cn.demomaster.huan.quickdevelop;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 public class HookTest {
@@ -63,12 +61,9 @@ public class HookTest {
             Field field2 = MyView.class.getDeclaredField("other2");
             field2.setAccessible(true);
             ProcInterface other2 = (ProcInterface) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
-                    new Class[]{ProcInterface.class}, new InvocationHandler() {
-                        @Override
-                        public Object invoke(Object proxy, Method method, Object[] args) {
-                            System.out.println("代理对象 method=" + method);
-                            return null;
-                        }
+                    new Class[]{ProcInterface.class}, (proxy, method, args) -> {
+                        System.out.println("代理对象 method=" + method);
+                        return null;
                     });
             // 替换对象变量，然后运行
             field2.set(myView, other2);

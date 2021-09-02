@@ -39,8 +39,6 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
             mEditor = new Editor(this);
         }*/
         getEditor();
-
-
         addTextChangedListener(null);
     }
 
@@ -108,7 +106,7 @@ public class CubeEditText extends androidx.appcompat.widget.AppCompatEditText {
                 if (!TextUtils.isEmpty(getText()) && getText().length() > i) {
                     textWidth = getPaint().measureText(getText().toString(), 0, i + 1);
                     charWidth = getPaint().measureText(getText().toString(), i, i + 1);
-                    left = (float) (compoundPaddingLeft + textWidth - charWidth);
+                    left = compoundPaddingLeft + textWidth - charWidth;
                 } else {
                     left = (float) (compoundPaddingLeft + textWidth - charWidth + letterSpacing * (i + 0.5) * getTextSize());
                 }

@@ -22,9 +22,9 @@ public enum BannerContentType {
     public static BannerContentType getEnum(int value) {
         BannerContentType resultEnum = null;
         BannerContentType[] enumArray = BannerContentType.values();
-        for (int i = 0; i < enumArray.length; i++) {
-            if (enumArray[i].value() == value) {
-                resultEnum = enumArray[i];
+        for (BannerContentType bannerContentType : enumArray) {
+            if (bannerContentType.value() == value) {
+                resultEnum = bannerContentType;
                 break;
             }
         }

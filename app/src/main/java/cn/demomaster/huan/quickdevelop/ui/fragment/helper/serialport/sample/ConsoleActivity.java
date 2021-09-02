@@ -17,7 +17,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper.serialport.sample;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class ConsoleActivity extends SerialPortActivity {
         setContentView(R.layout.activity_serialport_console);
 
 //		setTitle("Loopback test");
-        mReception = (TextView) findViewById(R.id.EditTextReception);
+        mReception = findViewById(R.id.EditTextReception);
 
 		/*EditText Emission = (EditText) findViewById(R.id.EditTextEmission);
 		Emission.setOnEditorActionListener(new OnEditorActionListener() {
@@ -55,28 +54,23 @@ public class ConsoleActivity extends SerialPortActivity {
 				return false;
 			}
 		});*/
-        findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = ((TextView) findViewById(R.id.EditTextEmission)).getText().toString();
-                try {
-                    mOutputStream.write(message.getBytes());
-                    mOutputStream.write('\n');
-                    QDLogger.i("已发送：" + message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        findViewById(R.id.btn_send).setOnClickListener(v -> {
+            String message = ((TextView) findViewById(R.id.EditTextEmission)).getText().toString();
+            try {
+                mOutputStream.write(message.getBytes());
+                mOutputStream.write('\n');
+                QDLogger.i("已发送：" + message);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }
 
     @Override
     protected void onDataReceived(final byte[] buffer, final int size) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                if (mReception != null) {
-                    mReception.append(new String(buffer, 0, size));
-                }
+        runOnUiThread(() -> {
+            if (mReception != null) {
+                mReception.append(new String(buffer, 0, size));
             }
         });
     }

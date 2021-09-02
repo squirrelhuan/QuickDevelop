@@ -71,7 +71,6 @@ public class QDTipPopup extends QDPopup {
         //drawable_bg.setCornerRadius(builder.backgroundRadiu);
         drawable_bg.setCornerRadii(backgroundRadius);
         if (withArrow) {
-            arrowHeight = arrowHeight;//DisplayUtil.dip2px(context, 8);
             arrowWidht = arrowWidth;
         } else {
             arrowHeight = 0;

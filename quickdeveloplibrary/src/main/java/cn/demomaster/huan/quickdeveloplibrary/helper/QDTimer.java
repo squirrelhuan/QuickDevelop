@@ -70,12 +70,7 @@ public class QDTimer implements OnReleaseListener {
     }
 
     Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            validateCode();
-        }
-    };
+    Runnable runnable = () -> validateCode();
     private long startTime;
 
     private void validateCode() {

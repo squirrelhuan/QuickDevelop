@@ -13,7 +13,7 @@ public class FPSMonitor implements Choreographer.FrameCallback, Runnable {
     private long startTime = -1;
     private long endTime = -1;
     private long vSyncCount = 0;
-    private Handler workHandler = new Handler(Looper.getMainLooper());
+    private final Handler workHandler = new Handler(Looper.getMainLooper());
 
     public FPSMonitor() {
 

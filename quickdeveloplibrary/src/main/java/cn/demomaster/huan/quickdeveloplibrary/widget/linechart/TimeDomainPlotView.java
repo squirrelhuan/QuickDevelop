@@ -155,12 +155,11 @@ public class TimeDomainPlotView extends View {
             c = (int) (1 / scale);
         }
         columnNum = (int) (getWidth() / g) + 1;
-        W:
         for (int i = 0; i < columnNum; i += c) {
             float startX = i * g + offsetX % g;
             canvas.drawLine(startX, 0, startX, getHeight(), columnPaint);
             if (startX > getWidth()) {
-                break W;
+                break;
             }
         }
     }
@@ -340,12 +339,7 @@ public class TimeDomainPlotView extends View {
         postInvalidate();
         int t = (transitionType == TransitionType.horizontal ? dx : dy);
         if (Math.abs(t) > 2) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fling(dx, dy);
-                }
-            }, 10);
+            handler.postDelayed(() -> fling(dx, dy), 10);
         }
     }
 

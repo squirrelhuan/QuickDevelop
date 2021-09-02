@@ -57,16 +57,14 @@ public class EmoticonView extends ImageTextView {
     }
 
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width;
+    private int height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         width = w;
         height = h;
-        center_x = width / 2;
-
     }
 
     @Override
@@ -82,7 +80,6 @@ public class EmoticonView extends ImageTextView {
     private LoadStateType stateType = LoadStateType.LOADING;
     private LoadStateType stateType_target = LoadStateType.LOADING;
 
-    private int targetColor;
     private int warningColor = Color.YELLOW;
     private int errorColor = Color.RED;
     private int completeColor = Color.GREEN;
@@ -107,7 +104,7 @@ public class EmoticonView extends ImageTextView {
         warningColor = getContext().getResources().getColor(R.color.orange);
         switch (stateType_target) {
             case COMPLETE://完成
-                targetColor = completeColor;
+                int targetColor = completeColor;
                 break;
             case ERROR://完成
                 targetColor = errorColor;
@@ -220,7 +217,7 @@ public class EmoticonView extends ImageTextView {
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
                 RectF oval = new RectF((width - r0) / 2, (height - r0) / 2, (width - r0) / 2 + r0, (height - r0) / 2 + r0);
-                canvas.rotate((float) progress * 360, width / 2f, height / 2f);
+                canvas.rotate(progress * 360, width / 2f, height / 2f);
                 canvas.drawArc(oval, 0, 90 + Math.abs(progress - 0.5f) * 140, false, mPaint);
                 //canvas.save();
                 //canvas.translate(0,0);

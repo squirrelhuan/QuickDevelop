@@ -63,14 +63,11 @@ public class DebugFloating2 implements FloatView {
             QDLoggerType.ERROR.name()};
 
     private void showTagFilter(TextView textView) {
-        new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                textView.setText(data.get(position));
-                tagFilter = logTagfilters[position];
-                textView.setTextColor(QDLogger.getColor(tagFilter.value()));
-            }
+        new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener((dialog, position, data) -> {
+            dialog.dismiss();
+            textView.setText(data.get(position));
+            tagFilter = logTagfilters[position];
+            textView.setTextColor(QDLogger.getColor(tagFilter.value()));
         }).create().show();
     }
 
@@ -93,7 +90,6 @@ public class DebugFloating2 implements FloatView {
                     floatHelper.onWindowSizeChanged(movedX, movedY);
                     break;
                 case MotionEvent.ACTION_UP:
-                    break;
                 default:
                     break;
             }
@@ -111,12 +107,9 @@ public class DebugFloating2 implements FloatView {
         if (!TextUtils.isEmpty(logStr)) {
             SpannableStringBuilder spannableStringBuilder = SpannableStringBuilder.valueOf(logStr);
             tv_log.setText(spannableStringBuilder);
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (scrollView != null)
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
-                }
+            scrollView.post(() -> {
+                if (scrollView != null)
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
             });
         }
         QDLogger.setInterceptor(logInterceptor);
@@ -146,22 +139,19 @@ public class DebugFloating2 implements FloatView {
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
 
                 //logStr = builder.toString()+tv_log.getText();
-                QdThreadHelper.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (msg.getType().value() == tagFilter.value() || tagFilter == QDLoggerType.ALL && tv_log != null) {
-                            if (tv_log.getText().length() > strMaxLen) {
-                                tv_log.setText("");
-                            }
-                            tv_log.append(builder);
-                            if (scrollView != null) {
-                                scrollView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
-                                    }
-                                });
-                            }
+                QdThreadHelper.runOnUiThread(() -> {
+                    if (msg.getType().value() == tagFilter.value() || tagFilter == QDLoggerType.ALL && tv_log != null) {
+                        if (tv_log.getText().length() > strMaxLen) {
+                            tv_log.setText("");
+                        }
+                        tv_log.append(builder);
+                        if (scrollView != null) {
+                            scrollView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
+                                }
+                            });
                         }
                     }
                 });
@@ -171,12 +161,7 @@ public class DebugFloating2 implements FloatView {
 
     static int drag_X;
     static int drag_Y;
-    View.OnClickListener onClickTagListenernew = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showTagFilter((TextView) v);
-        }
-    };
+    View.OnClickListener onClickTagListenernew = v -> showTagFilter((TextView) v);
 
     @Override
     public View onCreateView(Activity context) {
@@ -197,12 +182,7 @@ public class DebugFloating2 implements FloatView {
         tv_title = contentView.findViewById(R.id.tv_title);
         tv_title.setText("" + QDAppInfoUtil.getVersionName(context));
         tv_close = contentView.findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                floatHelper.hideFloatView();
-            }
-        });
+        tv_close.setOnClickListener(v -> floatHelper.hideFloatView());
 
         tv_log_tag = contentView.findViewById(R.id.tv_log_tag);
         tv_log_tag.setText(tagFilter.name());
@@ -248,11 +228,8 @@ public class DebugFloating2 implements FloatView {
             tv_log.setText(spannableStringBuilder);
         }
         if (scrollView != null)
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
-                }
+            scrollView.post(() -> {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
             });
     }
 

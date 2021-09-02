@@ -9,7 +9,8 @@ def getApkVersionName() {
     println("getApkVersionName")
     return getDeviceType() == "0" ? ApkVersionName_V8 : ApkVersionName_V8
 }
-def getDeviceType() {
+
+ def getDeviceType() {
     return DeviceType
 }
 android {

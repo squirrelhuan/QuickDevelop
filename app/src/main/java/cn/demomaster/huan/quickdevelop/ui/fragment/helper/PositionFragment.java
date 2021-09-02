@@ -37,39 +37,34 @@ public class PositionFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_position, null);
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_position, null);
+        return mView;
     }
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("获取定位");
-        btn_get_position.setOnClickListener(new View.OnClickListener() {
+        btn_get_position.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, PERMISSIONS_POSITION, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.getInstance().requestPermission(mContext, PERMISSIONS_POSITION, new PermissionHelper.PermissionListener() {
+            public void onPassed() {
+                GPSUtils.getInstance(mContext).getLngAndLat(new GPSUtils.OnLocationResultListener() {
                     @Override
-                    public void onPassed() {
-                        GPSUtils.getInstance(mContext).getLngAndLat(new GPSUtils.OnLocationResultListener() {
-                            @Override
-                            public void onLocationResult(Location location) {
-                                QDLogger.i("当前位置：" + location.getLatitude() + "," + location.getLongitude());
-                            }
-
-                            @Override
-                            public void OnLocationChange(Location location) {
-                                QDLogger.i("最新位置：" + location.getLatitude() + "," + location.getLongitude());
-                            }
-                        });
+                    public void onLocationResult(Location location) {
+                        QDLogger.i("当前位置：" + location.getLatitude() + "," + location.getLongitude());
                     }
 
                     @Override
-                    public void onRefused() {
-
+                    public void OnLocationChange(Location location) {
+                        QDLogger.i("最新位置：" + location.getLatitude() + "," + location.getLongitude());
                     }
                 });
             }
-        });
+
+            @Override
+            public void onRefused() {
+
+            }
+        }));
     }
 
     private static String[] PERMISSIONS_POSITION = {

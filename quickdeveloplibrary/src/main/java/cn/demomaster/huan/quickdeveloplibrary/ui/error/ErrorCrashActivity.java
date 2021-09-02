@@ -15,7 +15,7 @@ public class ErrorCrashActivity extends QDActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error_crash);
-        setTitle("Error Detail");
+        setTitle("Error");
         String error = getIntent().getStringExtra("error");
         TextView tv_content = findViewById(R.id.tv_content);
         tv_content.setText("" + error);

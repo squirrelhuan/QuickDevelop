@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -35,13 +34,8 @@ public class SlidingPanelLayoutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding_panel_layout);
 
-        ListView lv = (ListView) findViewById(R.id.list);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SlidingPanelLayoutActivity.this, "onItemClick", Toast.LENGTH_SHORT).show();
-            }
-        });
+        ListView lv = findViewById(R.id.list);
+        lv.setOnItemClickListener((parent, view, position, id) -> Toast.makeText(SlidingPanelLayoutActivity.this, "onItemClick", Toast.LENGTH_SHORT).show());
 
         List<String> your_array_list = new ArrayList<>();
         /*Arrays.asList(
@@ -56,10 +50,10 @@ public class SlidingPanelLayoutActivity extends BaseActivity {
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                your_array_list );
+                your_array_list);
 
         lv.setAdapter(arrayAdapter);
 
@@ -75,25 +69,17 @@ public class SlidingPanelLayoutActivity extends BaseActivity {
                 Log.i(TAG, "onPanelStateChanged " + newState);
             }
         });
-        mLayout.setFadeOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
+        mLayout.setFadeOnClickListener(view -> mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED));
 
         TextView t = findViewById(R.id.name);
         t.setText(Html.fromHtml("上拉"));
         Button f = findViewById(R.id.follow);
         f.setText(Html.fromHtml("follow"));
         f.setMovementMethod(LinkMovementMethod.getInstance());
-        f.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("http://www.twitter.com/umanoapp"));
-                startActivity(i);
-            }
+        f.setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("http://www.twitter.com/umanoapp"));
+            startActivity(i);
         });
     }
 

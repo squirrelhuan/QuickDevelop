@@ -102,12 +102,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         }
 
         SheetAdapter adapter = new SheetAdapter(getContext(), data);
-        adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                onDialogActionListener.onItemClick(QDMulSheetDialog.this, position, data);
-            }
-        });
+        adapter.setOnItemClickListener((view, position) -> onDialogActionListener.onItemClick(QDMulSheetDialog.this, position, data));
 
         recyclerView.setAdapter(adapter);
         RelativeLayout relativeLayout = new RelativeLayout(getContext());
@@ -252,13 +247,10 @@ public class QDMulSheetDialog extends QDDialog2 {
 
         @Override
         public void onBindViewHolder(@NonNull final VHItem vhItem, int i) {
-            vhItem.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = vhItem.getAdapterPosition();
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(v, position);
-                    }
+            vhItem.itemView.setOnClickListener(v -> {
+                int position = vhItem.getAdapterPosition();
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(v, position);
                 }
             });
             vhItem.onbind(i);

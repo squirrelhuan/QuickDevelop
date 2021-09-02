@@ -146,16 +146,11 @@ public class Banner extends FrameLayout {
         layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER;
         addView((View) mBannerCursorView, layoutParams);
 
-        adsResourceList = new ArrayList<AdsResource>();
+        adsResourceList = new ArrayList<>();
         indicatorCount = adsResourceList.size();
         mBannerCursorView.setIndicatorCount(indicatorCount);
         if (adsAdapter == null) {
-            adsAdapter = new BannerAdapter((FragmentActivity) getContext(), adsResourceList, mViewPager, new BannerAdapter.OnPlayingListener() {
-                @Override
-                public void onVideoComplete() {
-                    setCurrentItem(mViewPager.getCurrentItem() + 1);
-                }
-            });
+            adsAdapter = new BannerAdapter((FragmentActivity) getContext(), adsResourceList, mViewPager, () -> setCurrentItem(mViewPager.getCurrentItem() + 1));
         }
         //mViewPager.setPageMargin(getResources().getInteger(R.integer.viewpager_margin_width));
         //mViewPager.setPageMarginDrawable(R.drawable.viewpager_margin);

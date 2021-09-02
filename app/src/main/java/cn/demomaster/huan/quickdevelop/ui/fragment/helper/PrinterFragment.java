@@ -43,24 +43,21 @@ public class PrinterFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         //getActionBarTool().setHeaderBackgroundColor(Color.RED);
-        btn_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QdToast.show("printer");
+        btn_print.setOnClickListener(v -> {
+            QdToast.show("printer");
 
-                Thread thread =  new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        printer = new NetPrinter();
-                        printer.Open("172.16.11.183", 9100);
-                        QDLogger.e("printer.IFOpen="+printer.IFOpen);
-                        if(printer.IFOpen){
+            Thread thread =  new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    printer = new NetPrinter();
+                    printer.Open("172.16.11.183", 9100);
+                    QDLogger.e("printer.IFOpen="+printer.IFOpen);
+                    if(printer.IFOpen){
 
-                        }
                     }
-                });
-                thread.start();
-            }
+                }
+            });
+            thread.start();
         });
     }
 

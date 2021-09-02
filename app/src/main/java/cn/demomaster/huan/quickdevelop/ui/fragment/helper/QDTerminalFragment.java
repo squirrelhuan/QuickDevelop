@@ -42,8 +42,8 @@ public class QDTerminalFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_terminal, null);
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_terminal, null);
+        return mView;
     }
 
     ADBHelper adbHelper = ADBHelper.getInstance();
@@ -52,11 +52,8 @@ public class QDTerminalFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("终端命令");
 
-        btn_test_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //adbHelper.execute("adb shell settings put global policy_control immersive.full=*");
-            }
+        btn_test_01.setOnClickListener(v -> {
+            //adbHelper.execute("adb shell settings put global policy_control immersive.full=*");
         });
 
     }

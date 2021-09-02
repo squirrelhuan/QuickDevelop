@@ -32,7 +32,7 @@ public class WifiTimerService2 extends Service {
     private static final long LOOP_TIME = 10; //循环时间
     private static ScheduledExecutorService mExecutorService;
 
-    List<ScanResult> mScanResultList = new ArrayList<ScanResult>();
+    List<ScanResult> mScanResultList = new ArrayList<>();
 
     //WifiTestActivity2.ConnectAsyncTask mConnectAsyncTask = null;
     private String currentWifi = "hyc";
@@ -80,13 +80,10 @@ public class WifiTimerService2 extends Service {
         mRunnable = null;
     }
 
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            count++;
-            Log.d(TAG, "============ count:" + count);
-            checkWifi();
-        }
+    private Runnable mRunnable = () -> {
+        count++;
+        Log.d(TAG, "============ count:" + count);
+        checkWifi();
     };
 
     private ScanResult findWifi() {
@@ -106,7 +103,7 @@ public class WifiTimerService2 extends Service {
             WifiUtil.getInstance().openWifi();
             boolean isNetwork = NetWorkUtils.isNetWork();
             Log.d(TAG, "====== isNetwork=" + isNetwork);
-            if (isNetwork == false) {
+            if (!isNetwork) {
                 WifiUtil.getInstance().getWifiInfo();
                 //重连wifi
                 Log.d(TAG, "=== checkWifi:无网络....");

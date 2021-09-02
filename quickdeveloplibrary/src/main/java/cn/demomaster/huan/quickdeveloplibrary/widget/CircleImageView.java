@@ -46,8 +46,6 @@ public class CircleImageView extends AppCompatImageView {
     }
 
     private boolean isRound = true;
-    private float minWidth = 0;
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (isRound) {
@@ -57,7 +55,7 @@ public class CircleImageView extends AppCompatImageView {
             int centerY = (int) (getHeight() / 2f);
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
-            path.addCircle(centerX, centerY, (float) (raduis), Path.Direction.CCW);
+            path.addCircle(centerX, centerY, raduis, Path.Direction.CCW);
             if (circle_background_color != Color.TRANSPARENT) {
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);

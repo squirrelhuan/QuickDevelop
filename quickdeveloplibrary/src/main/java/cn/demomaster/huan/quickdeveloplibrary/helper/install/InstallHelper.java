@@ -483,20 +483,17 @@ public class InstallHelper {
     }
 
     public static void runInstall(final Context context, final Uri uri) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean success = installByRoot();
-                if (!success) {
-                    if (isAccessBilityOn(context)) {
-                        //Intent intent = new Intent(Intent.ACTION_VIEW);
-                        //intent.setDataAndType(uri,"application/vnd.android.package-archive");
-                        //context.startActivity(intent);
-                        openAPKFile((Activity) context, uri);
-                    } else {
-                        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                        context.startActivity(intent);
-                    }
+        new Thread(() -> {
+            boolean success = installByRoot();
+            if (!success) {
+                if (isAccessBilityOn(context)) {
+                    //Intent intent = new Intent(Intent.ACTION_VIEW);
+                    //intent.setDataAndType(uri,"application/vnd.android.package-archive");
+                    //context.startActivity(intent);
+                    openAPKFile(context, uri);
+                } else {
+                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    context.startActivity(intent);
                 }
             }
         }).start();

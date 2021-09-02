@@ -244,9 +244,8 @@ public class LifecycleView extends View {
                     //needToHandle=false;
                     break;
                 case MotionEvent.ACTION_MOVE:
-
                     break;
-                case MotionEvent.ACTION_POINTER_2_UP://第二个手指抬起的时候
+                case MotionEvent.ACTION_POINTER_UP://第二个手指抬起的时候
                     //needToHandle=true;
                     break;
                 default:
@@ -338,12 +337,7 @@ public class LifecycleView extends View {
         postInvalidate();
         int t = (transitionType == TransitionType.horizontal ? dx : dy);
         if (Math.abs(t) > 2) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fling(dx, dy);
-                }
-            }, 10);
+            handler.postDelayed(() -> fling(dx, dy), 10);
         }
     }
 

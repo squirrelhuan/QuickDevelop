@@ -16,7 +16,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.ViewHolder> {
 
     private List<String> data;
-    private Context context;
+    private final Context context;
     
     public ComponentAdapter(Context context) {
         this.context = context;

@@ -25,7 +25,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
-import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
@@ -58,48 +57,37 @@ public class ZipFileFragment extends BaseFragment {
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_filemanager, null);
+            mView = inflater.inflate(R.layout.fragment_layout_filemanager, null);
         }
         ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     public void initView(View rootView) {
         getActionBarTool().setTitle("文件管理");
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        btn_search.setOnClickListener(new View.OnClickListener() {
+        btn_search.setOnClickListener(v -> QdThreadHelper.runOnSubThread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                QdThreadHelper.runOnSubThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String rootPath = Environment.getExternalStorageDirectory().getPath();
-                        List<File> files = QDFileUtil.getEmptyFiles(rootPath);
-                        for (File f : files) {
-                            QDLogger.d(f);
-                        }
-                    }
-                });
+            public void run() {
+                String rootPath = Environment.getExternalStorageDirectory().getPath();
+                List<File> files = QDFileUtil.getEmptyFiles(rootPath);
+                for (File f : files) {
+                    QDLogger.d(f);
+                }
             }
-        });
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentView(new LoadingCircleView(mContext)).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage("删除中...").create();
-                qdActionDialog.show();
-                btn_delete.setEnabled(false);
-                QdThreadHelper.runOnSubThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String rootPath = Environment.getExternalStorageDirectory().getPath();
-                        deleteEmptyFiles(rootPath);
+        }));
+        btn_delete.setOnClickListener(v -> {
+            QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentView(new LoadingCircleView(mContext)).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setTopImage(R.mipmap.quickdevelop_ic_launcher).setMessage("删除中...").create();
+            qdActionDialog.show();
+            btn_delete.setEnabled(false);
+            QdThreadHelper.runOnSubThread(() -> {
+                String rootPath = Environment.getExternalStorageDirectory().getPath();
+                deleteEmptyFiles(rootPath);
 
-                        btn_delete.setEnabled(true);
-                        btn_delete.setText("删除文件");
-                        qdActionDialog.dismiss();
-                    }
-                });
-            }
+                btn_delete.setEnabled(true);
+                btn_delete.setText("删除文件");
+                qdActionDialog.dismiss();
+            });
         });
 
         QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
@@ -124,14 +112,11 @@ public class ZipFileFragment extends BaseFragment {
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-        getFileCreatTime(mContext, file, new QDFileUtil.OnSearchListener() {
-            @Override
-            public void onResult(QDFile qdFile) {
-                if (qdFile != null) {
-                    //Date date1 = new Date(System.currentTimeMillis());
-                    Date date = new Date(qdFile.getModifyTime());
-                    QDLogger.e("-------------------------" + simpleDateFormat.format(date));
-                }
+        getFileCreatTime(mContext, file, qdFile -> {
+            if (qdFile != null) {
+                //Date date1 = new Date(System.currentTimeMillis());
+                Date date = new Date(qdFile.getModifyTime());
+                QDLogger.e("-------------------------" + simpleDateFormat.format(date));
             }
         });
     }
@@ -146,12 +131,7 @@ public class ZipFileFragment extends BaseFragment {
             if (file.listFiles().length == 0) {
                 if (file.isDirectory() && file.listFiles().length < 1) {
                     count += 1;
-                    ((Activity) getContext()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath());
-                        }
-                    });
+                    ((Activity) getContext()).runOnUiThread(() -> tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath()));
 
                     QDLogger.d("删除空文件夹:" + file.getPath());
                     QDFileUtil.delete(file.getPath());

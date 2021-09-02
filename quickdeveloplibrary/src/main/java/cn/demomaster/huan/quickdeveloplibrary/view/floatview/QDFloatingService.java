@@ -160,8 +160,8 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
 
     public void setPosition(Point point) {
         layoutParams = (WindowManager.LayoutParams) contentView.getLayoutParams();
-        layoutParams.x = (int) point.x;
-        layoutParams.y = (int) point.y;
+        layoutParams.x = point.x;
+        layoutParams.y = point.y;
         contentView.setLayoutParams(layoutParams);
     }
 

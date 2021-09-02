@@ -248,16 +248,13 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         animator = ValueAnimator.ofInt((int) startTranslationValue, (int) endTranslationValue);
         animator.setInterpolator(mInterpolator);
         animator.setDuration(mDuration).start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                animatedValue = (int) animation.getAnimatedValue();
-                if (onVisiableChangedListener != null) {
-                    float progress = (animatedValue - m1) / (m2 - m1);
-                    onVisiableChangedListener.onVisiableChanaged(visibility, progress);
-                }
-                requestLayout();
+        animator.addUpdateListener(animation -> {
+            animatedValue = (int) animation.getAnimatedValue();
+            if (onVisiableChangedListener != null) {
+                float progress = (animatedValue - m1) / (m2 - m1);
+                onVisiableChangedListener.onVisiableChanaged(visibility, progress);
             }
+            requestLayout();
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -317,9 +314,6 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
                     end = getWidth();
                     break;
                 case Gravity.TOP:
-                    start = childView.getTranslationY();
-                    end = -getChildMaxHeight();
-                    break;
                 case Gravity.BOTTOM:
                     start = childView.getTranslationY();
                     end = -getChildMaxHeight();

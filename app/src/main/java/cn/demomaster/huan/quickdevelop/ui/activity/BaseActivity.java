@@ -19,9 +19,8 @@ public class BaseActivity extends QDActivity {
     public String getTitleFromAnnotation(){
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation a : annotations) {
-            if (a != null && a instanceof ActivityPager) {
-                String name = ((ActivityPager) a).name();
-                return name;
+            if (a instanceof ActivityPager) {
+                return ((ActivityPager) a).name();
             }
         }
         return null;

@@ -30,17 +30,14 @@ public class QdToast {
         } else if (mContext == null) {
             mContext = context.getApplicationContext();
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//处理Android7.1上系统bug
-                    ToastCompat.makeText(mContext, text, time)
-                            .setBadTokenListener(toast -> {
-                                Log.e("failed toast", "" + text);
-                            }).show();
-                } else {
-                    Toast.makeText(mContext, text, time).show();
-                }
+        runOnUiThread(() -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//处理Android7.1上系统bug
+                ToastCompat.makeText(mContext, text, time)
+                        .setBadTokenListener(toast -> {
+                            Log.e("failed toast", "" + text);
+                        }).show();
+            } else {
+                Toast.makeText(mContext, text, time).show();
             }
         });
     }

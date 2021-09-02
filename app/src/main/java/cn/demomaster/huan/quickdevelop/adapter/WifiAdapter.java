@@ -84,13 +84,10 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder> {
             }
             tv_wifi_type.setText(wifiPassType);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int p = getAdapterPosition();
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(v,  p);
-                    }
+            itemView.setOnClickListener(v -> {
+                int p = getAdapterPosition();
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(v,  p);
                 }
             });
         }

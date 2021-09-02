@@ -189,12 +189,9 @@ public class Saleng extends View {
     public void startAnimation() {
         isPlaying = true;
         animator.setDuration(500);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                rotationX = (float) animation.getAnimatedValue();
-                postInvalidate();
-            }
+        animator.addUpdateListener(animation -> {
+            rotationX = (float) animation.getAnimatedValue();
+            postInvalidate();
         });
         //animator.setRepeatMode(ValueAnimator.REVERSE);
         animator.setRepeatCount(ValueAnimator.INFINITE);

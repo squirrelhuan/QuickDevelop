@@ -148,17 +148,17 @@ public class QDAndroidDeviceUtil {
         // get md5 bytes
         byte[] p_md5Data = m.digest();
         // create a hex string
-        String m_szUniqueID = new String();
-        for (int i = 0; i < p_md5Data.length; i++) {
-            int b = (0xFF & p_md5Data[i]);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte p_md5Datum : p_md5Data) {
+            int b = (0xFF & p_md5Datum);
             // if it is a single digit, make sure it have 0 in front (proper padding)
-            if (b <= 0xF)
-                m_szUniqueID += "0";
+            if (b <= 0xF) {
+                stringBuilder.append("0");
+            }
             // add number to string
-            m_szUniqueID += Integer.toHexString(b);
+            stringBuilder.append(Integer.toHexString(b));
         }   // hex string to uppercase
-        m_szUniqueID = m_szUniqueID.toUpperCase();
-        return m_szUniqueID;
+        return stringBuilder.toString().toUpperCase();
     }
 
     //判断手机是否root
@@ -186,13 +186,14 @@ public class QDAndroidDeviceUtil {
         final String[] kSuSearchPaths = { "/system/bin/", "/system/xbin/",
                 "/system/sbin/", "/sbin/", "/vendor/bin/" };
         try {
-            for (int i = 0; i < kSuSearchPaths.length; i++) {
-                f = new File(kSuSearchPaths[i] + "su");
-                if (f != null && f.exists()&&f.canExecute()) {
+            for (String kSuSearchPath : kSuSearchPaths) {
+                f = new File(kSuSearchPath + "su");
+                if (f != null && f.exists() && f.canExecute()) {
                     return true;
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -208,6 +209,7 @@ public class QDAndroidDeviceUtil {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -295,6 +297,7 @@ public class QDAndroidDeviceUtil {
             responseReader.close();
             result = sb.toString().toLowerCase();
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return result;
     }

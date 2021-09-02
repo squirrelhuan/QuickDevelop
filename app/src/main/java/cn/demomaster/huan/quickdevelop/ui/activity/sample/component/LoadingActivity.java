@@ -23,12 +23,9 @@ public class LoadingActivity extends BaseActivity {
         sv_loading = findViewById(R.id.sv_loading);
         sv_loading.setStateType(LoadStateType.LOADING);
 
-        ViewTreeObserver.OnDrawListener onParentViewDrawListener = new ViewTreeObserver.OnDrawListener() {
-            @Override
-            public void onDraw() {
-                QDLogger.println("viewParent重绘");
-                //invalidate();
-            }
+        ViewTreeObserver.OnDrawListener onParentViewDrawListener = () -> {
+            QDLogger.println("viewParent重绘");
+            //invalidate();
         };
         //view重绘时回调
         getWindow().getDecorView().getViewTreeObserver().addOnDrawListener(onParentViewDrawListener);

@@ -296,6 +296,9 @@ public class QDBitmapUtil {
      * 得到bitmap的大小
      */
     public static int getBitmapSize(Bitmap bitmap) {
+        if(bitmap==null){
+            return 0;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
             return bitmap.getAllocationByteCount();
         }
@@ -319,9 +322,8 @@ public class QDBitmapUtil {
             QDLogger.e(e);
         } catch (IOException e) {
             QDLogger.e(e);
-        } finally {
-            return imgBase64;
         }
+        return imgBase64;
     }
 
     /**
@@ -377,7 +379,6 @@ public class QDBitmapUtil {
                 try {
                     if (fileOutputStream != null) {
                         fileOutputStream.close();
-                        fileOutputStream = null;
                     }
                 } catch (IOException e) {
                     QDLogger.e(e);
@@ -542,7 +543,8 @@ public class QDBitmapUtil {
             if (Build.VERSION.SDK_INT < 30) {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, targetUri);
             } else {
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+                String path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getPath();
+                //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
                 //storage/emulated/0/Pictures
                 File mOnputFile = new File(path, System.currentTimeMillis() + ".png");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse("file://" + mOnputFile.getAbsolutePath()));

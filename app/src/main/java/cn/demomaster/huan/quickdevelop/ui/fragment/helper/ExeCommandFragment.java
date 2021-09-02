@@ -24,7 +24,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -33,8 +32,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * Squirrel桓
  * 2018/8/25
  */
-
-@ActivityPager(name = "ExeCommand", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "ExeCommand", iconRes = R.drawable.ic_terminal, resType = ResType.Resource)
 public class ExeCommandFragment extends BaseFragment {
 
 
@@ -78,68 +76,46 @@ public class ExeCommandFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_execommand, null);
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_execommand, null);
+        return mView;
     }
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("command");
 
-        btn_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                send();
-            }
-        });
+        btn_send.setOnClickListener(v -> send());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-            et_console.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    //当actionId == XX_SEND 或者 XX_DONE时都触发
-                    //或者event.getKeyCode == ENTER 且 event.getAction == ACTION_DOWN时也触发
-                    //注意，这是一定要判断event != null。因为在某些输入法上会返回null。
-                    if (actionId == EditorInfo.IME_ACTION_SEND
-                            || actionId == EditorInfo.IME_ACTION_DONE
-                            || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
-                        //处理事件
-                        send();
-                    }
-                    return false;
+            et_console.setOnEditorActionListener((v, actionId, event) -> {
+                //当actionId == XX_SEND 或者 XX_DONE时都触发
+                //或者event.getKeyCode == ENTER 且 event.getAction == ACTION_DOWN时也触发
+                //注意，这是一定要判断event != null。因为在某些输入法上会返回null。
+                if (actionId == EditorInfo.IME_ACTION_SEND
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                    //处理事件
+                    send();
                 }
+                return false;
             });
         }
-        fab_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_console.setText("");
-            }
-        });
-        btn_exe_02.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = "ps |grep " + getActivity().getPackageName();
-                QDLogger.i(str);
-                //exeCommand(str);
-            }
+        fab_clear.setOnClickListener(v -> tv_console.setText(""));
+        btn_exe_02.setOnClickListener(v -> {
+            String str = "ps |grep " + getActivity().getPackageName();
+            QDLogger.i(str);
+            //exeCommand(str);
         });
 
-        btn_exe_03.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = "adb shell settings put global policy_control immersive.full=*";
-                QDLogger.i(str);
-                //exeCommand(str);
-            }
+        btn_exe_03.setOnClickListener(v -> {
+            String str = "adb shell settings put global policy_control immersive.full=*";
+            QDLogger.i(str);
+            //exeCommand(str);
         });
 
-        btn_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //tv_console.setText("");
-                et_console.setText("");
-            }
+        btn_clear.setOnClickListener(v -> {
+            //tv_console.setText("");
+            et_console.setText("");
         });
 
         /*TextWatcher textWatcher2 = new TextWatcher() {
@@ -214,18 +190,15 @@ public class ExeCommandFragment extends BaseFragment {
             tv_console.setText("");
             return;
         }
-        ADBHelper.getInstance().execute(et_console.getText().toString(), new ADBHelper.OnReceiveListener() {
-            @Override
-            public void onReceive(ProcessResult result) {
-                if (result.getCode() == 0) {
-                    tv_console.append(result.getResult());
-                } else {
-                    tv_console.append(result.getError());
-                }
-                et_console.setText("");
-                scroll_01.scrollTo(0, tv_console.getHeight());
-                tv_current_path.setText(">_" + ADBHelper.getInstance().currentPath);
+        ADBHelper.getInstance().execute(et_console.getText().toString(), result -> {
+            if (result.getCode() == 0) {
+                tv_console.append(result.getResult());
+            } else {
+                tv_console.append(result.getError());
             }
+            et_console.setText("");
+            scroll_01.scrollTo(0, tv_console.getHeight());
+            tv_current_path.setText(">_" + ADBHelper.getInstance().currentPath);
         });
     }
 

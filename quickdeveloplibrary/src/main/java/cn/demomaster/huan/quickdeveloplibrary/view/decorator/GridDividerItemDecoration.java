@@ -19,8 +19,8 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
-    private Drawable mDivider;
-    private int mSpanCount;
+    private final Drawable mDivider;
+    private final int mSpanCount;
 
     public GridDividerItemDecoration(Context context, int spanCount) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);

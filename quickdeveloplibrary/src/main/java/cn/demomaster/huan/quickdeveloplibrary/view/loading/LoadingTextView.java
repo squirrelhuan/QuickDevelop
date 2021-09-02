@@ -96,18 +96,15 @@ public class LoadingTextView extends View {
         final int end = 360;
         animator = ValueAnimator.ofInt(0, end);
         animator.setDuration(1200);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (int) animation.getAnimatedValue();
-                //Log.d(TAG, "progress=" + progress);
-                if (progress >= end) {
-                    isForward = !isForward;
-                    //Log.d(TAG, "isForward=" + isForward);
-                } else {
-                    //postInvalidate();
-                    invalidate();
-                }
+        animator.addUpdateListener(animation -> {
+            progress = (int) animation.getAnimatedValue();
+            //Log.d(TAG, "progress=" + progress);
+            if (progress >= end) {
+                isForward = !isForward;
+                //Log.d(TAG, "isForward=" + isForward);
+            } else {
+                //postInvalidate();
+                invalidate();
             }
         });
         animator.setRepeatMode(ValueAnimator.RESTART);

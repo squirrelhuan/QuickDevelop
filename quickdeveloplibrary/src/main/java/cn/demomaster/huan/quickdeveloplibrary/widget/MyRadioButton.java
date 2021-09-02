@@ -154,7 +154,6 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
 
             int dx = 0;
             int dy = 0;
-
             //int gravity_h = getGravity() & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK;
             int gravity_h = getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK;
             int gravity_v = getGravity() & Gravity.VERTICAL_GRAVITY_MASK;
@@ -170,7 +169,6 @@ public class MyRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
                     }
                     break;
                 case Gravity.TOP:
-                    break;
                 case Gravity.BOTTOM:
                     break;
             }

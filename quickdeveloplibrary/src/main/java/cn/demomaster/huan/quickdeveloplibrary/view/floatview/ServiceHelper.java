@@ -31,9 +31,7 @@ public class ServiceHelper {
     }
 
     public static void removeService(Service qdFloatingService) {
-        if (serviceMap.containsKey(qdFloatingService.getClass().getName())) {
-            serviceMap.remove(qdFloatingService.getClass().getName());
-        }
+        serviceMap.remove(qdFloatingService.getClass().getName());
         if (serviceListenerMap.containsKey(qdFloatingService.getClass().getName())) {
             ServiceListener serviceListener = serviceListenerMap.get(qdFloatingService.getClass().getName());
             if (serviceListener != null) {

@@ -207,7 +207,7 @@ public final class ScanMakerView extends View implements ResultPointCallback {
         paint.setAntiAlias(true);//使用抗锯齿功能
         //paint.setColor(Color.RED);    //设置画笔的颜色为绿色
         paint.setStyle(Paint.Style.FILL);//设置画笔类型为填充
-        /***********绘制圆弧*************/
+        //绘制圆弧
         canvas.save();
         canvas.clipRect(rectF);
         RectF rectf_head;//确定外切矩形范围

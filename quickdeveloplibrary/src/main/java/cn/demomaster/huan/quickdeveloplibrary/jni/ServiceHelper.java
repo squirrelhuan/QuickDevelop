@@ -17,7 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.aidl.IBaseService;
  */
 public class ServiceHelper {
     public static IBaseService mService = null;
-    private static HashMap<Context, BaseServiceConnection> sConnectionMap = new HashMap<Context, BaseServiceConnection>();
+    private static HashMap<Context, BaseServiceConnection> sConnectionMap = new HashMap<>();
 
     /**
      * @return

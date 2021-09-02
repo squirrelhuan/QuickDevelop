@@ -46,7 +46,7 @@ public class PushCardFragment extends BaseFragment {
     @Nullable
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_pushcard, null);
+        View mView = inflater.inflate(R.layout.fragment_layout_pushcard, null);
         return mView;
     }
 
@@ -96,7 +96,7 @@ public class PushCardFragment extends BaseFragment {
         pcl_layout.addFooterView(new LoadingTengxuntvView(mContext), layoutParams);
 
         //禁用滑动 pcl_layout.setCanRefresh(false);
-        /*************************   设置数据监听器，可触发网络请求  数据加载完成请手动恢复 pcl_layout.setCancel();  ********************************/
+        //设置数据监听器，可触发网络请求  数据加载完成请手动恢复 pcl_layout.setCancel();
         pcl_layout.setDataListener(new PushCardLayout.PushCardDatalistener() {
             @Override
             public void onLoadMoreData() {
@@ -117,16 +117,11 @@ public class PushCardFragment extends BaseFragment {
             }
         });
 
-        /*************************   设置动画监听器，可自定义动画   ************************************************/
-        pcl_layout.setAnimationListener(new PushCardLayout.PushCardAnimationListener() {
-
-            @Override
-            public void onRuning(boolean isUpper, final float value) {
-                //QDLogger.i("Animation", "Animation onRuning:" + value);
-                //(isUpper?textView:textView2). refreshAnimation();
-                //isUpper 可判断是头部动画还是底部动画
-            }
-
+        //设置动画监听器，可自定义动画
+        pcl_layout.setAnimationListener((isUpper, value) -> {
+            //QDLogger.i("Animation", "Animation onRuning:" + value);
+            //(isUpper?textView:textView2). refreshAnimation();
+            //isUpper 可判断是头部动画还是底部动画
         });
         //设置默认状态
         pcl_layout.setDefaultState(PushCardLayout.DefaultStateType.top);
@@ -138,22 +133,16 @@ public class PushCardFragment extends BaseFragment {
         actionBarLayoutOld.setHeaderBackgroundColor(colors[i]);
     }*/
 
-    Runnable upRunnable = new Runnable() {
-        @Override
-        public void run() {
-            //qdActionDialog.dismiss();
-            QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
-            qdActionDialog.show();
-            //pcl_layout.dismiss();
-        }
+    Runnable upRunnable = () -> {
+        //qdActionDialog.dismiss();
+        QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("刷新成功").setDelayMillis(2000).create();
+        qdActionDialog.show();
+        //pcl_layout.dismiss();
     };
 
-    Runnable downRunnable = new Runnable() {
-        @Override
-        public void run() {
-            final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
-            qdActionDialog.show();
-        }
+    Runnable downRunnable = () -> {
+        final QDActionDialog qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage("加载失败").setDelayMillis(2000).create();
+        qdActionDialog.show();
     };
 
 }

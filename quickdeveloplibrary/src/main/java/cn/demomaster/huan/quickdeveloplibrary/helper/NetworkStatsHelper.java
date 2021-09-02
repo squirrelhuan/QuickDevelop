@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.usage.NetworkStats;
 import android.app.usage.NetworkStatsManager;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -85,7 +83,6 @@ public class NetworkStatsHelper {
 
     /**
      * 获取指定应用 wifi 发送的当天总流量
-     *
      * @param packageUid 应用的uid
      * @return
      */
@@ -128,24 +125,6 @@ public class NetworkStatsHelper {
         cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
         return (int) (cal.getTimeInMillis());
-    }
-
-    /**
-     * 根据包名获取uid
-     *
-     * @param context     上下文
-     * @param packageName 包名
-     */
-    public static int getUidByPackageName(Context context, String packageName) {
-        int uid = -1;
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA);
-            uid = packageInfo.applicationInfo.uid;
-        } catch (PackageManager.NameNotFoundException e) {
-            QDLogger.e(e);
-        }
-        return uid;
     }
 
 }

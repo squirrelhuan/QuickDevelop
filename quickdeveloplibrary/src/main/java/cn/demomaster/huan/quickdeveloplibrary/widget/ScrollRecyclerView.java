@@ -28,10 +28,10 @@ public class ScrollRecyclerView extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    @Override
     /**
      * 重写该方法，达到使ListView适应ScrollView的效果
      */
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
@@ -46,19 +46,16 @@ public class ScrollRecyclerView extends RecyclerView {
 
         QDLogger.d(mode);
         switch (mode) {
-            case MeasureSpec.UNSPECIFIED: {//如果没有指定大小，就设置为默认大小
+            case MeasureSpec.UNSPECIFIED: //如果没有指定大小，就设置为默认大小
                 mySize = defaultSize;
                 break;
-            }
-            case MeasureSpec.AT_MOST: {//如果测量模式是最大取值为size
+            case MeasureSpec.AT_MOST: //如果测量模式是最大取值为size
                 //我们将大小取最大值,你也可以取其他值
                 mySize = size;
                 break;
-            }
-            case MeasureSpec.EXACTLY: {//如果是固定的大小，那就不要去改变它
+            case MeasureSpec.EXACTLY: //如果是固定的大小，那就不要去改变它
                 mySize = size;
                 break;
-            }
         }
         return mySize;
     }

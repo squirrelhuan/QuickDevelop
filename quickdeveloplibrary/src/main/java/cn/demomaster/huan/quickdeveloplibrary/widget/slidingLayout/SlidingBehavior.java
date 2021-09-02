@@ -162,10 +162,8 @@ public class SlidingBehavior extends CoordinatorLayout.Behavior<SlidingLayout> {
     private int clamp(int i, int minOffset, int maxOffset) {
         if (i > maxOffset) {
             return maxOffset;
-        } else if (i < minOffset) {
-            return minOffset;
         } else {
-            return i;
+            return Math.max(i, minOffset);
         }
     }
 }

@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.webview;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -12,7 +11,6 @@ import android.net.Uri;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -26,7 +24,6 @@ import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -59,7 +56,7 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return touchAble ? super.onTouchEvent(ev) : false;
+        return touchAble && super.onTouchEvent(ev);
     }
 
     private float mProgress;
@@ -87,15 +84,12 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         //参数2：Java对象名
         addJavascriptInterface(new AndroidtoJs(getContext()), "app");//AndroidtoJS类对象映射到js的test对象
 
-        super.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                if(downloadListener!=null) {
-                    downloadListener.onDownloadStart(url, userAgent, contentDisposition, mimetype, contentLength);
-                }else {
-                    QDLogger.e("userAgent="+userAgent+",contentDisposition="+contentDisposition+",mimetype="+mimetype+",contentLength="+contentLength);
-                    showDownloadDialog(url,contentDisposition,contentLength);
-                }
+        super.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            if(downloadListener!=null) {
+                downloadListener.onDownloadStart(url, userAgent, contentDisposition, mimetype, contentLength);
+            }else {
+                QDLogger.e("userAgent="+userAgent+",contentDisposition="+contentDisposition+",mimetype="+mimetype+",contentLength="+contentLength);
+                showDownloadDialog(url,contentDisposition,contentLength);
             }
         });
 
@@ -110,44 +104,41 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         setInitialScale(100);   //100代表不缩放
         setMyWebViewClient(new QuickWebViewClient(this));
         //loadUrl(mUrl);
-        setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                //dealUrlLoading();
-                final WebView.HitTestResult result = getHitTestResult();
-                if (null == result) {
-                    return false;
-                }
-                int type = result.getType();
-                switch (type) {
-                    case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
-                        QdToast.show(getContext(), "选中的文字类型");
-                        break;
-                    case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
-                        QdToast.show(getContext(), "处理拨号");
-                        break;
-                    case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
-                        QdToast.show(getContext(), "处理Email");
-                        break;
-                    case WebView.HitTestResult.GEO_TYPE: // 　地图类型
-                        QdToast.show(getContext(), "地图类型");
-                        break;
-                    case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
-                        QdToast.show(getContext(), "超链接");
-                        break;
-                    case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
-                        QdToast.show(getContext(), "带有链接的图片类型");
-                        break;
-                    case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
-                        String url = result.getExtra();//获取图片
-                        QdToast.show(getContext(), "处理长按图片的菜单项");
-                        break;
-                    case WebView.HitTestResult.UNKNOWN_TYPE: //未知
-                        QdToast.show(getContext(), "未知");
-                        break;
-                }
+        setOnLongClickListener(v -> {
+            //dealUrlLoading();
+            final HitTestResult result = getHitTestResult();
+            if (null == result) {
                 return false;
             }
+            int type = result.getType();
+            switch (type) {
+                case HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
+                    QdToast.show(getContext(), "选中的文字类型");
+                    break;
+                case HitTestResult.PHONE_TYPE: // 处理拨号
+                    QdToast.show(getContext(), "处理拨号");
+                    break;
+                case HitTestResult.EMAIL_TYPE: // 处理Email
+                    QdToast.show(getContext(), "处理Email");
+                    break;
+                case HitTestResult.GEO_TYPE: // 　地图类型
+                    QdToast.show(getContext(), "地图类型");
+                    break;
+                case HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+                    QdToast.show(getContext(), "超链接");
+                    break;
+                case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
+                    QdToast.show(getContext(), "带有链接的图片类型");
+                    break;
+                case HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
+                    String url = result.getExtra();//获取图片
+                    QdToast.show(getContext(), "处理长按图片的菜单项");
+                    break;
+                case HitTestResult.UNKNOWN_TYPE: //未知
+                    QdToast.show(getContext(), "未知");
+                    break;
+            }
+            return false;
         });
     }
 
@@ -162,12 +153,9 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
                 .setTitle("确定要下载"+contentDisposition+"("+ QDFileUtil.formatFileSize(contentLength,false) +")"+"吗？")
                 .setMessage(url)
                 .addAction("取消")
-                .addAction("确定", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        dialog.dismiss();
-                        downloadByBrowser(url);
-                    }
+                .addAction("确定", (dialog, view, tag) -> {
+                    dialog.dismiss();
+                    downloadByBrowser(url);
                 })
                 .create();
         qdDialog.show();
@@ -276,7 +264,7 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         this.onWindowViewInflate = onWindowViewInflate;
     }
 
-    public static interface WindowViewInflate{
+    public interface WindowViewInflate{
         WebView onWindowOpen();
         void onCloseWindow(WebView window);
     }

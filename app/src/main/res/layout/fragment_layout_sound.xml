@@ -8,27 +8,26 @@
            android:id="@+id/btn_play1"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="播放1"/>
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_play2"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="播放2"/>
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_play3"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="播放3"/>
 
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_play4"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="播放指定音频"/>
-
-       <WebView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"/>
-
 
 </LinearLayout>

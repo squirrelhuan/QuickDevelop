@@ -21,9 +21,9 @@ public class BlueToothReceiver extends BroadcastReceiver {
         //连接
         if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
             device.getName();//蓝牙的名字
-            QDLogger.e("蓝牙连接：" + device.getName());//蓝牙的名字
+            QDLogger.println("蓝牙连接：" + device.getName());//蓝牙的名字
         } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-            QDLogger.e("蓝牙断开：" + device.getName());//蓝牙的名字
+            QDLogger.println("蓝牙断开：" + device.getName());//蓝牙的名字
         }
     }
 }

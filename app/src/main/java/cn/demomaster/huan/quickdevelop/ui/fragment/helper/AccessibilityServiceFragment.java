@@ -41,17 +41,13 @@ public class AccessibilityServiceFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        btn_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //QDAccessibilityService.addPackage("cn.demomaster.huan.quickdevelop");
-                if (!AccessibilityHelper.isEnable(getContext(), QDAccessibilityService.class)) {
-                    //跳转系统自带界面 辅助功能界面
-                    QDAccessibilityService.startSettintActivity(mContext);
-                    return;
-                }else {
-                    QdToast.show(mContext, "无障碍已开启");
-                }
+        btn_01.setOnClickListener(v -> {
+            //QDAccessibilityService.addPackage("cn.demomaster.huan.quickdevelop");
+            if (!AccessibilityHelper.isEnable(getContext(), QDAccessibilityService.class)) {
+                //跳转系统自带界面 辅助功能界面
+                QDAccessibilityService.startSettintActivity(mContext);
+            }else {
+                QdToast.show(mContext, "无障碍已开启");
             }
         });
     }

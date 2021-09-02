@@ -17,8 +17,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper.serialport.sample;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
 import java.io.IOException;
@@ -65,11 +63,7 @@ public abstract class SerialPortActivity extends QDActivity {
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setTitle("Error");
         b.setMessage(resourceId);
-        b.setPositiveButton("OK", new OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                SerialPortActivity.this.finish();
-            }
-        });
+        b.setPositiveButton("OK", (dialog, which) -> SerialPortActivity.this.finish());
         b.show();
     }
 

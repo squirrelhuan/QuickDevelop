@@ -44,7 +44,6 @@ import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -91,10 +90,10 @@ public class WifiFragment2 extends BaseFragment {
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_wifi, null);
+            mView = inflater.inflate(R.layout.fragment_layout_wifi, null);
         }
         ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     NetworkHelper networkHelper;
@@ -143,16 +142,13 @@ public class WifiFragment2 extends BaseFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         wifiAdapter = new WifiAdapter(mContext);
-        wifiAdapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
-                if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
-                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
-                    showInputDialog(position);
-                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
-                    showInputDialog(position);
-                }
+        wifiAdapter.setOnItemClickListener((view, position) -> {
+            WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
+            if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
+            } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
+                showInputDialog(position);
+            } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
+                showInputDialog(position);
             }
         });
 
@@ -324,7 +320,7 @@ public class WifiFragment2 extends BaseFragment {
         if (netId == -1) {
             netId = wifiManager.addNetwork(configuration);
         }
-        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
+        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifiManager.enableNetwork(netId, true);
     }
 
@@ -337,8 +333,8 @@ public class WifiFragment2 extends BaseFragment {
     WifiManager wifiManager;
 
     private void initData() {
-        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
-        PermissionHelper.getInstance().requestPermission(mContext, permissions, new PermissionHelper.PermissionListener() {
+        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        PermissionHelper.requestPermission(mContext, permissions, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 scanResultList = WifiUtil.getInstance().getWifiList();
@@ -363,7 +359,7 @@ public class WifiFragment2 extends BaseFragment {
     public List<ScanResult> getWifiListSort(List<ScanResult> scanWifiList, String ssid) {
         List<ScanResult> wifiList = new ArrayList<>();
         if (scanWifiList != null && scanWifiList.size() > 0) {
-            HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
+            HashMap<String, Integer> signalStrength = new HashMap<>();
             for (int i = 0; i < scanWifiList.size(); i++) {
                 ScanResult scanResult = scanWifiList.get(i);
                 if (!scanResult.SSID.isEmpty()) {
@@ -428,8 +424,8 @@ public class WifiFragment2 extends BaseFragment {
     public String getCurentWifiSSID() {
         String ssid = "";
         ssid = mWifiManager.getConnectionInfo().getSSID();
-        if (ssid.substring(0, 1).equals("\"")
-                && ssid.substring(ssid.length() - 1).equals("\"")) {
+        if (ssid.charAt(0) == '"'
+                && ssid.endsWith("\"")) {
             ssid = ssid.substring(1, ssid.length() - 1);
         }
         return ssid;

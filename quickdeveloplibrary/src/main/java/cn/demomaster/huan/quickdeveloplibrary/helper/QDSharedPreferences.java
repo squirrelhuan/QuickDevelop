@@ -55,8 +55,8 @@ public class QDSharedPreferences {
             }
             return;
         }
-        this.context = context.getApplicationContext();
-        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(this.context);
+        QDSharedPreferences.context = context.getApplicationContext();
+        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(QDSharedPreferences.context);
         /*context.getSharedPreferences(String name,int mode)
         MODE_PRIVATE:私有
         MODE_APPED:追加

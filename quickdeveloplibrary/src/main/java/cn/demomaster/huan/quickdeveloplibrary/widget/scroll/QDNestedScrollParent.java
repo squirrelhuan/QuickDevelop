@@ -125,7 +125,7 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
         }
         if (dy < 0) {
             int toTop = fixedView.getMeasuredHeight() - fixedView.getMinHeight();
-            toTop = toTop > 0 ? toTop : 0;
+            toTop = Math.max(toTop, 0);
             QDLogger.println("getScrollY=" + getScrollY() + "hideImg toTop: " + toTop);
             //toTop = fixedView.getMinHeight();
             return (getScrollY() <= toTop);

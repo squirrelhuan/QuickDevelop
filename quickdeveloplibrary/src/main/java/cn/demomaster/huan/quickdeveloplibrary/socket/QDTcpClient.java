@@ -45,23 +45,20 @@ public class QDTcpClient {
         flag = true;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (!isServerClose(client)) {
-                        throw new QDException("client已连接，请勿重新初始化");
-                    }
-                    client = new Socket(serverIP, serverPort);
-                    isConnected = true;
-                    System.out.println("socket连接成功");
-                    //client.setKeepAlive(true);//开启保持活动状态的套接字
-                    //client.setSoTimeout(5 * 60 * 1000);//设置超时时间
-                    waitMessage();//开启消息接收
-                    //qdlogin();//用户登录
-                } catch (Exception e) {
-                    QDLogger.e(e);
+        Thread thread = new Thread(() -> {
+            try {
+                if (!isServerClose(client)) {
+                    throw new QDException("client已连接，请勿重新初始化");
                 }
+                client = new Socket(serverIP, serverPort);
+                isConnected = true;
+                System.out.println("socket连接成功");
+                //client.setKeepAlive(true);//开启保持活动状态的套接字
+                //client.setSoTimeout(5 * 60 * 1000);//设置超时时间
+                waitMessage();//开启消息接收
+                //qdlogin();//用户登录
+            } catch (Exception e) {
+                QDLogger.e(e);
             }
         });
         thread.start();
@@ -70,43 +67,40 @@ public class QDTcpClient {
     boolean flag = true;
 
     private void waitMessage() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (flag) {
-                    try {
-                        System.out.println("等待接收 ：" + flag);
-                        InputStream is = client.getInputStream();
-                        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                        //接收服务器的相应
-                        String reply = null;
-                        boolean hasRead = false;
-                        while (!((reply = br.readLine()) == null)) {
-                            hasRead = true;
-                            QDMessage qdMessage = JSON.parseObject(reply, QDMessage.class);
-                            System.out.println("接收信息：" + qdMessage.getTime() + "," + reply);
-                            if (qdMessage != null) {
-                                isConnected = true;
-                                if (receiveListenerManager.containsKey(qdMessage.getTime())) {
-                                    MessageReceiveListener listener = receiveListenerManager.getListener(qdMessage.getTime());
-                                    if (listener != null) {
-                                        listener.onReceived(qdMessage);
-                                    }
-                                    receiveListenerManager.removeListenerById(qdMessage.getTime());
-                                } else {
-                                    if (onMessageReceiveListener != null) {
-                                        onMessageReceiveListener.onReceived(qdMessage);
-                                    }
+        new Thread(() -> {
+            while (flag) {
+                try {
+                    System.out.println("等待接收 ：" + flag);
+                    InputStream is = client.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                    //接收服务器的相应
+                    String reply = null;
+                    boolean hasRead = false;
+                    while (!((reply = br.readLine()) == null)) {
+                        hasRead = true;
+                        QDMessage qdMessage = JSON.parseObject(reply, QDMessage.class);
+                        System.out.println("接收信息：" + qdMessage.getTime() + "," + reply);
+                        if (qdMessage != null) {
+                            isConnected = true;
+                            if (receiveListenerManager.containsKey(qdMessage.getTime())) {
+                                MessageReceiveListener listener = receiveListenerManager.getListener(qdMessage.getTime());
+                                if (listener != null) {
+                                    listener.onReceived(qdMessage);
+                                }
+                                receiveListenerManager.removeListenerById(qdMessage.getTime());
+                            } else {
+                                if (onMessageReceiveListener != null) {
+                                    onMessageReceiveListener.onReceived(qdMessage);
                                 }
                             }
                         }
-                        if (!hasRead) {
-                            throw new Exception("maybe disconnect");
-                        }
-                    } catch (Exception e) {
-                        QDLogger.e(e);
-                        closeConnect();
                     }
+                    if (!hasRead) {
+                        throw new Exception("maybe disconnect");
+                    }
+                } catch (Exception e) {
+                    QDLogger.e(e);
+                    closeConnect();
                 }
             }
         }).start();
@@ -196,24 +190,21 @@ public class QDTcpClient {
             receiveListenerManager.addListener(qdMessage.getTime(), listener);
         }
         //这里比较重要，需要给请求信息添加终止符，否则服务端会在解析数据时，一直等待
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (validConnect()) {
-                    try {
-                        String msg1 = JSON.toJSONString(qdMessage) + END_CHAR;
-                        out = client.getOutputStream();
-                        out.write(msg1.getBytes());
-                        System.out.println("发送请求：" + qdMessage.getTime() + "," + JSON.toJSONString(qdMessage));
-                    } catch (IOException e) {
-                        QDLogger.e(e);
-                        reConnect();
-                    }
-                } else {
+        Thread thread = new Thread(() -> {
+            if (validConnect()) {
+                try {
+                    String msg1 = JSON.toJSONString(qdMessage) + END_CHAR;
+                    out = client.getOutputStream();
+                    out.write(msg1.getBytes());
+                    System.out.println("发送请求：" + qdMessage.getTime() + "," + JSON.toJSONString(qdMessage));
+                } catch (IOException e) {
+                    QDLogger.e(e);
                     reConnect();
                 }
-
+            } else {
+                reConnect();
             }
+
         });
         thread.start();
     }

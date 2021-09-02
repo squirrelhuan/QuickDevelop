@@ -18,7 +18,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class CustomCameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static String TAG = CustomCameraPreview.class.getName();
+    private static final String TAG = CustomCameraPreview.class.getName();
 
     private Camera mCamera;
 

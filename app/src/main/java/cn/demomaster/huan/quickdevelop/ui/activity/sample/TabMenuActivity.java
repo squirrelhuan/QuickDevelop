@@ -20,7 +20,6 @@ import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopScrollListener;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
@@ -36,7 +35,7 @@ public class TabMenuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_menu);
 
-        /*********************      数据初始化                   ************************/
+        //数据初始化
         String[] aaa = new String[30];
         for (int i = 0; i < aaa.length; i++) {
             aaa[i] = "aaa" + (i < 10 ? "---" : "****#####a");
@@ -71,46 +70,35 @@ public class TabMenuActivity extends BaseActivity {
         tabSelectModels.add(tabMenuModel2);
 
         //添加自定义布局
-        TabMenuModel tabMenuModel3 = new TabMenuModel("自定义", R.layout.layout_date_picker2, new TabMenuModel.OnCreatTabContentView() {
-            @Override
-            public void onCreat(View root) {
-                LoopView2 loopView2;
-                loopView2 = (LoopView2) root.findViewById(R.id.loop_view2);
-                loopView2.setLoopListener(new LoopScrollListener() {
-                    @Override
-                    public void onItemSelect(int item) {
-                        PopToastUtil.showToast(mContext, "item=" + item);
-                    }
-                });
-                loopView2.setTextSize(16);//must be called before setDateList
-                loopView2.setDataList(getList(20));
-                loopView2.setCurrentIndex(10);
-            }
+        TabMenuModel tabMenuModel3 = new TabMenuModel("自定义", R.layout.layout_date_picker2, root -> {
+            LoopView2 loopView2;
+            loopView2 = root.findViewById(R.id.loop_view2);
+            loopView2.setLoopListener(item -> PopToastUtil.showToast(mContext, "item=" + item));
+            loopView2.setTextSize(16);//must be called before setDateList
+            loopView2.setDataList(getList(20));
+            loopView2.setCurrentIndex(10);
         });
         tabMenuModel3.setTabButtonView(new TButton(this));
         tabSelectModels.add(tabMenuModel3);
 
-        /*********************      组建初始化                   ************************/
+        //组建初始化
         tabMenuLayout = findViewById(R.id.tab_menu_layout);
         tabMenuLayout.setTabDividerResId(R.layout.activity_layout_driver);
-        tabMenuLayout.setData(tabSelectModels, new TabMenuLayout.TabMenuInterface() {
-            @Override
-            public String onSelected(TabRadioGroup.TabRadioButton tabButton, int tabIndex, int position) {
-                PopToastUtil.showToast(mContext, "" + tabIndex + ":" + position);
-                tabMenuLayout.getPopupWindow().dismiss();
-                switch (tabIndex) {
-                    case 0:
-                        tabButton.setTabName(aaa[position]);
-                        break;
-                    case 1:
-                        tabButton.setTabName(bbb[position]);
-                        break;
-                    case 2:
-                        tabButton.setTabName(ccc[position]);
-                        break;
-                }
-                return null;
+        tabMenuLayout.setData(tabSelectModels, (tabButton, tabIndex, position) -> {
+            PopToastUtil.showToast(mContext, "" + tabIndex + ":" + position);
+            tabMenuLayout.getPopupWindow().dismiss();
+            switch (tabIndex) {
+                case 0:
+                    tabButton.setTabName(aaa[position]);
+                    break;
+                case 1:
+                    tabButton.setTabName(bbb[position]);
+                    break;
+                case 2:
+                    tabButton.setTabName(ccc[position]);
+                    break;
             }
+            return null;
         });
     }
 
@@ -156,7 +144,7 @@ public class TabMenuActivity extends BaseActivity {
         public void initView(Context context) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             view = inflater.inflate(R.layout.item_tab_menu_layout, null);
-            tv_tab_name = (TextView) view.findViewById(R.id.tv_tab_name);
+            tv_tab_name = view.findViewById(R.id.tv_tab_name);
             view.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
             this.addView(view);
         }

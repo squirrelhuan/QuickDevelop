@@ -4,6 +4,8 @@ import android.view.View;
 
 import androidx.viewpager2.widget.ViewPager2;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ZoomOutPageTransformer2 implements ViewPager2.PageTransformer {
     private static final float MAX_SCALE = 1f;
     private static final float MAX_SCALE_X = 1f;
@@ -14,7 +16,7 @@ public class ZoomOutPageTransformer2 implements ViewPager2.PageTransformer {
     private static final float MIN_ALPHA = 0.9F;
 
     @Override
-    public void transformPage(View view, float position) {
+    public void transformPage(@NotNull View view, float position) {
         if (position < -1) {
             //view.setLeft((int) (view.getWidth()*MIN_SCALE));
             //view.setScaleY(MIN_SCALE);

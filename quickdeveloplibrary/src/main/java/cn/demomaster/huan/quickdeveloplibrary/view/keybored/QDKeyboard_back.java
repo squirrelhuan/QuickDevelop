@@ -25,7 +25,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -118,50 +117,40 @@ public class QDKeyboard_back {
         mEditText = editText;
         for (int i = 0; i < editTextList.size(); i++) {
             if (editTextList.get(i) == editText) {
-                editTextList.get(i).setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        isTouchedEditText = true;
-                        hideSystemKeyBoard((EditText) v);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if ((isClosed || isClosing)) {
-                                showKeyboard();
-                            }
+                editTextList.get(i).setOnTouchListener((v, event) -> {
+                    isTouchedEditText = true;
+                    hideSystemKeyBoard((EditText) v);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if ((isClosed || isClosing)) {
+                            showKeyboard();
                         }
-                        return false;
                     }
+                    return false;
                 });
-                editTextList.get(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        hideSystemKeyBoard((EditText) v);
-                        //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
-                        if (hasFocus) {
-                            if ((isClosed || isClosing)) {
-                                showKeyboard();
-                            }
-                        } else {//如果新的焦点不使用自定义键盘则隐藏
-                            waitHideKeyboard();
+                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                    hideSystemKeyBoard((EditText) v);
+                    //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                    if (hasFocus) {
+                        if ((isClosed || isClosing)) {
+                            showKeyboard();
                         }
+                    } else {//如果新的焦点不使用自定义键盘则隐藏
+                        waitHideKeyboard();
                     }
                 });
             } else {
                 editTextList.get(i).setOnTouchListener(null);
-                editTextList.get(i).setOnFocusChangeListener(new View.
-                        OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        hideSystemKeyBoard((EditText) v);
-                        //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
-                        if (hasFocus) {
-                            // 此处为得到焦点时的处理内容
-                            setCurrentFocus((EditText) v);
-                            if ((isClosed || isClosing)) {
-                                showKeyboard();
-                            }
-                        } else {//如果新的焦点不使用自定义键盘则隐藏
-                            waitHideKeyboard();
+                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
+                    hideSystemKeyBoard((EditText) v);
+                    //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                    if (hasFocus) {
+                        // 此处为得到焦点时的处理内容
+                        setCurrentFocus((EditText) v);
+                        if ((isClosed || isClosing)) {
+                            showKeyboard();
                         }
+                    } else {//如果新的焦点不使用自定义键盘则隐藏
+                        waitHideKeyboard();
                     }
                 });
             }
@@ -206,30 +195,27 @@ public class QDKeyboard_back {
         animator = ValueAnimator.ofFloat(h1, h2);
         long d = (long) (duration * (isOpening ? (keyContainerHeight - keyContainer.getHeight()) : keyContainer.getHeight()) / keyContainerHeight);
         animator.setDuration(d);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = keyContainer.getLayoutParams();
-                layoutParams.height = (int) value;
-                keyContainer.setLayoutParams(layoutParams);
-                QDLogger.i("value=" + value);
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = keyContainer.getLayoutParams();
+            layoutParams.height = (int) value;
+            keyContainer.setLayoutParams(layoutParams);
+            QDLogger.i("value=" + value);
 
-                keyContainer.setVisibility(View.VISIBLE);
-                if (isOpening && value >= h2) {
-                    QDLogger.i("已开启");
-                    isOpening = false;
-                    isOpened = true;
-                    isClosed = false;
-                    isClosing = false;
-                } else if (isClosing && value <= h1) {
-                    QDLogger.i("已隐藏");
-                    keyContainer.setVisibility(View.GONE);
-                    isClosing = false;
-                    isClosed = true;
-                    isOpened = false;
-                    isOpening = false;
-                }
+            keyContainer.setVisibility(View.VISIBLE);
+            if (isOpening && value >= h2) {
+                QDLogger.i("已开启");
+                isOpening = false;
+                isOpened = true;
+                isClosed = false;
+                isClosing = false;
+            } else if (isClosing && value <= h1) {
+                QDLogger.i("已隐藏");
+                keyContainer.setVisibility(View.GONE);
+                isClosing = false;
+                isClosed = true;
+                isOpened = false;
+                isOpening = false;
             }
         });
         //animator.setRepeatMode(ValueAnimator.REVERSE);
@@ -247,18 +233,10 @@ public class QDKeyboard_back {
         //数字 case 3: keyboardView.setKeyboard(keyboardNumber);
         switch (mEditText.getInputType()) {
             case InputType.TYPE_CLASS_NUMBER://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_CLASS_PHONE://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_VARIATION_PASSWORD://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_VARIATION_NORMAL://数字
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
-            case InputType.TYPE_NUMBER_FLAG_DECIMAL://数字
+            case InputType.TYPE_CLASS_PHONE:
+            case InputType.TYPE_NUMBER_VARIATION_PASSWORD:
+            case InputType.TYPE_NUMBER_VARIATION_NORMAL:
+            case InputType.TYPE_NUMBER_FLAG_DECIMAL:
                 keyboardView.setKeyboard(keyboardNumber_Only);
                 break;
             default:
@@ -312,29 +290,21 @@ public class QDKeyboard_back {
             hideDrawable.setTint(mContext.getResources().getColor(R.color.transparent_light_cc));
         }
         iv_keyboardDone.setImageDrawable(hideDrawable);
-        iv_keyboardDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideKeyboard();
-            }
-        });
+        iv_keyboardDone.setOnClickListener(v -> hideKeyboard());
 
         qdTipPopup = new QDPopup(keyContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         qdTipPopup.setFocusable(false);
         qdTipPopup.setTouchable(true);
-        qdTipPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getActivityFromView(mEditText).getWindow().getAttributes();
-                lp.alpha = 1f;
-                getActivityFromView(mEditText).getWindow().setAttributes(lp);
-                contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
-                mDecorView = (View) contentView.getParent();
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
-                layoutParams.bottomMargin = (int) 0;
-                layoutParams.topMargin = 0;
-                mDecorView.setLayoutParams(layoutParams);
-            }
+        qdTipPopup.setOnDismissListener(() -> {
+            WindowManager.LayoutParams lp = getActivityFromView(mEditText).getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivityFromView(mEditText).getWindow().setAttributes(lp);
+            contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
+            mDecorView = (View) contentView.getParent();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
+            layoutParams.bottomMargin = 0;
+            layoutParams.topMargin = 0;
+            mDecorView.setLayoutParams(layoutParams);
         });
 
         setDelDrawable(mContext.getResources().getDrawable(R.drawable.icon_del));

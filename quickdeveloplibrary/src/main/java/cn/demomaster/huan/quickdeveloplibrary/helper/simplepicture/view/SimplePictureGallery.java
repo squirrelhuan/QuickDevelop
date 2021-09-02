@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -13,13 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import java.io.Serializable;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.constant.FilePath;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.PreviewActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
@@ -112,9 +112,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
             public void onItemClick(View view, int position, Image image) {
                 if (canPreview) {
                     Bundle bundle = new Bundle();
-                    ArrayList<Image> images = new ArrayList<>();
-                    images.add(image);
-                    bundle.putSerializable("images", (Serializable) imageList);
+                    bundle.putSerializable("images", imageList);
                     bundle.putInt("imageIndex", position);
                     Intent intent = new Intent(context, PreviewActivity.class);
                     intent.putExtras(bundle);
@@ -142,61 +140,58 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
     private void showMenuDialog() {
         String[] menus = getResources().getStringArray(R.array.select_picture_items);
-        new QDSheetDialog.MenuBuilder(getContext()).setData(menus).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                if (position == 0) {
-                    ((QDActivity) getContext()).getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
-                        @Override
-                        public void onSuccess(Intent data, String path) {
-                            if (data == null) {
-                                imageList.add(new Image(path, UrlType.file));
-                                addImageToView();
-                                if (onPictureChangeListener != null) {
-                                    onPictureChangeListener.onChanged(imageList);
-                                }
-                            } else {
-                                Bundle extras = data.getExtras();
-                                if (extras != null) {
-                                    Bitmap bitmap = extras.getParcelable("data");
-                                    String filePath = QDBitmapUtil.savePhoto(bitmap, FilePath.APP_PATH_PICTURE, "header");//String.valueOf(System.currentTimeMillis())
-                                    imageList.add(new Image(filePath, UrlType.file));
-                                    addImageToView();
-                                    if (onPictureChangeListener != null) {
-                                        onPictureChangeListener.onChanged(imageList);
-                                    }
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(String error) {
-
-                        }
-                    });
-                } else {//从相册选择
-                    ((QDActivity) getContext()).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
-                        @Override
-                        public void onSuccess(Intent data, ArrayList<Image> images) {
-                            imageList.addAll(images);
+        new QDSheetDialog.MenuBuilder(getContext()).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
+            dialog.dismiss();
+            if (position == 0) {
+                ((QDActivity) getContext()).getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
+                    @Override
+                    public void onSuccess(Intent data, String path) {
+                        if (data == null) {
+                            imageList.add(new Image(path, UrlType.file));
                             addImageToView();
                             if (onPictureChangeListener != null) {
                                 onPictureChangeListener.onChanged(imageList);
                             }
+                        } else {
+                            Bundle extras = data.getExtras();
+                            if (extras != null) {
+                                Bitmap bitmap = extras.getParcelable("data");
+                                String filePath = QDBitmapUtil.savePhoto(bitmap, getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath()+ File.separator+"temp", "header");//String.valueOf(System.currentTimeMillis())
+                                imageList.add(new Image(filePath, UrlType.file));
+                                addImageToView();
+                                if (onPictureChangeListener != null) {
+                                    onPictureChangeListener.onChanged(imageList);
+                                }
+                            }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(String error) {
+                    @Override
+                    public void onFailure(String error) {
 
+                    }
+                });
+            } else {//从相册选择
+                ((QDActivity) getContext()).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                    @Override
+                    public void onSuccess(Intent data, ArrayList<Image> images) {
+                        imageList.addAll(images);
+                        addImageToView();
+                        if (onPictureChangeListener != null) {
+                            onPictureChangeListener.onChanged(imageList);
                         }
+                    }
 
-                        @Override
-                        public int getImageCount() {
-                            return maxCount - imageList.size();
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+
+                    @Override
+                    public int getImageCount() {
+                        return maxCount - imageList.size();
+                    }
+                });
             }
         }).create().show();
     }

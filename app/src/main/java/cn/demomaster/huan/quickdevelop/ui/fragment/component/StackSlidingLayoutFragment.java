@@ -19,7 +19,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.widget.stackslidingLayout.ComponentAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.widget.slidingLayout.ComponentAdapter;
 
 /**
  * Squirrel桓
@@ -45,7 +45,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
         //A
         recyclerView_A = rootView.findViewById(R.id.list_A);
         header_A = rootView.findViewById(R.id.header_A);
-        adapter_A = new ComponentAdapter(getContext(), Color.BLACK);
+        adapter_A = new ComponentAdapter(getContext());
         items_A = new ArrayList();
         int c = 20;
         for (int i = 0; i < c; i++) {
@@ -58,7 +58,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
         //B
         recyclerView_B = rootView.findViewById(R.id.list_B);
         header_B = rootView.findViewById(R.id.header_B);
-        adapter_B = new ComponentAdapter(getContext(), Color.BLACK);
+        adapter_B = new ComponentAdapter(getContext());
         items_B = new ArrayList();
         c = 6;
         for (int i = 0; i < c; i++) {
@@ -71,7 +71,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
         //C
         recyclerView_C = rootView.findViewById(R.id.list_C);
         header_C = rootView.findViewById(R.id.header_C);
-        adapter_C = new ComponentAdapter(getContext(), Color.BLACK);
+        adapter_C = new ComponentAdapter(getContext());
         items_C = new ArrayList();
         c = 33;
         for (int i = 0; i < c; i++) {
@@ -84,7 +84,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
         //D
         recyclerView_D = rootView.findViewById(R.id.list_D);
         header_D = rootView.findViewById(R.id.header_D);
-        adapter_D = new ComponentAdapter(getContext(), Color.BLACK);
+        adapter_D = new ComponentAdapter(getContext());
         items_D = new ArrayList();
         c = 3;
         for (int i = 0; i < c; i++) {
@@ -97,7 +97,7 @@ public class StackSlidingLayoutFragment extends BaseFragment {
         //E
         recyclerView_E = rootView.findViewById(R.id.list_E);
         header_E = rootView.findViewById(R.id.header_E);
-        adapter_E = new ComponentAdapter(getContext(), Color.BLACK);
+        adapter_E = new ComponentAdapter(getContext());
         items_E = new ArrayList();
         c = 16;
         for (int i = 0; i < c; i++) {

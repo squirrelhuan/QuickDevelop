@@ -55,9 +55,9 @@ public class Test {
             ParameterizedType listGenericType = (ParameterizedType) listField.getGenericType();
             Type[] listActualTypeArguments = listGenericType.getActualTypeArguments();
             System.out.println(listActualTypeArguments[listActualTypeArguments.length - 1]);
-            for (int i = 0; i < listActualTypeArguments.length; i++) {
-                System.out.println(listActualTypeArguments[i]);
-                testa(Class.forName(listActualTypeArguments[i].toString()), "showTextField");
+            for (Type listActualTypeArgument : listActualTypeArguments) {
+                System.out.println(listActualTypeArgument);
+                testa(Class.forName(listActualTypeArgument.toString()), "showTextField");
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class Test {
     @org.junit.Test
     public void get7week() {
         String week = "";
-        List<String> weeksList = new ArrayList<String>();
+        List<String> weeksList = new ArrayList<>();
         List<String> dateList = get7date(21);
         for (String s : dateList) {
             System.out.println(s);
@@ -143,7 +143,7 @@ public class Test {
 
 
     public static List<String> get7date(int count) {
-        List<String> dates = new ArrayList<String>();
+        List<String> dates = new ArrayList<>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         java.text.SimpleDateFormat sim = new java.text.SimpleDateFormat(

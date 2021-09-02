@@ -35,12 +35,7 @@ public class ToggleButton extends View {
 
     private boolean isCheckedDef = false;
     public void init() {
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setChecked(!checked);
-            }
-        });
+        setOnClickListener(view -> setChecked(!checked));
     }
 
     public boolean isChecked() {
@@ -55,15 +50,13 @@ public class ToggleButton extends View {
         }
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         width = w;
         height = h;
-        center_x = width / 2;
     }
 
     private boolean checked = true;
@@ -152,13 +145,10 @@ public class ToggleButton extends View {
         ValueAnimator animator = ValueAnimator.ofFloat(start, end);
         animator.setDuration(200);
         //animator.setInterpolator(new OvershootInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                progress = value;
-                postInvalidate();
-            }
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            progress = value;
+            postInvalidate();
         });
         //animator.setRepeatMode(ValueAnimator.RESTART);
         //animator.setRepeatCount(ValueAnimator.INFINITE);

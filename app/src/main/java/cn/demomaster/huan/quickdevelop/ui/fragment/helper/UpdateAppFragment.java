@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInstaller;
@@ -40,7 +39,6 @@ import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -75,45 +73,33 @@ public class UpdateAppFragment extends BaseFragment {
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
-            mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_update_app, null);
+            mView = inflater.inflate(R.layout.fragment_layout_update_app, null);
         }
         ButterKnife.bind(this, mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     int type = 0;
 
     public void initView(View rootView) {
         getActionBarTool().setTitle("文件下载");
-        btn_update_app.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                type = 0;
-                updateApp(mContext);
-            }
+        btn_update_app.setOnClickListener(v -> {
+            type = 0;
+            updateApp(mContext);
         });
-        btn_install_access.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                type = 1;
-                updateApp(mContext);
-            }
+        btn_install_access.setOnClickListener(v -> {
+            type = 1;
+            updateApp(mContext);
         });
 
-        btn_install_silence.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                type = 2;
-                updateApp(mContext);
-            }
+        btn_install_silence.setOnClickListener(v -> {
+            type = 2;
+            updateApp(mContext);
         });
 
-        btn_install_silence2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                type = 3;
-                updateApp(mContext);
-            }
+        btn_install_silence2.setOnClickListener(v -> {
+            type = 3;
+            updateApp(mContext);
         });
     }
 
@@ -121,7 +107,7 @@ public class UpdateAppFragment extends BaseFragment {
     public void updateApp(final Activity context) {
         showDialog();
         //存储权限
-        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
+        PermissionHelper.requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 checkVersionCode(context);
@@ -219,57 +205,54 @@ public class UpdateAppFragment extends BaseFragment {
         new QDDialog.Builder(getContext()).setTitle("更新提示")
                 .setMessage("确定要更新吗？")
                 .setBackgroundRadius(30)
-                .addAction("更新", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        dialog.dismiss();
-                        //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
-                        //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
-                        if (type == 0) {
-                            InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
-                        } else if (type == 1) {
-                            InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
-                        } else if (type == 2) {
-                            try {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    InstallHelper.silenceInstall(mContext, true, new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
-                                        @Override
-                                        public void onCreated(int sessionId) {
+                .addAction("更新", (dialog, view, tag) -> {
+                    dialog.dismiss();
+                    //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
+                    //InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
+                    if (type == 0) {
+                        InstallHelper.downloadAndInstall(mContext, version.getFileName(), version.getDownloadUrl());
+                    } else if (type == 1) {
+                        InstallHelper.runInstall(mContext, new File(Environment.getExternalStorageDirectory(), "xiao.apk"));
+                    } else if (type == 2) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                InstallHelper.silenceInstall(mContext, true, new File(Environment.getExternalStorageDirectory(), "xiao.apk"), new PackageInstaller.SessionCallback() {
+                                    @Override
+                                    public void onCreated(int sessionId) {
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onBadgingChanged(int sessionId) {
+                                    @Override
+                                    public void onBadgingChanged(int sessionId) {
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onActiveChanged(int sessionId, boolean active) {
+                                    @Override
+                                    public void onActiveChanged(int sessionId, boolean active) {
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onProgressChanged(int sessionId, float progress) {
+                                    @Override
+                                    public void onProgressChanged(int sessionId, float progress) {
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onFinished(int sessionId, boolean success) {
-                                            InstallHelper.launchAPK(mContext, "");
-                                        }
-                                    });
-                                } else {
-                                    QDLogger.e("5.0以上用这种静默安装");
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                    @Override
+                                    public void onFinished(int sessionId, boolean success) {
+                                        InstallHelper.launchAPK(mContext, "");
+                                    }
+                                });
+                            } else {
+                                QDLogger.e("5.0以上用这种静默安装");
                             }
-                        } else if (type == 3) {
-                            try {
-                                InstallHelper.downloadAndSilenceInstall(getActivity(), true, version.getFileName() + ".apk", version.getDownloadUrl());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (type == 3) {
+                        try {
+                            InstallHelper.downloadAndSilenceInstall(getActivity(), true, version.getFileName() + ".apk", version.getDownloadUrl());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }).addAction("取消").setGravity_foot(Gravity.CENTER).create().show();
@@ -282,7 +265,7 @@ public class UpdateAppFragment extends BaseFragment {
     //下载文件
     public static void downloadFile(final Activity context, String urls, final String name) {
         final String url = urls;
-        PermissionHelper.getInstance().requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
+        PermissionHelper.requestPermission(context, PERMISSIONS_STORAGE, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 /*DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);

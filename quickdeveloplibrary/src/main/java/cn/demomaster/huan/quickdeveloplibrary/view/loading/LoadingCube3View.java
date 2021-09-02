@@ -110,33 +110,30 @@ public class LoadingCube3View extends View {
         final int end = 360;
         animator = ValueAnimator.ofInt(start, end);
         animator.setDuration(1000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (getVisibility() == VISIBLE) {
-                    progress = (int) animation.getAnimatedValue();
-                    //Log.d(TAG, "progress=" + progress);
-                    if (progress >= end) {
-                        isForward = !isForward;
-                        //Log.d(TAG, "isForward=" + isForward);
-                    } else {
-                        //postInvalidate();
-                        invalidate();
-                    }
-                    float t1 = progress - lastPro;
-                    if (t1 * dx < 0 || (t1 == 0 && progress != lastPro)) {
-                        //方向转换了
-                        // QDLogger.d("方向转换了");
-                        if (index == 3) {
-                            index = 0;
-                        } else {
-                            index++;
-                        }
-                    }
-
-                    dx = progress - lastPro;
-                    lastPro = progress;
+        animator.addUpdateListener(animation -> {
+            if (getVisibility() == VISIBLE) {
+                progress = (int) animation.getAnimatedValue();
+                //Log.d(TAG, "progress=" + progress);
+                if (progress >= end) {
+                    isForward = !isForward;
+                    //Log.d(TAG, "isForward=" + isForward);
+                } else {
+                    //postInvalidate();
+                    invalidate();
                 }
+                float t1 = progress - lastPro;
+                if (t1 * dx < 0 || (t1 == 0 && progress != lastPro)) {
+                    //方向转换了
+                    // QDLogger.d("方向转换了");
+                    if (index == 3) {
+                        index = 0;
+                    } else {
+                        index++;
+                    }
+                }
+
+                dx = progress - lastPro;
+                lastPro = progress;
             }
         });
         animator.setRepeatMode(ValueAnimator.RESTART);

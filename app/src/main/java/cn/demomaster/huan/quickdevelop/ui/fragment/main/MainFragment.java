@@ -1,7 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.main;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,10 +30,8 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -112,24 +108,16 @@ public class MainFragment extends BaseFragment {
         getActionBarTool().setTitle(getString(R.string.title_home));
         //getActionBarTool().setStateBarColorAuto(true);//状态栏文字颜色自动
         //getActionBarTool().setActionBarThemeColors(Color.WHITE, Color.BLACK);
-        getActionBarTool().setLeftOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
-                final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
-                loadingDialog.show();*/
-                QDActionDialog.Builder builder = new QDActionDialog.Builder(mContext).setContentViewLayout(R.layout.layout_dialog_loading_default);
-                final QDActionDialog customDialog = builder.setCancelable(false).create();
-                customDialog.show();
-            }
+        getActionBarTool().setLeftOnClickListener(view -> {
+            /*LoadingDialog.Builder builder = new LoadingDialog.Builder(MainActivity.this);
+            final LoadingDialog loadingDialog = builder.setMessage("登陆中").setCanTouch(false).create();
+            loadingDialog.show();*/
+            QDActionDialog.Builder builder = new QDActionDialog.Builder(mContext).setContentViewLayout(R.layout.layout_dialog_loading_default);
+            final QDActionDialog customDialog = builder.setCancelable(false).create();
+            customDialog.show();
         });
         getActionBarTool().getLeftView().setVisibility(View.GONE);
-        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                optionsMenu.show(v);
-            }
-        });
+        getActionBarTool().setRightOnClickListener(v -> optionsMenu.show(v));
         initOptionsMenu();
     }
 
@@ -162,44 +150,41 @@ public class MainFragment extends BaseFragment {
                 .setGravity(GuiderView.Gravity.BOTTOM)
                 .setDividerColor(getResources().getColor(R.color.transparent))
                 .setAnchor(getActionBarTool().getRightView());
-        optionsMenubuilder.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
-            @Override
-            public void onItemClick(int position, View view) {
-                switch (position) {
-                    case 0:
-                        optionsMenu.dismiss();
-                        break;
-                    case 1:
-                        getPhotoHelper().scanQrcode(new PhotoHelper.OnTakePhotoResult() {
-                            @Override
-                            public void onSuccess(Intent data, String path) {
-                                //QdToast.show(mContext, path + "");
-                                showScanDialog(path);
-                            }
+        optionsMenubuilder.setOnMenuItemClicked((position, view) -> {
+            switch (position) {
+                case 0:
+                    optionsMenu.dismiss();
+                    break;
+                case 1:
+                    getPhotoHelper().scanQrcode(new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            //QdToast.show(mContext, path + "");
+                            showScanDialog(path);
+                        }
 
-                            @Override
-                            public void onFailure(String error) {
-                                QdToast.show(mContext, "error:" + error);
-                            }
-                        });
-                        optionsMenu.dismiss();
-                       /* photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
-                            @Override
-                            public void onSuccess(Intent data, String path) {
-                                *//*setImageToView(data);*//*
-                            }
+                        @Override
+                        public void onFailure(String error) {
+                            QdToast.show(mContext, "error:" + error);
+                        }
+                    });
+                    optionsMenu.dismiss();
+                   /* photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            *//*setImageToView(data);*//*
+                        }
 
-                            @Override
-                            public void onFailure(String error) {
+                        @Override
+                        public void onFailure(String error) {
 
-                            }
-                        });*/
-                        break;
-                    case 2:
-                        ScreenShotUitl.shot((Activity) mContext);
-                        optionsMenu.dismiss();
-                        break;
-                }
+                        }
+                    });*/
+                    break;
+                case 2:
+                    //ScreenShotUitl.shot((Activity) mContext);
+                    optionsMenu.dismiss();
+                    break;
             }
         });
         optionsMenu = optionsMenubuilder.creat();
@@ -220,26 +205,20 @@ public class MainFragment extends BaseFragment {
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                 //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
                 .setText_color_body(Color.BLUE)
-                .addAction("复制", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        ClipboardUtil.setClip(getContext(),""+url);
-                        QdToast.show("copy success");
-                        dialog.dismiss();
-                    }
+                .addAction("复制", (dialog, view, tag) -> {
+                    ClipboardUtil.setClip(getContext(),""+url);
+                    QdToast.show("copy success");
+                    dialog.dismiss();
                 })
-                .addAction("跳转", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        dialog.dismiss();
-                        WebViewFragment webViewFragment = new WebViewFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("URL", url);
-                        webViewFragment.setArguments(bundle);
-                        Intent intent =new Intent();
-                        intent.putExtras(bundle);
-                        startFragment(webViewFragment,R.id.container1,intent);
-                    }
+                .addAction("跳转", (dialog, view, tag) -> {
+                    dialog.dismiss();
+                    WebViewFragment webViewFragment = new WebViewFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("URL", url);
+                    webViewFragment.setArguments(bundle);
+                    Intent intent =new Intent();
+                    intent.putExtras(bundle);
+                    startFragment(webViewFragment,R.id.container1,intent);
                 })
                 //.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))

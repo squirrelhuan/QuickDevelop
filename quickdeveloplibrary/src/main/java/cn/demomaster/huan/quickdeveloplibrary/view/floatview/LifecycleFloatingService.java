@@ -62,12 +62,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         tv_title = view.findViewById(R.id.tv_title);
         tv_title.setText("" + QDAppInfoUtil.getVersionName(context));
         TextView tv_close = view.findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dissmissWindow();
-            }
-        });
+        tv_close.setOnClickListener(v -> dissmissWindow());
         handler.postDelayed(runnable, 1000);
         layoutParams = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -95,7 +90,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
 
-    private static Handler handler = new Handler();
+    private static final Handler handler = new Handler();
     static Runnable runnable = new Runnable() {
         @Override
         public void run() {

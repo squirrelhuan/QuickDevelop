@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -37,38 +36,15 @@ public class HtmlTestActivity extends QDActivity {
         QuickStickerBinder.getInstance().bind(this);
         et_input.setText("http://ucipchatlib.astro.nxengine.com/webchat/chat.html?c=31&jId=79&from=active&hashid=24242123454224&initFlag=debug&devOneId=ttcf542c5112a03557ce961b51560130");
 
-        btn_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_input.setText("http://ucipchatlib.astro.nxengine.com/webchat/chat.html?c=31&jId=79&from=active&hashid=24242123454224&initFlag=debug&devOneId=ttcf542c5112a03557ce961b51560130");
-            }
-        });
-        btn_02.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_input.setText("http://ucipchatlib.astro.nxengine.com/webchat/chat.html?c=31&jId=85&from=active&hashid=24242123454224&initFlag=debug&devOneId=ttcf542c5112a03557ce961b51560130");
-            }
-        });
-        btn_03.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_input.setText("https://cipchat.sa.mysvw.com/webchat/chat.html?c=31&jId=79&from=active");
-            }
-        });
-        btn_04.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et_input.setText("https://cipchat.sa.mysvw.com/webchat/chat.html?c=31&jId=85&from=active");
-            }
-        });
-        btn_go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url= et_input.getText().toString();
-                Bundle bundle = new Bundle();
-                bundle.putString("url",url);
-                startActivity(QDMainFragmentActivity2.class,bundle);
-            }
+        btn_01.setOnClickListener(v -> et_input.setText("http://ucipchatlib.astro.nxengine.com/webchat/chat.html?c=31&jId=79&from=active&hashid=24242123454224&initFlag=debug&devOneId=ttcf542c5112a03557ce961b51560130"));
+        btn_02.setOnClickListener(v -> et_input.setText("http://ucipchatlib.astro.nxengine.com/webchat/chat.html?c=31&jId=85&from=active&hashid=24242123454224&initFlag=debug&devOneId=ttcf542c5112a03557ce961b51560130"));
+        btn_03.setOnClickListener(v -> et_input.setText("https://cipchat.sa.mysvw.com/webchat/chat.html?c=31&jId=79&from=active"));
+        btn_04.setOnClickListener(v -> et_input.setText("https://cipchat.sa.mysvw.com/webchat/chat.html?c=31&jId=85&from=active"));
+        btn_go.setOnClickListener(v -> {
+            String url= et_input.getText().toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("url",url);
+            startActivity(QDMainFragmentActivity2.class,bundle);
         });
 
         PermissionHelper.requestPermission(mContext, new String[]{

@@ -80,7 +80,7 @@ public class BaseService extends Service {
         WeakReference<Service> mService;
 
         ServiceStub(Service service) {
-            mService = new WeakReference<Service>(service);
+            mService = new WeakReference<>(service);
         }
 
         @Override

@@ -25,7 +25,7 @@ public class GuiderHelper {
         return instance;
     }
 
-    private List<GuiderModel> guiderModels;
+    private final List<GuiderModel> guiderModels;
     private int position;
 
     public GuiderHelper() {
@@ -127,17 +127,14 @@ public class GuiderHelper {
     public void startGuider(Activity context, View view, String Tag) {
         //initGuiderView(context,view,Tag);
         decorView = (FrameLayout) context.getWindow().getDecorView();
-        guiderSurfaceView = new GuiderView(context, guiderModels.get(position), decorView, new GuiderActionDialog.OnActionFinishListener() {
-            @Override
-            public void onFinish() {
-                if (position > guiderModels.size() - 2) {
-                    //结束；
-                    decorView.removeView(guiderSurfaceView);
-                } else {
-                    //继续下一个
-                    position++;
-                    toNextGuider();
-                }
+        guiderSurfaceView = new GuiderView(context, guiderModels.get(position), decorView, () -> {
+            if (position > guiderModels.size() - 2) {
+                //结束；
+                decorView.removeView(guiderSurfaceView);
+            } else {
+                //继续下一个
+                position++;
+                toNextGuider();
             }
         });
         guiderSurfaceView.setGuiderBackgroundColor(backgroundColor);

@@ -24,27 +24,14 @@ public class RouterPaper extends Paper {
         //actionBarLayout.setTitle(titles[i]+"sss");
         //actionBarLayout.setHeaderBackgroundColor(colors[i]);
         Button button = view.findViewById(R.id.btn_open_new_fragment);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                opentFragment();
-            }
-        });
+        button.setOnClickListener(view1 -> opentFragment());
         Button btn_set_title = view.findViewById(R.id.btn_set_title);
-        btn_set_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int i = (int) (Math.random() * 10 % 4);
-                // actionBarLayout.setTitle(titles[i]+"");
-            }
+        btn_set_title.setOnClickListener(view12 -> {
+            int i1 = (int) (Math.random() * 10 % 4);
+            // actionBarLayout.setTitle(titles[i]+"");
         });
         Button btn_guider = view.findViewById(R.id.btn_guider);
-        btn_guider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startFragment();
-            }
-        });
+        btn_guider.setOnClickListener(view13 -> startFragment());
 
     }
 
@@ -81,7 +68,7 @@ public class RouterPaper extends Paper {
 
     @Override
     public View onCreatView(LayoutInflater inflater, ViewGroup container) {
-        View view = (ViewGroup) inflater.inflate(R.layout.fragment_layout_router, null);
+        View view = inflater.inflate(R.layout.fragment_layout_router, null);
         initView(view);
         return view;
     }

@@ -41,12 +41,11 @@ public class SettingFragment extends BaseFragment {
     @BindView(R.id.btn_send_connect)
     QDButton btn_send_connect;
     View mView;
+
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mView == null) {
-            mView = inflater.inflate(R.layout.fragment_layout_setting, null);
-        }
+        mView = inflater.inflate(R.layout.fragment_layout_setting, null);
         ButterKnife.bind(this, mView);
         return mView;
     }
@@ -55,8 +54,9 @@ public class SettingFragment extends BaseFragment {
     private static final String SYNC_CONN_STATUS_CHANGED = "com.android.sync.SYNC_CONN_STATUS_CHANGED";
     private TestChange mTestChange;
     private IntentFilter mIntentFilter;
+
     public void initView(View rootView) {
-        getActionBarTool().setTitle("setting");
+        setTitle("setting");
 
         mTestChange = new TestChange();
         mIntentFilter = new IntentFilter();
@@ -64,18 +64,8 @@ public class SettingFragment extends BaseFragment {
         mIntentFilter.addAction("com.android.sync.SYNC_CONN_STATUS_CHANGED");
 //注册广播接收器
         getContext().registerReceiver(mTestChange, mIntentFilter);
-        btn_send_connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSyncStatus(!getSyncStatus(mContext));
-            }
-        });
-        btn_send_tcp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setAutoTime(true);
-            }
-        });
+        btn_send_connect.setOnClickListener(v -> setSyncStatus(!getSyncStatus(mContext)));
+        btn_send_tcp.setOnClickListener(v -> setAutoTime(true));
         //QDTcpClient.setStateListener();
     }
 
@@ -102,7 +92,7 @@ public class SettingFragment extends BaseFragment {
             try {
                 Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.AUTO_TIME,
                         autoEnabled ? 1 : 0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -123,7 +113,6 @@ public class SettingFragment extends BaseFragment {
     private class TestChange extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
             String action = intent.getAction();
             if (SYNC_CONN_STATUS_CHANGED.equals(action)) {
                 Toast.makeText(mContext, "同步模式设置有改变", Toast.LENGTH_SHORT).show();

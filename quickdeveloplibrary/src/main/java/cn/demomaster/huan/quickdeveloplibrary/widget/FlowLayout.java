@@ -89,7 +89,7 @@ public class FlowLayout extends ViewGroup {
                     }
                 }
                 int viewWith = chid.getMeasuredWidth() + leftMargin + rightMargin;
-                if (currentWidth + viewWith > lineWidth) {//再追加一个元素会超出最大宽度
+                if ((currentWidth + viewWith) > lineWidth) {//再追加一个元素会超出最大宽度
                     //QDLogger.println("换行追加=" + lineViewList.size());
                     List<View> viewList = new ArrayList<>();
                     viewList.addAll(lineViewList);
@@ -354,10 +354,7 @@ public class FlowLayout extends ViewGroup {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
-    private static OnClickListener onItemClickedListener;
-
     public void setOnItemClickListener(final OnClickListener myListener) {
-        onItemClickedListener = myListener;
         for (int i = 0; i < getChildCount(); i++) {
             getChildAt(i).setOnClickListener(myListener);
         }

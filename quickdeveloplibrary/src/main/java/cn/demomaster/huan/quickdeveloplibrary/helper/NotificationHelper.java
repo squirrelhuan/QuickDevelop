@@ -9,7 +9,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetFileDescriptor;
@@ -35,6 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.WakeLockUtil;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -100,17 +100,7 @@ public class NotificationHelper {
         if (!isNotificationEnabled(context)) {
             new AlertDialog.Builder(context).setTitle("温馨提示")
                     .setMessage("你还未开启系统通知，将影响消息的接收，要去开启吗？")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startNotificationSetting(context);
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).show();
+                    .setPositiveButton("确定", (dialog, which) -> startNotificationSetting(context)).setNegativeButton("取消", (dialog, which) -> dialog.dismiss()).show();
         }
     }
 
@@ -419,8 +409,7 @@ public class NotificationHelper {
                 if (!file.exists()) {
                     AssetFileDescriptor afd = context.getAssets().openFd(soundResourceName);
                     InputStream is = afd.createInputStream();
-                    file.getParentFile().mkdirs();
-                    file.createNewFile();
+                    QDFileUtil.createFile(file);
                     FileOutputStream fos = new FileOutputStream(audioFileName);
                     byte[] b = new byte[1024];
                     int length;

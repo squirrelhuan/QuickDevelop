@@ -1,11 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.square;
 
-/**
- * @author squirrel桓
- * @date 2018/11/29.
- * description：
- */
-
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
@@ -89,34 +83,30 @@ public class SquareImageMenuView extends View {
     public static String SquareImageMenuView_Y_SP = "SquareImageMenuView_Y_SP";
 
     private void init() {
-        setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDLogger.println("触发点击事件 onClick=" + animator);
-                if (animator != null) {
-                    QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
-                    if (animator.getState() == QDValueAnimator.AnimationState.isOpened || animator.getState() == QDValueAnimator.AnimationState.isOpening) {
-                        boolean canDoAction = false;
-                        W:
-                        for (Map.Entry entry : pointMap.entrySet()) {
-                            Point point = (Point) entry.getValue();
-                            if (Math.abs(point.x - clickX) < button_width && Math.abs(point.y - clickY) < button_width) {
-                                //QDLogger.i("clicked=" + entry.getKey());
-                                int id = (int) entry.getKey();
-                                doAction(id);
-                                canDoAction = true;
-                                break W;
-                            }
+        setOnClickListener(v -> {
+            QDLogger.println("触发点击事件 onClick=" + animator);
+            if (animator != null) {
+                QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
+                if (animator.getState() == QDValueAnimator.AnimationState.isOpened || animator.getState() == QDValueAnimator.AnimationState.isOpening) {
+                    boolean canDoAction = false;
+                    for (Map.Entry entry : pointMap.entrySet()) {
+                        Point point = (Point) entry.getValue();
+                        if (Math.abs(point.x - clickX) < button_width && Math.abs(point.y - clickY) < button_width) {
+                            //QDLogger.i("clicked=" + entry.getKey());
+                            int id = (int) entry.getKey();
+                            doAction(id);
+                            canDoAction = true;
+                            break;
                         }
-                        if (canDoAction) {
-                            stopAnimation();
-                        }
-                    } else {
-                        startAnimation();
+                    }
+                    if (canDoAction) {
+                        stopAnimation();
                     }
                 } else {
                     startAnimation();
                 }
+            } else {
+                startAnimation();
             }
         });
     }
@@ -242,7 +232,6 @@ public class SquareImageMenuView extends View {
                     y = (int) event.getRawY();
                     isclick = false;//当按下的时候设置isclick为false
                     startTime = System.currentTimeMillis();
-                    System.out.println("触摸 按下 down");
                     break;
                 case MotionEvent.ACTION_MOVE:
                     //System.out.println("触摸 滑动 down "+targetView.getLayoutParams());
@@ -357,8 +346,8 @@ public class SquareImageMenuView extends View {
             WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) getLayoutParams();
             layoutParams.width = lp.width;
             layoutParams.height = lp.height;
-            QDLogger.e("setSize w1=" + lp.width + ",w2=" + layoutParams.width);
-            windowManager.updateViewLayout((View) this, layoutParams);
+            QDLogger.println("setSize w1=" + lp.width + ",w2=" + layoutParams.width);
+            windowManager.updateViewLayout(this, layoutParams);
         }
     }
 
@@ -437,12 +426,7 @@ public class SquareImageMenuView extends View {
     }
 
     Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            stopAnimation();
-        }
-    };
+    Runnable runnable = () -> stopAnimation();
 
     @Override
     protected void onDetachedFromWindow() {

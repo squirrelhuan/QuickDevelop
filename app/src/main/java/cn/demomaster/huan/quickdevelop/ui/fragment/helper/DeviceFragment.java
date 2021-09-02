@@ -74,8 +74,8 @@ public class DeviceFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_device, null);
-        return (ViewGroup) mView;
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_device, null);
+        return mView;
     }
     NetworkHelper networkHelper;
     public void initView(View rootView) {
@@ -162,7 +162,7 @@ public class DeviceFragment extends BaseFragment {
             }
         });
 
-        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         int wifiState = wifiManager.getWifiState();
         switch (wifiState) {
             case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
@@ -225,7 +225,7 @@ public class DeviceFragment extends BaseFragment {
     private void registerPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionHelper.PermissionListener() {
+                PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionHelper.PermissionListener() {
                     @Override
                     public void onPassed() {
                         print();
@@ -241,21 +241,12 @@ public class DeviceFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        /*if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION) {
-            print();
-        }*/
-    }
-
     public List<ScanResult> getWifiList() {
-        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(getActivity().WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<ScanResult> scanWifiList = wifiManager.getScanResults();
         List<ScanResult> wifiList = new ArrayList<>();
         if (scanWifiList != null && scanWifiList.size() > 0) {
-            HashMap<String, Integer> signalStrength = new HashMap<String, Integer>();
+            HashMap<String, Integer> signalStrength = new HashMap<>();
             for (int i = 0; i < scanWifiList.size(); i++) {
                 ScanResult scanResult = scanWifiList.get(i);
                 if (!scanResult.SSID.isEmpty()) {

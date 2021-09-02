@@ -36,7 +36,7 @@ public class ScrollingTabsAdapter implements TabAdapter {
 
         //Get tab visibility preferences
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        Set<String> defaults = new HashSet<String>(Arrays.asList(mTitles));
+        Set<String> defaults = new HashSet<>(Arrays.asList(mTitles));
         tabs_set = sp.getStringSet("", defaults);
         //if its empty fill reset it to full defaults
         //stops app from crashing when no tabs1 are shown
@@ -51,9 +51,9 @@ public class ScrollingTabsAdapter implements TabAdapter {
         String[] tabs_new = new String[tabs_set.size()];
         int cnt = 0;
         int count = mTitles.length;
-        for (int i = 0; i < count; i++) {
-            if (tabs_set.contains(mTitles[i])) {
-                tabs_new[cnt] = mTitles[i];
+        for (String mTitle : mTitles) {
+            if (tabs_set.contains(mTitle)) {
+                tabs_new[cnt] = mTitle;
                 cnt++;
             }
         }

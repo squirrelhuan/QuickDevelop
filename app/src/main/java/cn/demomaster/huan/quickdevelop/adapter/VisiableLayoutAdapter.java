@@ -61,14 +61,11 @@ public class VisiableLayoutAdapter extends RecyclerView.Adapter<VisiableLayoutAd
         public void onBind(final int position) {
             String clazz = data.get(position);
             tv_title.setText(clazz);
-            tv_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(tv_message.getVisibility()== View.VISIBLE){
-                        tv_message.setVisibility(View.GONE);
-                    }else {
-                        tv_message.setVisibility(View.VISIBLE);
-                    }
+            tv_title.setOnClickListener(v -> {
+                if(tv_message.getVisibility()== View.VISIBLE){
+                    tv_message.setVisibility(View.GONE);
+                }else {
+                    tv_message.setVisibility(View.VISIBLE);
                 }
             });
         }

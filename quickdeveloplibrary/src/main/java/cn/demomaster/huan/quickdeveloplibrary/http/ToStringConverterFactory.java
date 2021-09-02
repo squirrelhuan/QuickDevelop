@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.http;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -20,12 +19,7 @@ public class ToStringConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         if (String.class.equals(type) || Object.class.equals(type)) {
-            return new Converter<ResponseBody, String>() {
-                @Override
-                public String convert(ResponseBody value) throws IOException {
-                    return value.string();
-                }
-            };
+            return (Converter<ResponseBody, String>) value -> value.string();
         }
         return null;
     }

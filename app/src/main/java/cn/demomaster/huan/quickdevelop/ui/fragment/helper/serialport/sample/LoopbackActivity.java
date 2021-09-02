@@ -60,22 +60,21 @@ public class LoopbackActivity extends SerialPortActivity {
                     // the sent byte has been read back.
                     try {
                         mByteReceivedBackSemaphore.wait(100);
-                        if (mByteReceivedBack == true) {
+                        if (mByteReceivedBack) {
                             // Byte has been received
                             mIncoming++;
                         } else {
                             // Timeout
                             mLost++;
                         }
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                mTextViewOutgoing.setText(mOutgoing.toString());
-                                mTextViewLost.setText(mLost.toString());
-                                mTextViewIncoming.setText(mIncoming.toString());
-                                mTextViewCorrupted.setText(mCorrupted.toString());
-                            }
+                        runOnUiThread(() -> {
+                            mTextViewOutgoing.setText(mOutgoing.toString());
+                            mTextViewLost.setText(mLost.toString());
+                            mTextViewIncoming.setText(mIncoming.toString());
+                            mTextViewCorrupted.setText(mCorrupted.toString());
                         });
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -86,10 +85,10 @@ public class LoopbackActivity extends SerialPortActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serialport_loopback);
-        mTextViewOutgoing = (TextView) findViewById(R.id.TextViewOutgoingValue);
-        mTextViewIncoming = (TextView) findViewById(R.id.TextViewIncomingValue);
-        mTextViewLost = (TextView) findViewById(R.id.textViewLostValue);
-        mTextViewCorrupted = (TextView) findViewById(R.id.textViewCorruptedValue);
+        mTextViewOutgoing = findViewById(R.id.TextViewOutgoingValue);
+        mTextViewIncoming = findViewById(R.id.TextViewIncomingValue);
+        mTextViewLost = findViewById(R.id.textViewLostValue);
+        mTextViewCorrupted = findViewById(R.id.textViewCorruptedValue);
         if (mSerialPort != null) {
             mSendingThread = new SendingThread();
             mSendingThread.start();
@@ -102,7 +101,7 @@ public class LoopbackActivity extends SerialPortActivity {
         synchronized (mByteReceivedBackSemaphore) {
             int i;
             for (i = 0; i < size; i++) {
-                if ((buffer[i] == mValueToSend) && (mByteReceivedBack == false)) {
+                if ((buffer[i] == mValueToSend) && (!mByteReceivedBack)) {
                     mValueToSend++;
                     // This byte was expected
                     // Wake-up the sending thread

@@ -44,13 +44,10 @@ public class PopWinDialog_Update {
         contentView.setText(contentText);
         btn_close = ccustomDialogView.findViewById(R.id.btn_close);
         btn_close.setText(btnText);
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customDialog.dismiss();
-                if (onClickListener != null) {
-                    onClickListener.onClick(v);
-                }
+        btn_close.setOnClickListener(v -> {
+            customDialog.dismiss();
+            if (onClickListener != null) {
+                onClickListener.onClick(v);
             }
         });
     }

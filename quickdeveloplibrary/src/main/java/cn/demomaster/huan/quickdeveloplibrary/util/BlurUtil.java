@@ -1,9 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
-/**
- * 这是BlurUtil的源码，对外提供一个getBlurBackground的public方法。
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;

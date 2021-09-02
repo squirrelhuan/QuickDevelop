@@ -15,7 +15,7 @@ public class Element {
     private String cssClass;
     private String android_view_class;
     private List<Element> nodes;
-    private Map<String, Object> propertyMap;
+    private final Map<String, Object> propertyMap;
 
     public Element() {
         this.propertyMap = new HashMap<>();

@@ -47,43 +47,37 @@ public class TimeDomainPlotFragment extends BaseFragment {
         //timeDomainPlotView.setBaselineY(0);
 
         RadioGroup rg_transitionType = rootView.findViewById(R.id.rg_transitionType);
-        rg_transitionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_transitionType_01:
-                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.horizontal);
-                        break;
-                    case R.id.rb_transitionType_02:
-                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.vertical);
-                        break;
-                    case R.id.rb_transitionType_03:
-                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.transitionXY);
-                        break;
-                    case R.id.rb_transitionType_04:
-                        timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.none);
-                        break;
-                }
+        rg_transitionType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_transitionType_01:
+                    timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.horizontal);
+                    break;
+                case R.id.rb_transitionType_02:
+                    timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.vertical);
+                    break;
+                case R.id.rb_transitionType_03:
+                    timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.transitionXY);
+                    break;
+                case R.id.rb_transitionType_04:
+                    timeDomainPlotView.setTransitionType(TimeDomainPlotView.TransitionType.none);
+                    break;
             }
         });
         RadioGroup rg_scaleType = rootView.findViewById(R.id.rg_scaleType);
-        rg_scaleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rg_scaleType_01:
-                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleX);
-                        break;
-                    case R.id.rg_scaleType_02:
-                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleY);
-                        break;
-                    case R.id.rg_scaleType_03:
-                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleXY);
-                        break;
-                    case R.id.rg_scaleType_04:
-                        timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.none);
-                        break;
-                }
+        rg_scaleType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rg_scaleType_01:
+                    timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleX);
+                    break;
+                case R.id.rg_scaleType_02:
+                    timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleY);
+                    break;
+                case R.id.rg_scaleType_03:
+                    timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.scaleXY);
+                    break;
+                case R.id.rg_scaleType_04:
+                    timeDomainPlotView.setScaleType(TimeDomainPlotView.ScaleType.none);
+                    break;
             }
         });
     }

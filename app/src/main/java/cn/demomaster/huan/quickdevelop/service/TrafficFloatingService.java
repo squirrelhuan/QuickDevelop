@@ -15,6 +15,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.QDHandler;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NetworkStatsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.TrafficHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.QDFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -34,12 +35,7 @@ public class TrafficFloatingService extends QDFloatingService {
     public View setContentView(Context context) {
         mContext = context.getApplicationContext();
         View view = LayoutInflater.from(context).inflate(R.layout.layout_floating_traffic, null);
-        view.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServiceHelper.dissmissWindow(TrafficFloatingService.class);
-            }
-        });
+        view.findViewById(R.id.iv_close).setOnClickListener(v -> ServiceHelper.dissmissWindow(TrafficFloatingService.class));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsHelper = new NetworkStatsHelper(mContext);
         }
@@ -76,7 +72,7 @@ public class TrafficFloatingService extends QDFloatingService {
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    trafficFloatingServiceWeakReference.get().uid = NetworkStatsHelper.getUidByPackageName(trafficFloatingServiceWeakReference.get().mContext, trafficFloatingServiceWeakReference.get().mContext.getPackageName());
+                    trafficFloatingServiceWeakReference.get().uid = QDAppInfoUtil.getUidByPackageName(trafficFloatingServiceWeakReference.get().mContext, trafficFloatingServiceWeakReference.get().mContext.getPackageName());
                     QDLogger.d("uid1=" + trafficFloatingServiceWeakReference.get().uid);
                     //value = networkStatsHelper.getAllBytesWifi(mContext);
                     value = TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();

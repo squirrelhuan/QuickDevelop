@@ -118,12 +118,7 @@ public class TabMenuLayout extends LinearLayout {
             tabRadioButtons.add(textView);
         }
         tabRadioGroup.setTabRadioButtons(tabRadioButtons);
-        tabRadioGroup.setOnCheckedChangeListener(new TabRadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(View view, int i) {
-                showTabMenuView(tabRadioGroup, view, i);
-            }
-        });
+        tabRadioGroup.setOnCheckedChangeListener((view, i) -> showTabMenuView(tabRadioGroup, view, i));
         addView(tabRadioGroup);
     }
 
@@ -166,7 +161,7 @@ public class TabMenuLayout extends LinearLayout {
             QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
             popupWindow.setContentView(contentView);
             popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-            popupWindow.setHeight((int) (QMUIDisplayHelper.getScreenHeight(context) - location[1]));
+            popupWindow.setHeight(QMUIDisplayHelper.getScreenHeight(context) - location[1]);
             popupWindow.setTouchable(true);
             contentView.setPadding(0, tabGroup.getHeight(), 0, 0);
             ll_tab_content_panel = contentView.findViewById(R.id.cgq_ll_tab_menu_item_panel);
@@ -175,29 +170,23 @@ public class TabMenuLayout extends LinearLayout {
             rl_tab_menu_custom_panel = contentView.findViewById(R.id.rl_tab_menu_custom_panel);
             recy_tab_content = contentView.findViewById(R.id.recy_tab_content);
             rel_root = contentView.findViewById(R.id.rel_root);
-            rel_root.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
+            rel_root.setOnTouchListener((View view, MotionEvent motionEvent)-> {
                     if (motionEvent.getX() > location[0] && motionEvent.getX() < (location[0] + tabGroup.getWidth()) && motionEvent.getY() < tabGroup.getHeight()) {
                         int wc = tabGroup.getWidth() / tabCount;
                         int x = (int) motionEvent.getX() - location[0];
-                        int index = (int) (x / wc);
+                        int index = x / wc;
                         tabRadioGroup.setCurrentTab(index);
                     } else {
                         popupWindow.dismiss();
                     }
                     return false;
-                }
             });
 
             popupWindow.setTouchable(true);
             popupWindow.setFocusable(true);
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    //弹窗消失tab按钮需要恢复之前的状态
-                    tabRadioGroup.resume();
-                }
+            popupWindow.setOnDismissListener(() -> {
+                //弹窗消失tab按钮需要恢复之前的状态
+                tabRadioGroup.resume();
             });
         }
 
@@ -237,15 +226,12 @@ public class TabMenuLayout extends LinearLayout {
             //adapter.setColors(color_selected,color_normal);
             //recy_tab_content.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-            adapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    tabMenuInterface.onSelected((TabRadioGroup.TabRadioButton) tabButton, tabIndex, position);
-                    //adapter.setOnClickItem(position);
-                    adapter.setOnItemClicked(position);
-                    tabSelectModels = adapter.getTabMenuModels();
-                    //popupWindow.dismiss();
-                }
+            adapter.setOnItemClickListener((view, position) -> {
+                tabMenuInterface.onSelected((TabRadioGroup.TabRadioButton) tabButton, tabIndex, position);
+                //adapter.setOnClickItem(position);
+                adapter.setOnItemClicked(position);
+                tabSelectModels = adapter.getTabMenuModels();
+                //popupWindow.dismiss();
             });
         } else if (columnCount == -1) {//自定义contentView
             recy_tab_content.setVisibility(GONE);

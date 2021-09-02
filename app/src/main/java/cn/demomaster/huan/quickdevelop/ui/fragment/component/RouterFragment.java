@@ -35,27 +35,14 @@ public class RouterFragment extends BaseFragment {
         getActionBarTool().setTitle(titles[i]+"sss");
         getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(colors[i]);
         Button button = rootView.findViewById(R.id.btn_open_new_fragment);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startFragment(new RouterFragment(),R.id.container1,null);
-            }
-        });
+        button.setOnClickListener(view -> startFragment(new RouterFragment(),R.id.container1,null));
         Button btn_set_title = rootView.findViewById(R.id.btn_set_title);
-        btn_set_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int i = (int) (Math.random() * 10 % 4);
-                setTitle(titles[i]+"");
-            }
+        btn_set_title.setOnClickListener(view -> {
+            int i1 = (int) (Math.random() * 10 % 4);
+            setTitle(titles[i1]+"");
         });
         Button btn_guider = rootView.findViewById(R.id.btn_guider);
-        btn_guider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startFragment(new GuiderFragment(),R.id.container1,null);
-            }
-        });
+        btn_guider.setOnClickListener(view -> startFragment(new GuiderFragment(),R.id.container1,null));
     }
 
     private String[] titles = {"1", "2", "3", "4"};

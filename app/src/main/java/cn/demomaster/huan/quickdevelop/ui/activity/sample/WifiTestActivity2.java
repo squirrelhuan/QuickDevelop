@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -42,7 +41,7 @@ public class WifiTestActivity2 extends BaseActivity implements View.OnClickListe
     WifiListAdapter mWifiListAdapter;
     public static final int WIFI_SCAN_PERMISSION_CODE = 2;
     //ConnectAsyncTask mConnectAsyncTask = null;
-    List<ScanResult> mScanResultList = new ArrayList<ScanResult>();
+    List<ScanResult> mScanResultList = new ArrayList<>();
     /* public static String ssid = "";
      public static String password = "";//"hyc888888";*/
     FrameLayout progressbar;
@@ -170,34 +169,31 @@ public class WifiTestActivity2 extends BaseActivity implements View.OnClickListe
     }
 
     private void intiView() {
-        progressbar = (FrameLayout) findViewById(R.id.progressbar);
-        mWifiState = (TextView) findViewById(R.id.wifi_state);
-        mWifiName = (TextView) findViewById(R.id.wifi_name);
-        mMac = (TextView) findViewById(R.id.wifi_mac);
-        mIP = (TextView) findViewById(R.id.ip_address);
-        mGateway = (TextView) findViewById(R.id.ip_gateway);
-        mListWifi = (ListView) findViewById(R.id.list_wifi);
-        mBtnSearch = (Button) findViewById(R.id.search_wifi);
+        progressbar = findViewById(R.id.progressbar);
+        mWifiState = findViewById(R.id.wifi_state);
+        mWifiName = findViewById(R.id.wifi_name);
+        mMac = findViewById(R.id.wifi_mac);
+        mIP = findViewById(R.id.ip_address);
+        mGateway = findViewById(R.id.ip_gateway);
+        mListWifi = findViewById(R.id.list_wifi);
+        mBtnSearch = findViewById(R.id.search_wifi);
         //mBtnConnect = (Button) findViewById(R.id.connect_wifi);
         //et_pwd = (EditText) findViewById(R.id.et_pwd);
 
         mBtnSearch.setOnClickListener(this);
         //mBtnConnect.setOnClickListener(this);
-        mListWifi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mWifiListAdapter.setSelectItem(i);
-                mWifiListAdapter.notifyDataSetChanged();
-                ScanResult scanResult = mScanResultList.get(i);
+        mListWifi.setOnItemClickListener((adapterView, view, i, l) -> {
+            mWifiListAdapter.setSelectItem(i);
+            mWifiListAdapter.notifyDataSetChanged();
+            ScanResult scanResult = mScanResultList.get(i);
 
-                String currentSsid = WifiUtil.getInstance().getWifiInfo()[0];
-                String ssid = scanResult.SSID;
-                if (currentSsid.equals(ssid)) {
-                    WifiUtil.WifiCipherType type = WifiUtil.getInstance().getCipherType(ssid);
+            String currentSsid = WifiUtil.getInstance().getWifiInfo()[0];
+            String ssid = scanResult.SSID;
+            if (currentSsid.equals(ssid)) {
+                WifiUtil.WifiCipherType type = WifiUtil.getInstance().getCipherType(ssid);
 
-                   /*WifiUtil.getInstance().saveWifiInfo(ssid, password);
-                   WifiUtil.getInstance().connect(ssid, password);*/
-                }
+               /*WifiUtil.getInstance().saveWifiInfo(ssid, password);
+               WifiUtil.getInstance().connect(ssid, password);*/
             }
         });
         mWifiListAdapter = new WifiListAdapter(mScanResultList, LayoutInflater.from(WifiTestActivity2.this));
@@ -238,7 +234,7 @@ public class WifiTestActivity2 extends BaseActivity implements View.OnClickListe
             }
             ScanResult sr = mWifiList.get(position);
             convertView.setTag(sr);
-            TextView textView = (TextView) convertView.findViewById(R.id.wifi_item_name);
+            TextView textView = convertView.findViewById(R.id.wifi_item_name);
             int numLevel = WifiUtil.getInstance().getSignalNumsLevel(sr.level, 5);
             String password = sr.capabilities;
             String text = "加密方式:";

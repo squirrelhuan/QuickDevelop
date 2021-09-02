@@ -59,12 +59,11 @@ public class NetworkHelper implements OnReleaseListener {
      * @return
      */
     public static String int2ip(int ipInt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ipInt & 0xFF).append(".");
-        sb.append((ipInt >> 8) & 0xFF).append(".");
-        sb.append((ipInt >> 16) & 0xFF).append(".");
-        sb.append((ipInt >> 24) & 0xFF);
-        return sb.toString();
+        String sb = (ipInt & 0xFF) + "." +
+                ((ipInt >> 8) & 0xFF) + "." +
+                ((ipInt >> 16) & 0xFF) + "." +
+                ((ipInt >> 24) & 0xFF);
+        return sb;
     }
 
     /**
@@ -94,7 +93,7 @@ public class NetworkHelper implements OnReleaseListener {
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
-                        return inetAddress.getHostAddress().toString();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
@@ -129,41 +128,45 @@ public class NetworkHelper implements OnReleaseListener {
                         break;
                 }
 
-                if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-                    int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
-                    String wifiDesc = "";
-                    switch (wifiState) {
-                        case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
-                            wifiDesc = "WIFI网卡正在关闭";
-                            break;
-                        case WIFI_STATE_DISABLED:// WIFI网卡不可用  1
-                            wifiDesc = "WIFI网卡不可用";
-                            break;
-                        case WIFI_STATE_ENABLING://WIFI网卡正在打开  2
-                            wifiDesc = "WIFI网卡正在打开";
-                            break;
-                        case WIFI_STATE_ENABLED://WIFI网卡可用  3
-                            wifiDesc = "WIFI网卡可用";
-                            break;
-                        case WIFI_STATE_UNKNOWN://WIFI网卡状态不可知 4
-                            wifiDesc = "WIFI网卡状态不可知";
-                            break;
-                        default:
-                            wifiDesc = "WIFI default";
-                            break;
-                    }
-                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + wifiDesc);
-                } else if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-                    //int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
-                } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                    QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + des);
-                    ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-                    if (networkInfo != null) { //如果无网络连接networkInfo为null
-                        dispatchConnectedEvent(context, intent);
-                    } else { //网络连接
-                        dispatchDisConnectedEvent(context, intent);
-                    }
+                switch (action) {
+                    case WifiManager.WIFI_STATE_CHANGED_ACTION:
+                        int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+                        String wifiDesc = "";
+                        switch (wifiState) {
+                            case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
+                                wifiDesc = "WIFI网卡正在关闭";
+                                break;
+                            case WIFI_STATE_DISABLED:// WIFI网卡不可用  1
+                                wifiDesc = "WIFI网卡不可用";
+                                break;
+                            case WIFI_STATE_ENABLING://WIFI网卡正在打开  2
+                                wifiDesc = "WIFI网卡正在打开";
+                                break;
+                            case WIFI_STATE_ENABLED://WIFI网卡可用  3
+                                wifiDesc = "WIFI网卡可用";
+                                break;
+                            case WIFI_STATE_UNKNOWN://WIFI网卡状态不可知 4
+                                wifiDesc = "WIFI网卡状态不可知";
+                                break;
+                            default:
+                                wifiDesc = "WIFI default";
+                                break;
+                        }
+                        QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + wifiDesc);
+                        break;
+                    case WifiManager.NETWORK_STATE_CHANGED_ACTION:
+                        //int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+                        break;
+                    case ConnectivityManager.CONNECTIVITY_ACTION:
+                        QDLogger.println("网络状态变化,hashCode:" + hashCode() + ",action=" + action + "," + des);
+                        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+                        if (networkInfo != null) { //如果无网络连接networkInfo为null
+                            dispatchConnectedEvent(context, intent);
+                        } else { //网络连接
+                            dispatchDisConnectedEvent(context, intent);
+                        }
+                        break;
                 }
             }
         }

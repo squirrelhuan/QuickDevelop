@@ -37,18 +37,9 @@ public class SimpleTreeRecyclerAdapter extends TreeRecyclerAdapter {
     public void onBindViewHolder(final Node node, RecyclerView.ViewHolder holder, int position) {
         final MyHoder viewHolder = (MyHoder) holder;
         //todo do something
-        viewHolder.cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setChecked(node,viewHolder.cb.isChecked());
-            }
-        });
+        viewHolder.cb.setOnClickListener(v -> setChecked(node,viewHolder.cb.isChecked()));
 
-        if (node.isChecked()){
-            viewHolder.cb.setChecked(true);
-        }else {
-            viewHolder.cb.setChecked(false);
-        }
+        viewHolder.cb.setChecked(node.isChecked());
         
         if (node.getIcon() == -1) {
             viewHolder.icon.setVisibility(View.INVISIBLE);

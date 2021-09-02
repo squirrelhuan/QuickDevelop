@@ -40,94 +40,58 @@ public class GuiderFragment extends BaseFragment {
     public void initView(View rootView) {
         Button btn_01 = rootView.findViewById(R.id.btn_01);
         btn_01.setText("点击按钮");
-        btn_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view,tips[0], GuiderModel.TouchType.TargetView,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_01.setOnClickListener(view -> {
+            showGuider(view,tips[0], GuiderModel.TouchType.TargetView,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_02 = rootView.findViewById(R.id.btn_02);
         btn_02.setText("点击提示框");
-        btn_02.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view,tips[1],GuiderModel.TouchType.TipView,GuiderModel.SHAPE.rectangle);//点击提示框关闭引导！
-            }
+        btn_02.setOnClickListener(view -> {
+            showGuider(view,tips[1],GuiderModel.TouchType.TipView,GuiderModel.SHAPE.rectangle);//点击提示框关闭引导！
         });
         Button btn_03 = rootView.findViewById(R.id.btn_03);
         btn_03.setText("点击任意位置");
-        btn_03.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view,tips[2], GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击任意位置关闭提示！
+        btn_03.setOnClickListener(view -> {
+            showGuider(view,tips[2], GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击任意位置关闭提示！
 
-            }
         });
         Button btn_04 = rootView.findViewById(R.id.btn_04);
         btn_04.setText("椭圆提示框");
-        btn_04.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, tips[3],GuiderModel.TouchType.Other,GuiderModel.SHAPE.oval);//椭圆提示框！
+        btn_04.setOnClickListener(view -> {
+            showGuider(view, tips[3],GuiderModel.TouchType.Other,GuiderModel.SHAPE.oval);//椭圆提示框！
 
-            }
         });
         Button btn_05 = rootView.findViewById(R.id.btn_05);
         btn_05.setText("超长文本");
-        btn_05.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, tips[4],GuiderModel.TouchType.Other,GuiderModel.SHAPE.roundedrectangle);//超长文本！
-            }
+        btn_05.setOnClickListener(view -> {
+            showGuider(view, tips[4],GuiderModel.TouchType.Other,GuiderModel.SHAPE.roundedrectangle);//超长文本！
         });
         Button btn_06 = rootView.findViewById(R.id.btn_06);
-        btn_06.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_06.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_06.setOnClickListener(view -> {
+            showGuider(view, btn_06.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_07 = rootView.findViewById(R.id.btn_07);
-        btn_07.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_07.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_07.setOnClickListener(view -> {
+            showGuider(view, btn_07.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_08 = rootView.findViewById(R.id.btn_08);
-        btn_08.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_08.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_08.setOnClickListener(view -> {
+            showGuider(view, btn_08.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_09 = rootView.findViewById(R.id.btn_09);
-        btn_09.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_09.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_09.setOnClickListener(view -> {
+            showGuider(view, btn_09.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_10 = rootView.findViewById(R.id.btn_10);
-        btn_10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_10.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_10.setOnClickListener(view -> {
+            showGuider(view, btn_10.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_11 = rootView.findViewById(R.id.btn_11);
-        btn_11.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_11.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_11.setOnClickListener(view -> {
+            showGuider(view, btn_11.getText().toString(),GuiderModel.TouchType.Other,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
         Button btn_12 = rootView.findViewById(R.id.btn_12);
-        btn_12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showGuider(view, btn_12.getText().toString(), GuiderModel.TouchType.TargetView,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
-            }
+        btn_12.setOnClickListener(view -> {
+            showGuider(view, btn_12.getText().toString(), GuiderModel.TouchType.TargetView,GuiderModel.SHAPE.rectangle);//点击按钮关闭引导！
         });
     }
 
@@ -136,7 +100,7 @@ public class GuiderFragment extends BaseFragment {
     private void showGuider(View view, String tip, GuiderModel.TouchType touchType, GuiderModel.SHAPE shape) {
         GuiderModel guiderModel = new GuiderModel();
         guiderModel.setLineType(GuiderModel.LINETYPE.straight);
-        guiderModel.setTargetView(new WeakReference<View>(view));
+        guiderModel.setTargetView(new WeakReference<>(view));
         guiderModel.setMessage(tip);
         guiderModel.setComplateType(GuiderModel.GuidActionType.CLICK);
         //guiderModel.setLineColor(Color.BLACK);

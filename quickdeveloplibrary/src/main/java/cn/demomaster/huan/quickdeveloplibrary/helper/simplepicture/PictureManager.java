@@ -27,43 +27,40 @@ public class PictureManager {
      */
     public static void loadImageForSDCard(final Context context, final DataCallback callback) {
         //由于扫描图片是耗时的操作，所以要在子线程处理。
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //扫描图片
-                Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                ContentResolver mContentResolver = context.getContentResolver();
-                Cursor mCursor = mContentResolver.query(mImageUri, new String[]{
-                                MediaStore.Images.Media.DATA,
-                                MediaStore.Images.Media.DISPLAY_NAME,
-                                MediaStore.Images.Media.DATE_ADDED,
-                                MediaStore.Images.Media._ID},
-                        null,
-                        null,
-                        MediaStore.Images.Media.DATE_ADDED);
+        new Thread(() -> {
+            //扫描图片
+            Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            ContentResolver mContentResolver = context.getContentResolver();
+            Cursor mCursor = mContentResolver.query(mImageUri, new String[]{
+                            MediaStore.Images.Media.DATA,
+                            MediaStore.Images.Media.DISPLAY_NAME,
+                            MediaStore.Images.Media.DATE_ADDED,
+                            MediaStore.Images.Media._ID},
+                    null,
+                    null,
+                    MediaStore.Images.Media.DATE_ADDED);
 
-                ArrayList<Image> images = new ArrayList<>();
-                //读取扫描到的图片
-                while (mCursor.moveToNext()) {
-                    // 获取图片的路径
-                    String path = mCursor.getString(
-                            mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                    //获取图片名称
-                    String name = mCursor.getString(
-                            mCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
-                    //获取图片时间
-                    long time = mCursor.getLong(
-                            mCursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
-                    images.add(new Image(path, time, name));
-                }
-                mCursor.close();
-                Collections.reverse(images);
-                callback.onSuccess(splitFolder(images));
+            ArrayList<Image> images = new ArrayList<>();
+            //读取扫描到的图片
+            while (mCursor.moveToNext()) {
+                // 获取图片的路径
+                String path = mCursor.getString(
+                        mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                //获取图片名称
+                String name = mCursor.getString(
+                        mCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+                //获取图片时间
+                long time = mCursor.getLong(
+                        mCursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+                images.add(new Image(path, time, name));
             }
+            mCursor.close();
+            Collections.reverse(images);
+            callback.onSuccess(splitFolder(images));
         }).start();
     }
 
-    private static LinkedHashMap<String, Folder> folderMap = new LinkedHashMap<>();
+    private static final LinkedHashMap<String, Folder> folderMap = new LinkedHashMap<>();
 
     /**
      * 把图片按文件夹拆分，第一个文件夹保存所有的图片

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -41,65 +40,59 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         rg_action = findViewById(R.id.rg_action);
-        rg_action.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_01:
-                        ((RadioButton) findViewById(R.id.rb_01)).setText(ACTIONBAR_TYPE.NORMAL+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
-                        break;
-                    case R.id.rb_02:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
-                        break;
-                    case R.id.rb_03:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-                        break;
-                    case R.id.rb_04:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
-                        break;
-                    case R.id.rb_05:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
-                        break;
-                    case R.id.rb_07:
-                        ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_STATUS+"");
-                        getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_STATUS);
-                        break;
-                }
+        rg_action.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_01:
+                    ((RadioButton) findViewById(R.id.rb_01)).setText(ACTIONBAR_TYPE.NORMAL+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NORMAL);
+                    break;
+                case R.id.rb_02:
+                    ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR);
+                    break;
+                case R.id.rb_03:
+                    ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
+                    break;
+                case R.id.rb_04:
+                    ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK);
+                    break;
+                case R.id.rb_05:
+                    ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.ACTION_STACK_NO_STATUS);
+                    break;
+                case R.id.rb_07:
+                    ((RadioButton) findViewById(checkedId)).setText(ACTIONBAR_TYPE.NO_STATUS+"");
+                    getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_STATUS);
+                    break;
             }
         });
 
         rg_action_color = findViewById(R.id.rg_action_color);
-        rg_action_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_color_01:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.WHITE);
-                        break;
-                    case R.id.rb_color_02:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GREEN);
-                        break;
-                    case R.id.rb_color_03:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.YELLOW);
-                        break;
-                    case R.id.rb_color_04:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
-                        break;
-                    case R.id.rb_color_05:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GRAY);
-                        break;
-                    case R.id.rb_color_06:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.BLACK);
-                        break;
-                    case R.id.rb_color_07:
-                        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.TRANSPARENT);
-                        break;
-                }
+        rg_action_color.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_color_01:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.WHITE);
+                    break;
+                case R.id.rb_color_02:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GREEN);
+                    break;
+                case R.id.rb_color_03:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.YELLOW);
+                    break;
+                case R.id.rb_color_04:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
+                    break;
+                case R.id.rb_color_05:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.GRAY);
+                    break;
+                case R.id.rb_color_06:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.BLACK);
+                    break;
+                case R.id.rb_color_07:
+                    getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.TRANSPARENT);
+                    break;
             }
         });
         sb_color = findViewById(R.id.sb_color);
@@ -137,11 +130,8 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.btn_color_white).setOnClickListener(this);
 
         CheckBox cb_use_background = findViewById(R.id.cb_use_background);
-        cb_use_background.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               // getActionBarTool().setHasContainBackground(isChecked);
-            }
+        cb_use_background.setOnCheckedChangeListener((buttonView, isChecked) -> {
+           // getActionBarTool().setHasContainBackground(isChecked);
         });
         //getActionBarTool().getActionBarTip().setActionBarState();
         setTitle("导航栏");

@@ -122,27 +122,31 @@ public class WifiUtil {
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
                     Log.e("wifidemo ", "action:" + action);
-                    if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-                        int wifState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-                        Log.e("wifidemo ", "wifState:" + wifState);
-                        if (wifState != WifiManager.WIFI_STATE_ENABLED) {
-                            QdToast.show("没有wifi");
-                        } else {
-                            QdToast.show("wifi已开启");
-                        }
-                    } else if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
-                        int linkWifiResult = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 123);
-                        Log.e("wifidemo", ssid + "linkWifiResult:" + linkWifiResult);
-                        if (linkWifiResult == WifiManager.ERROR_AUTHENTICATING) {
-                            Log.e("wifidemo", ssid + "onReceive:密码错误");
-                        }
-                    } else if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-                        NetworkInfo.DetailedState state = ((NetworkInfo) intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO)).getDetailedState();
-                        Log.e("wifidemo ", "state:" + state);
-                        if (onWifiChangeListener != null) {
-                            onWifiChangeListener.onWifiStateChanged(state);
-                        }
-                        setWifiState(state);
+                    switch (action) {
+                        case WifiManager.WIFI_STATE_CHANGED_ACTION:
+                            int wifState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
+                            Log.e("wifidemo ", "wifState:" + wifState);
+                            if (wifState != WifiManager.WIFI_STATE_ENABLED) {
+                                QdToast.show("没有wifi");
+                            } else {
+                                QdToast.show("wifi已开启");
+                            }
+                            break;
+                        case WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION:
+                            int linkWifiResult = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 123);
+                            Log.e("wifidemo", ssid + "linkWifiResult:" + linkWifiResult);
+                            if (linkWifiResult == WifiManager.ERROR_AUTHENTICATING) {
+                                Log.e("wifidemo", ssid + "onReceive:密码错误");
+                            }
+                            break;
+                        case WifiManager.NETWORK_STATE_CHANGED_ACTION:
+                            NetworkInfo.DetailedState state = ((NetworkInfo) intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO)).getDetailedState();
+                            Log.e("wifidemo ", "state:" + state);
+                            if (onWifiChangeListener != null) {
+                                onWifiChangeListener.onWifiStateChanged(state);
+                            }
+                            setWifiState(state);
+                            break;
                     }
                 }
             };
@@ -550,7 +554,7 @@ public class WifiUtil {
     public List<ScanResult> getScanResults() {
         List<ScanResult> srList = wifiManager.getScanResults();
         if (srList == null) {
-            srList = new ArrayList<ScanResult>();
+            srList = new ArrayList<>();
         }
         return srList;
     }
@@ -568,11 +572,6 @@ public class WifiUtil {
 
     private class SearchAsyncTask extends AsyncTask<Void, Void, List<ScanResult>> {
         private List<ScanResult> mScanResult = new ArrayList<>();
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected List<ScanResult> doInBackground(Void... params) {
@@ -604,11 +603,6 @@ public class WifiUtil {
             this.ssid = ssid;
             this.password = password;
             this.type = type;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
         }
 
         @SuppressLint("MissingPermission")
@@ -712,23 +706,20 @@ public class WifiUtil {
     private void requestPassword() {
         //password = inputServer.getText().toString();
         WifiUtil.getInstance().saveWifiInfo(ssid, password);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                WifiConfiguration wifiConfig = WifiUtil.getInstance().createWifiInfo(ssid, password,
-                        type);
-                if (wifiConfig == null) {
-                    Log.d("wifidemo", "wifiConfig is null!");
-                    return;
-                }
-                Log.d("wifidemo", wifiConfig.SSID);
+        new Thread(() -> {
+            WifiConfiguration wifiConfig = WifiUtil.getInstance().createWifiInfo(ssid, password,
+                    type);
+            if (wifiConfig == null) {
+                Log.d("wifidemo", "wifiConfig is null!");
+                return;
+            }
+            Log.d("wifidemo", wifiConfig.SSID);
 
-                int netID = WifiUtil.getInstance().wifiManager.addNetwork(wifiConfig);
-                boolean enabled = WifiUtil.getInstance().wifiManager.enableNetwork(netID, true);
-                Log.d("wifidemo", "enableNetwork status enable=" + enabled);
+            int netID = WifiUtil.getInstance().wifiManager.addNetwork(wifiConfig);
+            boolean enabled = WifiUtil.getInstance().wifiManager.enableNetwork(netID, true);
+            Log.d("wifidemo", "enableNetwork status enable=" + enabled);
 //                                                    Log.d("wifidemo", "enableNetwork connected=" + mWifiAutoConnectManager.wifiManager.reconnect());
 //                                                    mWifiAutoConnectManager.wifiManager.reconnect();
-            }
         }).start();
     }
 

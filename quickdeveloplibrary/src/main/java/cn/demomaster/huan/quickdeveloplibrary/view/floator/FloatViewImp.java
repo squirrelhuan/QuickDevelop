@@ -7,7 +7,7 @@ import android.view.View;
 public class FloatViewImp {
     int id;
     public View view;
-    private FloatView floatView;
+    private final FloatView floatView;
 
     public FloatViewImp(FloatView view) {
         floatView = view;

@@ -131,7 +131,6 @@ public class PercentLayout extends FrameLayout {
 
     public static class PosionConfig {
         public PosionConfig() {
-
         }
 
         float x;

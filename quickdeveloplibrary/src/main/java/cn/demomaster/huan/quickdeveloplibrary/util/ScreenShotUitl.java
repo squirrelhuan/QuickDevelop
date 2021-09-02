@@ -6,22 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 
@@ -29,7 +19,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -40,73 +29,6 @@ public class ScreenShotUitl {
     public static View getContentView(Activity context) {
         return context.findViewById(android.R.id.content);
     }
-
-    public static void shot(final Activity context) {
-        View anchor = getContentView(context);
-        shot(context, anchor);
-    }
-
-    public static void shot(final Activity context, View anchor) {
-        // 用于PopupWindow的View
-        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_screen_shot, null, false);
-        // 创建PopupWindow对象，其中：
-        // 第一个参数是用于PopupWindow中的View，第二个参数是PopupWindow的宽度，
-        // 第三个参数是PopupWindow的高度，第四个参数指定PopupWindow能否获得焦点
-        PopupWindow window = new PopupWindow(contentView, 100, 100, true);
-        // 设置PopupWindow的背景
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // 设置PopupWindow是否能响应外部点击事件
-        window.setOutsideTouchable(true);
-        // 设置PopupWindow是否能响应点击事件
-        window.setTouchable(true);
-        // 显示PopupWindow，其中：
-        // 第一个参数是PopupWindow的锚点，第二和第三个参数分别是PopupWindow相对锚点的x、y偏移
-        // window.showAsDropDown(anchor, xoff, yoff);
-        //window.showAsDropDown(anchor);
-
-        PopupWindow popupWindow = new PopupWindow();
-        ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(shotActivity(context,false));
-        popupWindow.setContentView(contentView);
-        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
-        ImageView iv_code = contentView.findViewById(R.id.iv_code);
-        Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), R.mipmap.quickdevelop_ic_launcher);
-        String codeStr = "http://weixin.qq.com/r/E0M1LcDE6Z2WrYRO9xYB";
-        try {
-            //////////iv_code.setImageBitmap(BarcodeUtil.createCode(codeStr,bitmap_app));
-        } catch (Exception e) {
-            QDLogger.e(e);
-        }
-
-        final View ll_content = contentView.findViewById(R.id.ll_content);
-        ll_content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //Uri uri = saveImage(context,getCacheBitmapFromView(ll_content));
-                //shareImg(context, "口袋基因", "口袋基因", "欢迎来到基因世界", uri);
-            }
-        });
-
-        TextView tv_share = contentView.findViewById(R.id.tv_share);
-        tv_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = saveImage(context, getCacheBitmapFromView(ll_content));
-                shareImg(context, "口袋基因", "口袋基因", "欢迎来到基因世界", uri);
-            }
-        });
-
-        RelativeLayout rl_root = contentView.findViewById(R.id.rl_root);
-        rl_root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        });
-    }
-
     public static Bitmap shotActivity(Activity activity,boolean withStatusBar) {
         int statusBarHeights = 0;
         if(!withStatusBar){
@@ -171,7 +93,7 @@ public class ScreenShotUitl {
             drawingCache = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas c = new Canvas(drawingCache);
             c.drawColor(Color.WHITE);
-            /** 如果不设置canvas画布为白色，则生成透明 */
+            //如果不设置canvas画布为白色，则生成透明
             view.layout(0, 0, view.getWidth(), view.getHeight());
             view.draw(c);
         } catch (Exception e) {
@@ -263,8 +185,8 @@ public class ScreenShotUitl {
      * @param content  分享内容（文字）
      * @param uri      图片资源URI
      */
-    private static void shareImg(Context context, String dlgTitle, String subject, String content,
-                                 Uri uri) {
+    public static void shareImg(Context context, String dlgTitle, String subject, String content,
+                                Uri uri) {
         if (uri == null) {
             return;
         }

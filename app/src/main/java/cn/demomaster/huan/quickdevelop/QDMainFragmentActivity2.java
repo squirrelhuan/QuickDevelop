@@ -35,7 +35,7 @@ public class QDMainFragmentActivity2 extends QDActivity {
         qdWebView = findViewById(R.id.webView);
         qdWebView.loadUrl(url);
        // qdWebView.loadUrl("http:\\/\\/ucipchatlib.astro.nxengine.com\\/webchat\\/chat.html?c=31&jId=79");//"http://192.168.199.118:8080/webchat/chat.html?c=1&jId=81");
-        PermissionHelper.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
+        PermissionHelper.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
         QDLogger.d("getAppName="+getAppName(this));
     }
 

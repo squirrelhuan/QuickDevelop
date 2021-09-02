@@ -51,21 +51,18 @@ public class AdsActivity extends BaseActivity {
         Element myElement = getElement(nodeElement);
         frameLayout_01.addView(generateLayout(this,null, myElement));
         binner.setRadius(20);
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.radio_button_01:
-                        binner.setPageTransformer(true, new NormalPageTransformer());
-                        binner.setGalleryPadding(0,0,0,0);
-                        binner.setOffscreenPageLimit(1); //缓存页面数
-                        break;
-                    case R.id.radio_button_02:
-                        binner.setPageTransformer(true, new ZoomOutPageTransformer());
-                        binner.setGalleryPadding(100,0,100,0);
-                        binner.setOffscreenPageLimit(3); //缓存页面数
-                        break;
-                }
+        radio_group.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId){
+                case R.id.radio_button_01:
+                    binner.setPageTransformer(true, new NormalPageTransformer());
+                    binner.setGalleryPadding(0,0,0,0);
+                    binner.setOffscreenPageLimit(1); //缓存页面数
+                    break;
+                case R.id.radio_button_02:
+                    binner.setPageTransformer(true, new ZoomOutPageTransformer());
+                    binner.setGalleryPadding(100,0,100,0);
+                    binner.setOffscreenPageLimit(3); //缓存页面数
+                    break;
             }
         });
         binner2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);

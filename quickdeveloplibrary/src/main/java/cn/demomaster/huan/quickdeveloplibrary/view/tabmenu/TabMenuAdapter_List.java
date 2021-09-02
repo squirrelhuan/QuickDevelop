@@ -75,7 +75,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-        return (long) position;
+        return position;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -83,7 +83,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
         if (convertView == null) {
             convertView = this.inflater.inflate(R.layout.item_tab_menu, parent, false);
             holder = new ViewHolder();
-            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.tv_title = convertView.findViewById(R.id.tv_title);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -94,7 +94,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
         } else {
             holder.tv_title.setTextColor(Color.BLACK);
         }
-        holder.tv_title.setText(((TabListViewItem) this.tabListViewItems.get(position)).getItemName());
+        holder.tv_title.setText(this.tabListViewItems.get(position).getItemName());
         return convertView;
     }
 
@@ -119,26 +119,6 @@ public class TabMenuAdapter_List extends BaseAdapter {
         tabListViewItems.get(position).setSelected(b);
         notifyDataSetChanged();
     }
-
-    Integer[] reSort(Integer[] arr) {
-        Integer[] tmp = new Integer[arr.length];
-        for (int i = 0; i < arr.length - 1; i++) {
-            tmp[i] = arr[i + 1];
-        }
-        return tmp;
-    }
-
-    Integer[] removeSort(Integer[] arr, int index) {
-        if (arr.length == 1) {
-            return new Integer[selectCount];
-        }
-        Integer[] tmp = arr.clone();
-        for (int i = index; i < arr.length - 1; i++) {
-            tmp[i] = arr[i + 1];
-        }
-        return tmp;
-    }
-
 
     public List<TabMenuModel> getTabMenuModels() {
         return tabMenuModels;

@@ -115,19 +115,15 @@ public class BannerCursorView extends View implements Banner.BannerIndicator {
 
     int currentX;
     ValueAnimator animator;
-    private Interpolator mInterpolator = new FastOutSlowInInterpolator();
-    private int mDuration = 300;
-
+    private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
     private void startTransPositonAnimation(int current, int target) {
-        animator = ValueAnimator.ofInt((int) current, (int) target);
+        animator = ValueAnimator.ofInt(current, target);
         animator.setInterpolator(mInterpolator);
+        int mDuration = 300;
         animator.setDuration(mDuration).start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                currentX = (int) animation.getAnimatedValue();
-                invalidate();
-            }
+        animator.addUpdateListener(animation -> {
+            currentX = (int) animation.getAnimatedValue();
+            invalidate();
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override

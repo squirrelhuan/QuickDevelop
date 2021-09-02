@@ -73,27 +73,22 @@ public class FloatingFragment extends BaseFragment {
             }
         });
 
-        btn_floating_01.setOnClickListener(new View.OnClickListener() {
+        btn_floating_01.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        Service service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
-                        if (service != null) {
-                            ServiceHelper.dissmissWindow(FpsFloatingService.class);
-                        } else {
-                            ServiceHelper.showWindow(mContext, FpsFloatingService.class);
-                        }
-                    }
-
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onPassed() {
+                Service service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
+                if (service != null) {
+                    ServiceHelper.dissmissWindow(FpsFloatingService.class);
+                } else {
+                    ServiceHelper.showWindow(mContext, FpsFloatingService.class);
+                }
             }
-        });
+
+            @Override
+            public void onRefused() {
+                Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+            }
+        }));
 
         ServiceHelper.addServiceListener(FloatingMenuService.class, new ServiceHelper.ServiceListener() {
             @Override
@@ -106,38 +101,33 @@ public class FloatingFragment extends BaseFragment {
                 btn_floating_02.setText("开启悬浮");
             }
         });
-        btn_floating_02.setOnClickListener(new View.OnClickListener() {
+        btn_floating_02.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        Service service = ServiceHelper.getServiceByKey(FloatingMenuService.class.getName());
-                        if (service != null) {
-                            ServiceHelper.dissmissWindow(FloatingMenuService.class);
-                        } else {
-                            ServiceHelper.showWindow(mContext, FloatingMenuService.class);
-                        }
-                    }
-
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public boolean handRefused(Activity context, PermissionRequest request) {
-                        //return super.handRefused(context, request);
-                        PermissionModel permissionModel = request.getPermissionModelList().get(request.getIndex());
-                        switch (permissionModel.getName()) {
-                            case Manifest.permission.SYSTEM_ALERT_WINDOW:
-                                return true;
-                        }
-                        return false;//返回此权限是否必须，若是必要权限可以返回true，重复请求
-                    }
-                });
+            public void onPassed() {
+                Service service = ServiceHelper.getServiceByKey(FloatingMenuService.class.getName());
+                if (service != null) {
+                    ServiceHelper.dissmissWindow(FloatingMenuService.class);
+                } else {
+                    ServiceHelper.showWindow(mContext, FloatingMenuService.class);
+                }
             }
-        });
+
+            @Override
+            public void onRefused() {
+                Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean handRefused(Activity context, PermissionRequest request) {
+                //return super.handRefused(context, request);
+                PermissionModel permissionModel = request.getPermissionModelList().get(request.getIndex());
+                switch (permissionModel.getName()) {
+                    case Manifest.permission.SYSTEM_ALERT_WINDOW:
+                        return true;
+                }
+                return false;//返回此权限是否必须，若是必要权限可以返回true，重复请求
+            }
+        }));
         ServiceHelper.addServiceListener(DebugFloatingService.class, new ServiceHelper.ServiceListener() {
             @Override
             public void onCreateService() {
@@ -149,27 +139,22 @@ public class FloatingFragment extends BaseFragment {
                 btn_floating_03.setText("开启控制台");
             }
         });
-        btn_floating_03.setOnClickListener(new View.OnClickListener() {
+        btn_floating_03.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        Service service = ServiceHelper.getServiceByKey(DebugFloatingService.class.getName());
-                        if (service != null) {
-                            ServiceHelper.dissmissWindow(DebugFloatingService.class);
-                        } else {
-                            ServiceHelper.showWindow(mContext, DebugFloatingService.class);
-                        }
-                    }
-
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onPassed() {
+                Service service = ServiceHelper.getServiceByKey(DebugFloatingService.class.getName());
+                if (service != null) {
+                    ServiceHelper.dissmissWindow(DebugFloatingService.class);
+                } else {
+                    ServiceHelper.showWindow(mContext, DebugFloatingService.class);
+                }
             }
-        });
+
+            @Override
+            public void onRefused() {
+                Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+            }
+        }));
         ServiceHelper.addServiceListener(LifecycleFloatingService.class, new ServiceHelper.ServiceListener() {
             @Override
             public void onCreateService() {
@@ -181,41 +166,28 @@ public class FloatingFragment extends BaseFragment {
                 btn_floating_04.setText("开启生命周期监控器");
             }
         });
-        btn_floating_04.setOnClickListener(new View.OnClickListener() {
+        btn_floating_04.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        Service service = ServiceHelper.getServiceByKey(LifecycleFloatingService.class.getName());
-                        if (service != null) {
-                            ServiceHelper.dissmissWindow(LifecycleFloatingService.class);
-                        } else {
-                            ServiceHelper.showWindow(mContext, LifecycleFloatingService.class);
-                        }
-                    }
-
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        btn_floating_05.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    BatteryOptimizationsHelper.requestIgnoreBatteryOptimizations(getContext());
+            public void onPassed() {
+                Service service = ServiceHelper.getServiceByKey(LifecycleFloatingService.class.getName());
+                if (service != null) {
+                    ServiceHelper.dissmissWindow(LifecycleFloatingService.class);
+                } else {
+                    ServiceHelper.showWindow(mContext, LifecycleFloatingService.class);
                 }
             }
-        });
-        btn_floating_06.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                BatteryOptimizationsHelper.requestAutoStartService(getContext());
+            public void onRefused() {
+                Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+            }
+        }));
+        btn_floating_05.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                BatteryOptimizationsHelper.requestIgnoreBatteryOptimizations(getContext());
             }
         });
+        btn_floating_06.setOnClickListener(v -> BatteryOptimizationsHelper.requestAutoStartService(getContext()));
     }
 /*
     //跳转到设置-请求悬浮窗权限

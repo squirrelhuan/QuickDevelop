@@ -16,9 +16,8 @@ public abstract class BaseFragment extends QDFragment {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation a : annotations) {
             //如果是@Login注释，则强制转化，并调用username方法，和password方法。
-            if (a != null && a instanceof ActivityPager) {
-                String name = ((ActivityPager) a).name();
-                return name;
+            if (a instanceof ActivityPager) {
+                return ((ActivityPager) a).name();
             }
         }
         return null;

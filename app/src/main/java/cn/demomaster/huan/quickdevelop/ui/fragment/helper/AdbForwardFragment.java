@@ -25,7 +25,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
-import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ProcessResult;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -56,24 +55,16 @@ public class AdbForwardFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("PC和App通讯");
         et_port.setText(port+"");
-        btn_start_service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mServer = new ServerThread();
-                mServer.start();
-            }
+        btn_start_service.setOnClickListener(v -> {
+            mServer = new ServerThread();
+            mServer.start();
         });
         getSerialNumber();
     }
     private static String getSerialNumber() {
         String serial = null;
         try {
-            ADBHelper.getInstance().execute("getprop | grep serial", new ADBHelper.OnReceiveListener() {
-                @Override
-                public void onReceive(ProcessResult result) {
-                    QdToast.show("serial="+result.getResult());
-                }
-            });
+            ADBHelper.getInstance().execute("getprop | grep serial", result -> QdToast.show("serial="+result.getResult()));
             Class<?> c = Class.forName("android.os.SystemProperties");
             Method get = c.getMethod("get", String.class);
             serial = (String) get.invoke(c, "ro.serialnocustom");
@@ -125,13 +116,10 @@ public class AdbForwardFragment extends BaseFragment {
                             byte[] buffer = new byte[1024];
 //                        char[] buffer = new char[1024];
                             int bt;
-                            String text = "";
                             while ((bt = inputStream.read(buffer)) != -1) {
 //                            stringBuffer.append(buffer, 0, bt);
-                                text += new String(buffer, 0, bt).trim();
 //                            String aaa = new String(buffer, 0, bt).trim();
-                                writeLog(text.trim());
-                                text="";
+                                writeLog(new String(buffer, 0, bt).trim());
                                 /*String tag = "-end-";
                                 if (text.endsWith(tag)) {
                                     text = text.substring(0, text.lastIndexOf(tag));
@@ -153,11 +141,6 @@ public class AdbForwardFragment extends BaseFragment {
 
     private void writeLog(String str) {
         QDLogger.i("str: " + str);
-        QdThreadHelper.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tv_console.append(str + "\n");
-            }
-        });
+        QdThreadHelper.runOnUiThread(() -> tv_console.append(str + "\n"));
     }
 }

@@ -17,6 +17,7 @@ public class CamParaUtil {
         try {
             c = Camera.open();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return c;
     }

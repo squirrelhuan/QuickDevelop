@@ -105,37 +105,25 @@ public class AnimitionFragment extends BaseFragment {
                 qdValueAnimator2.start();
             }
         });
-        rootView.findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDLogger.e("start "+",state="+qdValueAnimator.getState()+",isRunning="+qdValueAnimator.isRunning());
-                qdValueAnimator.start();
-            }
+        rootView.findViewById(R.id.btn_start).setOnClickListener(v -> {
+            QDLogger.e("start "+",state="+qdValueAnimator.getState()+",isRunning="+qdValueAnimator.isRunning());
+            qdValueAnimator.start();
         });
 
-        rootView.findViewById(R.id.btn_reverse).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDLogger.e("reverse "+",state="+qdValueAnimator.getState()+",isRunning="+qdValueAnimator.isRunning());
-                qdValueAnimator.reverse();
-            }
+        rootView.findViewById(R.id.btn_reverse).setOnClickListener(v -> {
+            QDLogger.e("reverse "+",state="+qdValueAnimator.getState()+",isRunning="+qdValueAnimator.isRunning());
+            qdValueAnimator.reverse();
         });
 
-        rootView.findViewById(R.id.btn_start2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDLogger.e("start "+",state="+qdValueAnimator2.getState()+",isRunning="+qdValueAnimator2.isRunning());
-                qdValueAnimator.start();
-                qdValueAnimator2.start();
-            }
+        rootView.findViewById(R.id.btn_start2).setOnClickListener(v -> {
+            QDLogger.e("start "+",state="+qdValueAnimator2.getState()+",isRunning="+qdValueAnimator2.isRunning());
+            qdValueAnimator.start();
+            qdValueAnimator2.start();
         });
 
-        rootView.findViewById(R.id.btn_reverse2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QDLogger.e("reverse "+",isFrward="+qdValueAnimator2.isFrward()+",isRunning="+qdValueAnimator2.isRunning());
-                qdValueAnimator2.backward();
-            }
+        rootView.findViewById(R.id.btn_reverse2).setOnClickListener(v -> {
+            QDLogger.e("reverse "+",isFrward="+qdValueAnimator2.isFrward()+",isRunning="+qdValueAnimator2.isRunning());
+            qdValueAnimator2.backward();
         });
 
        }

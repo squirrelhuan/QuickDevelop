@@ -1,9 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.pickview;
 
-/**
- * Created by Squirrel桓 on 2018/11/13.
- */
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -17,8 +13,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build.VERSION;
 import android.os.Handler;
-import android.os.Handler.Callback;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -64,7 +58,7 @@ public class LoopView2 extends View {
     public Handler mHandler;
 
     public LoopView2(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public LoopView2(Context context, AttributeSet attrs) {
@@ -74,18 +68,16 @@ public class LoopView2 extends View {
     public LoopView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mExecutor = Executors.newSingleThreadScheduledExecutor();
-        this.mHandler = new Handler(new Callback() {
-            public boolean handleMessage(Message msg) {
-                if (msg.what == 1000) {
-                    LoopView2.this.invalidate();
-                }
-                if (msg.what == 2000) {
-                    LoopView2.this.startSmoothScrollTo();
-                } else if (msg.what == 3000) {
-                    LoopView2.this.itemSelected();
-                }
-                return false;
+        this.mHandler = new Handler(msg -> {
+            if (msg.what == 1000) {
+                LoopView2.this.invalidate();
             }
+            if (msg.what == 2000) {
+                LoopView2.this.startSmoothScrollTo();
+            } else if (msg.what == 3000) {
+                LoopView2.this.itemSelected();
+            }
+            return false;
         });
         this.initView(context, attrs);
     }
@@ -94,20 +86,18 @@ public class LoopView2 extends View {
     public LoopView2(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.mExecutor = Executors.newSingleThreadScheduledExecutor();
-        this.mHandler = new Handler(new Callback() {
-            public boolean handleMessage(Message msg) {
-                if (msg.what == 1000) {
-                    LoopView2.this.invalidate();
-                }
-
-                if (msg.what == 2000) {
-                    LoopView2.this.startSmoothScrollTo();
-                } else if (msg.what == 3000) {
-                    LoopView2.this.itemSelected();
-                }
-
-                return false;
+        this.mHandler = new Handler(msg -> {
+            if (msg.what == 1000) {
+                LoopView2.this.invalidate();
             }
+
+            if (msg.what == 2000) {
+                LoopView2.this.startSmoothScrollTo();
+            } else if (msg.what == 3000) {
+                LoopView2.this.itemSelected();
+            }
+
+            return false;
         });
         this.initView(context, attrs);
     }
@@ -125,7 +115,7 @@ public class LoopView2 extends View {
         this.mOnGestureListener = new LoopView2.LoopViewGestureListener();
         this.mTextPaint = new Paint();
         if (VERSION.SDK_INT >= 11) {
-            this.setLayerType(1, (Paint) null);
+            this.setLayerType(1, null);
         }
 
         this.mGestureDetector = new GestureDetector(context, this.mOnGestureListener);
@@ -179,13 +169,12 @@ public class LoopView2 extends View {
         //高度度
         int specModeHeight = MeasureSpec.getMode(heightMeasureSpec);
         switch (specModeHeight) {
-            case MeasureSpec.UNSPECIFIED:
-                break;
             case MeasureSpec.AT_MOST://AT_MOST 自适应模式，根据设置的行数动态申请高度
                 mWidgetHeight = (int) lineHeight * mDrawItemsCount;
                 mWidgetWidth = measureWidth(widthMeasureSpec);
                 setMeasuredDimension(mWidgetWidth, mWidgetHeight);
                 break;
+            case MeasureSpec.UNSPECIFIED:
             case MeasureSpec.EXACTLY:
                 break;
         }
@@ -269,9 +258,10 @@ public class LoopView2 extends View {
             int count_t = ((data1.length - startIndex - 1) > mDrawItemsCount + 1 ? mDrawItemsCount + 1 : (data1.length - startIndex));
 
             String[] data2 = new String[count_t];
-            for (int i = 0; i < data2.length; i++) {
+            System.arraycopy(data1,startIndex,data2,0,data2.length);
+            /*for (int i = 0; i < data2.length; i++) {
                 data2[i] = data1[startIndex + i];
-            }
+            }*/
 
             mTextPaint.setTextSize(mTextSize);
             mTextPaint.setColor(normalColor);
@@ -388,7 +378,7 @@ public class LoopView2 extends View {
         Log.i("CGQ", "startSmoothScrollTo----------------------------------" + velocityY);
         this.cancelSchedule();
         int velocityFling = 20;
-        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView2.FlingRunnable(velocityY), 0L, (long) velocityFling, TimeUnit.MILLISECONDS);
+        this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView2.FlingRunnable(velocityY), 0L, velocityFling, TimeUnit.MILLISECONDS);
     }
 
 

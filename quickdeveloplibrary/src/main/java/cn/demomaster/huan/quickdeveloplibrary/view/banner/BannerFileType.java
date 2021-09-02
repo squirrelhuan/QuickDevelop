@@ -20,9 +20,9 @@ public enum BannerFileType {
     public static BannerFileType getEnum(int value) {
         BannerFileType resultEnum = null;
         BannerFileType[] enumArray = BannerFileType.values();
-        for (int i = 0; i < enumArray.length; i++) {
-            if (enumArray[i].value() == value) {
-                resultEnum = enumArray[i];
+        for (BannerFileType bannerFileType : enumArray) {
+            if (bannerFileType.value() == value) {
+                resultEnum = bannerFileType;
                 break;
             }
         }

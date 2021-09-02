@@ -4,10 +4,12 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.core.view.LayoutInflaterFactory;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -16,14 +18,13 @@ import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
-public class QDSkinFactory implements LayoutInflaterFactory {
+public class QDSkinFactory implements LayoutInflater.Factory2 {//LayoutInflaterFactory
     //自定义的控件，这里面放包控件的包路径
     public static String[] sClassPrefixList = {
             "andfix.shenbin.com.skindemo.struct"
     };
     //存放符合条件的皮肤数据源
     private List<SkinView> skinCacheList = new ArrayList<>();
-
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
@@ -52,7 +53,33 @@ public class QDSkinFactory implements LayoutInflaterFactory {
             ClassLoader classLoader = context.getClass().getClassLoader();
             //通过名字，获得控件的类
             Class clz = classLoader.loadClass(name);
-            Constructor<? extends View> constructor = clz.getConstructor(new Class[]{Context.class, AttributeSet.class});
+            Constructor<? extends View> constructor = clz.getConstructor(Context.class, AttributeSet.class);
+            //返回控件
+            return constructor.newInstance(context, attrs);
+        } catch (ClassNotFoundException e) {
+            QDLogger.e(e);
+        } catch (InvocationTargetException e) {
+            QDLogger.e(e);
+        } catch (NoSuchMethodException e) {
+            QDLogger.e(e);
+        } catch (InstantiationException e) {
+            QDLogger.e(e);
+        } catch (IllegalAccessException e) {
+            QDLogger.e(e);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        try {
+            //获得当前的类加载器
+            ClassLoader classLoader = context.getClass().getClassLoader();
+            //通过名字，获得控件的类
+            Class clz = classLoader.loadClass(name);
+            Constructor<? extends View> constructor = clz.getConstructor(Context.class, AttributeSet.class);
             //返回控件
             return constructor.newInstance(context, attrs);
         } catch (ClassNotFoundException e) {
@@ -107,6 +134,7 @@ public class QDSkinFactory implements LayoutInflaterFactory {
     }
 
 
+
     /**
      * 皮肤类
      */
@@ -150,9 +178,7 @@ public class QDSkinFactory implements LayoutInflaterFactory {
 //                }
                 //切换背景图片
                 else if ("background".equalsIgnoreCase(skinItem.attrName)) {
-
-                    ((View) view).setBackground(QDSkinManager.getInstance().getDrawable(skinItem.refId));
-
+                    view.setBackground(QDSkinManager.getInstance().getDrawable(skinItem.refId));
                 }
             }
         }

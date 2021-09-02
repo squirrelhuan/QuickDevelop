@@ -34,12 +34,6 @@ public class BaseFragmentActivity extends QDActivity {
     }*/
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        //FragmentActivityHelper.getInstance().unBindActivity(this);
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         QDLogger.i("keyCode="+keyCode);
         return super.onKeyDown(keyCode, event);

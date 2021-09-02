@@ -22,9 +22,9 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
-    private Context mContext;
-    private ArrayList<Folder> mFolders;
-    private LayoutInflater mInflater;
+    private final Context mContext;
+    private final ArrayList<Folder> mFolders;
+    private final LayoutInflater mInflater;
     private int mSelectItem;
     private OnFolderSelectListener mListener;
 
@@ -56,14 +56,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             holder.ivImage.setImageBitmap(null);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSelectItem = holder.getAdapterPosition();
-                notifyDataSetChanged();
-                if (mListener != null) {
-                    mListener.OnFolderSelect(folder);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            mSelectItem = holder.getAdapterPosition();
+            notifyDataSetChanged();
+            if (mListener != null) {
+                mListener.OnFolderSelect(folder);
             }
         });
     }
@@ -78,12 +75,10 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView ivImage;
         ImageView ivSelect;
         TextView tvFolderName;
         TextView tvFolderSize;
-
         public ViewHolder(View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.iv_image);

@@ -85,8 +85,8 @@ public class test {
     public String convertStringToHex(String str){
         char[] chars = str.toCharArray();
         StringBuffer hex = new StringBuffer();
-        for(int i = 0; i < chars.length; i++){
-            hex.append(Integer.toHexString((int)chars[i]));
+        for (char aChar : chars) {
+            hex.append(Integer.toHexString(aChar));
         }
         return hex.toString();
     }
@@ -126,11 +126,10 @@ public class test {
        System.out.println("Hex : " + hex);
        System.out.println("ASCII : " + strToHex.convertHexToString(hex));
 
-        /*****************************************************************/
        System.out.println("\n-----ASCII码转换为16进制 -----");
         int ins = 1024;
        System.out.println("int: " + ins);
-        hex = strToHex.intToHex(ins);
+        hex = intToHex(ins);
        System.out.println("转换为16进制 : " + hex);
 
        System.out.println("\n***** 16进制转换为ASCII *****");
@@ -138,7 +137,7 @@ public class test {
        System.out.println("ASCII : " + strToHex.convertHexToString(hex));
 
         String str1 = "1024";
-        int i=Integer.valueOf(str1);
+        int i=Integer.parseInt(str1);
        System.out.println(intToHex(i));
 
        System.out.println(intToHex(1900));

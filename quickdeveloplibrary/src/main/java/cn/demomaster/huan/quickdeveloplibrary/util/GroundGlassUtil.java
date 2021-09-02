@@ -80,13 +80,10 @@ public class GroundGlassUtil implements OnReleaseListener {
             view.getViewTreeObserver().removeOnDrawListener(onParentViewDrawListener);
             onParentViewDrawListener = null;
         }
-        onParentViewDrawListener = new ViewTreeObserver.OnDrawListener() {
-            @Override
-            public void onDraw() {
-                QDLogger.println("viewParent重绘重新模糊处理");
-                parentBitmap=null;
-                invalidate();
-            }
+        onParentViewDrawListener = () -> {
+            //QDLogger.println("viewParent重绘重新模糊处理");
+            parentBitmap=null;
+            invalidate();
         };
         //view重绘时回调
         view.getViewTreeObserver().addOnDrawListener(onParentViewDrawListener);
@@ -157,17 +154,14 @@ public class GroundGlassUtil implements OnReleaseListener {
         bamboo.add(new Bamboo.Node() {
             @Override
             public void doJob(Bamboo.Node node, Object... result) {
-                QdThreadHelper.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //方案1
-                        Bitmap backgroundBitmap = shootBackgroundBitmap();
+                QdThreadHelper.runOnUiThread(() -> {
+                    //方案1
+                    Bitmap backgroundBitmap = shootBackgroundBitmap();
 
-                        /* 方案2
-                        getBackGroundViewBitmap();
-                        Bitmap backgroundBitmap = parentBitmap;*/
-                        node.submit(backgroundBitmap);
-                    }
+                    /* 方案2
+                    getBackGroundViewBitmap();
+                    Bitmap backgroundBitmap = parentBitmap;*/
+                    node.submit(backgroundBitmap);
                 });
             }
         })
@@ -175,21 +169,18 @@ public class GroundGlassUtil implements OnReleaseListener {
             @Override
             public void doJob(Bamboo.Node node, Object... result) {
                 if (result[0] != null) {
-                    QdThreadHelper.runOnSubThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //方案1
-                            Bitmap bitmap = generateBackgroundBitmap((Bitmap) result[0]);
-                            //方案2
-                            //Bitmap bitmap = generateBackgroundBitmap2(backgroundBitmap);
-                            if (bitmap == null) {
-                                releaseRuning();
-                                return;
-                            }
-
-                            setViewBackground(bitmap);
+                    QdThreadHelper.runOnSubThread(() -> {
+                        //方案1
+                        Bitmap bitmap = generateBackgroundBitmap((Bitmap) result[0]);
+                        //方案2
+                        //Bitmap bitmap = generateBackgroundBitmap2(backgroundBitmap);
+                        if (bitmap == null) {
                             releaseRuning();
+                            return;
                         }
+
+                        setViewBackground(bitmap);
+                        releaseRuning();
                     });
                 }
             }
@@ -198,34 +189,26 @@ public class GroundGlassUtil implements OnReleaseListener {
     }
 
     private void getBackGroundViewBitmap() {
-        QdThreadHelper.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(parentBitmap==null) {
-                    boolean isVisible = false;
-                    if (targetView.getVisibility() == View.VISIBLE) {
-                        isVisible = true;
-                        targetView.setVisibility(View.INVISIBLE);
-                    }
-                    parentBitmap = ScreenShotUitl.shotActivity((Activity) targetView.getContext(), true);
-                    if (isVisible) {
-                        targetView.setVisibility(View.VISIBLE);
-                    }
-                    parentBitmap = QDBitmapUtil.zoomImage(parentBitmap, parentBitmap.getWidth() / 4f, parentBitmap.getHeight() / 4f);
-                    //QDLogger.println("bitmap w2=：" + bitmap.getWidth());
-                    parentBitmap = BlurUtil.doBlur(parentBitmap, radius, 0.2f);
+        QdThreadHelper.runOnUiThread(() -> {
+            if(parentBitmap==null) {
+                boolean isVisible = false;
+                if (targetView.getVisibility() == View.VISIBLE) {
+                    isVisible = true;
+                    targetView.setVisibility(View.INVISIBLE);
                 }
+                parentBitmap = ScreenShotUitl.shotActivity((Activity) targetView.getContext(), true);
+                if (isVisible) {
+                    targetView.setVisibility(View.VISIBLE);
+                }
+                parentBitmap = QDBitmapUtil.zoomImage(parentBitmap, parentBitmap.getWidth() / 4f, parentBitmap.getHeight() / 4f);
+                //QDLogger.println("bitmap w2=：" + bitmap.getWidth());
+                parentBitmap = BlurUtil.doBlur(parentBitmap, radius, 0.2f);
             }
         });
     }
 
     private void setViewBackground(Bitmap bitmap) {
-        QdThreadHelper.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                targetView.setBackground(new BitmapDrawable(context.getResources(), bitmap));
-            }
-        });
+        QdThreadHelper.runOnUiThread(() -> targetView.setBackground(new BitmapDrawable(context.getResources(), bitmap)));
     }
 
     private void releaseRuning() {

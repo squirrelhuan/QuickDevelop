@@ -52,7 +52,6 @@ public class PopToastUtil {
     private static int destinc_Y;
 
     private static void initPopToast(Activity context, String text, int time, int gravity) {
-
         if (popupWindow == null) {
             popupWindow = new PopupWindow();
             //contentView = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.layout_customer_toast, null, false);
@@ -107,14 +106,14 @@ public class PopToastUtil {
      * @param time
      */
     public void setResidenceTime(int time) {
-        this.residenceTime = time;
+        residenceTime = time;
     }
 
     private static int residenceTime = 3000;
     private static int timer_t = 3000;
-    private static Handler mHandler = new Handler();
+    private static final Handler mHandler = new Handler();
     static int dt = 500;
-    private static ToastRunable toastRunable = new ToastRunable() {
+    private static final ToastRunable toastRunable = new ToastRunable() {
         @Override
         public void run() {
             if (timer_t > 0) {
@@ -131,9 +130,8 @@ public class PopToastUtil {
 
     public static class ToastRunable implements Runnable {
         static PopupWindow popupWindow;
-
         public void setPopupWindow(PopupWindow popupWindow) {
-            this.popupWindow = popupWindow;
+            ToastRunable.popupWindow = popupWindow;
         }
 
         @Override
@@ -141,6 +139,4 @@ public class PopToastUtil {
 
         }
     }
-
-
 }

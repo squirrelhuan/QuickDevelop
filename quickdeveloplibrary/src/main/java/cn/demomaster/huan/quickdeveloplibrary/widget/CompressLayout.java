@@ -1,13 +1,11 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
@@ -24,17 +22,17 @@ public class CompressLayout extends ViewGroup {
 
     public CompressLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(null);
+        init(attrs);
     }
 
     public CompressLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(null);
+        init(attrs);
     }
 
     public CompressLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(null);
+        init(attrs);
     }
 
     int originalHeight = -400;
@@ -49,28 +47,25 @@ public class CompressLayout extends ViewGroup {
             a.recycle();
         }
 
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //compressLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                //QdToast.show(getContext(),"height="+getMeasuredHeight());
-                //QDLogger.e("getViewTreeObserver height=" + getMeasuredHeight());
-                //PopToastUtil.ShowToast((Activity) getContext(),"height="+getMeasuredHeight());
+        getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            //compressLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            //QdToast.show(getContext(),"height="+getMeasuredHeight());
+            //QDLogger.e("getViewTreeObserver height=" + getMeasuredHeight());
+            //PopToastUtil.ShowToast((Activity) getContext(),"height="+getMeasuredHeight());
 
-                if (originalHeight == -400) {
-                    originalHeight = getMeasuredHeight();
-                }
-                if (lastHeight != getMeasuredHeight() || lastWidth != getMeasuredWidth()) {
-                    int oldHeight = lastHeight;
-                    lastHeight = getMeasuredHeight();
-                    lastWidth = getMeasuredWidth();
+            if (originalHeight == -400) {
+                originalHeight = getMeasuredHeight();
+            }
+            if (lastHeight != getMeasuredHeight() || lastWidth != getMeasuredWidth()) {
+                int oldHeight = lastHeight;
+                lastHeight = getMeasuredHeight();
+                lastWidth = getMeasuredWidth();
 
-                    if (oldHeight > getMeasuredHeight()) {//键盘展开
-                        hideView();
-                    } else {//键盘关闭
-                        showView();
-                        reLayout();
-                    }
+                if (oldHeight > getMeasuredHeight()) {//键盘展开
+                    hideView();
+                } else {//键盘关闭
+                    showView();
+                    reLayout();
                 }
             }
         });
@@ -283,13 +278,10 @@ public class CompressLayout extends ViewGroup {
         //QDLogger.d( "showPanelWithSorftKeyBoard startValue=" + startValue+",progress="+progress);
         animator = QDValueAnimator.ofFloat(startValue, 1f);
         animator.setDuration((long) (mDuration * (1 - startValue) + 5));
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                //QDLogger.d( "showPanelWithSorftKeyBoard progress=" + progress);
-                reLayout();
-            }
+        animator.addUpdateListener(animation -> {
+            progress = (float) animation.getAnimatedValue();
+            //QDLogger.d( "showPanelWithSorftKeyBoard progress=" + progress);
+            reLayout();
         });
         //animator.setRepeatMode(ValueAnimator.RESTART);
         //animator.setRepeatCount(ValueAnimator.INFINITE);
@@ -308,12 +300,9 @@ public class CompressLayout extends ViewGroup {
         }
         animator = QDValueAnimator.ofFloat(progress, 0);
         animator.setDuration((long) ((mDuration / 2) * (progress)));
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                reLayout();
-            }
+        animator.addUpdateListener(animation -> {
+            progress = (float) animation.getAnimatedValue();
+            reLayout();
         });
         animator.setInterpolator(new AccelerateInterpolator());
         animator.start();

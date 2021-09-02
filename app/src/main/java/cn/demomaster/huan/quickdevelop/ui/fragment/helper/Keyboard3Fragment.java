@@ -78,14 +78,11 @@ public class Keyboard3Fragment extends BaseFragment {
        /* qdKeyboard.addEditText(et_system_none);
         qdKeyboard.addEditText(et_system_number);
         qdKeyboard.addEditText(et_system_numberPassword);*/
-        iv_emtion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(compressLayout.isExpanded()){
-                    compressLayout.dissmissPanel();
-                }else {
-                    compressLayout.showPanel();
-                }
+        iv_emtion.setOnClickListener(v -> {
+            if(compressLayout.isExpanded()){
+                compressLayout.dissmissPanel();
+            }else {
+                compressLayout.showPanel();
             }
         });
 

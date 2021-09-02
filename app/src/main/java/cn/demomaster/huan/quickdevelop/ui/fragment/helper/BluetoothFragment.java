@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +34,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -85,49 +83,33 @@ public class BluetoothFragment extends BaseFragment {
         }
 
         tooglebutton.setChecked(mBluetoothAdapter.isEnabled());
-        tooglebutton.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                if (!mBluetoothAdapter.isEnabled()) {// 没有开始蓝牙
-                    // Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    // startActivityForResult(enableBtIntent,REQUEST_ENBLE_BT);
-                    mBluetoothAdapter.enable();
-                } else {
-                    mBluetoothAdapter.disable();
-                }
+        tooglebutton.setOnToggleChanged((view, on) -> {
+            if (!mBluetoothAdapter.isEnabled()) {// 没有开始蓝牙
+                // Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                // startActivityForResult(enableBtIntent,REQUEST_ENBLE_BT);
+                mBluetoothAdapter.enable();
+            } else {
+                mBluetoothAdapter.disable();
             }
         });
 
 
-        cb_discoverable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    requestDiscoverable(300);
-                }
+        cb_discoverable.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                requestDiscoverable(300);
             }
         });
 
         registerBoradcastReceiver();
         //QDLogger.i("v0="+v0+",v1="+v1);
 
-        btn_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBluetoothAdapter.startDiscovery();
-            }
-        });
+        btn_search.setOnClickListener(v -> mBluetoothAdapter.startDiscovery());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         bluetoothAdapter = new cn.demomaster.huan.quickdevelop.adapter.BluetoothAdapter(mContext);
-        bluetoothAdapter.setOnItemClickListener(new TabMenuAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                connect(bluetoothAdapter.getData().get(position));
-            }
-        });
+        bluetoothAdapter.setOnItemClickListener((view, position) -> connect(bluetoothAdapter.getData().get(position)));
         bluetoothAdapter.updateList(mBluetoothAdapter.getBondedDevices());
         recyclerView.setAdapter(bluetoothAdapter);
         //设置分隔线
@@ -234,13 +216,11 @@ public class BluetoothFragment extends BaseFragment {
     private void refreshState() {
         int state = mBluetoothAdapter.getState();
         switch (state) {
-            case BluetoothAdapter.STATE_TURNING_ON:
-                break;
             case BluetoothAdapter.STATE_ON:
                 bluetoothAdapter.updateList(mBluetoothAdapter.getBondedDevices());
                 break;
+            case BluetoothAdapter.STATE_TURNING_ON:
             case BluetoothAdapter.STATE_TURNING_OFF:
-                break;
             case BluetoothAdapter.STATE_OFF:
                 break;
         }

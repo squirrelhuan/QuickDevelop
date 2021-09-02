@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,23 +24,15 @@ public class RegisterActivity extends AppCompatActivity {
     private void initView() {
         final EditText et_phone = findViewById(R.id.et_phone);
         final Button btn_get_smscode = findViewById(R.id.btn_get_smscode);
-        qdTimer = new QDTimer(60,new QDTimer.OnTimerListener() {
-            @Override
-            public void onTimeChange(long time) {
-                btn_get_smscode.setText("剩余"+time);
-            }
-        });
-        btn_get_smscode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean b = StringVerifyUtil.validateMobilePhone(et_phone.getText().toString());
-                if(b){
-                    Toast.makeText(RegisterActivity.this,"net获取验证码...",Toast.LENGTH_LONG).show();
-                    qdTimer.stop();
+        qdTimer = new QDTimer(60, time -> btn_get_smscode.setText("剩余"+time));
+        btn_get_smscode.setOnClickListener(v -> {
+            boolean b = StringVerifyUtil.validateMobilePhone(et_phone.getText().toString());
+            if(b){
+                Toast.makeText(RegisterActivity.this,"net获取验证码...",Toast.LENGTH_LONG).show();
+                qdTimer.stop();
 
-                }else {
-                    Toast.makeText(RegisterActivity.this,"手机号格式有误",Toast.LENGTH_LONG).show();
-                }
+            }else {
+                Toast.makeText(RegisterActivity.this,"手机号格式有误",Toast.LENGTH_LONG).show();
             }
         });
     }

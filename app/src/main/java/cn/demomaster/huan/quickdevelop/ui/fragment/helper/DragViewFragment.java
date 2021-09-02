@@ -33,9 +33,9 @@ public class DragViewFragment extends BaseFragment {
 
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_dragview, null);
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_dragview, null);
         // ButterKnife.bind(this,mView);
-        return (ViewGroup) mView;
+        return mView;
     }
 
     private TextView mFirstOne;
@@ -43,13 +43,7 @@ public class DragViewFragment extends BaseFragment {
     public void initView(View rootView) {
         // actionBarLayoutOld.setTitle("异常捕获");
         mFirstOne = rootView.findViewById(R.id.tv_first_one);
-        mFirstOne.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mFirstOne.setOnClickListener(v -> Toast.makeText(mContext, "点击", Toast.LENGTH_SHORT).show());
     }
 
 }

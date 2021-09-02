@@ -188,24 +188,6 @@ public class QDAppInfoUtil {
         }
         return (String) packageManager.getApplicationLabel(applicationInfo);
     }
-    public static boolean isSystemApp(Context context) {
-        if(context==null){
-            return false;
-        }
-        PackageManager pm = context.getPackageManager();
-        String packageName = context.getPackageName();
-        if (packageName != null) {
-            try {
-                PackageInfo info = pm.getPackageInfo(packageName, 0);
-                return (info != null) && (info.applicationInfo != null) &&
-                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
     public static boolean isSystemApp(Context context, Intent intent) {
         PackageManager pm = context.getPackageManager();
         ComponentName cn = intent.getComponent();
@@ -218,6 +200,10 @@ public class QDAppInfoUtil {
         } else {
             packageName = cn.getPackageName();
         }
+        return isSystemApp(context,packageName);
+    } 
+    public static boolean isSystemApp(Context context, String packageName) {
+        PackageManager pm = context.getPackageManager();
         if (packageName != null) {
             try {
                 PackageInfo info = pm.getPackageInfo(packageName, 0);
@@ -229,5 +215,27 @@ public class QDAppInfoUtil {
         } else {
             return false;
         }
+    }
+
+    public static boolean isSystemUid(Context context, String packageName) {
+       // android:sharedUserId="android.uid.system" 返回1000
+        return 1000==QDAppInfoUtil.getUidByPackageName(context, packageName);
+    }
+    /**
+     * 根据包名获取uid
+     *
+     * @param context     上下文
+     * @param packageName 包名
+     */
+    public static int getUidByPackageName(Context context, String packageName) {
+        int uid = -1;
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA);
+            uid = packageInfo.applicationInfo.uid;
+        } catch (PackageManager.NameNotFoundException e) {
+            QDLogger.e(e);
+        }
+        return uid;
     }
 }

@@ -52,15 +52,11 @@ public class AbouchementView extends View {
         //int r2 = r*10/8;// (int) (r*progress/360f);
         ballers.clear();
         degrees = 0;
-        W:
-        while (true) {
+        do {
             double r1 = random.nextDouble() * radius * 2 / 10f + radius / 10f * 6f;
             generate(degrees, r1, 0, false);
             generate(degrees, radius, r1, true);
-            if (degrees > 360) {
-                break W;
-            }
-        }
+        } while (!(degrees > 360));
     }
 
     double degrees = 0;

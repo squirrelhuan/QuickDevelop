@@ -55,21 +55,18 @@ public class NdkTestFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         // Example of a call to a native method
-        TextView tv = (TextView) rootView.findViewById(R.id.sample_text);
+        TextView tv = rootView.findViewById(R.id.sample_text);
 //        tv.setText(JNITest.stringFromJNI());
 
         Button btn_start = rootView.findViewById(R.id.btn_start);
-        btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Bind to Service
-                mToken = ServiceHelper.bindToService(getActivity(), SimpleService.class, serviceConnection);
-                //getActivity().startService(new Intent(getContext(),BaseService.class));
+        btn_start.setOnClickListener(v -> {
+            // Bind to Service
+            mToken = ServiceHelper.bindToService(getActivity(), SimpleService.class, serviceConnection);
+            //getActivity().startService(new Intent(getContext(),BaseService.class));
 
-                //Intent mIntent = new Intent();
-                // mIntent.setClass(mContext, MessageService.class);
-                //mContext.startService(mIntent);
-            }
+            //Intent mIntent = new Intent();
+            // mIntent.setClass(mContext, MessageService.class);
+            //mContext.startService(mIntent);
         });
 
         //BaseService.baseBinder.getService();

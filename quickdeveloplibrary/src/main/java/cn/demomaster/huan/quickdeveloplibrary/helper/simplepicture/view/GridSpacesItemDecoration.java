@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GridSpacesItemDecoration extends RecyclerView.ItemDecoration {
     private final boolean includeEdge;
-    private int spacing;
+    private final int spacing;
 
 
     public GridSpacesItemDecoration(int spacing, boolean includeEdge) {

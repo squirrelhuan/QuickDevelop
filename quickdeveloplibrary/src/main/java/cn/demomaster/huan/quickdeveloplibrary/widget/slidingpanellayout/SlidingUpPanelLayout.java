@@ -478,7 +478,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (getPanelState() == PanelState.COLLAPSED) {
             smoothToBottom();
             invalidate();
-            return;
         }
     }
 
@@ -596,19 +595,16 @@ public class SlidingUpPanelLayout extends ViewGroup {
             mDragView.setClickable(true);
             mDragView.setFocusable(false);
             mDragView.setFocusableInTouchMode(false);
-            mDragView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!isEnabled() || !isTouchEnabled()) return;
-                    if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED) {
-                        if (mAnchorPoint < 1.0f) {
-                            setPanelState(PanelState.ANCHORED);
-                        } else {
-                            setPanelState(PanelState.EXPANDED);
-                        }
+            mDragView.setOnClickListener(v -> {
+                if (!isEnabled() || !isTouchEnabled()) return;
+                if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED) {
+                    if (mAnchorPoint < 1.0f) {
+                        setPanelState(PanelState.ANCHORED);
                     } else {
-                        setPanelState(PanelState.COLLAPSED);
+                        setPanelState(PanelState.EXPANDED);
                     }
+                } else {
+                    setPanelState(PanelState.COLLAPSED);
                 }
             });
         }

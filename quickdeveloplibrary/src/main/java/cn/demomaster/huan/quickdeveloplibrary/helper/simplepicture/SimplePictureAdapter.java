@@ -48,9 +48,9 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
 
     public SimplePictureAdapter(Context context, ArrayList<Image> mImages, int maxCount, boolean isViewImage, RecyclerView recyclerView) {
         this.mImages = mImages;
-        this.mContext = context.getApplicationContext();
+        mContext = context.getApplicationContext();
         this.mInflater = LayoutInflater.from(mContext);
-        this.mMaxCount = maxCount;
+        mMaxCount = maxCount;
         this.isViewImage = isViewImage;
         this.mRecyclerView = recyclerView;
         map = new LinkedHashMap<>();
@@ -71,29 +71,23 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         holder.iv_masking.setAlpha(0.2f);
         holder.ct_select.setTag(position);
         //点击选中/取消选中图片
-        holder.ct_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkedImage(holder, (int) v.getTag());
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, (int) v.getTag(), map);
-                }
+        holder.ct_select.setOnClickListener(v -> {
+            checkedImage(holder, (int) v.getTag());
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(v, (int) v.getTag(), map);
             }
         });
         holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int p = holder.getAdapterPosition();
-                if (isViewImage) {
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemPreview(v, p, mImages.get(p));
-                    }
-                } else {
-                    checkedImage(holder, p);
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(v, p, map);
-                    }
+        holder.itemView.setOnClickListener(v -> {
+            int p = holder.getAdapterPosition();
+            if (isViewImage) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemPreview(v, p, mImages.get(p));
+                }
+            } else {
+                checkedImage(holder, p);
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(v, p, map);
                 }
             }
         });
@@ -242,7 +236,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         Object[] objects = map.entrySet().toArray();
         //Map.Entry entry = (Map.Entry) objects[0];
         for (int i = 0; i < objects.length; i++) {
-            if (((Image) (((Map.Entry) objects[i])).getValue()) == image) {
+            if ((((Map.Entry) objects[i])).getValue() == image) {
                 return i;
             }
         }

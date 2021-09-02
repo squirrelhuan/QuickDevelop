@@ -49,37 +49,27 @@ public class TrafficFragment extends BaseFragment {
     }
 
     public void initView(View rootView) {
-        btn_start.setOnClickListener(new View.OnClickListener() {
+        btn_start.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_PHONE_STATE, Manifest.permission.PACKAGE_USAGE_STATS}, new PermissionHelper.PermissionListener() {
             @Override
-            public void onClick(View v) {
-                PermissionHelper.getInstance().requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_PHONE_STATE, Manifest.permission.PACKAGE_USAGE_STATS}, new PermissionHelper.PermissionListener() {
-                    @Override
-                    public void onPassed() {
-                        /*final AppOpsManager appOps;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                            if (isGrantedUsagePremission(getContext())) {
-                                Toast.makeText(getContext(),"ok",Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(),"refused",Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }*/
-                        ServiceHelper.dissmissWindow(TrafficFloatingService.class);
+            public void onPassed() {
+                /*final AppOpsManager appOps;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    if (isGrantedUsagePremission(getContext())) {
+                        Toast.makeText(getContext(),"ok",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(),"refused",Toast.LENGTH_SHORT).show();
+                        return;
                     }
-
-                    @Override
-                    public void onRefused() {
-                        Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        btn_stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                }*/
                 ServiceHelper.dissmissWindow(TrafficFloatingService.class);
             }
-        });
+
+            @Override
+            public void onRefused() {
+                Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
+            }
+        }));
+        btn_stop.setOnClickListener(v -> ServiceHelper.dissmissWindow(TrafficFloatingService.class));
         //QDTcpClient.setStateListener();
     }
 }

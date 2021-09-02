@@ -68,16 +68,13 @@ public class DesignListAdapter extends RecyclerView.Adapter<DesignListAdapter.Vi
             String string = data.get(position);
             JSONObject jsonObject = JSON.parseObject(string);
             item_name.setText((CharSequence) jsonObject.get("name"));
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // (Fragment) WebViewFragment.class.newInstance()
-                    WebViewFragment webViewFragment = new WebViewFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("URL", (String) jsonObject.get("url"));
-                    webViewFragment.setArguments(bundle);
-                    ((QDActivity)v.getContext()).startFragment(webViewFragment,R.id.container1,null);
-                }
+            itemView.setOnClickListener(v -> {
+                // (Fragment) WebViewFragment.class.newInstance()
+                WebViewFragment webViewFragment = new WebViewFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", (String) jsonObject.get("url"));
+                webViewFragment.setArguments(bundle);
+                ((QDActivity)v.getContext()).startFragment(webViewFragment,R.id.container1,null);
             });
         }
     }

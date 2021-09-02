@@ -49,7 +49,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
     String currentActivityName;
     FrameLayout linearLayout;
     RecyclerView recyclerView;
-    List<Node> mDatas = new ArrayList<Node>();
+    List<Node> mDatas = new ArrayList<>();
     SimpleTreeRecyclerAdapter mAdapter;
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
@@ -69,29 +69,23 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         button.setPadding(20, 20, 20, 20);
         button.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
         linearLayout.addView(button, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (hierarchyView.getVisibility() == View.VISIBLE) {
-                    //layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-                    showDetailInfo();
-                } else {
-                    //layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_FULLSCREEN;
-                    hideDetailInfo();
-                }
+        button.setOnClickListener(v -> {
+            if (hierarchyView.getVisibility() == View.VISIBLE) {
+                //layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                showDetailInfo();
+            } else {
+                //layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_FULLSCREEN;
+                hideDetailInfo();
             }
         });
 
-        hierarchyView.setOnNodeInfoClickListener(new HierarchyView.OnNodeInfoClickListener() {
-            @Override
-            public void onClick(HierarchyView.ViewNodeInfo nodeInfo) {
-                ViewGroup.LayoutParams layoutParams = dialogView.getLayoutParams();
-                layoutParams.width = DisplayUtil.getScreenWidth(context);
-                layoutParams.height = DisplayUtil.getScreenHeight(context);
-                dialogView.setLayoutParams(layoutParams);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    showNodeInfo(nodeInfo);
-                }
+        hierarchyView.setOnNodeInfoClickListener(nodeInfo -> {
+            ViewGroup.LayoutParams layoutParams = dialogView.getLayoutParams();
+            layoutParams.width = DisplayUtil.getScreenWidth(context);
+            layoutParams.height = DisplayUtil.getScreenHeight(context);
+            dialogView.setLayoutParams(layoutParams);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                showNodeInfo(nodeInfo);
             }
         });
 
@@ -113,29 +107,16 @@ public class HierarchyFlotingService extends QDFloatingService2 {
 
         tv_title = dialogView.findViewById(R.id.tv_title);
         TextView tv_copy = dialogView.findViewById(R.id.tv_copy);
-        tv_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardUtil.setClip(getApplicationContext(), stringMap.toString());
-                QdToast.show(getApplicationContext(), "copy success", 1000);
-            }
+        tv_copy.setOnClickListener(v -> {
+            ClipboardUtil.setClip(getApplicationContext(), stringMap.toString());
+            QdToast.show(getApplicationContext(), "copy success", 1000);
         });
         ImageView iv_colse = dialogView.findViewById(R.id.iv_colse);
-        iv_colse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogView.setVisibility(View.GONE);
-            }
-        });
+        iv_colse.setOnClickListener(v -> dialogView.setVisibility(View.GONE));
         linearLayout.addView(dialogView);
 
         ViewGroup viewGroup = dialogView.findViewById(R.id.rl_bg);
-        viewGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogView.setVisibility(View.GONE);
-            }
-        });
+        viewGroup.setOnClickListener(v -> dialogView.setVisibility(View.GONE));
 
         layoutParams = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -172,8 +153,8 @@ public class HierarchyFlotingService extends QDFloatingService2 {
 
     public void setPosition(Point point) {
         layoutParams = (WindowManager.LayoutParams) linearLayout.getLayoutParams();
-        layoutParams.x = (int) point.x;
-        layoutParams.y = (int) point.y;
+        layoutParams.x = point.x;
+        layoutParams.y = point.y;
         linearLayout.setLayoutParams(layoutParams);
     }
 

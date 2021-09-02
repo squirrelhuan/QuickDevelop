@@ -18,7 +18,7 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
         this.netStateChangedReceiver = netStateChangedReceiver;
     }
 
-    private int netState = -400;//0不可用，1可用，-400未初始化
+    private final int netState = -400;//0不可用，1可用，-400未初始化
 
     public int getNetState() {//0不可用，1可用，-400未初始化
         return netState;

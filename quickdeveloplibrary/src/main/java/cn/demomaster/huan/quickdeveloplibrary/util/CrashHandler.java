@@ -1,29 +1,28 @@
 package cn.demomaster.huan.quickdeveloplibrary.util;
 
-/**
- * Created by Stardust on 2017/2/2.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.HandlerThread;
 import android.os.Process;
+import android.util.Log;
 import android.widget.Toast;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Date;
 
-import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
-
+//系统崩溃异常捕获
 public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
+    private static final String Dir_KEY = "quick_crash_log";
     private Class<? extends Activity> mErrorReportClass;
     private Context mContext;
+    private final Thread.UncaughtExceptionHandler systemHandler;
+    private final Handler mHandler;
     private CrashDealType mCrashDealType = CrashDealType.showError;//异常结果处理方式
     private OnCrashListener mOnCrashListener;
     private static CrashHandler instance;
@@ -36,6 +35,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     private CrashHandler() {
+        systemHandler = Thread.getDefaultUncaughtExceptionHandler();
+        HandlerThread handlerThread = new HandlerThread(TAG);
+        handlerThread.start();
+        mHandler = new Handler(handlerThread.getLooper());
     }
 
     public void init(Context context, Class<? extends Activity> errorReportClass) {
@@ -47,7 +50,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 设置异常处理方式
-     *
      * @param crashDealType
      */
     public void setCrashDealType(CrashDealType crashDealType) {
@@ -56,24 +58,20 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 设置异常监听
-     *
      * @param mOnCrashListener
      */
-    public void setmOnCrashListener(OnCrashListener mOnCrashListener) {
+    public void setOnCrashListener(OnCrashListener mOnCrashListener) {
         this.mOnCrashListener = mOnCrashListener;
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
+        //保存崩溃信息
+        QDFileUtil.writeFileSdcardFile(getCrashCacheFile(),Log.getStackTraceString(ex),false);
         QDLogger.e(TAG, ex);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                dealError(thread, ex);
-                Looper.loop();
-            }
-        }).start();
+        mHandler.post(()->{
+           dealError(thread, ex);
+        });
     }
 
     /**
@@ -83,32 +81,28 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * @param ex
      */
     private void dealError(Thread thread, Throwable ex) {
+        boolean hasDeal = false;
+        String tipMessage = Log.getStackTraceString(ex);
+        Toast.makeText(mContext, tipMessage, Toast.LENGTH_LONG).show();
         try {
-            boolean isMainLooper = Looper.getMainLooper().getThread().getId() == thread.getId();
-            String tipMessage = mContext.getString(R.string.sorry_for_crash) + ex.toString();
             //处理异常，要么提示用户，要么关闭app，要么重启app
             if (mCrashDealType != null) {
                 switch (mCrashDealType) {
+                    case savelog:
                     case shutdown:
                         break;
                     case showError:
-                        if (mErrorReportClass != null && !isMainLooper) {//子线程异常，可以展示异常详情
+                        if (mErrorReportClass != null) {//子线程异常，可以展示异常详情
                             Intent intent = new Intent(mContext, mErrorReportClass);
-                            intent.putExtra("message", tipMessage);
-                            intent.putExtra("error", throwableToString(ex));
+                            intent.putExtra("error", tipMessage);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
                             }
                             mContext.startActivity(intent);
+                            hasDeal = true;
                         } else {//主线程可以错误提示,并关闭app
-                            Toast.makeText(mContext, tipMessage, Toast.LENGTH_LONG).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.exit(0);
-                                }
-                            }, 5000);
+                            //System.exit(0);
                         }
                         break;
                     case reboot:
@@ -117,6 +111,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                     case custome:
                         if (mOnCrashListener != null) {
                             mOnCrashListener.onUncaughtException(thread, ex);
+                            hasDeal = true;
                         }
                         break;
                 }
@@ -124,17 +119,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         } catch (Throwable throwable) {
             QDLogger.e("异常捕获失败>", throwable);
         }
+        if(!hasDeal) {
+            mHandler.postDelayed(() -> systemHandler.uncaughtException(thread, ex), 2000);
+        }
     }
-
-    public static String throwableToString(Throwable throwable) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace();
-        throwable.printStackTrace(pw);
-        return sw.toString();
-    }
-
     public enum CrashDealType {
+        savelog,//只保存记录
         reboot,//重启
         shutdown,//关闭
         showError,//显示错误
@@ -143,5 +133,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     public interface OnCrashListener {
         void onUncaughtException(Thread thread, Throwable ex);
+    }
+    public File getCrashCacheDir() {
+        File dir = new File(mContext.getCacheDir() + File.separator + Dir_KEY);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        return dir;
+    }
+
+    private File getCrashCacheFile() {
+        String fileName = new Date().toString();
+        return new File(getCrashCacheDir() + File.separator + fileName);
     }
 }

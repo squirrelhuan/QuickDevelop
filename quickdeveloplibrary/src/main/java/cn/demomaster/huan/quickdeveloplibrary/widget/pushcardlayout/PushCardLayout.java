@@ -270,10 +270,10 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
                 MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
                 getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
         headerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((int) headerHeight, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(headerHeight, MeasureSpec.EXACTLY));
 
         footerLayout.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((int) footerHeight, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(footerHeight, MeasureSpec.EXACTLY));
     }
 
     /**
@@ -657,16 +657,13 @@ public class PushCardLayout extends FrameLayout implements NestedScrollingParent
         int duration = 50 + 150 * ((view == headerLayout) ? (Math.abs(end - start)) / headerHeight : (Math.abs(end - start) / footerHeight));
 
         animator.setDuration(duration).start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                scrollCardLayoutTo(value);
-                if (animationListener != null) {
-                    animationListener.onRuning(isUpper, (value - start) /((start - end)*1f));
-                }
-                // postInvalidate();
+        animator.addUpdateListener(animation -> {
+            int value = (int) animation.getAnimatedValue();
+            scrollCardLayoutTo(value);
+            if (animationListener != null) {
+                animationListener.onRuning(isUpper, (value - start) /((start - end)*1f));
             }
+            // postInvalidate();
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override

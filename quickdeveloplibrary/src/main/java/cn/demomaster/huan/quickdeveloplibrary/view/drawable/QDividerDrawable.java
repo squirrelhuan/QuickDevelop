@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,9 +28,10 @@ public class QDividerDrawable extends GradientDrawable {
 
     public QDividerDrawable(DividerGravity... gravitys) {
         this.gravityList = new ArrayList<>();
-        for (DividerGravity gravity : gravitys) {
+        this.gravityList.addAll(Arrays.asList(gravitys));
+        /*for (DividerGravity gravity : gravitys) {
             this.gravityList.add(gravity);
-        }
+        }*/
         init();
     }
 

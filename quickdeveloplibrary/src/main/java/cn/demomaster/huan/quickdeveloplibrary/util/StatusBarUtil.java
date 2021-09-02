@@ -56,7 +56,7 @@ public class StatusBarUtil {
             window.setStatusBarColor(colorId);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
-            transparencyBar(new WeakReference<Activity>(activity));
+            transparencyBar(new WeakReference<>(activity));
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(colorId);
@@ -170,7 +170,7 @@ public class StatusBarUtil {
                 window.setAttributes(lp);
                 result = true;
             } catch (Exception e) {
-
+e.printStackTrace();
             }
         }
         return result;
@@ -210,7 +210,7 @@ public class StatusBarUtil {
                     }
                 }
             } catch (Exception e) {
-
+e.printStackTrace();
             }
         }
         return result;

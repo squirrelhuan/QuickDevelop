@@ -143,7 +143,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
 
                         Method m = null;
                         try {
-                            m = (Method) parentElement.getClass().getMethod("get" + getMethodName(field.getName()));
+                            m = parentElement.getClass().getMethod("get" + getMethodName(field.getName()));
                             List list = (List) m.invoke(parentElement);
                             if (list == null) list = new ArrayList();
                             newElement = genericClazz.newInstance();
@@ -206,7 +206,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
 
                         Method m = null;
                         try {
-                            m = (Method) parentElement.getClass().getMethod("get" + getMethodName(field.getName()));
+                            m = parentElement.getClass().getMethod("get" + getMethodName(field.getName()));
                             List list = (List) m.invoke(parentElement);
                             if (list == null) list = new ArrayList();
                             newElement = genericClazz.newInstance();

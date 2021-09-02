@@ -74,7 +74,7 @@ public class QDMainFragmentActivity extends QDActivity {
 */
         //QdToast.show(mContext, Build.BRAND.toLowerCase());
         //DebugFloatingService.showConsole(mContext);
-        PermissionHelper.getInstance().requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
+        PermissionHelper.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
         QDLogger.i("AppName:"+getAppName(this));
     }
 

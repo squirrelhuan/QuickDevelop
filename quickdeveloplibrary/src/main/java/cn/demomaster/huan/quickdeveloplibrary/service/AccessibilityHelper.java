@@ -24,7 +24,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class AccessibilityHelper {
     public static final String TAG = AccessibilityHelper.class.getSimpleName();
-    static Map<Integer, QDAccessibilityService.OnAccessibilityListener> listenerMap = new HashMap<>();
+    final static Map<Integer, QDAccessibilityService.OnAccessibilityListener> listenerMap = new HashMap<>();
 
     public static void registerAccessibilityEventListener(int code, QDAccessibilityService.OnAccessibilityListener listener) {
         listenerMap.put(code, listener);
@@ -69,7 +69,7 @@ public class AccessibilityHelper {
         return qdAccessibilityService;
     }
 
-    public static Map<String, String> packageMap = new HashMap<>();
+    public final static Map<String, String> packageMap = new HashMap<>();
 
     static void addPackagesToMap(String[] packages) {
         if (packages != null) {

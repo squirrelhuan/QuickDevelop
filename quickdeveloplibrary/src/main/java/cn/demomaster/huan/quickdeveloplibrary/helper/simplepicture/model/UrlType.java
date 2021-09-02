@@ -24,9 +24,9 @@ public enum UrlType {
     public static UrlType getEnum(int value) {
         UrlType resultEnum = null;
         UrlType[] enumArray = UrlType.values();
-        for (int i = 0; i < enumArray.length; i++) {
-            if (enumArray[i].value() == value) {
-                resultEnum = enumArray[i];
+        for (UrlType urlType : enumArray) {
+            if (urlType.value() == value) {
+                resultEnum = urlType;
                 break;
             }
         }

@@ -50,7 +50,7 @@ public class QMUIDrawableHelper {
     public static Bitmap createBitmapFromView(View view, float scale) {
         if (view instanceof ImageView) {
             Drawable drawable = ((ImageView) view).getDrawable();
-            if (drawable != null && drawable instanceof BitmapDrawable) {
+            if (drawable instanceof BitmapDrawable) {
                 return ((BitmapDrawable) drawable).getBitmap();
             }
         }

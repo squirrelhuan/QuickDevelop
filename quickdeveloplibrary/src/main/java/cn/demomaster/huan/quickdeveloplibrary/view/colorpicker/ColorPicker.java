@@ -313,10 +313,10 @@ public class ColorPicker extends View {
         int centerX = width / 2;
         int centerY = height / 2;
 
-        innerPadding = (int) (paramInnerPadding * width / 100);
-        outerPadding = (int) (paramOuterPadding * width / 100);
-        arrowPointerSize = (int) (paramArrowPointerSize * width / 100);
-        valueSliderWidth = (int) (paramValueSliderWidth * width / 100);
+        innerPadding = paramInnerPadding * width / 100;
+        outerPadding = paramOuterPadding * width / 100;
+        arrowPointerSize = paramArrowPointerSize * width / 100;
+        valueSliderWidth = paramValueSliderWidth * width / 100;
 
         outerWheelRadius = width / 2 - outerPadding - arrowPointerSize;
         innerWheelRadius = outerWheelRadius - valueSliderWidth;
@@ -390,7 +390,7 @@ public class ColorPicker extends View {
                     invalidate();
                 } else if (x >= alphaSliderRect.left && x <= (alphaSliderRect.left + alphaSliderRect.width()) && y > alphaSliderRect.top && y < alphaSliderRect.top + alphaSliderRect.height()) {//设置透明度
                     alphaValue = (x - alphaSliderRect.left) / alphaSliderRect.width();
-                    colorHSV[2] = (float) Math.max(0, Math.min(1, alphaValue));
+                    colorHSV[2] = Math.max(0, Math.min(1, alphaValue));
                     invalidate();
                 }
                 if(onSelectChangeListener!=null){

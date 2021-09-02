@@ -29,9 +29,9 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
 // ① 创建Adapter
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
     private List<Image> mImages;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     //保存选中的图片
     private LinkedHashMap<Integer, Image> map;
@@ -108,44 +108,35 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
                     holder.iv_delete.setVisibility(View.GONE);
                 }
                 holder.iv_delete.setTag(position);
-                holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onItemClickListener != null) {
-                            int p = holder.getAdapterPosition();
-                            onItemClickListener.onItemDelete(view, p, mImages.get(p));
-                        }
+                holder.iv_delete.setOnClickListener(view -> {
+                    if (onItemClickListener != null) {
+                        int p = holder.getAdapterPosition();
+                        onItemClickListener.onItemDelete(view, p, mImages.get(p));
                     }
                 });
                 holder.itemView.setTag(position);
                 //点击选中/取消选中图片
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        int p = holder.getAdapterPosition();
-                        setModelType(MODEL.edit);
-                        Vibrator vibrator = (Vibrator) mContext.getSystemService(mContext.VIBRATOR_SERVICE);
-                        long[] patter = {100, 50, 50};
-                        vibrator.vibrate(patter, -1);
-                        return true;
-                    }
+                holder.itemView.setOnLongClickListener(view -> {
+                    int p = holder.getAdapterPosition();
+                    setModelType(MODEL.edit);
+                    Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                    long[] patter = {100, 50, 50};
+                    vibrator.vibrate(patter, -1);
+                    return true;
                 });
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((View) v.getParent()).findViewById(R.id.iv_delete).setVisibility(View.GONE);
-                        int p = holder.getAdapterPosition();
-                        setModelType(MODEL.normal);
-                        if (isViewImage) {
-                            if (onItemClickListener != null) {
-                                onItemClickListener.onItemClick(v, p, mImages.get(p));
-                            }
+                holder.itemView.setOnClickListener(v -> {
+                    ((View) v.getParent()).findViewById(R.id.iv_delete).setVisibility(View.GONE);
+                    int p = holder.getAdapterPosition();
+                    setModelType(MODEL.normal);
+                    if (isViewImage) {
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemClick(v, p, mImages.get(p));
                         }
                     }
                 });
-                ((ViewHolder) holder).rmovePadding();
+                holder.rmovePadding();
             } else {
-                ((ViewHolder) holder).setAddButton(addButtonPadding);
+                holder.setAddButton(addButtonPadding);
             }
         }
     }
@@ -204,13 +195,10 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         private void setAddButton(int p) {
             iv_picture.setPadding(p, p, p, p);
             iv_picture.setImageResource(R.drawable.ic_add_black_24dp);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setModelType(MODEL.normal);
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onLastClick(view);
-                    }
+            itemView.setOnClickListener(view -> {
+                setModelType(MODEL.normal);
+                if (onItemClickListener != null) {
+                    onItemClickListener.onLastClick(view);
                 }
             });
         }

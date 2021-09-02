@@ -121,6 +121,7 @@ public class QDFrameLayout extends android.widget.FrameLayout {
 
                     switch (verticalGravity) {
                         case Gravity.TOP:
+                        default:
                             childTop = parentTop + lp.topMargin;
                             break;
                         case Gravity.CENTER_VERTICAL:
@@ -130,8 +131,6 @@ public class QDFrameLayout extends android.widget.FrameLayout {
                         case Gravity.BOTTOM:
                             childTop = parentBottom - height - lp.bottomMargin;
                             break;
-                        default:
-                            childTop = parentTop + lp.topMargin;
                     }
 
                     child.layout(childLeft, childTop, childLeft + width, childTop + height);

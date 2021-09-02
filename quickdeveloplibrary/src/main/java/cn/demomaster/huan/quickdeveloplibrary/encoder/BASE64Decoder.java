@@ -154,6 +154,5 @@ package cn.demomaster.huan.quickdeveloplibrary.encoder;
          outStream.write( (byte) (((c << 6) & 0xc0) | (d  & 0x3f)) );
        break;
  }
-      return;
    }
  }

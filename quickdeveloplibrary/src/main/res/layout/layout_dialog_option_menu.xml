@@ -12,9 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
-        android:background="@drawable/listview_option_menu">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+        android:background="@drawable/listview_option_menu"/>
 
 </LinearLayout>

@@ -122,35 +122,32 @@ public class AnimationUtil {
             }
         });*/
         //targetView.setOnClickListener(listener);
-        targetView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                float x = motionEvent.getX();
-                float y = motionEvent.getY();
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下
-                    animator.start();
-                    //animatorUpdateListener.onTouchDown();
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {//移动
-                    if (motionEvent.getX() < 0 || (motionEvent.getX() > targetView.getWidth()) || motionEvent.getY() < 0 || (motionEvent.getY() > targetView.getHeight())) {
-                        animator.reverse();
+        targetView.setOnTouchListener((view, motionEvent) -> {
+            float x = motionEvent.getX();
+            float y = motionEvent.getY();
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下
+                animator.start();
+                //animatorUpdateListener.onTouchDown();
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {//移动
+                if (motionEvent.getX() < 0 || (motionEvent.getX() > targetView.getWidth()) || motionEvent.getY() < 0 || (motionEvent.getY() > targetView.getHeight())) {
+                    animator.reverse();
+                    return false;
+                }
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) { //抬起
+                if (motionEvent.getX() > 0 && motionEvent.getX() < targetView.getWidth()) {
+                    //pointF.x = location[0]+x;
+                    //pointF.y = location[1]+y;
+                    if (y > 0 && motionEvent.getY() < targetView.getHeight()) {
+                        animatorUpdateListener.doClick();
                         return false;
                     }
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) { //抬起
-                    if (motionEvent.getX() > 0 && motionEvent.getX() < targetView.getWidth()) {
-                        //pointF.x = location[0]+x;
-                        //pointF.y = location[1]+y;
-                        if (y > 0 && motionEvent.getY() < targetView.getHeight()) {
-                            animatorUpdateListener.doClick();
-                            return false;
-                        }
-                    }
-                    animator.reverse();
-                    QDLogger.println("CGQ", "点击动画 无效点击");
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    animator.reverse();
                 }
-                return true;
+                animator.reverse();
+                QDLogger.println("CGQ", "点击动画 无效点击");
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                animator.reverse();
             }
+            return true;
         });
         return animator;
     }
@@ -266,20 +263,15 @@ public class AnimationUtil {
          */
         private void triggerClick() {
             canDoClickEvent = false;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    valueAnimator.reverse();
-                }
-            }, 0);
+            new Handler().postDelayed(() -> valueAnimator.reverse(), 0);
             if (onClickListener != null) {
                 View.OnClickListener ref = onClickListener;
                 try {
                     Method method = ref.getClass().getMethod("onClick",
-                            new Class[]{View.class});
+                            View.class);
                     QDLogger.println("反射方法:" + method.getName());
                     method.invoke(onClickListener,
-                            new Object[]{mView});
+                            mView);
                 } catch (Exception e) {
                     QDLogger.e(e);
                 }

@@ -309,7 +309,8 @@ public class QDRuntimeHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line + "\n\r");
+                stringBuffer.append(line)
+                        .append("\n\r");
             }
             QDLogger.e(Tag, "getResultString end :" + new String(stringBuffer));
         } catch (IOException e) {

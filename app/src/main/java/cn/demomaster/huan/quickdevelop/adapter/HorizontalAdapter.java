@@ -59,7 +59,7 @@ public class HorizontalAdapter implements AutoCenterHorizontalScrollView.HAdapte
 
         public HViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.tv_tab_name);
+            textView = itemView.findViewById(R.id.tv_tab_name);
         }
     }
 }

@@ -33,7 +33,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
 @ActivityPager(name = "多语言", preViewClass = TextView.class, resType = ResType.Custome)
 public class LanguageFragment extends BaseFragment {
 
-
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;
 
@@ -52,30 +51,20 @@ public class LanguageFragment extends BaseFragment {
         final String[] locals = {"zh_CN", "en", "ja", "de"};
         //final String[] locals = {Locale.CHINA.getLanguage(),Locale.ENGLISH.getLanguage(),Locale.JAPAN.getLanguage(), Locale.KOREA.getLanguage()};
 
-        btn_error_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setIcon(R.mipmap.ic_launcher);
-                builder.setTitle(R.string.select_language);
-                builder.setItems(cities, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setLanguageLocalForActivity(mContext, locals[which]);
-                        //changeAppLanguage(mContext);
-                        EventBus.getDefault().post(EVENT_REFRESH_LANGUAGE);
-                    }
-                });
-                builder.show();
-            }
+        btn_error_01.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setTitle(R.string.select_language);
+            builder.setItems(cities, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setLanguageLocalForActivity(mContext, locals[which]);
+                    //changeAppLanguage(mContext);
+                    EventBus.getDefault().post(EVENT_REFRESH_LANGUAGE);
+                }
+            });
+            builder.show();
         });
     }
 
-
-  /*  public void initActionBarLayout(ActionBarLayout2 actionBarLayoutOld) {
-        int i = (int) (Math.random() * 10 % 4);
-        actionBarLayoutOld.setTitle("audio play");
-        actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
-
-    }*/
 }

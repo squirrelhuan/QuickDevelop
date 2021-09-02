@@ -43,7 +43,7 @@ public class ScrollableTabView extends HorizontalScrollView implements
 
     private final LinearLayout mContainer;
 
-    private final ArrayList<View> mTabs = new ArrayList<View>();
+    private final ArrayList<View> mTabs = new ArrayList<>();
 
     public ScrollableTabView(Context context) {
         this(context, null);
@@ -126,14 +126,11 @@ public class ScrollableTabView extends HorizontalScrollView implements
                 }
                 tab.setFocusable(true);
                 mTabs.add(tab);
-                tab.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mPager.getCurrentItem() == index) {
-                            selectTab(index);
-                        } else {
-                            mPager.setCurrentItem(index, true);
-                        }
+                tab.setOnClickListener(v -> {
+                    if (mPager.getCurrentItem() == index) {
+                        selectTab(index);
+                    } else {
+                        mPager.setCurrentItem(index, true);
                     }
                 });
             }
@@ -151,14 +148,11 @@ public class ScrollableTabView extends HorizontalScrollView implements
                 }
                 tab.setFocusable(true);
                 mTabs.add(tab);
-                tab.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mPager2.getCurrentItem() == index) {
-                            selectTab(index);
-                        } else {
-                            mPager2.setCurrentItem(index, true);
-                        }
+                tab.setOnClickListener(v -> {
+                    if (mPager2.getCurrentItem() == index) {
+                        selectTab(index);
+                    } else {
+                        mPager2.setCurrentItem(index, true);
                     }
                 });
             }

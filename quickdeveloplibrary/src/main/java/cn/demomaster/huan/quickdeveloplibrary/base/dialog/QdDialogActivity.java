@@ -34,14 +34,9 @@ public abstract class QdDialogActivity extends Activity {
         frameLayout = new FrameLayout(this);
         generateView(getLayoutInflater(), frameLayout);
         setContentView(frameLayout);
-        StatusBarUtil.transparencyBar(new WeakReference<Activity>(this));
+        StatusBarUtil.transparencyBar(new WeakReference<>(this));
         getWindow().setBackgroundDrawable(new ColorDrawable(0x55000000));
-        frameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        frameLayout.setOnClickListener(v -> finish());
     }
 
     public abstract void generateView(LayoutInflater layoutInflater, ViewGroup viewParent);

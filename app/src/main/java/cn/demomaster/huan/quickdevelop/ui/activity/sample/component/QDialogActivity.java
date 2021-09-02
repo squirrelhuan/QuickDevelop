@@ -1,16 +1,12 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.component;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,8 +23,6 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
@@ -37,7 +31,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
 
 @ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Custome)
 public class QDialogActivity extends BaseActivity {
-
     private int backgroundRadio = 20;
     private ListView mListView;
 
@@ -46,12 +39,9 @@ public class QDialogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdialog);
 
-        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //getOptionsMenu().show();
-                showSheetMenu();
-            }
+        getActionBarTool().setRightOnClickListener(v -> {
+            //getOptionsMenu().show();
+            showSheetMenu();
         });
 
         mListView = findViewById(R.id.listview);
@@ -70,61 +60,97 @@ public class QDialogActivity extends BaseActivity {
                 "多选菜单类型对话框",
                 "多选菜单类型对话框(item 数量很多)",
                 "带输入框的对话框",
-                "高度适应键盘升降的对话框"
+                "高度适应键盘升降的对话框",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3",
+                "1",
+                "2",
+                "3"
         };
         /*List<String> data = new ArrayList<>();
         Collections.addAll(data, listItems);*/
         mListView.setAdapter(new ArrayAdapter<>(mContext, R.layout.simple_list_item, listItems));
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0://简单提示框
-                        showMessage();
-                        break;
-                    case 1://简单提示框(带标题)
-                        showMessage1();
-                        break;
-                    case 2:
-                        showMessageWithButton(Gravity.RIGHT);
-                        break;
-                    case 3:
-                        showMessageWithButton(Gravity.CENTER);
-                        break;
-                    case 4:
-                        showMessageWithButton(Gravity.LEFT);
-                        break;
-                    case 5:
-                        showMessageWithButton2(Gravity.RIGHT);
-                        break;
-                    case 6:
-                        showMessageWithButton2(Gravity.CENTER);
-                        break;
-                    case 7:
-                        showMessageWithButton2(Gravity.LEFT);
-                        break;
-                    case 8://菜单类型对话框
-                        showMenuDialog();
-                        break;
-                    case 9://带 Checkbox 的消息确认框
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0://简单提示框
+                    showMessage();
+                    break;
+                case 1://简单提示框(带标题)
+                    showMessage1();
+                    break;
+                case 2:
+                    showMessageWithButton(Gravity.RIGHT);
+                    break;
+                case 3:
+                    showMessageWithButton(Gravity.CENTER);
+                    break;
+                case 4:
+                    showMessageWithButton(Gravity.LEFT);
+                    break;
+                case 5:
+                    showMessageWithButton2(Gravity.RIGHT);
+                    break;
+                case 6:
+                    showMessageWithButton2(Gravity.CENTER);
+                    break;
+                case 7:
+                    showMessageWithButton2(Gravity.LEFT);
+                    break;
+                case 8://菜单类型对话框
+                    showMenuDialog();
+                    break;
+                case 9://带 Checkbox 的消息确认框
 
-                        break;
-                    case 10://单选菜单类型对话框
-                        showMulMenuDialog1();
-                        break;
-                    case 11://多选菜单类型对话框
-                        showMulMenuDialog();
-                        break;
-                    case 12://多选菜单类型对话框(item 数量很多)
+                    break;
+                case 10://单选菜单类型对话框
+                    showMulMenuDialog1();
+                    break;
+                case 11://多选菜单类型对话框
+                    showMulMenuDialog();
+                    break;
+                case 12://多选菜单类型对话框(item 数量很多)
 
-                        break;
-                    case 13://带输入框的对话框
+                    break;
+                case 13://带输入框的对话框
 
-                        break;
-                    case 14://高度适应键盘升降的对话框
-                        showInputDialog();
-                        break;
-                }
+                    break;
+                case 14://高度适应键盘升降的对话框
+                    showInputDialog();
+                    break;
             }
         });
         initOptionsMenu();
@@ -136,12 +162,9 @@ public class QDialogActivity extends BaseActivity {
                 .setHint("请输入密码")
                 .setBackgroundRadius(backgroundRadio)
                 .setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
-                .addAction("连接", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        Toast.makeText(mContext, "input = " + tag, Toast.LENGTH_SHORT).show();
-                        //连接返回editview的value
-                    }
+                .addAction("连接", (dialog, view, tag) -> {
+                    Toast.makeText(mContext, "input = " + tag, Toast.LENGTH_SHORT).show();
+                    //连接返回editview的value
                 }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
     }
 
@@ -159,30 +182,27 @@ public class QDialogActivity extends BaseActivity {
         getOptionsMenu().setAlpha(.86f);
         getOptionsMenu().setMargin(2);
         getOptionsMenu().setAnchor(getActionBarTool().getRightView());
-        getOptionsMenu().setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
-            @Override
-            public void onItemClick(int position, View view) {
-                switch (position) {
-                    case 0:
-                        showSheetMenu();
-                        break;
-                    case 1:
-                        getPhotoHelper().selectPhotoFromGalleryAndCrop(null,new PhotoHelper.OnTakePhotoResult() {
-                            @Override
-                            public void onSuccess(Intent data, String path) {
-                                /*setImageToView(data);*/
-                            }
+        getOptionsMenu().setOnMenuItemClicked((position, view) -> {
+            switch (position) {
+                case 0:
+                    showSheetMenu();
+                    break;
+                case 1:
+                    getPhotoHelper().selectPhotoFromGalleryAndCrop(null,new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            /*setImageToView(data);*/
+                        }
 
-                            @Override
-                            public void onFailure(String error) {
+                        @Override
+                        public void onFailure(String error) {
 
-                            }
-                        });
-                        break;
-                    case 2:
-                        ScreenShotUitl.shot((Activity) mContext);
-                        break;
-                }
+                        }
+                    });
+                    break;
+                case 2:
+                    //ScreenShotUitl.shot((Activity) mContext);
+                    break;
             }
         });
     }
@@ -240,12 +260,7 @@ public class QDialogActivity extends BaseActivity {
                 QDLogger.println("setLayoutAnimationListener onAnimationRepeat");
             }
         });
-        qdDialog.getContentView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                QDLogger.println("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom);
-            }
-        });
+        qdDialog.getContentView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> QDLogger.println("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom));
 
         glassUtil.setTargetView(qdDialog.getContentLinearView());
         glassUtil.setBackgroundView(mListView);
@@ -259,35 +274,24 @@ public class QDialogActivity extends BaseActivity {
         new QDDialog.Builder(mContext).setTitle("标题")
                 .setMessage("确定要发送吗？")
                 .setBackgroundRadius(backgroundRadio)
-                .addAction("确定", new OnClickActionListener() {
-                    @Override
-                    public void onClick(Dialog dialog, View view, Object tag) {
-                        dialog.dismiss();
-                    }
-                }).addAction("取消").setGravity_foot(gravity).create().show();
+                .addAction("确定", (dialog, view, tag) -> dialog.dismiss()).addAction("取消").setGravity_foot(gravity).create().show();
     }
 
     private void showMenuDialog() {
         String[] menus = {"item1", "item2", "item3"};
         new QDSheetDialog.MenuBuilder(mContext)
                 .setData(menus)
-                .setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                PopToastUtil.showToast(mContext, data.get(position));
-            }
-        }).create().show();
+                .setOnDialogActionListener((dialog, position, data) -> {
+                    dialog.dismiss();
+                    PopToastUtil.showToast(mContext, data.get(position));
+                }).create().show();
     }
 
     private void showMulMenuDialog1() {
         String[] menus = {"item1", "item2", "234"};
-        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                PopToastUtil.showToast(mContext, data.get(position));
-            }
+        new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
+            dialog.dismiss();
+            PopToastUtil.showToast(mContext, data.get(position));
         }).create().show();
     }
 
@@ -295,12 +299,9 @@ public class QDialogActivity extends BaseActivity {
         String[] menus = {"item1", "item2", "234", "6565", "656456", "56656", "8888", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "item3", "item2", "234", "6565", "656456", "56656", "8888", "item2",};
         new QDMulSheetDialog.MenuBuilder(mContext)
                 .setData(menus)
-                .setOnDialogActionListener(new QDMulSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDMulSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                PopToastUtil.showToast(mContext, data.get(position));
-            }
-        }).create().show();
+                .setOnDialogActionListener((dialog, position, data) -> {
+                    dialog.dismiss();
+                    PopToastUtil.showToast(mContext, data.get(position));
+                }).create().show();
     }
 }

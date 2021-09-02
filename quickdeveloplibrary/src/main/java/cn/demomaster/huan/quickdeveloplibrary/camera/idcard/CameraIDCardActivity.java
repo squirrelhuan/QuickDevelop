@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,15 +72,10 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         //getActionBarTool().setStateBarColorAuto(true);
         setTitle("身份证拍照");
         initOptionsMenu();
-        getActionBarTool().setRightOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                optionsMenu.show();
-            }
-        });
+        getActionBarTool().setRightOnClickListener(v -> optionsMenu.show());
         getActionBarTool().getRightView().setImageResource(R.drawable.ic_more_vert_black_24dp);
 
-        customCameraPreview = (CustomCameraPreview) findViewById(R.id.camera_surface);
+        customCameraPreview = findViewById(R.id.camera_surface);
         camera_crop_view = findViewById(R.id.camera_crop_view);
         optionView = findViewById(R.id.camera_option);
 
@@ -111,18 +105,8 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
                 break;
         }
 
-        customCameraPreview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customCameraPreview.focus();
-            }
-        });
-        findViewById(R.id.camera_take).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePhoto();
-            }
-        });
+        customCameraPreview.setOnClickListener(v -> customCameraPreview.focus());
+        findViewById(R.id.camera_take).setOnClickListener(v -> takePhoto());
     }
 
     private void initOptionsMenu() {
@@ -155,41 +139,38 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         }
         optionsMenu.setMenus(menus);
         optionsMenu.setAnchor(getActionBarTool().getRightView());
-        optionsMenu.setOnMenuItemClicked(new OptionsMenu.OnMenuItemClicked() {
-            @Override
-            public void onItemClick(int position, View view) {
-                optionsMenu.dismiss();
-                //选取图片并截取
-                /*photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
-                    @Override
-                    public void onSuccess(Intent data, String path) {
-                        setImageToView(data);
-                    }
+        optionsMenu.setOnMenuItemClicked((position, view) -> {
+            optionsMenu.dismiss();
+            //选取图片并截取
+            /*photoHelper.selectPhotoFromGalleryAndCrop(new PhotoHelper.OnTakePhotoResult(){
+                @Override
+                public void onSuccess(Intent data, String path) {
+                    setImageToView(data);
+                }
 
-                    @Override
-                    public void onFailure(String error) {
+                @Override
+                public void onFailure(String error) {
 
-                    }
-                });*/
-                //只选取图片不截取
-                getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
-                    @Override
-                    public void onSuccess(Intent data, String path) {
-                        String relPath = QDFileUtil.getRealPathFromURI(mContext, data.getData());
-                        //setImageToView(data);
-                        //拍照完成，返回对应图片路径
-                        Intent intent = new Intent();
-                        intent.putExtra(PHOTOHELPER_RESULT_PATH, relPath);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+                }
+            });*/
+            //只选取图片不截取
+            getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+                @Override
+                public void onSuccess(Intent data, String path) {
+                    String relPath = QDFileUtil.getRealPathFromURI(mContext, data.getData());
+                    //setImageToView(data);
+                    //拍照完成，返回对应图片路径
+                    Intent intent = new Intent();
+                    intent.putExtra(PHOTOHELPER_RESULT_PATH, relPath);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
 
-                    @Override
-                    public void onFailure(String error) {
+                @Override
+                public void onFailure(String error) {
 
-                    }
-                });
-            }
+                }
+            });
         });
     }
 
@@ -200,49 +181,46 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     private void takePhoto() {
         optionView.setVisibility(View.GONE);
         customCameraPreview.setEnabled(false);
-        customCameraPreview.takePhoto(new Camera.PictureCallback() {
-            public void onPictureTaken(final byte[] data, final Camera camera) {
-                //子线程处理图片，防止ANR
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = null;
-                        if (data != null) {
-                            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            camera.stopPreview();
-                        }
-                        if (bitmap != null) {
-                            //计算裁剪位置
-                            float left = camera_crop_view.getPercentage_Left();
-                            float top = camera_crop_view.getPercentage_top();
-                            float width = camera_crop_view.getPercentage_width();
-                            float height = camera_crop_view.getPercentage_height();
-
-                            //裁剪及保存到文件
-                            Bitmap resBitmap = Bitmap.createBitmap(bitmap,
-                                    (int) (left * bitmap.getWidth()),
-                                    (int) (top * bitmap.getHeight()),
-                                    (int) (width * bitmap.getWidth()),
-                                    (int) (height * bitmap.getHeight()));
-
-                            String path = QDFileUtil.saveBitmap(resBitmap);
-
-                            if (!bitmap.isRecycled()) {
-                                bitmap.recycle();
-                            }
-                            if (!resBitmap.isRecycled()) {
-                                resBitmap.recycle();
-                            }
-                            //拍照完成，返回对应图片路径
-                            Intent intent = new Intent();
-                            intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                        return;
+        customCameraPreview.takePhoto((data, camera) -> {
+            //子线程处理图片，防止ANR
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = null;
+                    if (data != null) {
+                        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        camera.stopPreview();
                     }
-                }).start();
-            }
+                    if (bitmap != null) {
+                        //计算裁剪位置
+                        float left = camera_crop_view.getPercentage_Left();
+                        float top = camera_crop_view.getPercentage_top();
+                        float width = camera_crop_view.getPercentage_width();
+                        float height = camera_crop_view.getPercentage_height();
+
+                        //裁剪及保存到文件
+                        Bitmap resBitmap = Bitmap.createBitmap(bitmap,
+                                (int) (left * bitmap.getWidth()),
+                                (int) (top * bitmap.getHeight()),
+                                (int) (width * bitmap.getWidth()),
+                                (int) (height * bitmap.getHeight()));
+
+                        String path = QDFileUtil.saveBitmap(mContext,resBitmap);
+
+                        if (!bitmap.isRecycled()) {
+                            bitmap.recycle();
+                        }
+                        if (!resBitmap.isRecycled()) {
+                            resBitmap.recycle();
+                        }
+                        //拍照完成，返回对应图片路径
+                        Intent intent = new Intent();
+                        intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                }
+            }).start();
         });
     }
 
@@ -303,21 +281,17 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
             final Bitmap bitmap = extras.getParcelable("data");
             //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
             //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (bitmap != null) {
-                        String path = QDFileUtil.saveBitmap(bitmap);
-                        if (!bitmap.isRecycled()) {
-                            bitmap.recycle();
-                        }
-                        //拍照完成，返回对应图片路径
-                        Intent intent = new Intent();
-                        intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
-                        setResult(RESULT_OK, intent);
-                        finish();
+            new Thread(() -> {
+                if (bitmap != null) {
+                    String path = QDFileUtil.saveBitmap(mContext,bitmap);
+                    if (!bitmap.isRecycled()) {
+                        bitmap.recycle();
                     }
-                    return;
+                    //拍照完成，返回对应图片路径
+                    Intent intent = new Intent();
+                    intent.putExtra(PHOTOHELPER_RESULT_PATH, path);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             }).start();
         }

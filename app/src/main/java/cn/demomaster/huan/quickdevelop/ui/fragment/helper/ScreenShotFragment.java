@@ -2,12 +2,17 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -35,6 +40,9 @@ public class ScreenShotFragment extends BaseFragment {
     //Components
     @BindView(R.id.btn_shot)
     QDButton btn_shot;
+    @BindView(R.id.btn_share_shot)
+    QDButton btn_share_shot;
+
     @BindView(R.id.iv_prev)
     ImageView iv_prev;
 
@@ -59,24 +67,23 @@ public class ScreenShotFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
-        btn_shot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bitmap = ScreenShotUitl.shotActivity((Activity) v.getContext(),false);
-                QDFileUtil.saveBitmap(bitmap);
-                iv_prev.setImageBitmap(bitmap);
-                tv_size.setText("原图大小:" + QDBitmapUtil.getBitmapSize(bitmap) / 1024 / 8 + "kb");
-            }
+        btn_shot.setOnClickListener(v -> {
+            bitmap = ScreenShotUitl.shotActivity((Activity) v.getContext(),false);
+            QDFileUtil.saveBitmap(getContext(),bitmap);
+            iv_prev.setImageBitmap(bitmap);
+            tv_size.setText("原图大小:" + QDBitmapUtil.getBitmapSize(bitmap) / 1024 / 8 + "kb");
         });
         sb_scale.setMax(200);
         sb_scale.setProgress(100);
         sb_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Bitmap bitmap1 = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() * (progress) / 100f, bitmap.getHeight() * (progress) / 100f);
-                iv_prev.setImageBitmap(bitmap1);
-                tv_scale.setText("尺寸压缩(" + (progress) / 100f + ")");
-                tv_size2.setText("压缩后大小:" + QDBitmapUtil.getBitmapSize(bitmap1) / 1024 / 8 + "kb");
+                if(bitmap!=null) {
+                    Bitmap bitmap1 = QDBitmapUtil.zoomImage(bitmap, bitmap.getWidth() * (progress) / 100f, bitmap.getHeight() * (progress) / 100f);
+                    iv_prev.setImageBitmap(bitmap1);
+                    tv_scale.setText("尺寸压缩(" + (progress) / 100f + ")");
+                    tv_size2.setText("压缩后大小:" + QDBitmapUtil.getBitmapSize(bitmap1) / 1024 / 8 + "kb");
+                }
             }
 
             @Override
@@ -89,6 +96,37 @@ public class ScreenShotFragment extends BaseFragment {
 
             }
         });
+        btn_share_shot.setOnClickListener(v -> showShot(mContext,  v));
+
     }
 
+    public void showShot(final Activity context, View anchor){
+            // 用于PopupWindow的View
+            View contentView = LayoutInflater.from(context).inflate(R.layout.layout_screen_shot, null, false);
+
+            PopupWindow popupWindow = new PopupWindow();
+            ((ImageView) contentView.findViewById(R.id.iv_content)).setImageBitmap(ScreenShotUitl.shotActivity(context,false));
+            popupWindow.setContentView(contentView);
+            popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            popupWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+            popupWindow.setFocusable(true);
+            popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, 0, 0);
+            ImageView iv_code = contentView.findViewById(R.id.iv_code);
+            Bitmap bitmap_app = BitmapFactory.decodeResource(context.getResources(), cn.demomaster.huan.quickdeveloplibrary.R.mipmap.quickdevelop_ic_launcher);
+            String codeStr = "http://weixin.qq.com/r/E0M1LcDE6Z2WrYRO9xYB";
+            final View ll_content = contentView.findViewById(cn.demomaster.huan.quickdeveloplibrary.R.id.ll_content);
+            ll_content.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                //Uri uri = saveImage(context,getCacheBitmapFromView(ll_content));
+                //shareImg(context, "口袋基因", "口袋基因", "欢迎来到基因世界", uri);
+            });
+
+            TextView tv_share = contentView.findViewById(R.id.tv_share);
+            tv_share.setOnClickListener(view -> {
+                Uri uri = ScreenShotUitl.saveImage(context, ScreenShotUitl.getCacheBitmapFromView(ll_content));
+                ScreenShotUitl.shareImg(context, "口袋基因", "口袋基因", "欢迎来到基因世界", uri);
+            });
+
+            RelativeLayout rl_root = contentView.findViewById(R.id.rl_root);
+            rl_root.setOnClickListener(view -> popupWindow.dismiss());
+    }
 }

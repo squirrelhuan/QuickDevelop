@@ -34,12 +34,7 @@ public class PopUpFragment extends BaseFragment {
 
     public void initView(View rootView) {
         QDButton btn_01 = rootView.findViewById(R.id.btn_01);
-        btn_01.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPop();
-            }
-        });
+        btn_01.setOnClickListener(view -> showPop());
     }
 
     private QDPopup pop = null;

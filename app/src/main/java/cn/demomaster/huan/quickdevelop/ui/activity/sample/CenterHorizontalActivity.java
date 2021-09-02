@@ -45,21 +45,17 @@ public class CenterHorizontalActivity extends BaseActivity {
         //测试用的随机字符串集合
         List<String> names =new ArrayList<>();
         for(int i=0;i<50;i++){
-            String a = ""+i;
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(""+i);
             for(int j=0;j<i%4;j++){
-                a=a+"A";
+                stringBuilder.append("A");
             }
-            names.add(a);
+            names.add(stringBuilder.toString());
         }
         //adapter去处理itemView
         HorizontalAdapter hadapter = new HorizontalAdapter(mContext,names);
         autoCenterHorizontalScrollView.setAdapter(hadapter);
-        autoCenterHorizontalScrollView.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
-            @Override
-            public void onSelectChange(int position) {
-                ((TextView) findViewById(R.id.tv_index)).setText("当前"+position);
-            }
-        });
+        autoCenterHorizontalScrollView.setOnSelectChangeListener(position -> ((TextView) findViewById(R.id.tv_index)).setText("当前"+position));
         autoCenterHorizontalScrollView.setCurrentIndex(39);
 
 
@@ -68,21 +64,17 @@ public class CenterHorizontalActivity extends BaseActivity {
         //测试用的随机字符串集合
         List<String> names2 =new ArrayList<>();
         for(int i=0;i<50;i++){
-            String a = ""+i;
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(""+i);
             for(int j=0;j<i%4;j++){
-                a=a+"A";
+                stringBuilder.append("A");
             }
-            names2.add(a);
+            names2.add(stringBuilder.toString());
         }
         //adapter去处理itemView
         HorizontalAdapter hadapter2 = new HorizontalAdapter(mContext,names2);
         achs_test2.setAdapter(hadapter2);
-        achs_test2.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
-            @Override
-            public void onSelectChange(int position) {
-                ((TextView) findViewById(R.id.tv_index2)).setText("当前"+position);
-            }
-        });
+        achs_test2.setOnSelectChangeListener(position -> ((TextView) findViewById(R.id.tv_index2)).setText("当前"+position));
         achs_test2.setCurrentIndex(16);
     }
 
@@ -138,7 +130,7 @@ public class CenterHorizontalActivity extends BaseActivity {
     }
 
     public static class SampleFragmentAdapter extends FragmentStateAdapter {
-        private List<String> data;
+        private final List<String> data;
 
         public SampleFragmentAdapter(@NonNull FragmentActivity fragmentActivity,List<String> data) {
             super(fragmentActivity);

@@ -31,19 +31,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpUtils {
     public static String TAG = HttpUtils.class.getSimpleName();
-    private static HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
+    private static final HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
     //新建log拦截器
-    private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-        @Override
-        public void log(String message) {
-            if (!TextUtils.isEmpty(message)) {
-                QDLogger.i(TAG, message);
-            }
+    private static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
+        if (!TextUtils.isEmpty(message)) {
+            QDLogger.i(TAG, message);
         }
     }).setLevel(level);
 
     public void setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
-        this.loggingInterceptor = loggingInterceptor;
+        HttpUtils.loggingInterceptor = loggingInterceptor;
     }
 
     /* static {
@@ -85,7 +82,6 @@ public class HttpUtils {
 
     private static String baseUrl = "";
     private static Class clazz;
-
     public static void setBaseUrl(String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
         retrofit = new Retrofit.Builder()
@@ -148,7 +144,7 @@ public class HttpUtils {
                 .addConverterFactory(new ToStringConverterFactory())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-        return (T) retrofit.create(targetClazz);
+        return retrofit.create(targetClazz);
     }
 
     private static HttpUtils instance;
@@ -181,26 +177,23 @@ public class HttpUtils {
     public void uploadFile(String name, String fileName, String url, String filePath, Callback callback) {
         File file = new File(filePath);
         if (file.exists()) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    OkHttpClient okHttpClient = new OkHttpClient();
-                    RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),
-                            new File(filePath));
-                    MultipartBody body = new MultipartBody.Builder()
-                            .setType(FROM_DATA)
-                            .addFormDataPart("key1", "1")
-                            .addFormDataPart("key2", "2")
-                            .addFormDataPart(name, fileName, fileBody)
-                            .build();
-                    Request request = new Request.Builder()
-                            .post(body)
-                            .url(url)
-                            .build();
+            new Thread(() -> {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),
+                        new File(filePath));
+                MultipartBody body = new MultipartBody.Builder()
+                        .setType(FROM_DATA)
+                        .addFormDataPart("key1", "1")
+                        .addFormDataPart("key2", "2")
+                        .addFormDataPart(name, fileName, fileBody)
+                        .build();
+                Request request = new Request.Builder()
+                        .post(body)
+                        .url(url)
+                        .build();
 
-                    Call call = okHttpClient.newCall(request);
-                    call.enqueue(callback);
-                }
+                Call call = okHttpClient.newCall(request);
+                call.enqueue(callback);
             }).start();
         }
     }
@@ -216,8 +209,8 @@ public class HttpUtils {
             sc.init(null,new TrustManager[]{trustManager},new SecureRandom());
             ssfFactory=sc.getSocketFactory();
         }catch(Exception e){
+            e.printStackTrace();
         }
-
         return ssfFactory;
     }
     

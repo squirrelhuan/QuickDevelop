@@ -127,16 +127,13 @@ public class MyCheckBox extends AppCompatImageView {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        OnClickListener listener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (l != null) {
-                    l.onClick(v);
-                }
-                mChecked = !mChecked;
-                if (mOnCheckedChangeListener != null) {
-                    mOnCheckedChangeListener.onCheckedChanged(v, mChecked);
-                }
+        OnClickListener listener = v -> {
+            if (l != null) {
+                l.onClick(v);
+            }
+            mChecked = !mChecked;
+            if (mOnCheckedChangeListener != null) {
+                mOnCheckedChangeListener.onCheckedChanged(v, mChecked);
             }
         };
         super.setOnClickListener(listener);

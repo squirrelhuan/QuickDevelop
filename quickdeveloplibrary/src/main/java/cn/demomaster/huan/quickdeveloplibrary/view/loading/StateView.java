@@ -220,7 +220,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setColor(mainColor);
                 RectF oval = new RectF((width - r0) / 2f, (height - r0) / 2f, (width - r0) / 2f + r0, (height - r0) / 2f + r0);
-                canvas.rotate((float) progress * 360, width / 2f, height / 2f);
+                canvas.rotate(progress * 360, width / 2f, height / 2f);
                 canvas.drawArc(oval, 0, 90 + Math.abs(progress - 0.5f) * 140, false, mPaint);
                 //canvas.save();
                 //canvas.translate(0,0);
@@ -294,16 +294,13 @@ public class StateView extends ImageTextView implements OnReleaseListener {
             //animator.setFloatValues(0, progress);
             animator.setRepeatCount(0);
             animator.setDuration((int) (duration * progress));
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    progress = (float) animation.getAnimatedValue();
-                    if (progress == 0) {
-                        stateType = stateType1;
-                        show();
-                    } else {
-                        invalidate();
-                    }
+            animator.addUpdateListener(animation -> {
+                progress = (float) animation.getAnimatedValue();
+                if (progress == 0) {
+                    stateType = stateType1;
+                    show();
+                } else {
+                    invalidate();
                 }
             });
             animator.reverse();

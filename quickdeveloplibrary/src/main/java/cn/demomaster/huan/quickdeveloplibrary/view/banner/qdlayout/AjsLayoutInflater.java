@@ -280,8 +280,7 @@ public class AjsLayoutInflater {
                     String[] textSizeArray = textSizeStrs.trim().split(",");
                     if (textSizeArray != null && textSizeArray.length > 0) {
                         List<Float> textSizesList = new ArrayList<>();
-                        for (int i = 0; i < textSizeArray.length; i++) {
-                            String str = textSizeArray[i];
+                        for (String str : textSizeArray) {
                             if (!TextUtils.isEmpty(str)) {
                                 try {
                                     float textSize = Float.valueOf(str);
@@ -291,7 +290,7 @@ public class AjsLayoutInflater {
                                 }
                             }
                         }
-                        textSizesArray = textSizesList.toArray(new Float[textSizesList.size()]);
+                        textSizesArray = textSizesList.toArray(new Float[0]);
                     }
                 }
 
@@ -342,7 +341,7 @@ public class AjsLayoutInflater {
                         }
                         colorList.add(color);
                     }
-                    textColorsArray = colorList.toArray(new Integer[colorList.size()]);
+                    textColorsArray = colorList.toArray(new Integer[0]);
                 }
 
                 //解析文本背景颜色配置
@@ -360,7 +359,7 @@ public class AjsLayoutInflater {
                         }
                         colorList.add(color);
                     }
-                    textBackgroundColorsArray = colorList.toArray(new Integer[colorList.size()]);
+                    textBackgroundColorsArray = colorList.toArray(new Integer[0]);
                 }
                 //解析布局背景色配置
                 String backgroundColorStrs = element.getAttribute("backgroundColor");
@@ -377,11 +376,11 @@ public class AjsLayoutInflater {
                         }
                         colorList.add(color);
                     }
-                    backgroundColorsArray = colorList.toArray(new Integer[colorList.size()]);
+                    backgroundColorsArray = colorList.toArray(new Integer[0]);
                 }
 
                 if (descArray.length > 0 || urls.length > 0) {
-                    List<AdsResource> list = new ArrayList<AdsResource>();
+                    List<AdsResource> list = new ArrayList<>();
                     int count = Math.max(descArray.length, urls.length);
                     for (int i = 0; i < count; i++) {
                         AdsResource adsResource = new AdsResource();

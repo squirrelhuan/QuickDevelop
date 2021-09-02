@@ -33,12 +33,6 @@ public class BasePaperActivity extends QDActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        //FragmentActivityHelper.getInstance().unBindActivity(this);
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         QDLogger.i("BasePaperActivity onKeyDown"+keyCode);
         if(myPayerManager.onKeyDown(this,keyCode,event)){

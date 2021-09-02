@@ -245,7 +245,7 @@ public class QDDialog extends QDDialog2 {
                 button.setText(actionButton.getText());
                 button.setTextSize(text_size_foot);
                 button.setTextColor(text_color_foot);
-                button.setPadding(actionPadding * 3, (int) (actionPadding * 2), actionPadding * 3, (int) (actionPadding * 2));
+                button.setPadding(actionPadding * 3, actionPadding * 2, actionPadding * 3, actionPadding * 2);
                 button.setGravity(Gravity.CENTER);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //获取selectableItemBackground中对应的attrId
@@ -257,14 +257,11 @@ public class QDDialog extends QDDialog2 {
                     button.setForeground(typedArray.getDrawable(0));
                     typedArray.recycle();
                 }
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (actionButton.getOnClickListener() != null) {
-                            actionButton.getOnClickListener().onClick(QDDialog.this, view,null);
-                        } else {
-                            dismiss();
-                        }
+                button.setOnClickListener(view -> {
+                    if (actionButton.getOnClickListener() != null) {
+                        actionButton.getOnClickListener().onClick(QDDialog.this, view,null);
+                    } else {
+                        dismiss();
                     }
                 });
 
@@ -282,20 +279,14 @@ public class QDDialog extends QDDialog2 {
 
         ViewGroup layout = new RelativeLayout(getContext());
         layout.addView(contentLinearView, layoutParams);
-        contentLinearView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        contentLinearView.setOnClickListener(v -> {
 
-            }
         });
         layout.setPadding(margin, margin, margin, margin);
         if (margin > 0) {
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (canceledOnTouchOutside && cancelable) {
-                        dismiss();
-                    }
+            layout.setOnClickListener(v -> {
+                if (canceledOnTouchOutside && cancelable) {
+                    dismiss();
                 }
             });
         }
@@ -308,12 +299,7 @@ public class QDDialog extends QDDialog2 {
         for(Map.Entry entry: clickListenerMap.entrySet()){
             View view1 = view.findViewById((Integer) entry.getKey());
             if(view1!=null){
-                view1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((OnClickActionListener) entry.getValue()).onClick(QDDialog.this,v,null);
-                    }
-                });
+                view1.setOnClickListener(v -> ((OnClickActionListener) entry.getValue()).onClick(QDDialog.this,v,null));
             }
         }
     }

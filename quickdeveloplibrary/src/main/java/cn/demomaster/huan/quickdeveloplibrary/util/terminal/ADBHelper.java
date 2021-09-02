@@ -25,7 +25,7 @@ public class ADBHelper {
     public static final String COMMAND = "java.exe -version";    // 要执行的语句
     public static final String SUCCESS_MESSAGE = "执行成功：";
     public static final String ERROR_MESSAGE = "出错了：";
-    public static String Tag = "ADB";
+    public static final String Tag = "ADB";
     public static String Path_Temp;
     public static String Path_Def;
     private static ADBHelper instance;
@@ -33,7 +33,7 @@ public class ADBHelper {
     boolean isRunning = true;
     public String currentPath = "/";
     OnAdbReceiceListener onAdbReceiceListener;
-    List<DeviceModel> deviceModels = new ArrayList<>();
+    final List<DeviceModel> deviceModels = new ArrayList<>();
     private String directory_path;
     private final Map<String, DeviceModel> deviceMap = new HashMap<>();
     private DeviceModel currentDevice;
@@ -252,7 +252,7 @@ public class ADBHelper {
             QDLogger.e(Tag, "当前路径=" + part1);
             int a = cmd.indexOf("cd") + 2;
             QDLogger.e(Tag, "[cd]出现的位置=" + a);
-            String part2 = cmd.substring(a, cmd.length());
+            String part2 = cmd.substring(a);
             QDLogger.e(Tag, "截取后的路径=" + part2);
 
             if (part2.trim().startsWith(".")) {
@@ -260,8 +260,8 @@ public class ADBHelper {
                 int index = Math.max(0, i - 1);
                 int count = (index / 2);
                 splitLastSeparatorFormPath(part1, count);
-                QDLogger.e(Tag, "[part2],i=" + i + ",l=" + part2.length());
-                part2 = part2.substring(i, part2.length());
+                QDLogger.i(Tag, "[part2],i=" + i + ",l=" + part2.length());
+                part2 = part2.substring(i);
                 return part1 + (part1.endsWith(File.separator) ? "" : File.separator) + (part2.startsWith(File.separator) ? part2.substring(1, part2.length() - 1) : part2);
             } else if (part2.trim().startsWith(File.separator)) {
                 //return (part1.trim().endsWith(File.separator) ?part1.replaceFirst(File.separator,""):part1)+part2;
@@ -296,7 +296,8 @@ public class ADBHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line + "\n");
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
                 //out.println(line);
             }
         } catch (IOException e) {
@@ -325,26 +326,23 @@ public class ADBHelper {
 
     public void findDeviceList() {
         execute(" adb start-server ");
-        execute(" adb devices ", new OnReceiveListener() {
-            @Override
-            public void onReceive(ProcessResult result) {
-                if (result.getCode() == 0) {
-                    String res = result.getResult();
-                    if (res.startsWith("List of devices attached")) {
-                        String[] list = res.replace("List of devices attached\n\r", "").split("\n\r");
-                        deviceModels.clear();
-                        deviceMap.clear();
-                        for (int i = 0; i < list.length; i++) {
-                            if (list[i].contains("\t")) {
-                                DeviceModel deviceModel = new DeviceModel(list[i].split("\t")[0], list[i].split("\t")[1]);
-                                deviceModels.add(deviceModel);
-                                deviceMap.put(deviceModel.getName(), deviceModel);
-                            }
+        execute(" adb devices ", result -> {
+            if (result.getCode() == 0) {
+                String res = result.getResult();
+                if (res.startsWith("List of devices attached")) {
+                    String[] list = res.replace("List of devices attached\n\r", "").split("\n\r");
+                    deviceModels.clear();
+                    deviceMap.clear();
+                    for (String s : list) {
+                        if (s.contains("\t")) {
+                            DeviceModel deviceModel = new DeviceModel(s.split("\t")[0], s.split("\t")[1]);
+                            deviceModels.add(deviceModel);
+                            deviceMap.put(deviceModel.getName(), deviceModel);
                         }
-                        //System.out.println("设备列表：" + Arrays.asList(deviceModels));
-                        if (onAdbReceiceListener != null) {
-                            onAdbReceiceListener.onFindDevices(deviceModels);
-                        }
+                    }
+                    //System.out.println("设备列表：" + Arrays.asList(deviceModels));
+                    if (onAdbReceiceListener != null) {
+                        onAdbReceiceListener.onFindDevices(deviceModels);
                     }
                 }
             }

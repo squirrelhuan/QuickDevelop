@@ -99,7 +99,7 @@ public class DateTimeUtil {
      */
     public void get7week() {
         String week = "";
-        List<String> weeksList = new ArrayList<String>();
+        List<String> weeksList = new ArrayList<>();
         List<String> dateList = getDateAsCount(21);
         for (String s : dateList) {
             QDLogger.println(s);
@@ -118,7 +118,7 @@ public class DateTimeUtil {
 
 
     public static List<String> getDateAsCount(int count) {
-        List<String> dates = new ArrayList<String>();
+        List<String> dates = new ArrayList<>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         SimpleDateFormat sim = new SimpleDateFormat(
@@ -134,7 +134,7 @@ public class DateTimeUtil {
     }
 
     public static List<String> getDateAsCount(Date targetDate, int count) {
-        List<String> dates = new ArrayList<String>();
+        List<String> dates = new ArrayList<>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         SimpleDateFormat sim = new SimpleDateFormat(

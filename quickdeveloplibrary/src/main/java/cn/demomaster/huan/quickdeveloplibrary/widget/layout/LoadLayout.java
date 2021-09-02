@@ -62,13 +62,10 @@ public class LoadLayout extends FrameLayout {
     }
 
     public void resetRetryButton() {
-        ((EmptyLayout) loadView).btn_retry.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((EmptyLayout) loadView).hideAll();
-                ((EmptyLayout) loadView).showLodding();
-                loadData();
-            }
+        ((EmptyLayout) loadView).btn_retry.setOnClickListener(v -> {
+            ((EmptyLayout) loadView).hideAll();
+            ((EmptyLayout) loadView).showLodding();
+            loadData();
         });
     }
 

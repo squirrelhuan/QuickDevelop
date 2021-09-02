@@ -58,50 +58,17 @@ public class CompressLayoutFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         // mContext.getCurrentFocus()
         compressLayout.setDuration(1000);
-        btn_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compressLayout.setGravity(Gravity.LEFT);
-            }
-        });
-        btn_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compressLayout.setGravity(Gravity.TOP);
-            }
-        });
-        btn_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compressLayout.setGravity(Gravity.RIGHT);
-            }
-        });
-        btn_bottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compressLayout.setGravity(Gravity.BOTTOM);
-            }
-        });
-        btn_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compressLayout.showPanel();
-            }
-        });
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_left.setOnClickListener(v -> compressLayout.setGravity(Gravity.LEFT));
+        btn_top.setOnClickListener(v -> compressLayout.setGravity(Gravity.TOP));
+        btn_right.setOnClickListener(v -> compressLayout.setGravity(Gravity.RIGHT));
+        btn_bottom.setOnClickListener(v -> compressLayout.setGravity(Gravity.BOTTOM));
+        btn_open.setOnClickListener(v -> compressLayout.showPanel());
+        btn_close.setOnClickListener(v -> compressLayout.dissmissPanel());
+        iv_emtion.setOnClickListener(v -> {
+            if(compressLayout.isExpanded()){
                 compressLayout.dissmissPanel();
-            }
-        });
-        iv_emtion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(compressLayout.isExpanded()){
-                    compressLayout.dissmissPanel();
-                }else {
-                    compressLayout.showPanel();
-                }
+            }else {
+                compressLayout.showPanel();
             }
         });
     }

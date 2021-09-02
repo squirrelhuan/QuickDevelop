@@ -12,8 +12,8 @@ public class AttributeHelper {
 
     public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
-    private WeakReference<Context> contextWeakReference;
-    private AttributeSet mAttrs;
+    private final WeakReference<Context> contextWeakReference;
+    private final AttributeSet mAttrs;
 
     public AttributeHelper(Context context, AttributeSet attrs) {
         contextWeakReference = new WeakReference<>(context);

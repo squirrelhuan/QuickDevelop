@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.view.banner;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,12 +93,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        QDLogger.println("setUserVisibleHint=" + isVisibleToUser);
-        if (isVisibleToUser) {
-            //可见
-        } else {
-            //不可见
-        }
+        QDLogger.println("setUserVisibleHint=" + isVisibleToUser);//可见//不可见
     }
 
     @Override
@@ -278,24 +272,13 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                 qdVideo = new QdVideo(bannerFrameLayout.getContext());
                 bannerFrameLayout.addView(qdVideo);
                 qdVideo.setVideoPath(adsResource.getUrl());
-                qdVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        System.out.println("播放完成 video/mp4");
-                        mOnloadingListener.onVideoComplete();
-                    }
+                qdVideo.setOnCompletionListener(mp -> {
+                    System.out.println("播放完成 video/mp4");
+                    mOnloadingListener.onVideoComplete();
                 });//监听播放完成的事件。
-                qdVideo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                    @Override
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        return false;
-                    }
-                });//监听播放发生错误时候的事件。
-                qdVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
+                qdVideo.setOnErrorListener((mp, what, extra) -> false);//监听播放发生错误时候的事件。
+                qdVideo.setOnPreparedListener(mp -> {
 
-                    }
                 });
 
                 if (adsResource.getFrom() == BannerFileType.local.value()) {
@@ -372,9 +355,9 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                 break;
         }
         BannerContentType[] enumArray = BannerContentType.values();
-        for (int i = 0; i < enumArray.length; i++) {
-            if (enumArray[i] != resourceType) {
-                releaseUnUsedView2(enumArray[i]);
+        for (BannerContentType bannerContentType : enumArray) {
+            if (bannerContentType != resourceType) {
+                releaseUnUsedView2(bannerContentType);
             }
         }
     }
@@ -382,7 +365,6 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
     private void releaseUnUsedView2(BannerContentType resourceType) {
         switch (resourceType) {
             case text:
-                break;
             case html:
                 break;
             case video:

@@ -17,7 +17,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedFixedView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -55,34 +54,26 @@ public class NestedScrollViewFragment extends BaseFragment {
         //BaseService.baseBinder.getService();
         final QDNestedScrollParent qdNestedScrollParent = rootView.findViewById(R.id.ns_p_01);
         //qdNestedScrollParent.setMinHeight(200);
-        qdNestedScrollParent.getFixedView().setOnVisibleHeightChangeListener(new QDNestedFixedView.OnVisibleHeightChangeListener() {
-            @Override
-            public void onChange(final int dx, final int dy) {
-
-                QDLogger.i(",headHeight=" + headHeight);
-                if (headHeight + dy <= qdNestedScrollParent.getFixedView().getMinHeight()) {
-                    headHeight = qdNestedScrollParent.getFixedView().getMinHeight();
-                } else if (headHeight + dy >= qdNestedScrollParent.getFixedView().getMaxHeight()) {
-                    headHeight = qdNestedScrollParent.getFixedView().getMaxHeight();
-                } else {
-                    headHeight = headHeight + dy;
-                }
-                QDLogger.i("可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) iv_head.getLayoutParams();
-                layoutParams.height = headHeight;
-                iv_head.setLayoutParams(layoutParams);
-                int l = (int) (DisplayUtil.getScreenWidth(mContext) / 2 * (qdNestedScrollParent.getFixedView().getProgress()) - (qdNestedScrollParent.getFixedView().getMaxHeight() / 2 - iv_head.getWidth() / 2) * (1 - qdNestedScrollParent.getFixedView().getProgress()));
-                layoutParams.leftMargin = (int) (l - iv_head.getWidth() / 2);
-              /*  if (layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2) {
-                    Log.i(TAG, layoutParams.leftMargin+">>>>"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
-                } else {
-                    Log.i(TAG, layoutParams.leftMargin+"<<<<"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
-                }*/
-                layoutParams.leftMargin = layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2 ? layoutParams.leftMargin : -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2;
-                QDLogger.i("可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight + "layoutParams.leftMargin=" + layoutParams.leftMargin);
-
-
+        qdNestedScrollParent.getFixedView().setOnVisibleHeightChangeListener((dx, dy) -> {
+            QDLogger.println(",headHeight=" + headHeight);
+            if (headHeight + dy <= qdNestedScrollParent.getFixedView().getMinHeight()) {
+                headHeight = qdNestedScrollParent.getFixedView().getMinHeight();
+            } else {
+                headHeight = Math.min(headHeight + dy, qdNestedScrollParent.getFixedView().getMaxHeight());
             }
+            QDLogger.println("可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) iv_head.getLayoutParams();
+            layoutParams.height = headHeight;
+            iv_head.setLayoutParams(layoutParams);
+            int l = (int) (DisplayUtil.getScreenWidth(mContext) / 2 * (qdNestedScrollParent.getFixedView().getProgress()) - (qdNestedScrollParent.getFixedView().getMaxHeight() / 2 - iv_head.getWidth() / 2) * (1 - qdNestedScrollParent.getFixedView().getProgress()));
+            layoutParams.leftMargin = l - iv_head.getWidth() / 2;
+          /*  if (layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2) {
+                Log.i(TAG, layoutParams.leftMargin+">>>>"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
+            } else {
+                Log.i(TAG, layoutParams.leftMargin+"<<<<"+(-qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight/2));
+            }*/
+            layoutParams.leftMargin = layoutParams.leftMargin > -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2 ? layoutParams.leftMargin : -qdNestedScrollParent.getFixedView().getMaxHeight() / 2 + headHeight / 2;
+            QDLogger.println("可视区域改变 " + dx + "," + dy + ",headHeight=" + headHeight + "layoutParams.leftMargin=" + layoutParams.leftMargin);
         });
     }
 

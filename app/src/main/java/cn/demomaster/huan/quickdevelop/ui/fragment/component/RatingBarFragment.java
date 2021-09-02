@@ -42,8 +42,8 @@ public class RatingBarFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         ButterKnife.bind(this,rootView);
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        sb_weight = (SeekBar) findViewById(R.id.sb_weight);
+        ratingBar = findViewById(R.id.ratingBar);
+        sb_weight = findViewById(R.id.sb_weight);
         sb_weight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -64,7 +64,7 @@ public class RatingBarFragment extends BaseFragment {
             }
         });
         sb_weight.setProgress(50);
-        sb_progress = (SeekBar) findViewById(R.id.sb_progress);
+        sb_progress = findViewById(R.id.sb_progress);
         sb_progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -83,45 +83,29 @@ public class RatingBarFragment extends BaseFragment {
         });
         sb_progress.setProgress(50);
 
-        tooglebutton = (ToggleButton) findViewById(R.id.tooglebutton);
-        tooglebutton.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                ratingBar.setCanTouch(on);
-            }
-        });
-        tooglebutton_datatype = (ToggleButton) findViewById(R.id.tooglebutton_datatype);
+        tooglebutton = findViewById(R.id.tooglebutton);
+        tooglebutton.setOnToggleChanged((view, on) -> ratingBar.setCanTouch(on));
+        tooglebutton_datatype = findViewById(R.id.tooglebutton_datatype);
         tooglebutton_datatype.setChecked(true);
         ratingBar.setFloat(true);
         tooglebutton_datatype.setToogleColor(Color.RED);
-        tooglebutton_datatype.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                ratingBar.setFloat(on);
-            }
-        });
+        tooglebutton_datatype.setOnToggleChanged((view, on) -> ratingBar.setFloat(on));
 
-        tooglebutton_customdrable = (ToggleButton) findViewById(R.id.tooglebutton_customdrable);
+        tooglebutton_customdrable = findViewById(R.id.tooglebutton_customdrable);
         tooglebutton_customdrable.setToogleColor(Color.BLUE);
-        tooglebutton_customdrable.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                //使用默认背景前要把自定义的资源设置好
-                ratingBar.setBackResourceId(R.mipmap.meizi);
-                ratingBar.setFrontResourceId(R.mipmap.ic_launcher);
-                ratingBar.setUseCustomDrable(on);
-            }
+        tooglebutton_customdrable.setOnToggleChanged((view, on) -> {
+            //使用默认背景前要把自定义的资源设置好
+            ratingBar.setBackResourceId(R.mipmap.meizi);
+            ratingBar.setFrontResourceId(R.mipmap.ic_launcher);
+            ratingBar.setUseCustomDrable(on);
         });
 
-        tooglebutton_minValue = (ToggleButton) findViewById(R.id.tooglebutton_minValue);
+        tooglebutton_minValue = findViewById(R.id.tooglebutton_minValue);
         tooglebutton_minValue.setToogleColor(Color.BLUE);
-        tooglebutton_minValue.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                //使用默认背景前要把自定义的资源设置好
-                ratingBar.setCountMni(on ? 3 : 0);//int类型
-                ratingBar.setProgressMin(on ? .6f : 0f);//int类型
-            }
+        tooglebutton_minValue.setOnToggleChanged((view, on) -> {
+            //使用默认背景前要把自定义的资源设置好
+            ratingBar.setCountMni(on ? 3 : 0);//int类型
+            ratingBar.setProgressMin(on ? .6f : 0f);//int类型
         });
     }
 }

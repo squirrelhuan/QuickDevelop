@@ -2,12 +2,10 @@ package cn.demomaster.huan.quickdeveloplibrary;
 
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpServer;
 
@@ -34,14 +32,11 @@ public class ExampleUnitTest {
     @Test
     public void testSocket() {
         QDTcpServer qdTcpServer = QDTcpServer.getInstance();
-        qdTcpServer.setOnReceiveMessageListener(new QDTcpServer.OnReceiveMessageListener() {
-            @Override
-            public void onReceiveMessage(long clientId, QDMessage qdMessage) {
-                System.out.println("shou dao le " + qdMessage);
-                if (qdMessage != null) {
-                    if (qdMessage.getData().equals("你好")) {
-                        qdTcpServer.sendMessage(clientId, qdMessage.getTime(), "懒得理你");
-                    }
+        qdTcpServer.setOnReceiveMessageListener((clientId, qdMessage) -> {
+            System.out.println("shou dao le " + qdMessage);
+            if (qdMessage != null) {
+                if (qdMessage.getData().equals("你好")) {
+                    qdTcpServer.sendMessage(clientId, qdMessage.getTime(), "懒得理你");
                 }
             }
         });
@@ -70,11 +65,11 @@ public class ExampleUnitTest {
         }
         byte[] byteArray = messageDigest.digest();
         StringBuffer md5StrBuff = new StringBuffer();
-        for (int i = 0; i < byteArray.length; i++) {
-            if (Integer.toHexString(0xFF & byteArray[i]).length() == 1)
-                md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));
+        for (byte b : byteArray) {
+            if (Integer.toHexString(0xFF & b).length() == 1)
+                md5StrBuff.append("0").append(Integer.toHexString(0xFF & b));
             else
-                md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
+                md5StrBuff.append(Integer.toHexString(0xFF & b));
         }
         return md5StrBuff.toString();
     }

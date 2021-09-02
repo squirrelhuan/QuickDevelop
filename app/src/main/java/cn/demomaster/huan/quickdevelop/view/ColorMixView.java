@@ -40,7 +40,6 @@ public class ColorMixView extends androidx.appcompat.widget.AppCompatImageView {
         Bitmap bitmap = QDBitmapUtil.drawable2Bitmap(getContext(),R.drawable.umeng_socialize_fav);
         canvas.drawBitmap(bitmap,new Rect(0,0,bitmap.getWidth(),bitmap.getHeight()),new Rect(0,0,getMeasuredWidth(),getMeasuredHeight()),paint);
 
-
         paint.setColor(getResources().getColor(R.color.transparent_light_77));
         Rect rect = new Rect(0,0,getMeasuredWidth(),getMeasuredHeight());
         canvas.drawRect(rect,paint);

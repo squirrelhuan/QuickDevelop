@@ -40,7 +40,6 @@ public class ColorPicker2Fragment extends BaseFragment {
         iv_image3.post(new Runnable() {
             @Override
             public void run() {
-
                 // glassUtil.setBackgroundView(rootView, false);
             }
         });

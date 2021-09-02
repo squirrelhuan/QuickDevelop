@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -38,12 +37,9 @@ public class OnClickListenerHook {
             // 本地的类加载器;
             // 代理类的对象所继承的接口（用Class数组表示，支持多个接口）
             // 代理类的实际逻辑，封装在new出来的InvocationHandler内
-            Object proxyOnClickListener = Proxy.newProxyInstance(context.getClass().getClassLoader(), new Class[]{View.OnClickListener.class}, new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    Log.d("HookSetOnClickListener", "点击事件被hook到了");//加入自己的逻辑
-                    return method.invoke(onClickListenerInstance, args);//执行被代理的对象的逻辑
-                }
+            Object proxyOnClickListener = Proxy.newProxyInstance(context.getClass().getClassLoader(), new Class[]{View.OnClickListener.class}, (proxy, method1, args) -> {
+                Log.d("HookSetOnClickListener", "点击事件被hook到了");//加入自己的逻辑
+                return method1.invoke(onClickListenerInstance, args);//执行被代理的对象的逻辑
             });
             //3. 用我们自己的点击事件代理类，设置到"持有者"中
             field.set(mListenerInfo, proxyOnClickListener);

@@ -33,21 +33,18 @@ public class FpsFloatingService extends QDFloatingService2 {
         button.setPadding(10, 10, 10, 10);
         button.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_99));
         button.setTextColor(context.getResources().getColor(R.color.white));
-        fpsMonitor.setOnFramChangedListener(new FPSMonitor.OnFramChangedListener() {
-            @Override
-            public void onChanged(float mframe) {
-                frame = mframe;
-                if (QDActivityManager.getInstance().getCurrentActivity() != null) {
-                    Display display = QDActivityManager.getInstance().getCurrentActivity().getWindowManager().getDefaultDisplay();
-                    float refreshRate = display.getRefreshRate();
-                    QdThreadHelper.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            button.setText("frame:" + frame);
-                            ///QDLogger.i("rate:"+refreshRate);
-                        }
-                    });
-                }
+        fpsMonitor.setOnFramChangedListener(mframe -> {
+            frame = mframe;
+            if (QDActivityManager.getInstance().getCurrentActivity() != null) {
+                Display display = QDActivityManager.getInstance().getCurrentActivity().getWindowManager().getDefaultDisplay();
+                float refreshRate = display.getRefreshRate();
+                QdThreadHelper.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        button.setText("frame:" + frame);
+                        ///QDLogger.i("rate:"+refreshRate);
+                    }
+                });
             }
         });
         fpsMonitor.start();

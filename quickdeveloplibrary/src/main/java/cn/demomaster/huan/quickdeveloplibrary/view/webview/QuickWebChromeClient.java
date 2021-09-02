@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.webview;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Message;
 import android.view.View;
@@ -45,11 +44,7 @@ public class QuickWebChromeClient extends WebChromeClient {
         new AlertDialog.Builder(view.getContext())
                 .setTitle("AlertDialog")
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        result.confirm();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> result.confirm())
                 .setCancelable(false)
                 .create()
                 .show();

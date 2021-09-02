@@ -62,6 +62,7 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
+        <!--requestLegacyExternalStorage 仅仅应用于Android10-->
         <activity android:name=".QDMainFragmentActivity2"/>
         <activity
             android:name=".ui.activity.sample.AdsActivity"

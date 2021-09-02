@@ -66,12 +66,9 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
         viewHolder.setTextColor(textColor);
         viewHolder.setTextGravity(textGravity);
         viewHolder.setTextSize(textSize);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(viewHolder.getAdapterPosition(), lists.get(viewHolder.getAdapterPosition()));
-                }
+        viewHolder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(viewHolder.getAdapterPosition(), lists.get(viewHolder.getAdapterPosition()));
             }
         });
     }

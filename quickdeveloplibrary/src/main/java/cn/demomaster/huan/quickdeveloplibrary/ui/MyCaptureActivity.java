@@ -73,32 +73,24 @@ public class MyCaptureActivity extends QDActivity {
 
         iv_light = findViewById(R.id.iv_light);
         iv_gallery = findViewById(R.id.iv_gallery);
-        iv_light.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ScanHelper.getInstance().isFlashOpened(MyCaptureActivity.this)) {
-                    ScanHelper.getInstance().closeFlash(MyCaptureActivity.this);
-                } else {
-                    ScanHelper.getInstance().openFlash(MyCaptureActivity.this);
-                }
+        iv_light.setOnClickListener(v -> {
+            if (ScanHelper.getInstance().isFlashOpened(MyCaptureActivity.this)) {
+                ScanHelper.getInstance().closeFlash(MyCaptureActivity.this);
+            } else {
+                ScanHelper.getInstance().openFlash(MyCaptureActivity.this);
             }
         });
-        iv_gallery.setOnClickListener(new View.OnClickListener() {
+        iv_gallery.setOnClickListener(v -> getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
             @Override
-            public void onClick(View v) {
-                getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
-                    @Override
-                    public void onSuccess(Intent data, String path) {
-                        setImageToView(path, data);
-                    }
-
-                    @Override
-                    public void onFailure(String error) {
-
-                    }
-                });
+            public void onSuccess(Intent data, String path) {
+                setImageToView(path, data);
             }
-        });
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        }));
         if (ScanHelper.getInstance().isSupportCameraLedFlash(mContext)) {
             iv_light.setVisibility(View.VISIBLE);
         } else {

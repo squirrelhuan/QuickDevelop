@@ -124,21 +124,18 @@ public class LoadingDownView extends View {
         final float end = 1f;
         animator = ValueAnimator.ofFloat(0f, end);
         animator.setDuration(800);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                progress = (float) animation.getAnimatedValue();
-                if (onProgressChanged != null) {
-                    onProgressChanged.onProgress(progress);
-                }
-                //Log.d(TAG, "progress=" + progress);
-                if (progress >= end) {
-                    isForward = !isForward;
-                    //Log.d(TAG, "isForward=" + isForward);
-                } else {
-                    //postInvalidate();
-                    invalidate();
-                }
+        animator.addUpdateListener(animation -> {
+            progress = (float) animation.getAnimatedValue();
+            if (onProgressChanged != null) {
+                onProgressChanged.onProgress(progress);
+            }
+            //Log.d(TAG, "progress=" + progress);
+            if (progress >= end) {
+                isForward = !isForward;
+                //Log.d(TAG, "isForward=" + isForward);
+            } else {
+                //postInvalidate();
+                invalidate();
             }
         });
         animator.setRepeatMode(ValueAnimator.REVERSE);

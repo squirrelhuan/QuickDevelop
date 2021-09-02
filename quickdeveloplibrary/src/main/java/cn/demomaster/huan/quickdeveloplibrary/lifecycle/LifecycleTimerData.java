@@ -24,9 +24,7 @@ public class LifecycleTimerData {
 
     }
 
-
     LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> linePointsMap = new LinkedHashMap();
-
     public void addLifecycleEvent(Object object, LifeCycleEvent lifeCycleEvent) {
         if (linePointsMap.size() > maxLength) {
             linePointsMap.clear();

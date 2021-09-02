@@ -49,51 +49,40 @@ public class lifecycleTimerFragment extends BaseFragment {
         LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
         lifecycleView.setLinePoints(listLinkedHashMap);
         toggle_enable.setChecked(LifecycleManager.getInstance().isEnable());
-        toggle_enable.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
-            @Override
-            public void onToggle(View view, boolean on) {
-                LifecycleManager.getInstance().setEnable(on);
-            }
-        });
+        toggle_enable.setOnToggleChanged((view, on) -> LifecycleManager.getInstance().setEnable(on));
 
         RadioGroup rg_transitionType = rootView.findViewById(R.id.rg_transitionType);
-        rg_transitionType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_transitionType_01:
-                        lifecycleView.setTransitionType(LifecycleView.TransitionType.horizontal);
-                        break;
-                    case R.id.rb_transitionType_02:
-                        lifecycleView.setTransitionType(LifecycleView.TransitionType.vertical);
-                        break;
-                    case R.id.rb_transitionType_03:
-                        lifecycleView.setTransitionType(LifecycleView.TransitionType.transitionXY);
-                        break;
-                    case R.id.rb_transitionType_04:
-                        lifecycleView.setTransitionType(LifecycleView.TransitionType.none);
-                        break;
-                }
+        rg_transitionType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_transitionType_01:
+                    lifecycleView.setTransitionType(LifecycleView.TransitionType.horizontal);
+                    break;
+                case R.id.rb_transitionType_02:
+                    lifecycleView.setTransitionType(LifecycleView.TransitionType.vertical);
+                    break;
+                case R.id.rb_transitionType_03:
+                    lifecycleView.setTransitionType(LifecycleView.TransitionType.transitionXY);
+                    break;
+                case R.id.rb_transitionType_04:
+                    lifecycleView.setTransitionType(LifecycleView.TransitionType.none);
+                    break;
             }
         });
         RadioGroup rg_scaleType = rootView.findViewById(R.id.rg_scaleType);
-        rg_scaleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rg_scaleType_01:
-                        lifecycleView.setScaleType(LifecycleView.ScaleType.scaleX);
-                        break;
-                    case R.id.rg_scaleType_02:
-                        lifecycleView.setScaleType(LifecycleView.ScaleType.scaleY);
-                        break;
-                    case R.id.rg_scaleType_03:
-                        lifecycleView.setScaleType(LifecycleView.ScaleType.scaleXY);
-                        break;
-                    case R.id.rg_scaleType_04:
-                        lifecycleView.setScaleType(LifecycleView.ScaleType.none);
-                        break;
-                }
+        rg_scaleType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rg_scaleType_01:
+                    lifecycleView.setScaleType(LifecycleView.ScaleType.scaleX);
+                    break;
+                case R.id.rg_scaleType_02:
+                    lifecycleView.setScaleType(LifecycleView.ScaleType.scaleY);
+                    break;
+                case R.id.rg_scaleType_03:
+                    lifecycleView.setScaleType(LifecycleView.ScaleType.scaleXY);
+                    break;
+                case R.id.rg_scaleType_04:
+                    lifecycleView.setScaleType(LifecycleView.ScaleType.none);
+                    break;
             }
         });
     }

@@ -21,10 +21,10 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     //用于控制SurfaceView
-    private SurfaceHolder sfh;
-    private Handler handler = new Handler();
-    private ImageRunnable imageRunnable = new ImageRunnable();
-    private Paint paint;
+    private final SurfaceHolder sfh;
+    private final Handler handler = new Handler();
+    private final ImageRunnable imageRunnable = new ImageRunnable();
+    private final Paint paint;
     private Canvas canvas;
     private Matrix matrix;
 

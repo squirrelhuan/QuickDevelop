@@ -31,7 +31,6 @@ import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogBean;
-import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -69,12 +68,7 @@ public class DebugFloatingService extends QDFloatingService2 {
         tv_title.setText("" + QDAppInfoUtil.getVersionName(context));
         TextView tv_close = view.findViewById(R.id.tv_close);
         tv_log = view.findViewById(R.id.tv_log);
-        tv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dissmissWindow();
-            }
-        });
+        tv_close.setOnClickListener(v -> dissmissWindow());
         tv_log_tag = view.findViewById(R.id.tv_log_tag);
         tv_log_tag.setText(tagFilter.name());
         tv_log_tag.setTextColor(QDLogger.getColor(tagFilter.value()));
@@ -107,22 +101,14 @@ public class DebugFloatingService extends QDFloatingService2 {
         view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
     }
 
-    View.OnClickListener onClickTagListenernew = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showTagFilter((TextView) v);
-        }
-    };
+    View.OnClickListener onClickTagListenernew = v -> showTagFilter((TextView) v);
 
     private void showTagFilter(TextView textView) {
-        new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener(new QDSheetDialog.OnDialogActionListener() {
-            @Override
-            public void onItemClick(QDSheetDialog dialog, int position, List<String> data) {
-                dialog.dismiss();
-                textView.setText(data.get(position));
-                tagFilter = logTagfilters[position];
-                textView.setTextColor(QDLogger.getColor(tagFilter.value()));
-            }
+        new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener((dialog, position, data) -> {
+            dialog.dismiss();
+            textView.setText(data.get(position));
+            tagFilter = logTagfilters[position];
+            textView.setTextColor(QDLogger.getColor(tagFilter.value()));
         }).create().show();
     }
 
@@ -132,42 +118,34 @@ public class DebugFloatingService extends QDFloatingService2 {
 
     private static void initLog() {
         tv_log.setText(logStr);
-        scrollView.post(new Runnable() {
+        scrollView.post(() -> {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
+        });
+        QDLogger.setInterceptor(msg -> QdThreadHelper.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (tv_log.getText().length() > strMaxLen) {
+                    logList.clear();
+                    tv_log.setText("");
+                }
+                logList.add(msg);
+                int lineNum = tv_log.getLineCount();
+                String str = lineNum + " " + msg.getTag() + " " + msg.getMessage() + " \n";
+
+                SpannableStringBuilder builder = new SpannableStringBuilder(str);
+                //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(tv_log.getResources().getColor(R.color.orange));
+                //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
+                StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
+                builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(msg.getType().value()));
+                builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
+                //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
+                tv_log.append(builder);
+                logStr = tv_log.getText().toString();
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
             }
-        });
-        QDLogger.setInterceptor(new QDLogInterceptor() {
-            @Override
-            public void onLog(QDLogBean msg) {
-                QdThreadHelper.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (tv_log.getText().length() > strMaxLen) {
-                            logList.clear();
-                            tv_log.setText("");
-                        }
-                        logList.add(msg);
-                        int lineNum = tv_log.getLineCount();
-                        String str = lineNum + " " + msg.getTag() + " " + msg.getMessage() + " \n";
-
-                        SpannableStringBuilder builder = new SpannableStringBuilder(str);
-                        //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
-                        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(tv_log.getResources().getColor(R.color.orange));
-                        //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
-                        StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
-                        builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                        ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(msg.getType().value()));
-                        builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                        //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
-                        tv_log.append(builder);
-                        logStr = tv_log.getText().toString();
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
-                    }
-                });
-            }
-        });
+        }));
     }
 
     int drag_X;

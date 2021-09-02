@@ -64,68 +64,53 @@ public class HttpFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        btn_send_connect.setOnClickListener(new View.OnClickListener() {
+        btn_send_connect.setOnClickListener(v -> new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
+            public void run() {
+                String url = "https://web.baekteori.com/mange-web/login/loginUser";
+                url = "https://web.baekteori.com/mange-web/log/upload";
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), new File(Environment.getExternalStorageDirectory(), "download/" + "0812-0813ota.txt"));
+                MultipartBody body = new MultipartBody.Builder()
+                        .setType(FROM_DATA)
+                        .addFormDataPart("file", "abc", fileBody)
+                        .build();
+                Request request = new Request.Builder()
+                        .post(body)
+                        .url(url)
+                        .build();
+                try {
+                    QDLogger.d(okHttpClient.newCall(request).execute().body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+               /* Call call = okHttpClient.newCall(request);
+                call.enqueue(new Callback() {
                     @Override
-                    public void run() {
-                        String url = "https://web.baekteori.com/mange-web/login/loginUser";
-                        url = "https://web.baekteori.com/mange-web/log/upload";
-                        OkHttpClient okHttpClient = new OkHttpClient();
-                        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), new File(Environment.getExternalStorageDirectory(), "download/" + "0812-0813ota.txt"));
-                        MultipartBody body = new MultipartBody.Builder()
-                                .setType(FROM_DATA)
-                                .addFormDataPart("file", "abc", fileBody)
-                                .build();
-                        Request request = new Request.Builder()
-                                .post(body)
-                                .url(url)
-                                .build();
-                        try {
-                            QDLogger.d(okHttpClient.newCall(request).execute().body().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                       /* Call call = okHttpClient.newCall(request);
-                        call.enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                Log.d("tag", "onFailure: ");
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                Log.d("tag", "onResponse: " + response.body().string());
-                            }
-                        });*/
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("tag", "onFailure: ");
                     }
-                }).start();
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Log.d("tag", "onResponse: " + response.body().string());
+                    }
+                });*/
             }
-        });
-        btn_send_tcp.setOnClickListener(new View.OnClickListener() {
+        }).start());
+        btn_send_tcp.setOnClickListener(v -> QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
             @Override
-            public void onClick(View v) {
-                QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
-                    @Override
-                    public void onReceived(QDMessage qdMessage) {
+            public void onReceived(QDMessage qdMessage) {
 
-                    }
-
-                    @Override
-                    public void onError(String err) {
-
-                    }
-                });
             }
-        });
+
+            @Override
+            public void onError(String err) {
+
+            }
+        }));
         //QDTcpClient.setStateListener();
-        btn_retrofit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                test("");
-            }
-        });
+        btn_retrofit.setOnClickListener(v -> test(""));
     }
 
     public void test(String filePath){

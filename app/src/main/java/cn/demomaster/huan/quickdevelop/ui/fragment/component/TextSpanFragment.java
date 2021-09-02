@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -28,7 +27,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.SpannableUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 
 
@@ -120,41 +118,29 @@ public class TextSpanFragment extends BaseFragment {
         SpannableUtil.setText(tv_content,"请阅读并同意《用户协议》\n 超链接测试《百度一下》\n 点击响应测试《点击1》《点击2》 \n 微信支付H5开发指引 \n 微信支付H5测试",spannableFactory);
     }
 
-
     private void showScanDialog(String clickText,String url) {
         QDDialog.Builder builder = new QDDialog.Builder(mContext)
                 .setTitle("点击了“"+clickText+"”")
                 .setText_color_body(Color.BLUE)
                 .setText_size_foot(14)
-                .addAction("取消", new OnClickActionListener() {
-            @Override
-            public void onClick(Dialog dialog, View view, Object tag) {
-                dialog.dismiss();
-            }
-        });
+                .addAction("取消", (dialog, view, tag) -> dialog.dismiss());
         if(!TextUtils.isEmpty(url)){
             builder.setMessage("链接"+url);
-            builder.addAction("APP内打开", new OnClickActionListener() {
-                @Override
-                public void onClick(Dialog dialog, View view, Object tag) {
-                    dialog.dismiss();
-                    WebViewFragment webViewFragment = new WebViewFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("URL", url);
-                    webViewFragment.setArguments(bundle);
-                    Intent intent = new Intent();
-                    intent.putExtras(bundle);
-                   startFragment(webViewFragment,R.id.container1,intent);
-                }
+            builder.addAction("APP内打开", (dialog, view, tag) -> {
+                dialog.dismiss();
+                WebViewFragment webViewFragment = new WebViewFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", url);
+                webViewFragment.setArguments(bundle);
+                Intent intent = new Intent();
+                intent.putExtras(bundle);
+               startFragment(webViewFragment,R.id.container1,intent);
             });
-            builder.addAction("浏览器打开", new OnClickActionListener() {
-                @Override
-                public void onClick(Dialog dialog, View view, Object tag) {
-                    dialog.dismiss();
-                    Uri uri = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                }
+            builder.addAction("浏览器打开", (dialog, view, tag) -> {
+                dialog.dismiss();
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             });
         }
         QDDialog qdDialog = builder.create();
@@ -168,8 +154,6 @@ public class TextSpanFragment extends BaseFragment {
                 //.setText_color_foot(Color.GREEN)
                 //.setLineColor(Color.RED)
                 //.setBackgroundRadius(backgroundRadio)
-
         qdDialog.show();
     }
-
 }

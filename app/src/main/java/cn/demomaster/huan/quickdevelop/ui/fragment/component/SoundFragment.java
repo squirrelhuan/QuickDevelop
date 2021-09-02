@@ -26,52 +26,23 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 @ActivityPager(name = "音频播放", preViewClass = TextView.class, resType = ResType.Custome)
 public class SoundFragment extends BaseFragment {
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        //QDLogger.d("拦截Activity:"+getClass().getName() + "返回事件");
-        return super.onKeyDown(keyCode, event);
-    }
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_layout_sound, null);
-
         return mView;
     }
 
     @Override
     public void initView(View rootView) {
-
         Button button = rootView.findViewById(R.id.btn_play1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play(1);
-            }
-        });
+        button.setOnClickListener(v -> play(1));
         Button button2 = rootView.findViewById(R.id.btn_play2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play(2);
-            }
-        });
+        button2.setOnClickListener(v -> play(2));
         Button button3 = rootView.findViewById(R.id.btn_play3);
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play(3);
-            }
-        });
+        button3.setOnClickListener(v -> play(3));
         Button button4 = rootView.findViewById(R.id.btn_play4);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play();
-            }
-        });
-
+        button4.setOnClickListener(v -> play());
     }
 
     private void play(int index) {

@@ -42,7 +42,6 @@ public class Test {
         File directory = new File("adb");//设定为当前文件夹
         if (!directory.exists()) {
             QDLogger.println("未找到 adb可执行文件");//获取绝对路径
-            return;
         } else {
             Path_Temp = directory.getAbsolutePath();
             Path_Temp = Path_Temp.substring(0, Path_Temp.lastIndexOf(File.separator));

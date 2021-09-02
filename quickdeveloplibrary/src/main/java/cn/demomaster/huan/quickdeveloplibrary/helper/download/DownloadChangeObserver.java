@@ -56,7 +56,6 @@ public class DownloadChangeObserver extends ContentObserver {
                             QDLogger.i(id + "下载终止了");
                         } else if (r == 1) {
                             QDLogger.i(id + "下载id在列表");
-                            continue;
                         } else if (r == 0) {
                             QDLogger.i(id + "下载id不存在");
                             break;

@@ -40,16 +40,14 @@ public class BarcodeStateView extends View {
         //init();
     }
 
-    private int centerX, centerY, width, height;
+    private int width;
+    private int height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         width = w;
         height = h;
-        centerX = width / 2;
-        centerY = height / 2;
     }
 
     @Override

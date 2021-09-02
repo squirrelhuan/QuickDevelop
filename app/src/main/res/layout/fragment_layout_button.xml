@@ -195,7 +195,6 @@
                     android:text="我的"
                     app:srcBottom="@mipmap/ic_launcher" />
             </RadioGroup>
-
         </LinearLayout>
     </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 

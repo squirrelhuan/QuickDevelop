@@ -111,11 +111,8 @@ public class NetPrinter {
             outbytes = command.getBytes(Charset.forName("GB2312")); //Charset.defaultCharset()); //forName("UTF-8")
             stream.write(outbytes);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            return;
         }
-
     }
 
     /// <summary>
@@ -242,7 +239,7 @@ class PrinterCMD {
     /// </summary>
     /// <returns></returns>
     public String CMD_SetPos() {
-        return new StringBuffer().append((char) 27).append((char) 64).toString();
+        return String.valueOf((char) 27) + (char) 64;
     }
 
     /// <summary>
@@ -250,7 +247,7 @@ class PrinterCMD {
     /// </summary>
     /// <returns></returns>
     public String CMD_Enter() {
-        return new StringBuffer().append((char) 10).toString();
+        return String.valueOf((char) 10);
     }
 
     /// <summary>
@@ -259,7 +256,7 @@ class PrinterCMD {
     /// <param name="align">0:左对齐 1:中对齐 2:右对齐</param>
     /// <returns></returns>
     public String CMD_TextAlign(int align) {
-        return new StringBuffer().append((char) 27).append((char) 97).append((char) align).toString();
+        return String.valueOf((char) 27) + (char) 97 + (char) align;
     }
 
     /// <summary>
@@ -275,59 +272,45 @@ class PrinterCMD {
             case -1:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 0).toString();//29 33
                 break;
-
             case 0:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 0).toString();//29 33
                 break;
-
             case 1:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 1).toString();
                 break;
-
             case 2:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 16).toString();
                 break;
-
             case 3:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 17).toString();
                 break;
-
             case 4:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 2).toString();
                 break;
-
             case 5:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 32).toString();
                 break;
-
             case 6:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 34).toString();
                 break;
-
             case 7:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 3).toString();
                 break;
-
             case 8:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 48).toString();
                 break;
-
             case 9:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 51).toString();
                 break;
-
             case 10:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 4).toString();
                 break;
-
             case 11:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 64).toString();
                 break;
-
             case 12:
                 _cmdstr = new StringBuffer().append((char) 29).append((char) 33).append((char) 68).toString();
                 break;
-
         }
         return _cmdstr;
     }

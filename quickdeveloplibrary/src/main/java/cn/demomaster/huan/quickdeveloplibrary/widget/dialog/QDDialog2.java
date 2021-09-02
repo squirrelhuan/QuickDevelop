@@ -172,20 +172,14 @@ public class QDDialog2 extends AppCompatDialog {
             QDLogger.e("h="+h+",panelMarginTop="+panelMarginTop);
             slidingUpPanelLayout.setPanelMaginTop(panelMarginTop);
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            (slidingUpPanelLayout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (cancelable) {
-                        QDDialog2.this.dismiss();
-                    }
+            (slidingUpPanelLayout).setOnClickListener(v -> {
+                if (cancelable) {
+                    QDDialog2.this.dismiss();
                 }
             });
-            (slidingUpPanelLayout.findViewById(R.id.fl_bg)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (cancelable) {
-                        QDDialog2.this.dismiss();
-                    }
+            (slidingUpPanelLayout.findViewById(R.id.fl_bg)).setOnClickListener(v -> {
+                if (cancelable) {
+                    QDDialog2.this.dismiss();
                 }
             });
             if (panelSlideListener == null) {

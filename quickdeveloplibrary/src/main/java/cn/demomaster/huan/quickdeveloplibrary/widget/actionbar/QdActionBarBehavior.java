@@ -175,11 +175,10 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
     private QdActionBarContainer getUpperChild(CoordinatorLayout parent) {
         QdActionBarContainer current = getCurrentChild(parent);
         int index = parent.indexOfChild(current);
-        W:
         for (int i = index; i < parent.getChildCount(); i++) {
             View v = parent.getChildAt(i);
             if (v instanceof QdActionBarContainer) {
-                if (getChildRecyclerView((ViewGroup) v) == null) continue W;
+                if (getChildRecyclerView((ViewGroup) v) == null) continue;
                 boolean canScrollUp = getChildRecyclerView((ViewGroup) v).canScrollVertically(1);//ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
                 if (canScrollUp) {//可上推
                     return (QdActionBarContainer) v;
@@ -636,11 +635,8 @@ public class QdActionBarBehavior extends CoordinatorLayout.Behavior<QdActionBarC
     }
 
     //f(x) = (x-1)^5 + 1
-    private static final Interpolator sQuinticInterpolator = new Interpolator() {
-        @Override
-        public float getInterpolation(float t) {
-            t -= 1.0f;
-            return t * t * t * t * t + 1.0f;
-        }
+    private static final Interpolator sQuinticInterpolator = t -> {
+        t -= 1.0f;
+        return t * t * t * t * t + 1.0f;
     };
 }

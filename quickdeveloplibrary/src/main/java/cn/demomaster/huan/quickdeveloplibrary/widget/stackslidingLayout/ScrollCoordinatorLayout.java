@@ -268,12 +268,9 @@ public class ScrollCoordinatorLayout extends CoordinatorLayout {
     }
 
     //f(x) = (x-1)^5 + 1
-    private static final Interpolator sQuinticInterpolator = new Interpolator() {
-        @Override
-        public float getInterpolation(float t) {
-            t -= 1.0f;
-            return t * t * t * t * t + 1.0f;
-        }
+    private static final Interpolator sQuinticInterpolator = t -> {
+        t -= 1.0f;
+        return t * t * t * t * t + 1.0f;
     };
 
 }

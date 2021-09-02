@@ -177,11 +177,10 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
     private MultiRecycleContainer getUpperChild(CoordinatorLayout parent) {
         MultiRecycleContainer current = getCurrentChild(parent);
         int index = parent.indexOfChild(current);
-        W:
         for (int i = index; i < parent.getChildCount(); i++) {
             View v = parent.getChildAt(i);
             if (v instanceof MultiRecycleContainer) {
-                if (getChildRecyclerView((ViewGroup) v) == null) continue W;
+                if (getChildRecyclerView((ViewGroup) v) == null) continue;
                 boolean canScrollUp = getChildRecyclerView((ViewGroup) v).canScrollVertically(1);//ViewCompat.canScrollVertically(getChildRecyclerView((ViewGroup) v), 1);//的值表示是否能向上滚动
                 if (canScrollUp) {//可上推
                     return (MultiRecycleContainer) v;
@@ -420,8 +419,8 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
     private Context mContext;
     private int SCREEN_WIDTH = 0;
     private int SCREEN_HEIGHT = 0;
-    private int mWidth = 0;
-    private int mHeight = 0;
+    private final int mWidth = 0;
+    private final int mHeight = 0;
     private static final int INVALID_POINTER = -1;
     public static final int SCROLL_STATE_IDLE = 0;
     public static final int SCROLL_STATE_DRAGGING = 1;
@@ -638,11 +637,8 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
     }
 
     //f(x) = (x-1)^5 + 1
-    private static final Interpolator sQuinticInterpolator = new Interpolator() {
-        @Override
-        public float getInterpolation(float t) {
-            t -= 1.0f;
-            return t * t * t * t * t + 1.0f;
-        }
+    private static final Interpolator sQuinticInterpolator = t -> {
+        t -= 1.0f;
+        return t * t * t * t * t + 1.0f;
     };
 }

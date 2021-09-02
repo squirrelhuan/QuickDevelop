@@ -29,7 +29,7 @@ public class Zprint {
         } else if (className.contains("$")) { //用于内部类的名字解析
             className = className.substring(className.lastIndexOf(".") + 1, className.indexOf("$"));
         } else {
-            className = className.substring(className.lastIndexOf(".") + 1, className.length());
+            className = className.substring(className.lastIndexOf(".") + 1);
         }
 
         StackTraceElement[] s = Thread.currentThread().getStackTrace();
@@ -95,7 +95,7 @@ public class Zprint {
         } else if (className.contains("$")) { //用于内部类的名字解析
             className = className.substring(className.lastIndexOf(".") + 1, className.indexOf("$"));
         } else {
-            className = className.substring(className.lastIndexOf(".") + 1, className.length());
+            className = className.substring(className.lastIndexOf(".") + 1);
         }
         StackTraceElement[] s = Thread.currentThread().getStackTrace();
         for (StackTraceElement value : s) {

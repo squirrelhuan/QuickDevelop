@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +23,14 @@
                 android:text=""
                 android:textColor="@color/black"/>
 
-        </LinearLayout>
-    </ScrollView>
+            <TextView
+                android:id="@+id/tv_cpu_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:text=""
+                android:textColor="@color/black"/>
 
-</RelativeLayout>
+        </LinearLayout>
+
+</cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>

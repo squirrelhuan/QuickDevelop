@@ -85,17 +85,14 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
         } else {
             holder.tv_title.setTextColor(color_normal);
         }
-        holder.tv_title.setText(((TabListViewItem) this.tabListViewItems.get(position)).getItemName());
+        holder.tv_title.setText(this.tabListViewItems.get(position).getItemName());
         holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    int p = (int) v.getTag();
-                    onItemClickListener.onItemClick(v, p);
-                }
-                QDLogger.e("这里是点击每一行item的响应事件", "" + position);
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                int p = (int) v.getTag();
+                onItemClickListener.onItemClick(v, p);
             }
+            QDLogger.e("这里是点击每一行item的响应事件", "" + position);
         });
     }
 

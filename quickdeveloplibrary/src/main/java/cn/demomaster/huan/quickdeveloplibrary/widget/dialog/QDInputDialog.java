@@ -193,7 +193,7 @@ public class QDInputDialog extends AppCompatDialog {
                 button.setText(actionButton.getText());
                 button.setTextSize(text_size_foot);
                 button.setTextColor(text_color_foot);
-                button.setPadding(actionPadding * 3, (int) (actionPadding * 2), actionPadding * 3, (int) (actionPadding * 2));
+                button.setPadding(actionPadding * 3, actionPadding * 2, actionPadding * 3, actionPadding * 2);
                 button.setGravity(Gravity.CENTER);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     //获取selectableItemBackground中对应的attrId
@@ -205,14 +205,11 @@ public class QDInputDialog extends AppCompatDialog {
                     button.setForeground(typedArray.getDrawable(0));
                     typedArray.recycle();
                 }
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (actionButton.getOnClickListener() != null) {
-                            actionButton.getOnClickListener().onClick(QDInputDialog.this,view, TextUtils.isEmpty(textView.getText()) ? null : textView.getText().toString());
-                        } else {
-                            dismiss();
-                        }
+                button.setOnClickListener(view -> {
+                    if (actionButton.getOnClickListener() != null) {
+                        actionButton.getOnClickListener().onClick(QDInputDialog.this,view, TextUtils.isEmpty(textView.getText()) ? null : textView.getText().toString());
+                    } else {
+                        dismiss();
                     }
                 });
 
@@ -255,13 +252,11 @@ public class QDInputDialog extends AppCompatDialog {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             switch ((int) viewGroup.getTag()) {
                 case Gravity.LEFT:
+                case Gravity.RIGHT:
                     layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     break;
                 case Gravity.CENTER:
                     layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-                    break;
-                case Gravity.RIGHT:
-                    layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     break;
             }
             textView.setLayoutParams(layoutParams);
@@ -282,13 +277,11 @@ public class QDInputDialog extends AppCompatDialog {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
             switch ((int) viewGroup.getTag()) {
                 case Gravity.LEFT:
+                case Gravity.RIGHT:
                     layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     break;
                 case Gravity.CENTER:
                     layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-                    break;
-                case Gravity.RIGHT:
-                    layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     break;
             }
             textView.setLayoutParams(layoutParams);

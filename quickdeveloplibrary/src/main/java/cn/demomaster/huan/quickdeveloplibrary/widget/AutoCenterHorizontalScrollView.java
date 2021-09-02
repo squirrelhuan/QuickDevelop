@@ -106,12 +106,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             adapter.registerDataSetObserver(pagerAdapterObserver);
         }
 
-        setOnSelectChangeListener(new OnSelectChangeListener() {
-            @Override
-            public void onSelectChange(int position) {
-                viewPager.setCurrentItem(position);
-            }
-        });
+        setOnSelectChangeListener(position -> viewPager.setCurrentItem(position));
 
         // Finally make sure we reflect the new adapter
         populateFromPagerAdapter();
@@ -185,19 +180,16 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             LinearLayout linearLayout1 = new LinearLayout(getContext());
             linearLayout1.addView(viewHolders.get(i).itemView);
             linearLayout1.setTag(i);
-            linearLayout1.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int index = (int) view.getTag();
-                    if (adapter != null) {
-                        //处理上一个
-                        adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
-                        //处理当前选中的
-                        adapter.onSelectStateChanged(viewHolders.get(index), index, true);//触发选中事件回调
-                        lastIndex = index;
-                    }
-                    smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
+            linearLayout1.setOnClickListener(view -> {
+                int index = (int) view.getTag();
+                if (adapter != null) {
+                    //处理上一个
+                    adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
+                    //处理当前选中的
+                    adapter.onSelectStateChanged(viewHolders.get(index), index, true);//触发选中事件回调
+                    lastIndex = index;
                 }
+                smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
             });
             linearLayout.addView(linearLayout1);
         }
@@ -251,21 +243,18 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
 
     void init() {
         //添加触摸事件，滑动事件会触发
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
-                    touchDown_X = motionEvent.getX();
-                }
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
-                    if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
-                        touchDown_X = motionEvent.getX();
-                        handler.removeCallbacks(scrollerTask);
-                        handler.postDelayed(scrollerTask, delayMillis);
-                    }
-                }
-                return false;
+        this.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
+                touchDown_X = motionEvent.getX();
             }
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
+                if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
+                    touchDown_X = motionEvent.getX();
+                    handler.removeCallbacks(scrollerTask);
+                    handler.postDelayed(scrollerTask, delayMillis);
+                }
+            }
+            return false;
         });
 
         if (getChildCount() <= 0) {
@@ -307,13 +296,13 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     /**
      * Runnable延迟执行的时间
      */
-    private long delayMillis = 100;
+    private final long delayMillis = 100;
     /**
      * 上次滑动left，即x
      */
     private long lastScrollLeft = -1;
     private long nowScrollLeft = -1;
-    private Runnable scrollerTask = new Runnable() {
+    private final Runnable scrollerTask = new Runnable() {
         @Override
         public void run() {
             if ((nowScrollLeft == lastScrollLeft)) {
@@ -341,7 +330,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     /**
      * 用来判断滚动是否滑动
      */
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     String tag = "AutoCenter";
 
     @Override
@@ -402,12 +391,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             int child_width = child.getMeasuredWidth();
             if (i == currentIndex) {
                 offset_target = offset_tmp;
-                this.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        smoothScrollTo(offset_target, 0);
-                    }
-                });
+                this.post(() -> smoothScrollTo(offset_target, 0));
                 return;
             }
             offset_tmp = offset_tmp + child_width;

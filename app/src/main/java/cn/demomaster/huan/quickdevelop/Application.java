@@ -81,7 +81,7 @@ public class Application extends QDApplication {
         return dbHelper;
     }
 
-    public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
+    public final SerialPortFinder mSerialPortFinder = new SerialPortFinder();
     private SerialPort mSerialPort = null;
 
     public SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {

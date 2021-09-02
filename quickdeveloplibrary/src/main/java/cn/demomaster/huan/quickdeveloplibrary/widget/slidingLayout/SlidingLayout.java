@@ -38,7 +38,7 @@ public class SlidingLayout extends FrameLayout {
 
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.stack_sliding_item, this);
-        RecyclerView list = (RecyclerView) findViewById(R.id.list);
+        RecyclerView list = findViewById(R.id.list);
         TextView header = findViewById(R.id.header);
         int[] colors = {Color.RED, Color.GREEN, Color.YELLOW};
         header.setBackgroundColor(colors[(int) (Math.random() * 10 % 3)]);

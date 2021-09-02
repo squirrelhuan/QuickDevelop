@@ -30,7 +30,7 @@ import cn.demomaster.qdrouter_library.view.ImageTextView;
 public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.ViewHolder> {
 
     private List<Class> data;
-    private Context context;
+    private final Context context;
 
     public ComponentAdapter(Context context) {
         this.context = context;
@@ -80,7 +80,7 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
             Annotation[] annotations = clazz.getAnnotations();
             for (Annotation a : annotations) {
                 //如果是@Login注释，则强制转化，并调用username方法，和password方法。
-                if (a != null && a instanceof ActivityPager) {
+                if (a instanceof ActivityPager) {
                     Class preViewClass = ((ActivityPager) a).preViewClass();
                     //final Class activityClass = ((ActivityPager) a).activityClass();
                     String name = ((ActivityPager) a).name();
@@ -114,18 +114,15 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
                             imageView.setImageResource(id);
                             rl_preview.addView(imageView);
                         }
-                        itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                try {
-                                    if (Fragment.class.isAssignableFrom(clazz)) {
-                                        ((QDActivity) context).startFragment((QuickFragment) clazz.newInstance(),R.id.container1,null);
-                                    } else if (Activity.class.isAssignableFrom(clazz)) {
-                                        ((QDActivity) context).startActivity(clazz);
-                                    }
-                                } catch (Exception e) {
-                                    QDLogger.e(e);
+                        itemView.setOnClickListener(v -> {
+                            try {
+                                if (Fragment.class.isAssignableFrom(clazz)) {
+                                    ((QDActivity) context).startFragment((QuickFragment) clazz.newInstance(),R.id.container1,null);
+                                } else if (Activity.class.isAssignableFrom(clazz)) {
+                                    ((QDActivity) context).startActivity(clazz);
                                 }
+                            } catch (Exception e) {
+                                QDLogger.e(e);
                             }
                         });
                     } catch (IllegalAccessException e) {

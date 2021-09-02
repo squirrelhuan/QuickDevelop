@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,18 +64,15 @@ public class SimplePictureActivity extends QDActivity {
         getActionBarTool().getRightView().setText(getResources().getString(R.string.send));
         getActionBarTool().getRightView().setImageResource(0);
         getActionBarTool().getRightView().setTextSize(16);
-        getActionBarTool().getRightView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //拍照完成，返回对应图片路径
-                Intent intent = new Intent();
-                ArrayList<Image> images = mAdapter.getImages();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(PHOTOHELPER_RESULT_PATHES, images);
-                intent.putExtras(bundle);
-                setResult(RESULT_OK, intent);
-                mContext.finish();
-            }
+        getActionBarTool().getRightView().setOnClickListener(view -> {
+            //拍照完成，返回对应图片路径
+            Intent intent = new Intent();
+            ArrayList<Image> images = mAdapter.getImages();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PHOTOHELPER_RESULT_PATHES, images);
+            intent.putExtras(bundle);
+            setResult(RESULT_OK, intent);
+            mContext.finish();
         });
         //getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
         //getActionBarTool().setStateBarColorAuto(true);
@@ -88,7 +86,7 @@ public class SimplePictureActivity extends QDActivity {
 
     private void init() {
         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        PermissionHelper.getInstance().requestPermission(mContext, permission, new PermissionHelper.PermissionListener() {
+        PermissionHelper.requestPermission(mContext, permission, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
                 initView();
@@ -103,47 +101,31 @@ public class SimplePictureActivity extends QDActivity {
 
     private void initView() {
         tv_preview = findViewById(R.id.tv_preview);
-        tv_preview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                previewImage();
-            }
-        });
+        tv_preview.setOnClickListener(v -> previewImage());
         tvFolderName = findViewById(R.id.tv_folder_name);
         tv_preview.setVisibility(View.GONE);
         rl_mark = findViewById(R.id.rl_mark);
         rvImage = findViewById(R.id.recy_picture_grid);
         rvImage.setLayoutManager(mLayoutManager);
-        rl_mark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeFolder();
-            }
-        });
-        tvFolderName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isInitFolder) {
-                    if (isOpenFolder) {
-                        closeFolder();
-                    } else {
-                        openFolder();
-                    }
+        rl_mark.setOnClickListener(v -> closeFolder());
+        tvFolderName.setOnClickListener(v -> {
+            if (isInitFolder) {
+                if (isOpenFolder) {
+                    closeFolder();
+                } else {
+                    openFolder();
                 }
             }
         });
-        PictureManager.loadImageForSDCard(mContext, new PictureManager.DataCallback() {
-            @Override
-            public void onSuccess(ArrayList<Folder> folders1) {
-                mFolders = folders1;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initAdapter();
-                        initFolderList();
-                    }
-                });
-            }
+        PictureManager.loadImageForSDCard(mContext, folders1 -> {
+            mFolders = folders1;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    initAdapter();
+                    initFolderList();
+                }
+            });
         });
     }
 
@@ -208,13 +190,15 @@ public class SimplePictureActivity extends QDActivity {
         if (mFolders != null && !mFolders.isEmpty()) {
             isInitFolder = true;
             rvFolder.setLayoutManager(new LinearLayoutManager(mContext));
+            //设置分隔线
+            //rvFolder.addItemDecoration( new DividerGridItemDecoration(this ));
+            //设置行级分割线使用的divider
+            rvFolder.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+
             FolderAdapter adapter = new FolderAdapter(mContext, mFolders);
-            adapter.setOnFolderSelectListener(new FolderAdapter.OnFolderSelectListener() {
-                @Override
-                public void OnFolderSelect(Folder folder) {
-                    setFolder(folder);
-                    closeFolder();
-                }
+            adapter.setOnFolderSelectListener(folder -> {
+                setFolder(folder);
+                closeFolder();
             });
             rvFolder.setAdapter(adapter);
         }

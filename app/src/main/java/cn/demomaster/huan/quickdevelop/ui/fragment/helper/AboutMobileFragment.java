@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
@@ -36,6 +39,9 @@ public class AboutMobileFragment extends BaseFragment {
     TextView tv_info;
     @BindView(R.id.tv_root_state)
     TextView tv_root_state;
+    @BindView(R.id.tv_cpu_info)
+    TextView tv_cpu_info;
+
     View mView;
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,6 +84,26 @@ public class AboutMobileFragment extends BaseFragment {
         float v0 = DisplayUtil.dip2px(mContext,45);
         float v1 =  getResources().getDimension(cn.demomaster.huan.quickdeveloplibrary.R.dimen.dp_45);
         QDLogger.i("v0="+v0+",v1="+v1);
+        tv_cpu_info.setText("cpu架构:"+getCPUABI());
     }
+
+    public static String getCPUABI() {
+        String CPUABI = "unKnow";
+            try {
+                String os_cpuabi = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("getprop ro.product.cpu.abi").getInputStream())).readLine();
+                if (os_cpuabi.contains("x86")) {
+                    CPUABI = "x86";
+                } else if (os_cpuabi.contains("armeabi-v7a") || os_cpuabi.contains("arm64-v8a")) {
+                    CPUABI = "armeabi-v7a";
+                } else {
+                    CPUABI = "armeabi";
+                }
+                QDLogger.i("os_cpuabi="+os_cpuabi);
+            } catch (Exception e) {
+                CPUABI = "armeabi";
+            }
+        return CPUABI;
+    }
+
 
 }
