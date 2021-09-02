@@ -72,7 +72,6 @@ public class QDDialog extends QDDialog2 {
     public Map<Integer, OnClickActionListener> clickListenerMap = new HashMap<>();
     public QDDialog(Context context) {
         super(context);
-
     }
     View contentLayout;
     public QDDialog(Context context, Builder builder) {

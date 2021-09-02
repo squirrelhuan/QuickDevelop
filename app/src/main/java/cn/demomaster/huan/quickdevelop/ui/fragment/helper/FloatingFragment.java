@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Service;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -118,7 +119,7 @@ public class FloatingFragment extends BaseFragment {
             }
 
             @Override
-            public boolean handRefused(Activity context, PermissionRequest request) {
+            public boolean handRefused(Context context, PermissionRequest request) {
                 //return super.handRefused(context, request);
                 PermissionModel permissionModel = request.getPermissionModelList().get(request.getIndex());
                 switch (permissionModel.getName()) {

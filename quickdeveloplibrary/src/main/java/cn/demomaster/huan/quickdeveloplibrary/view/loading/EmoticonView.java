@@ -38,18 +38,18 @@ public class EmoticonView extends ImageTextView {
         init();
     }
 
-    ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
+  /*  ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             progress = (float) animation.getAnimatedValue();
             invalidate();
         }
-    };
+    };*/
 
     void init() {
         animator = ValueAnimator.ofFloat(0, 1);
         animator.setDuration(duration);
-        animator.addUpdateListener(updateListener);
+        //animator.addUpdateListener(updateListener);
         //animator.setRepeatMode(ValueAnimator.REVERSE);
         //animator.setRepeatCount(ValueAnimator.INFINITE);
         // accelerate_decelerate_interpolator
@@ -227,7 +227,6 @@ public class EmoticonView extends ImageTextView {
     }
 
     private float progress;
-
     public void setStateType(LoadStateType stateType) {
         stateType_target = stateType;
         if (this.stateType != stateType) {
@@ -338,8 +337,8 @@ public class EmoticonView extends ImageTextView {
         if (hideUpdateListener != null) {
             hideUpdateListener = null;
         }
-        if (updateListener != null) {
+        /*if (updateListener != null) {
             updateListener = null;
-        }
+        }*/
     }
 }

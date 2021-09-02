@@ -46,8 +46,6 @@ public class NetWorkChangReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
         
         }
-
     }
-
 
 }

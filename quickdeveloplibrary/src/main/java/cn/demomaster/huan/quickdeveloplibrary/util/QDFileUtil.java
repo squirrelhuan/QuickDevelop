@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -56,7 +57,13 @@ public class QDFileUtil {
         return QDFileUtil.saveBitmap(b, imgPath);
     }
 
-    public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener)//filename是我们的文件全名，包括后缀哦
+    /**
+     *
+     * @param context
+     * @param filename 是文件全名，包括后缀哦
+     * @param listener
+     */
+    public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener)
     {
         MediaScannerConnection.scanFile(context,
                 new String[]{filename}, null, listener);
@@ -79,8 +86,6 @@ public class QDFileUtil {
             b.compress(Bitmap.CompressFormat.JPEG, 100, bos);//代表压缩(100-100)%
             bos.flush();
             bos.close();
-            File file = new File(imgPath);
-            QDLogger.d("save success path:" + imgPath + ",size:" + file.length());
             return imgPath;
         } catch (IOException e) {
             QDLogger.e(e);
@@ -97,9 +102,15 @@ public class QDFileUtil {
      */
     public static void writeFileSdcardFile(String dirPath, String fileName,
                                            String write_str, boolean append) {
-        //Environment.getExternalStorageDirectory(),
-        File file = new File(dirPath + File.separator + fileName);
+        File file = new File(endWithSeparator(dirPath) + fileName);
         writeFileSdcardFile(file, write_str, append);
+    }
+
+    public static String endWithSeparator(String filePath){
+        if(filePath!=null&&!filePath.endsWith(File.separator)){
+            return filePath+File.separator;
+        }
+        return filePath;
     }
 
     public static void writeFileSdcardFile(String fileName,
@@ -144,7 +155,6 @@ public class QDFileUtil {
     }
 
     // 读SD中的文件
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String readFileSdcardFile(File file) {
         if (file == null || !file.exists()) {
             return null;
@@ -155,7 +165,7 @@ public class QDFileUtil {
             int length = fin.available();
             byte[] buffer = new byte[length];
             fin.read(buffer);
-            res = new String(buffer, StandardCharsets.UTF_8);
+            res = new String(buffer, Charset.forName("UTF-8"));
             //res = EncodingUtils.getString(buffer, "UTF-8");
             fin.close();
         } catch (Exception e) {
@@ -195,17 +205,14 @@ public class QDFileUtil {
 
     public static String getFromAssets(Context context, String fileName) {
         InputStream is;
-        String text = "";
+        String text = null;
         try {
             is = context.getResources().getAssets().open(fileName);
             int size = is.available();
-            // Read the entire asset into a local byte buffer.
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-
-            // Convert the buffer into a string.
-            text = new String(buffer, StandardCharsets.UTF_8);
+            text = new String(buffer, Charset.forName("UTF-8"));
         } catch (IOException e) {
             QDLogger.e(e);
         }
@@ -290,19 +297,13 @@ public class QDFileUtil {
             return false;
         }
         // 删除当前目录
-        if (dirFile.delete()) {
-            QDLogger.i(" 除目录:" + filePath + "成功！");
-            return true;
-        } else {
-            return false;
-        }
+        return dirFile.delete();
     }
 
     public static List<File> getEmptyFiles(String rootPath) {
-        List<File> files = new ArrayList<>();
-        //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);
         if (file.isDirectory()) {
+            List<File> files = new ArrayList<>();
             QDLogger.println("正在读取:" + file.getPath());
             if (file.listFiles().length == 0) {
                 QDLogger.println("空文件夹:" + file.getPath());
@@ -312,8 +313,9 @@ public class QDFileUtil {
                     files.addAll(getEmptyFiles(file1.getPath()));
                 }
             }
+            return files;
         }
-        return files;
+        return null;
     }
 
     /**
@@ -409,15 +411,14 @@ public class QDFileUtil {
     }
 
     /**
-     * Asyn文件创建时间
+     * 文件创建时间
      */
-    public static void getFileCreatTime(Context context, final File file, final OnSearchListener listener) {
+    public static void getFileCreatTime(final File file, final OnSearchListener listener) {
         if (file == null || !file.exists()) {
             return;
         }
         String rs = null;
         final StringBuilder sb = new StringBuilder();
-        Process p = null;
         final ADBHelper adbHelper = ADBHelper.getInstance();
         adbHelper.execute(String.format("stat -t %s ", file.getAbsolutePath()), result -> {
             if (result != null && result.getResult() != null) {
@@ -438,15 +439,14 @@ public class QDFileUtil {
     }
 
     /**
-     * Asyn文件创建时间
+     * 文件创建时间
      */
-    public static void getFileCreatTime2(Context context, final File file, final OnSearchListener listener) {
+    public static void getFileCreatTime2(final File file, final OnSearchListener listener) {
         if (file == null || !file.exists()) {
             return;
         }
         String rs = null;
         final StringBuilder sb = new StringBuilder();
-        Process p = null;
         final ADBHelper adbHelper = ADBHelper.getInstance();
         adbHelper.execute(String.format("ls -l %s ", file.getParentFile().getAbsolutePath()), result -> {
             QDLogger.i(result.getResult());
@@ -526,7 +526,6 @@ public class QDFileUtil {
         void onResult(QDFile qdFile);
     }
 
-
     /**
      * 通过反射调用获取内置存储和外置sd卡根路径(通用)
      *
@@ -561,17 +560,7 @@ public class QDFileUtil {
     }
 
     /**
-     * 获取内置SD卡路径
-     *
-     * @return
-     */
-    public static String getInnerSDCardPath() {
-        return Environment.getExternalStorageDirectory().getPath();
-    }
-
-    /**
      * 获取存储路径
-     *
      * @return 所有可用于存储的不同的卡的位置，用一个List来保存
      */
     public static List<String> getExtSDCardPathList() {
@@ -825,8 +814,8 @@ public class QDFileUtil {
      */
     public static String formatFileSize(long size, boolean isInteger) {
         DecimalFormat df = isInteger ? fileIntegerFormat : fileDecimalFormat;
-        String fileSizeString = "0M";
-        if (size < 1024 && size > 0) {
+        String fileSizeString;
+        if (size < 1024 && size >= 0) {
             fileSizeString = df.format((double) size) + "B";
         } else if (size < 1024 * 1024) {
             fileSizeString = df.format((double) size / 1024) + "K";
@@ -848,7 +837,6 @@ public class QDFileUtil {
 
     /**
      * 获取手机内部剩余存储空间
-     *
      * @return
      */
     public static long getAvailableInternalMemorySize() {
@@ -861,7 +849,6 @@ public class QDFileUtil {
 
     /**
      * 获取手机内部总的存储空间
-     *
      * @return
      */
     public static long getTotalInternalMemorySize() {
@@ -874,7 +861,6 @@ public class QDFileUtil {
 
     /**
      * 获取SDCARD剩余存储空间
-     *
      * @return
      */
     public static long getAvailableExternalMemorySize() {
@@ -891,7 +877,6 @@ public class QDFileUtil {
 
     /**
      * 获取SDCARD总的存储空间
-     *
      * @return
      */
     public static long getTotalExternalMemorySize() {
@@ -908,7 +893,6 @@ public class QDFileUtil {
 
     /**
      * 获取系统总内存
-     *
      * @param context 可传入应用程序上下文。
      * @return 总内存大单位为B。
      */

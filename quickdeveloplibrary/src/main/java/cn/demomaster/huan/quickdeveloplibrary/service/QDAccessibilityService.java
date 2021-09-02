@@ -3,7 +3,10 @@ package cn.demomaster.huan.quickdeveloplibrary.service;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -15,6 +18,7 @@ import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
+import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
 
 /**
  * 无障碍辅助服务
@@ -170,7 +174,13 @@ public class QDAccessibilityService extends AccessibilityService {
     }
 
     //跳转系统自带界面 辅助功能界面
-    public static void startSettintActivity(Activity context) {
+    public static void startSettintActivity(Context context) {
+
+        /*Intent intent = new Intent(context, DialogWindowActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("permission", Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
+        intent.putExtras(bundle);
+        (context).startActivity(intent);*/
         PermissionHelper.requestPermission(context,
                 new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, null);
     }

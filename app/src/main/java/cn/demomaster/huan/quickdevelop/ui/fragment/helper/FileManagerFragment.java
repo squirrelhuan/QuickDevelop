@@ -148,11 +148,10 @@ public class FileManagerFragment extends BaseFragment {
         File file = new File(path);
         QDFileUtil.createFile(file);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-        getFileCreatTime(mContext, file, qdFile -> {
+        getFileCreatTime(file, qdFile -> {
             if (qdFile != null) {
-                //Date date1 = new Date(System.currentTimeMillis());
                 Date date = new Date(qdFile.getModifyTime());
-                QDLogger.e("文件创建时间：" + simpleDateFormat.format(date));
+                QDLogger.e("文件修改时间：" + simpleDateFormat.format(date));
             }
         });
     }

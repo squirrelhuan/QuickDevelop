@@ -50,7 +50,6 @@ public class ExeCommandFragment extends BaseFragment {
     @BindView(R.id.btn_send)
     QDButton btn_send;
 
-
     //@BindView(R.id.ll_console)
     //LinearLayout ll_console;
     /*@BindView(R.id.tv_console)

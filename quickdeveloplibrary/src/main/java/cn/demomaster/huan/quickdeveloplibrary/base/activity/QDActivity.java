@@ -50,7 +50,6 @@ public class QDActivity extends QuickActivity {
         getWindow().setAttributes(attrs);
     }
 
-
     /**
      * 点击空白区域隐藏键盘.
      */

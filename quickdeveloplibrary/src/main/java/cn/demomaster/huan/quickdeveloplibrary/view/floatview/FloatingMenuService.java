@@ -62,8 +62,10 @@ public class FloatingMenuService extends QDFloatingService2 {
         layoutParams.height = layoutParams.width;//ViewGroup.LayoutParams.WRAP_CONTENT;
         this.windowManager = windowManager;
         windowManager.addView(view, layoutParams);
-        view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
+        floatingOnTouchListener = new QDFloatingService.FloatingOnTouchListener(view);
+        view.setOnTouchListener(floatingOnTouchListener);
     }
+    QDFloatingService.FloatingOnTouchListener floatingOnTouchListener;
 
     static boolean buttonEnable = true;
 
@@ -84,6 +86,13 @@ public class FloatingMenuService extends QDFloatingService2 {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(floatingOnTouchListener!=null){
+            floatingOnTouchListener.onRelease();
+        }
+        if(menuView!=null){
+            menuView.setOnTouchListener(null);
+            menuView.onRelease();
+        }
         removeView(view);
     }
 }

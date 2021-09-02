@@ -177,7 +177,6 @@ public final class ToastCompat extends Toast {
         return toast;
     }
 
-
     private static void setContextCompat(@NonNull View view, @NonNull Context context) {
         if (Build.VERSION.SDK_INT == 25) {
             try {

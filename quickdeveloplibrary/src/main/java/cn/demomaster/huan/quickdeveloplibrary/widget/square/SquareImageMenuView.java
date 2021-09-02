@@ -40,6 +40,7 @@ import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 import static android.content.Context.WINDOW_SERVICE;
 import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
@@ -47,7 +48,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TA
 /**
  * 正方形的ImageView
  */
-public class SquareImageMenuView extends View {
+public class SquareImageMenuView extends View implements OnReleaseListener {
 
     public SquareImageMenuView(Context context) {
         super(context);
@@ -113,7 +114,6 @@ public class SquareImageMenuView extends View {
 
     /**
      * 执行动作
-     *
      * @param type
      */
     public void doAction(int type) {
@@ -129,7 +129,7 @@ public class SquareImageMenuView extends View {
         }
         if (!AccessibilityHelper.isEnable(getContext(), QDAccessibilityService.class)) {
             //跳转系统自带界面 辅助功能界面
-            QDAccessibilityService.startSettintActivity((Activity) getContext());
+            QDAccessibilityService.startSettintActivity(getContext());
             return;
         }
         if (AccessibilityHelper.getService() == null) {
@@ -195,9 +195,15 @@ public class SquareImageMenuView extends View {
     }
 
     WindowManager windowManager;
-
     public void setWindowManager(WindowManager windowManager) {
         this.windowManager = windowManager;
+    }
+
+    @Override
+    public void onRelease() {
+        if (animator != null) {
+            animator.cancel();
+        }
     }
 
     public interface OnClickListener {
@@ -205,7 +211,6 @@ public class SquareImageMenuView extends View {
     }
 
     Map<Integer, Point> pointMap = new HashMap<>();
-
     public class OnTouchListener implements View.OnTouchListener {
         private int x;
         private int y;
@@ -434,6 +439,9 @@ public class SquareImageMenuView extends View {
         if (animator != null) {
             animator.cancel();
             animator = null;
+        }
+        if(handler!=null) {
+            handler.removeCallbacks(runnable);
         }
     }
 }

@@ -17,16 +17,14 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.keybored.QDKeyboard;
-
+import cn.demomaster.huan.quickdeveloplibrary.view.keybored.QuickKeyboard;
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "Keyboard", preViewClass = TextView.class, resType = ResType.Custome)
 public class KeyboardFragment extends BaseFragment {
-
 
     //Components
     @BindView(R.id.et_system_none)
@@ -55,13 +53,12 @@ public class KeyboardFragment extends BaseFragment {
         return mView;
     }
 
-    private QDKeyboard qdKeyboard;
-
+    private QuickKeyboard qdKeyboard;
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        setTitle("键盘");
+        setTitle("键盘1");
 
-        qdKeyboard = new QDKeyboard(mContext);
+        qdKeyboard = new QuickKeyboard(mContext);
         qdKeyboard.addEditText(et_custom_none);
         qdKeyboard.addEditText(et_custom_number);
         qdKeyboard.addEditText(et_custom_numberPassword);
@@ -72,7 +69,6 @@ public class KeyboardFragment extends BaseFragment {
         qdKeyboard.addEditText(et_system_number);
         qdKeyboard.addEditText(et_system_numberPassword);*/
     }
-
 
     // 如果是activity 当点击返回键时, 如果软键盘正在显示, 则隐藏软键盘并是此次返回无效
    /* @Override

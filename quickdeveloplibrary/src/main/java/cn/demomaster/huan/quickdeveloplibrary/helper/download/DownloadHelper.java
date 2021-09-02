@@ -80,17 +80,20 @@ public class DownloadHelper {
      */
     public void downloadFile(DownloadTask downloadTask) {
         final long startTime = System.currentTimeMillis();
-        QDLogger.i("DOWNLOAD", "开始下载：" + downloadTask.getDownloadUrl());
 
         //获取要下载的文件存放路径
         String download_app_folder_name = downloadTask.getDirectoryPath();
-        QDLogger.i("下载文件存放路径：" + download_app_folder_name + "，文件名：" + downloadTask.getFileName());
+        QDLogger.i("开始下载:" + downloadTask.getDownloadUrl()+"\n,文件存放路径:" + download_app_folder_name + ",文件名:" + downloadTask.getFileName());
 
         // 储存下载文件的目录
         String downloadDirectory = (download_app_folder_name.startsWith(File.separator) ? download_app_folder_name : (File.separator + download_app_folder_name));
+
+        //QDLogger.i("downloadDirectory:" +downloadDirectory);
         QDFileUtil.createDir(downloadDirectory);
         String downFilePath = downloadDirectory + File.separator + downloadTask.getFileName();
         downloadTask.setSavePath(downFilePath);
+        //QDLogger.i("downFilePath:" +downFilePath);
+
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(downloadTask.getDownloadUrl()).build();
         Call call = okHttpClient.newCall(request);

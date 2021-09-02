@@ -19,13 +19,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
-/**
- * Created by Administrator on 2018/3/7 0007.
- */
-
 public class QDKeyboardView extends KeyboardView {
-
-    private static final String TAG = "QDKeyboardView";
     private boolean isCap;
     private Drawable delDrawable;
     private Drawable lowDrawable;
@@ -125,7 +119,6 @@ public class QDKeyboardView extends KeyboardView {
                         labelTextSize = (int) field.get(this);
                     } catch (Exception e) {
                         QDLogger.e(e);
-                        QDLogger.e(e == null ? "e=null" : e.toString());
                     }
                     paint.setTextSize(labelTextSize);
                     paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -137,7 +130,6 @@ public class QDKeyboardView extends KeyboardView {
                         keyTextSize = (int) field.get(this);
                     } catch (Exception e) {
                         QDLogger.e(e);
-                        QDLogger.e(e == null ? "e=null" : e.toString());
                     }
                     paint.setTextSize(keyTextSize);
                     paint.setTypeface(Typeface.DEFAULT);
@@ -177,7 +169,6 @@ public class QDKeyboardView extends KeyboardView {
             }
         } catch (Exception e) {
             QDLogger.e(e);
-            QDLogger.e(e == null ? "e=null" : e.toString());
         }
     }
 

@@ -24,7 +24,7 @@ public class LoadingActivity extends BaseActivity {
         sv_loading.setStateType(LoadStateType.LOADING);
 
         ViewTreeObserver.OnDrawListener onParentViewDrawListener = () -> {
-            QDLogger.println("viewParent重绘");
+            //QDLogger.println("viewParent重绘");
             //invalidate();
         };
         //view重绘时回调

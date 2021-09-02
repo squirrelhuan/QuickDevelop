@@ -11,7 +11,7 @@ import android.view.animation.TranslateAnimation;
 public class TinyAnimation {
 
     public static void payRandomAnimition(View targetView) {
-        if (targetView!=null&&targetView.getParent() != null && targetView.getParent() instanceof View) {
+        if (targetView!=null&& targetView.getParent() instanceof View) {
             View parentView = (View) targetView.getParent();
             // 组合动画设置
             AnimationSet setAnimation = new AnimationSet(true);

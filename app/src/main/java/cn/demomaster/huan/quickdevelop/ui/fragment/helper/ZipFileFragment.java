@@ -25,6 +25,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
@@ -112,11 +113,10 @@ public class ZipFileFragment extends BaseFragment {
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-        getFileCreatTime(mContext, file, qdFile -> {
+        getFileCreatTime(file, qdFile -> {
             if (qdFile != null) {
-                //Date date1 = new Date(System.currentTimeMillis());
                 Date date = new Date(qdFile.getModifyTime());
-                QDLogger.e("-------------------------" + simpleDateFormat.format(date));
+                QDLogger.println("修改时间：" + simpleDateFormat.format(date));
             }
         });
     }

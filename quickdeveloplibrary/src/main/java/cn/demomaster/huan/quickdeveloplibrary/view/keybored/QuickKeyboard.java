@@ -30,57 +30,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil.getActivityFromView;
 
-public class QDKeyboard {
-    private static final String TAG = "QDKeyboard";
-    private Context mContext;               //上下文
-    //private LinearLayout layout;
-    private View keyContainer;              //自定义键盘的容器View
+public class QuickKeyboard {
+    private static final String TAG = QuickKeyboard.class.getName();
+    private final Activity mContext;               //上下文
     private QDKeyboardView keyboardView;  //键盘的View
     private Keyboard keyboard;        //数字键盘
-    private Keyboard keyboardNumber;        //数字键盘
-    private Keyboard keyboardNumber_Only;        //数字键盘
-    private Keyboard keyboardLetter;        //字母键盘
-    private Keyboard keyboardLetter_Only;        //字母键盘
-    private Keyboard keyboardSymbol;        //符号键盘
-    private Keyboard keyboardSymbol_Only;        //符号键盘
     private static boolean isCapes = false;
-    private boolean isOpening = false;
-    private boolean isClosing = false;
     private int keyboardType = 1;
     private Drawable delDrawable;
     private Drawable lowDrawable;
     private Drawable upDrawable;
-    private int keyboardContainerResId;
-    private int keyboardResId;
+    private final int keyboardContainerResId;
 
     private EditText mEditText;
     public List<EditText> editTextList;
 
-    public QDKeyboard(Activity mContext) {
+    public QuickKeyboard(Activity mContext) {
         this.mContext = mContext;
         this.keyboardContainerResId = R.layout.layout_keyboard_containor;
+        onFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                hideSystemKeyBoard((EditText) v);
+                //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    setCurrentFocus((EditText) v);
+                    showKeyboard();
+                } else {//如果新的焦点不使用自定义键盘则隐藏
+                    waitHideKeyboard();
+                }
+            }
+        };
+        onTouchListener = (v, event) -> {
+            hideSystemKeyBoard((EditText) v);
+            if (event.getAction() == MotionEvent.ACTION_UP && v.hasFocus() && v.isFocused()) {
+                showKeyboard();
+            }
+            return false;
+        };
+
         initKeyboard();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     private void initKeyboard() {
         //解决onresume系统输入法重新弹出，遗留的问题就是不能根据焦点自动弹出输入框了
-        ((Activity) mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        keyContainer = LayoutInflater.from(mContext).inflate(keyboardContainerResId, null, false);
-        keyboardResId = keyContainer.findViewById(R.id.safeKeyboardLetter).getId();
-        keyboard = new Keyboard(mContext, R.xml.keyboard_num);            //实例化数字键盘
-        keyboardNumber = new Keyboard(mContext, R.xml.keyboard_num);            //实例化数字键盘
-        keyboardNumber_Only = new Keyboard(mContext, R.xml.keyboard_num_only);            //实例化数字键盘
-        keyboardLetter = new Keyboard(mContext, R.xml.keyboard_letter);         //实例化字母键盘
-        keyboardLetter_Only = new Keyboard(mContext, R.xml.keyboard_letter);         //实例化字母键盘
-        keyboardSymbol = new Keyboard(mContext, R.xml.keyboard_symbol);         //实例化符号键盘
-        keyboardSymbol_Only = new Keyboard(mContext, R.xml.keyboard_symbol);         //实例化符号键盘
+        mContext.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //自定义键盘的容器View
+        View keyContainer = LayoutInflater.from(mContext).inflate(keyboardContainerResId, null, false);
+        int keyboardResId = keyContainer.findViewById(R.id.safeKeyboardLetter).getId();
+        keyboard = new Keyboard(mContext, R.xml.keyboard_num);
         keyboardView = keyContainer.findViewById(keyboardResId);
         keyboardView.setDelDrawable(delDrawable);
         keyboardView.setLowDrawable(lowDrawable);
@@ -89,50 +96,32 @@ public class QDKeyboard {
         keyboardView.setEnabled(true);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(listener);
-       /* keyContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                keyContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                if (keyContainerHeight == -1) {
-                    //获取键盘的高度
-                    int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                    int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                    keyContainer.measure(w, h);
-                    keyContainerHeight = keyContainer.getHeight();
-                    //第一次展示时候高度才确定，要重新关闭再展示一下
-                    hideKeyboard();
-                    showKeyboard();
-                }
-            }
-        });*/
-
         ImageView iv_keyboardDone = keyContainer.findViewById(R.id.iv_keyboardDone);
-        Drawable hideDrawable = ResourcesCompat.getDrawable(mContext.getResources(),R.drawable.ic_keyboard_hide_black_24dp,null);
+        Drawable hideDrawable = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.ic_keyboard_hide_black_24dp, null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             hideDrawable.setTint(mContext.getResources().getColor(R.color.transparent_light_cc));
         }
         iv_keyboardDone.setImageDrawable(hideDrawable);
         iv_keyboardDone.setOnClickListener(v -> hideKeyboard());
 
-        qdTipPopup = new QDPopup(keyContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        qdTipPopup.setFocusable(false);
-        qdTipPopup.setTouchable(true);
-        qdTipPopup.setAnimationStyle(R.style.keybored_anim);
-        qdTipPopup.setOnDismissListener(() -> {
-            WindowManager.LayoutParams lp = getActivityFromView(mEditText).getWindow().getAttributes();
-            lp.alpha = 1f;
-            getActivityFromView(mEditText).getWindow().setAttributes(lp);
-            contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
-            mDecorView = (View) contentView.getParent();
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
-            layoutParams.bottomMargin = 0;
-            layoutParams.topMargin = 0;
-            mDecorView.setLayoutParams(layoutParams);
-        });
-
         setDelDrawable(mContext.getResources().getDrawable(R.drawable.icon_del));
         setLowDrawable(mContext.getResources().getDrawable(R.drawable.icon_capital_default));
         setUpDrawable(mContext.getResources().getDrawable(R.drawable.icon_capital_selected));
+
+        creatPopWindow(keyContainer);
+    }
+
+    /**
+     * 判断焦点是否被其他editview获取了
+     * @return
+     */
+    private boolean ortherViewGetFocusState() {
+        for (EditText editText: editTextList) {
+            if(editText.isFocused()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeEditText(EditText editText) {
@@ -143,7 +132,6 @@ public class QDKeyboard {
             return;
         }
         if (editTextList.contains(editText)) {
-            //QDLogger.d("contains=true");
             editText.setOnTouchListener(null);
             editText.setOnFocusChangeListener(null);
             editText.clearFocus();
@@ -166,8 +154,6 @@ public class QDKeyboard {
         setCurrentFocus(editText);
     }
 
-    private int currentEditKey;
-
     /**
      * 设置默认获取焦点的editText
      *
@@ -175,53 +161,18 @@ public class QDKeyboard {
      */
     private void setCurrentFocus(EditText editText) {
         mEditText = editText;
+        setFocusListener();
+    }
+
+    View.OnFocusChangeListener onFocusChangeListener;
+    View.OnTouchListener onTouchListener;
+    private void setFocusListener() {
         for (int i = 0; i < editTextList.size(); i++) {
-            if (editTextList.get(i) == editText) {
-                editTextList.get(i).setOnTouchListener((v, event) -> {
-                    hideSystemKeyBoard((EditText) v);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if ((isClosed || isClosing)) {
-                            currentEditKey = v.getId();
-                            showKeyboard();
-                        }
-                    }
-                    return false;
-                });
-                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
-                    hideSystemKeyBoard((EditText) v);
-                    //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
-                    if (hasFocus) {
-                        if ((isClosed || isClosing)) {
-                            currentEditKey = v.getId();
-                            showKeyboard();
-                        }
-                    } else {//如果新的焦点不使用自定义键盘则隐藏
-                        if (currentEditKey == 0 || currentEditKey == v.getId()) {
-                            waitHideKeyboard();
-                        }
-                    }
-                });
-            } else {
-                editTextList.get(i).setOnTouchListener(null);
-                editTextList.get(i).setOnFocusChangeListener((v, hasFocus) -> {
-                    hideSystemKeyBoard((EditText) v);
-                    //QDLogger.d(v.getId() + (hasFocus ? "得到焦点" : "失去焦点"));
-                    if (hasFocus) {
-                        // 此处为得到焦点时的处理内容
-                        setCurrentFocus((EditText) v);
-                        if ((isClosed || isClosing)) {
-                            currentEditKey = v.getId();
-                            showKeyboard();
-                        }
-                    } else {//如果新的焦点不使用自定义键盘则隐藏
-                        if (currentEditKey == 0 || currentEditKey == v.getId()) {
-                            waitHideKeyboard();
-                        }
-                    }
-                });
-            }
+            editTextList.get(i).setOnTouchListener(onTouchListener);
+            editTextList.get(i).setOnFocusChangeListener(onFocusChangeListener);
         }
     }
+
 
     /**
      * 延迟隐藏
@@ -231,15 +182,10 @@ public class QDKeyboard {
     private void waitHideKeyboard() {
         View v = getActivityFromView(mEditText).getCurrentFocus();
         //v=((Activity) getActivityFromView( mEditText)).getWindow().getDecorView().findFocus();
-        QDLogger.println(v == null ? "null" : v.toString() + v.getId());
         if (v == null || !editTextList.contains(v)) {
             hideKeyboard();
         }
     }
-
-    private boolean isOpened = false;
-    private boolean isClosed = true;
-    // float keyContainerHeight = -1;
 
     /**
      * 根据输入类型锁定对应的键盘
@@ -248,21 +194,51 @@ public class QDKeyboard {
         //字母 case 1: keyboardView.setKeyboard(keyboardLetter);
         //符号 case 2: keyboardView.setKeyboard(keyboardSymbol);
         //数字 case 3: keyboardView.setKeyboard(keyboardNumber);
-        switch (mEditText.getInputType()) {
+
+       /* Keyboard keyboardNumber;        //数字键盘
+        Keyboard keyboardSymbol;        //符号键盘
+        keyboardNumber = new Keyboard(mContext, R.xml.keyboard_num);            //实例化数字键盘
+         keyboardSymbol = new Keyboard(mContext, R.xml.keyboard_symbol);         //实例化符号键盘
+        */
+        QDLogger.println("mEditText.getInputType()="+mEditText.getInputType());
+        switchKeyboard(mEditText.getInputType());
+    }
+
+    /**
+     * 切换到指定 键盘
+     *
+     * @param keyboardType
+     */
+    public void switchKeyboard(int keyboardType) {
+        keyboardView.setKeyboard(getKeyboardView(keyboardType));
+    }
+
+    public Keyboard getKeyboardView(int keyboardType) {
+        switch (keyboardType) {
             case InputType.TYPE_CLASS_NUMBER://数字
             case InputType.TYPE_CLASS_PHONE:
             case InputType.TYPE_NUMBER_VARIATION_PASSWORD:
+            case 18://inputType="numberPassword"
             case InputType.TYPE_NUMBER_VARIATION_NORMAL:
             case InputType.TYPE_NUMBER_FLAG_DECIMAL:
-                keyboardView.setKeyboard(keyboardNumber_Only);
-                break;
+                return new Keyboard(mContext, R.xml.keyboard_num_only);
             default:
-                keyboardView.setKeyboard(keyboardLetter);
-                break;
+                return new Keyboard(mContext, R.xml.keyboard_letter);//实例化字母键盘
         }
     }
 
-    public QDPopup qdTipPopup;
+    public QDPopup mPopWindow;
+
+    public QDPopup creatPopWindow(View keyContainer) {
+        if (mPopWindow == null) {
+            mPopWindow = new QDPopup(keyContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mPopWindow.setFocusable(false);
+            mPopWindow.setTouchable(true);
+            mPopWindow.setAnimationStyle(R.style.keybored_anim);
+        }
+        return mPopWindow;
+    }
+
     // 设置键盘点击监听
     private KeyboardView.OnKeyboardActionListener listener = new KeyboardView.OnKeyboardActionListener() {
         @Override
@@ -274,8 +250,8 @@ public class QDKeyboard {
                 keyboardView.setPreviewEnabled(false);
             } else {
                 keyboardView.setPreviewEnabled(true);
-                    keyboardView.setPreviewEnabled(!(primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
-                            || primaryCode == 100860 || primaryCode == -35));
+                keyboardView.setPreviewEnabled(!(primaryCode == -1 || primaryCode == -5 || primaryCode == 32 || primaryCode == -2
+                        || primaryCode == 100860 || primaryCode == -35));
             }
             //关闭所有按压预览
             keyboardView.setPreviewEnabled(false);
@@ -314,24 +290,21 @@ public class QDKeyboard {
                     // 大小写切换
                     changeKeyboardLetterCase();
                     // 重新setKeyboard, 进而系统重新加载, 键盘内容才会变化(切换大小写)
-                    keyboardType = 1;
-                    switchKeyboard();
+                    switchKeyboard(keyboardType);
                 } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE) {
                     // 数字与字母键盘互换
                     if (keyboardType == 3) { //当前为数字键盘
-                        keyboardType = 1;
-                    } else {        //当前不是数字键盘
-                        keyboardType = 3;
+                        switchKeyboard(1);//切换为字母键
+                    } else {//当前不是数字键盘
+                        switchKeyboard(3);//切换为数字键
                     }
-                    switchKeyboard();
                 } else if (primaryCode == 100860) {
                     // 字母与符号切换
                     if (keyboardType == 2) { //当前是符号键盘
-                        keyboardType = 1;
-                    } else {        //当前不是符号键盘, 那么切换到符号键盘
-                        keyboardType = 2;
+                        switchKeyboard(1);//切换到字母键
+                    } else {//当前不是符号键盘, 那么切换到符号键盘
+                        switchKeyboard(2);//切换到符号键
                     }
-                    switchKeyboard();
                 } else {
                     // 输入键盘值
                     // editable.insert(start, Character.toString((char) primaryCode));
@@ -365,39 +338,20 @@ public class QDKeyboard {
         }
     };
 
-    private void switchKeyboard() {
-        switch (keyboardType) {
-            case 1:
-                keyboardView.setKeyboard(keyboardLetter);
-                break;
-            case 2:
-                keyboardView.setKeyboard(keyboardSymbol);
-                break;
-            case 3:
-                keyboardView.setKeyboard(keyboardNumber);
-                break;
-            default:
-                Log.e(TAG, "ERROR keyboard type");
-                break;
-        }
-    }
-
     private void changeKeyboardLetterCase() {
         List<Keyboard.Key> keyList = keyboard.getKeys();
-        if (isCapes) {
-            for (Keyboard.Key key : keyList) {
-                if (key.label != null && StringUtil.isUpCaseLetter(key.label.toString())) {
-                    key.label = key.label.toString().toLowerCase();
-                    QDLogger.println("key.codes[0]="+key.codes[0]);
-                    key.codes[0] += 32;
-                }
-            }
-        } else {
-            for (Keyboard.Key key : keyList) {
-                if (key.label != null && StringUtil.isLowCaseLetter(key.label.toString())) {
-                    key.label = key.label.toString().toUpperCase();
-                    QDLogger.println("key.codes222[0]="+key.codes[0]);
-                    key.codes[0] -= 32;
+        for (Keyboard.Key key : keyList) {
+            if (key.label != null) {
+                if (isCapes) {
+                    if (StringUtil.isUpCaseLetter(key.label.toString())) {
+                        key.label = key.label.toString().toLowerCase();
+                        key.codes[0] += 32;
+                    }
+                } else {
+                    if (StringUtil.isLowCaseLetter(key.label.toString())) {
+                        key.label = key.label.toString().toUpperCase();
+                        key.codes[0] -= 32;
+                    }
                 }
             }
         }
@@ -406,64 +360,26 @@ public class QDKeyboard {
     }
 
     public void hideKeyboard() {
-        qdTipPopup.dismiss();
-        /*if (isOpened || isOpening) {
-            isClosing = true;
-            isOpening = false;
-            animator.reverse();
-        }*/
+        mPopWindow.dismiss();
     }
 
-    View contentView;
-    View mDecorView;
     private void showKeyboard() {
         //qdTipPopup.showAsDropDown(mEditText,0,0,Gravity.BOTTOM);
         switchKeyboardByInputType();
-        if (qdTipPopup.isShowing()) {
+        if (mPopWindow.isShowing()) {
             return;
         }
-        /*contentView = getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content);
-        mDecorView = (View) contentView.getParent();
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mDecorView.getLayoutParams();
-        layoutParams.bottomMargin = getEditorBottomY();
-        layoutParams.topMargin = -getEditorBottomY();
-        mDecorView.setLayoutParams(layoutParams);*/
         IBinder iBinder = mEditText.getWindowToken();
         if (iBinder != null && !getActivityFromView(mEditText).isFinishing()) {
             if (!getActivityFromView(mEditText).isFinishing()) {
-                qdTipPopup.showAtLocation(getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
+                mPopWindow.showAtLocation(getActivityFromView(mEditText).getWindow().getDecorView().findViewById(android.R.id.content), Gravity.BOTTOM, 0,
                         0);
             }
         }
-        /*keyContainer.setFocusable(true);
-        keyContainer.setFocusableInTouchMode(true);
-        keyContainer.requestFocus();*/
-        /*keyboardView.setKeyboard(keyboardLetter);
-        if (isClosed || isClosing) {
-            isOpening = true;
-            isClosing = false;
-            keyContainer.setVisibility(View.VISIBLE);
-            startAnimation();
-        }*/
     }
 
-
-    /**
-     * 获取需要向上调整的布局高度
-     *
-     * @return
-     */
-/*    private int getEditorBottomY() {
-        int[] location = new int[2];
-        mEditText.getLocationOnScreen(location);
-        int x = location[0];
-        int y = location[1];
-        int d = DisplayUtil.getScreenHeight(getActivityFromView( mEditText)) - y - mEditText.getHeight();
-        return d > keyContainerHeight ? 0 : (int) (keyContainerHeight - d);
-    }*/
-   
     public boolean isShow() {
-        return isOpening || isOpened;
+        return (mPopWindow != null && mPopWindow.isShowing());
     }
 
     //隐藏系统键盘关键代码
@@ -472,7 +388,7 @@ public class QDKeyboard {
         InputMethodManager imm = (InputMethodManager) this.mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null)
             return;
-        boolean isOpen = imm.isActive();
+        //boolean isOpen = imm.isActive();
         //QDLogger.i("isOpen=" + isOpen);
         imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 
@@ -574,51 +490,4 @@ public class QDKeyboard {
                 break;
         }
     }
-
-    // public void dispatchTouchEvent(MotionEvent me) {
-    //QDLogger.i("me.getAction()=" + me.getAction());
-       /* if(keyContainer==null||keyContainer.getHeight()==0){
-            return;
-        }
-        int[] location = new int[2];
-        keyContainer.getLocationOnScreen(location);
-        int x = location[0];
-        int y = location[1];
-        if(me.getY()>y){
-            onTouchListener.onTouch(keyContainer,null);
-        }*/
-        /*if (me.getAction() == MotionEvent.ACTION_DOWN) {  //把操作放在用户点击的时候
-            View v = activity.getCurrentFocus();      //得到当前页面的焦点,ps:有输入框的页面焦点一般会被输入框占据
-            if (isShouldHideKeyboard(v, me) && !isKeyboard(v)) { //判断用户点击的是否是输入框以外的区域
-                QDLogger.i("isShouldHideKeyboard="+me.getAction());
-                if (editTextList.contains(v)) {
-                    QDLogger.i("contains="+v.getClass().getName());
-                    if (isShow()) {
-                        hideKeyboard();
-                    }
-                }
-            }
-        }*/
-    // }
-
-
- /*   private boolean isKeyboard(View v) {
-        return validateParent(v);
-    }
-
-    private boolean validateParent(View v) {
-        if (v != null) {
-            if ((v.getId()) == layout.getId()) {
-                return true;
-            } else {
-                if (v.getParent() != null) {
-                    if (v.getParent() instanceof View) {
-                        return validateParent((View) v.getParent());
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
-
 }

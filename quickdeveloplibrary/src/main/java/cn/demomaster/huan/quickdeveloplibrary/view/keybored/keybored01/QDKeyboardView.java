@@ -19,10 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 
-/**
- * Created by Administrator on 2018/3/7 0007.
- */
-
 public class QDKeyboardView extends KeyboardView {
     private static final String TAG = "QDKeyboardView";
     private boolean isCap;

@@ -83,5 +83,10 @@
         <cn.demomaster.huan.quickdeveloplibrary.view.loading.QdLoadingView
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"/>
+
+        <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleView2
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/black"/>
     </cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout>
 </LinearLayout>

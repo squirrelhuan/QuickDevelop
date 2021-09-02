@@ -55,6 +55,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
         timeDomainPlotView.setLinePoints(listLinkedHashMap);
         iv_drag = view.findViewById(R.id.iv_drag);
+        onTouchListener = new QDFloatingService.FloatingOnTouchListener(iv_drag);
         iv_drag.setOnTouchListener(onTouchListener);
         iv_logo = view.findViewById(R.id.iv_logo);
         iv_logo.setImageDrawable(QDAppInfoUtil.getAppIconDrawable(mcontext));
@@ -87,7 +88,8 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         layoutParams.height = 500;
         this.windowManager = windowManager;
         windowManager.addView(view, layoutParams);
-        view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
+        onTouchListener1 = new QDFloatingService.FloatingOnTouchListener(view);
+        view.setOnTouchListener(onTouchListener1);
     }
 
     private static final Handler handler = new Handler();
@@ -102,7 +104,9 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         }
     };
 
-    int drag_X;
+    public QDFloatingService.FloatingOnTouchListener onTouchListener1;
+    public QDFloatingService.FloatingOnTouchListener onTouchListener;
+    /*int drag_X;
     int drag_Y;
     public View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
@@ -131,20 +135,20 @@ public class LifecycleFloatingService extends QDFloatingService2 {
                     updateViewLayout(view, width, height);
                     break;
                 case MotionEvent.ACTION_UP:
-                    /*endTime = System.currentTimeMillis();
+                    *//*endTime = System.currentTimeMillis();
                     //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
                     if ((endTime - startTime) > 0.15 * 1000L) {
                         isclick = true;
                     } else {
                         isclick = false;
-                    }*/
+                    }*//*
                     break;
                 default:
                     break;
             }
             return true;
         }
-    };
+    };*/
 
     @Override
     public PointF getOriginPoint() {
@@ -152,7 +156,6 @@ public class LifecycleFloatingService extends QDFloatingService2 {
     }
 
     static DebugFloating2 debugFloating2;
-
     public void showConsole(Activity context) {
         if (isDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
@@ -164,6 +167,21 @@ public class LifecycleFloatingService extends QDFloatingService2 {
                 }
                 debugFloating2.show(context);
             }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(onTouchListener!=null){
+            onTouchListener.onRelease();
+        }
+        if(onTouchListener1!=null){
+            onTouchListener1.onRelease();
+        }
+        if(view!=null) {
+            removeView(view);
+            view.setOnTouchListener(null);
         }
     }
 }

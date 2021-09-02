@@ -63,7 +63,9 @@ public class QDTimer implements OnReleaseListener {
     }
 
     public void stop() {
-        handler.removeCallbacks(runnable);
+        if(handler!=null) {
+            handler.removeCallbacks(runnable);
+        }
         /*if(onTimerListener!=null) {
             onTimerListener.onTimeChange(0);
         }*/

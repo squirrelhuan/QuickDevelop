@@ -14,6 +14,8 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
@@ -64,7 +66,7 @@ public class QDApplication extends Application implements UpgradeInterface {
         initCrash();
         //DoraemonKit.install(this);
         if (isDebug(this)) {
-            // DebugFloatingService.showWindow(this.getApplicationContext(),DebugFloatingService.class);
+            //ServiceHelper.showWindow(this,DebugFloatingService.class);
         }
     }
 

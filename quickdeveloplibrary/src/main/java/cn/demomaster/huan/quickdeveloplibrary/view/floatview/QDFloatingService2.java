@@ -23,10 +23,10 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
         return this;
     }
 
-    @Override
+   /* @Override
     public boolean isShowing() {
         return false;
-    }
+    }*/
 
     /**
      * 窗口消失

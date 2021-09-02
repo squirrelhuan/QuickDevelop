@@ -327,7 +327,7 @@ public class GroundGlassUtil implements OnReleaseListener {
     private Animation getAnimation(View targetView) {
         Animation animation = targetView.getAnimation();
         if (animation == null) {
-            if (targetView.getParent() != null && targetView.getParent() instanceof View) {
+            if (targetView.getParent() instanceof View) {
                 return getAnimation((View) targetView.getParent());
             }
             return null;

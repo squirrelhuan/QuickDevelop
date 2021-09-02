@@ -12,13 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * @author drakeet
  */
 final class SafeToastContext extends ContextWrapper {
 
-    private @NonNull
-    Toast toast;
+    private @NonNull Toast toast;
 
     private @Nullable
     BadTokenListener badTokenListener;
@@ -28,24 +29,20 @@ final class SafeToastContext extends ContextWrapper {
         this.toast = toast;
     }
 
-
     @Override
     public Context getApplicationContext() {
         return new ApplicationContextWrapper(getBaseContext().getApplicationContext());
     }
 
-
     public void setBadTokenListener(@NonNull BadTokenListener badTokenListener) {
         this.badTokenListener = badTokenListener;
     }
-
 
     private final class ApplicationContextWrapper extends ContextWrapper {
 
         private ApplicationContextWrapper(@NonNull Context base) {
             super(base);
         }
-
 
         @Override
         public Object getSystemService(@NonNull String name) {
@@ -79,15 +76,16 @@ final class SafeToastContext extends ContextWrapper {
         @Override
         public void addView(View view, ViewGroup.LayoutParams params) {
             try {
-                Log.d(TAG, "WindowManager's addView(view, params) has been hooked.");
+                QDLogger.println("WindowManager's addView(view, params) has been hooked.");
                 base.addView(view, params);
             } catch (BadTokenException e) {
-                Log.i(TAG, e.getMessage());
+                QDLogger.e(e);
                 if (badTokenListener != null) {
                     badTokenListener.onBadTokenCaught(toast);
                 }
             } catch (Throwable throwable) {
-                Log.e(TAG, "[addView]", throwable);
+                QDLogger.e(throwable);
+                //Log.e(TAG, "[addView]", throwable);
             }
         }
 
@@ -99,6 +97,7 @@ final class SafeToastContext extends ContextWrapper {
 
         @Override
         public void removeView(View view) {
+            QDLogger.e("removeView");
             base.removeView(view);
         }
     }

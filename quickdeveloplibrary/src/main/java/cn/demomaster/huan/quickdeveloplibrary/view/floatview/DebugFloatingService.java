@@ -31,6 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogBean;
+import cn.demomaster.qdlogger_library.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -59,6 +60,7 @@ public class DebugFloatingService extends QDFloatingService2 {
         mcontext = context;
         view = LayoutInflater.from(context).inflate(R.layout.layout_debug_console, null, false);
         iv_drag = view.findViewById(R.id.iv_drag);
+        onTouchListener = new QDFloatingService.FloatingOnTouchListener(iv_drag);
         iv_drag.setOnTouchListener(onTouchListener);
         iv_logo = view.findViewById(R.id.iv_logo);
         iv_logo.setImageDrawable(QDAppInfoUtil.getAppIconDrawable(mcontext));
@@ -98,7 +100,8 @@ public class DebugFloatingService extends QDFloatingService2 {
         layoutParams.height = 500;
         this.windowManager = windowManager;
         windowManager.addView(view, layoutParams);
-        view.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(view));
+        onTouchListener1 = new QDFloatingService.FloatingOnTouchListener(view);
+        view.setOnTouchListener(onTouchListener1);
     }
 
     View.OnClickListener onClickTagListenernew = v -> showTagFilter((TextView) v);
@@ -115,13 +118,14 @@ public class DebugFloatingService extends QDFloatingService2 {
     static int strMaxLen = 20000;
     static List<QDLogBean> logList = new ArrayList<>();
     static String logStr = "";
-
+    static QDLogInterceptor qdLogInterceptor;
     private static void initLog() {
         tv_log.setText(logStr);
         scrollView.post(() -> {
             scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
         });
-        QDLogger.setInterceptor(msg -> QdThreadHelper.runOnUiThread(new Runnable() {
+
+        qdLogInterceptor = msg -> QdThreadHelper.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (tv_log.getText().length() > strMaxLen) {
@@ -145,12 +149,17 @@ public class DebugFloatingService extends QDFloatingService2 {
                 logStr = tv_log.getText().toString();
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
             }
-        }));
+        });
+        QDLogger.setInterceptor(qdLogInterceptor);
     }
+
+    public QDFloatingService.FloatingOnTouchListener onTouchListener1;
+    public QDFloatingService.FloatingOnTouchListener onTouchListener;
+    /*
 
     int drag_X;
     int drag_Y;
-    public View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+    new QDFloatingService.FloatingOnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -178,20 +187,20 @@ public class DebugFloatingService extends QDFloatingService2 {
                     updateViewLayout(view, width, height);
                     break;
                 case MotionEvent.ACTION_UP:
-                    /*endTime = System.currentTimeMillis();
+                    *//*endTime = System.currentTimeMillis();
                     //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
                     if ((endTime - startTime) > 0.15 * 1000L) {
                         isclick = true;
                     } else {
                         isclick = false;
-                    }*/
+                    }*//*
                     break;
                 default:
                     break;
             }
             return true;
         }
-    };
+    };*/
 
     @Override
     public PointF getOriginPoint() {
@@ -218,6 +227,16 @@ public class DebugFloatingService extends QDFloatingService2 {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        removeView(view);
+        if(onTouchListener!=null){
+            onTouchListener.onRelease();
+        }
+        if(onTouchListener1!=null){
+            onTouchListener1.onRelease();
+        }
+        qdLogInterceptor = null;
+        if(view!=null) {
+            removeView(view);
+            view.setOnTouchListener(null);
+        }
     }
 }
