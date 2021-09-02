@@ -351,4 +351,12 @@ public class WifiFragment extends BaseFragment {
         mWifiManager.disableNetwork(netId);
         mWifiManager.disconnect();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkHelper!=null){
+            networkHelper.onRelease();
+        }
+    }
 }

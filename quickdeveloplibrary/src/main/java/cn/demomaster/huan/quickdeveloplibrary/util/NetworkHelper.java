@@ -277,6 +277,7 @@ public class NetworkHelper implements OnReleaseListener {
         //context.unregisterReceiver(mNetWorkReceiver);
         if (context != null) {
             if (mNetWorkReceiver != null) {
+                unRegisterListener((NetWorkChangReceiver.OnNetStateChangedListener)mNetWorkReceiver.netStateChangedReceiver);
                 mNetWorkReceiver.setOnNetStateChangedListener(null);
                 try {
                     context.unregisterReceiver(mNetWorkReceiver);

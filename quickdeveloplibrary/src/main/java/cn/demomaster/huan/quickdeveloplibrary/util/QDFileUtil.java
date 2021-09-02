@@ -310,7 +310,10 @@ public class QDFileUtil {
                 files.add(file);
             } else {
                 for (File file1 : file.listFiles()) {
-                    files.addAll(getEmptyFiles(file1.getPath()));
+                    List<File> fileList = getEmptyFiles(file1.getPath());
+                    if(fileList!=null) {
+                        files.addAll(fileList);
+                    }
                 }
             }
             return files;

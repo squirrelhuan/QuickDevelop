@@ -4,18 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_open_new_fragment"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="打开新页面"/>
 
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_set_title"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/dp_5"
            android:text="设置title"/>
 
 

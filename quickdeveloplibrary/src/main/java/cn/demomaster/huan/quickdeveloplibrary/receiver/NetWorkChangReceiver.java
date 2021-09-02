@@ -8,7 +8,7 @@ import android.content.Intent;
  * Created by Squirrel桓 on 2018/12/12.
  */
 public class NetWorkChangReceiver extends BroadcastReceiver {
-    private NetStateChangedReceiver netStateChangedReceiver;
+    public NetStateChangedReceiver netStateChangedReceiver;
 
     public void setOnNetStateChangedListener(NetStateChangedReceiver netStateChangedReceiver) {
         this.netStateChangedReceiver = netStateChangedReceiver;

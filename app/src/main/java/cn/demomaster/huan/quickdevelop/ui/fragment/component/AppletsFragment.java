@@ -106,7 +106,7 @@ public class AppletsFragment extends BaseFragment {
         if (btn_set_title != null) {
             btn_set_title.setOnClickListener(view -> {
                 int i1 = (int) (Math.random() * 10 % 4);
-                getActionBarTool().setTitle(titles[i1] + "");
+                setTitle(titles[i1] + "");
             });
         }
     }
@@ -114,7 +114,7 @@ public class AppletsFragment extends BaseFragment {
     private final String[] titles = {"1", "2", "3", "4"};
     private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void startFragment() {
-        startFragment(new AppletsFragment(),R.id.container1,null);
+        startFragment(new AppletsFragment(),android.R.id.content,null);
     }
 
     //记录用户首次点击返回键的时间
