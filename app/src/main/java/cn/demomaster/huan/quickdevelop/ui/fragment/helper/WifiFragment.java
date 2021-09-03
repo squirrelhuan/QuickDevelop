@@ -122,7 +122,7 @@ public class WifiFragment extends BaseFragment {
                 QDLogger.e("wifi disconnect");
             }
         };
-        networkHelper.registerListener(onNetStateChangedListener);
+        networkHelper.registerListener(mContext,onNetStateChangedListener);
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器

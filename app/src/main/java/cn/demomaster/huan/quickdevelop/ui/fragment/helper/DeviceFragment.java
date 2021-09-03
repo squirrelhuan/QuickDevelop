@@ -184,7 +184,7 @@ public class DeviceFragment extends BaseFragment {
                 QDLogger.e("WIFI default");
                 break;
         }
-        networkHelper = new NetworkHelper(getContext());
+        networkHelper = new NetworkHelper();
         onNetStateChangedListener = new OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
@@ -208,7 +208,7 @@ public class DeviceFragment extends BaseFragment {
                 QDLogger.e("網絡 斷開");
             }
         };
-        networkHelper.registerListener(onNetStateChangedListener);
+        networkHelper.registerListener(mContext,onNetStateChangedListener);
         registerPermission();
     }
     OnNetStateChangedListener onNetStateChangedListener;

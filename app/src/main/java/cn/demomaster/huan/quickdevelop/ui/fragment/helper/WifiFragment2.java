@@ -111,7 +111,7 @@ public class WifiFragment2 extends BaseFragment {
                 getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
             }
         });
-        networkHelper = new NetworkHelper(getContext());
+        networkHelper = new NetworkHelper();
         onNetStateChangedListener = new OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
@@ -135,7 +135,7 @@ public class WifiFragment2 extends BaseFragment {
                 QDLogger.e("wifi disconnect");
             }
         };
-        networkHelper.registerListener(onNetStateChangedListener);
+        networkHelper.registerListener(mContext,onNetStateChangedListener);
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
