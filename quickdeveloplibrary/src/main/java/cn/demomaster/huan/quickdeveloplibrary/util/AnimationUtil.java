@@ -143,7 +143,7 @@ public class AnimationUtil {
                     }
                 }
                 animator.reverse();
-                QDLogger.println("CGQ", "点击动画 无效点击");
+                QDLogger.println("点击动画 无效点击");
             } else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
                 animator.reverse();
             }

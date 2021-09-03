@@ -84,7 +84,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     public static String SquareImageMenuView_Y_SP = "SquareImageMenuView_Y_SP";
 
     private void init() {
-        setOnClickListener(v -> {
+        onClickListener = v -> {
             QDLogger.println("触发点击事件 onClick=" + animator);
             if (animator != null) {
                 QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
@@ -109,11 +109,15 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             } else {
                 startAnimation();
             }
-        });
+        };
+        setOnClickListener(onClickListener);
     }
+
+    View.OnClickListener onClickListener;
 
     /**
      * 执行动作
+     *
      * @param type
      */
     public void doAction(int type) {
@@ -195,15 +199,14 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     }
 
     WindowManager windowManager;
+
     public void setWindowManager(WindowManager windowManager) {
         this.windowManager = windowManager;
     }
 
     @Override
     public void onRelease() {
-        if (animator != null) {
-            animator.cancel();
-        }
+        onDetachedFromWindow();
     }
 
     public interface OnClickListener {
@@ -211,7 +214,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     }
 
     Map<Integer, Point> pointMap = new HashMap<>();
-    public class OnTouchListener implements View.OnTouchListener {
+   /* public class OnTouchListener implements View.OnTouchListener {
         private int x;
         private int y;
 
@@ -270,7 +273,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             }
             return isclick;
         }
-    }
+    }*/
 
     int maxWith = -1;
     int maxHeight = -1;
@@ -358,7 +361,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
 
     private float progress;
     QDValueAnimator animator;
-
+    QDValueAnimator.AnimationListener animationListener;
     public void startAnimation() {
         Log.d(TAG, "开启动画");
         if (animator == null) {
@@ -367,55 +370,63 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             animator = new QDValueAnimator(Integer.class);
             animator.setIntValues(start, end);
             animator.setDuration(200);
-            animator.setAnimationListener(new QDValueAnimator.AnimationListener() {
-                @Override
-                public void onStartOpen(Object value) {
-                    Log.d(TAG, "onStartOpen");
-                }
-
-                @Override
-                public void onOpening(Object value) {
-                    Log.d(TAG, "onOpening");
-                    if (getVisibility() == VISIBLE) {
-                        progress = (int) value;
-                        //Log.d(TAG, "progress=" + progress);
-                        setSize();
+            if (animationListener == null) {
+                animationListener = new QDValueAnimator.AnimationListener() {
+                    @Override
+                    public void onStartOpen(Object value) {
+                        Log.d(TAG, "onStartOpen");
                     }
-                }
 
-                @Override
-                public void onEndOpen(Object value) {
-                    Log.d(TAG, "onEndOpen");
-                    delayedStopAnimation();
-                }
-
-                @Override
-                public void onStartClose(Object value) {
-                    Log.d(TAG, "onStartClose");
-                }
-
-                @Override
-                public void onClosing(Object value) {
-                    Log.d(TAG, "onClosing");
-                    if (getVisibility() == VISIBLE) {
-                        progress = (int) value;
-                        //Log.d(TAG, "progress=" + progress);
-                        setSize();
+                    @Override
+                    public void onOpening(Object value) {
+                        Log.d(TAG, "onOpening");
+                        if (getVisibility() == VISIBLE) {
+                            progress = (int) value;
+                            //Log.d(TAG, "progress=" + progress);
+                            setSize();
+                        }
                     }
-                }
 
-                @Override
-                public void onEndClose(Object value) {
-                    Log.d(TAG, "onEndClose");
-                    postInvalidate();
-                }
-            });
+                    @Override
+                    public void onEndOpen(Object value) {
+                        Log.d(TAG, "onEndOpen");
+                        delayedStopAnimation();
+                    }
+
+                    @Override
+                    public void onStartClose(Object value) {
+                        Log.d(TAG, "onStartClose");
+                    }
+
+                    @Override
+                    public void onClosing(Object value) {
+                        Log.d(TAG, "onClosing");
+                        if (getVisibility() == VISIBLE) {
+                            progress = (int) value;
+                            //Log.d(TAG, "progress=" + progress);
+                            setSize();
+                        }
+                    }
+
+                    @Override
+                    public void onEndClose(Object value) {
+                        Log.d(TAG, "onEndClose");
+                        postInvalidate();
+                    }
+                };
+            }
+            animator.setAnimationListener(animationListener);
             // animator.setRepeatMode(ValueAnimator.RESTART);
             // animator.setRepeatCount(ValueAnimator.INFINITE);
-            animator.setInterpolator(new AccelerateInterpolator());
+            if (interpolator == null) {
+                interpolator = new AccelerateInterpolator();
+            }
+            animator.setInterpolator(interpolator);
         }
         animator.start();
     }
+
+    AccelerateInterpolator interpolator;
 
     public void stopAnimation() {
         //Log.d(TAG, "关闭动画");
@@ -436,12 +447,21 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        onClickListener = null;
+        setOnClickListener(null);
+        setOnTouchListener(null);
         if (animator != null) {
-            animator.cancel();
-            animator = null;
+            animator.setAnimationListener(null);
+            if (animator.isRunning()) {
+                animator.cancel();
+            }
         }
-        if(handler!=null) {
+        animationListener = null;
+        animator = null;
+        if (handler != null) {
             handler.removeCallbacks(runnable);
         }
+        runnable = null;
+        windowManager = null;
     }
 }

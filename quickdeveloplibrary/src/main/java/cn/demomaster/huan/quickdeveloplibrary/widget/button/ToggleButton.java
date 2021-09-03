@@ -32,8 +32,6 @@ public class ToggleButton extends View {
         super(context, attrs, defStyleAttr);
         init();
     }
-
-    private boolean isCheckedDef = false;
     public void init() {
         setOnClickListener(view -> setChecked(!checked));
     }
@@ -132,9 +130,8 @@ public class ToggleButton extends View {
         super.onDraw(canvas);
         drawView(canvas);
     }
-
+    ValueAnimator animator;
     private float progress;
-
     public void startAnimation(boolean checked) {
         int start = 0;
         int end = 1;
@@ -142,19 +139,27 @@ public class ToggleButton extends View {
             start = 1;
             end = 0;
         }
-        ValueAnimator animator = ValueAnimator.ofFloat(start, end);
+        if(animator!=null&&animator.isRunning()){
+            animator.cancel();
+        }
+        if(animatorUpdateListener==null){
+            animatorUpdateListener = animation -> {
+                float value = (float) animation.getAnimatedValue();
+                progress = value;
+                postInvalidate();
+            };
+        }
+        animator = ValueAnimator.ofFloat(start, end);
         animator.setDuration(200);
         //animator.setInterpolator(new OvershootInterpolator());
-        animator.addUpdateListener(animation -> {
-            float value = (float) animation.getAnimatedValue();
-            progress = value;
-            postInvalidate();
-        });
+        animator.addUpdateListener(animatorUpdateListener);
         //animator.setRepeatMode(ValueAnimator.RESTART);
         //animator.setRepeatCount(ValueAnimator.INFINITE);
         //animator.setInterpolator(new AccelerateInterpolator());
         animator.start();
     }
+
+    ValueAnimator.AnimatorUpdateListener animatorUpdateListener;
 
     /**
      * @author ThinkPad
@@ -167,9 +172,18 @@ public class ToggleButton extends View {
     }
 
     private OnToggleChangeListener onToggleChangeListener;
-
     public void setOnToggleChanged(OnToggleChangeListener onToggleChanged) {
         onToggleChangeListener = onToggleChanged;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        onToggleChangeListener = null;
+        if(animator!=null){
+            if((animator.isRunning())) {
+                animator.cancel();
+            }
+        }
+    }
 }

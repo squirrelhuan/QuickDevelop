@@ -173,15 +173,21 @@ public class LifecycleFloatingService extends QDFloatingService2 {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(iv_logo!=null){
+            iv_logo.setOnTouchListener(null);
+        }
+        if(iv_drag!=null){
+            iv_drag.setOnTouchListener(null);
+        }
+        if(view!=null) {
+            removeView(view);
+            view.setOnTouchListener(null);
+        }
         if(onTouchListener!=null){
             onTouchListener.onRelease();
         }
         if(onTouchListener1!=null){
             onTouchListener1.onRelease();
-        }
-        if(view!=null) {
-            removeView(view);
-            view.setOnTouchListener(null);
         }
     }
 }

@@ -86,7 +86,9 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
     }
     
     public void removeView(View view) {
-        windowManager.removeView(view);
+        if(windowManager!=null) {
+            windowManager.removeView(view);
+        }
     }
 
     public void dissmissWindow() {
@@ -94,7 +96,6 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
     }
 
     private PopupWindow.OnDismissListener onDismissListener;
-
     public void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
     }

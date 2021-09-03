@@ -28,6 +28,8 @@ public class ServiceHelper {
             }
             Class clazz = service.getClass();
             service.stopService(new Intent(service.getApplicationContext(), clazz));
+            serviceMap.remove(clazz.getName());
+            serviceListenerMap.remove(clazz.getName());
         } else {
             QDLogger.println("Service未在运行：" + serviceClass.getName());
         }
@@ -41,32 +43,10 @@ public class ServiceHelper {
         return serviceMap.get(serviceName);
     }
 
-    public static void removeService(Service qdFloatingService) {
-        serviceMap.remove(qdFloatingService.getClass().getName());
-        if (serviceListenerMap.containsKey(qdFloatingService.getClass().getName())) {
-            ServiceListener serviceListener = serviceListenerMap.get(qdFloatingService.getClass().getName());
-            if (serviceListener != null) {
-                serviceListener.onDestroyService();
-            }
-            // serviceListenerMap.remove(qdFloatingService.getClass().getName());
-        }
-    }
-
     static Map<String, Service> serviceMap = new HashMap<>();
     static Map<String, ServiceListener> serviceListenerMap = new HashMap<>();
-
     public static void addService(Service qdFloatingService) {
         serviceMap.put(qdFloatingService.getClass().getName(), qdFloatingService);
-        if (serviceListenerMap.containsKey(qdFloatingService.getClass().getName())) {
-            ServiceListener serviceListener = serviceListenerMap.get(qdFloatingService.getClass().getName());
-            if (serviceListener != null) {
-                serviceListener.onCreateService();
-            }
-        }
-    }
-
-    public static void addServiceListener(Class<? extends Service> clazz, ServiceListener serviceListener) {
-        serviceListenerMap.put(clazz.getName(), serviceListener);
     }
 
     public static void onCreateService(Service qdFloatingService) {
@@ -74,16 +54,9 @@ public class ServiceHelper {
     }
 
     public static void onDestroyService(Service qdFloatingService) {
-        removeService(qdFloatingService);
+        serviceMap.remove(qdFloatingService.getClass().getName());
+        serviceListenerMap.remove(qdFloatingService.getClass().getName());
     }
-
-    public interface ServiceListener {
-        void onCreateService();
-
-        void onDestroyService();
-    }
-
-
     /**
      * @return boolean 返回该服务是否在运行中；
      * @params componentName 查询指定service的组件名；
@@ -91,7 +64,6 @@ public class ServiceHelper {
      */
     public static boolean serverIsRunning(Context context, String componentName) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-
         List<ActivityManager.RunningServiceInfo> runningServices
                 = activityManager.getRunningServices(Integer.MAX_VALUE);
         if (runningServices.size() <= 0) {
@@ -104,5 +76,14 @@ public class ServiceHelper {
             }
         }
         return false;
+    }
+
+    public static void addServiceListener(Class serviceClass,ServiceListener serviceListener) {
+        serviceListenerMap.put(serviceClass.getName(),serviceListener);
+    }
+
+    public interface ServiceListener {
+        void onCreateService();
+        void onDestroyService();
     }
 }

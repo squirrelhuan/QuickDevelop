@@ -38,8 +38,8 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
+import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
+import cn.demomaster.huan.quickdeveloplibrary.network.OnNetStateChangedListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -99,7 +99,7 @@ public class WifiFragment extends BaseFragment {
                 getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
             }
         });
-        networkHelper.registerListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
+        onNetStateChangedListener = new OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
                 QDLogger.e("wifi onConnected");
@@ -121,7 +121,8 @@ public class WifiFragment extends BaseFragment {
             public void onDisConnected(Context context, Intent intent) {
                 QDLogger.e("wifi disconnect");
             }
-        });
+        };
+        networkHelper.registerListener(onNetStateChangedListener);
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
@@ -168,6 +169,8 @@ public class WifiFragment extends BaseFragment {
 
         initData();
     }
+
+    OnNetStateChangedListener onNetStateChangedListener;
 
     /**
      * 状态变更
@@ -356,7 +359,7 @@ public class WifiFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         if(networkHelper!=null){
-            networkHelper.onRelease();
+            networkHelper.unRegisterListener(onNetStateChangedListener);
         }
     }
 }

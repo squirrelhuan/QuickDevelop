@@ -30,8 +30,8 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.receiver.NetWorkChangReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.util.NetworkHelper;
+import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
+import cn.demomaster.huan.quickdeveloplibrary.network.OnNetStateChangedListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -185,7 +185,7 @@ public class DeviceFragment extends BaseFragment {
                 break;
         }
         networkHelper = new NetworkHelper(getContext());
-        networkHelper.registerListener(new NetWorkChangReceiver.OnNetStateChangedListener() {
+        onNetStateChangedListener = new OnNetStateChangedListener() {
             @Override
             public void onConnected(Context context, Intent intent) {
                 QDLogger.i("wifi onConnected");
@@ -207,9 +207,11 @@ public class DeviceFragment extends BaseFragment {
             public void onDisConnected(Context context, Intent intent) {
                 QDLogger.e("網絡 斷開");
             }
-        });
+        };
+        networkHelper.registerListener(onNetStateChangedListener);
         registerPermission();
     }
+    OnNetStateChangedListener onNetStateChangedListener;
 
     private void print() {
         List<ScanResult> scanResultList = getWifiList();
@@ -259,5 +261,13 @@ public class DeviceFragment extends BaseFragment {
             }
         }
         return wifiList;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkHelper!=null) {
+            networkHelper.unRegisterListener(onNetStateChangedListener);
+        }
     }
 }

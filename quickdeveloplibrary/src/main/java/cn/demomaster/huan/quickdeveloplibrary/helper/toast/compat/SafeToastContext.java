@@ -21,8 +21,7 @@ final class SafeToastContext extends ContextWrapper {
 
     private @NonNull Toast toast;
 
-    private @Nullable
-    BadTokenListener badTokenListener;
+    //private @Nullable BadTokenListener badTokenListener;
 
     SafeToastContext(@NonNull Context base, @NonNull Toast toast) {
         super(base);
@@ -35,7 +34,7 @@ final class SafeToastContext extends ContextWrapper {
     }
 
     public void setBadTokenListener(@NonNull BadTokenListener badTokenListener) {
-        this.badTokenListener = badTokenListener;
+       // this.badTokenListener = badTokenListener;
     }
 
     private final class ApplicationContextWrapper extends ContextWrapper {
@@ -54,7 +53,6 @@ final class SafeToastContext extends ContextWrapper {
     }
 
     private final class WindowManagerWrapper implements WindowManager {
-        private static final String TAG = "WindowManagerWrapper";
         private final @NonNull
         WindowManager base;
 
@@ -76,13 +74,13 @@ final class SafeToastContext extends ContextWrapper {
         @Override
         public void addView(View view, ViewGroup.LayoutParams params) {
             try {
-                QDLogger.println("WindowManager's addView(view, params) has been hooked.");
+                //QDLogger.println("WindowManager's addView(view, params) has been hooked.");
                 base.addView(view, params);
             } catch (BadTokenException e) {
                 QDLogger.e(e);
-                if (badTokenListener != null) {
+               /* if (badTokenListener != null) {
                     badTokenListener.onBadTokenCaught(toast);
-                }
+                }*/
             } catch (Throwable throwable) {
                 QDLogger.e(throwable);
                 //Log.e(TAG, "[addView]", throwable);
@@ -97,7 +95,7 @@ final class SafeToastContext extends ContextWrapper {
 
         @Override
         public void removeView(View view) {
-            QDLogger.e("removeView");
+            //QDLogger.e("removeView");
             base.removeView(view);
         }
     }

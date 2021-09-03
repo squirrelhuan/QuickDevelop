@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,11 +29,12 @@ import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 /**
  * Created by Squirrel桓 on 2019/1/7.
  */
-public class QDActionDialog extends Dialog {
+public class QDActionDialog extends Dialog implements OnReleaseListener {
 
     //private Builder builder;
     public int gravity = Gravity.CENTER;
@@ -287,8 +289,6 @@ public class QDActionDialog extends Dialog {
         setContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-
-
        /* Window window = getWindow();
         View decorView = window.getDecorView();
         //设置window背景，默认的背景会有Padding值，不能全屏。当然不一定要是透明，你可以设置其他背景，替换默认的背景即可。
@@ -325,15 +325,22 @@ public class QDActionDialog extends Dialog {
                 }
             }
         }
-
         super.show();
         if (delayMillis != -1) {
-            contentLinearView.postDelayed(() -> dismiss(), delayMillis);
+            handler.postDelayed(runnable,delayMillis);
         }
     }
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            dismiss();
+        }
+    };
 
     @Override
     public void dismiss() {
+        handler.removeCallbacks(runnable);
         if (isShowing()&&getContext()!=null) {
             Context context = ((ContextWrapper) getContext()).getBaseContext();
             if (context instanceof Activity) {
@@ -350,6 +357,11 @@ public class QDActionDialog extends Dialog {
                 super.dismiss();
             }
         }
+    }
+
+    @Override
+    public void onRelease() {
+
     }
 
    /* @Override

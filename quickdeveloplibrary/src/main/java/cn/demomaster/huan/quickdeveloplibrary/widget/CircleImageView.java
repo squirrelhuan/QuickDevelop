@@ -18,7 +18,6 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  */
 
 public class CircleImageView extends AppCompatImageView {
-
     public CircleImageView(Context context) {
         super(context);
         init(null);
@@ -69,7 +68,6 @@ public class CircleImageView extends AppCompatImageView {
             //绘制Bitmap
             //canvas.drawBitmap(targetView.mBitmap, 0, 0, paint);
             super.onDraw(canvas); //恢复Canvas
-
             canvas.restore();
         } else {
             super.onDraw(canvas);

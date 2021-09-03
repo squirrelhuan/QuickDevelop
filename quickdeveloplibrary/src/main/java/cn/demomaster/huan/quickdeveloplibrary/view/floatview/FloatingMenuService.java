@@ -85,7 +85,9 @@ public class FloatingMenuService extends QDFloatingService2 {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        if(view!=null) {
+            view.setOnTouchListener(null);
+        }
         if(floatingOnTouchListener!=null){
             floatingOnTouchListener.onRelease();
         }
@@ -93,6 +95,8 @@ public class FloatingMenuService extends QDFloatingService2 {
             menuView.setOnTouchListener(null);
             menuView.onRelease();
         }
+        menuView = null;
         removeView(view);
+        super.onDestroy();
     }
 }

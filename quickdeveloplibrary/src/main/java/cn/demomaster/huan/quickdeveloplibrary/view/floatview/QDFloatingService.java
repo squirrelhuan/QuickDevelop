@@ -266,7 +266,9 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
     private void removeView() {
        // setIsShowing(false);
         if (contentView!=null&&contentView.getParent() != null) {
-            windowManager.removeView(contentView);
+            if(windowManager!=null) {
+                windowManager.removeView(contentView);
+            }
         }
     }
 /*

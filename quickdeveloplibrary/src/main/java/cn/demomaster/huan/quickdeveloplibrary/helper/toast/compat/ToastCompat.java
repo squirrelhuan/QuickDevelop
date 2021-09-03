@@ -24,7 +24,6 @@ public final class ToastCompat extends Toast {
     private final @NonNull
     Toast toast;
 
-
     /**
      * Construct an empty Toast object.  You must call {@link #setView} before you
      * can call {@link #show}.

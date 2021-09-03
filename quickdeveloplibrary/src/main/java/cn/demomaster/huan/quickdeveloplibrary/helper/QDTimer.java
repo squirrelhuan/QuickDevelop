@@ -97,7 +97,14 @@ public class QDTimer implements OnReleaseListener {
 
     @Override
     public void onRelease() {
-        handler.removeCallbacksAndMessages(null);
+        onTimerListener = null;
+
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+            handler.removeCallbacksAndMessages(null);
+        }
+        handler = null;
+        runnable = null;
     }
 
     public interface OnTimerListener {
@@ -105,7 +112,7 @@ public class QDTimer implements OnReleaseListener {
         void onTimeChange(long time);
     }
 
-    public void destory() {
+    /*public void destory() {
         if (onTimerListener != null) {
             onTimerListener = null;
         }
@@ -115,6 +122,6 @@ public class QDTimer implements OnReleaseListener {
             runnable = null;
         }
         handler = null;
-    }
+    }*/
 
 }

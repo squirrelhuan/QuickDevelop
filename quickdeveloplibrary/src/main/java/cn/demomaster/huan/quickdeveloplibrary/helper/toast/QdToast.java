@@ -34,7 +34,7 @@ public class QdToast {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//处理Android7.1上系统bug
                 ToastCompat.makeText(mContext, text, time)
                         .setBadTokenListener(toast -> {
-                            Log.e("failed toast", "" + text);
+                            Log.e("failed toast", ""+text);
                         }).show();
             } else {
                 Toast.makeText(mContext, text, time).show();
