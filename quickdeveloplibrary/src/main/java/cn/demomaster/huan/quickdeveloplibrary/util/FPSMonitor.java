@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Choreographer;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 public class FPSMonitor implements Choreographer.FrameCallback, Runnable {
     //监控1秒内的帧数
     private static final int MONITOR_TIME = 1000;
@@ -33,7 +35,7 @@ public class FPSMonitor implements Choreographer.FrameCallback, Runnable {
     public void run() {
         long duration = (endTime - startTime) / 1000000L;
         float frame = 1000.0f * vSyncCount / duration;
-        Log.d("harish", "帧率:" + frame + "/" + duration + "ms");
+        //QDLogger.println("帧率:" + frame + "/" + duration + "ms");
         if (onFramChangedListener != null) {
             onFramChangedListener.onChanged(frame);
         }

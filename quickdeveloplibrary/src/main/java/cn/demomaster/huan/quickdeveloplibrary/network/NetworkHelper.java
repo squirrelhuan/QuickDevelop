@@ -103,7 +103,6 @@ public class NetworkHelper {
         return null;
     }
 
-
     public static String getWifiStateDes(int wifiState) {
         switch (wifiState) {
             case WIFI_STATE_DISABLING://WIFI网卡正在关闭  0
@@ -150,50 +149,17 @@ public class NetworkHelper {
         }
     }
 
-
-    static NetWorkBroadcastReceiver netWorkBroadcastReceiver;
-
-    public void registerListener(Context context, OnNetStateChangedListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (netWorkBroadcastReceiver == null) {
-            netWorkBroadcastReceiver = new NetWorkBroadcastReceiver();
+    public void registerListener(Context context, NetWorkBroadcastReceiver netWorkBroadcastReceiver) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             context.registerReceiver(netWorkBroadcastReceiver, filter);
-        } else {
-            netWorkBroadcastReceiver.putListener(listener, context.hashCode());
-        }
-        QDLogger.println("add监听,hashcode:" + listener.hashCode());
     }
 
-    public void unRegisterListener(NetStateChangedListener listener) {
+    public void unRegisterListener(Context context,NetWorkBroadcastReceiver listener) {
         //context.unregisterReceiver(mNetWorkReceiver);
-        if (netWorkBroadcastReceiver != null) {
-            netWorkBroadcastReceiver.remove(listener);
-        }
+
     }
 
-    /**
-     * 移除所有广播监听
-     *
-     * @param context
-     */
-    public void unRegisterListenerAll(Context context) {
-        //context.unregisterReceiver(mNetWorkReceiver);
-        if (netWorkBroadcastReceiver != null) {
-            netWorkBroadcastReceiver.removeAll();
-            if (context != null) {
-                try {
-                    context.unregisterReceiver(netWorkBroadcastReceiver);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            netWorkBroadcastReceiver =null;
-        }
-    }
 }

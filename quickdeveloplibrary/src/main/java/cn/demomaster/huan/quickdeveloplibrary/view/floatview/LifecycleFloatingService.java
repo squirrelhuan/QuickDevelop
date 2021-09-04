@@ -155,7 +155,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         return new PointF(100, 100);
     }
 
-    static DebugFloating2 debugFloating2;
+/*    static DebugFloating2 debugFloating2;
     public void showConsole(Activity context) {
         if (isDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
@@ -168,11 +168,12 @@ public class LifecycleFloatingService extends QDFloatingService2 {
                 debugFloating2.show(context);
             }
         }
-    }
+    }*/
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacks(runnable);
         if(iv_logo!=null){
             iv_logo.setOnTouchListener(null);
         }

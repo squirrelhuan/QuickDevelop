@@ -99,7 +99,6 @@ public class DebugFloating2 implements FloatView {
 
     int strMaxLen = 5000;
     List<QDLogBean> logList = new ArrayList<>();
-
     private void initLog(View view) {
         RichTextView tv_log = view.findViewById(R.id.tv_log);
         ScrollView scrollView = view.findViewById(R.id.scrollView);
@@ -266,16 +265,7 @@ public class DebugFloating2 implements FloatView {
         if (windowView == null || windowView.getChildCount() == 0) {
             return;
         }
-
-        RichTextView tv_log;
-        tv_log = windowView.findViewById(R.id.tv_log);
-       /* if (!TextUtils.isEmpty(logStr) && tv_log != null) {
-            logStr = tv_log.getText().toString();
-        }*/
     }
-
-    static int windowWidth = 600;
-    static int windowHeight = 400;
 
     @Override
     public Point getSize() {
@@ -287,4 +277,9 @@ public class DebugFloating2 implements FloatView {
         return new Point(100, 100);
     }
 
+
+    @Override
+    public void onRelease() {
+        //floatHelper
+    }
 }

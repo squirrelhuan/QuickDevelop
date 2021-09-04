@@ -25,19 +25,9 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
 /**
  * Created by Squirrel桓 on 2018/12/12.
  */
-public class NetWorkBroadcastReceiver extends BroadcastReceiver {
-    /*public NetStateChangedListener netStateChangedListener;
+public abstract class NetWorkBroadcastReceiver extends BroadcastReceiver implements NetStateChangedListener{
 
-    public void setOnNetStateChangedListener(NetStateChangedListener netStateChangedListener) {
-        this.netStateChangedListener = netStateChangedListener;
-    }
-
-    public NetWorkBroadcastReceiver(NetStateChangedListener netStateChangedListener) {
-        this.netStateChangedListener = netStateChangedListener;
-    }*/
-    
     public NetWorkBroadcastReceiver(){
-        listenerMap = new HashMap<>();
     }
 
     private int netState = -400;//0不可用，1可用，-400未初始化
@@ -50,7 +40,6 @@ public class NetWorkBroadcastReceiver extends BroadcastReceiver {
         /*if (netStateChangedListener != null) {
             netStateChangedListener.onReceive(context, intent);
         }*/
-        dispatchReceivedEvent(context, intent);
         String action = intent.getAction();
         //QDLogger.e("action=" + action);
         if (!TextUtils.isEmpty(action)) {
@@ -78,13 +67,14 @@ public class NetWorkBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    public void dispatchReceivedEvent(Context context, Intent intent) {
-        if (listenerMap != null) {
-            for (Map.Entry entry : listenerMap.entrySet()) {
-                NetStateChangedListener listener = (NetStateChangedListener) entry.getKey();
-                listener.onReceive(context, intent);
-            }
-        }
+    @Override
+    public void onConnected(Context context, Intent intent) {
+
+    }
+
+    @Override
+    public void onDisConnected(Context context, Intent intent) {
+
     }
 
     public void dispatchConnectedEvent(Context context, Intent intent) {
@@ -96,12 +86,7 @@ public class NetWorkBroadcastReceiver extends BroadcastReceiver {
             if (networkInfo != null) { //如果无网络连接activeInfo为null
                 des = NetworkHelper.getNetworkTypeDescription(networkInfo.getType());
                 QDLogger.println("网络[连接]:" + des);
-                if (listenerMap != null) {
-                    for (Map.Entry entry : listenerMap.entrySet()) {
-                        NetStateChangedListener listener = (NetStateChangedListener) entry.getKey();
-                        listener.onConnected(context, intent);
-                    }
-                }
+                onConnected(context,intent);
             }
         }
     }
@@ -111,30 +96,9 @@ public class NetWorkBroadcastReceiver extends BroadcastReceiver {
             netState = 0;
             String des = NetworkHelper.getActionDescription(intent.getAction());
             QDLogger.println("网络[断开]:" + des);
-            if (listenerMap != null) {
-                for (Map.Entry entry : listenerMap.entrySet()) {
-                    NetStateChangedListener listener = (NetStateChangedListener) entry.getKey();
-                    listener.onDisConnected(context, intent);
-                }
-            }
+            onDisConnected(context,intent);
         }
     }
 
-    Map<NetStateChangedListener, Integer> listenerMap;
-    public void putListener(OnNetStateChangedListener listener, int hashCode) {
-        listenerMap.put(listener, hashCode);
-    }
-
-    public void remove(NetStateChangedListener listener) {
-        if(listenerMap!=null){
-            listenerMap.remove(listener);
-        }
-    }
-
-    public void removeAll() {
-        if(listenerMap!=null){
-            listenerMap.clear();
-        }
-    }
 
 }

@@ -93,6 +93,7 @@ dependencies {
     /*添加依赖*/
     //implementation 'com.github.yuzhiqiang1993:zxing:2.2.5'
     api project(path: ':qdzxinglibrary')
+    api project(path:":quickevent_library")
     //api 'com.github.squirrelhuan:QdZxing:0.1.7'
    // api 'com.github.squirrelhuan:QuickSticker:0.1.1'
     //annotationProcessor "com.github.squirrelhuan:quicksticker-compiler:0.1.1"

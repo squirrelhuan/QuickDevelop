@@ -16,15 +16,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.OnReleaseListener;
+import cn.demomaster.quickevent_library.core.QuickEvent;
 
 /**
  * 悬浮按钮
  * Created
  */
-public abstract class QDFloatingService extends Service implements QdFloatingServiceInterFace {
-    //public boolean isShowing = false;
+public abstract class QDFloatingService extends Service{
     private WindowManager windowManager;
     public WindowManager.LayoutParams layoutParams;
     public View contentView;
@@ -35,21 +36,11 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
         return windowManager;
     }
 
-    /**
-     * 窗口消失
-     */
-    @Override
-    public void onDismiss() {
-        if (onDismissListener != null) {
-            onDismissListener.onDismiss();
-        }
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         QDLogger.i("服务启动" + this.getClass().getName());
-        ServiceHelper.onCreateService(this);
+        QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),0));
         //setIsShowing(true);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         layoutParams = new WindowManager.LayoutParams();
@@ -260,7 +251,7 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
         super.onDestroy();
         removeView();
         QDLogger.e("onDestroyService " + this.getClass().getName());
-        ServiceHelper.onDestroyService(this);
+        QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),1));
     }
 
     private void removeView() {
@@ -270,35 +261,6 @@ public abstract class QDFloatingService extends Service implements QdFloatingSer
                 windowManager.removeView(contentView);
             }
         }
-    }
-/*
-    public void setIsShowing(boolean isShowing) {
-        if (isShowing != this.isShowing) {
-            this.isShowing = isShowing;
-        }
-    }
-
-    @Override
-    public boolean isShowing() {
-        return isShowing;
-    }
-
-    public void showWindow(Context context, Class clazz) {
-        if (!isShowing) {
-            context.startService(new Intent(context, clazz));
-        }
-    }
-
-    public void dissmissWindow() {
-        if (isShowing) {
-            getApplicationContext().stopService(new Intent(getApplicationContext(), this.getClass()));
-        }
-    }*/
-
-    private PopupWindow.OnDismissListener onDismissListener;
-
-    public void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
-        this.onDismissListener = onDismissListener;
     }
 
 }

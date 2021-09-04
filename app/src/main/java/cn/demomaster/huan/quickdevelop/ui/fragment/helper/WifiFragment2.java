@@ -40,8 +40,8 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.util.PasswordGenarator;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
-import cn.demomaster.huan.quickdeveloplibrary.network.OnNetStateChangedListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -112,7 +112,7 @@ public class WifiFragment2 extends BaseFragment {
             }
         });
         networkHelper = new NetworkHelper();
-        onNetStateChangedListener = new OnNetStateChangedListener() {
+        onNetStateChangedListener = new NetWorkBroadcastReceiver() {
             @Override
             public void onConnected(Context context, Intent intent) {
                 QDLogger.e("wifi onConnected");
@@ -200,7 +200,7 @@ public class WifiFragment2 extends BaseFragment {
         initWifi();
     }
 
-    OnNetStateChangedListener onNetStateChangedListener;
+    NetWorkBroadcastReceiver onNetStateChangedListener;
     private IntentFilter mWifiSearchIntentFilter;
     private BroadcastReceiver mWifiSearchBroadcastReceiver;
 
@@ -452,7 +452,7 @@ public class WifiFragment2 extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         if(networkHelper!=null){
-            networkHelper.unRegisterListener(onNetStateChangedListener);
+            networkHelper.unRegisterListener(mContext,onNetStateChangedListener);
         }
     }
 }

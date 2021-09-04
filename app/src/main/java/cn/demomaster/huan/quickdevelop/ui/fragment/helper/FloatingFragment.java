@@ -23,11 +23,16 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
+import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FpsFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.LifecycleFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickevent_library.core.QuickEvent;
+import cn.demomaster.quickevent_library.core.Subscribe;
+import cn.demomaster.quickevent_library.core.ThreadMode;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 import cn.demomaster.quickpermission_library.model.PermissionModel;
 import cn.demomaster.quickpermission_library.model.PermissionRequest;
@@ -62,24 +67,14 @@ public class FloatingFragment extends BaseFragment {
 
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
-        ServiceHelper.addServiceListener(FpsFloatingService.class, new ServiceHelper.ServiceListener() {
-            @Override
-            public void onCreateService() {
-                btn_floating_01.setText("关闭悬浮");
-            }
-
-            @Override
-            public void onDestroyService() {
-                btn_floating_01.setText("打开悬浮");
-            }
-        });
+        QuickEvent.getDefault().register(this);
 
         btn_floating_01.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                Service service = ServiceHelper.getServiceByKey(FpsFloatingService.class.getName());
-                if (service != null) {
-                    ServiceHelper.dissmissWindow(FpsFloatingService.class);
+                boolean exist = ServiceHelper.serverIsRunning(mContext,FpsFloatingService.class.getName());
+                if (exist) {
+                    ServiceHelper.dissmissWindow(mContext,FpsFloatingService.class);
                 } else {
                     ServiceHelper.showWindow(mContext, FpsFloatingService.class);
                 }
@@ -91,23 +86,13 @@ public class FloatingFragment extends BaseFragment {
             }
         }));
 
-        ServiceHelper.addServiceListener(FloatingMenuService.class, new ServiceHelper.ServiceListener() {
-            @Override
-            public void onCreateService() {
-                btn_floating_02.setText("关闭悬浮");
-            }
 
-            @Override
-            public void onDestroyService() {
-                btn_floating_02.setText("开启悬浮");
-            }
-        });
         btn_floating_02.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                Service service = ServiceHelper.getServiceByKey(FloatingMenuService.class.getName());
-                if (service != null) {
-                    ServiceHelper.dissmissWindow(FloatingMenuService.class);
+                boolean exist = ServiceHelper.serverIsRunning(mContext,FloatingMenuService.class.getName());
+                if (exist) {
+                    ServiceHelper.dissmissWindow(mContext,FloatingMenuService.class);
                 } else {
                     ServiceHelper.showWindow(mContext, FloatingMenuService.class);
                 }
@@ -129,23 +114,13 @@ public class FloatingFragment extends BaseFragment {
                 return false;//返回此权限是否必须，若是必要权限可以返回true，重复请求
             }
         }));
-        ServiceHelper.addServiceListener(DebugFloatingService.class, new ServiceHelper.ServiceListener() {
-            @Override
-            public void onCreateService() {
-                btn_floating_03.setText("关闭控制台");
-            }
 
-            @Override
-            public void onDestroyService() {
-                btn_floating_03.setText("开启控制台");
-            }
-        });
         btn_floating_03.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                Service service = ServiceHelper.getServiceByKey(DebugFloatingService.class.getName());
-                if (service != null) {
-                    ServiceHelper.dissmissWindow(DebugFloatingService.class);
+                boolean exist = ServiceHelper.serverIsRunning(mContext,DebugFloatingService.class.getName());
+                if (exist) {
+                    ServiceHelper.dissmissWindow(mContext,DebugFloatingService.class);
                 } else {
                     ServiceHelper.showWindow(mContext, DebugFloatingService.class);
                 }
@@ -156,23 +131,12 @@ public class FloatingFragment extends BaseFragment {
                 Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
             }
         }));
-        ServiceHelper.addServiceListener(LifecycleFloatingService.class, new ServiceHelper.ServiceListener() {
-            @Override
-            public void onCreateService() {
-                btn_floating_04.setText("关闭生命周期监控器");
-            }
-
-            @Override
-            public void onDestroyService() {
-                btn_floating_04.setText("开启生命周期监控器");
-            }
-        });
         btn_floating_04.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                Service service = ServiceHelper.getServiceByKey(LifecycleFloatingService.class.getName());
-                if (service != null) {
-                    ServiceHelper.dissmissWindow(LifecycleFloatingService.class);
+                boolean exist = ServiceHelper.serverIsRunning(mContext,LifecycleFloatingService.class.getName());
+                if (exist) {
+                    ServiceHelper.dissmissWindow(mContext,LifecycleFloatingService.class);
                 } else {
                     ServiceHelper.showWindow(mContext, LifecycleFloatingService.class);
                 }
@@ -189,6 +153,22 @@ public class FloatingFragment extends BaseFragment {
             }
         });
         btn_floating_06.setOnClickListener(v -> BatteryOptimizationsHelper.requestAutoStartService(getContext()));
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnServiceChanged(EventMessage eventMessage){
+        QDLogger.println(eventMessage.toString());
+        if(eventMessage.data[0]==FpsFloatingService.class){
+            btn_floating_01.setText(((int)eventMessage.data[1])==0?"关闭悬浮":"打开悬浮");
+        }
+        if(eventMessage.data[0]==FloatingMenuService.class){
+            btn_floating_02.setText(((int)eventMessage.data[1])==0?"关闭悬浮":"打开悬浮");
+        }
+        if(eventMessage.data[0]==DebugFloatingService.class){
+            btn_floating_03.setText(((int)eventMessage.data[1])==0?"关闭控制台":"开启控制台");
+        }
+        if(eventMessage.data[0]==LifecycleFloatingService.class){
+            btn_floating_04.setText(((int)eventMessage.data[1])==0?"关闭生命周期监控器":"开启生命周期监控器");
+        }
     }
 /*
     //跳转到设置-请求悬浮窗权限
@@ -209,4 +189,10 @@ public class FloatingFragment extends BaseFragment {
             }
         });
     }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        QuickEvent.getDefault().unRegister(this);
+    }
 }

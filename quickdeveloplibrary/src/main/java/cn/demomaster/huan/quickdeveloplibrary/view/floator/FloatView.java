@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.View;
 
-public interface FloatView {
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
+
+public interface FloatView extends OnReleaseListener {
 
     View onCreateView(Activity activity);
 

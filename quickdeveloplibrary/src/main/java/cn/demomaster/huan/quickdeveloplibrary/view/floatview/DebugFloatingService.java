@@ -227,16 +227,27 @@ public class DebugFloatingService extends QDFloatingService2 {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if(tv_log_tag!=null) {
+            tv_log_tag.setOnClickListener(null);
+        }
+        onClickTagListenernew = null;
+        if(iv_drag!=null) {
+            iv_drag.setOnTouchListener(null);
+        }
         if(onTouchListener!=null){
             onTouchListener.onRelease();
         }
         if(onTouchListener1!=null){
             onTouchListener1.onRelease();
         }
+
+        QDLogger.setInterceptor(null);
         qdLogInterceptor = null;
+
         if(view!=null) {
-            removeView(view);
             view.setOnTouchListener(null);
+            removeView(view);
         }
     }
 }

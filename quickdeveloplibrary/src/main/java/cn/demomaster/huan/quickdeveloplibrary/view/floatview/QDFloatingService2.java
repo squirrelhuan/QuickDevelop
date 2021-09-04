@@ -9,40 +9,23 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickevent_library.core.QuickEvent;
 
 /**
  * 悬浮按钮
  * Created
  */
-public abstract class QDFloatingService2 extends Service implements QdFloatingServiceInterFace {
+public abstract class QDFloatingService2 extends Service {
     public WindowManager windowManager;
     public WindowManager.LayoutParams layoutParams;
-
-    public Service getInstance() {
-        return this;
-    }
-
-   /* @Override
-    public boolean isShowing() {
-        return false;
-    }*/
-
-    /**
-     * 窗口消失
-     */
-    @Override
-    public void onDismiss() {
-        if (onDismissListener != null) {
-            onDismissListener.onDismiss();
-        }
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         QDLogger.println("服务启动" + this.getClass().getName());
-        ServiceHelper.onCreateService(this);
+        QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),0));
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         onCreateView(getApplicationContext(), windowManager);
         //contentView.setBackgroundColor(getResources().getColor(R.color.transparent_dark_33));
@@ -81,8 +64,8 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        QDLogger.e("onDestroyService,this:"+this);
-        ServiceHelper.onDestroyService(this);
+        QDLogger.println("onDestroyService,this:"+this);
+        QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),1));
     }
     
     public void removeView(View view) {
@@ -93,11 +76,6 @@ public abstract class QDFloatingService2 extends Service implements QdFloatingSe
 
     public void dissmissWindow() {
         getApplicationContext().stopService(new Intent(getApplicationContext(), this.getClass()));
-    }
-
-    private PopupWindow.OnDismissListener onDismissListener;
-    public void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener) {
-        this.onDismissListener = onDismissListener;
     }
 
 }

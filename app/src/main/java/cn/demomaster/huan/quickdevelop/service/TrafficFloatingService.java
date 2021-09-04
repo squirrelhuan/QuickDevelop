@@ -35,7 +35,7 @@ public class TrafficFloatingService extends QDFloatingService {
     public View setContentView(Context context) {
         mContext = context.getApplicationContext();
         View view = LayoutInflater.from(context).inflate(R.layout.layout_floating_traffic, null);
-        view.findViewById(R.id.iv_close).setOnClickListener(v -> ServiceHelper.dissmissWindow(TrafficFloatingService.class));
+        view.findViewById(R.id.iv_close).setOnClickListener(v -> ServiceHelper.dissmissWindow(context,TrafficFloatingService.class));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             networkStatsHelper = new NetworkStatsHelper(mContext);
         }
