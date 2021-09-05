@@ -35,7 +35,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
 
 public class PhotoHelper {
 
-
     public enum RequestType {
         takePhoto(0),//拍照
         scanQrcode(1),//扫描二维码

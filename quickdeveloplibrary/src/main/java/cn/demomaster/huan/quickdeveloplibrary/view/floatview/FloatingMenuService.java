@@ -89,11 +89,11 @@ public class FloatingMenuService extends QDFloatingService2 {
             view.setOnTouchListener(null);
         }
         if(floatingOnTouchListener!=null){
-            floatingOnTouchListener.onRelease();
+            floatingOnTouchListener.onRelease(null);
         }
         if(menuView!=null){
             menuView.setOnTouchListener(null);
-            menuView.onRelease();
+            menuView.onRelease(null);
         }
         menuView = null;
         removeView(view);

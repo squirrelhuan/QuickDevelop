@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
+import cn.demomaster.qdrouter_library.manager.QuickFragmentHelper;
 
 /**
  * Created by Squirrel桓 on 2019/1/3.

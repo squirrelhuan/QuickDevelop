@@ -6,8 +6,9 @@ import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 public class QDHandler extends Handler implements OnReleaseListener {
 
+
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
 
     }
 }

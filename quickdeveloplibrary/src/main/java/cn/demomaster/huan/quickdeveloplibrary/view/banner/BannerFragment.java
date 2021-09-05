@@ -211,12 +211,12 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
     private void resetView() {
         //QDLogger.d("resetView >> "+fragmentCode);
         if (bannerFrameLayout == null) {
-            QDLogger.i("fragment[" + fragmentCode + "] bannerFrameLayout =null ");
+            QDLogger.println("[" + fragmentCode + "] bannerFrameLayout =null ");
             return;
         }
         BannerContentType resourceType = BannerContentType.getEnum(adsResource.getType());
         if (resourceType == null) {
-            QDLogger.i("fragment[" + fragmentCode + "] resourceType =null ");
+            QDLogger.println("[" + fragmentCode + "] resourceType =null ");
             return;
         }
         if (titleView != null) {

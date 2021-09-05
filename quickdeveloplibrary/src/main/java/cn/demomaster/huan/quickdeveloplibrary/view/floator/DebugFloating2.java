@@ -279,7 +279,7 @@ public class DebugFloating2 implements FloatView {
 
 
     @Override
-    public void onRelease() {
-        //floatHelper
+    public void onRelease(Object self) {
+
     }
 }

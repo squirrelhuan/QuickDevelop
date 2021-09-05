@@ -481,7 +481,7 @@ public class GroundGlassUtil implements OnReleaseListener {
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
         if (onParentViewDrawListener != null) {
             parentView.getViewTreeObserver().removeOnDrawListener(onParentViewDrawListener);
             onParentViewDrawListener = null;

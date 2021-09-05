@@ -185,10 +185,10 @@ public class LifecycleFloatingService extends QDFloatingService2 {
             view.setOnTouchListener(null);
         }
         if(onTouchListener!=null){
-            onTouchListener.onRelease();
+            onTouchListener.onRelease(null);
         }
         if(onTouchListener1!=null){
-            onTouchListener1.onRelease();
+            onTouchListener1.onRelease(null);
         }
     }
 }

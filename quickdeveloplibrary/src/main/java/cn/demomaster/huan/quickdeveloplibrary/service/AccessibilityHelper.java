@@ -23,14 +23,13 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * 无障碍服务帮助类
  */
 public class AccessibilityHelper {
-    public static final String TAG = AccessibilityHelper.class.getSimpleName();
-    final static Map<Integer, QDAccessibilityService.OnAccessibilityListener> listenerMap = new HashMap<>();
+   // final static Map<Integer, QDAccessibilityService.OnAccessibilityListener> listenerMap = new HashMap<>();
 
-    public static void registerAccessibilityEventListener(int code, QDAccessibilityService.OnAccessibilityListener listener) {
+    /*public static void registerAccessibilityEventListener(int code, QDAccessibilityService.OnAccessibilityListener listener) {
         listenerMap.put(code, listener);
-    }
+    }*/
 
-    public static void unRegisterAccessibilityEventListener(int code) {
+   /* public static void unRegisterAccessibilityEventListener(int code) {
         listenerMap.remove(code);
     }
 
@@ -42,7 +41,7 @@ public class AccessibilityHelper {
         for (Map.Entry entry : listenerMap.entrySet()) {
             ((QDAccessibilityService.OnAccessibilityListener) entry.getValue()).onAccessibilityEvent(accessibilityService, event);
         }
-    }
+    }*/
 
     /**
      * 服务开启时回调
@@ -52,15 +51,15 @@ public class AccessibilityHelper {
     public static void onServiceConnected(QDAccessibilityService service) {
         qdAccessibilityService = service;
         resetPackage(qdAccessibilityService);
-        for (Map.Entry entry : listenerMap.entrySet()) {
-            ((QDAccessibilityService.OnAccessibilityListener) entry.getValue()).onServiceConnected(qdAccessibilityService);
-        }
+        //for (Map.Entry entry : listenerMap.entrySet()) {
+        //    ((QDAccessibilityService.OnAccessibilityListener) entry.getValue()).onServiceConnected(qdAccessibilityService);
+       // }
     }
 
     public static void onServiceDestroy() {
-        for (Map.Entry entry : listenerMap.entrySet()) {
+      /*  for (Map.Entry entry : listenerMap.entrySet()) {
             ((QDAccessibilityService.OnAccessibilityListener) entry.getValue()).onServiceDestroy();
-        }
+        }*/
     }
 
     static QDAccessibilityService qdAccessibilityService;
@@ -141,7 +140,7 @@ public class AccessibilityHelper {
             Settings.Secure.putString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, newValue);
             Settings.Secure.putString(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, "1");
             String strs = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            QDLogger.i(TAG, "无障碍的辅助服务设置值：" + strs);
+            QDLogger.i("无障碍的辅助服务设置值：" + strs);
         } catch (Exception e) {
             //授权方法：开启usb调试并使用adb工具连接手机，执行 adb shell pm grant org.autojs.autojspro android.permission.WRITE_SECURE_SETTING
             //QdToast.show(context.getApplicationContext(),"请确保已给予 WRITE_SECURE_SETTINGS 权限授权代码已复制，请使用adb工具连接手机执行(重启不失效)"+ e.toString());
@@ -164,7 +163,7 @@ public class AccessibilityHelper {
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         try {
             String enabledServices = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            Log.i(TAG, "已开启的无障碍服务：" + enabledServices);
+            QDLogger.i("已开启的无障碍服务：" + enabledServices);
             accessibilityEnabled = Settings.Secure.getInt(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED);//"1开启":"0关闭"
         } catch (Settings.SettingNotFoundException e) {
             QDLogger.e(e);
@@ -173,14 +172,14 @@ public class AccessibilityHelper {
         if (accessibilityEnabled == 1) {
             if (enableServices != null) {
                 for (AccessibilityServiceInfo enableService : enableServices) {
-                    Log.i(TAG, "当前服务：" + enableService.getId() + ",目标服务：" + targetId);
+                    QDLogger.i("当前服务：" + enableService.getId() + ",目标服务：" + targetId);
                     if (enableService.getId().trim().equalsIgnoreCase(targetId.trim())) {
-                        Log.e(TAG, "服务已开启：" + targetId);
+                        QDLogger.i( "服务已开启：" + targetId);
                         return true;
                     }
                 }
             } else {
-                Log.e(TAG, "FEEDBACK_GENERIC " + enableServices.toString() + "不包含" + targetId);
+                QDLogger.e( "FEEDBACK_GENERIC " + enableServices.toString() + "不包含" + targetId);
             }
         }
         return false;

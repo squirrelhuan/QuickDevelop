@@ -96,7 +96,7 @@ public class QDTimer implements OnReleaseListener {
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
         onTimerListener = null;
 
         if (handler != null) {

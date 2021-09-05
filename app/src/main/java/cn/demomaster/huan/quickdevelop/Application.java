@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdevelop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
@@ -55,7 +56,7 @@ public class Application extends QDApplication {
 
         DoraemonKit.install(this);
         //初始化缓存目录
-        QuickCache.init(this,"/qdlogger/cache/");
+        QuickCache.init(this, Environment.getExternalStorageDirectory().getAbsolutePath()+"/qdlogger/cache/");
     }
 
     @Override

@@ -240,9 +240,9 @@ public abstract class QDFloatingService extends Service{
         }
 
         @Override
-        public void onRelease() {
-             targetView = null;
-             windowManager = null;
+        public void onRelease(Object self) {
+            targetView = null;
+            windowManager = null;
         }
     }
 

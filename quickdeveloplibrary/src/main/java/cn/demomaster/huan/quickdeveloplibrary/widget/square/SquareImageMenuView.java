@@ -205,7 +205,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
         onDetachedFromWindow();
     }
 

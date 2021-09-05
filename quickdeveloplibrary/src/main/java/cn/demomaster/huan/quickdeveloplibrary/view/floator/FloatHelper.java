@@ -120,8 +120,6 @@ public class FloatHelper {
         }
     }
 
-    public static String Tag = "floatHelper";
-
     private void attachView(Activity activity) {
         // QDLogger.d(Tag, "attachView getParent=" + activity);
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();

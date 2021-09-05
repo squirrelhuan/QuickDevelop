@@ -345,11 +345,11 @@ public class StateView extends ImageTextView implements OnReleaseListener {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        onRelease();
+        onRelease(this);
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
         if (animatorUpdateListener != null) {
             animatorUpdateListener = null;
         }
@@ -357,6 +357,7 @@ public class StateView extends ImageTextView implements OnReleaseListener {
             animatorUpdateListener2 = null;
         }
         if (animator != null) {
+            animator.removeAllUpdateListeners();
             animator.cancel();
         }
     }

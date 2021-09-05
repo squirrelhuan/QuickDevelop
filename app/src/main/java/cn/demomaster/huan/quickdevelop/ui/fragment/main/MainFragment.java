@@ -286,7 +286,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.e( "main onKeyDown " + isRootFragment());
+        QDLogger.i( "main onKeyDown " + isRootFragment());
         if (isRootFragment()) {
             if (System.currentTimeMillis() - firstClickTime > 2000) {
                 QdToast.show(mContext, "再点击退出app");
@@ -296,7 +296,7 @@ public class MainFragment extends BaseFragment {
             }
             return true;
         }
-        QdToast.show(mContext, "onKeyDown isRootFragment=" + isRootFragment());
+        //QdToast.show(mContext, "onKeyDown isRootFragment=" + isRootFragment());
         return super.onKeyDown(keyCode, event);
     }
 }

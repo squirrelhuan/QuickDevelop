@@ -64,7 +64,7 @@ public abstract class QDFloatingService2 extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        QDLogger.println("onDestroyService,this:"+this);
+        QDLogger.i("onDestroyService:"+this);
         QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),1));
     }
     

@@ -32,12 +32,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  * 文件下载帮助类
  */
 public class DownloadHelper {
-    // 权限
-    public static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static DownloadHelper instance;
-
     public static DownloadHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DownloadHelper(context.getApplicationContext());
@@ -46,7 +41,6 @@ public class DownloadHelper {
     }
 
     public Map<Long, DownloadTask> taskMap = new HashMap<>();
-    private static BroadcastReceiver broadcastReceiver;//广播接收者
     private static DownloadChangeObserver downloadChangeObserver;//下载变更观察者
     private DownloadManager downloadManager;
 
@@ -63,7 +57,7 @@ public class DownloadHelper {
 
     private void pushTask(final DownloadTask downloadTask) {
         if (downloadTask.getDownloadType() == DownloadTask.DownloadType.DownloadManager) {
-            QDLogger.println("使用下载管理器进行文件下载");
+            QDLogger.println("使用下载管理器下载");
             excute(downloadTask);//使用下载管理器进行文件下载。
         } else {
             QDLogger.println("使用okhttp方式下载");
@@ -90,7 +84,8 @@ public class DownloadHelper {
 
         //QDLogger.i("downloadDirectory:" +downloadDirectory);
         QDFileUtil.createDir(downloadDirectory);
-        String downFilePath = downloadDirectory + File.separator + downloadTask.getFileName();
+        //String downFilePath = downloadDirectory + File.separator + downloadTask.getFileName();
+        String downFilePath = QDFileUtil.genateFilePath(downloadDirectory,downloadTask.getFileName());
         downloadTask.setSavePath(downFilePath);
         //QDLogger.i("downFilePath:" +downFilePath);
 

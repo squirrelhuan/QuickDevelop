@@ -236,10 +236,10 @@ public class DebugFloatingService extends QDFloatingService2 {
             iv_drag.setOnTouchListener(null);
         }
         if(onTouchListener!=null){
-            onTouchListener.onRelease();
+            onTouchListener.onRelease(null);
         }
         if(onTouchListener1!=null){
-            onTouchListener1.onRelease();
+            onTouchListener1.onRelease(null);
         }
 
         QDLogger.setInterceptor(null);

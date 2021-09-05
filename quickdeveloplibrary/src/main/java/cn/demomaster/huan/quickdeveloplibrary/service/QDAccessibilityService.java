@@ -30,7 +30,7 @@ public class QDAccessibilityService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        QDLogger.i(TAG, "无障碍服务【开启】");
+        QDLogger.println(TAG, "无障碍服务【开启】");
         AccessibilityHelper.onServiceConnected(this);
     }
 
@@ -59,7 +59,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 }
                 break;
         }
-        AccessibilityHelper.onAccessibilityEvent(this, event);
+        //AccessibilityHelper.onAccessibilityEvent(this, event);
         /*
         switch (eventType) {
             case AccessibilityEvent.TYPE_VIEW_CLICKED:

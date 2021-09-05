@@ -330,6 +330,17 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
         this.onVisiableChangedListener = onVisiableChangedListener;
     }
 
+    @Override
+    public void onRelease(Object self) {
+        if (VisibilityMap != null) {
+            VisibilityMap.clear();
+        }
+        if (animator != null) {
+            animator.removeAllUpdateListeners();
+            animator.cancel();
+        }
+    }
+
     public interface OnVisiableChangedListener {
         void onVisiableChanaged(int visibility, float progress);
     }
@@ -365,16 +376,7 @@ public class VisibleLayout extends FrameLayout implements OnReleaseListener {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        onRelease();
+        onRelease(this);
     }
 
-    @Override
-    public void onRelease() {
-        if (VisibilityMap != null) {
-            VisibilityMap.clear();
-        }
-        if (animator != null) {
-            animator.cancel();
-        }
-    }
 }

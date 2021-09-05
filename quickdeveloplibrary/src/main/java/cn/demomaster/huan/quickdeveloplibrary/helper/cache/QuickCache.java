@@ -24,6 +24,7 @@ public class QuickCache {
     public static void init(Context context, String cacheFolder) {
         cacheFolderPath = cacheFolder;
         applicationContext = context.getApplicationContext();
+        QDFileUtil.createDir(cacheFolderPath);
         if (quickCacheMap == null) {
             quickCacheMap = new CacheMap();
         }

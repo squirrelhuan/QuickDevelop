@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * 广告帮助类
@@ -50,7 +51,8 @@ public class UrlHelper {
                     });
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                QDLogger.e("未识别链接资源类型："+urlString);
+                //e.printStackTrace();
                 if (analyResult != null) {
                     analyResult.error();
                 }

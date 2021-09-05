@@ -240,7 +240,7 @@ public class OptionsMenu implements OnReleaseListener {
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(Object self) {
         dismiss();
     }
 

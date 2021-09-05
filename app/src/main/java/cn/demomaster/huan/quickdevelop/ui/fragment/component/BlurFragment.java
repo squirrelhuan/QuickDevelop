@@ -84,7 +84,7 @@ public class BlurFragment extends BaseFragment implements SeekBar.OnSeekBarChang
     public void onPause() {
         super.onPause();
         if(glassUtil!=null) {
-            glassUtil.onRelease();
+            glassUtil.onRelease(null);
         }
     }
 
@@ -146,7 +146,7 @@ public class BlurFragment extends BaseFragment implements SeekBar.OnSeekBarChang
     public void onDestroyView() {
         super.onDestroyView();
         if(glassUtil!=null){
-            glassUtil.onRelease();
+            glassUtil.onRelease(null);
         }
     }
 }

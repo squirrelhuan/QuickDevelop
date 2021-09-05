@@ -17,6 +17,7 @@ import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -523,6 +524,25 @@ public class QDFileUtil {
         File newFile = new File(newPath);
         //执行重命名
         oleFile.renameTo(newFile);
+    }
+
+    /**
+     * 拼接文件路径
+     * @param downloadDirectory
+     * @param fileName
+     * @return
+     */
+    public static String genateFilePath(String downloadDirectory, String fileName) {
+        if(TextUtils.isEmpty(downloadDirectory)||TextUtils.isEmpty(fileName)){
+            return null;
+        }
+        if(downloadDirectory.endsWith(File.separator)){
+            downloadDirectory =downloadDirectory.substring(0,downloadDirectory.length()-1);
+        }
+        if(fileName.startsWith(File.separator)){
+            fileName =downloadDirectory.substring(1);
+        }
+        return downloadDirectory+File.separator +fileName;
     }
 
     public interface OnSearchListener {

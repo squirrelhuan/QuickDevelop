@@ -17,10 +17,6 @@ public class DownloadTask {
         Okhttp
     }
 
-    // 权限
-    public static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private long downloadId;
     private Context context;
     private String fileName;//文件名带格式名

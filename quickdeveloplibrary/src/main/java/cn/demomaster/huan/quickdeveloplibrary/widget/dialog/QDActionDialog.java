@@ -340,6 +340,11 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
 
     @Override
     public void dismiss() {
+        onRelease(this);
+    }
+
+    @Override
+    public void onRelease(Object self) {
         handler.removeCallbacks(runnable);
         if (isShowing()&&getContext()!=null) {
             Context context = ((ContextWrapper) getContext()).getBaseContext();
@@ -357,11 +362,6 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
                 super.dismiss();
             }
         }
-    }
-
-    @Override
-    public void onRelease() {
-
     }
 
    /* @Override
