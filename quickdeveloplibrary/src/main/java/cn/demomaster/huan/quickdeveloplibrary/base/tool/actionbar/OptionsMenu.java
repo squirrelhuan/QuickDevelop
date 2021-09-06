@@ -29,7 +29,6 @@ import cn.demomaster.qdrouter_library.base.OnReleaseListener;
  */
 public class OptionsMenu implements OnReleaseListener {
 
-    public static String TAG = "CGQ";
     private final WeakReference<Context> contextWeakReference;
     private List<Menu> menus;
     private OnMenuItemClicked onMenuItemClicked;
