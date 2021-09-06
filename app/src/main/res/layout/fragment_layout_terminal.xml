@@ -1,63 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/black"
+    android:fitsSystemWindows="true">
+    <!--
+        android:fitsSystemWindows="true"-->
 
+    <!-- <TextView
+         android:id="@+id/tv_console"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="@color/white"
+         android:text="$"/>
+         android:id="@+id/et_console"-->
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignBottom="@+id/ll_input"
-        android:layout_weight="1"
-        android:background="@color/black">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_execute_content"
+            android:id="@+id/tv_current_path"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="input"
-            android:textColor="@color/white"
-            android:textColorHint="@color/greenyellow" />
-
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/ll_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_execute_cmd"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/green"/>
+
+        <ScrollView
+            android:id="@+id/scroll_01"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:textColor="@color/orange"
-            android:textSize="20sp" />
+            android:background="@color/black">
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-            android:id="@+id/btn_execute"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_console"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible" />
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="发送"
-            android:textColor="@color/orange"
-            android:textSize="20sp" />
+            android:background="@color/transparent_light_cc"
+            android:gravity="right">
+
+            <EditText
+                android:id="@+id/et_console"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/dp_5"
+                android:paddingLeft="@dimen/dp_3"
+                android:paddingRight="@dimen/dp_3"
+                android:background="@drawable/folder_bg"/>
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/dp_5"
+                android:text="send"
+                android:textSize="22sp" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-            android:id="@+id/btn_test_01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="强制开启全屏模式"
-            android:textColor="@color/blue"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

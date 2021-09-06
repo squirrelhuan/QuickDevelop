@@ -15,8 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
@@ -25,49 +23,25 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
-@ActivityPager(name = "ExeCommand", iconRes = R.drawable.ic_terminal, resType = ResType.Resource)
-public class ExeCommandFragment extends BaseFragment {
+@ActivityPager(name = "终端", iconRes = R.drawable.ic_terminal, resType = ResType.Resource)
+public class TerminalFragment extends BaseFragment {
 
-
-    @BindView(R.id.btn_exe_02)
-    QDButton btn_exe_02;
-
-    @BindView(R.id.btn_clear)
-    QDButton btn_clear;
-/*
-    @BindView(R.id.et_command)
-    EditText et_command;*/
-
-    @BindView(R.id.btn_exe_03)
-    QDButton btn_exe_03;
     @BindView(R.id.btn_send)
     QDButton btn_send;
 
-    //@BindView(R.id.ll_console)
-    //LinearLayout ll_console;
-    /*@BindView(R.id.tv_console)
-    TextView tv_console;*/
-
     @BindView(R.id.et_console)
     EditText et_console;
-/*
-    @BindView(R.id.qet_console)
-    QDEditView qet_console;*/
 
     @BindView(R.id.scroll_01)
     ScrollView scroll_01;
     @BindView(R.id.tv_console)
     TextView tv_console;
-
-    @BindView(R.id.fab_clear)
-    FloatingActionButton fab_clear;
 
     @BindView(R.id.tv_current_path)
     TextView tv_current_path;
@@ -75,7 +49,7 @@ public class ExeCommandFragment extends BaseFragment {
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_execommand, null);
+        ViewGroup mView = (ViewGroup) inflater.inflate(R.layout.fragment_layout_terminal, null);
         return mView;
     }
 
@@ -99,23 +73,23 @@ public class ExeCommandFragment extends BaseFragment {
                 return false;
             });
         }
-        fab_clear.setOnClickListener(v -> tv_console.setText(""));
-        btn_exe_02.setOnClickListener(v -> {
-            String str = "ps |grep " + getActivity().getPackageName();
+        //fab_clear.setOnClickListener(v -> tv_console.setText(""));
+        /*btn_exe_02.setOnClickListener(v -> {
+            //String str = "ps |grep " + getActivity().getPackageName();
             QDLogger.i(str);
             //exeCommand(str);
-        });
+        });*/
 
-        btn_exe_03.setOnClickListener(v -> {
+       /* btn_exe_03.setOnClickListener(v -> {
             String str = "adb shell settings put global policy_control immersive.full=*";
             QDLogger.i(str);
             //exeCommand(str);
-        });
+        });*/
 
-        btn_clear.setOnClickListener(v -> {
+        /*btn_clear.setOnClickListener(v -> {
             //tv_console.setText("");
             et_console.setText("");
-        });
+        });*/
 
         /*TextWatcher textWatcher2 = new TextWatcher() {
             @Override
@@ -190,14 +164,16 @@ public class ExeCommandFragment extends BaseFragment {
             return;
         }
         ADBHelper.getInstance().execute(et_console.getText().toString(), result -> {
+            tv_console.append("\n"+et_console.getText().toString());
             if (result.getCode() == 0) {
-                tv_console.append(result.getResult());
+                tv_console.append("\n"+result.getResult());
             } else {
-                tv_console.append(result.getError());
+                tv_console.append("\n"+result.getError());
             }
             et_console.setText("");
-            scroll_01.scrollTo(0, tv_console.getHeight());
+            //scroll_01.scrollTo(0, tv_console.getHeight());
             tv_current_path.setText(">_" + ADBHelper.getInstance().currentPath);
+            scroll_01.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
         });
     }
 

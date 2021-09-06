@@ -135,8 +135,6 @@
 
         </LinearLayout>
 
-
-
         <cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

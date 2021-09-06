@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.ErrorTestFragment;
-import cn.demomaster.huan.quickdevelop.ui.fragment.helper.ExeCommandFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.TerminalFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.FloatingFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.HttpFragment;
@@ -105,7 +105,7 @@ public class HelperFragment extends BaseFragment {
         classList.add(UpdateAppFragment.class);
         classList.add(PermitionFragment.class);
         classList.add(PositionFragment.class);
-        classList.add(ExeCommandFragment.class);
+        classList.add(TerminalFragment.class);
         classList.add(AdbForwardFragment.class);
         classList.add(WifiFragment.class);
         classList.add(WifiFragment2.class);

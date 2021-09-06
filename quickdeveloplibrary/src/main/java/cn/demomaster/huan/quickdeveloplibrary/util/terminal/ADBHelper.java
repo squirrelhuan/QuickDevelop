@@ -207,14 +207,10 @@ public class ADBHelper {
                         break;
                     case 1:
                         QDLogger.e(Tag, "Operation not permitted");
-                        if (TextUtils.isEmpty(processResult.getError())) {
-                            processResult.setError("Permission denied");
-                        }
+                        processResult.setError("Permission denied:"+processResult.getError());
                     case 2:
                         QDLogger.e(Tag, "error2");
-                        if (TextUtils.isEmpty(processResult.getError())) {
-                            processResult.setError("error2");
-                        }
+                        processResult.setError("error2:"+processResult.getError());
                         break;
                 }
                 if (onReceiveListener != null) {
