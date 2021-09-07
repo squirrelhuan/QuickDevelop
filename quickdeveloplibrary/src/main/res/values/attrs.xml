@@ -184,6 +184,7 @@
     <declare-styleable name="CircleImageView">
         <attr name="circle_background_padding" format="dimension" />
         <attr name="circle_background_color" format="color" />
+        <attr name="circle_radius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="LoadingView">
