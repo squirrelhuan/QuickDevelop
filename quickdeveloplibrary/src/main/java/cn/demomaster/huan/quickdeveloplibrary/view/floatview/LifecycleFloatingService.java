@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
@@ -10,7 +8,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -23,13 +20,8 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
-import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
-import cn.demomaster.huan.quickdeveloplibrary.view.floator.FloatHelper;
-import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
 

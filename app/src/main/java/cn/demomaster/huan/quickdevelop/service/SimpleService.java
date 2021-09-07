@@ -20,7 +20,6 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 public class SimpleService extends BaseService {
 
-
     public int index;
 
     @Override

@@ -149,17 +149,11 @@ public class NetworkHelper {
         }
     }
 
-    public void registerListener(Context context, NetWorkBroadcastReceiver netWorkBroadcastReceiver) {
+    /*public void registerListener(Context context, NetWorkBroadcastReceiver netWorkBroadcastReceiver) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             context.registerReceiver(netWorkBroadcastReceiver, filter);
-    }
-
-    public void unRegisterListener(Context context,NetWorkBroadcastReceiver listener) {
-        //context.unregisterReceiver(mNetWorkReceiver);
-
-    }
-
+    }*/
 }

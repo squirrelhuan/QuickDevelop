@@ -254,9 +254,7 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
             if (stateType == QDActionStateType.CONTENTVIEWID) {
                 ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 View view = LayoutInflater.from(context).inflate(contentViewLayoutID, null, false);
-                view.setOnClickListener(v -> {
-
-                });
+                view.setClickable(true);
                 contentLinearView.addView(view, layoutParams1);
                 contentLinearView.setBackgroundColor(Color.TRANSPARENT);
                 padding = 0;
@@ -276,17 +274,17 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         }
         contentLinearView.setPadding(p, p, p, p);
 
-        RelativeLayout layout = new RelativeLayout(getContext());
-        layout.setGravity(gravity);
-        layout.addView(contentLinearView, layoutParams);
-        layout.setBackgroundColor(backgroundColor);
+        relativeLayout = new RelativeLayout(getContext());
+        relativeLayout.setGravity(gravity);
+        relativeLayout.addView(contentLinearView, layoutParams);
+        relativeLayout.setBackgroundColor(backgroundColor);
         if (mCancelable) {
-            layout.setOnTouchListener((v, event) -> {
+            relativeLayout.setOnTouchListener((v, event) -> {
                 dismiss();
                 return false;
             });
         }
-        setContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setContentView(relativeLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
        /* Window window = getWindow();
@@ -308,6 +306,7 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         //内容扩展到导航栏
         window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);*/
     }
+    RelativeLayout relativeLayout;
 
     //private int delayMillis = 1500;
 
@@ -341,11 +340,6 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     @Override
     public void dismiss() {
         onRelease(this);
-    }
-
-    @Override
-    public void onRelease(Object self) {
-        handler.removeCallbacks(runnable);
         if (isShowing()&&getContext()!=null) {
             Context context = ((ContextWrapper) getContext()).getBaseContext();
             if (context instanceof Activity) {
@@ -361,6 +355,16 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
             } else {
                 super.dismiss();
             }
+        }
+    }
+
+    @Override
+    public void onRelease(Object self) {
+        if(handler!=null) {
+            handler.removeCallbacks(runnable);
+        }
+        if(relativeLayout!=null){
+            relativeLayout.setOnTouchListener(null);
         }
     }
 

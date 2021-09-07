@@ -20,8 +20,6 @@ public class ServiceHelper {
             context.stopService(new Intent(context, serviceClass));
             //serviceMap.remove(clazz.getName());
            // serviceListenerMap.remove(clazz.getName());
-        } else {
-            QDLogger.println("Service未在运行：" + serviceClass.getName());
         }
     }
 
@@ -41,9 +39,10 @@ public class ServiceHelper {
         if (runningServices.size() <= 0) {
             return false;
         }
-
+        int pid = android.os.Process.myPid();
         for (ActivityManager.RunningServiceInfo serviceInfo : runningServices) {
-            if (componentName.equals(serviceInfo.service.getClassName())) {
+            //QDLogger.e("componentName:"+serviceInfo.service.getClassName()+",pid="+serviceInfo.pid+",pid2="+pid);
+            if ( serviceInfo.pid==pid&& componentName.equals(serviceInfo.service.getClassName())) {
                 return true;
             }
         }

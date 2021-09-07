@@ -73,15 +73,9 @@ public class LoadLayout extends FrameLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         removeAllViews();
-        if(loadView!=null) {
-            loadView = null;
-        }
-        if(contentView!=null) {
-            contentView = null;
-        }
-        if(onLoadListener!=null) {
-            onLoadListener = null;
-        }
+        loadView = null;
+        contentView = null;
+        onLoadListener = null;
     }
 
     @Override

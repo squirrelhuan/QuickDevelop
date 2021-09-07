@@ -167,7 +167,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         button.setBackgroundColor(Color.GREEN);
         button.setText("捕获");
     }
-    QDAccessibilityService qdAccessibilityService;
+
     private void hideDetailInfo() {
         Point point = getPosition();
         hierarchyView.setVisibility(View.VISIBLE);
@@ -176,8 +176,8 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         button.setBackgroundColor(Color.RED);
         button.setText("结束");
 
-        qdAccessibilityService = AccessibilityHelper.getService();
-        if (qdAccessibilityService != null) {
+        if (ServiceHelper.serverIsRunning(getApplicationContext(),QDAccessibilityService.class.getName())) {
+            QDAccessibilityService qdAccessibilityService = QDAccessibilityService.instance;
             currentActivityName = qdAccessibilityService.getCurrentActivityName();
             hierarchyView.setAccessibilityNodeInfo(qdAccessibilityService.getRootInActiveWindow());
         }
@@ -242,7 +242,10 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             tableLayout.addView(row);
             i++;
         }
-        setTreeData(qdAccessibilityService.getRootInActiveWindow());
+        if (ServiceHelper.serverIsRunning(getApplicationContext(),QDAccessibilityService.class.getName())) {
+            QDAccessibilityService qdAccessibilityService = QDAccessibilityService.instance;
+            setTreeData(qdAccessibilityService.getRootInActiveWindow());
+        }
         //mAdapter.notifyDataSetChanged();
 
         mAdapter = new SimpleTreeRecyclerAdapter(recyclerView, dialogView.getContext(),

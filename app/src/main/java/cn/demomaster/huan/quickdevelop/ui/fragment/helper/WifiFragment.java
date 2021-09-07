@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -84,7 +85,6 @@ public class WifiFragment extends BaseFragment {
         return mView;
     }
 
-    NetworkHelper networkHelper;
     public void initView(View rootView) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         WifiUtil.getInstance().init(this.getContext());
@@ -122,7 +122,14 @@ public class WifiFragment extends BaseFragment {
                 QDLogger.e("wifi disconnect");
             }
         };
-        networkHelper.registerListener(mContext,onNetStateChangedListener);
+
+        IntentFilter mWifiConnectIntentFilter = new IntentFilter();
+        mWifiConnectIntentFilter.addAction(WifiManager.ACTION_PICK_WIFI_NETWORK);
+        mWifiConnectIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        getContext().registerReceiver(onNetStateChangedListener,mWifiConnectIntentFilter);
+
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
@@ -358,8 +365,8 @@ public class WifiFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(networkHelper!=null){
-            networkHelper.unRegisterListener(mContext,onNetStateChangedListener);
+        if(onNetStateChangedListener!=null){
+            getContext().unregisterReceiver(onNetStateChangedListener);
         }
     }
 }

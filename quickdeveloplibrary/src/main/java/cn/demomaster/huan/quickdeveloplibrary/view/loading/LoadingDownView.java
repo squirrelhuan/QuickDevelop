@@ -41,7 +41,7 @@ public class LoadingDownView extends View {
         //QDLogger.v("color = "+color);
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int center_x,width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -66,7 +66,6 @@ public class LoadingDownView extends View {
     boolean isDrawed;
     private int lineWidth = 30;
     private int arrowHeight = 30;
-
     private void drawView(Canvas canvas) {
         //QDLogger.e("progress="+progress+"");
         // canvas.rotate(progress, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
@@ -148,10 +147,9 @@ public class LoadingDownView extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (animator != null) {
+            animator.removeAllUpdateListeners();
             animator.cancel();
         }
-        if (onProgressChanged != null) {
-            onProgressChanged = null;
-        }
+        onProgressChanged = null;
     }
 }

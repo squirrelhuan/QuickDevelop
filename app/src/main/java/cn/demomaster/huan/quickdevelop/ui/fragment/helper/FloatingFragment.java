@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,6 @@ public class FloatingFragment extends BaseFragment {
             }
         }));
 
-
         btn_floating_02.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
@@ -156,18 +156,22 @@ public class FloatingFragment extends BaseFragment {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnServiceChanged(EventMessage eventMessage){
-        QDLogger.println(eventMessage.toString());
-        if(eventMessage.data[0]==FpsFloatingService.class){
-            btn_floating_01.setText(((int)eventMessage.data[1])==0?"关闭悬浮":"打开悬浮");
-        }
-        if(eventMessage.data[0]==FloatingMenuService.class){
-            btn_floating_02.setText(((int)eventMessage.data[1])==0?"关闭悬浮":"打开悬浮");
-        }
-        if(eventMessage.data[0]==DebugFloatingService.class){
-            btn_floating_03.setText(((int)eventMessage.data[1])==0?"关闭控制台":"开启控制台");
-        }
-        if(eventMessage.data[0]==LifecycleFloatingService.class){
-            btn_floating_04.setText(((int)eventMessage.data[1])==0?"关闭生命周期监控器":"开启生命周期监控器");
+        if(eventMessage!=null) {
+            //QDLogger.println(eventMessage.toString());
+            if (!TextUtils.isEmpty(eventMessage.key) && eventMessage.key.equals("QDFloatingService2-onCreate")) {
+                if (eventMessage.data[0] == FpsFloatingService.class) {
+                    btn_floating_01.setText(((int) eventMessage.data[1]) == 0 ? "关闭悬浮" : "打开悬浮");
+                }
+                if (eventMessage.data[0] == FloatingMenuService.class) {
+                    btn_floating_02.setText(((int) eventMessage.data[1]) == 0 ? "关闭悬浮" : "打开悬浮");
+                }
+                if (eventMessage.data[0] == DebugFloatingService.class) {
+                    btn_floating_03.setText(((int) eventMessage.data[1]) == 0 ? "关闭控制台" : "开启控制台");
+                }
+                if (eventMessage.data[0] == LifecycleFloatingService.class) {
+                    btn_floating_04.setText(((int) eventMessage.data[1]) == 0 ? "关闭生命周期监控器" : "开启生命周期监控器");
+                }
+            }
         }
     }
 /*

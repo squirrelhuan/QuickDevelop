@@ -38,13 +38,13 @@ import cn.demomaster.qdrouter_library.manager.QDActivityManager;
  */
 public class DebugFloating2 implements FloatView {
 
-    static FloatHelper floatHelper;
+    //static FloatHelper floatHelper;
 
     public void show(Activity mactivity) {
-        if (floatHelper == null) {
+      /*  if (floatHelper == null) {
             floatHelper = new FloatHelper();
         }
-        floatHelper.addFloatView(mactivity, this);
+        floatHelper.addFloatView(mactivity, this);*/
     }
 
     static int screenWidth;
@@ -87,7 +87,7 @@ public class DebugFloating2 implements FloatView {
                     drag_X = nowX;
                     drag_Y = nowY;
 
-                    floatHelper.onWindowSizeChanged(movedX, movedY);
+                    //floatHelper.onWindowSizeChanged(movedX, movedY);
                     break;
                 case MotionEvent.ACTION_UP:
                 default:
@@ -117,7 +117,7 @@ public class DebugFloating2 implements FloatView {
     QDLogInterceptor logInterceptor = new QDLogInterceptor() {
         @Override
         public void onLog(QDLogBean msg) {
-            View view = floatHelper.getCurrentContentView();
+            View view = null;//floatHelper.getCurrentContentView();
             if (view != null) {
                 RichTextView tv_log = view.findViewById(R.id.tv_log);
                 ScrollView scrollView = view.findViewById(R.id.scrollView);
@@ -181,7 +181,7 @@ public class DebugFloating2 implements FloatView {
         tv_title = contentView.findViewById(R.id.tv_title);
         tv_title.setText("" + QDAppInfoUtil.getVersionName(context));
         tv_close = contentView.findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(v -> floatHelper.hideFloatView());
+       // tv_close.setOnClickListener(v -> floatHelper.hideFloatView());
 
         tv_log_tag = contentView.findViewById(R.id.tv_log_tag);
         tv_log_tag.setText(tagFilter.name());
@@ -196,7 +196,7 @@ public class DebugFloating2 implements FloatView {
 
     @Override
     public void onResume(Activity activity) {
-        ViewGroup windowView = floatHelper.getCurrentContentView();
+        ViewGroup windowView = null;//floatHelper.getCurrentContentView();
         if (windowView == null || windowView.getChildCount() == 0) {
             return;
         }
@@ -261,7 +261,7 @@ public class DebugFloating2 implements FloatView {
      */
     @Override
     public void onPause(Activity activity) {
-        ViewGroup windowView = floatHelper.getFloatView(activity);
+        ViewGroup windowView = null;//floatHelper.getFloatView(activity);
         if (windowView == null || windowView.getChildCount() == 0) {
             return;
         }

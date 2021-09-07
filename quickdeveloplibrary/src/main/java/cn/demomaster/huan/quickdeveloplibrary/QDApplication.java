@@ -41,15 +41,14 @@ public class QDApplication extends Application implements UpgradeInterface {
         String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");
         if(!TextUtils.isEmpty(logPath)) {
             QDLogger.init(this, logPath);
-            QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid());
         }
-        QDLogger.i("uid="+QDAppInfoUtil.getUidByPackageName(this,getPackageName()));
+        QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid()+",uid="+QDAppInfoUtil.getUidByPackageName(this,getPackageName()));
 
         //初始化全局SharedPreferences
         QDSharedPreferences.init(this);
         //activity管理监听
         QDActivityManager.getInstance().init(this);
-        LifecycleManager.getInstance().init(this);
+        //LifecycleManager.getInstance().init(this);
 
         ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
         if (TextUtils.isEmpty(processInfo.processName) || !getPackageName().equals(processInfo.processName)) {
@@ -65,9 +64,9 @@ public class QDApplication extends Application implements UpgradeInterface {
         //处理崩溃日志
         initCrash();
         //DoraemonKit.install(this);
-        if (isDebug(this)) {
-            //ServiceHelper.showWindow(this,DebugFloatingService.class);
-        }
+        /*if (isDebug(this)) {
+           ServiceHelper.showWindow(this,DebugFloatingService.class);
+        }*/
     }
 
     @Override
@@ -103,10 +102,6 @@ public class QDApplication extends Application implements UpgradeInterface {
     public void initCrash() {
         if (BuildConfig.DEBUG) {
             Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
-            if (errorReportActivity == null) {
-                QDLogger.println("未定义错误异常捕获页面");
-                return;
-            }
             CrashHandler.getInstance().init(this, errorReportActivity);
         }else {
             CrashHandler.getInstance().init(this, null);

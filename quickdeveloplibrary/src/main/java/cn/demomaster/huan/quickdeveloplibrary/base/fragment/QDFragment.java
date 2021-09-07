@@ -27,12 +27,11 @@ public abstract class QDFragment extends QuickFragment {
     public boolean dispatchTouchEvent(MotionEvent me) {
         return false;
     }
-    private PhotoHelper photoHelper;
     public PhotoHelper getPhotoHelper() {
         if (getContext() instanceof QDActivity) {
-            photoHelper = ((QDActivity) getContext()).getPhotoHelper();
+            return ((QDActivity) getContext()).getPhotoHelper();
         }
-        return photoHelper;
+        return null;
     }
     
    /* //获取自定义菜单

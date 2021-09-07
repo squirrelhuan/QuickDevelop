@@ -120,7 +120,9 @@ public class LoadingCircleBallInnerView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (animator != null)
+        if (animator != null){
+            animator.removeAllUpdateListeners();
             animator.cancel();
+        }
     }
 }

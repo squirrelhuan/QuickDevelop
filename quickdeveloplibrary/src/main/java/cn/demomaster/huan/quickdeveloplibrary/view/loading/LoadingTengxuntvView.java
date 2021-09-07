@@ -29,7 +29,7 @@ public class LoadingTengxuntvView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -37,7 +37,6 @@ public class LoadingTengxuntvView extends View {
 
         width = w;
         height = h;
-        center_x = width / 2;
     }
 
     private boolean isPlaying = false;
@@ -109,7 +108,9 @@ public class LoadingTengxuntvView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (animator != null)
+        if (animator != null) {
+            animator.removeAllUpdateListeners();
             animator.cancel();
+        }
     }
 }

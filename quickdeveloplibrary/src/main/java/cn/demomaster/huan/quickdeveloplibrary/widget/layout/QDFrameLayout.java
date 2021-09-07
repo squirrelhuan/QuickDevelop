@@ -167,6 +167,6 @@ public class QDFrameLayout extends android.widget.FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        QDLogger.println("dispatchDraw");
+       // QDLogger.println("dispatchDraw");
     }
 }

@@ -96,7 +96,6 @@ public class WifiFragment2 extends BaseFragment {
         return mView;
     }
 
-    NetworkHelper networkHelper;
     public void initView(View rootView) {
         QDDeviceHelper.setFlagDef(AudioManager.FLAG_PLAY_SOUND);
         WifiUtil.getInstance().init(this.getContext());
@@ -111,7 +110,6 @@ public class WifiFragment2 extends BaseFragment {
                 getWifiListSort(scanResults, WifiUtil.getInstance().getSSID());
             }
         });
-        networkHelper = new NetworkHelper();
         onNetStateChangedListener = new NetWorkBroadcastReceiver() {
             @Override
             public void onConnected(Context context, Intent intent) {
@@ -135,7 +133,14 @@ public class WifiFragment2 extends BaseFragment {
                 QDLogger.e("wifi disconnect");
             }
         };
-        networkHelper.registerListener(mContext,onNetStateChangedListener);
+
+        IntentFilter mWifiConnectIntentFilter = new IntentFilter();
+        mWifiConnectIntentFilter.addAction(WifiManager.ACTION_PICK_WIFI_NETWORK);
+        mWifiConnectIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        getContext().registerReceiver(onNetStateChangedListener,mWifiConnectIntentFilter);
+
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
@@ -451,8 +456,8 @@ public class WifiFragment2 extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(networkHelper!=null){
-            networkHelper.unRegisterListener(mContext,onNetStateChangedListener);
+        if(onNetStateChangedListener!=null){
+            getContext().unregisterReceiver(onNetStateChangedListener);
         }
     }
 }

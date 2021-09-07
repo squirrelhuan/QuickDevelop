@@ -169,6 +169,7 @@ public class BarcodeStateView extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (animator != null) {
+            animator.removeAllUpdateListeners();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 animator.cancel();
             }

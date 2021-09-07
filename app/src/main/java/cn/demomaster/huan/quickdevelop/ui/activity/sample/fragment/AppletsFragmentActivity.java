@@ -29,9 +29,10 @@ public class AppletsFragmentActivity extends QDActivity {
         setContentView(view);
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         getFragmentHelper().build(this,AppletsFragment.class.getName())
-                .setContainerViewId(view.getId()).putExtras(new Bundle())
+                .setContainerViewId(view.getId())
+                .putExtras(new Bundle())
                 .putExtra("password", 666666)
-                .putExtra("name", "小三").navigation();
+                .navigation();
     }
 /*
     public int getContentViewId(){

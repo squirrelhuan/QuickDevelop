@@ -17,9 +17,6 @@ import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 @ActivityPager(name = "数据库",preViewClass = TextView.class,resType = ResType.Resource)
 public class CsqliteActivity extends BaseActivity {
 
-
-    /** Called when the activity is first created. */
-//声明各个按钮
     @BindView(R.id.createDatabase)
     Button createBtn;
     @BindView(R.id.insert)

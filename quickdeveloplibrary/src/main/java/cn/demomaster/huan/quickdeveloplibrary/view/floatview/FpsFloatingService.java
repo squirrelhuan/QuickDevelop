@@ -24,7 +24,7 @@ import cn.demomaster.quickevent_library.core.QuickEvent;
  */
 public class FpsFloatingService extends QDFloatingService2 {
     LinearLayout linearLayout;
-
+    
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         linearLayout = new LinearLayout(context.getApplicationContext());

@@ -149,6 +149,7 @@ public class LoadingCircleView2 extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (animator != null) {
+            animator.removeAllUpdateListeners();
             animator.cancel();
         }
     }

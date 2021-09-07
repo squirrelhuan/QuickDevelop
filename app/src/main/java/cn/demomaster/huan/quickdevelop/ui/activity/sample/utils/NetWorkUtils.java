@@ -17,9 +17,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 public class NetWorkUtils {
-	
-	private static final String PINGURL = "rp.belle.cn";
-	
+
 	private static final String URL = "http://rp.belle.cn:9090/blsf-mesV1-web/bas_workshop_group/listAll.json";
 	
 	public static boolean isNetWork(String pingUrl){

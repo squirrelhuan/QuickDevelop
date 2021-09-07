@@ -87,7 +87,7 @@ public class ImageTextView extends cn.demomaster.qdrouter_library.view.ImageText
                 }
             }
         }
-        attributeHelper = null;
+        attributeHelper.onRelease(this);
     }
 
     private float textWidth;

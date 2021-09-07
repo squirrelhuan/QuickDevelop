@@ -30,7 +30,6 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
 @ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class PermitionFragment extends BaseFragment {
 
-
     //Components
     @BindView(R.id.btn_write_external_storage)
     QDButton btn_write_external_storage;

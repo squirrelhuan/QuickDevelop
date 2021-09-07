@@ -25,7 +25,7 @@ public abstract class QDFloatingService2 extends Service {
     public void onCreate() {
         super.onCreate();
         QDLogger.println("服务启动" + this.getClass().getName());
-        QuickEvent.getDefault().post(new EventMessage(0,this.getClass(),0));
+        QuickEvent.getDefault().post(new EventMessage("QDFloatingService2-onCreate",this.getClass(),0));
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         onCreateView(getApplicationContext(), windowManager);
         //contentView.setBackgroundColor(getResources().getColor(R.color.transparent_dark_33));

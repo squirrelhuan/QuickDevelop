@@ -19,13 +19,13 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 final class SafeToastContext extends ContextWrapper {
 
-    private @NonNull Toast toast;
+   // private @NonNull Toast toast;
 
     //private @Nullable BadTokenListener badTokenListener;
 
     SafeToastContext(@NonNull Context base, @NonNull Toast toast) {
         super(base);
-        this.toast = toast;
+       // this.toast = toast;
     }
 
     @Override
@@ -37,7 +37,7 @@ final class SafeToastContext extends ContextWrapper {
        // this.badTokenListener = badTokenListener;
     }
 
-    private final class ApplicationContextWrapper extends ContextWrapper {
+    private static final class ApplicationContextWrapper extends ContextWrapper {
 
         private ApplicationContextWrapper(@NonNull Context base) {
             super(base);
@@ -52,7 +52,7 @@ final class SafeToastContext extends ContextWrapper {
         }
     }
 
-    private final class WindowManagerWrapper implements WindowManager {
+    private static final class WindowManagerWrapper implements WindowManager {
         private final @NonNull
         WindowManager base;
 

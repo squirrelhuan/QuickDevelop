@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -116,6 +115,9 @@ public class QDActivity extends QuickActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1&&!this.isDestroyed()) {
             Glide.with(this).pauseRequests();
         }
+        if(photoHelper!=null) {
+            photoHelper.onRelease(this);
+        }
         /*try {
             NetworkUtil.unRegisterListener(this);
         } catch (Exception e) {
@@ -158,7 +160,6 @@ public class QDActivity extends QuickActivity {
 
     public void showMessage(String message) {
         PopToastUtil.showToast(this, message);
-        //getMesageHelper().showMessage(message);
     }
 
     @Override

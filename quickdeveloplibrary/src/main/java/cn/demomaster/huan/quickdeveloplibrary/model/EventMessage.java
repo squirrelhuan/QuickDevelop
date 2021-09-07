@@ -5,19 +5,26 @@ import java.util.Arrays;
 
 public class EventMessage implements Serializable {
     public int code;
+    public String key;
     public Object obj;
     public Object[] data;
 
     public EventMessage(int eventType) {
         this.code = eventType;
     }
-    public EventMessage(int eventCode, Object obj) {
-        this.code = eventCode;
-        this.obj = obj;
-    }
     public EventMessage(int eventCode, Object... eventObj) {
         this.code = eventCode;
         this.data = eventObj;
+        if(eventObj!=null&&eventObj.length>0) {
+            this.obj = data[0];
+        }
+    }
+    public EventMessage(String key, Object... eventObj) {
+        this.key = key;
+        this.data = eventObj;
+        if(eventObj!=null&&eventObj.length>0) {
+            this.obj = data[0];
+        }
     }
 
     public int getCode() {

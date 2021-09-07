@@ -20,6 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static android.app.Activity.RESULT_OK;
@@ -33,7 +34,20 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
  * description：
  */
 
-public class PhotoHelper {
+public class PhotoHelper implements OnReleaseListener {
+
+    @Override
+    public void onRelease(Object self) {
+        if(self instanceof Activity) {
+            contextWeakReference.clear();
+            if (currentBuilder != null) {
+                currentBuilder.setOnTakePhotoResult(null);
+                currentBuilder.setOnSelectPictureResult(null);
+                currentBuilder.setOutUri(null);
+                currentBuilder.setSrcUri(null);
+            }
+        }
+    }
 
     public enum RequestType {
         takePhoto(0),//拍照
@@ -259,8 +273,6 @@ public class PhotoHelper {
         });
     }
 
-    //private Map<Integer, Object> photoResultMap = new HashMap<>();
-
     private Uri takePhoto(Builder builder) {
         Uri fileUri = builder.outUri;
         if (fileUri == null) {
@@ -392,7 +404,6 @@ public class PhotoHelper {
     //public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
     public final static String PHOTOHELPER_RESULT_PATH = "PHOTOHELPER_RESULT_PATH";
     public final static String PHOTOHELPER_RESULT_PATHES = "PHOTOHELPER_RESULT_PATHES";
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         onActivityResultImp(requestCode, resultCode, data);
         /*switch (requestCode) {

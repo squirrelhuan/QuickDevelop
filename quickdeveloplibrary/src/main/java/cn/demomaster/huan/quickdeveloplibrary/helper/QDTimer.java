@@ -98,7 +98,6 @@ public class QDTimer implements OnReleaseListener {
     @Override
     public void onRelease(Object self) {
         onTimerListener = null;
-
         if (handler != null) {
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
@@ -111,17 +110,5 @@ public class QDTimer implements OnReleaseListener {
         //读秒状态不可点击
         void onTimeChange(long time);
     }
-
-    /*public void destory() {
-        if (onTimerListener != null) {
-            onTimerListener = null;
-        }
-        if (handler != null) {
-            handler.removeCallbacks(runnable);
-            handler.removeCallbacksAndMessages(null);
-            runnable = null;
-        }
-        handler = null;
-    }*/
 
 }

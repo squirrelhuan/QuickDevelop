@@ -93,12 +93,14 @@ public class CacheMap {
         if (file.exists()) {
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
-                for (File file1 : files) {
-                    if (file1.isDirectory()) {
-                        findCacheFolder(file1);
-                    } else {
-                        //这里只做初始化，不对value赋值
-                        md5Map.put(file1.getAbsolutePath(), null);
+                if(files!=null) {
+                    for (File file1 : files) {
+                        if (file1.isDirectory()) {
+                            findCacheFolder(file1);
+                        } else {
+                            //这里只做初始化，不对value赋值
+                            md5Map.put(file1.getAbsolutePath(), null);
+                        }
                     }
                 }
             }

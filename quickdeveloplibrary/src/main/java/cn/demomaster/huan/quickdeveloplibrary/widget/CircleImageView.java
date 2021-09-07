@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
@@ -35,15 +36,17 @@ public class CircleImageView extends AppCompatImageView {
 
     int circle_background_padding;//是否对背景圆角处理
     int circle_background_color;
+    int circle_background_radius = -1;
     private void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleImageView);
             circle_background_padding = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_background_padding, 0);
             circle_background_color = a.getColor(R.styleable.CircleImageView_circle_background_color, Color.TRANSPARENT);
+            circle_background_radius = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_radius, -1);
             a.recycle();
         }
     }
-
+    
     private boolean isRound = true;
     @Override
     protected void onDraw(Canvas canvas) {
@@ -54,13 +57,25 @@ public class CircleImageView extends AppCompatImageView {
             int centerY = (int) (getHeight() / 2f);
             //Log.e("CGQ", "raduis=" + raduis + ",Height = "+getHeight()+",Width="+getWidth());
             //按照逆时针方向添加一个圆
-            path.addCircle(centerX, centerY, raduis, Path.Direction.CCW);
-            if (circle_background_color != Color.TRANSPARENT) {
-                Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setColor(circle_background_color);
-                canvas.drawCircle(centerX, centerY, raduis, paint);
+            if(circle_background_radius==-1) {
+                path.addCircle(centerX, centerY, raduis, Path.Direction.CCW);
+                if (circle_background_color != Color.TRANSPARENT) {
+                    Paint paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(circle_background_color);
+                    canvas.drawCircle(centerX, centerY, raduis, paint);
+                }
+            }else {
+                RectF rectF = new RectF(centerX-raduis,centerY-raduis,centerX+raduis,centerY+raduis);
+                path.addRoundRect(rectF,circle_background_radius,circle_background_radius, Path.Direction.CCW);
+                if (circle_background_color != Color.TRANSPARENT) {
+                    Paint paint = new Paint();
+                    paint.setAntiAlias(true);
+                    paint.setColor(circle_background_color);
+                    canvas.drawRoundRect(rectF,circle_background_radius,circle_background_radius, paint);
+                }
             }
+
             //先将canvas保存
             canvas.save();
             //设置为在圆形区域内绘制

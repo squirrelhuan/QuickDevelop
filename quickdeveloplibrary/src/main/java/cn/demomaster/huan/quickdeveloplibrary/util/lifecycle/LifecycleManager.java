@@ -50,11 +50,9 @@ public class LifecycleManager {
 
     //生命周期数据
     LifecycleTimerData lifecycleTimerData = null;
-
     public LifecycleTimerData getLifecycleTimerData() {
         return lifecycleTimerData;
     }
-
 
     /**
      * 页面切换监听

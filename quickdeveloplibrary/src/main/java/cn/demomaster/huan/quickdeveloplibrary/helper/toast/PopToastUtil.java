@@ -19,7 +19,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView;
 public class PopToastUtil {
 
     static PopupWindow popupWindow;
-    static View contentView;
     static CircleTextView messageView;
 
     public static void showToast(Activity context, String text) {

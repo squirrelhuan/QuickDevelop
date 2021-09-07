@@ -23,10 +23,10 @@ public class BaseFragmentActivity extends QDActivity {
         setContentView(null);
         getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
         getFragmentHelper().build(this, RouterFragment.class.getName())
-                .setContainerViewId(getContentViewId()).putExtras(new Bundle())
+                .setContainerViewId(getContentViewId())
+                .putExtras(new Bundle())
                 .putExtra("password", 666666)
-                .putExtra("name", "小三").navigation();
-
+                .navigation();
     }
 /*
     public int getContentViewId(){

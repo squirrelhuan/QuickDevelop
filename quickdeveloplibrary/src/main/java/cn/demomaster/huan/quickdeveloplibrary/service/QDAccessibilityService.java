@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.service;
 
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +15,19 @@ import android.view.accessibility.AccessibilityWindowInfo;
 
 import androidx.annotation.RequiresApi;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.quickevent_library.core.QuickEvent;
+import cn.demomaster.quickevent_library.core.Subscribe;
+import cn.demomaster.quickevent_library.core.ThreadMode;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
 
@@ -25,25 +36,25 @@ import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
  */
 public class QDAccessibilityService extends AccessibilityService {
     public static final String TAG = QDAccessibilityService.class.getSimpleName();
+    public static QDAccessibilityService instance;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        QuickEvent.getDefault().register(this);
+    }
 
     //初始化
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
         QDLogger.println(TAG, "无障碍服务【开启】");
-        AccessibilityHelper.onServiceConnected(this);
+       // AccessibilityHelper.onServiceConnected(this);
     }
 
-    public interface OnAccessibilityListener {
-        void onServiceConnected(QDAccessibilityService qdAccessibilityService);
-
-        void onAccessibilityEvent(AccessibilityService accessibilityService, AccessibilityEvent event);
-
-        void onServiceDestroy();
-    }
-
+    public static final int QDAccessibilityService_Event = 1035445;
     String currentActivityName;
-
     public String getCurrentActivityName() {
         return currentActivityName;
     }
@@ -51,6 +62,7 @@ public class QDAccessibilityService extends AccessibilityService {
     //实现辅助功能
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        //QDLogger.i("onAccessibilityEvent---------");
         int eventType = event.getEventType();
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
@@ -59,6 +71,7 @@ public class QDAccessibilityService extends AccessibilityService {
                 }
                 break;
         }
+        QuickEvent.getDefault().post(new EventMessage(QDAccessibilityService_Event,event));
         //AccessibilityHelper.onAccessibilityEvent(this, event);
         /*
         switch (eventType) {
@@ -138,19 +151,22 @@ public class QDAccessibilityService extends AccessibilityService {
             Log.i(TAG, "showDialog:" + rootNodeInfo.canOpenPopup());
         }*/
         rootNodeInfo.getPackageName();
-       /*
-        Log.i(TAG, "窗口Id:" + rootNodeInfo.getWindowId());*/
+       /*Log.i(TAG, "窗口Id:" + rootNodeInfo.getWindowId());*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public static AccessibilityNodeInfo getNodeInfoById(String id) {
+        return getNodeInfoById(instance,id);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static AccessibilityNodeInfo getNodeInfoById(AccessibilityService accessibilityService, String id) {
-        if (TextUtils.isEmpty(id) || accessibilityService.getRootInActiveWindow() == null) {
+        if (accessibilityService==null||TextUtils.isEmpty(id) || accessibilityService.getRootInActiveWindow() == null) {
             return null;
         }
         List<AccessibilityNodeInfo> nodeInfoList = accessibilityService.getRootInActiveWindow().findAccessibilityNodeInfosByViewId(id);
         if (nodeInfoList != null && nodeInfoList.size() > 0) {
             nodeInfoList.get(0).getViewIdResourceName();
-            int count = nodeInfoList.get(0).getChildCount();
+            //int count = nodeInfoList.get(0).getChildCount();
             //Log.d(TAG, "ChildCount="+count);
             return nodeInfoList.get(0);
         }
@@ -160,7 +176,6 @@ public class QDAccessibilityService extends AccessibilityService {
     /**
      * 模拟全局按键 performGlobalAction "Android 4.1及以上系统才支持此功能
      */
-
     @Override
     public void onInterrupt() {
         QDLogger.i(TAG, "辅助功能被迫中断");
@@ -168,14 +183,14 @@ public class QDAccessibilityService extends AccessibilityService {
 
     @Override
     public void onDestroy() {
+        QuickEvent.getDefault().unRegister(this);
+        instance =null;
         super.onDestroy();
         QDLogger.i(TAG, "辅助功能已关闭");
-        AccessibilityHelper.onServiceDestroy();
     }
 
     //跳转系统自带界面 辅助功能界面
     public static void startSettintActivity(Context context) {
-
         /*Intent intent = new Intent(context, DialogWindowActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("permission", Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
@@ -183,6 +198,51 @@ public class QDAccessibilityService extends AccessibilityService {
         (context).startActivity(intent);*/
         PermissionHelper.requestPermission(context,
                 new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, null);
+    }
+
+    /**
+     * 添加要监听的包名
+     * @param packageName
+     */
+    public static void addPackage(String packageName) {
+        packageMap.put(packageName, "");
+        resetPackage();
+    }
+
+    /**
+     * 重置服务包名（需要服务启动时执行）
+     */
+    public static void resetPackage() {
+        if(instance!=null) {
+            AccessibilityServiceInfo serviceInfo = instance.getServiceInfo();
+            if (serviceInfo != null) {
+                if (serviceInfo.packageNames != null) {
+                    for (String packageName : serviceInfo.packageNames) {
+                        packageMap.put(packageName, packageName);
+                    }
+                }
+                String[] arr = new String[packageMap.size()];
+                int i =0;
+                for(Map.Entry entry:packageMap.entrySet()){
+                    arr[i] = (String) entry.getKey();
+                    i++;
+                }
+                serviceInfo.packageNames = arr;
+                instance.setServiceInfo(serviceInfo);
+            }
+        }
+    }
+
+    public static final Map<String, String> packageMap = new HashMap<>();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void performGlobalAction(EventMessage eventMessage){
+        if(eventMessage!=null) {
+            if(!TextUtils.isEmpty(eventMessage.key)&&eventMessage.key.equals("performGlobalAction")) {
+                //new EventMessage(1, "performGlobalAction", AccessibilityService.GLOBAL_ACTION_HOME);
+                //QuickEvent.getDefault().post(QDAccessibilityService.class, eventMessage);
+                performGlobalAction((int) eventMessage.data[0]);
+            }
+        }
     }
 
 }

@@ -148,7 +148,6 @@ public class H5Fragment extends BaseFragment {
         getFragmentHelper().build(getActivity(),WebViewFragment.class.getName())
                 .putExtras(bundle)
                 .putExtra("password", 666666)
-                .putExtra("name", "小三")
                 .navigation();
     }
 

@@ -35,15 +35,17 @@ import java.util.Map;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
+import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.OnReleaseListener;
+import cn.demomaster.quickevent_library.core.QuickEvent;
 
 import static android.content.Context.WINDOW_SERVICE;
-import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
 
 /**
  * 正方形的ImageView
@@ -85,9 +87,9 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
 
     private void init() {
         onClickListener = v -> {
-            QDLogger.println("触发点击事件 onClick=" + animator);
+            //QDLogger.println("触发点击事件 onClick=" + animator);
             if (animator != null) {
-                QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
+                //QDLogger.println("animator=" + animator.getState() + ",isHasReversed=" + animator.isHasReversed());
                 if (animator.getState() == QDValueAnimator.AnimationState.isOpened || animator.getState() == QDValueAnimator.AnimationState.isOpening) {
                     boolean canDoAction = false;
                     for (Map.Entry entry : pointMap.entrySet()) {
@@ -136,7 +138,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             QDAccessibilityService.startSettintActivity(getContext());
             return;
         }
-        if (AccessibilityHelper.getService() == null) {
+       /* if (!ServiceHelper.serverIsRunning(getContext(),QDAccessibilityService.class.getName())) {
             AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
             serviceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
             serviceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
@@ -144,18 +146,24 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             serviceInfo.notificationTimeout = 100;
             //QDAccessibilityService.getService().setServiceInfo(serviceInfo);
             return;
-        }
-        QDAccessibilityService qdAccessibilityService = AccessibilityHelper.getService();
-        if (qdAccessibilityService != null) {
+        }*/
+        //QDAccessibilityService qdAccessibilityService = AccessibilityHelper.getService();
+        if (ServiceHelper.serverIsRunning(getContext(),QDAccessibilityService.class.getName())) {
             switch (type) {
                 case 0:
-                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
+                    EventMessage eventMessage = new EventMessage("performGlobalAction",AccessibilityService.GLOBAL_ACTION_HOME);
+                    QuickEvent.getDefault().post(QDAccessibilityService.class,eventMessage);
+                    //qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
                     break;
                 case 1:
-                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                    EventMessage eventMessage1 = new EventMessage("performGlobalAction",AccessibilityService.GLOBAL_ACTION_RECENTS);
+                    QuickEvent.getDefault().post(QDAccessibilityService.class,eventMessage1);
+                    //qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                     break;
                 case 2:
-                    qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+                    EventMessage eventMessage2 = new EventMessage("performGlobalAction",AccessibilityService.GLOBAL_ACTION_BACK);
+                    QuickEvent.getDefault().post(QDAccessibilityService.class,eventMessage2);
+                    //qdAccessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
                     break;
             }
         }
@@ -354,7 +362,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
             WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) getLayoutParams();
             layoutParams.width = lp.width;
             layoutParams.height = lp.height;
-            QDLogger.println("setSize w1=" + lp.width + ",w2=" + layoutParams.width);
+            //QDLogger.println("setSize w1=" + lp.width + ",w2=" + layoutParams.width);
             windowManager.updateViewLayout(this, layoutParams);
         }
     }
@@ -363,7 +371,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
     QDValueAnimator animator;
     QDValueAnimator.AnimationListener animationListener;
     public void startAnimation() {
-        Log.d(TAG, "开启动画");
+        QDLogger.println("开启动画");
         if (animator == null) {
             final int start = 0;
             final int end = 360;
@@ -374,12 +382,12 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
                 animationListener = new QDValueAnimator.AnimationListener() {
                     @Override
                     public void onStartOpen(Object value) {
-                        Log.d(TAG, "onStartOpen");
+                        //Log.d(TAG, "onStartOpen");
                     }
 
                     @Override
                     public void onOpening(Object value) {
-                        Log.d(TAG, "onOpening");
+                        //Log.d(TAG, "onOpening");
                         if (getVisibility() == VISIBLE) {
                             progress = (int) value;
                             //Log.d(TAG, "progress=" + progress);
@@ -389,18 +397,18 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
 
                     @Override
                     public void onEndOpen(Object value) {
-                        Log.d(TAG, "onEndOpen");
+                       // Log.d(TAG, "onEndOpen");
                         delayedStopAnimation();
                     }
 
                     @Override
                     public void onStartClose(Object value) {
-                        Log.d(TAG, "onStartClose");
+                        //Log.d(TAG, "onStartClose");
                     }
 
                     @Override
                     public void onClosing(Object value) {
-                        Log.d(TAG, "onClosing");
+                        //Log.d(TAG, "onClosing");
                         if (getVisibility() == VISIBLE) {
                             progress = (int) value;
                             //Log.d(TAG, "progress=" + progress);
@@ -410,7 +418,7 @@ public class SquareImageMenuView extends View implements OnReleaseListener {
 
                     @Override
                     public void onEndClose(Object value) {
-                        Log.d(TAG, "onEndClose");
+                        //Log.d(TAG, "onEndClose");
                         postInvalidate();
                     }
                 };

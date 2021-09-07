@@ -178,7 +178,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.UploadFilesIntentService" /> <!-- AIDL服务端 -->
+        <!-- AIDL服务端 -->
         <service
             android:name=".aidl.StudentService"
             android:exported="true">

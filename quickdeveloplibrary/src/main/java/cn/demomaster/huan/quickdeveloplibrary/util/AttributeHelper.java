@@ -5,15 +5,17 @@ import android.util.AttributeSet;
 
 import java.lang.ref.WeakReference;
 
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
+
 /**
  * AttributeSet 帮助类,读取Android的属性
  */
-public class AttributeHelper {
+public class AttributeHelper implements OnReleaseListener {
 
     public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 
     private final WeakReference<Context> contextWeakReference;
-    private final AttributeSet mAttrs;
+    private AttributeSet mAttrs;
 
     public AttributeHelper(Context context, AttributeSet attrs) {
         contextWeakReference = new WeakReference<>(context);
@@ -92,4 +94,11 @@ public class AttributeHelper {
         return Boolean.parseBoolean(string);
     }
 
+    @Override
+    public void onRelease(Object self) {
+        if(contextWeakReference!=null){
+            contextWeakReference.clear();
+        }
+        mAttrs = null;
+    }
 }

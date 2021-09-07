@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -208,7 +209,13 @@ public class DeviceFragment extends BaseFragment {
                 QDLogger.e("網絡 斷開");
             }
         };
-        networkHelper.registerListener(mContext,onNetStateChangedListener);
+
+        IntentFilter mWifiConnectIntentFilter = new IntentFilter();
+        mWifiConnectIntentFilter.addAction(WifiManager.ACTION_PICK_WIFI_NETWORK);
+        mWifiConnectIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        mWifiConnectIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        getContext().registerReceiver(onNetStateChangedListener,mWifiConnectIntentFilter);
         registerPermission();
     }
     NetWorkBroadcastReceiver onNetStateChangedListener;
@@ -266,8 +273,8 @@ public class DeviceFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(networkHelper!=null) {
-            networkHelper.unRegisterListener(mContext, onNetStateChangedListener);
+        if(onNetStateChangedListener!=null) {
+            getContext().unregisterReceiver(onNetStateChangedListener);
         }
     }
 }

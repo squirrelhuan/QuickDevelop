@@ -330,14 +330,11 @@ public class EmoticonView extends ImageTextView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (animator != null) {
+            animator.removeAllUpdateListeners();
             animator.cancel();
         }
-        if (showUpdateListener != null) {
             showUpdateListener = null;
-        }
-        if (hideUpdateListener != null) {
             hideUpdateListener = null;
-        }
         /*if (updateListener != null) {
             updateListener = null;
         }*/
