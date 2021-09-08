@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/dp_4"
     android:paddingRight="@dimen/dp_4"
     android:background="@color/transparent_light_cc">
@@ -14,7 +15,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/quickdev_title_text_size"
         android:gravity="center_vertical" />
-    <!-- <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+    <!-- <cn.demomaster.qdrouter_library.view.ImageTextView
          android:id="@+id/it_actionbar_common_left"
          android:layout_width="@dimen/activity_actionbar_button_width"
          android:layout_height="match_parent"
@@ -37,7 +38,7 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/quickdev_middle_text_size" />
 
-    <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+    <cn.demomaster.qdrouter_library.view.ImageTextView
         android:id="@+id/itv_retry"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -46,8 +47,8 @@
         android:gravity="left|center_vertical"
         android:layout_gravity="right"
         android:singleLine="true"
-        android:text=""
-        android:textColor="@color/dodgerblue"
-        android:textSize="@dimen/quickdev_middle_text_size" />
+        app:qd_text=""
+        app:qd_textColor="@color/dodgerblue"
+        app:qd_textSize="@dimen/quickdev_middle_text_size" />
 
 </FrameLayout>

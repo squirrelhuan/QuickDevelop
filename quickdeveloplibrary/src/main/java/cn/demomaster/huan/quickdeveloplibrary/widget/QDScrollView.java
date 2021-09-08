@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 
+import androidx.annotation.NonNull;
+
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -151,6 +153,12 @@ public class QDScrollView extends androidx.core.widget.NestedScrollView {
         return b;
     }
 
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        getChildlayout();
+    }
+    
     ValueAnimator childAnimator;
     private void getChildlayout() {
         if (getChildCount() > 0) {
@@ -200,6 +208,15 @@ public class QDScrollView extends androidx.core.widget.NestedScrollView {
                     childTop = getPaddingTop() + lp.topMargin;
             }
             originalRect.set(childLeft, childTop, childLeft + width, childTop + height);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(childAnimator!=null){
+            childAnimator.removeAllUpdateListeners();
+            childAnimator.cancel();
         }
     }
 }

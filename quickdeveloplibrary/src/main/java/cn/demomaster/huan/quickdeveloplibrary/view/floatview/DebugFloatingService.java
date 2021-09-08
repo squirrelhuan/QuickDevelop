@@ -36,6 +36,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
+import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.getTagColor;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagNames;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.logTagfilters;
 import static cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2.tagFilter;
@@ -73,7 +74,7 @@ public class DebugFloatingService extends QDFloatingService2 {
         tv_close.setOnClickListener(v -> dissmissWindow());
         tv_log_tag = view.findViewById(R.id.tv_log_tag);
         tv_log_tag.setText(tagFilter.name());
-        tv_log_tag.setTextColor(QDLogger.getColor(tagFilter.value()));
+        tv_log_tag.setTextColor(getTagColor(tagFilter.value()));
         tv_log_tag.setOnClickListener(onClickTagListenernew);
         initLog();
 
@@ -111,7 +112,7 @@ public class DebugFloatingService extends QDFloatingService2 {
             dialog.dismiss();
             textView.setText(data.get(position));
             tagFilter = logTagfilters[position];
-            textView.setTextColor(QDLogger.getColor(tagFilter.value()));
+            textView.setTextColor(getTagColor(tagFilter.value()));
         }).create().show();
     }
 
@@ -142,7 +143,7 @@ public class DebugFloatingService extends QDFloatingService2 {
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(msg.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
                 tv_log.append(builder);

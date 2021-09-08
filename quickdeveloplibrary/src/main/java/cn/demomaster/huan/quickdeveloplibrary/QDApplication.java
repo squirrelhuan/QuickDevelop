@@ -50,13 +50,14 @@ public class QDApplication extends Application implements UpgradeInterface {
         QDActivityManager.getInstance().init(this);
         //LifecycleManager.getInstance().init(this);
 
-        ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
+      /*  ActivityManager.RunningAppProcessInfo processInfo = QDProcessUtil.getProcessInfo(getApplicationContext(), android.os.Process.myPid());
         if (TextUtils.isEmpty(processInfo.processName) || !getPackageName().equals(processInfo.processName)) {
             QDLogger.e(TAG, getPackageName() + "进程[" + android.os.Process.myPid() + "]已存在无需重复初始化");
             return;
-        }
+        }*/
 
         //NotifycationHelper.getInstance().init(this);
+
         //QDSaxXml.parseXmlAssets(this, "config/test.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.Article.class, null);
         //QDSaxXml.parseXmlAssets(this, "config/test2.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, null);
         QDSaxXml.parseXmlAssets(this, "config/project.xml", cn.demomaster.huan.quickdeveloplibrary.util.xml.AppConfig.class, result -> QDLogger.println("配置文件初始化完成" + result));

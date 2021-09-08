@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -9,6 +10,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -67,8 +69,32 @@ public class DebugFloating2 implements FloatView {
             dialog.dismiss();
             textView.setText(data.get(position));
             tagFilter = logTagfilters[position];
-            textView.setTextColor(QDLogger.getColor(tagFilter.value()));
+            textView.setTextColor(getTagColor(tagFilter.value()));
         }).create().show();
+    }
+
+    static int[] tagColors = new int[]{Color.WHITE, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED, Color.RED, Color.DKGRAY};
+    public static int getTagColor(int logType) {
+        int color = tagColors[1];
+        switch (logType) {
+            case Log.VERBOSE:// 2;
+                color = tagColors[0];
+                break;
+            case Log.DEBUG:// 3;
+                color = tagColors[6];
+                break;
+            case Log.INFO:// 4;
+            case -2:// 6;
+                color = tagColors[2];
+                break;
+            case Log.WARN:// 5;
+                color = tagColors[3];
+                break;
+            case Log.ERROR:// 6;
+                color = tagColors[4];
+                break;
+        }
+        return color;
     }
 
     public View.OnTouchListener onTouchListener2 = new View.OnTouchListener() {
@@ -134,7 +160,7 @@ public class DebugFloating2 implements FloatView {
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(msg.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
 
                 //logStr = builder.toString()+tv_log.getText();
@@ -185,7 +211,7 @@ public class DebugFloating2 implements FloatView {
 
         tv_log_tag = contentView.findViewById(R.id.tv_log_tag);
         tv_log_tag.setText(tagFilter.name());
-        tv_log_tag.setTextColor(QDLogger.getColor(tagFilter.value()));
+        tv_log_tag.setTextColor(getTagColor(tagFilter.value()));
         tv_log_tag.setOnClickListener(onClickTagListenernew);
 
         initLog(contentView);
@@ -218,7 +244,7 @@ public class DebugFloating2 implements FloatView {
         tv_log_tag = windowView.findViewById(R.id.tv_log_tag);
         if (tv_log_tag != null) {
             tv_log_tag.setText(tagFilter.name());
-            tv_log_tag.setTextColor(QDLogger.getColor(tagFilter.value()));
+            tv_log_tag.setTextColor(getTagColor(tagFilter.value()));
         }
 
         String logStr = getLogText(activity);
@@ -245,7 +271,7 @@ public class DebugFloating2 implements FloatView {
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(QDLogger.getColor(QDLogBean.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(QDLogBean.getType().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 stringBuffer.append(builder.toString());
                 i++;

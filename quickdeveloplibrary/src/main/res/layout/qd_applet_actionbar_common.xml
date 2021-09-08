@@ -13,25 +13,25 @@
         android:layout_gravity="left|center"
         android:orientation="horizontal">
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+        <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_actionbar_back"
             style="@style/quick_actionbar_common_weight"
             android:layout_width="@dimen/activity_actionbar_button_width"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_6"
-            android:textSize="@dimen/quickdev_title_text_size"
+            app:qd_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp"
             tools:ignore="VectorDrawableCompat" />
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+        <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_actionbar_title"
             style="@style/quick_actionbar_common_weight"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_6"
-            android:textSize="@dimen/quickdev_title_text_size"
-            android:text="1234656"
+            app:qd_textSize="@dimen/quickdev_title_text_size"
+            app:qd_text="1234656"
             android:gravity="center_vertical" />
     </LinearLayout>
 
@@ -45,14 +45,14 @@
         android:background="@drawable/applet_menu_bg"
         android:orientation="horizontal">
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+        <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_actionbar_menu"
             style="@style/quick_actionbar_common_weight"
             android:layout_width="@dimen/activity_actionbar_button_width"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/dp_6"
-            android:textSize="@dimen/quickdev_title_text_size"
+            app:qd_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             android:rotation="90"
             app:srcCompat="@drawable/ic_more_vert_black_24dp"
@@ -66,14 +66,14 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginBottom="@dimen/dp_5" />
 
-        <cn.demomaster.huan.quickdeveloplibrary.widget.ImageTextView
+        <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_actionbar_close"
             style="@style/quick_actionbar_common_weight"
             android:layout_width="@dimen/activity_actionbar_button_width"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/dp_6"
-            android:textSize="@dimen/quickdev_title_text_size"
+            app:qd_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             app:srcCompat="@mipmap/ic_close_circle" />
     </LinearLayout>

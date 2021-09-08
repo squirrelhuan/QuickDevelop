@@ -30,10 +30,12 @@
     <attr name="qd_radiusBottomLeft" format="dimension" />
     <attr name="qd_radiusBottomRight" format="dimension" />
     <attr name="qd_btn_internal_width" format="dimension" />
-
+    <attr name="qd_textColor" format="color" />
+    <attr name="qd_textSize" format="dimension" />
+    <attr name="qd_text" format="string" />
 
     <attr name="QDButtonStyle" format="reference" />
-    <declare-styleable name="QDButton">
+    <declare-styleable name="QDButton" >
         <attr name="qd_backgroundColor" />
         <attr name="qd_borderColor" />
         <attr name="qd_borderWidth" />
@@ -57,13 +59,12 @@
         <attr name="qd_radiusBottomLeft" />
         <attr name="qd_radiusBottomRight" />
         <attr name="qd_btn_internal_width" />
-
+        <attr name="qd_textColor" />
+        <attr name="qd_textSize" />
+        textSize
     </declare-styleable>
 
 
-    <!--**********************************************
-        *                  btn                      *
-        **********************************************-->
     <attr name="qd_btn_text_size" format="dimension" />
     <attr name="qd_btn_border_width" format="dimension" /><!--
     <attr name="qd_btn_internal_width" format="dimension"/>-->

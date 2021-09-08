@@ -74,10 +74,10 @@ public class ActionBarTipActivity extends QDActivity {
             }
         });*/
 
-        btn_complete.setOnClickListener(view -> getActionBarTool().getActionBarTip().showComplete("完成"));
+        /*btn_complete.setOnClickListener(view -> getActionBarTool().getActionBarTip().showComplete("完成"));
         btn_loading.setOnClickListener(view -> getActionBarTool().getActionBarTip().showLoading("加载"));
         btn_warning.setOnClickListener(view -> getActionBarTool().getActionBarTip().showWarning("警告"));
-        btn_error.setOnClickListener(view -> getActionBarTool().getActionBarTip().showError("错误"));
+        btn_error.setOnClickListener(view -> getActionBarTool().getActionBarTip().showError("错误"));*/
 
         sb_background = findViewById(R.id.sb_background);
         sb_background.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
