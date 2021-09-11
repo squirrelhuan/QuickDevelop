@@ -24,8 +24,8 @@ import cn.demomaster.qdrouter_library.view.ImageTextView;
 public class AppletsFragment extends BaseFragment {
 
     @Override
-    public int getHeadlayoutResID() {
-        return R.layout.qd_applet_actionbar_common;
+    public View getHeaderlayout() {
+        return inflateView(R.layout.qd_applet_actionbar_common);
     }
 
     @Nullable

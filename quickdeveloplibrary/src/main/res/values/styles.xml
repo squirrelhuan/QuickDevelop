@@ -74,6 +74,9 @@
         <item name="android:selectAllOnFocus">false</item>
     </style>
 
+    <style name="QDTextViewStyle">
+        <item name="qd_backgroundColor">@color/transparent</item>
+    </style>
     <!--********************* Button *********************-->
     <style name="QDButtonStyle" parent="android:Widget.Holo.Light.Button">
         <item name="android:layout_width">wrap_content</item>

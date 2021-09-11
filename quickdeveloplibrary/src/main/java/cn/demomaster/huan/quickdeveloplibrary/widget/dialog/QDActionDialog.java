@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -279,10 +280,10 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         relativeLayout.addView(contentLinearView, layoutParams);
         relativeLayout.setBackgroundColor(backgroundColor);
         if (mCancelable) {
-            relativeLayout.setOnTouchListener((v, event) -> {
-                dismiss();
-                return false;
-            });
+            if(myOnToucherListener==null){
+                myOnToucherListener = new MyOnToucherListener(this);
+            }
+            relativeLayout.setOnTouchListener(myOnToucherListener);
         }
         setContentView(relativeLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
@@ -307,7 +308,26 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);*/
     }
     RelativeLayout relativeLayout;
+    MyOnToucherListener myOnToucherListener;
+    public static class MyOnToucherListener implements View.OnTouchListener{
+        QDActionDialog qdActionDialog;
 
+        public MyOnToucherListener(QDActionDialog qdActionDialog) {
+            this.qdActionDialog = qdActionDialog;
+        }
+
+        public void setQdActionDialog(QDActionDialog qdActionDialog) {
+            this.qdActionDialog = qdActionDialog;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if(qdActionDialog!=null&& qdActionDialog.isShowing()) {
+                qdActionDialog.dismiss();
+            }
+            return false;
+        }
+    }
     //private int delayMillis = 1500;
 
     @Override
@@ -362,6 +382,9 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     public void onRelease(Object self) {
         if(handler!=null) {
             handler.removeCallbacks(runnable);
+        }
+        if(myOnToucherListener!=null){
+            myOnToucherListener.setQdActionDialog(null);
         }
         if(relativeLayout!=null){
             relativeLayout.setOnTouchListener(null);

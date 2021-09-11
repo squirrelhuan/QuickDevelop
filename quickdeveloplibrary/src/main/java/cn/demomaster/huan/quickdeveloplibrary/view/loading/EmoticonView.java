@@ -240,13 +240,27 @@ public class EmoticonView extends ImageTextView {
 
     private ValueAnimator animator;
     private int duration = 500;
-    ValueAnimator.AnimatorUpdateListener showUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    MyAnimatorUpdateListener showUpdateListener;
+    public static class MyAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateListener{
+
+        EmoticonView emoticonView;
+
+        public MyAnimatorUpdateListener(EmoticonView emoticonView) {
+            this.emoticonView = emoticonView;
+        }
+
+        public void setEmoticonView(EmoticonView emoticonView) {
+            this.emoticonView = emoticonView;
+        }
+
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            progress = (float) animation.getAnimatedValue();
-            invalidate();
+            if(emoticonView!=null){
+                emoticonView.progress = (float) animation.getAnimatedValue();
+                emoticonView.invalidate();
+            }
         }
-    };
+    }
 
     public void show() {
         if (animator == null) {
@@ -260,6 +274,9 @@ public class EmoticonView extends ImageTextView {
         //animator = MyValueAnimator.ofFloat(0, 1);
         // animator.setFloatValues(0, 1);
         animator.setDuration(duration);
+        if(showUpdateListener==null){
+            showUpdateListener = new MyAnimatorUpdateListener(this);
+        }
         animator.addUpdateListener(showUpdateListener);
 
         if (stateType == LoadStateType.LOADING) {
@@ -282,19 +299,32 @@ public class EmoticonView extends ImageTextView {
     }
 
     private LoadStateType stateType1 = LoadStateType.LOADING;
-    ValueAnimator.AnimatorUpdateListener hideUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    MyAnimatorUpdateListener2 hideUpdateListener;
+    public static class MyAnimatorUpdateListener2 implements ValueAnimator.AnimatorUpdateListener{
+
+        EmoticonView emoticonView;
+
+        public MyAnimatorUpdateListener2(EmoticonView emoticonView) {
+            this.emoticonView = emoticonView;
+        }
+
+        public void setEmoticonView(EmoticonView emoticonView) {
+            this.emoticonView = emoticonView;
+        }
+
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            progress = (float) animation.getAnimatedValue();
-            if (progress == 0) {
-                stateType = stateType1;
-                show();
-            } else {
-                invalidate();
+            if(emoticonView!=null){
+                emoticonView.progress = (float) animation.getAnimatedValue();
+                if (emoticonView.progress == 0) {
+                    emoticonView.stateType = emoticonView.stateType1;
+                    emoticonView.show();
+                } else {
+                    emoticonView.invalidate();
+                }
             }
         }
-    };
-
+    }
     //隐藏后显示
     public void hideAndShow(final LoadStateType stateType1) {
         this.stateType1 = stateType1;
@@ -306,6 +336,9 @@ public class EmoticonView extends ImageTextView {
             //animator.setFloatValues(0, progress);
             animator.setRepeatCount(0);
             animator.setDuration((int) (duration * progress));
+            if(hideUpdateListener==null){
+                hideUpdateListener = new MyAnimatorUpdateListener2(this);
+            }
             animator.addUpdateListener(hideUpdateListener);
             animator.reverse();
         }
@@ -333,8 +366,12 @@ public class EmoticonView extends ImageTextView {
             animator.removeAllUpdateListeners();
             animator.cancel();
         }
-            showUpdateListener = null;
-            hideUpdateListener = null;
+        if(showUpdateListener!=null){
+            showUpdateListener.setEmoticonView(null);
+        }
+        if(hideUpdateListener!=null){
+            hideUpdateListener.setEmoticonView(null);
+        }
         /*if (updateListener != null) {
             updateListener = null;
         }*/

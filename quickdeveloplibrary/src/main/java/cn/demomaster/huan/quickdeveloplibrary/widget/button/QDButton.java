@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.button;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 
@@ -46,6 +48,67 @@ public class QDButton extends AppCompatButton {
 
         //QDRoundButtonDrawable bg = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QMUIViewHelper.setBackgroundKeepingPadding(this, drawable);
+
+        fromAttributeSet(context, attrs, defStyleAttr);
     }
 
+    ColorStateList colorBg;
+    ColorStateList colorBorder;
+    int borderWidth;
+    boolean isRadiusAdjustBounds;
+    int mRadius;
+    int mRadiusTopLeft,mRadiusTopRight,mRadiusBottomLeft,mRadiusBottomRight;
+    public QDRoundButtonDrawable fromAttributeSet(Context context, AttributeSet attrs, int defStyleAttr) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDButton, defStyleAttr, 0);
+        colorBg = typedArray.getColorStateList(R.styleable.QDButton_qd_backgroundColor);
+        colorBorder = typedArray.getColorStateList(R.styleable.QDButton_qd_borderColor);
+        borderWidth = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_borderWidth, 0);
+        isRadiusAdjustBounds = typedArray.getBoolean(R.styleable.QDButton_qd_isRadiusAdjustBounds, false);
+        mRadius = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radius, 0);
+        mRadiusTopLeft = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radiusTopLeft, 0);
+        mRadiusTopRight = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radiusTopRight, 0);
+        mRadiusBottomLeft = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radiusBottomLeft, 0);
+        mRadiusBottomRight = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radiusBottomRight, 0);
+        typedArray.recycle();
+        return generateDrawable();
+    }
+
+    public void setBackgroundColor(int color){
+           /* QDRoundButtonDrawable qdRoundButtonDrawable = (QDRoundButtonDrawable) getBackground();
+            qdRoundButtonDrawable.setColor(color);
+*/
+            int[] colors = new int[] {color,color,color,color,color,color};//{ pressed, focused, normal, focused, unable, normal };
+            int[][] states = new int[6][];
+            states[0] = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
+            states[1] = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
+            states[2] = new int[] { android.R.attr.state_enabled };
+            states[3] = new int[] { android.R.attr.state_focused };
+            states[4] = new int[] { android.R.attr.state_window_focused };
+            states[5] = new int[] {};
+            colorBg = new ColorStateList(states,colors);
+            setBackground(generateDrawable());
+    }
+
+    private QDRoundButtonDrawable generateDrawable() {
+        QDRoundButtonDrawable bg = new QDRoundButtonDrawable();
+        bg.setBgData(colorBg);
+        bg.setStrokeData(borderWidth, colorBorder);
+        if (mRadiusTopLeft > 0 || mRadiusTopRight > 0 || mRadiusBottomLeft > 0 || mRadiusBottomRight > 0) {
+            float[] radii = new float[]{
+                    mRadiusTopLeft, mRadiusTopLeft,
+                    mRadiusTopRight, mRadiusTopRight,
+                    mRadiusBottomRight, mRadiusBottomRight,
+                    mRadiusBottomLeft, mRadiusBottomLeft
+            };
+            bg.setCornerRadii(radii);
+            isRadiusAdjustBounds = false;
+        } else {
+            bg.setCornerRadius(mRadius);
+            if (mRadius > 0) {
+                isRadiusAdjustBounds = false;
+            }
+        }
+        bg.setIsRadiusAdjustBounds(isRadiusAdjustBounds);
+        return bg;
+    }
 }

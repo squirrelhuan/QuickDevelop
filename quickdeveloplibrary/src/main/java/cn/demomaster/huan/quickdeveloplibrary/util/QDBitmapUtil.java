@@ -425,7 +425,12 @@ public class QDBitmapUtil {
                     String colorStr = "#" + r1 + g1 + b1;    //十六进制的颜色字符串。
                     //QDLogger.i("colorStr2 = " + colorStr);
                     int color1 = (r << 16) | (g << 8) | b | color;
-                    bitmap.setPixel(i, j, Color.parseColor(colorStr));
+                    try {
+                        int color3 = Color.parseColor(colorStr);
+                        bitmap.setPixel(i, j, color3);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }

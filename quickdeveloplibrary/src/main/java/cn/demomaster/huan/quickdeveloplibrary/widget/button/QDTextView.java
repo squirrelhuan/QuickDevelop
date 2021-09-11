@@ -41,7 +41,7 @@ public class QDTextView extends AppCompatTextView {
             //获取selectableItemBackground中对应的attrId
             TypedValue typedValue = new TypedValue();
             getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, typedValue, true);
-
+            
             int[] attribute = new int[]{android.R.attr.selectableItemBackground};
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
             setForeground(typedArray.getDrawable(0));
@@ -140,5 +140,11 @@ public class QDTextView extends AppCompatTextView {
         }
         bg.setIsRadiusAdjustBounds(isRadiusAdjustBounds);
         return bg;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        
     }
 }

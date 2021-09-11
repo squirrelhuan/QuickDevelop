@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.drawable.StateListDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QMUIViewHelper;
+import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundButtonDrawable;
 
 /**
  * @author squirrel桓
@@ -39,6 +42,24 @@ public class QDTextViewPoint extends AppCompatTextView {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        if(getBackground()==null) {//注意如果设置了自定义的背景 就不用自动生成背景drawable了
+            StateListDrawable drawable = new StateListDrawable();
+            //如果要设置莫项为false，在前面加负号 ，比如android.R.attr.state_focesed标志true，-android.R.attr.state_focesed就标志false
+            int defStyleAttr = R.attr.QDTextViewStyle;
+            QDRoundButtonDrawable bg_normal = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+            QDRoundButtonDrawable bg_focused = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+            QDRoundButtonDrawable bg_pressed = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+            QDRoundButtonDrawable bg_selected = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+            drawable.addState(new int[]{android.R.attr.state_focused}, bg_focused);
+            drawable.addState(new int[]{android.R.attr.state_pressed}, bg_pressed);
+            drawable.addState(new int[]{android.R.attr.state_selected}, bg_selected);
+            drawable.addState(new int[]{}, bg_normal);//默认
+            //btn.setBackgroundDrawable(drawable);
+            //QDRoundButtonDrawable bg = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+            QMUIViewHelper.setBackgroundKeepingPadding(this, drawable);
+        }
+
+
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.QDTextViewPoint);
 
         pointMargin = array.getDimension(R.styleable.QDTextViewPoint_pointMargin, 0);
@@ -79,7 +100,6 @@ public class QDTextViewPoint extends AppCompatTextView {
             pointPaddingBottom = pointPaddingBottom_value;
         }
 
-
         pointText = array.getString(R.styleable.QDTextViewPoint_pointText);
         pointBackgroundColor = array.getColor(R.styleable.QDTextViewPoint_pointBackgroundColor, 0);
         pointTextSize = array.getDimension(R.styleable.QDTextViewPoint_pointTextSize, 0);
@@ -99,14 +119,13 @@ public class QDTextViewPoint extends AppCompatTextView {
         QDLogger.println( "showPoint: " + showPoint);*/
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-        center_x = width / 2;
     }
 
     boolean hollowOut;
