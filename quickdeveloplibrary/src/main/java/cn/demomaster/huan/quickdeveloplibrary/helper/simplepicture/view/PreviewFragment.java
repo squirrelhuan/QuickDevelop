@@ -24,17 +24,12 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType
  */
 public class PreviewFragment extends Fragment {
 
-    View mView;
-
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mView == null) {
-            mView = inflater.inflate(R.layout.fragment_layout_preview, null);
-        }
+        View contentView = inflater.inflate(R.layout.fragment_layout_preview, null);
         Bundle bundle = getArguments();
-        PhotoView pv_image = mView.findViewById(R.id.pv_image);
-        Image image = null;
+        PhotoView pv_image = contentView.findViewById(R.id.pv_image);
         if (bundle != null && bundle.containsKey("image")) {
-            image = (Image) bundle.getSerializable("image");
+            Image image = (Image) bundle.getSerializable("image");
             if (image != null && image.getPath() != null) {
                 if (image.getUrlType() == UrlType.url) {
                     Glide.with(getContext()).load(image.getPath()).into(pv_image);
@@ -43,7 +38,6 @@ public class PreviewFragment extends Fragment {
                 }
             }
         }
-
-        return mView;
+        return contentView;
     }
 }

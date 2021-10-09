@@ -30,7 +30,7 @@ public class LoadingWaveTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -38,7 +38,6 @@ public class LoadingWaveTextView extends AppCompatTextView {
 
         width = w;
         height = h;
-        center_x = width / 2;
     }
 
     private boolean isPlaying = false;

@@ -41,7 +41,6 @@ public class EmptyLayout extends FrameLayout {
     }
 
     private View targetView;
-
     public void setTargetView(View targetView) {
         this.targetView = targetView;
     }
@@ -68,6 +67,9 @@ public class EmptyLayout extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if(btn_retry!=null){
+            btn_retry.setOnClickListener(null);
+        }
         btn_retry = null;
         it_empty_icon = null;
         it_empty_title = null;

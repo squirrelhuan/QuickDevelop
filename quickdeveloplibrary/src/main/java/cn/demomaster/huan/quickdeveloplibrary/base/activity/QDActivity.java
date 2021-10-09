@@ -132,14 +132,14 @@ public class QDActivity extends QuickActivity {
         changeAppLanguageAndRefreshUI(mContext, new Locale("ko"));
     }
 
-    private PhotoHelper photoHelper;
+    public PhotoHelper photoHelper;
     public PhotoHelper getPhotoHelper() {
         if (photoHelper == null) {
             photoHelper = new PhotoHelper(mContext);
         }
         return photoHelper;
     }
-    private OptionsMenu optionsMenu;
+    public OptionsMenu optionsMenu;
     //获取自定义菜单
     public OptionsMenu getOptionsMenu() {
         if (optionsMenu == null) {

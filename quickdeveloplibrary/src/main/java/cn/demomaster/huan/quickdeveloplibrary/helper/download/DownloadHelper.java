@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.download;
 
-import android.Manifest;
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -43,7 +41,6 @@ public class DownloadHelper {
     public Map<Long, DownloadTask> taskMap = new HashMap<>();
     private static DownloadChangeObserver downloadChangeObserver;//下载变更观察者
     private DownloadManager downloadManager;
-
     private DownloadHelper(Context context) {
         // this.broadcastReceiver = new DownLoadBroadcast(onDownloadStateChangeListener);
         init(context);
@@ -365,11 +362,9 @@ public class DownloadHelper {
         }
 
         int downloadId;
-
         public void cancel() {
             DownloadHelper.getInstance(context).cancelTask(downloadId);
         }
-
         public void unregister(Context context) {
             QDLogger.i("注销");
             if (context != null) {

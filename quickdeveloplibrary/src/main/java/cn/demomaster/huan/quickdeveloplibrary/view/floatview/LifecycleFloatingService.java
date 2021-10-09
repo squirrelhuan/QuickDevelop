@@ -23,8 +23,6 @@ import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 
-import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
-
 /**
  * 生命周期悬浮窗
  * Created

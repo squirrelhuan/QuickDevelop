@@ -18,17 +18,23 @@ public class QDTimer implements OnReleaseListener {
     private long totalTime = 60;
     private OnTimerListener onTimerListener;
 
-    public QDTimer() {
+    private QDTimer() {
 
     }
 
     public QDTimer(OnTimerListener onReceiveSmsCodeListener) {
         this.onTimerListener = onReceiveSmsCodeListener;
+        init();
+    }
+
+    private void init() {
+        runnable = new ValidateCodeRunnable(this);
     }
 
     public QDTimer(long time, OnTimerListener onReceiveSmsCodeListener) {
         this.onTimerListener = onReceiveSmsCodeListener;
         this.totalTime = time;
+        init();
     }
 
     public void setOnTimerListener(OnTimerListener onTimerListener) {
@@ -72,10 +78,36 @@ public class QDTimer implements OnReleaseListener {
     }
 
     Handler handler = new Handler();
-    Runnable runnable = () -> validateCode();
+    ValidateCodeRunnable runnable = null;
     private long startTime;
+    public static class ValidateCodeRunnable implements Runnable,OnReleaseListener{
+        QDTimer qdTimer;
 
-    private void validateCode() {
+        public ValidateCodeRunnable(QDTimer qdTimer) {
+            this.qdTimer = qdTimer;
+        }
+
+        @Override
+        public void run() {
+            long last = qdTimer.startTime;
+            long now = System.currentTimeMillis();
+            long diff = getSecond(now - last);
+            if (diff > qdTimer.totalTime) {
+                qdTimer.handler.removeCallbacks(qdTimer.runnable);
+            } else {
+                if (qdTimer.onTimerListener != null) {
+                    qdTimer.onTimerListener.onTimeChange(qdTimer.totalTime - diff);
+                }
+                qdTimer.handler.postDelayed(qdTimer.runnable, 1000);
+            }
+        }
+
+        @Override
+        public void onRelease(Object self) {
+            qdTimer.handler.removeCallbacks(qdTimer.runnable);
+        }
+    }
+    /*private void validateCode() {
         long last = startTime;
         long now = System.currentTimeMillis();
         long diff = getSecond(now - last);
@@ -87,7 +119,7 @@ public class QDTimer implements OnReleaseListener {
             }
             handler.postDelayed(runnable, 1000);
         }
-    }
+    }*/
 
     //时间戳转字符串
     public static long getSecond(long diff) {
@@ -98,17 +130,17 @@ public class QDTimer implements OnReleaseListener {
     @Override
     public void onRelease(Object self) {
         onTimerListener = null;
+        if(runnable!=null){
+            runnable.onRelease(self);
+        }
         if (handler != null) {
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
         }
-        handler = null;
-        runnable = null;
     }
 
     public interface OnTimerListener {
         //读秒状态不可点击
         void onTimeChange(long time);
     }
-
 }

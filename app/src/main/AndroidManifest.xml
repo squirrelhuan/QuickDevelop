@@ -136,7 +136,6 @@
         <activity android:name=".ui.activity.sample.actionbar.ActionBarTipActivity" />
         <activity android:name=".ui.activity.sample.component.QDActionDialogActivity" />
         <activity android:name=".ui.activity.sample.fragment.BaseFragmentActivity" />
-        <activity android:name=".ui.activity.sample.fragment.BasePaperActivity" />
         <activity android:name=".ui.activity.sample.fragment.AppletsFragmentActivity" />
         <activity android:name=".ui.fragment.helper.serialport.sample.SerialportMain" />
         <activity android:name=".ui.fragment.helper.serialport.sample.ConsoleActivity" />

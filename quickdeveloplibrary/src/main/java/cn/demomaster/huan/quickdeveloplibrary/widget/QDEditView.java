@@ -96,7 +96,6 @@ public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListen
         Paint paint = new Paint();
         paint.setColor(textColor);
         paint.setTextSize(textSize);
-        int index = 0;
         lineHeight = textSize;
         int count = getContentWidth() / textSize;//每行显示文字数量
         lineCount = (int) Math.ceil(text.length() / (count * 1f));//行数

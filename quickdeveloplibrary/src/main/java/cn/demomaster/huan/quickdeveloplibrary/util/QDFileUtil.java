@@ -18,9 +18,6 @@ import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -35,7 +32,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -430,7 +426,7 @@ public class QDFileUtil {
                 QDLogger.i(r);
                 String[] arr = r.split(" ");
                 QDFile qdFile = new QDFile(file);
-                qdFile.setModifyTime(Integer.valueOf(arr[arr.length - 2]));
+                qdFile.setModifyTime(Integer.parseInt(arr[arr.length - 2]));
                 listener.onResult(qdFile);
                 return;
             }
@@ -724,7 +720,7 @@ public class QDFileUtil {
 
                 filePath = getDataColumn(context, contentUri, selection, selectionArgs);
             } else if (isDownloadsDocument(uri)) { // DownloadsProvider
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(documentId));
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(documentId));
                 filePath = getDataColumn(context, contentUri, null, null);
             } else if (isExternalStorageDocument(uri)) {
                 // ExternalStorageProvider

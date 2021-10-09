@@ -10,11 +10,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -96,17 +94,17 @@ public class LoadingCircleView2 extends View {
         //QDLogger.println("startAngle="+(startAngle)+",e="+(sweepAngle));
         RectF rectF = new RectF(left,top,left+h,top+h);
         mPaint.setColor(getResources().getColor(R.color.transparent_light_55));
-        canvas.drawCircle(center_x, center_y, h/2, mPaint);
+        canvas.drawCircle(center_x, center_y, h/2f, mPaint);
 
         mPaint.setColor(pointColor);
         canvas.drawArc(rectF, startAngle, sweepAngle, false, mPaint);//绘制圆弧，不含圆心
 
-        mPaint.setStrokeWidth(lineWidth/2);
+        mPaint.setStrokeWidth(lineWidth/2f);
         mPaint.setStyle(Paint.Style.FILL);
         PointF p = getPointByAngle(center_x, center_y, h/2, startAngle);
-        canvas.drawCircle(p.x, p.y, lineWidth/2, mPaint);
+        canvas.drawCircle(p.x, p.y, lineWidth/2f, mPaint);
         PointF p2 = getPointByAngle(center_x, center_y, h/2, startAngle+sweepAngle);
-        canvas.drawCircle(p2.x, p2.y, lineWidth/2, mPaint);
+        canvas.drawCircle(p2.x, p2.y, lineWidth/2f, mPaint);
     }
 
     private PointF getPointByAngle(int x, int y, int r, float angle) {

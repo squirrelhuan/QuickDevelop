@@ -25,6 +25,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
@@ -120,7 +121,12 @@ public class MainFragment extends BaseFragment {
         getActionBarTool().setRightOnClickListener(v -> optionsMenu.show(v));
         initOptionsMenu();
     }
-
+    public PhotoHelper getPhotoHelper() {
+        if (getContext() instanceof QDActivity) {
+            return ((QDActivity) getContext()).getPhotoHelper();
+        }
+        return null;
+    }
     OptionsMenu optionsMenu;
     private OptionsMenu.Builder optionsMenubuilder;
     private void initOptionsMenu() {

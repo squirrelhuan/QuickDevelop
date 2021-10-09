@@ -44,8 +44,6 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         void onSelectChange(int position);
     }
 
-    private HAdapter adapter;
-
     public interface HAdapter {
         int getCount();
 
@@ -53,7 +51,6 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     }
 
     public void setAdapter(HAdapter adapter) {
-        this.adapter = adapter;
         removeAllViews();
         LinearLayout linearLayout = new LinearLayout(getContext());
         for (int i = 0; i < adapter.getCount(); i++) {

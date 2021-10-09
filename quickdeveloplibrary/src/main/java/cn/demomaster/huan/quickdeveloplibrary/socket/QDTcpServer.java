@@ -107,7 +107,7 @@ public class QDTcpServer {
             //4.读取用户输入信息
             String info = null;
             while (!((info = br.readLine()) == null)) {
-                StringBuffer stringBuffer = new StringBuffer();
+                StringBuilder stringBuffer = new StringBuilder();
                 stringBuffer.append(info);
 
                 QDMessage qdMessage = JSON.parseObject(info, QDMessage.class);

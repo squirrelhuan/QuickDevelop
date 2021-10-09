@@ -25,8 +25,8 @@ import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 public class TextDetailFragment extends QuickFragment {
     @Override
     public View onGenerateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_file_text_detail, null);
-        return mView;
+        View view = inflater.inflate(R.layout.fragment_file_text_detail, null);
+        return view;
     }
     TextView tv_content;
     @Override

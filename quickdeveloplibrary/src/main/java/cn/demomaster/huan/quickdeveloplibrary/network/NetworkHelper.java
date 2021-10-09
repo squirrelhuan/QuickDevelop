@@ -1,24 +1,18 @@
 package cn.demomaster.huan.quickdeveloplibrary.network;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;

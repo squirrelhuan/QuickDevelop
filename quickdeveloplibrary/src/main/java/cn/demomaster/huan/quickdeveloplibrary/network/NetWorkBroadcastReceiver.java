@@ -8,19 +8,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.demomaster.qdlogger_library.QDLogger;
-
-import static android.net.ConnectivityManager.TYPE_WIFI;
-import static android.net.wifi.WifiManager.WIFI_STATE_DISABLED;
-import static android.net.wifi.WifiManager.WIFI_STATE_DISABLING;
-import static android.net.wifi.WifiManager.WIFI_STATE_ENABLED;
-import static android.net.wifi.WifiManager.WIFI_STATE_ENABLING;
-import static android.net.wifi.WifiManager.WIFI_STATE_UNKNOWN;
-import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_CAR;
-import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
 
 /**
  * Created by Squirrel桓 on 2018/12/12.

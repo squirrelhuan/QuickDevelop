@@ -31,7 +31,6 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;

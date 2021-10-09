@@ -196,9 +196,6 @@ public class ADBHelper {
             int exitCode = process.waitFor();
             if (exitCode == SUCCESS) {
                 QDLogger.i(Tag, SUCCESS_MESSAGE + cmd + ",Result=" + processResult.getResult());
-                if (onReceiveListener != null) {
-                    onReceiveListener.onReceive(processResult);
-                }
             } else {
                 QDLogger.e(Tag, ERROR_MESSAGE + cmd + ",exitCode=" + exitCode + ",processIsEnd=" + processResult.getCode() + ",error=" + processResult.getError());
                 switch (exitCode) {
@@ -213,9 +210,9 @@ public class ADBHelper {
                         processResult.setError("error2:"+processResult.getError());
                         break;
                 }
-                if (onReceiveListener != null) {
-                    onReceiveListener.onReceive(processResult);
-                }
+            }
+            if (onReceiveListener != null) {
+                onReceiveListener.onReceive(processResult);
             }
             process.destroy();
         } catch (Exception e) {

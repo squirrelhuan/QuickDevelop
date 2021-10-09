@@ -77,7 +77,7 @@ public class DateTimeUtil {
         int hour = (int) (time % 86400 / 3600);
         int minute = (int) (time % 86400 % 3600 / 60);
         int second = (int) (time % 86400 % 3600 % 60);
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         if (day > 0) {
             stringBuffer.append(day);
         }

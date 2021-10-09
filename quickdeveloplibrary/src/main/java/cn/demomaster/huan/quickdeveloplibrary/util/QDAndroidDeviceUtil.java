@@ -288,7 +288,7 @@ public class QDAndroidDeviceUtil {
             String[] args = {"/system/bin/cat", "/proc/cpuinfo"};
             ProcessBuilder cmd = new ProcessBuilder(args);
             Process process = cmd.start();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String readLine = "";
             BufferedReader responseReader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
             while ((readLine = responseReader.readLine()) != null) {

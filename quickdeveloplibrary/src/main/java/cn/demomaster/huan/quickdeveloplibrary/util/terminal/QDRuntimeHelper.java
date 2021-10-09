@@ -305,8 +305,9 @@ public class QDRuntimeHelper {
 
     private static String getResultString(InputStream inputStream) {
         StringBuffer stringBuffer = new StringBuffer();
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
                 stringBuffer.append(line)
@@ -316,15 +317,23 @@ public class QDRuntimeHelper {
         } catch (IOException e) {
             QDLogger.e(e);
         } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                QDLogger.e(e);
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    QDLogger.e(e);
+                }
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    QDLogger.e(e);
+                }
             }
         }
         return new String(stringBuffer);
     }
-
 
     public void setOnAdbReceiceListener(OnAdbReceiceListener onAdbReceiceListener) {
         this.onAdbReceiceListener = onAdbReceiceListener;

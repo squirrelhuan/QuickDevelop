@@ -16,7 +16,6 @@ public class MessageListenerManager {
     }
 
     private boolean isRunning;
-
     private MessageListenerManager() {
         timerRunnable = new TimerRunnable() {
             @Override

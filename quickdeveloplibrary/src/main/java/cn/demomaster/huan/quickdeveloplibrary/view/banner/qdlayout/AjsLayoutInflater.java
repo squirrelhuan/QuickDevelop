@@ -204,7 +204,7 @@ public class AjsLayoutInflater {
 
                 String durationStr = element.getAttribute("duration");
                 if (!TextUtils.isEmpty(durationStr)) {
-                    int duration = Integer.valueOf(durationStr);
+                    int duration = Integer.parseInt(durationStr);
                     banner.setLoopTime(duration);
                 }
 
@@ -283,7 +283,7 @@ public class AjsLayoutInflater {
                         for (String str : textSizeArray) {
                             if (!TextUtils.isEmpty(str)) {
                                 try {
-                                    float textSize = Float.valueOf(str);
+                                    float textSize = Float.parseFloat(str);
                                     textSizesList.add(textSize);
                                 } catch (Exception e) {
                                     System.out.println("解析文本大小异常：" + str);
@@ -299,10 +299,10 @@ public class AjsLayoutInflater {
                 float[] radiusArray = new float[8];
                 if (!TextUtils.isEmpty(radiusStrs)) {
                     String[] radiusStrArray = radiusStrs.trim().split(",");
-                    if (radiusStrArray != null && radiusStrArray.length > 0) {
+                    if (radiusStrArray.length > 0) {
                         if (radiusStrArray.length == 1) {
                             try {
-                                float radius = Float.valueOf(radiusStrArray[0]);
+                                float radius = Float.parseFloat(radiusStrArray[0]);
                                 radiusArray = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
                             } catch (Exception e) {
                                 System.out.println("圆角转换异常");
@@ -312,7 +312,7 @@ public class AjsLayoutInflater {
                                 String str = radiusStrArray[i];
                                 if (!TextUtils.isEmpty(str)) {
                                     try {
-                                        float radius = Float.valueOf(str);
+                                        float radius = Float.parseFloat(str);
                                         radiusArray[i * 2] = radius;
                                         radiusArray[i * 2 + 1] = radius;
                                     } catch (Exception e) {
@@ -495,31 +495,31 @@ public class AjsLayoutInflater {
                 if (!TextUtils.isEmpty(xstr) && !TextUtils.isEmpty(ystr) && !TextUtils.isEmpty(wstr) && !TextUtils.isEmpty(hstr)) {
                     xstr = xstr.trim();
                     ystr = ystr.trim();
-                    float x = 0;
+                    float x;
                     if (xstr.contains("%")) {
-                        x = Float.valueOf(xstr.replace("%", "")) / 100;
+                        x = Float.parseFloat(xstr.replace("%", "")) / 100;
                     } else {
-                        x = Float.valueOf(xstr);
+                        x = Float.parseFloat(xstr);
                     }
-                    float y = 0;
+                    float y;
                     if (ystr.contains("%")) {
-                        y = Float.valueOf(ystr.replace("%", "")) / 100;
+                        y = Float.parseFloat(ystr.replace("%", "")) / 100;
                     } else {
-                        y = Float.valueOf(ystr);
+                        y = Float.parseFloat(ystr);
                     }
 
                     float width = 0;
                     if (wstr.contains("%")) {
-                        width = Float.valueOf(wstr.replace("%", "")) / 100;
+                        width = Float.parseFloat(wstr.replace("%", "")) / 100;
                     } else {
-                        width = Float.valueOf(wstr);
+                        width = Float.parseFloat(wstr);
                     }
 
                     float height = 0;
                     if (hstr.contains("%")) {
-                        height = Float.valueOf(hstr.replace("%", "")) / 100;
+                        height = Float.parseFloat(hstr.replace("%", "")) / 100;
                     } else {
-                        height = Float.valueOf(hstr);
+                        height = Float.parseFloat(hstr);
                     }
 
                     posionConfig.setX(x);

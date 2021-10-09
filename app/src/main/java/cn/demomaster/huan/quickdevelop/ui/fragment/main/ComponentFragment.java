@@ -35,7 +35,6 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.SlidingPanel
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.ToggleButtonActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.AppletsFragmentActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BaseFragmentActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BasePaperActivity;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AnimitionFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AudioRecordFragment;
@@ -128,7 +127,6 @@ public class ComponentFragment extends BaseFragment {
         classList.add(AppletsFragmentActivity.class);
         classList.add(BaseFragmentActivity.class);
 
-        classList.add(BasePaperActivity.class);
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);
         classList.add(NdkTestFragment.class);

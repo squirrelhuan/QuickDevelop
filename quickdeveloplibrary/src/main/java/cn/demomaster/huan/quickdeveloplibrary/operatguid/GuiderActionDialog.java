@@ -18,13 +18,11 @@ public class GuiderActionDialog extends Dialog {
     // private Builder builder;
     private boolean hasStateBar = true;
     private final Activity context;
-    private final String message;
     private final GuiderModel guiderModel;
 
     public GuiderActionDialog(Activity context, Builder builder) {
         super(context);
         this.context = context;
-        message = builder.message;
         guiderModel = builder.guiderModel;
         int backgroundColor = builder.backgroundColor;
         float[] backgroundRadius = builder.backgroundRadius;
@@ -50,12 +48,11 @@ public class GuiderActionDialog extends Dialog {
         initData();
     }
 
-    private LinearLayout contentView;
     private void initData() {
         setCancelable(true);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        contentView = new LinearLayout(context);
+        
+        LinearLayout contentView = new LinearLayout(context);
         //contentView.setBackgroundColor(Color.WHITE);
         onActionFinishListener = () -> dismiss();
         GuiderView guiderSurfaceView = new GuiderView(context, guiderModel, hasStateBar, onActionFinishListener);
@@ -68,7 +65,7 @@ public class GuiderActionDialog extends Dialog {
     }
 
     private OnActionFinishListener onActionFinishListener;
-
+    
     public interface OnActionFinishListener {
         void onFinish();
     }

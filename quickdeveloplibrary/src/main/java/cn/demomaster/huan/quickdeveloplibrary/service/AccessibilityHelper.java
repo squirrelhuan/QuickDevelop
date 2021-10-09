@@ -6,15 +6,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;

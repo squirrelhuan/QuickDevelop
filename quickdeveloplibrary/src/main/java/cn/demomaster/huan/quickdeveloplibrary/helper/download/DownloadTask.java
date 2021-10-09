@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.download;
 
-import android.Manifest;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;

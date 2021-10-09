@@ -37,12 +37,12 @@ public class QDButton extends AppCompatButton {
         //如果要设置莫项为false，在前面加负号 ，比如android.R.attr.state_focesed标志true，-android.R.attr.state_focesed就标志false
 
         QDRoundButtonDrawable bg_normal = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
-        QDRoundButtonDrawable bg_focused = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+        /*QDRoundButtonDrawable bg_focused = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QDRoundButtonDrawable bg_pressed = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
-        QDRoundButtonDrawable bg_selected = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
-        drawable.addState(new int[]{android.R.attr.state_focused}, bg_focused);
-        drawable.addState(new int[]{android.R.attr.state_pressed}, bg_pressed);
-        drawable.addState(new int[]{android.R.attr.state_selected}, bg_selected);
+        QDRoundButtonDrawable bg_selected = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);*/
+        drawable.addState(new int[]{android.R.attr.state_focused}, bg_normal);
+        drawable.addState(new int[]{android.R.attr.state_pressed}, bg_normal);
+        drawable.addState(new int[]{android.R.attr.state_selected}, bg_normal);
         drawable.addState(new int[]{}, bg_normal);//默认
         //btn.setBackgroundDrawable(drawable);
 

@@ -3,11 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.service;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -15,10 +12,6 @@ import android.view.accessibility.AccessibilityWindowInfo;
 
 import androidx.annotation.RequiresApi;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +22,6 @@ import cn.demomaster.quickevent_library.core.QuickEvent;
 import cn.demomaster.quickevent_library.core.Subscribe;
 import cn.demomaster.quickevent_library.core.ThreadMode;
 import cn.demomaster.quickpermission_library.PermissionHelper;
-import cn.demomaster.quickpermission_library.dialog.DialogWindowActivity;
 
 /**
  * 无障碍辅助服务

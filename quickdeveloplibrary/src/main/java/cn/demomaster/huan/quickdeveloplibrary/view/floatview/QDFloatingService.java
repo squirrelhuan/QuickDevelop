@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.PopupWindow;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -72,14 +71,16 @@ public abstract class QDFloatingService extends Service{
 
     private void initContentView() {
         if (contentView != null && contentView.getParent() != null) {
-            windowManager.removeView(contentView);
+            if(windowManager!=null) {
+                windowManager.removeView(contentView);
+            }
         }
         contentView = setContentView(getApplicationContext());
         //contentView.setBackgroundColor(getResources().getColor(R.color.transparent_dark_33));
-        if (getTouchAble()) {
-            contentView.setOnTouchListener(new FloatingOnTouchListener(contentView));
-        }
         if (contentView != null) {
+            if (getTouchAble()) {
+                contentView.setOnTouchListener(new FloatingOnTouchListener(contentView));
+            }
             updateLayoutParams();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Settings.canDrawOverlays(this)) {
@@ -183,12 +184,11 @@ public abstract class QDFloatingService extends Service{
 
         View targetView;//目标控件（位置要移动的控件）
         WindowManager windowManager;
-
         public FloatingOnTouchListener(View targetView) {
             this.targetView = targetView;
             windowManager = (WindowManager) targetView.getContext().getSystemService(WINDOW_SERVICE);
         }
-
+        
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             //System.out.println("执行顺序down");
@@ -209,7 +209,6 @@ public abstract class QDFloatingService extends Service{
                     int movedY = nowY - y;
                     x = nowX;
                     y = nowY;
-
                     if (targetView != null) {
                         if (targetView.getLayoutParams() instanceof WindowManager.LayoutParams) {
                             WindowManager.LayoutParams layoutParams;

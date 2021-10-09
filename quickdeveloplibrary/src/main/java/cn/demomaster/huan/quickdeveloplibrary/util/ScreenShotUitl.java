@@ -45,21 +45,7 @@ public class ScreenShotUitl {
     public static Bitmap shotActivity(Activity activity, int top) {
         // 获取windows中最顶层的view
         View view = activity.getWindow().getDecorView();
-        // 允许当前窗口保存缓存信息
-        view.setDrawingCacheEnabled(true);
-        // 去掉状态栏
-        /*Bitmap bmp = Bitmap.createBitmap(bitmap, 0,
-                top, bitmap.getWidth(), bitmap.getHeight());*/
-        Bitmap bitmap = view.getDrawingCache();
-        Bitmap bmp =null;
-        if(bitmap!=null) {
-            bmp = Bitmap.createBitmap(bitmap);
-        }
-        //Bitmap bmp1=bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
-        view.setDrawingCacheEnabled(false);
-        // 销毁缓存信息
-        view.destroyDrawingCache();
-        return bmp;
+        return getCacheBitmapFromView(view);
     }
 
     /**
@@ -77,10 +63,14 @@ public class ScreenShotUitl {
             v.setDrawingCacheEnabled(true);
             v.buildDrawingCache();
             Bitmap bitmap = v.getDrawingCache();
+            Bitmap bmp =null;
+            if(bitmap!=null) {
+                bmp = Bitmap.createBitmap(bitmap);
+            }
             //Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, w, h);
             v.setDrawingCacheEnabled(false);
             v.destroyDrawingCache();
-            return bitmap;
+            return bmp;
         } catch (Exception e) {
             QDLogger.e(e);
         }
@@ -150,7 +140,7 @@ public class ScreenShotUitl {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
-            String imageUri = insertImageToSystem(activity, path, "口袋基因", "欢迎来到基因世界");
+            String imageUri = insertImageToSystem(activity, path, "名称", "描述");
             uri = Uri.parse(imageUri);
         } catch (Exception e) {
             QDLogger.e(e);

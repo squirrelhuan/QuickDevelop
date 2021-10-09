@@ -135,6 +135,8 @@
         如果是false，相当于LinearLayout，主页面在上，菜单在下
         如果是true，相当于FrameLayout-->
         <attr name="umanoOverlay" format="boolean" />
+        <!--是否显示遮罩蒙版颜色-->
+        <attr name="showBackground" format="boolean" />
         <attr name="umanoClipPanel" format="boolean" />
         <!--自定义的菜单展开的锚点比例。值为0-1之间的小数，非手动拖拽菜单的情况下（例如点击）只会展开到这个锚点的比例。-->
         <attr name="umanoAnchorPoint" format="float" />

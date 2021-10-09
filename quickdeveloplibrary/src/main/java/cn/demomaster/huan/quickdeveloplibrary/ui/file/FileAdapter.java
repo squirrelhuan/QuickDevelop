@@ -15,13 +15,11 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
-    private final Context mContext;
     private final List<FileInfo> mFolders;
     private final LayoutInflater mInflater;
     private int mSelectItem;
 
     public FileAdapter(Context context, List<FileInfo> folders) {
-        mContext = context;
         mFolders = folders;
         this.mInflater = LayoutInflater.from(context);
     }

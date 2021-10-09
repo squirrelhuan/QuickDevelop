@@ -279,7 +279,7 @@ public class AbouchementView extends View {
             @Override
             public void onClosing(Object value) {
                 if (getVisibility() == VISIBLE) {
-                    progress = Float.valueOf((int) value);
+                    progress = (float)value;
                     //QDLogger.d( "progress=" + progress+",value="+value);
                     invalidate();
                 }

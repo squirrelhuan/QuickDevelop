@@ -55,12 +55,11 @@ public class LoadingTengxuntvView extends View {
         super.dispatchDraw(canvas);
         //QDLogger.e("dispatchDraw LoadingTengxuntvView");
     }
-
+    
     private float maxHeight = .4f;
     private float maxWidth = .16f;
     private int childCount = 3;
     private int[] colors = {Color.GREEN, Color.YELLOW, Color.RED};
-
     private void drawView(Canvas canvas) {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);

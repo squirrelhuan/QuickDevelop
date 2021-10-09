@@ -58,8 +58,7 @@ public class FlowLayout extends ViewGroup {
                 if (viewWith > lineWidth) {//单个元素占用一行的情况
                     //QDLogger.e("换行=" + viewWith);
                     QDLogger.println("单个元素占用一行：" + lineViewList.size());
-                    List<View> viewList = new ArrayList<>();
-                    viewList.addAll(lineViewList);
+                    List<View> viewList = new ArrayList<>(lineViewList);
                     mAllChildViews.add(viewList);
                     lineViewList = new ArrayList<>();
                 }
@@ -91,14 +90,11 @@ public class FlowLayout extends ViewGroup {
                 int viewWith = chid.getMeasuredWidth() + leftMargin + rightMargin;
                 if ((currentWidth + viewWith) > lineWidth) {//再追加一个元素会超出最大宽度
                     //QDLogger.println("换行追加=" + lineViewList.size());
-                    List<View> viewList = new ArrayList<>();
-                    viewList.addAll(lineViewList);
+                    List<View> viewList = new ArrayList<>(lineViewList);
                     mAllChildViews.add(viewList);
                     lineViewList = new ArrayList<>();
-                    lineViewList.add(chid);
-                } else {//再追加一个元素不会超出最大宽度
-                    lineViewList.add(chid);
-                }
+                } 
+                lineViewList.add(chid);
             }
         }
         if (lineViewList.size() > 0) {

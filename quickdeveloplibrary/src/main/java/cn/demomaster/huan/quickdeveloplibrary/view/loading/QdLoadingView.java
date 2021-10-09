@@ -116,7 +116,6 @@ public class QdLoadingView extends View {
 
     public void stop() {
         if (mAnimator != null) {
-            mAnimator.removeUpdateListener(mUpdateListener);
             mAnimator.removeAllUpdateListeners();
             mAnimator.cancel();
             mAnimator = null;
@@ -168,7 +167,7 @@ public class QdLoadingView extends View {
         super.onDetachedFromWindow();
         stop();
     }
-
+    
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
@@ -178,5 +177,5 @@ public class QdLoadingView extends View {
             stop();
         }
     }
-
+    
 }

@@ -3,14 +3,20 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.os.Handler;
-import android.os.Looper;
 
 import java.lang.reflect.Field;
 
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 
-public class QDValueAnimator extends ValueAnimator {
+public class QDValueAnimator extends ValueAnimator implements OnReleaseListener {
+
+    @Override
+    public void onRelease(Object self) {
+        /*if(handler!=null){
+            handler.removeCallbacks();
+        }*/
+    }
 
     public enum AnimationState {
         idle,
@@ -29,14 +35,14 @@ public class QDValueAnimator extends ValueAnimator {
         return hasReversed;
     }
 
-    Handler handler;
+    //Handler handler;
     private Object tag;
     private AnimationState state = AnimationState.idle;
     AnimatorListener mAnimatorListener;
 
     public QDValueAnimator(Class dataType) {
         this.dataType = dataType;
-        handler = new Handler(Looper.getMainLooper());
+        //handler = new Handler(Looper.getMainLooper());
         AnimatorUpdateListener animatorUpdateListener = animation -> {
             value = animation.getAnimatedValue();
             //QDLogger.i("value="+value);
@@ -261,7 +267,9 @@ public class QDValueAnimator extends ValueAnimator {
         state = AnimationState.isClosed;
         if (animationListener != null) {
             //QDLogger.i("onEndClose，getRepeatCount()=" + getRepeatCount());
-            handler.post(() -> animationListener.onEndClose(startValue));
+            animationListener.onEndClose(startValue);
+            /*handler.post(() ->
+                    animationListener.onEndClose(startValue));*/
         }
     }
 

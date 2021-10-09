@@ -117,11 +117,11 @@ public class Banner extends FrameLayout {
         if (mBannerCursorView == bannerCursorView) {
             return;
         }
-        if (mBannerCursorView != null && ((View) mBannerCursorView).getParent() != null) {
+        if (mBannerCursorView instanceof View && ((View) mBannerCursorView).getParent() != null) {
             removeView((View) mBannerCursorView);
             mBannerCursorView = null;
         }
-        if (bannerCursorView != null && ((View) bannerCursorView).getParent() == null) {
+        if (bannerCursorView instanceof View && ((View) bannerCursorView).getParent() == null) {
             LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 80);
             layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER;
             addView((View) bannerCursorView, 1, layoutParams);

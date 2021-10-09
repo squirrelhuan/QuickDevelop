@@ -1,13 +1,10 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
 import android.app.ActivityManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 

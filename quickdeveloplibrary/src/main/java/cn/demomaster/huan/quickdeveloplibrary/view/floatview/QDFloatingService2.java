@@ -7,7 +7,6 @@ import android.graphics.PointF;
 import android.os.IBinder;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.PopupWindow;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.qdlogger_library.QDLogger;

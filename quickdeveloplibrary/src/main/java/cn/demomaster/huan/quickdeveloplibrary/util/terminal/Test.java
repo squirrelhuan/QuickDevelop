@@ -85,21 +85,29 @@ public class Test {
 
     // 读取输入流
     private static void read(InputStream inputStream, PrintStream out) {
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
+            reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
                 out.println(line);
             }
-
         } catch (IOException e) {
             QDLogger.e(e);
         } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                QDLogger.e(e);
+            if(inputStream!=null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    QDLogger.e(e);
+                }
+            }
+            if(reader!=null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    QDLogger.e(e);
+                }
             }
         }
     }

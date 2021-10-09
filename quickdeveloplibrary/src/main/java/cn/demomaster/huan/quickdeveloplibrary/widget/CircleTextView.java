@@ -29,7 +29,7 @@ public class CircleTextView extends TextView {
         super(context, attrs, defStyleAttr);
     }
 
-    private int center_x, center_y, mwidth, width, height;
+    private int width, height;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -37,7 +37,6 @@ public class CircleTextView extends TextView {
 
         width = w;
         height = h;
-        center_x = width / 2;
     }
 
     private boolean isRound = true;

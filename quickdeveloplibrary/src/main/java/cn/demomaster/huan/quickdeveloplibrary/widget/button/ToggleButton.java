@@ -41,10 +41,12 @@ public class ToggleButton extends View {
     }
 
     public void setChecked(boolean checked) {
-        this.checked = checked;
-        startAnimation(checked);
-        if (onToggleChangeListener != null) {
-            onToggleChangeListener.onToggle(this, checked);
+        if(this.checked!=checked) {
+            this.checked = checked;
+            startAnimation(checked);
+            if (onToggleChangeListener != null) {
+                onToggleChangeListener.onToggle(this, checked);
+            }
         }
     }
 

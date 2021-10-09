@@ -2,8 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.animation;
 
 import android.view.View;
 
-import cn.demomaster.qdlogger_library.QDLogger;
-
 public class QDObjectAnimator extends QDValueAnimator {
     public String propertyName;
     public View targetView;
@@ -19,14 +17,8 @@ public class QDObjectAnimator extends QDValueAnimator {
                         targetView.setRotation((Float) animation.getAnimatedValue());
                         break;
                 }
-            } else {
-                print("targetView = null");
             }
         });
-    }
-
-    private void print(String s) {
-        QDLogger.println(s);
     }
 
     public static QDObjectAnimator ofFloat(View view, String property, float start, float end) {

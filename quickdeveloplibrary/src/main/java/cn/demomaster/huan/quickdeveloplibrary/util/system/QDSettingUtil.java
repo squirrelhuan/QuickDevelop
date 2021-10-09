@@ -80,7 +80,7 @@ public class QDSettingUtil {
 
     public static void setBrightness(Activity activity, int brightness) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+        lp.screenBrightness = (float) brightness * (1f / 255f);
         activity.getWindow().setAttributes(lp);
     }
 }

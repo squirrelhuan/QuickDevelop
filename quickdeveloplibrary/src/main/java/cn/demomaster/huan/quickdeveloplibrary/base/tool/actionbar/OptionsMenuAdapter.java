@@ -26,12 +26,10 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
 
     private List<OptionsMenu.Menu> lists = new ArrayList<>();
     private Context context;
-    private LayoutInflater inflater;
 
     public OptionsMenuAdapter(Context context, List<OptionsMenu.Menu> lists) {
         this.context = context;
         this.lists = lists;
-        inflater = ((Activity) context).getLayoutInflater();
     }
 
     @NonNull

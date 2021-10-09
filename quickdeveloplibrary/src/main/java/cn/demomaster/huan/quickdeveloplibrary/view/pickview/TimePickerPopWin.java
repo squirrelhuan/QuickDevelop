@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.pickview;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;

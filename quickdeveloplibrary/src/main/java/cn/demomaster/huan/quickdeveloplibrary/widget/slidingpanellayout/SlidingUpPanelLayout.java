@@ -65,7 +65,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * If no fade color is given by default it will fade to 80% gray.
      * 如果默认情况下没有淡入颜色，它将淡入80%的灰色。
      */
-    private static final int DEFAULT_FADE_COLOR = 0x99000000;
+    private static int DEFAULT_FADE_COLOR = 0x99000000;
 
     /**
      * Default Minimum velocity that will be detected as a fling
@@ -354,12 +354,14 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
                 mMinFlingVelocity = ta.getInt(R.styleable.SlidingUpPanelLayout_umanoFlingVelocity, DEFAULT_MIN_FLING_VELOCITY);
                 mCoveredFadeColor = ta.getColor(R.styleable.SlidingUpPanelLayout_umanoFadeColor, DEFAULT_FADE_COLOR);
+                //DEFAULT_FADE_COLOR = ta.getColor(R.styleable.SlidingUpPanelLayout_umanoFadeColor, DEFAULT_FADE_COLOR);
 
                 mDragViewResId = ta.getResourceId(R.styleable.SlidingUpPanelLayout_umanoDragView, -1);
                 mScrollableViewResId = ta.getResourceId(R.styleable.SlidingUpPanelLayout_umanoScrollableView, -1);
 
                 mOverlayContent = ta.getBoolean(R.styleable.SlidingUpPanelLayout_umanoOverlay, DEFAULT_OVERLAY_FLAG);
                 mClipPanel = ta.getBoolean(R.styleable.SlidingUpPanelLayout_umanoClipPanel, DEFAULT_CLIP_PANEL_FLAG);
+                showBackground = ta.getBoolean(R.styleable.SlidingUpPanelLayout_showBackground, showBackground);
 
                 mAnchorPoint = ta.getFloat(R.styleable.SlidingUpPanelLayout_umanoAnchorPoint, DEFAULT_ANCHOR_POINT);
 

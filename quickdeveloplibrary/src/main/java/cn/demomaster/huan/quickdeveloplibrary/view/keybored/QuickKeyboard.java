@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.StringUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
 import cn.demomaster.qdlogger_library.QDLogger;

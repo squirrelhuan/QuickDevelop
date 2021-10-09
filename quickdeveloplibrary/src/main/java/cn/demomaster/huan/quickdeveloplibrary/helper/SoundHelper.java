@@ -33,7 +33,7 @@ public class SoundHelper {
                 field.setAccessible(true);
                 try {
                     //得到资源id
-                    int id = Integer.valueOf((int) field.get(rawClass));
+                    int id = (int) field.get(rawClass);
                     //添加到音频集合中
                     soundMap.put(id, field.getName());
                 } catch (IllegalArgumentException e) {
@@ -109,9 +109,7 @@ public class SoundHelper {
     }
 
     private void loadAudio() {
-        Iterator iter = soundMap.keySet().iterator();
-        while (iter.hasNext()) {
-            Object key = iter.next();
+        for (Object key : soundMap.keySet()) {
             //Object val = soundMap.get(key);
             try {
                 soundPool.load(context, (Integer) key, 1);
@@ -147,9 +145,7 @@ public class SoundHelper {
      */
     public int getIndexByResID(int id) {
         int index = 0;
-        Iterator iter = soundMap.keySet().iterator();
-        while (iter.hasNext()) {
-            Object key = iter.next();
+        for (Object key : soundMap.keySet()) {
             if ((int) key == id) {
                 return index + 1;
             }

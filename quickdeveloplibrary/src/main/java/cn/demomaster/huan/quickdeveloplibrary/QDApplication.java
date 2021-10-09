@@ -1,32 +1,28 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDProcessUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.DebugFloatingService;
-import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
 import cn.demomaster.quickdatabaselibrary.listener.UpgradeInterface;
 
 import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TAG;
-import static cn.demomaster.qdlogger_library.QDLogger.isDebug;
 
 public class QDApplication extends Application implements UpgradeInterface {
 
     private static QDApplication instance = null;
+    public Handler handler;
 
     public static QDApplication getInstance() {
         return instance;
@@ -36,6 +32,7 @@ public class QDApplication extends Application implements UpgradeInterface {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        handler = new Handler();
         QdToast.setContext(this);
         AppConfig.getInstance().load(this, "config/project.conf");
         String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");

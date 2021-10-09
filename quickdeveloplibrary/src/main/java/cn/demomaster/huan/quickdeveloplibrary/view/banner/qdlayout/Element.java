@@ -109,16 +109,16 @@ public class Element {
         }
         if (!TextUtils.isEmpty(widthStr)) {
             if (widthStr.endsWith("px")) {
-                width = Integer.valueOf(widthStr.replace("px", ""));
+                width = Integer.parseInt(widthStr.replace("px", ""));
             } else if (widthStr.endsWith("dp")) {
-                width = Integer.valueOf(widthStr.replace("dp", ""));
+                width = Integer.parseInt(widthStr.replace("dp", ""));
             } else if (widthStr.contains("%") || widthStr.contains(".") || widthStr.contains("f")) {
                 widthStr = widthStr.replace("%", "");
                 widthStr = widthStr.replace("f", "");
-                width = Float.valueOf(widthStr);
+                width = Float.parseFloat(widthStr);
             } else {
                 try {
-                    width = Integer.valueOf(widthStr);
+                    width = Integer.parseInt(widthStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -135,16 +135,16 @@ public class Element {
         }
         if (!TextUtils.isEmpty(heightStr)) {
             if (heightStr.endsWith("px")) {
-                height = Integer.valueOf(heightStr.replace("px", ""));
+                height = Integer.parseInt(heightStr.replace("px", ""));
             } else if (heightStr.endsWith("dp")) {
-                height = Integer.valueOf(heightStr.replace("dp", ""));
+                height = Integer.parseInt(heightStr.replace("dp", ""));
             } else if (heightStr.contains("%") || heightStr.contains(".") || heightStr.contains("f")) {
                 heightStr = heightStr.replace("%", "");
                 heightStr = heightStr.replace("f", "");
-                height = Float.valueOf(heightStr);
+                height = Float.parseFloat(heightStr);
             } else {
                 try {
-                    height = Integer.valueOf(heightStr);
+                    height = Integer.parseInt(heightStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

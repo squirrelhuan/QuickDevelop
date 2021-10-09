@@ -355,7 +355,6 @@ public class QMUIDisplayHelper {
      * @param context
      * @return
      */
-    @SuppressWarnings("SimplifiableIfStatement")
     public static boolean hasHardwareMenuKey(Context context) {
         boolean flag;
         if (Build.VERSION.SDK_INT < 11)

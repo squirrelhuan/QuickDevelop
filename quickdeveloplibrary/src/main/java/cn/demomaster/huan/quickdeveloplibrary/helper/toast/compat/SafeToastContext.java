@@ -2,7 +2,6 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.toast.compat;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 

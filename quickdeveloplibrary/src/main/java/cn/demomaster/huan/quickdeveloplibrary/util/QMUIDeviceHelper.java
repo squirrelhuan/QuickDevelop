@@ -132,19 +132,19 @@ public class QMUIDeviceHelper {
                 if (versionString != null && !versionString.equals("")) {
                     String[] version = versionString.split("\\.");
                     if (version.length == 3) {
-                        if (Integer.valueOf(version[0]) < 5) {
+                        if (Integer.parseInt(version[0]) < 5) {
                             isHigher = false;
-                        } else if (Integer.valueOf(version[0]) > 5) {
+                        } else if (Integer.parseInt(version[0]) > 5) {
                             isHigher = true;
                         } else {
-                            if (Integer.valueOf(version[1]) < 2) {
+                            if (Integer.parseInt(version[1]) < 2) {
                                 isHigher = false;
-                            } else if (Integer.valueOf(version[1]) > 2) {
+                            } else if (Integer.parseInt(version[1]) > 2) {
                                 isHigher = true;
                             } else {
-                                if (Integer.valueOf(version[2]) < 4) {
+                                if (Integer.parseInt(version[2]) < 4) {
                                     isHigher = false;
-                                } else if (Integer.valueOf(version[2]) >= 5) {
+                                } else if (Integer.parseInt(version[2]) >= 5) {
                                     isHigher = true;
                                 }
                             }

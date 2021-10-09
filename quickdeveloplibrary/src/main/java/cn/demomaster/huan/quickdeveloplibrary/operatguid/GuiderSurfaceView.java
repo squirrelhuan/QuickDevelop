@@ -29,23 +29,6 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private Matrix matrix;
 
     /**
-     * 图片的坐标
-     */
-    private float imageX, imageY;
-    /**
-     * 获取的图片
-     */
-    private Bitmap bmp;
-    /**
-     * 图片宽高
-     */
-    private float bmpW, bmpH;
-    /**
-     * 屏幕大小
-     */
-    private int screenW, screenH;
-
-    /**
      * SurfaceView初始化函数
      */
     public GuiderSurfaceView(Context context) {
@@ -104,9 +87,6 @@ public class GuiderSurfaceView extends SurfaceView implements SurfaceHolder.Call
      */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        QDLogger.println("ImageSurfaceView is surfaceCreated");
-        screenH = this.getHeight();
-        screenW = this.getWidth();
         handler.post(imageRunnable);
     }
 

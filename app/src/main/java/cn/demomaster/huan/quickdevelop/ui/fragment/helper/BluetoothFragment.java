@@ -74,7 +74,6 @@ public class BluetoothFragment extends BaseFragment {
     int REQUEST_ENBLE_BT = 11223;
     public void initView(View rootView) {
         ButterKnife.bind(this, mView);
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             // 此设备不支持蓝牙操作

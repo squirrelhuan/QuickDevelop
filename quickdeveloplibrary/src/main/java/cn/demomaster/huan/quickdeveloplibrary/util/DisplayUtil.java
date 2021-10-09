@@ -164,11 +164,11 @@ public class DisplayUtil {
             }
             if (value.endsWith("dip")) {
                 String a = value.replace("dip", "");
-                r = dip2px(context, Float.valueOf(a));
+                r = dip2px(context, Float.parseFloat(a));
             }
             if (value.endsWith("sp")) {
                 String a = value.replace("sp", "");
-                r = sp2px(context, Float.valueOf(a));
+                r = sp2px(context, Float.parseFloat(a));
             }
             if (value.endsWith("pt")) {
 

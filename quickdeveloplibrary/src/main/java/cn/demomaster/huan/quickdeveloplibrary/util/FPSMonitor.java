@@ -2,10 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Choreographer;
-
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public class FPSMonitor implements Choreographer.FrameCallback, Runnable {
     //监控1秒内的帧数

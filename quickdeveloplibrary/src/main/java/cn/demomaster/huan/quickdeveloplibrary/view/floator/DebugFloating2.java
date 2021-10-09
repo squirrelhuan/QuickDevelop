@@ -259,7 +259,7 @@ public class DebugFloating2 implements FloatView {
     }
 
     private String getLogText(Context context) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         int i = 0;
         for (QDLogBean QDLogBean : logList) {
             if (tagFilter == QDLogBean.getType() || tagFilter == QDLoggerType.ALL) {

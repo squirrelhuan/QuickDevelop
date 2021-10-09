@@ -64,7 +64,7 @@ public class ExampleUnitTest {
             e.printStackTrace();
         }
         byte[] byteArray = messageDigest.digest();
-        StringBuffer md5StrBuff = new StringBuffer();
+        StringBuilder md5StrBuff = new StringBuilder();
         for (byte b : byteArray) {
             if (Integer.toHexString(0xFF & b).length() == 1)
                 md5StrBuff.append("0").append(Integer.toHexString(0xFF & b));

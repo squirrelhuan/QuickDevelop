@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.square;
 
 import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,14 +16,12 @@ import android.hardware.input.InputManager;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AccelerateInterpolator;
 
 import java.lang.reflect.Method;
@@ -34,7 +30,6 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
-import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.model.EventMessage;
 import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
@@ -44,8 +39,6 @@ import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.OnReleaseListener;
 import cn.demomaster.quickevent_library.core.QuickEvent;
-
-import static android.content.Context.WINDOW_SERVICE;
 
 /**
  * 正方形的ImageView

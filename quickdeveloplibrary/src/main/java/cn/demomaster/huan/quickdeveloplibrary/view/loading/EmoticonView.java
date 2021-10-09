@@ -14,7 +14,6 @@ import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 /**
@@ -242,9 +241,7 @@ public class EmoticonView extends ImageTextView {
     private int duration = 500;
     MyAnimatorUpdateListener showUpdateListener;
     public static class MyAnimatorUpdateListener implements ValueAnimator.AnimatorUpdateListener{
-
         EmoticonView emoticonView;
-
         public MyAnimatorUpdateListener(EmoticonView emoticonView) {
             this.emoticonView = emoticonView;
         }
@@ -372,6 +369,7 @@ public class EmoticonView extends ImageTextView {
         if(hideUpdateListener!=null){
             hideUpdateListener.setEmoticonView(null);
         }
+        
         /*if (updateListener != null) {
             updateListener = null;
         }*/
