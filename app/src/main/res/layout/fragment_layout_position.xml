@@ -15,10 +15,18 @@
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_get_position"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:layout_gravity="center"
                 android:text="获取位置" />
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_get_position2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:layout_gravity="center"
+                android:text="持续定位" />
             <!--  <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                   android:id="@+id/btn_error_buggly"
                   android:layout_width="match_parent"

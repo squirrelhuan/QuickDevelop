@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
@@ -76,6 +78,11 @@ public class QDMainFragmentActivity extends QDActivity {
         //DebugFloatingService.showConsole(mContext);
         PermissionHelper.requestPermission(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},null);
         QDLogger.i("AppName:"+getAppName(this));
+        String ip = null;
+        if(NetworkHelper.isNetworkConnected(mContext)){
+            ip = NetworkHelper.getLocalIpAddress(mContext);
+            QdToast.show(mContext,"ip:"+ip);
+        }
     }
 
     @Override

@@ -118,15 +118,12 @@ public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.
     }
 
     private OnItemClickListener onItemClickListener;
-
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
+    
     public interface OnItemClickListener {
         void onItemClick(int position, OptionsMenu.Menu menu);
     }
-
-
 }
 

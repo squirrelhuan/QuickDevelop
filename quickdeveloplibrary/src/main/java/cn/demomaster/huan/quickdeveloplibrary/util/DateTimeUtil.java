@@ -22,22 +22,24 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class DateTimeUtil {
 
     public static String getDuration(long startTime, long currentTimeMillis) {
-        return formatDayTime((currentTimeMillis - startTime) / 1000);
+        return formatTime((currentTimeMillis - startTime) / 1000);
     }
 
     /**
      * 将秒转化为 HH:mm:ss 的格式
      *
-     * @param time 秒
+     * @param duration 秒
      * @return
      */
-    public static String formatDayTime(long time) {
+    public static String formatTime(long duration) {
         DecimalFormat decimalFormat = new DecimalFormat("00");
         //String dd = decimalFormat.format(time / 3600/24);
-        String hh = decimalFormat.format(time / 3600);
-        String mm = decimalFormat.format(time % 3600 / 60);
-        String ss = decimalFormat.format(time % 60);
+        String hh = decimalFormat.format(duration / 3600);
+        String mm = decimalFormat.format(duration % 3600 / 60);
+        String ss = decimalFormat.format(duration % 60);
         return hh + ":" + mm + ":" + ss;
+       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");//设置日期格式,这里只取出小时和分钟
+        return simpleDateFormat.format(new Date(time));*/
     }
 
     public static String formatDayTime1(Context context, long time) {

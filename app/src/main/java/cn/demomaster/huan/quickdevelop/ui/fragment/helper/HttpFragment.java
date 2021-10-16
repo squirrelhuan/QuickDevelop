@@ -25,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
-import cn.demomaster.huan.quickdeveloplibrary.socket.MessageReceiveListener;
+import cn.demomaster.huan.quickdeveloplibrary.socket.RequestListener;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
@@ -98,17 +98,7 @@ public class HttpFragment extends BaseFragment {
                 });*/
             }
         }).start());
-        btn_send_tcp.setOnClickListener(v -> QDTcpClient.getInstance().send("你好", new MessageReceiveListener() {
-            @Override
-            public void onReceived(QDMessage qdMessage) {
-
-            }
-
-            @Override
-            public void onError(String err) {
-
-            }
-        }));
+        btn_send_tcp.setOnClickListener(v -> QDTcpClient.getInstance().send("你好",null));
         //QDTcpClient.setStateListener();
         btn_retrofit.setOnClickListener(v -> test(""));
     }

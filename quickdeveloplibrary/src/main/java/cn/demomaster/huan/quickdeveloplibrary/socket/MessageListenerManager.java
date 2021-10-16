@@ -80,25 +80,25 @@ public class MessageListenerManager {
         }
     }
 
-    public Map.Entry<Long, MessageReceiveListener> getFirstTime() {
-        for (Map.Entry<Long, MessageReceiveListener> entry : receiveListenerMap.entrySet()) {
+    public Map.Entry<Long, RequestListener> getFirstTime() {
+        for (Map.Entry<Long, RequestListener> entry : receiveListenerMap.entrySet()) {
             return entry;
         }
         return null;
     }
 
-    LinkedHashMap<Long, MessageReceiveListener> receiveListenerMap = new LinkedHashMap<>();
+    LinkedHashMap<Long, RequestListener> receiveListenerMap = new LinkedHashMap<>();
 
     /**
      * @param targetTime 目标时间
      * @param listener   监听器
      */
-    public void addListener(long targetTime, MessageReceiveListener listener) {
+    public void addListener(long targetTime, RequestListener listener) {
         receiveListenerMap.put(targetTime, listener);
         startTimer();
     }
 
-    public MessageReceiveListener getListener(long time) {
+    public RequestListener getListener(long time) {
         return receiveListenerMap.get(time);
     }
 

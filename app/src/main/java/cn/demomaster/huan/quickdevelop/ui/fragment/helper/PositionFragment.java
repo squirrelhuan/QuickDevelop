@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +36,8 @@ public class PositionFragment extends BaseFragment {
 
     @BindView(R.id.btn_get_position)
     QDButton btn_get_position;
+    @BindView(R.id.btn_get_position2)
+    QDButton btn_get_position2;
 
     @NonNull
     @Override
@@ -47,17 +52,7 @@ public class PositionFragment extends BaseFragment {
         btn_get_position.setOnClickListener(v -> PermissionHelper.requestPermission(mContext, PERMISSIONS_POSITION, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                GPSUtils.getInstance(mContext).getLngAndLat(new GPSUtils.OnLocationResultListener() {
-                    @Override
-                    public void onLocationResult(Location location) {
-                        QDLogger.i("当前位置：" + location.getLatitude() + "," + location.getLongitude());
-                    }
-
-                    @Override
-                    public void OnLocationChange(Location location) {
-                        QDLogger.i("最新位置：" + location.getLatitude() + "," + location.getLongitude());
-                    }
-                });
+                getposition();
             }
 
             @Override
@@ -65,7 +60,56 @@ public class PositionFragment extends BaseFragment {
 
             }
         }));
+
+        btn_get_position2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable,6000);
+            }
+        });
     }
+
+    private void getposition() {
+        GPSUtils.getInstance(mContext).getLngAndLat(new GPSUtils.LocationResultListener() {
+
+            @Override
+            protected void onLocationResult(Location location) {
+                QDLogger.i("当前位置：" + location.getLatitude() + "," + location.getLongitude());
+            }
+
+            @Override
+            public void onLocationChanged(@NonNull @NotNull Location location) {
+                super.onLocationChanged(location);
+                QDLogger.i("onLocationChanged：" +location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                QDLogger.i("onStatusChanged：" );
+            }
+
+            @Override
+            public void onProviderDisabled(@NonNull @NotNull String provider) {
+                super.onProviderDisabled(provider);
+            }
+
+            @Override
+            public void onProviderEnabled(@NonNull @NotNull String provider) {
+                super.onProviderEnabled(provider);
+            }
+        });
+    }
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            handler.removeCallbacks(runnable);
+            getposition();
+            handler.postDelayed(runnable,3000);
+        }
+    };
 
     private static String[] PERMISSIONS_POSITION = {
             Manifest.permission.ACCESS_FINE_LOCATION};

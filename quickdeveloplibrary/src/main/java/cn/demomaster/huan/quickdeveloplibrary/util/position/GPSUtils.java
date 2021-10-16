@@ -11,6 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -40,11 +44,14 @@ public class GPSUtils {
      * 获取经纬度
      * @return
      */
-    public void getLngAndLat(OnLocationResultListener onLocationResultListener) {
+    public void getLngAndLat(LocationResultListener onLocationResultListener) {
+        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if(mOnLocationListener!=null) {
+            locationManager.removeUpdates(mOnLocationListener);
+        }
         mOnLocationListener = onLocationResultListener;
 
         String locationProvider = null;
-        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         //获取所有可用的位置提供器
         List<String> providers = locationManager.getProviders(true);
         if (providers.contains(LocationManager.GPS_PROVIDER)) {
@@ -80,12 +87,11 @@ public class GPSUtils {
             }
         }
         //监视地理位置变化
-        locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 1000, 0, mOnLocationListener);
     }
 
-
-    public LocationListener locationListener = new LocationListener() {
-
+    /*public LocationListener locationListener = new LocationListener() {
+        
         // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -111,17 +117,40 @@ public class GPSUtils {
                 mOnLocationListener.OnLocationChange(location);
             }
         }
-    };
+    };*/
 
     public void removeListener() {
-        locationManager.removeUpdates(locationListener);
+        if(mOnLocationListener!=null) {
+            locationManager.removeUpdates(mOnLocationListener);
+        }
     }
 
-    private OnLocationResultListener mOnLocationListener;
+    private LocationResultListener mOnLocationListener;
 
-    public interface OnLocationResultListener {
-        void onLocationResult(Location location);
+    public abstract static class LocationResultListener implements LocationListener{
+       protected abstract void onLocationResult(Location location);
 
-        void OnLocationChange(Location location);
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(@NonNull String provider) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(@NonNull String provider) {
+
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
     }
+
 }

@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -298,4 +300,19 @@ public class StringUtil {
         }
         return (r == null ? "" : r) + a;
     }
+
+    public static boolean isEmail(String email){
+        if (null==email || "".equals(email)){
+            return false;
+        }
+        String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern p = Pattern.compile(regEx1);
+        Matcher m = p.matcher(email);
+        if(m.matches()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

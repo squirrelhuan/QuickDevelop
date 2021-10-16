@@ -38,11 +38,11 @@ public class HttpUtils {
             QDLogger.i(TAG, message);
         }
     }).setLevel(level);
-
+    
     public void setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
         HttpUtils.loggingInterceptor = loggingInterceptor;
     }
-
+    
     /* static {
         if (BuildConfig.DEBUG) {
             //日志拦截器
@@ -57,7 +57,7 @@ public class HttpUtils {
             loggingInterceptor.setLevel(level);
         }
     }*/
-
+    
     private static final int DEFAULT_TIMEOUT = 30; //连接 超时的时间，单位：秒
     private static final OkHttpClient client = new OkHttpClient.Builder().
             connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).addInterceptor(loggingInterceptor).

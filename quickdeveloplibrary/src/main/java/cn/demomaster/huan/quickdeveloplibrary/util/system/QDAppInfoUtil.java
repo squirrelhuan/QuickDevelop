@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary.util.system;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.graphics.drawable.Drawable;
 import java.util.List;
 
 import cn.demomaster.qdlogger_library.QDLogger;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class QDAppInfoUtil {
 
@@ -146,17 +149,20 @@ public class QDAppInfoUtil {
 
     /**
      * 根据包名启动app
-     *
      * @param context
      * @param packageName
      */
-    public static void startApp(Context context, String packageName) {
+    public static void startActivity(Context context, String packageName) {
         if (checkAppInstalled(context, packageName)) {
             Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
             if (intent != null) {
                 //intent.putExtra("type", "110");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if(context instanceof Activity) {
+                    ((Activity) context).startActivity(intent);
+                }else {
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         }
     }
