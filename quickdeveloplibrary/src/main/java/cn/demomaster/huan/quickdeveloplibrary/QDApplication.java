@@ -1,10 +1,13 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.text.TextUtils;
+
+import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;

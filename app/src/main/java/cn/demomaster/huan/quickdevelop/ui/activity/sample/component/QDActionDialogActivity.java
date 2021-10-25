@@ -64,7 +64,14 @@ public class QDActionDialogActivity extends BaseActivity {
             qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setMessage(listItems[position]).setMessageTextSize(24).setPadding(50).create();
             switch (position) {
                 case 0://Loading 类型提示框
-                    qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.LOADING).setMessage(listItems[position]).setDelayMillis(-1).create();
+                    qdActionDialog = new QDActionDialog
+                            .Builder(mContext)
+                            .setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc))
+                            .setBackgroundRadius(50)
+                            .setStateType(QDActionStateType.LOADING)
+                            .setMessage(listItems[position])
+                            .setDelayMillis(-1)
+                            .create();
                     break;
                 case 1://成功提示类型提示框
                     qdActionDialog = new QDActionDialog.Builder(mContext).setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc)).setBackgroundRadius(50).setStateType(QDActionStateType.COMPLETE).setMessage(listItems[position]).setDelayMillis(2000).create();

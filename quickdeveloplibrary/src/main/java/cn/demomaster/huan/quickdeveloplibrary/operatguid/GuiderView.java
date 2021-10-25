@@ -699,7 +699,7 @@ public class GuiderView extends View {
     }
 
     public enum Gravity {
-        LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTOM, TOP, LEFT, RIGHT, BOTTOM
+        LEFTTOP, LEFTBOTTOM, RIGHTTOP, RIGHTBOTTOM, TOP, LEFT, RIGHT, BOTTOM,CENTER
     }
 
     private GuiderRectF getViewRectF(View view) {

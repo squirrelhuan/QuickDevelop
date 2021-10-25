@@ -36,7 +36,12 @@ public class QDTipPopupFragment extends BaseFragment implements View.OnClickList
     public void initView(View rootView) {
         //Button btn_01 = rootView.findViewById(R.id.btn_01);
         rootView.findViewById(R.id.btn_01).setOnClickListener(v -> {
-            QDTipPopup qdTipPopup = new QDTipPopup.Builder(getContext()).setBackgroundRadius(10).setWithArrow(false).setMessage(v.getContentDescription() != null ? v.getContentDescription().toString() : "普通无箭头提示").create();
+            QDTipPopup qdTipPopup = new QDTipPopup.Builder(getContext())
+                    .setBackgroundRadius(10)
+                    .setWithArrow(false)
+                    .setTouchable(false)
+                    .setMessage(v.getContentDescription() != null ? v.getContentDescription().toString() : "普通无箭头提示")
+                    .create();
             qdTipPopup.showTip(v, GuiderView.Gravity.TOP);
         });
         rootView.findViewById(R.id.btn_02).setOnClickListener(v -> {

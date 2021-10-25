@@ -178,7 +178,7 @@ public class LoadLayout extends FrameLayout {
     }
 
     public void showError(String err) {
-
+        
     }
 
     public void showEmpty(String msg) {

@@ -1,6 +1,9 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.ValueCallback;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,8 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static androidx.core.content.ContextCompat.getExternalFilesDirs;
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCreatTime;
 
@@ -154,6 +160,8 @@ public class FileManagerFragment extends BaseFragment {
                 QDLogger.e("文件修改时间：" + simpleDateFormat.format(date));
             }
         });
+
+
     }
 
     private int count;
@@ -177,6 +185,39 @@ public class FileManagerFragment extends BaseFragment {
             QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + file.listFiles().length + ")");
             for (File file1 : file.listFiles()) {
                 deleteEmptyFiles(file1.getPath());
+            }
+        }
+    }
+
+    private ValueCallback<Uri> uploadFile;
+    private ValueCallback<Uri[]> uploadFiles;
+    private void openFileChooseProcess() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("*/*");
+        ((Activity)getContext()).startActivityForResult(Intent.createChooser(i, "上传文件"), 0);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                if (null != uploadFile) {
+                    Uri result = data == null ? null
+                            : data.getData();
+                    uploadFile.onReceiveValue(result);
+                    uploadFile = null;
+                }
+                if (null != uploadFiles) {
+                    Uri result = data == null ? null
+                            : data.getData();
+                    uploadFiles.onReceiveValue(new Uri[]{result});
+                    uploadFiles = null;
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                if (null != uploadFile) {
+                    uploadFile.onReceiveValue(null);
+                    uploadFile = null;
+                }
             }
         }
     }
