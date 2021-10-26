@@ -135,7 +135,7 @@ public class QDActivity extends QuickActivity {
     public PhotoHelper photoHelper;
     public PhotoHelper getPhotoHelper() {
         if (photoHelper == null) {
-            photoHelper = new PhotoHelper(mContext);
+            photoHelper = new PhotoHelper(mContext,getPackageName()+".fileprovider");
         }
         return photoHelper;
     }

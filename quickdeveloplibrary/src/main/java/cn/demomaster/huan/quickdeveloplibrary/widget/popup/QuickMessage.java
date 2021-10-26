@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -15,7 +14,6 @@ import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundArrowDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundDrawable;
 
 public class QuickMessage extends QDPopup {
@@ -43,9 +41,15 @@ public class QuickMessage extends QDPopup {
         if (builder.animationStyleID != -1) {
             setAnimationStyle(builder.animationStyleID);
         }
-        setTouchable(builder.mTouchable);
+        setTouchable(builder.mTouchable);//这个控制PopupWindow内部控件的点击事件
+        setFocusable(builder.mFocusable);//这里必须设置为true才能点击区域外或者消失
+        setOutsideTouchable(builder.mOutsideTouchable);
+        //如何让点击区域外不消失呢:
+        //popupWindow.setOutsideTouchable(false);
+        //popupWindow.setFocusable(false);//点击区域外不会消失，点击返回会执行back事件
         init();
     }
+
     Handler handler;
     public void showTip(View anchor, GuiderView.Gravity gravity,long time) {
         this.mAnchor = anchor;
@@ -195,9 +199,6 @@ public class QuickMessage extends QDPopup {
     private int padding1;
 
     private void init() {
-        //setTouchable(true);
-        setFocusable(true);
-        setOutsideTouchable(true);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         padding1 = DisplayUtil.dip2px(contextWeakReference.get(), 30);
         screenHeight = DisplayUtil.getScreenHeight(contextWeakReference.get());
@@ -241,6 +242,8 @@ public class QuickMessage extends QDPopup {
         public int backgroundColor = Color.BLACK;
         public float[] backgroundRadius = new float[8];
         private boolean mTouchable = false;
+        private boolean mFocusable;
+        private boolean mOutsideTouchable;
 
         public GuiderView.Gravity gravity = GuiderView.Gravity.TOP;
 
@@ -261,8 +264,18 @@ public class QuickMessage extends QDPopup {
             return this;
         }
 
+        public Builder setOutsideTouchable(boolean mOutsideTouchable) {
+            this.mOutsideTouchable = mOutsideTouchable;
+            return this;
+        }
+
         public QuickMessage.Builder setTouchable(boolean mTouchable) {
             this.mTouchable = mTouchable;
+            return this;
+        }
+
+        public QuickMessage.Builder setFocusable(boolean mFocusable) {
+            this.mFocusable = mFocusable;
             return this;
         }
 

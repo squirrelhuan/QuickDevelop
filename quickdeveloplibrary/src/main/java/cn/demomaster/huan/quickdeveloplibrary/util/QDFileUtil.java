@@ -19,6 +19,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import androidx.core.content.FileProvider;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -43,12 +45,13 @@ import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDFileUtil {
-    
+
     /**
      * 保存Bitmap到sdcard
+     *
      * @param b 得到的图片
      */
-    public static String saveBitmap(Context context,Bitmap b) {
+    public static String saveBitmap(Context context, Bitmap b) {
         String path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         long dataTake = System.currentTimeMillis();
         String imgPath = path + File.separator + dataTake + ".jpg";
@@ -56,13 +59,11 @@ public class QDFileUtil {
     }
 
     /**
-     *
      * @param context
      * @param filename 是文件全名，包括后缀哦
      * @param listener
      */
-    public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener)
-    {
+    public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener) {
         MediaScannerConnection.scanFile(context,
                 new String[]{filename}, null, listener);
     }
@@ -104,9 +105,9 @@ public class QDFileUtil {
         writeFileSdcardFile(file, write_str, append);
     }
 
-    public static String endWithSeparator(String filePath){
-        if(filePath!=null&&!filePath.endsWith(File.separator)){
-            return filePath+File.separator;
+    public static String endWithSeparator(String filePath) {
+        if (filePath != null && !filePath.endsWith(File.separator)) {
+            return filePath + File.separator;
         }
         return filePath;
     }
@@ -267,7 +268,7 @@ public class QDFileUtil {
      */
     private static boolean deleteDirectory(String filePath) {
         // 如果dir不以文件分隔符结尾，自动添加文件分隔符
-        if (!filePath.endsWith(File.separator)){
+        if (!filePath.endsWith(File.separator)) {
             filePath = filePath + File.separator;
         }
         File dirFile = new File(filePath);
@@ -309,7 +310,7 @@ public class QDFileUtil {
             } else {
                 for (File file1 : file.listFiles()) {
                     List<File> fileList = getEmptyFiles(file1.getPath());
-                    if(fileList!=null) {
+                    if (fileList != null) {
                         files.addAll(fileList);
                     }
                 }
@@ -525,21 +526,22 @@ public class QDFileUtil {
 
     /**
      * 拼接文件路径
+     *
      * @param downloadDirectory
      * @param fileName
      * @return
      */
     public static String genateFilePath(String downloadDirectory, String fileName) {
-        if(TextUtils.isEmpty(downloadDirectory)||TextUtils.isEmpty(fileName)){
+        if (TextUtils.isEmpty(downloadDirectory) || TextUtils.isEmpty(fileName)) {
             return null;
         }
-        if(downloadDirectory.endsWith(File.separator)){
-            downloadDirectory =downloadDirectory.substring(0,downloadDirectory.length()-1);
+        if (downloadDirectory.endsWith(File.separator)) {
+            downloadDirectory = downloadDirectory.substring(0, downloadDirectory.length() - 1);
         }
-        if(fileName.startsWith(File.separator)){
-            fileName =downloadDirectory.substring(1);
+        if (fileName.startsWith(File.separator)) {
+            fileName = downloadDirectory.substring(1);
         }
-        return downloadDirectory+File.separator +fileName;
+        return downloadDirectory + File.separator + fileName;
     }
 
     public interface OnSearchListener {
@@ -581,6 +583,7 @@ public class QDFileUtil {
 
     /**
      * 获取存储路径
+     *
      * @return 所有可用于存储的不同的卡的位置，用一个List来保存
      */
     public static List<String> getExtSDCardPathList() {
@@ -803,19 +806,33 @@ public class QDFileUtil {
         return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
     }
 
-    public static Uri getUrifromFile(Context context, File file) {
+    public static Uri getUrifromFile(Context context,String authority, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return getUrifromPath1(context, file.getAbsolutePath());
+            return getUrifromPath1(context,authority, file.getAbsolutePath());
         } else {
             return Uri.fromFile(file);
         }
     }
 
-    public static Uri getUrifromPath1(Context context, String path) {
+    public static Uri getUrifromPath1(Context context,String authority, String path) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put(MediaStore.Images.Media.DATA, path);
-            return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
+            File file = new File(path);
+            String fileType = context.getContentResolver().getType(Uri.fromFile(file));
+            QDLogger.e("getUrifromPath1 fileType=" + fileType+",authority="+authority);
+            if (!file.isDirectory() && !TextUtils.isEmpty(fileType)) {
+                ContentValues contentValues = new ContentValues(1);
+                contentValues.put(MediaStore.Images.Media.DATA, path);
+                Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);//步骤二：Android 7.0及以上获取文件 Uri
+                return uri;
+            } else {
+                if (file.isDirectory()) {
+                    //"cn.demomaster.huan.quickdeveloplibrary.fileprovider"
+                    Uri fileUri = FileProvider.getUriForFile(context, authority, file);
+                    QDLogger.e("fileUri=" + fileUri.toString());
+                    return fileUri;
+                }
+                return null;
+            }
             //fileUri = FileProvider.getUriForFile(context, "cn.demomaster.huan.quickdeveloplibrary.fileprovider", pictureFile);
         } else {
             return Uri.parse(path);
@@ -857,6 +874,7 @@ public class QDFileUtil {
 
     /**
      * 获取手机内部剩余存储空间
+     *
      * @return
      */
     public static long getAvailableInternalMemorySize() {
@@ -869,6 +887,7 @@ public class QDFileUtil {
 
     /**
      * 获取手机内部总的存储空间
+     *
      * @return
      */
     public static long getTotalInternalMemorySize() {
@@ -881,6 +900,7 @@ public class QDFileUtil {
 
     /**
      * 获取SDCARD剩余存储空间
+     *
      * @return
      */
     public static long getAvailableExternalMemorySize() {
@@ -897,6 +917,7 @@ public class QDFileUtil {
 
     /**
      * 获取SDCARD总的存储空间
+     *
      * @return
      */
     public static long getTotalExternalMemorySize() {
@@ -913,6 +934,7 @@ public class QDFileUtil {
 
     /**
      * 获取系统总内存
+     *
      * @param context 可传入应用程序上下文。
      * @return 总内存大单位为B。
      */

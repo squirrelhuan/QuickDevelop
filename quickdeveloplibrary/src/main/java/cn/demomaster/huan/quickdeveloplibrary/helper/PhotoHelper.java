@@ -35,7 +35,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
  */
 
 public class PhotoHelper implements OnReleaseListener {
-
+    String authority;//FileProvider
     @Override
     public void onRelease(Object self) {
         if(self instanceof Activity) {
@@ -81,8 +81,9 @@ public class PhotoHelper implements OnReleaseListener {
     }
 
     private final WeakReference<Activity> contextWeakReference;
-    public PhotoHelper(Activity context) {
+    public PhotoHelper(Activity context,String authority) {
         this.contextWeakReference = new WeakReference<>(context);
+        this.authority = authority;
     }
 
     public void scanQrcode(OnTakePhotoResult onTakePhotoResult) {
@@ -284,7 +285,7 @@ public class PhotoHelper implements OnReleaseListener {
             if (!file.exists()) {
                 QDFileUtil.createFile(file);
             }
-            fileUri = QDFileUtil.getUrifromFile(contextWeakReference.get(), file);
+            fileUri = QDFileUtil.getUrifromFile(contextWeakReference.get(),authority, file);
         } else {
             File file = new File(fileUri.getPath());
             if (!file.exists()) {
