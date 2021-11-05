@@ -965,7 +965,10 @@ public class QDFileUtil {
         am.getMemoryInfo(memoryInfo);
         return memoryInfo.availMem;
     }
-
+    
+    public static String getFileUniqueKey(File file) {
+        return getFileMD5(file)+file.length();
+    }
     public static String getFileMD5(File file) {
         if (!file.isFile()) {
             return null;
@@ -988,6 +991,7 @@ public class QDFileUtil {
         return bytesToHexString(digest.digest());
     }
 
+    
     public static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder("");
         if (src == null || src.length <= 0) {

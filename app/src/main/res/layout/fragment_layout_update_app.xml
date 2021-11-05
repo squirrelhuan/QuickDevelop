@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_update_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:text="在线升级" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_install_access"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:text="辅助安装" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_install_silence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:text="静默安装" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_install_silence2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:text="先下载再静默安装" />
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_check_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="检测新版本" />
+
+    </LinearLayout>
+</cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_update_app"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="在线升级"/>
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_install_access"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="辅助安装"/>
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_install_silence"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="静默安装"/>
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_install_silence2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="先下载再静默安装"/>
-
-                </LinearLayout>
-        </ScrollView>
-
-</RelativeLayout>

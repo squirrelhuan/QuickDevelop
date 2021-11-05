@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInstaller;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +25,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +38,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.install.InstallHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
+import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
@@ -46,14 +52,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-
-
 /**
  * Squirrel桓
  * 2018/8/25
  */
 
-@ActivityPager(name = "App更新", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "App更新", iconRes = R.drawable.ic_baseline_system_update_24, resType = ResType.Resource)
 public class UpdateAppFragment extends BaseFragment {
 
     @BindView(R.id.btn_update_app)
@@ -66,7 +70,8 @@ public class UpdateAppFragment extends BaseFragment {
 
     @BindView(R.id.btn_install_silence2)
     QDButton btn_install_silence2;
-
+    @BindView(R.id.btn_check_update)
+    QDButton btn_check_update;
     View mView;
 
     @NonNull
@@ -101,6 +106,7 @@ public class UpdateAppFragment extends BaseFragment {
             type = 3;
             updateApp(mContext);
         });
+        btn_check_update.setOnClickListener(this);
     }
 
     //app更新
@@ -304,4 +310,84 @@ public class UpdateAppFragment extends BaseFragment {
     }
 
 
+
+    public void checkVersion() {
+        // https://www.pgyer.com/apiv2/app/check
+        try {
+            String appKey = "2206123c28a3b818ab7abbed33b37632";
+            //RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), map_str2);
+            //RetrofitInterface retrofitInterface = HttpUtils.getInstance().createRetrofit(RetrofitInterface.class, URLConstant.URL_BASE);
+            String _api_key = "2736f790002c32b8eae7ad8e73843197";
+            RetrofitInterface retrofitInterface = HttpUtils.getInstance().getRetrofit(RetrofitInterface.class, URLConstant.URL_BASE);
+            retrofitInterface.checkAppVersion(_api_key, appKey)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<JSONObject>() {
+                        @Override
+                        public void onNext(@NonNull JSONObject response) {
+                            QDLogger.i("查询结果: " + response);
+                            if (response != null) {
+                                if (response.containsKey("code") && response.getIntValue("code") == 0) {
+                                    if (response.containsKey("data") && response.get("data") != null) {
+                                        JSONObject dataObj = response.getJSONObject("data");
+                                        if (dataObj != null && dataObj.containsKey("buildVersionNo")) {
+                                            int v = Integer.parseInt(dataObj.getString("buildVersionNo"));
+                                            if (v > QDAppInfoUtil.getVersionCode(getContext())) {
+                                                Version version = new Version();
+                                                version.setDownloadUrl(dataObj.getString("downloadURL"));
+                                                showUpdateAppDialog2(getContext(), version);
+                                            }else {
+                                                QdToast.show("云端最新版本："+v+",当前版本："+QDAppInfoUtil.getVersionCode(getContext()));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        protected void onStart() {
+
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable throwable) {
+                            QDLogger.i("onError: " + throwable.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //app更新弹窗
+    private void showUpdateAppDialog2(final Context context, final Version version) {
+        new QDDialog.Builder(getContext()).setTitle("更新提示")
+                .setMessage("检测到新版本是否前往更新？")
+                .setBackgroundRadius(30)
+                .addAction("前往更新", (dialog, view, tag) -> {
+                    dialog.dismiss();
+                    //Toast.makeText(context,"正在下载更新包",Toast.LENGTH_LONG).show();
+                    Uri uri = Uri.parse("https://www.pgyer.com/UYx0");
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    intent.setData(uri);
+                    startActivity(intent);
+
+                }).addAction("暂不")
+                .setGravity_foot(Gravity.CENTER)
+                .create().show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        if(v.getId()==R.id.btn_check_update){
+            checkVersion();
+        }
+    }
 }

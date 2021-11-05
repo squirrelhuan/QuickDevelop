@@ -6,6 +6,7 @@ package cn.demomaster.huan.quickdeveloplibrary.constant;
  * description：
  */
 public class EventBusConstant {
+    public static String EventBusTag = "Eventbus";
     //eventbus 切换语言
     public final static String EVENT_REFRESH_LANGUAGE = "EVENT_REFRESH_LANGUAGE";
     //eventbus 全局提示

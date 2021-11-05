@@ -110,12 +110,14 @@ public class LoadLayout extends FrameLayout {
         if (contentView != null) {
             contentView.setVisibility(INVISIBLE);
         }
-        loadView.setVisibility(VISIBLE);
-        if (loadView instanceof EmptyLayout) {
-            ((EmptyLayout) loadView).hideAll();
-            ((EmptyLayout) loadView).showLodding();
-            if (!TextUtils.isEmpty(loadingMessage)) {
-                ((EmptyLayout) loadView).showMessage(loadingMessage);
+        if(loadView!=null) {
+            loadView.setVisibility(VISIBLE);
+            if (loadView instanceof EmptyLayout) {
+                ((EmptyLayout) loadView).hideAll();
+                ((EmptyLayout) loadView).showLodding();
+                if (!TextUtils.isEmpty(loadingMessage)) {
+                    ((EmptyLayout) loadView).showMessage(loadingMessage);
+                }
             }
         }
     }

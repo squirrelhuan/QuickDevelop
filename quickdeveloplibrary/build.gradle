@@ -80,7 +80,8 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     api 'com.google.code.gson:gson:2.8.6'
     // fastjson
-    api 'com.alibaba:fastjson:1.2.75'
+    //api 'com.alibaba:fastjson:1.2.75'
+    api 'com.alibaba:fastjson:1.1.70.android'
     api 'io.reactivex.rxjava2:rxjava:2.2.20'
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'com.squareup.retrofit2:retrofit:2.9.0'

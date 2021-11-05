@@ -50,6 +50,8 @@ public class QDDialog2 extends AppCompatDialog {
                     return;
                 }
             }
+        }else {
+            return;
         }
         super.show();
     }

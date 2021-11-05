@@ -1,10 +1,13 @@
 package cn.demomaster.huan.quickdevelop.net;
 
+import com.alibaba.fastjson.JSONObject;
+
 import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -40,4 +43,14 @@ public interface RetrofitInterface {
     //get请求
     @POST(URLConstant.uploadFile)
     Observable<Object> uploadHeaderImg(String userId,MultipartBody.Part body);
+
+    /**
+     * 蒲公英查看最新app版本
+     * @param _api_key
+     * @param appKey
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("https://www.pgyer.com/apiv2/app/check")
+    Observable<JSONObject> checkAppVersion(@Field("_api_key") String _api_key, @Field("appKey") String appKey);
 }
