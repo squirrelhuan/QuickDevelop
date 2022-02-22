@@ -10,8 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,14 +119,15 @@ public class HttpFragment extends BaseFragment {
                 .subscribe(new DisposableObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object response) {
-                        QDLogger.i("onNext: " + JSON.toJSONString(response));
+                        Gson gson = new Gson();
+                        QDLogger.i("onNext: " + gson.toJson(response));
                         try {
                             //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
                             //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
                             //String token = jsonObject.get("token").toString();
-                            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(response));
-                            jsonObject = jsonObject.getJSONObject("data");
-                            Version version = JSON.parseObject(JSON.toJSONString(jsonObject), Version.class);
+                            JsonObject jsonObject = new JsonParser().parse(gson.toJson(response)).getAsJsonObject();
+                            jsonObject = jsonObject.get("data").getAsJsonObject();
+                            Version version = gson.fromJson(gson.toJson(jsonObject), Version.class);
                             int ver_code = version.getVersionCode();
                             String ver_name = version.getVersionName();
                         } catch (Exception e) {

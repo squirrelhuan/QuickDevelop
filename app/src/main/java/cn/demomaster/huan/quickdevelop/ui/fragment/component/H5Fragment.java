@@ -16,7 +16,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -80,13 +82,15 @@ public class H5Fragment extends BaseFragment {
             String url = et_url.getText().toString();
             String str = QDSharedPreferences.getInstance().getString("urls",null);
             Map<String,String> urlMap;
+
+            Gson gson = new Gson();
             if(!TextUtils.isEmpty(str)){
-                urlMap = JSON.parseObject(str, Map.class);
+                urlMap = gson.fromJson(str, Map.class);
             }else {
                 urlMap = new LinkedHashMap<>();
             }
             urlMap.put(url,url);
-            QDSharedPreferences.getInstance().putString("urls",JSON.toJSONString(urlMap));
+            QDSharedPreferences.getInstance().putString("urls",gson.toJson(urlMap));
             initListData();
             jumpUrl(url);
         });
@@ -154,7 +158,8 @@ public class H5Fragment extends BaseFragment {
     private void initListData() {
         String str = QDSharedPreferences.getInstance().getString("urls",null);
         if(!TextUtils.isEmpty(str)){
-            Map<String,String> urlMap = JSON.parseObject(str, Map.class);
+            Gson gson = new Gson();
+            Map<String,String> urlMap = gson.fromJson(str, Map.class);
             if(urlMap!=null){
                 List<String> stringList = new ArrayList<>();
                 for(Map.Entry entry:urlMap.entrySet()){

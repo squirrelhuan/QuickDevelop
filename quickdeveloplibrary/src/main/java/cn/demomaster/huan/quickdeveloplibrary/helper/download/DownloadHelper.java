@@ -368,7 +368,7 @@ public class DownloadHelper {
         public void unregister(Context context) {
             QDLogger.i("注销");
             if (context != null) {
-                DownloadHelper.getInstance(context).unregisterReceiver(context);
+                unregisterReceiver(context);
             }
         }
     }

@@ -1,6 +1,7 @@
 package cn.demomaster.huan.quickdeveloplibrary;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -525,8 +526,9 @@ public class Test {
 
         String lastState = "-1";//上次的状态（1/2）
         int position = -1;//上次状态的位置
-
-        List<Result> results = JSON.parseArray(str, Result.class);
+        Gson gson = new Gson();
+        List<Result> results = gson.fromJson(str,new TypeToken<ArrayList<Result>>(){}.getType())
+        //List<Result> results = JSON.parseArray(str, Result.class);
         for (int i = 0; i < results.size(); i++) {
             System.out.println("" + i);
             if (position == -1) {//初始化
@@ -538,7 +540,6 @@ public class Test {
 
             Result resultc = results.get(i);
             if (!lastState.equals(resultc.getIsOnline())) {//判断当前状态是否和上次相等
-
                 //获取上个状态开始的时间
                 int t1 = Integer.valueOf(results.get(position).getInsert_Time());
                 //获取当前第i条的时间

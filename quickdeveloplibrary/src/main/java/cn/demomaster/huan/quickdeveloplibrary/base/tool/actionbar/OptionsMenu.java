@@ -124,6 +124,7 @@ public class OptionsMenu implements OnReleaseListener {
                 .setWithArrow(withArrow)
                 .setArrowHeight(arrowHeight)
                 .setArrowWidth(arrowWidth)
+                .setTouchable(true)
                 .setAnimationStyleID(animationStyleID)
                 .create();
         qdTipPopup.setContentView(contentView);

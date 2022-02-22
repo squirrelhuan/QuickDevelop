@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
+    <!--过度使用 HTTP
+    error
+    错误
+    brightness_1
+    隐私权
+    您的应用对 HTTP 的使用量很大。继续使用这个不安全的协议可能会影响您的应用在 Play 商店的曝光度。我们建议您使用 HTTPS，以避免发生这种情况。
+    如果您在查明 HTTP 请求的来源方面需要帮助，可以考虑使用 detectCleartextNework 对应用的入口点进行插装
+    如果您发现自己的应用完全不必使用 HTTP 即可正常实现功能，请考虑将 android:usesCleartextTraffic 标记设置为 false。如果您的应用的目标运行环境是 Android N 或更高版本，那么您可以考虑将网络安全配置中的 cleartextTrafficPermitted 设置为 false。-->
 </network-security-config>

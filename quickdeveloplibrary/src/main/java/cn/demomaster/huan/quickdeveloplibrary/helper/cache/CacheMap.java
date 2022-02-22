@@ -6,9 +6,13 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSON;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -44,7 +48,9 @@ public class CacheMap {
     private void loadSharePrefrence() {
         String string = QDSharedPreferences.getInstance().getString(QuickCacheMap, null);
         if (!TextUtils.isEmpty(string)) {
-            List<CacheInfo> cacheInfoList = JSON.parseArray(string, CacheInfo.class);
+            Gson gson = new Gson();
+            Type userListType = new TypeToken<ArrayList<CacheInfo>>(){}.getType();
+            List<CacheInfo> cacheInfoList = gson.fromJson(string, userListType);
             if (cacheInfoList != null) {
                 for (CacheInfo cacheInfo : cacheInfoList) {
                     String url = cacheInfo.getUrl();
@@ -145,7 +151,8 @@ public class CacheMap {
             cacheInfo.setUrl((String) entry.getKey());
             cacheInfoList.add(cacheInfo);
         }
-        QDSharedPreferences.getInstance().putString(QuickCacheMap, JSON.toJSONString(cacheInfoList));
+        Gson gson = new Gson();
+        QDSharedPreferences.getInstance().putString(QuickCacheMap, gson.toJson(cacheInfoList));
     }
 
     /**

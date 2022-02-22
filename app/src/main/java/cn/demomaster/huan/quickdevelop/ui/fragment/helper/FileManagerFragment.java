@@ -83,7 +83,7 @@ public class FileManagerFragment extends BaseFragment {
                     }
                 }
             });
-            thread.run();
+            thread.start();
         });
         btn_delete.setOnClickListener(v -> {
             count = 0;

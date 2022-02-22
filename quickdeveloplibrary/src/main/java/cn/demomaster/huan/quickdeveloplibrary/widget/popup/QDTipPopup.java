@@ -298,10 +298,8 @@ public class QDTipPopup extends QDPopup {
         private boolean withArrow = true;
         private int arrowWidth;
         private int arrowHeight;
-        private boolean mTouchable;
-
+        private boolean mTouchable = true;
         public GuiderView.Gravity gravity = GuiderView.Gravity.TOP;
-
         
         public Builder(Context context) {
             this.contextWeakReference = new WeakReference<>(context);

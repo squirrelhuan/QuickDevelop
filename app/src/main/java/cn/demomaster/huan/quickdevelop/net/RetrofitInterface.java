@@ -1,6 +1,6 @@
 package cn.demomaster.huan.quickdevelop.net;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 
 import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
 import io.reactivex.Observable;
@@ -52,5 +52,5 @@ public interface RetrofitInterface {
      */
     @FormUrlEncoded
     @POST("https://www.pgyer.com/apiv2/app/check")
-    Observable<JSONObject> checkAppVersion(@Field("_api_key") String _api_key, @Field("appKey") String appKey);
+    Observable<JsonObject> checkAppVersion(@Field("_api_key") String _api_key, @Field("appKey") String appKey);
 }

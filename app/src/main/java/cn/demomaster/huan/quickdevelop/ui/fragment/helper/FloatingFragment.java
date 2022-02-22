@@ -42,7 +42,6 @@ import cn.demomaster.quickpermission_library.model.PermissionRequest;
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "悬浮窗", preViewClass = TextView.class, resType = ResType.Custome)
 public class FloatingFragment extends BaseFragment {
 
@@ -75,9 +74,9 @@ public class FloatingFragment extends BaseFragment {
             public void onPassed() {
                 boolean exist = ServiceHelper.serverIsRunning(mContext,FpsFloatingService.class.getName());
                 if (exist) {
-                    ServiceHelper.dissmissWindow(mContext,FpsFloatingService.class);
+                    ServiceHelper.stopService(mContext,FpsFloatingService.class);
                 } else {
-                    ServiceHelper.showWindow(mContext, FpsFloatingService.class);
+                    ServiceHelper.startService(mContext, FpsFloatingService.class);
                 }
             }
 
@@ -92,9 +91,9 @@ public class FloatingFragment extends BaseFragment {
             public void onPassed() {
                 boolean exist = ServiceHelper.serverIsRunning(mContext,FloatingMenuService.class.getName());
                 if (exist) {
-                    ServiceHelper.dissmissWindow(mContext,FloatingMenuService.class);
+                    ServiceHelper.stopService(mContext,FloatingMenuService.class);
                 } else {
-                    ServiceHelper.showWindow(mContext, FloatingMenuService.class);
+                    ServiceHelper.startService(mContext, FloatingMenuService.class);
                 }
             }
 
@@ -120,9 +119,9 @@ public class FloatingFragment extends BaseFragment {
             public void onPassed() {
                 boolean exist = ServiceHelper.serverIsRunning(mContext,DebugFloatingService.class.getName());
                 if (exist) {
-                    ServiceHelper.dissmissWindow(mContext,DebugFloatingService.class);
+                    ServiceHelper.stopService(mContext,DebugFloatingService.class);
                 } else {
-                    ServiceHelper.showWindow(mContext, DebugFloatingService.class);
+                    ServiceHelper.startService(mContext, DebugFloatingService.class);
                 }
             }
 
@@ -136,9 +135,9 @@ public class FloatingFragment extends BaseFragment {
             public void onPassed() {
                 boolean exist = ServiceHelper.serverIsRunning(mContext,LifecycleFloatingService.class.getName());
                 if (exist) {
-                    ServiceHelper.dissmissWindow(mContext,LifecycleFloatingService.class);
+                    ServiceHelper.stopService(mContext,LifecycleFloatingService.class);
                 } else {
-                    ServiceHelper.showWindow(mContext, LifecycleFloatingService.class);
+                    ServiceHelper.startService(mContext, LifecycleFloatingService.class);
                 }
             }
 

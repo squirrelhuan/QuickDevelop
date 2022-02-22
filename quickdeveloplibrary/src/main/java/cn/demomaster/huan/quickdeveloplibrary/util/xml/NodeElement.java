@@ -1,6 +1,6 @@
 package cn.demomaster.huan.quickdeveloplibrary.util.xml;
 
-import com.alibaba.fastjson.annotation.JSONField;
+//import com.alibaba.fastjson.annotation.JSONField;
 
 import org.xml.sax.Attributes;
 
@@ -14,7 +14,7 @@ public class NodeElement {
     private List<NodeProperty> attributes;
     private List<NodeElement> childNodes;
 
-    @JSONField(serialize = false)
+    //@JSONField(serialize = false)
     boolean parseEnd;//解析完成标志
 
     public NodeElement(String uri, String localName, String qName, Attributes attributes) {

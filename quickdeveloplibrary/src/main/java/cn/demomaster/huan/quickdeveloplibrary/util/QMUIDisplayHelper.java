@@ -175,15 +175,15 @@ public class QMUIDisplayHelper {
      * @param activity
      * @return
      */
-    public static int getUsefulScreenWidth(Activity activity) {
+    /*public static int getUsefulScreenWidth(Activity activity) {
         return getUsefulScreenWidth(activity, QMUINotchHelper.hasNotch(activity));
     }
 
     public static int getUsefulScreenWidth(View view) {
         return getUsefulScreenWidth(view.getContext(), QMUINotchHelper.hasNotch(view));
-    }
+    }*/
 
-    public static int getUsefulScreenWidth(Context context, boolean hasNotch) {
+   /* public static int getUsefulScreenWidth(Context context, boolean hasNotch) {
         int result = getRealScreenSize(context)[0];
         int orientation = context.getResources().getConfiguration().orientation;
         boolean isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE;
@@ -207,7 +207,7 @@ public class QMUIDisplayHelper {
             // TODO oppo 设置-显示与亮度-应用全屏显示-凹形区域显示控制 关闭是，整个 window 会移动，应该减去移动区域，但无API
         }
         return result;
-    }
+    }*/
 
     /**
      * 剔除挖孔屏等导致的不可用区域后的 height
@@ -215,13 +215,13 @@ public class QMUIDisplayHelper {
      * @param activity
      * @return
      */
-    public static int getUsefulScreenHeight(Activity activity) {
+   /* public static int getUsefulScreenHeight(Activity activity) {
         return getUsefulScreenHeight(activity, QMUINotchHelper.hasNotch(activity));
     }
 
     public static int getUsefulScreenHeight(View view) {
         return getUsefulScreenHeight(view.getContext(), QMUINotchHelper.hasNotch(view));
-    }
+    }*/
 
     private static int getUsefulScreenHeight(Context context, boolean hasNotch) {
         int result = getRealScreenSize(context)[1];

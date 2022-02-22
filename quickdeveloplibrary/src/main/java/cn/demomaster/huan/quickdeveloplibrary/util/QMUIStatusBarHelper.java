@@ -39,13 +39,13 @@ public class QMUIStatusBarHelper {
     int mStatuBarType = STATUSBAR_TYPE_DEFAULT;
     private static Integer sTransparentValue;
 
-    public static void translucent(Activity activity) {
+   /* public static void translucent(Activity activity) {
         translucent(activity.getWindow());
-    }
+    }*/
 
-    public static void translucent(Window window) {
+   /* public static void translucent(Window window) {
         translucent(window, 0x40000000);
-    }
+    }*/
 
     private static boolean supportTranslucent() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
@@ -59,11 +59,14 @@ public class QMUIStatusBarHelper {
      *
      * @param activity 需要被设置沉浸式状态栏的 Activity。
      */
-    public static void translucent(Activity activity, @ColorInt int colorOn5x) {
+    /*public static void translucent(Activity activity, @ColorInt int colorOn5x) {
         Window window = activity.getWindow();
         translucent(window, colorOn5x);
+    }*/
+    public static boolean isNotchOfficialSupport() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
-
+    /*
     @TargetApi(19)
     public static void translucent(Window window, @ColorInt int colorOn5x) {
         if (!supportTranslucent()) {
@@ -71,7 +74,7 @@ public class QMUIStatusBarHelper {
             return;
         }
 
-        if (QMUINotchHelper.isNotchOfficialSupport()) {
+        if (isNotchOfficialSupport()) {
             handleDisplayCutoutMode(window);
         }
 
@@ -112,9 +115,9 @@ public class QMUIStatusBarHelper {
 //                window.getDecorView().setSystemUiVisibility(transparentValue);
 //            }
         }
-    }
+    }*/
 
-    @TargetApi(28)
+    /*@TargetApi(28)
     private static void handleDisplayCutoutMode(final Window window) {
         View decorView = window.getDecorView();
         if (decorView != null) {
@@ -135,9 +138,9 @@ public class QMUIStatusBarHelper {
                 });
             }
         }
-    }
+    }*/
 
-    @TargetApi(28)
+    /*@TargetApi(28)
     private static void realHandleDisplayCutoutMode(Window window, View decorView) {
         if (decorView.getRootWindowInsets() != null &&
                 decorView.getRootWindowInsets().getDisplayCutout() != null) {
@@ -146,7 +149,7 @@ public class QMUIStatusBarHelper {
                     .LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             window.setAttributes(params);
         }
-    }
+    }*/
 
     /**
      * 设置状态栏黑色字体图标，

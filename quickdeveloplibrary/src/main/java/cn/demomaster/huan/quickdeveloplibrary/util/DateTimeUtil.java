@@ -262,13 +262,13 @@ public class DateTimeUtil {
         return c.get(Calendar.DAY_OF_WEEK);
     }
 
-    public static String getWeekName(Date date) {
-        String[] weeknames ={"周日","周一","周二","周三","周四","周五","周六"};
+    public static String getWeekName(Context context, Date date) {
+        String[] weeknames = context.getResources().getStringArray(R.array.weeknames);
         //国际上是以星期日为一周第一天
         return weeknames[getWeek(date)-1];
     }
-    public static String getWeekName(String time) {
-        String[] weeknames ={"周日","周一","周二","周三","周四","周五","周六"};
+    public static String getWeekName(Context context, String time) {
+        String[] weeknames = context.getResources().getStringArray(R.array.weeknames);
         //国际上是以星期日为一周第一天
         return weeknames[getWeek(time)-1];
     }

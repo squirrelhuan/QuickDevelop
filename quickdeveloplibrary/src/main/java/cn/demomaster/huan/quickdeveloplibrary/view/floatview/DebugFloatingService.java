@@ -4,6 +4,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Typeface;
@@ -118,6 +119,7 @@ public class DebugFloatingService extends QDFloatingService2 {
     static List<QDLogBean> logList = new ArrayList<>();
     static String logStr = "";
     static QDLogInterceptor qdLogInterceptor;
+
     private static void initLog() {
         tv_log.setText(logStr);
         scrollView.post(() -> {
@@ -141,7 +143,10 @@ public class DebugFloatingService extends QDFloatingService2 {
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(Color.WHITE);
+                if (msg.getType() != null) {
+                    tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
+                }
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点
                 tv_log.append(builder);
@@ -212,7 +217,7 @@ public class DebugFloatingService extends QDFloatingService2 {
         if (isDebug(context)) {
             if (PermissionHelper.getPermissionStatus(context.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 //DebugFloatingService.showWindow(context, DebugFloatingService.class);
-                ServiceHelper.showWindow(context, DebugFloatingService.class);
+                ServiceHelper.startService(context, DebugFloatingService.class);
             } else {
                 //QDLogger.e(FloatHelper.Tag, "showConsole context= " + context);
                 if (debugFloating2 == null) {
@@ -227,24 +232,24 @@ public class DebugFloatingService extends QDFloatingService2 {
     public void onDestroy() {
         super.onDestroy();
 
-        if(tv_log_tag!=null) {
+        if (tv_log_tag != null) {
             tv_log_tag.setOnClickListener(null);
         }
         onClickTagListenernew = null;
-        if(iv_drag!=null) {
+        if (iv_drag != null) {
             iv_drag.setOnTouchListener(null);
         }
-        if(onTouchListener!=null){
+        if (onTouchListener != null) {
             onTouchListener.onRelease(null);
         }
-        if(onTouchListener1!=null){
+        if (onTouchListener1 != null) {
             onTouchListener1.onRelease(null);
         }
 
         QDLogger.setInterceptor(null);
         qdLogInterceptor = null;
 
-        if(view!=null) {
+        if (view != null) {
             view.setOnTouchListener(null);
             removeView(view);
         }

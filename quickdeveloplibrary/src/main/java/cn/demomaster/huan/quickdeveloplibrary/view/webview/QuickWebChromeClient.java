@@ -1,19 +1,35 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.webview;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Message;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsResult;
+import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QuickWebChromeClient extends WebChromeClient {
     QDWebView qdWebView;
+
+    @Override
+    public void onPermissionRequest(PermissionRequest request) {
+        //super.onPermissionRequest(request);
+        QdThreadHelper.runOnUiThread(new Runnable(){
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void run() {
+                request.grant(request.getResources());
+            }// run
+        });// MainActivity
+    }
 
     public QuickWebChromeClient(QDWebView qdWebView) {
         this.qdWebView = qdWebView;

@@ -26,7 +26,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+
+import static cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil.sp2px;
 
 public class LoopView extends View {
     private static final String TAG = LoopView.class.getSimpleName();
@@ -123,7 +126,7 @@ public class LoopView extends View {
             this.mCenterLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);*/
             this.mCanLoop = array.getBoolean(R.styleable.LoopView_canLoop, true);
             this.mInitPosition = array.getInt(R.styleable.LoopView_initPosition, -1);
-            this.mTextSize = array.getDimensionPixelSize(R.styleable.LoopView_textSize, this.sp2px(context, 16.0F));
+            this.mTextSize = array.getDimensionPixelSize(R.styleable.LoopView_textSize, sp2px(context, 16.0F));
             this.mDrawItemsCount = array.getInt(R.styleable.LoopView_drawItemCount, 7);
             array.recycle();
         }
@@ -295,8 +298,7 @@ public class LoopView extends View {
                     } else if (this.mMaxTextHeight + translateY >= this.mBottomLineY) {
                         canvas.save();
                         canvas.clipRect(0, 0, this.mWidgetWidth, this.mBottomLineY - translateY);
-
-
+                        
                         // 文字宽
                         float textWidth1 = mCenterTextPaint.measureText(itemCount[count]);
 
@@ -304,8 +306,7 @@ public class LoopView extends View {
                         canvas.restore();
                         canvas.save();
                         canvas.clipRect(0, this.mBottomLineY - translateY, this.mWidgetWidth, (int) itemHeight);
-
-
+                        
                         // 文字宽
                         float textWidth = mTopBottomTextPaint.measureText(itemCount[count]);
                         // 文字baseline在y轴方向的位置
@@ -315,7 +316,7 @@ public class LoopView extends View {
                         canvas.restore();
                     } else if (translateY >= this.mTopLineY && this.mMaxTextHeight + translateY <= this.mBottomLineY) {
                         canvas.clipRect(0, 0, this.mWidgetWidth, (int) itemHeight);
-
+                        
                         // 文字宽
                         float textWidth = mCenterTextPaint.measureText(itemCount[count]);
                         // 文字baseline在y轴方向的位置
@@ -324,7 +325,7 @@ public class LoopView extends View {
                         //canvas.drawText(itemCount[count], (float)this.mPaddingLeftRight, (float)this.mMaxTextHeight, this.mCenterTextPaint);
                         this.mSelectedItem = this.mDataList.indexOf(itemCount[count]);
                     }
-
+                    
                     canvas.restore();
                 } else {
                     canvas.restore();
@@ -353,7 +354,6 @@ public class LoopView extends View {
                 if (!this.mGestureDetector.onTouchEvent(motionevent)) {
                     this.startSmoothScrollTo();
                 }
-
                 return true;
         }
     }
@@ -371,9 +371,8 @@ public class LoopView extends View {
 
     public final void setTextSize(float size) {
         if (size > 0.0F) {
-            this.mTextSize = this.sp2px(this.mContext, size);
+            this.mTextSize = DisplayUtil.sp2px(this.mContext, size);
         }
-
     }
 
     public void setInitPosition(int initPosition) {
@@ -398,7 +397,6 @@ public class LoopView extends View {
         if (this.mLoopListener != null) {
             this.postDelayed(new LoopView.SelectedRunnable(), 200L);
         }
-
     }
 
     private void cancelSchedule() {
@@ -406,7 +404,6 @@ public class LoopView extends View {
             this.mScheduledFuture.cancel(true);
             this.mScheduledFuture = null;
         }
-
     }
 
     private void startSmoothScrollTo() {
@@ -419,11 +416,6 @@ public class LoopView extends View {
         this.cancelSchedule();
         int velocityFling = 20;
         this.mScheduledFuture = this.mExecutor.scheduleWithFixedDelay(new LoopView.FlingRunnable(velocityY), 0L, velocityFling, TimeUnit.MILLISECONDS);
-    }
-
-    public int sp2px(Context context, float spValue) {
-        float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5F);
     }
 
     class FlingRunnable implements Runnable {
@@ -471,7 +463,6 @@ public class LoopView extends View {
                 } else {
                     this.velocity -= 20.0F;
                 }
-
                 LoopView.this.mHandler.sendEmptyMessage(1000);
             }
         }

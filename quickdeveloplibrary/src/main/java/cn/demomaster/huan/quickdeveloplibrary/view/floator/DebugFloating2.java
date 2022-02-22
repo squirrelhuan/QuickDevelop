@@ -73,7 +73,7 @@ public class DebugFloating2 implements FloatView {
         }).create().show();
     }
 
-    static int[] tagColors = new int[]{Color.WHITE, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED, Color.RED, Color.DKGRAY};
+    static int[] tagColors = new int[]{Color.WHITE, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED, Color.RED, Color.LTGRAY};
     public static int getTagColor(int logType) {
         int color = tagColors[1];
         switch (logType) {

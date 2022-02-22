@@ -83,24 +83,30 @@ public class NetworkStatsHelper {
 
     /**
      * 获取指定应用 wifi 发送的当天总流量
+     *
      * @param packageUid 应用的uid
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public long getPackageTxDayBytesWifi(Context context, int packageUid) {
-        NetworkStats networkStats = null;
-        NetworkStatsManager networkStatsManager = (NetworkStatsManager) context.getSystemService(NETWORK_STATS_SERVICE);
-        long timesmorning = getTimesmorning();
-        QDLogger.d("timesmorning=" + timesmorning);
-        networkStats = networkStatsManager.queryDetailsForUid(
-                ConnectivityManager.TYPE_MOBILE,
-                "",
-                timesmorning,
-                System.currentTimeMillis(),
-                packageUid);
-        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
-        networkStats.getNextBucket(bucket);
-        return bucket.getTxBytes();
+        try {
+            NetworkStats networkStats = null;
+            NetworkStatsManager networkStatsManager = (NetworkStatsManager) context.getSystemService(NETWORK_STATS_SERVICE);
+            long timesmorning = getTimesmorning();
+            QDLogger.d("timesmorning=" + timesmorning);
+            networkStats = networkStatsManager.queryDetailsForUid(
+                    ConnectivityManager.TYPE_MOBILE,
+                    "",
+                    timesmorning,
+                    System.currentTimeMillis(),
+                    packageUid);
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            networkStats.getNextBucket(bucket);
+            return bucket.getTxBytes();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**

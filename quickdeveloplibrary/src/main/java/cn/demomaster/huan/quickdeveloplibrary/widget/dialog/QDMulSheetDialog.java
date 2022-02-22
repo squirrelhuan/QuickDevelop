@@ -28,6 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
 import static android.view.View.OVER_SCROLL_NEVER;
 
 /**
+ * 多选
  * @author squirrel桓
  * @date 2019/1/7.
  * description：

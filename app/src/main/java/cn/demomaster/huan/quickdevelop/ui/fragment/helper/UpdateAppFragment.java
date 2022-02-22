@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +47,7 @@ import cn.demomaster.huan.quickdeveloplibrary.http.URLConstant;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -56,7 +60,6 @@ import io.reactivex.schedulers.Schedulers;
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "App更新", iconRes = R.drawable.ic_baseline_system_update_24, resType = ResType.Resource)
 public class UpdateAppFragment extends BaseFragment {
 
@@ -123,7 +126,6 @@ public class UpdateAppFragment extends BaseFragment {
             public void onRefused() {
             }
         });
-
     }
 
     /**
@@ -156,14 +158,15 @@ public class UpdateAppFragment extends BaseFragment {
                 .subscribe(new DisposableObserver<Object>() {
                     @Override
                     public void onNext(@NonNull Object response) {
-                        QDLogger.i("onNext: " + JSON.toJSONString(response));
+                        Gson gson = new Gson();
+                        QDLogger.i("onNext: " + gson.toJson(response));
                         try {
                             //JSONObject jsonObject = JSON.parseObject(response.getData().toString());
                             //List doctors1 = JSON.parseArray(response.getData().toString(), DoctorModelApi.class);
                             //String token = jsonObject.get("token").toString();
-                            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(response));
-                            jsonObject = jsonObject.getJSONObject("data");
-                            Version version = JSON.parseObject(JSON.toJSONString(jsonObject), Version.class);
+                            JsonObject jsonObject = new JsonParser().parse(gson.toJson(response)).getAsJsonObject();
+                            jsonObject = jsonObject.get("data").getAsJsonObject();
+                            Version version = gson.fromJson(gson.toJson(jsonObject), Version.class);
                             int ver_code = version.getVersionCode();
                             String ver_name = version.getVersionName();
                             if (version != null && ver_code > QDAppInfoUtil.getVersionCode(context)) {
@@ -198,7 +201,8 @@ public class UpdateAppFragment extends BaseFragment {
         QDSharedPreferences.init(getContext());
         String conf = QDFileUtil.getFromAssets(mContext, "config/update.his");
         if (conf != null) {
-            List<Version> versions = JSON.parseArray(conf, Version.class);
+            Gson gson = new Gson();
+            List<Version> versions = gson.fromJson(conf, new TypeToken<ArrayList<Version>>(){}.getType());
             final Version version = versions.get(versions.size() - 1);
             QDSharedPreferences.getInstance().putBoolean(version.getVersionCode() + "", false);
         }
@@ -261,7 +265,7 @@ public class UpdateAppFragment extends BaseFragment {
                             e.printStackTrace();
                         }
                     }
-                }).addAction("取消").setGravity_foot(Gravity.CENTER).create().show();
+                }).addAction("取消").setGravity_foot(cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity.CENTER).create().show();
     }
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -322,19 +326,19 @@ public class UpdateAppFragment extends BaseFragment {
             retrofitInterface.checkAppVersion(_api_key, appKey)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<JSONObject>() {
+                    .subscribe(new DisposableObserver<JsonObject>() {
                         @Override
-                        public void onNext(@NonNull JSONObject response) {
+                        public void onNext(@NonNull JsonObject response) {
                             QDLogger.i("查询结果: " + response);
                             if (response != null) {
-                                if (response.containsKey("code") && response.getIntValue("code") == 0) {
-                                    if (response.containsKey("data") && response.get("data") != null) {
-                                        JSONObject dataObj = response.getJSONObject("data");
-                                        if (dataObj != null && dataObj.containsKey("buildVersionNo")) {
-                                            int v = Integer.parseInt(dataObj.getString("buildVersionNo"));
+                                if (response.get("code") !=null&& response.get("code").getAsInt() == 0) {
+                                    if (response.get("data")!=null) {
+                                        JsonObject dataObj = response.get("data").getAsJsonObject();
+                                        if (dataObj != null && dataObj.get("buildVersionNo")!=null) {
+                                            int v = Integer.parseInt(dataObj.get("buildVersionNo").getAsString());
                                             if (v > QDAppInfoUtil.getVersionCode(getContext())) {
                                                 Version version = new Version();
-                                                version.setDownloadUrl(dataObj.getString("downloadURL"));
+                                                version.setDownloadUrl(dataObj.get("downloadURL").getAsString());
                                                 showUpdateAppDialog2(getContext(), version);
                                             }else {
                                                 QdToast.show("云端最新版本："+v+",当前版本："+QDAppInfoUtil.getVersionCode(getContext()));
@@ -377,7 +381,6 @@ public class UpdateAppFragment extends BaseFragment {
                     intent.setAction("android.intent.action.VIEW");
                     intent.setData(uri);
                     startActivity(intent);
-
                 }).addAction("暂不")
                 .setGravity_foot(Gravity.CENTER)
                 .create().show();

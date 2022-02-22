@@ -16,6 +16,30 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * description：
  */
 public class StringUtil {
+
+    public static boolean isNotEmpty(String str) {
+        if(!TextUtils.isEmpty(str)){
+            if(!str.trim().equals("null")){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static double parseDouble(String str){
+        return parseDouble(str,0);
+    }
+    public static double parseDouble(String str, double defValue){
+        double result = defValue;
+        if(!TextUtils.isEmpty(str)){
+            try {
+                result = Double.parseDouble(str);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+    
     /**
      * 是否是小写
      *
@@ -302,7 +326,7 @@ public class StringUtil {
     }
 
     public static boolean isEmail(String email){
-        if (null==email || "".equals(email)){
+        if (TextUtils.isEmpty(email)){
             return false;
         }
         String regEx1 = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";

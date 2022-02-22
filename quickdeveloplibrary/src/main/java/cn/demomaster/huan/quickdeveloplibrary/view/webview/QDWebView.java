@@ -113,29 +113,29 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
             int type = result.getType();
             switch (type) {
                 case HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
-                    QdToast.show(getContext(), "选中的文字类型");
+                    QdToast.showToast(getContext(), "选中的文字类型");
                     break;
                 case HitTestResult.PHONE_TYPE: // 处理拨号
-                    QdToast.show(getContext(), "处理拨号");
+                    QdToast.showToast(getContext(), "处理拨号");
                     break;
                 case HitTestResult.EMAIL_TYPE: // 处理Email
-                    QdToast.show(getContext(), "处理Email");
+                    QdToast.showToast(getContext(), "处理Email");
                     break;
                 case HitTestResult.GEO_TYPE: // 　地图类型
-                    QdToast.show(getContext(), "地图类型");
+                    QdToast.showToast(getContext(), "地图类型");
                     break;
                 case HitTestResult.SRC_ANCHOR_TYPE: // 超链接
-                    QdToast.show(getContext(), "超链接");
+                    QdToast.showToast(getContext(), "超链接");
                     break;
                 case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
-                    QdToast.show(getContext(), "带有链接的图片类型");
+                    QdToast.showToast(getContext(), "带有链接的图片类型");
                     break;
                 case HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
                     String url = result.getExtra();//获取图片
-                    QdToast.show(getContext(), "处理长按图片的菜单项");
+                    QdToast.showToast(getContext(), "处理长按图片的菜单项");
                     break;
                 case HitTestResult.UNKNOWN_TYPE: //未知
-                    QdToast.show(getContext(), "未知");
+                    QdToast.showToast(getContext(), "未知");
                     break;
             }
             return false;
@@ -276,29 +276,29 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         int type = result.getType();
         switch (type) {
             case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
-                QdToast.show(getContext(), "选中的文字类型");
+                QdToast.showToast(getContext(), "选中的文字类型");
                 break;
             case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
-                QdToast.show(getContext(), "处理拨号");
+                QdToast.showToast(getContext(), "处理拨号");
                 break;
             case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
-                QdToast.show(getContext(), "处理Email");
+                QdToast.showToast(getContext(), "处理Email");
                 break;
             case WebView.HitTestResult.GEO_TYPE: // 　地图类型
-                QdToast.show(getContext(), "地图类型");
+                QdToast.showToast(getContext(), "地图类型");
                 break;
             case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
-                QdToast.show(getContext(), "超链接");
+                QdToast.showToast(getContext(), "超链接");
                 break;
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
-                QdToast.show(getContext(), "带有链接的图片类型");
+                QdToast.showToast(getContext(), "带有链接的图片类型");
                 break;
             case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
                 //String url = result.getExtra();//获取图片
-                QdToast.show(getContext(), "处理长按图片的菜单项");
+                QdToast.showToast(getContext(), "处理长按图片的菜单项");
                 break;
             case WebView.HitTestResult.UNKNOWN_TYPE: //未知
-                QdToast.show(getContext(), "未知");
+                QdToast.showToast(getContext(), "未知");
                 break;
         }
     }

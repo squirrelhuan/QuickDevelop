@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
@@ -48,7 +52,6 @@ public class DesignPatternFragment extends BaseFragment {
     }
 
     private String linksPath = "designHtmls.json";
-
     public void initView(View rootView) {
         recyclerView = rootView.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -57,7 +60,9 @@ public class DesignPatternFragment extends BaseFragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         designListAdapter = new DesignListAdapter(getContext());
         String data_str = QDFileUtil.getFromAssets(getActivity(), linksPath);
-        List<String> data = JSON.parseArray(data_str, String.class);
+
+        Gson gson = new Gson();
+        List<URLBean> data = gson.fromJson(data_str, new TypeToken<ArrayList<URLBean>>(){}.getType());
         designListAdapter.updateList(data);
         //设置Adapter
         recyclerView.setAdapter(designListAdapter);
@@ -73,6 +78,27 @@ public class DesignPatternFragment extends BaseFragment {
         recyclerView.addItemDecoration(new GridDividerItemDecoration(getContext(), spanCount));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    public static class URLBean {
+        String name;
+        String url;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
     }
 
 }

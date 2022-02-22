@@ -248,7 +248,7 @@ public abstract class CharacterEncoder
 			 * space. 235
 			 */
 			buf = new byte[bb.remaining()];
-
+				
 			/*
 			 * 239 * position() automatically updated 240
 			 */

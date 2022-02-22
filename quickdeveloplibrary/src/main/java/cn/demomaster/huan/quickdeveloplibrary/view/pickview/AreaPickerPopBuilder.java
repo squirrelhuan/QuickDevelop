@@ -16,7 +16,7 @@ public class AreaPickerPopBuilder extends CommonPickerPop.Builder {
         super(context, listener);
         //private String[] viewFormatTag = new String[]{"YY","text1","MM","text2","DD","text3"};//"yyyy年MM月dd日 HH:mm:ss"
         setViewFormat("v-t-v-t-v-t", new String[]{"YY", "省", "MM", "市", "DD", "区"});
-
+        
         this.pickData = new PickData() {
             @Override
             public List<PickDataItem> getDataByTag(String tag, int[] selectIndexs) {

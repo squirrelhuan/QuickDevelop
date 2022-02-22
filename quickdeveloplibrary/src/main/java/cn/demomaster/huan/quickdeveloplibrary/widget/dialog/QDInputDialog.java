@@ -43,7 +43,7 @@ public class QDInputDialog extends AppCompatDialog {
     private int width = ViewGroup.LayoutParams.MATCH_PARENT;
     private int gravity_header = Gravity.LEFT;
     private int gravity_body = Gravity.LEFT;
-    private int gravity_foot = Gravity.CENTER;
+    private cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity_foot = cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity.CENTER;
     private int padding_header;
     private int padding_body;
     private int padding_foot;
@@ -174,11 +174,11 @@ public class QDInputDialog extends AppCompatDialog {
         if (footView != null) {
             contentView.addView(footView);
             footView.setMinimumHeight(minHeight_foot);
-            footView.setGravity(gravity_foot);
+            footView.setGravity(gravity_foot.value());
             footView.setBackgroundColor(color_foot);
             footView.setOrientation(LinearLayout.HORIZONTAL);
             LinearLayout.LayoutParams layoutParams_button;
-            if (gravity_foot == Gravity.CENTER) {
+            if (gravity_foot.value() == Gravity.CENTER) {
                 layoutParams_button = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
                 //新建一个Drawable对象
                 QDividerDrawable drawable = new QDividerDrawable(DividerGravity.TOP);
@@ -215,7 +215,7 @@ public class QDInputDialog extends AppCompatDialog {
 
                 //button.setBackgroundDrawable(null);
                 footView.addView(button, layoutParams_button);
-                if (i != actionButtons.size() - 1 && gravity_foot == Gravity.CENTER) {
+                if (i != actionButtons.size() - 1 && gravity_foot.value() == Gravity.CENTER) {
                     View centerLineView = new View(getContext());
                     LinearLayout.LayoutParams layoutParams_line = new LinearLayout.LayoutParams(1, ViewGroup.LayoutParams.MATCH_PARENT);
                     centerLineView.setLayoutParams(layoutParams_line);
@@ -312,7 +312,7 @@ public class QDInputDialog extends AppCompatDialog {
         private int width = ViewGroup.LayoutParams.MATCH_PARENT;
         private int gravity_header = Gravity.LEFT;
         private int gravity_body = Gravity.LEFT;
-        private int gravity_foot = Gravity.CENTER;
+        private cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity_foot = cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity.CENTER;
         private int padding_header;
         private int padding_body;
         private int padding_foot;
@@ -377,7 +377,7 @@ public class QDInputDialog extends AppCompatDialog {
             return this;
         }
 
-        public Builder setGravity_foot(int gravity_foot) {
+        public Builder setGravity_foot(cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity_foot) {
             this.gravity_foot = gravity_foot;
             return this;
         }

@@ -1,90 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/dp_50"
+    android:paddingBottom="@dimen/dp_50"
+    android:paddingLeft="@dimen/dp_30"
+    android:paddingRight="@dimen/dp_30"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_20"
-        android:background="@color/white"
-        android:layout_centerInParent="true">
+        android:background="#77ffffff"
+        android:orientation="vertical">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:padding="10dp"
+                        android:text="控件信息"
+                        android:textColor="@color/qd_radio_textcolor"
+                        android:textSize="@dimen/sp_14"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/cb_tree_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/dp_1"
+                        android:text="视图结构" />
+
+            </LinearLayout>
+
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/tv_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_5"
+                app:qd_borderColor="@color/white"
+                app:qd_radius="@dimen/dp_25"
+                app:qd_borderWidth="1px"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_3"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8"
+                android:textSize="@dimen/sp_10"
+                android:text="复制信息"
+                android:textColor="@color/qd_actionbar_textcolor" />
+
+            <ImageView
+                android:id="@+id/iv_colse"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="0dp"
+                android:padding="@dimen/dp_10"
+                android:src="@mipmap/ic_close_circle" />
+
+        </LinearLayout>
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView
+            android:id="@+id/ll_view_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="控件信息"
-                            android:textSize="20sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_title2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="视图结构"
-                            android:textSize="20sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_copy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="复制信息"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-
-                    <ImageView
-                        android:id="@+id/iv_colse"
-                        android:layout_width="@dimen/dp_35"
-                        android:layout_height="@dimen/dp_35"
-                        android:padding="@dimen/dp_10"
-                        android:layout_marginLeft="@dimen/dp_20"
-                        android:layout_marginRight="0dp"
-                        android:src="@mipmap/ic_close_circle" />
-
-                </LinearLayout>
+                android:orientation="vertical"
+                android:background="@color/white">
 
                 <TableLayout
                     android:id="@+id/tab_info"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent" />
 
-                </TableLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
+                <cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_5">
+
+                    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                        android:id="@+id/btn_action_click"
+                        style="@style/quick_button_big"
+                        android:text="点 击" />
+
+                    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                        android:id="@+id/btn_action_longclick"
+                        style="@style/quick_button_big"
+                        android:text="长 按" />
+
+                    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                        android:id="@+id/btn_action_input"
+                        style="@style/quick_button_big"
+                        android:text="输 入"/>
+                </cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout>
             </LinearLayout>
-        </ScrollView>
+        </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>
+
+        <LinearLayout
+            android:id="@+id/ll_view_info2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/tv_tree_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:button="@null"
+                android:padding="@dimen/dp_5"
+                android:text="视图结构"
+                android:textColor="@color/qd_radio_textcolor"
+                android:textSize="@dimen/sp_12" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

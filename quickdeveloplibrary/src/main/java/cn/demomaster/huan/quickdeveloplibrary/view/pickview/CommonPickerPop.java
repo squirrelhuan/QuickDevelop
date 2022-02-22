@@ -40,7 +40,7 @@ public class CommonPickerPop extends PickerPopWindow implements View.OnClickList
     private String viewFormat;
     private String[] viewFormatTag;
     private PickData pickData;
-
+    
     public CommonPickerPop(Builder builder) {
         super(builder);
         this.textCancel = builder.textCancel;

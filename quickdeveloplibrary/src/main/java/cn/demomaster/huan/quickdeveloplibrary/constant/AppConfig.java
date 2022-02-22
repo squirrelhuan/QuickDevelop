@@ -3,7 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.constant;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 
 import java.util.Map;
 
@@ -44,8 +45,9 @@ public class AppConfig {
             configMap = null;
             QDLogger.e(new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径：" + configPath));
         }
-
-        configMap = JSON.parseObject(conf, Map.class);
+        //configMap = JSON.parseObject(conf, Map.class);
+        Gson gson = new Gson();
+        configMap = gson.fromJson(conf, Map.class);
     }
 
     private AppConfig() {

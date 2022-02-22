@@ -8,8 +8,8 @@ public class QDFile extends File {
     private long creatTime;
     private long modifyTime;
 
-    public QDFile(String pathname) {
-        super(pathname);
+    public QDFile(String path) {
+        super(path);
     }
 
     public QDFile(String parent, String child) {

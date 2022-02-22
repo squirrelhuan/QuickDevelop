@@ -1,11 +1,22 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
+import android.view.View;
+
 public class ActionButton {
+    private int id = View.NO_ID;
     private String text;
     private int textColor;
     private OnClickActionListener onClickListener;
 
     public ActionButton() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getText() {

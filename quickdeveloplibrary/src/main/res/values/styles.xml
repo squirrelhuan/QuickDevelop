@@ -162,4 +162,22 @@
         <item name="android:tint">@color/qd_actionbar_textcolor</item>
     </style>
 
+   <!-- <style name="quick_button_small">
+    </style>
+    <style name="quick_button_middle">
+    </style>-->
+    <style name="quick_button_big">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/dp_5</item>
+        <item name="android:paddingTop">@dimen/dp_5</item>
+        <item name="android:paddingBottom">@dimen/dp_5</item>
+        <item name="android:paddingLeft">@dimen/dp_15</item>
+        <item name="android:paddingRight">@dimen/dp_15</item>
+        <item name="qd_backgroundColor_disable">@color/gray</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="qd_backgroundColor">@color/colorPrimary</item>
+        <item name="qd_radius">@dimen/dp_3</item>
+    </style>
+
 </resources>

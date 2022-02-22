@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
@@ -23,13 +22,14 @@ import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
+import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
-@ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_dialog)
 public class QDialogActivity extends BaseActivity {
     private int backgroundRadio = 20;
     private ListView mListView;
@@ -165,7 +165,10 @@ public class QDialogActivity extends BaseActivity {
                 .addAction("连接", (dialog, view, tag) -> {
                     Toast.makeText(mContext, "input = " + tag, Toast.LENGTH_SHORT).show();
                     //连接返回editview的value
-                }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
+                }).addAction("取消").
+                setGravity_foot(Gravity.RIGHT)
+                .create()
+                .show();
     }
 
     //初始化菜单
@@ -188,7 +191,7 @@ public class QDialogActivity extends BaseActivity {
                     showSheetMenu();
                     break;
                 case 1:
-                    getPhotoHelper().selectPhotoFromGalleryAndCrop(null,new PhotoHelper.OnTakePhotoResult() {
+                    getPhotoHelper().selectPhotoFromGalleryAndCrop(null, new PhotoHelper.OnTakePhotoResult() {
                         @Override
                         public void onSuccess(Intent data, String path) {
                             /*setImageToView(data);*/
@@ -209,7 +212,11 @@ public class QDialogActivity extends BaseActivity {
 
     private void showSheetMenu() {
         String[] menus = {"item1", "item2", "item3"};
-        QDSheetDialog dialog = new QDSheetDialog.Builder(mContext).setData(menus).setGravity(Gravity.BOTTOM).setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT).create();
+        QDSheetDialog dialog = new QDSheetDialog.Builder(mContext)
+                .setData(menus)
+                .setGravity(Gravity.BOTTOM)
+                .setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT)
+                .create();
         dialog.show();
     }
     /*private void showMessagePositiveDialog() {
@@ -227,7 +234,7 @@ public class QDialogActivity extends BaseActivity {
                 .setMessage("确定要发送吗？").setBackgroundRadius(backgroundRadio).create().show();
     }
 
-    private void showMessageWithButton(int gravity) {
+    private void showMessageWithButton(cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity) {
         QDDialog qdDialog = new QDDialog.Builder(mContext)
                 .setMessage("确定要发送吗？")
                 //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
@@ -270,7 +277,7 @@ public class QDialogActivity extends BaseActivity {
         //glassUtil.setTargetView(qdDialog.getContentLinearView());
     }
 
-    private void showMessageWithButton2(int gravity) {
+    private void showMessageWithButton2(cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity) {
         new QDDialog.Builder(mContext).setTitle("标题")
                 .setMessage("确定要发送吗？")
                 .setBackgroundRadius(backgroundRadio)

@@ -146,7 +146,6 @@ public class GPSUtils {
         }
 
         @NonNull
-        @NotNull
         @Override
         protected Object clone() throws CloneNotSupportedException {
             return super.clone();

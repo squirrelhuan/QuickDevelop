@@ -53,7 +53,7 @@ public class HierarchyView extends View {
             }
             return true;
         });
-
+        
         setOnClickListener2((x, y) -> {
             if (viewNodeInfo != null) {
                 List<ViewNodeInfo> nodeInfoList = findNodeInfoByPosition(x, y);
@@ -125,7 +125,7 @@ public class HierarchyView extends View {
                             nodeInfoList.addAll(nodeInfoList2);
                         }
                     }
-                    if (nodeInfoList != null && nodeInfoList.size() > 0) {
+                    if (nodeInfoList.size() > 0) {
                         return nodeInfoList;
                     }
                 }
@@ -237,9 +237,10 @@ public class HierarchyView extends View {
 
             for (int i = 0; i < accessibilityNodeInfo.getChildCount(); i++) {
                 AccessibilityNodeInfo child = accessibilityNodeInfo.getChild(i);
-                QDLogger.e("i=" + i + ",child=" + child);
+                //QDLogger.e("i=" + i + ",child=" + child);
                 if (child != null) {
                     ViewNodeInfo viewNodeInfo1 = new ViewNodeInfo();
+                    viewNodeInfo1.setAccessibilityNodeInfo(child);
                     viewNodeInfo1.setClassName(TextUtils.isEmpty(child.getClassName()) ? null : child.getClassName().toString());
                     viewNodeInfo1.setPackageName(TextUtils.isEmpty(child.getPackageName()) ? null : child.getPackageName().toString());
                     viewNodeInfo1.setViewIdResourceName(child.getViewIdResourceName());
@@ -275,6 +276,15 @@ public class HierarchyView extends View {
         Rect mBoundsInScreen;
         Rect mBoundsInParent;
         List<ViewNodeInfo> childList = new ArrayList<>();
+        AccessibilityNodeInfo accessibilityNodeInfo;
+
+        public AccessibilityNodeInfo getAccessibilityNodeInfo() {
+            return accessibilityNodeInfo;
+        }
+
+        public void setAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+            this.accessibilityNodeInfo = accessibilityNodeInfo;
+        }
 
         public String getClassName() {
             return mClassName;

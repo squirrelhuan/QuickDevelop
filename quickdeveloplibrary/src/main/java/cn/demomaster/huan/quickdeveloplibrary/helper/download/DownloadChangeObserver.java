@@ -138,7 +138,7 @@ public class DownloadChangeObserver extends ContentObserver {
                         if (downloadTask != null) {
                             downloadManager.remove(downloadTask.getDownloadId());
                             downloadTask.getOnProgressListener().onDownloadFail();
-                            DownloadHelper.getInstance(mContext).unregisterReceiver(downloadId);
+                            DownloadHelper.unregisterReceiver(downloadId);
                             downloadTaskMap.remove(downloadId);
                         }
                     }
@@ -151,7 +151,7 @@ public class DownloadChangeObserver extends ContentObserver {
         }
         if (!isExists) {
             downloadTaskMap.remove(downloadId);
-            DownloadHelper.getInstance(mContext).unregisterReceiver(downloadId);
+            DownloadHelper.unregisterReceiver(downloadId);
 
         }
         return !isExists ? 0 : 1;
@@ -241,34 +241,33 @@ public class DownloadChangeObserver extends ContentObserver {
                                     break;
                                 case DownloadManager.STATUS_PAUSED:
                                     QDLogger.d("QDdownload", "暂停下载");
-                                    if (downloadTask != null) {
-                                        downloadTask.getOnProgressListener().onDownloadPaused();
-                                        DownloadHelper.getInstance(mContext).unregisterReceiver(downloadTask.getDownloadId());
-                                    }
+                                    assert downloadTask != null;
+                                    downloadTask.getOnProgressListener().onDownloadPaused();
+                                    DownloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     break;
                                 case DownloadManager.STATUS_RUNNING:
                                     //QDLogger.d("下载中");
+                                    assert downloadTask != null;
                                     if (downloadTask.getOnProgressListener() != null) {
                                         downloadTask.getOnProgressListener().onDownloadRunning(downloadProgress.getDownloadId(), downloadTask.getFileName(), downloadProgress.getHasLoadSize() / (float) downloadProgress.getTotalSize());
                                     }
                                     break;
                                 case DownloadManager.STATUS_SUCCESSFUL:
                                     QDLogger.d("QDdownload", "下载成功");
+                                    assert downloadTask != null;
                                     if (downloadTask.getOnProgressListener() != null) {
                                         downloadTask.getOnProgressListener().onDownloadRunning(downloadProgress.getDownloadId(), downloadTask.getFileName(), 1);
                                     }
-                                    if (downloadTask != null) {
-                                        downloadTask.setFileName(downloadProgress.getFileName());
-                                        downloadTask.setDownloadPath(downloadProgress.getFileName());
-                                        downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
-                                        DownloadHelper.getInstance(mContext).unregisterReceiver(downloadTask.getDownloadId());
-                                    }
+                                    downloadTask.setFileName(downloadProgress.getFileName());
+                                    downloadTask.setDownloadPath(downloadProgress.getFileName());
+                                    downloadTask.getOnProgressListener().onDownloadSuccess(downloadTask);
+                                    DownloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     break;
                                 case DownloadManager.STATUS_FAILED:
                                     QDLogger.d("QDdownload", "下载失败");
                                     if (downloadTask != null) {
                                         downloadTask.getOnProgressListener().onDownloadFail();
-                                        DownloadHelper.getInstance(mContext).unregisterReceiver(downloadTask.getDownloadId());
+                                        DownloadHelper.unregisterReceiver(downloadTask.getDownloadId());
                                     }
                                     break;
                             }

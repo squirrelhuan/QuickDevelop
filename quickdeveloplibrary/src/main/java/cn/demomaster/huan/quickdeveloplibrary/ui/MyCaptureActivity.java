@@ -111,7 +111,7 @@ public class MyCaptureActivity extends QDActivity {
                 bitmap = QDFileUtil.getBitmapFromPath(filePath);
             }
             if (bitmap == null) {
-                QdToast.show(mContext, "机柜失败 fail");
+                QdToast.showToast(mContext, "机柜失败 fail");
                 return;
             }
             result = CodeCreator.readQRcode(this, bitmap);

@@ -61,7 +61,7 @@ public class TrafficFragment extends BaseFragment {
                         return;
                     }
                 }*/
-                ServiceHelper.dissmissWindow(mContext,TrafficFloatingService.class);
+                ServiceHelper.stopService(mContext,TrafficFloatingService.class);
             }
 
             @Override
@@ -69,7 +69,7 @@ public class TrafficFragment extends BaseFragment {
                 Toast.makeText(getContext(), "拒绝", Toast.LENGTH_SHORT).show();
             }
         }));
-        btn_stop.setOnClickListener(v -> ServiceHelper.dissmissWindow(mContext,TrafficFloatingService.class));
+        btn_stop.setOnClickListener(v -> ServiceHelper.stopService(mContext,TrafficFloatingService.class));
         //QDTcpClient.setStateListener();
     }
 }

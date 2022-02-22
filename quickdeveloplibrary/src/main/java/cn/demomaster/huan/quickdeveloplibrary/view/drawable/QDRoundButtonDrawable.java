@@ -5,7 +5,9 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 
@@ -41,11 +43,12 @@ public class QDRoundButtonDrawable extends GradientDrawable {
         colorState = state;
         setBgData(colors);
     }
-
+    public ColorStateList backgroundColors;
     /**
      * 设置按钮的背景色(只支持纯色,不支持 Bitmap 或 Drawable)
      */
     public void setBgData(@Nullable ColorStateList colors) {
+        backgroundColors = colors;
         if (hasNativeStateListAPI()) {
             super.setColor(colors);
         } else {
@@ -130,7 +133,7 @@ public class QDRoundButtonDrawable extends GradientDrawable {
             setCornerRadius(Math.min(r.width(), r.height()) / 2f);
         }
     }
-
+    
     public static QDRoundButtonDrawable fromAttributeSet(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDButton, defStyleAttr, 0);
         ColorStateList colorBg = typedArray.getColorStateList(R.styleable.QDButton_qd_backgroundColor);
@@ -206,5 +209,14 @@ public class QDRoundButtonDrawable extends GradientDrawable {
         bg.setIsRadiusAdjustBounds(isRadiusAdjustBounds);
         return bg;
     }
-
+    public static StateListDrawable makeSelector(Context context, int idNormal, int idPressed, int idFocused) {
+        StateListDrawable bg = new StateListDrawable();
+        Drawable normal = context.getResources().getDrawable(idNormal);
+        Drawable pressed = context.getResources().getDrawable(idPressed);
+        Drawable focused = context.getResources().getDrawable(idFocused);
+        bg.addState(new int[]{android.R.attr.state_pressed,}, pressed);
+        bg.addState(new int[]{android.R.attr.state_focused}, focused);
+        bg.addState(new int[]{}, normal);
+        return bg;
+    }
 }

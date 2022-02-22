@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.socket;
 
-import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSON;
+
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -80,7 +82,8 @@ public class QDTcpClient {
                 System.out.println("等待接收 ：" + flag);
                 while (!((reply = br.readLine()) == null)) {
                     hasRead = true;
-                    QDMessage qdMessage = JSON.parseObject(reply, QDMessage.class);
+                    Gson gson = new Gson();
+                    QDMessage qdMessage = gson.fromJson(reply, QDMessage.class);
                     //System.out.println("接收信息：" + qdMessage.getTime() + "," + reply);
                     if (qdMessage != null) {
                         isConnected = true;
@@ -152,12 +155,14 @@ public class QDTcpClient {
         sendObj(qdMessage, new RequestListener() {
             @Override
             public void onReceived(QDMessage qdMessage, byte[] bytes) {
-                System.out.println("收到登录回复" + JSON.toJSONString(qdMessage));
+                Gson gson = new Gson();
+                System.out.println("收到登录回复" + gson.toJson(qdMessage));
             }
 
             @Override
             public void onError(String err) {
-                System.out.println("登录超时" + JSON.toJSONString(qdMessage));
+                Gson gson = new Gson();
+                System.out.println("登录超时" + gson.toJson(qdMessage));
             }
         });
     }
@@ -201,7 +206,8 @@ public class QDTcpClient {
         if (msg instanceof QDMessage) {
             qdMessage = (QDMessage) msg;
             qdMessage.setTime(System.currentTimeMillis());
-            msg1 = JSON.toJSONString(qdMessage) + END_CHAR;
+            Gson gson = new Gson();
+            msg1 = gson.toJson(qdMessage) + END_CHAR;
         } else {
             msg1 = msg.toString();// + END_CHAR;
         }

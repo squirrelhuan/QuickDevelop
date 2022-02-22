@@ -278,7 +278,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
         //Log.i(tag, "onStartNestedScroll。。。");
         return super.onStartNestedScroll(child, target, nestedScrollAxes);
     }
-
+/*
     @Override
     public void onStopNestedScroll(View child) {
         super.onStopNestedScroll(child);
@@ -313,7 +313,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
     protected int computeVerticalScrollExtent() {
         //Log.i(tag, "computeVerticalScrollExtent。。。" + super.computeVerticalScrollExtent());//
         return super.computeVerticalScrollExtent();
-    }
+    }*/
 
     @Override
     protected int computeHorizontalScrollRange() {

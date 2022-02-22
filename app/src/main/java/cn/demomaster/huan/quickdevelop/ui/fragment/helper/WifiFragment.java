@@ -13,7 +13,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
@@ -244,7 +244,6 @@ public class WifiFragment extends BaseFragment {
                     }
                 }).addAction("取消").setGravity_foot(Gravity.RIGHT).create().show();
     }
-
 
     String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
     WifiManager wifiManager;

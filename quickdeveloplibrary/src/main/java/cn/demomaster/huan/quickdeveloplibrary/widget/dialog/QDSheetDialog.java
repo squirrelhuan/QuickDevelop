@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
 
 import static android.view.View.OVER_SCROLL_NEVER;
@@ -34,7 +34,7 @@ public class QDSheetDialog extends QDDialog2 {
     private int columnCount = 1;
     private ShowType showType = ShowType.List;
     private OnDialogActionListener onDialogActionListener;
-    private int gravity;
+    private Gravity gravity;
     private int boxColor;
 
     public QDSheetDialog(Context context, Builder builder) {
@@ -73,7 +73,7 @@ public class QDSheetDialog extends QDDialog2 {
 
     private void initData() {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = gravity;
+        layoutParams.gravity = gravity.value();
         setBackgroundColor(backgroundColor);
 
         RecyclerView recyclerView = new RecyclerView(getContext());
@@ -111,7 +111,7 @@ public class QDSheetDialog extends QDDialog2 {
         private int heightLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int widthLayoutType = ViewGroup.LayoutParams.WRAP_CONTENT;
         private OnDialogActionListener onDialogActionListener;
-        private int gravity = Gravity.CENTER;
+        private cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity = Gravity.CENTER;
         private int boxColor = Color.WHITE;
         private float[] backgroundRadius = new float[8];
 
@@ -139,7 +139,7 @@ public class QDSheetDialog extends QDDialog2 {
             return this;
         }
 
-        public Builder setGravity(int gravity) {
+        public Builder setGravity(Gravity gravity) {
             this.gravity = gravity;
             return this;
         }

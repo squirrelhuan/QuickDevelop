@@ -11,16 +11,25 @@ import cn.demomaster.qdlogger_library.QDLogger;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class ServiceHelper {
-    public static void dissmissWindow(Context context,Class serviceClass) {
+    /*public static void dissmissWindow(Context context,Class serviceClass) {
         if (serverIsRunning(context.getApplicationContext(), serviceClass.getName())) {
             QDLogger.println("Service在运行：" + serviceClass.getName());
             context.stopService(new Intent(context, serviceClass));
             //serviceMap.remove(clazz.getName());
            // serviceListenerMap.remove(clazz.getName());
         }
+    }*/
+    public static void stopService(Context context,Class serviceClass) {
+        if (serverIsRunning(context.getApplicationContext(), serviceClass.getName())) {
+            QDLogger.println("Service在运行：" + serviceClass.getName());
+            context.stopService(new Intent(context, serviceClass));
+        }
     }
-
-    public static void showWindow(Context context, Class clazz) {
+    
+    /*public static void showWindow(Context context, Class clazz) {
+        context.startService(new Intent(context.getApplicationContext(), clazz));
+    }*/
+    public static void startService(Context context, Class clazz) {
         context.startService(new Intent(context.getApplicationContext(), clazz));
     }
 

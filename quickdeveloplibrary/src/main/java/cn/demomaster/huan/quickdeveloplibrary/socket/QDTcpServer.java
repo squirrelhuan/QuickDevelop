@@ -1,6 +1,8 @@
 package cn.demomaster.huan.quickdeveloplibrary.socket;
 
-import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSON;
+
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -110,14 +112,16 @@ public class QDTcpServer {
                 StringBuilder stringBuffer = new StringBuilder();
                 stringBuffer.append(info);
 
-                QDMessage qdMessage = JSON.parseObject(info, QDMessage.class);
+                Gson gson = new Gson();
+                QDMessage qdMessage = gson.fromJson(info, QDMessage.class);
 
                 if (!socketMap.containsValue(client)) {
                     QDLogger.println("用户信息为：" + info);
 
                     QDUserInfo userInfo;
                     try {
-                        userInfo = JSON.parseObject(qdMessage.getData().toString(), QDUserInfo.class);
+                        Gson gson2 = new Gson();
+                        userInfo = gson2.fromJson(qdMessage.getData().toString(), QDUserInfo.class);
                     } catch (Exception e) {
                         System.err.println("用户登录失败,参数有误");
                         replyLogin(client, false, qdMessage.getTime());
@@ -193,7 +197,9 @@ public class QDTcpServer {
             qdMessage.setStatus(isSuccess ? 1 : 0);
             qdMessage.setTime(time);
             qdMessage.setMsg(isSuccess ? "login success" : "login fail");
-            String reply = JSON.toJSONString(qdMessage) + END_CHAR;
+
+            Gson gson = new Gson();
+            String reply = gson.toJson(qdMessage) + END_CHAR;
             os.write(reply.getBytes());
         } catch (IOException e) {
             QDLogger.e(e);
@@ -208,7 +214,8 @@ public class QDTcpServer {
             QDMessage qdMessage = new QDMessage();
             qdMessage.setTime(time);
             qdMessage.setMsg(msg);
-            String reply = JSON.toJSONString(qdMessage) + END_CHAR;
+            Gson gson = new Gson();
+            String reply = gson.toJson(qdMessage) + END_CHAR;
             os.write(reply.getBytes());
         } catch (IOException e) {
             QDLogger.e(e);

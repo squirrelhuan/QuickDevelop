@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -40,9 +41,31 @@ public class QDButton extends AppCompatButton {
         /*QDRoundButtonDrawable bg_focused = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QDRoundButtonDrawable bg_pressed = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QDRoundButtonDrawable bg_selected = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);*/
+
+        QDRoundButtonDrawable bg_enabled = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int color = getResources().getColor(R.color.gray);
+            int color_normal = color;// bg_normal.backgroundColors.getColorForState(bg_normal.getState(),Color.RED);
+            int[] colors = new int[]{color_normal, color_normal, color, color_normal, color_normal, color_normal};//{ pressed, focused, normal, focused, unable, normal };
+            int[][] states = new int[6][];
+            states[0] = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
+            states[1] = new int[]{android.R.attr.state_enabled, android.R.attr.state_focused};
+            //states[2] = new int[]{android.R.attr.state_enabled};
+            states[2] = new int[]{-android.R.attr.state_enabled};
+            states[3] = new int[]{android.R.attr.state_focused};
+            states[4] = new int[]{android.R.attr.state_window_focused};
+            states[5] = new int[]{};
+            ColorStateList colorBg = new ColorStateList(states, colors);
+            bg_enabled.setColor(colorBg);
+        }
+
+        //TODO 处理 描边颜色
+
         drawable.addState(new int[]{android.R.attr.state_focused}, bg_normal);
         drawable.addState(new int[]{android.R.attr.state_pressed}, bg_normal);
         drawable.addState(new int[]{android.R.attr.state_selected}, bg_normal);
+        drawable.addState(new int[]{-android.R.attr.state_enabled}, bg_enabled);
         drawable.addState(new int[]{}, bg_normal);//默认
         //btn.setBackgroundDrawable(drawable);
 

@@ -6,12 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -126,7 +128,8 @@ public class IDCardActivity extends BaseActivity {
                         @Override
                         public void onSuccess(Intent data, String path) {
                             Log.i(TAG, "map_path=" + path);
-                            String map_str2 = JSON.toJSONString(data);
+                            Gson gson = new Gson();
+                            String map_str2 = gson.toJson(data);
                             Log.i(TAG, "map_str2=" + map_str2);
                             if (!TextUtils.isEmpty(path)) {
                                 imageView.setImageBitmap(BitmapFactory.decodeFile(path));
