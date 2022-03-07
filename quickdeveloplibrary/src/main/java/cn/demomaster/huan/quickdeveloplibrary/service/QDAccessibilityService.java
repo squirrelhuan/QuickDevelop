@@ -54,7 +54,6 @@ public class QDAccessibilityService extends AccessibilityService {
     //实现辅助功能
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        //QDLogger.i("onAccessibilityEvent---------");
         int eventType = event.getEventType();
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:

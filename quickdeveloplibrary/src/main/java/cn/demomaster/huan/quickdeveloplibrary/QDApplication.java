@@ -12,6 +12,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.ui.error.ErrorCrashActivity;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.xml.QDSaxXml;
@@ -37,13 +38,14 @@ public class QDApplication extends Application implements UpgradeInterface {
         instance = this;
         handler = new Handler();
         QdToast.setContext(this);
-        AppConfig.getInstance().load(this, "config/project.conf");
-        String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");
-        if(!TextUtils.isEmpty(logPath)) {
+        //AppConfig.getInstance().load(this, "config/project.conf");
+        //String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");
+        /*if(!TextUtils.isEmpty(logPath)) {
             QDLogger.init(this, logPath);
-        }
-        QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid()+",uid="+QDAppInfoUtil.getUidByPackageName(this,getPackageName()));
-
+        }*/
+        QDLogger.init(this,null);
+        //QDLogger.i(TAG, "包名：" + getPackageName() + ",myPid=" + android.os.Process.myPid()+",uid="+QDAppInfoUtil.getUidByPackageName(this,getPackageName()));
+        
         //初始化全局SharedPreferences
         QDSharedPreferences.init(this);
         //activity管理监听
@@ -102,8 +104,9 @@ public class QDApplication extends Application implements UpgradeInterface {
      */
     public void initCrash() {
         if (BuildConfig.DEBUG) {
-            Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
-            CrashHandler.getInstance().init(this, errorReportActivity);
+            /*Class errorReportActivity = AppConfig.getInstance().getClassFromClassMap("errorReportActivity");
+            QDLogger.println("errorReportActivity="+errorReportActivity);*/
+            CrashHandler.getInstance().init(this, ErrorCrashActivity.class);
         }else {
             CrashHandler.getInstance().init(this, null);
             CrashHandler.getInstance().setCrashDealType(CrashHandler.CrashDealType.savelog);

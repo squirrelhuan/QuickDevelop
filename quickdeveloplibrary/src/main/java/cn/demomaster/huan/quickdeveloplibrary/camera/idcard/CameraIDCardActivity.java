@@ -58,7 +58,6 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
         return optionsMenubuilder;
     }
 
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

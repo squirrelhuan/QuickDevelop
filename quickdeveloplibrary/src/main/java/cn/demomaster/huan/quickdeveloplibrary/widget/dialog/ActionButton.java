@@ -6,9 +6,18 @@ public class ActionButton {
     private int id = View.NO_ID;
     private String text;
     private int textColor;
+    private int visible = View.VISIBLE;
     private OnClickActionListener onClickListener;
 
     public ActionButton() {
+    }
+
+    public int getVisible() {
+        return visible;
+    }
+
+    public void setVisible(int visible) {
+        this.visible = visible;
     }
 
     public int getId() {

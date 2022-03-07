@@ -99,7 +99,10 @@ public class HttpFragment extends BaseFragment {
                 });*/
             }
         }).start());
-        btn_send_tcp.setOnClickListener(v -> QDTcpClient.getInstance().send("你好",null));
+        btn_send_tcp.setOnClickListener(v ->  {
+            QDTcpClient qdTcpClient = new QDTcpClient("",1234);
+            qdTcpClient.send("你好",null);
+        });
         //QDTcpClient.setStateListener();
         btn_retrofit.setOnClickListener(v -> test(""));
     }

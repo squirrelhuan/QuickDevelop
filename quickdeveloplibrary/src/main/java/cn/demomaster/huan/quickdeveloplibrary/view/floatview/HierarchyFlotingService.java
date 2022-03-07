@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -31,6 +32,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,8 +44,12 @@ import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.treeviewlibrary.Node;
 
 /**
@@ -55,7 +61,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
     TextView button;
     String currentActivityName;
     FrameLayout linearLayout;
-    ViewGroup tab_info, ll_view_info,ll_view_info2;
+    ViewGroup tab_info, ll_view_info, ll_view_info2;
     RecyclerView recyclerView;
     Button btn_action_click, btn_action_longclick, btn_action_input;
     CheckBox cb_tree_view;
@@ -89,7 +95,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
                 startCapture();
             }
         });
-
+        
         hierarchyView.setOnNodeInfoClickListener(nodeInfo -> {
             ViewGroup.LayoutParams layoutParams = dialogView.getLayoutParams();
             layoutParams.width = DisplayUtil.getScreenWidth(context);
@@ -98,14 +104,22 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 showNodeInfo(nodeInfo);
             }
+            
+            /*View view = QDActivityManager.getInstance().getCurrentActivity().getWindow().getDecorView().getRootView();
+            Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromView(view);
+            int top = DisplayUtil.getStatusBarHeight(QDActivityManager.getInstance().getCurrentActivity());
+            Bitmap bitmap2 = Bitmap.createBitmap(bitmap, 0, top, bitmap.getWidth(), bitmap.getHeight() - top, null, false);
+            Bitmap bitmap3 = ScreenShotUitl.getCacheBitmapFromView(linearLayout);
+            Bitmap bitmap4 = QDBitmapUtil.mergeBitmap(bitmap2, bitmap3);
+            File dir = new File(QDFileUtil.getDiskCacheDir(context), "img/abc.jpg");
+            QDFileUtil.saveBitmap(bitmap4, dir.getAbsolutePath());*/
         });
-
 
         dialogView = LayoutInflater.from(context).inflate(cn.demomaster.huan.quickdeveloplibrary.R.layout.layout_floating_hierachy, null);
         dialogView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_55));
         dialogView.setVisibility(View.GONE);
 
-        ll_view_info2  = dialogView.findViewById(R.id.ll_view_info2);
+        ll_view_info2 = dialogView.findViewById(R.id.ll_view_info2);
         recyclerView = dialogView.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //第一个参数  RecyclerView
@@ -123,7 +137,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         cb_tree_view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ll_view_info2.setVisibility(isChecked?View.VISIBLE:View.GONE);
+                ll_view_info2.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -134,7 +148,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         btn_action_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentNodeInfo.getAccessibilityNodeInfo()!=null){
+                if (currentNodeInfo.getAccessibilityNodeInfo() != null) {
                     currentNodeInfo.getAccessibilityNodeInfo().performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 }
                 //QDAccessibilityService qdAccessibilityService = QDAccessibilityService.instance;
@@ -144,7 +158,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         btn_action_longclick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentNodeInfo.getAccessibilityNodeInfo()!=null){
+                if (currentNodeInfo.getAccessibilityNodeInfo() != null) {
                     currentNodeInfo.getAccessibilityNodeInfo().performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK);
                 }
             }
@@ -152,14 +166,14 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         btn_action_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentNodeInfo.getAccessibilityNodeInfo()!=null){
+                if (currentNodeInfo.getAccessibilityNodeInfo() != null) {
                     Bundle arguments = new Bundle();
                     arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "文字");
-                    currentNodeInfo.getAccessibilityNodeInfo().performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,arguments);
+                    currentNodeInfo.getAccessibilityNodeInfo().performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
                 }
             }
         });
-        
+
         TextView tv_copy = dialogView.findViewById(R.id.tv_copy);
         tv_copy.setOnClickListener(v -> {
             ClipboardUtil.setClip(getApplicationContext(), stringMap.toString());
@@ -228,6 +242,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
     /**
      * 开始捕获
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void startCapture() {
         if (!AccessibilityHelper.isEnable(getApplicationContext(), QDAccessibilityService.class)) {
             //跳转系统自带界面 辅助功能界面
@@ -249,6 +264,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
 
     Map<String, String> stringMap;
     HierarchyView.ViewNodeInfo currentNodeInfo;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void showNodeInfo(HierarchyView.ViewNodeInfo nodeInfo) {
         currentNodeInfo = nodeInfo;
@@ -289,14 +305,14 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             textView.setPadding(20, 20, 20, 20);
             textView.setText(entry.getKey() + "");
             textView.setTextColor(Color.BLACK);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             row.addView(textView);
             TextView textView2 = new TextView(getApplicationContext());
             textView2.setPadding(20, 20, 20, 20);
             textView2.setText(entry.getValue() + "");
             textView2.setTextColor(Color.BLACK);
             textView2.setGravity(Gravity.LEFT);
-            textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) textView2.getLayoutParams();
 
             //layoutParams.weight = 1f;
@@ -336,7 +352,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             addTreeData(i, id, nodeInfo.getChild(i));
         }
     }
-
+    
     /**
      * 遍历节点添加
      *

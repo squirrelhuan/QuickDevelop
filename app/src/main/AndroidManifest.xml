@@ -62,12 +62,17 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <!--requestLegacyExternalStorage 仅仅应用于Android10-->
-        <activity android:name=".QDMainFragmentActivity2"/>
+        <activity android:name=".ui.activity.sample.HorizontalDragViewActivity"></activity>
+        <activity
+            android:name=".ui.activity.sample.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".ui.activity.sample.database.QuickDataActivity" />
+        <activity android:name=".ui.activity.sample.SandBoxActivity" />
+        <activity android:name=".ui.activity.sample.CrashActivity" /> <!-- requestLegacyExternalStorage 仅仅应用于Android10 -->
+        <activity android:name=".QDMainFragmentActivity2" />
         <activity
             android:name=".ui.activity.sample.AdsActivity"
-            android:label="@string/title_activity_ads" />
-        <!-- 声明service组件 -->
+            android:label="@string/title_activity_ads" /> <!-- 声明service组件 -->
         <!--
   <service
             android:name="com.baidu.location.f"
@@ -175,9 +180,7 @@
 
                 <data android:scheme="package" />
             </intent-filter>
-        </receiver>
-
-        <!-- AIDL服务端 -->
+        </receiver> <!-- AIDL服务端 -->
         <service
             android:name=".aidl.StudentService"
             android:exported="true">

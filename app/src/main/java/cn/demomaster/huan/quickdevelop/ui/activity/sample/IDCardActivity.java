@@ -24,6 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QuickDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil.imageToBase64;
@@ -115,57 +116,63 @@ public class IDCardActivity extends BaseActivity {
         SelectPhotoPopupWindow();
     }
 
-    QDDialog qdDialog;
+    QuickDialog qdDialog;
     //选择照片的popupWindow
     private void SelectPhotoPopupWindow() {
         //@drawable/listview_option_menu
-        qdDialog = new QDDialog.Builder(mContext)
-                .setMessage("请选择你要上传的图片")
-                .setBackgroundRadius(50)
-                .addAction("拍照", (dialog, view, tag) -> {
+        qdDialog = new QuickDialog.Builder(mContext)
+                .bindView(R.id.tv_title,"请选择你要上传的图片")
+                .bindView(R.id.tv_left,"拍照", (dialog, view, tag) -> {
                     dialog.dismiss();
-                    getPhotoHelper().takePhoto(null,new PhotoHelper.OnTakePhotoResult() {
-                        @Override
-                        public void onSuccess(Intent data, String path) {
-                            Log.i(TAG, "map_path=" + path);
-                            Gson gson = new Gson();
-                            String map_str2 = gson.toJson(data);
-                            Log.i(TAG, "map_str2=" + map_str2);
-                            if (!TextUtils.isEmpty(path)) {
-                                imageView.setImageBitmap(BitmapFactory.decodeFile(path));
-                            }
-
-                            Bundle extras = data.getExtras();
-                            if (extras != null) {
-                                Bitmap photo = extras.getParcelable("data");
-                                imageView.setImageBitmap(photo);
-                                //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
-                                //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
-                                //iv_personal_icon.setImageBitmap(photo);
-                                //uploadPic(photo);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(String error) {
-
-                        }
-                    });
-
-                }).addAction("从相册中选取", (dialog, view, tag) -> {
+                    takePhoto2();
+                })
+                .bindView(R.id.tv_right,"从相册中选取", (dialog, view, tag) -> {
                     dialog.dismiss();
-                    getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
-                        @Override
-                        public void onSuccess(Intent data, String path) {
-                            QDLogger.i("path=" + path);
-                        }
-
-                        @Override
-                        public void onFailure(String error) {
-                            QDLogger.i("error=" + error);
-                        }
-                    });
-                }).setGravity_foot(Gravity.CENTER).create();
+                    selectPhoto();
+                })
+                .create();
         qdDialog.show();
+    }
+
+    private void selectPhoto() {
+        getPhotoHelper().selectPhotoFromGallery(new PhotoHelper.OnTakePhotoResult() {
+            @Override
+            public void onSuccess(Intent data, String path) {
+                QDLogger.i("path=" + path);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                QDLogger.i("error=" + error);
+            }
+        });
+    }
+
+    private void takePhoto2() {
+        getPhotoHelper().takePhoto(null,new PhotoHelper.OnTakePhotoResult() {
+            @Override
+            public void onSuccess(Intent data, String path) {
+                Gson gson = new Gson();
+                String map_str2 = gson.toJson(data);
+                if (!TextUtils.isEmpty(path)) {
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+                }
+
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap photo = extras.getParcelable("data");
+                    imageView.setImageBitmap(photo);
+                    //photo = ImageUtils.toRoundBitmap(photo, fileUri); // ���ʱ���ͼƬ�Ѿ��������Բ�ε���
+                    //photo = ImageUtils.savePhoto(photo, Constants.APP_PATH_PICTURE, "")
+                    //iv_personal_icon.setImageBitmap(photo);
+                    //uploadPic(photo);
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
 }

@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import cn.demomaster.qdlogger_library.MappedByteBufferHelper;
+import cn.demomaster.qdlogger_library.writer.MappedByteBufferHelper;
 
 public class TestMappedByteBuffer {
     private static int length = 1024000;//1G

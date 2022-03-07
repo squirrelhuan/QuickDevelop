@@ -211,9 +211,6 @@ public class QMUIDisplayHelper {
 
     /**
      * 剔除挖孔屏等导致的不可用区域后的 height
-     *
-     * @param activity
-     * @return
      */
    /* public static int getUsefulScreenHeight(Activity activity) {
         return getUsefulScreenHeight(activity, QMUINotchHelper.hasNotch(activity));

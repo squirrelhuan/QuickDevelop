@@ -1,11 +1,20 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +26,7 @@ import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
 
@@ -26,7 +36,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
  * description：
  */
 // ① 创建Adapter
-public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdapter.ViewHolder> {
+public class SimplePictureAdapter extends QuickRecyclerAdapter<SimplePictureAdapter.ViewHolder> {
 
     private static Context mContext;
     private ArrayList<Image> mImages;
@@ -68,7 +78,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         holder.setImage(image);
         Glide.with(mContext).load(new File(image.getPath())).into(holder.iv_picture);
         //.diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.ivImage);
-        holder.iv_masking.setAlpha(0.2f);
+        //holder.iv_masking.setAlpha(0.2f);
         holder.ct_select.setTag(position);
         //点击选中/取消选中图片
         holder.ct_select.setOnClickListener(v -> {
@@ -113,7 +123,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
         private Image image;
         SquareImageView iv_picture;
         CircleTextView2 ct_select;
-        SquareImageView iv_masking;
+        //SquareImageView iv_masking;
 
         public Image getImage() {
             return image;
@@ -130,7 +140,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
             ct_select.setLine_width(2);
             ct_select.setBackgroundColor(context.getResources().getColor(R.color.transparent_light_33));
             ct_select.setUsePadding(true);
-            iv_masking = itemView.findViewById(R.id.iv_masking);
+            //iv_masking = itemView.findViewById(R.id.iv_masking);
         }
 
         public void setCheckSelf() {
@@ -206,6 +216,8 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
     /**
      * 设置图片选中和未选中的效果
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("ResourceAsColor")
     private static void refreshItemView(ViewHolder holder, boolean isSelect) {
         if (holder != null) {
             if (isSelect) {
@@ -217,7 +229,7 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
                     holder.ct_select.setBackgroundColor(Color.BLUE);
                 }
                 holder.ct_select.setText(mMaxCount == 1 ? "" : (getSort(holder.getImage()) + 1) + "");
-                holder.iv_masking.setAlpha(0.5f);
+                holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent_dark_33)));
             } else {
                 if (mMaxCount == 1) {
                     holder.ct_select.setRound(false);
@@ -227,7 +239,24 @@ public class SimplePictureAdapter extends RecyclerView.Adapter<SimplePictureAdap
                     holder.ct_select.setBackgroundColor(mContext.getResources().getColor(R.color.transparent_light_33));
                 }
                 holder.ct_select.setText("");
-                holder.iv_masking.setAlpha(0.2f);
+
+                //float saturation = .5f;
+                // 夜色
+               /* final float colormatrix_yese[] = {
+                        1.0f, 0.0f, 0.0f, 0.0f, -66.6f,
+                        0.0f, 1.1f, 0.0f, 0.0f, -66.6f,
+                        0.0f, 0.0f, 1.0f, 0.0f, -66.6f,
+                        0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+                ColorMatrix colorMatrix = new ColorMatrix(colormatrix_yese);
+                colorMatrix.setSaturation(saturation);
+                Paint greyscalePaint = new Paint();
+                greyscalePaint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));*/
+                //greyscalePaint.setMaskFilter(new BlurMaskFilter(20, BlurMaskFilter.Blur.NORMAL));
+                //greyscalePaint.setColorFilter(new LightingColorFilter())
+                //holder.iv_picture.setLayerType(View.LAYER_TYPE_HARDWARE, greyscalePaint);
+                //int checkColor = mContext.getResources().getColor(R.color.transparent);
+                //holder.iv_picture.setColorFilter(checkColor);
+                holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent)));
             }
         }
     }

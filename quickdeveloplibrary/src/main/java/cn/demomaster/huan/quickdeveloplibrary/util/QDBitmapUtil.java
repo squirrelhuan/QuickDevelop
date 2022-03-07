@@ -114,7 +114,6 @@ public class QDBitmapUtil {
             new_width = (int) (h * (aspectRatio * 1f));
             x = (w - new_width) / 2;
         }
-
         return Bitmap.createBitmap(bitmap, x, y, new_width, new_height, null, false);
     }
 
@@ -263,7 +262,7 @@ public class QDBitmapUtil {
         if (background == null) {
             return null;
         }
-
+        
         int bgWidth = background.getWidth();
         int bgHeight = background.getHeight();
         //int fgWidth = foreground.getWidth();

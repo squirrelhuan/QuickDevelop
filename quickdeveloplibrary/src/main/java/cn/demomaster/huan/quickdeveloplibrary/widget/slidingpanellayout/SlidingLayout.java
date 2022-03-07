@@ -2,6 +2,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
+
+import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
@@ -38,6 +41,7 @@ public class SlidingLayout extends LinearLayout {
         init(attrs);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public SlidingLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);

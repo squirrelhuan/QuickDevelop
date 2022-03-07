@@ -25,7 +25,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * Created by Squirrel桓 on 2018/10/29.
  */
 public class ScreenShotUitl {
-
+    
     public static View getContentView(Activity context) {
         return context.findViewById(android.R.id.content);
     }

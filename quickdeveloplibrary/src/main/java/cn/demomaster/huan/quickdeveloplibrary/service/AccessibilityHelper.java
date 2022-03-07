@@ -20,7 +20,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * 无障碍服务帮助类
  */
 public class AccessibilityHelper {
-
+    
     //开启无障碍服务,需要WRITE_SECURE_SETTINGS权限
     public static void openAccessibilityService(Context context, Class<? extends AccessibilityService> accessibilityService) {
         String serviceClassName = accessibilityService.getCanonicalName();
@@ -101,7 +101,7 @@ public class AccessibilityHelper {
             if (i == 1) {
                 String settingVlue = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
                 String[] arr = settingVlue.split(":");
-                if (arr != null && arr.length > 0) {
+                if (arr.length > 0) {
                     for (String name : arr) {
                         if (service.equalsIgnoreCase(name)) {
                             return true;
@@ -137,7 +137,7 @@ public class AccessibilityHelper {
         }
         return false;
     }
-
+    
     public static List<AccessibilityNodeInfo> findAccessibilityNodeInfosByViewClass(AccessibilityNodeInfo nodeInfo, String viewClass) {
         if (nodeInfo != null) {
             List<AccessibilityNodeInfo> list = new ArrayList<>();

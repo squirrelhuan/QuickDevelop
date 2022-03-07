@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDViewUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIViewHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDRoundButtonDrawable;
 
@@ -94,28 +95,12 @@ public class QDTextView extends AppCompatTextView {
     }
 
     public void setBackgroundColor2(int color) {
-        int[] colors = new int[] {color,color,color,color,color,color};//{ pressed, focused, normal, focused, unable, normal };
-        int[][] states = new int[6][];
-        states[0] = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
-        states[1] = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
-        states[2] = new int[] { android.R.attr.state_enabled };
-        states[3] = new int[] { android.R.attr.state_focused };
-        states[4] = new int[] { android.R.attr.state_window_focused };
-        states[5] = new int[] {};
-        colorBg = new ColorStateList(states,colors);
+        colorBg = QDViewUtil.getColorStateList(color);
         setBackground(generateDrawable());
     }
 
     public void setBorderColor(int color) {
-        int[] colors = new int[] {color,color,color,color,color,color};//{ pressed, focused, normal, focused, unable, normal };
-        int[][] states = new int[6][];
-        states[0] = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
-        states[1] = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
-        states[2] = new int[] { android.R.attr.state_enabled };
-        states[3] = new int[] { android.R.attr.state_focused };
-        states[4] = new int[] { android.R.attr.state_window_focused };
-        states[5] = new int[] {};
-        colorBorder = new ColorStateList(states,colors);
+        colorBorder = QDViewUtil.getColorStateList(color);
         setBackground(generateDrawable());
     }
 

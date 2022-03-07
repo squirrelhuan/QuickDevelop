@@ -46,10 +46,10 @@ public class lifecycleTimerFragment extends BaseFragment {
     public void initView(View rootView) {
         QuickStickerBinder.getInstance().bind(this,rootView);
         LifecycleView lifecycleView = rootView.findViewById(R.id.timeDomainPlotView);
-        LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
+        LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance(mContext).getLifecycleTimerData().getLinePointsMap();
         lifecycleView.setLinePoints(listLinkedHashMap);
-        toggle_enable.setChecked(LifecycleManager.getInstance().isEnable());
-        toggle_enable.setOnToggleChanged((view, on) -> LifecycleManager.getInstance().setEnable(on));
+        toggle_enable.setChecked(LifecycleManager.getInstance(mContext).isEnable());
+        toggle_enable.setOnToggleChanged((view, on) -> LifecycleManager.getInstance(mContext).setEnable(on));
 
         RadioGroup rg_transitionType = rootView.findViewById(R.id.rg_transitionType);
         rg_transitionType.setOnCheckedChangeListener((group, checkedId) -> {

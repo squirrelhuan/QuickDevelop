@@ -26,7 +26,6 @@ public class QDViewPager extends ViewPager {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.QDViewPager);
             canScroll = a.getBoolean(R.styleable.QDViewPager_canScroll, true);
             //hide_with_child = a.getBoolean(R.styleable.VisibleLayout_hide_with_child, hide_with_child);
-
             a.recycle();
         }
     }

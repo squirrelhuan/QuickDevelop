@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 
-public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.ViewHolder> {
+public class ComponentAdapter extends QuickRecyclerAdapter<ComponentAdapter.ViewHolder> {
 
     private List<String> data;
     private final Context context;
@@ -45,19 +46,15 @@ public class ComponentAdapter extends RecyclerView.Adapter<ComponentAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView tv_title;
-
         public ViewHolder(View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_title);
         }
-
         public void onBind(final int position) {
             String clazz = data.get(position);
             tv_title.setText(clazz);
 
         }
     }
-
 }

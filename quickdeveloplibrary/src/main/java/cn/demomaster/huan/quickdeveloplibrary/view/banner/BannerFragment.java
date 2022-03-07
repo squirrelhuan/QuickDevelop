@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -176,6 +177,7 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         }
 
         UrlHelper.analyUrl(urlString, new UrlHelper.AnalyResult() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void success(String url, String fileType, int fileLength) {
                 QDLogger.i(" " + fragmentCode + ",网络资源类型：" + fileType + ",当前类型：" + BannerContentType.getEnum(adsResource.getType()));

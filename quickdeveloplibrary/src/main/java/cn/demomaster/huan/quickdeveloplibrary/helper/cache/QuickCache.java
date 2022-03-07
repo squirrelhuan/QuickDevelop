@@ -65,6 +65,7 @@ public class QuickCache {
      * @param url
      * @param bitmap
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void saveBitmap(String url, Bitmap bitmap) {
         String key = stringToMD5(url) + ".png";
         String folderPath = cacheFolderPath + "img/";
@@ -106,6 +107,7 @@ public class QuickCache {
     public static void downCacheFile(String url) {
         //判断文件类型
         UrlHelper.analyUrl(url, new UrlHelper.AnalyResult() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void success(String url, String fileType, int fileLength) {
                 downCacheFile(url, fileType);

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ import cn.demomaster.huan.quickdeveloplibrary.ui.file.FileExplorerFragment;
 import cn.demomaster.huan.quickdeveloplibrary.ui.file.FileInfo;
 import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.quickview.ViewInfo;
 
 
 /**
@@ -46,23 +48,19 @@ public class ErrorTestFragment extends BaseFragment {
     QDButton btn_error_02;
     @BindView(R.id.btn_error_03)
     QDButton btn_error_03;
+    @BindView(R.id.btn_error_04)
+    QDButton btn_error_04;
 
     @BindView(R.id.btn_double_click)
     QDButton btn_double_click;
     @BindView(R.id.btn_three_click)
     QDButton btn_three_click;
 
-    @BindView(R.id.btn_error_log)
-    QDButton btn_error_log;
-
-    @BindView(R.id.btn_file_browser)
-    QDButton btn_file_browser;
-
     @NonNull
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_layout_errortest, null);
-        return  mView;
+        return mView;
     }
 
     public void initView(View rootView) {
@@ -74,7 +72,7 @@ public class ErrorTestFragment extends BaseFragment {
             int c = b / a;
         });
         btn_error_02.setOnClickListener(v -> {
-            Paint paint =null;
+            Paint paint = null;
             paint.setColor(Color.RED);
         });
         btn_error_03.setOnClickListener(v -> new Thread(new Runnable() {
@@ -84,30 +82,28 @@ public class ErrorTestFragment extends BaseFragment {
                 RelativeLayout relativeLayout = (RelativeLayout) linearLayout;
             }
         }).start());
-        btn_error_log.setOnClickListener(v-> {
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString("DIR_PATH_KEY", CrashHandler.getInstance().getCrashCacheDir().getAbsolutePath());
-            intent.putExtras(bundle);
-                startFragment(new FileExplorerFragment(),android.R.id.content,intent);
-            }
-        );
-        btn_file_browser.setOnClickListener(v-> {
-                   // String[] paths = new String[]{};
-            ArrayList<String> paths = new ArrayList<>();
-            paths.add(mContext.getFilesDir().getParentFile().getAbsolutePath());
-            paths.add(mContext.getExternalCacheDir().getAbsolutePath());
-            paths.add(mContext.getExternalFilesDir(null).getAbsolutePath());
+        /*btn_file_browser.setOnClickListener(v -> {
+                    // String[] paths = new String[]{};
+                    ArrayList<String> paths = new ArrayList<>();
+                    paths.add(mContext.getFilesDir().getParentFile().getAbsolutePath());
+                    paths.add(mContext.getExternalCacheDir().getAbsolutePath());
+                    paths.add(mContext.getExternalFilesDir(null).getAbsolutePath());
 
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     //bundle.putString("DIR_PATH_KEY", mContext.getExternalFilesDir("").getParentFile().getAbsolutePath());
                     bundle.putStringArrayList("DIR_PATHS_KEY", paths);
                     intent.putExtras(bundle);
-                    startFragment(new FileExplorerFragment(),android.R.id.content,intent);
+                    startFragment(new FileExplorerFragment(), android.R.id.content, intent);
                 }
         );
-
+*/
+        btn_error_04.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error();
+            }
+        });
 
         btn_double_click.setOnClickListener(new OnDoubleClickListener() {
             @Override
@@ -129,4 +125,13 @@ public class ErrorTestFragment extends BaseFragment {
         actionBarLayoutOld.setHeaderBackgroundColor(Color.RED);
 
     }*/
+
+    public void error(){
+        List<String> stringList = new ArrayList<>();
+        stringList.add("a");
+        stringList.add("b");
+        for (String str : stringList) {
+            stringList.remove(str);
+        }
+    }
 }

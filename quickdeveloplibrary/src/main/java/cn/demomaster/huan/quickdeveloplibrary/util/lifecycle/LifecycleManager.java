@@ -32,20 +32,22 @@ public class LifecycleManager {
 
     private static LifecycleManager instance;
 
-    public static LifecycleManager getInstance() {
+    public static LifecycleManager getInstance(Context context) {
         if (instance == null) {
-            instance = new LifecycleManager();
+            instance = new LifecycleManager(context);
         }
         return instance;
     }
 
-    private LifecycleManager() {
-
+    private LifecycleManager(Context context) {
+        init(context);
     }
 
     public void init(Context context) {
         this.context = context.getApplicationContext();
-        lifecycleTimerData = new LifecycleTimerData();
+        if(lifecycleTimerData==null) {
+            lifecycleTimerData = new LifecycleTimerData();
+        }
     }
 
     //生命周期数据

@@ -276,6 +276,7 @@ public class QDAndroidDeviceUtil {
      *
      * @return true 为模拟器
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static boolean checkIsNotRealPhone() {
         String cpuInfo = readCpuInfo();
         return  ((cpuInfo.contains("intel") || cpuInfo.contains("amd")));

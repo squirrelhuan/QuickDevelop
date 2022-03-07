@@ -27,7 +27,7 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
  * 2018/8/25
  */
 
-@ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_permission_manager)
 public class PermitionFragment extends BaseFragment {
 
     //Components

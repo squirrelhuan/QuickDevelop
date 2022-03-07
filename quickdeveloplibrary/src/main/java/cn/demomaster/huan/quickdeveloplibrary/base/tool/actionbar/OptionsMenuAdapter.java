@@ -18,11 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 
 /**
  * Created by Squirrel桓 on 2018/11/11.
  */
-public class OptionsMenuAdapter extends RecyclerView.Adapter<OptionsMenuAdapter.ViewHolder> {
+public class OptionsMenuAdapter extends QuickRecyclerAdapter<OptionsMenuAdapter.ViewHolder> {
 
     private List<OptionsMenu.Menu> lists = new ArrayList<>();
     private Context context;

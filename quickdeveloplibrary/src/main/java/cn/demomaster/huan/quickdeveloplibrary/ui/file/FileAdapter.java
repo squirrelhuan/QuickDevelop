@@ -13,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 
-public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
+/**
+ * 文件适配器
+ */
+public class FileAdapter extends QuickRecyclerAdapter<FileAdapter.ViewHolder> {
     private final List<FileInfo> mFolders;
     private final LayoutInflater mInflater;
     private int mSelectItem;
@@ -57,13 +61,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
             holder.ivImage.setImageBitmap(null);
         }*/
 
-        holder.itemView.setOnClickListener(v -> {
-            int p = holder.getAdapterPosition();
-            mSelectItem = p;
-            if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(null,v,p,v.getId());
-            }
-        });
     }
 
     @Override
@@ -88,8 +85,4 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         }
     }
 
-    private AdapterView.OnItemClickListener onItemClickListener;
-    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
 }

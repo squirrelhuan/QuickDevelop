@@ -38,7 +38,9 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
@@ -80,6 +82,7 @@ public class QDFileUtil {
 
     public static String saveBitmap(Bitmap b, String imgPath) {
         try {
+            createFile(new File(imgPath));
             FileOutputStream fout = new FileOutputStream(imgPath);
             BufferedOutputStream bos = new BufferedOutputStream(fout);
             b.compress(Bitmap.CompressFormat.JPEG, 100, bos);//代表压缩(100-100)%
@@ -993,7 +996,7 @@ public class QDFileUtil {
 
     
     public static String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder();
         if (src == null || src.length <= 0) {
             return null;
         }
@@ -1006,5 +1009,171 @@ public class QDFileUtil {
             stringBuilder.append(hv);
         }
         return stringBuilder.toString();
+    }
+
+
+
+    /*************************************************/
+    protected static final String MIMETYPES_PROPERTIES = "FileTypes.properties";
+    protected static Properties mFileTypes;
+    private static void setFileTypes(Context context) {
+        try {
+            mFileTypes = new Properties();
+            mFileTypes.load(context.getAssets().open(MIMETYPES_PROPERTIES));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static String getFileType(Context context,File file) {
+
+        if (file == null||!file.exists() || file.length() < 11) {
+            return null;
+        }
+        if(mFileTypes==null){
+            setFileTypes(context);
+        }
+        String header = get10ByteHeader(file);
+        QDLogger.println("header="+header);
+        String fileSuffix = mFileTypes.getProperty(header);
+        /*
+         * 优化处理：在不同的设备上同样类型的文件，文件头前面内容未必一致，可能只有前几个一致，后面就不同了
+         * （例如：jpg类型文件，在不同手机上，lennovo k900前10个是一致的，但是MI3只有前5个字符一致，后面是不一样的，所有一些情况进行特殊处理）当整个头文件失败后，
+         * 在进行前5个字符截取对比处理，优化具体如下：
+         */
+        if (TextUtils.isEmpty(fileSuffix)) {
+            Iterator keyList = mFileTypes.keySet().iterator();
+            //并不是所有的文件格式前10 byte（jpg）都一致，前五个byte一致即可
+            String key, keySearchPrefix = header.substring(0, 5);
+            while (keyList.hasNext()) {
+                key = (String) keyList.next();
+                if (key.contains(keySearchPrefix)) {
+                    fileSuffix = mFileTypes.getProperty(key);
+                    break;
+                }
+            }
+        }
+
+        //前5个字符截取对比处理没有找到，则进行特殊处理
+        if (TextUtils.isEmpty(fileSuffix)) {
+            header = get3ByteHeader(file);
+            fileSuffix = mFileTypes.getProperty(header);
+        }
+
+        return fileSuffix;
+    }
+
+    public String getFileType(byte[] bytes) {
+        if (bytes == null || bytes.length < 11) {
+            return null;
+        }
+        String header = bytesToHexString(subarray(bytes, 0, 10));
+        String fileSuffix = mFileTypes.getProperty(header);
+        /*
+         * 优化处理：在不同的设备上同样类型的文件，文件头前面内容未必一致，可能只有前几个一致，后面就不同了
+         * （例如：jpg类型文件，在不同手机上，lennovo k900前10个是一致的，但是MI3只有前5个字符一致，后面是不一样的，所有一些情况进行特殊处理）当整个头文件失败后，
+         * 在进行前5个字符截取对比处理，优化具体如下：
+         */
+        if (TextUtils.isEmpty(fileSuffix)) {
+            Iterator keyList = mFileTypes.keySet().iterator();
+            //并不是所有的文件格式前10 byte（jpg）都一致，前五个byte一致即可
+            String key, keySearchPrefix = header.substring(0, 5);
+            while (keyList.hasNext()) {
+                key = (String) keyList.next();
+                if (key.contains(keySearchPrefix)) {
+                    fileSuffix = mFileTypes.getProperty(key);
+                    break;
+                }
+            }
+        }
+        //前5个字符截取对比处理没有找到，则进行特殊处理
+        if (TextUtils.isEmpty(fileSuffix)) {
+            header = bytesToHexString(subarray(bytes, 0, 3));
+            fileSuffix = mFileTypes.getProperty(header);
+        }
+        return fileSuffix;
+    }
+
+    public byte[] subarray(final byte[] array, int startIndexInclusive, int endIndexExclusive) {
+        if (array == null) {
+            return null;
+        }
+        if (startIndexInclusive < 0) {
+            startIndexInclusive = 0;
+        }
+        if (endIndexExclusive > array.length) {
+            endIndexExclusive = array.length;
+        }
+        final int newSize = endIndexExclusive - startIndexInclusive;
+        if (newSize <= 0) {
+            return new byte[0];
+        }
+
+        final byte[] subarray = new byte[newSize];
+        System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
+        return subarray;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static String get10ByteHeader(File file) {
+        InputStream input = null;
+        String value = null;
+        try {
+            input = new FileInputStream(file);
+            byte[] b = new byte[10];
+            input.read(b, 0, b.length);
+            value = bytesToHexString(b);
+        } catch (Exception e) {
+        } finally {
+            try {
+                input.close();
+                //IoUtils.closeSecure(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static String get3ByteHeader(File file) {
+        InputStream input = null;
+        String value = null;
+        try {
+            input = new FileInputStream(file);
+            byte[] b = new byte[3];
+            input.read(b, 0, b.length);
+            value = bytesToHexString(b);
+        } catch (Exception e) {
+        } finally {
+            try {
+                input.close();
+                //IoUtils.closeSecure(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 当SD卡存在或者SD卡不可被移除的时候，就调用getExternalCacheDir()方法来获取缓存路径，否则就调用getCacheDir()方法来获取缓存路径。前者获取到的就是 /sdcard/Android/data//cache 这个路径，而后者获取到的是 /data/data//cache 这个路径。
+     *   注意：这两种方式的缓存都会在卸载app的时候被系统清理
+     * @param context
+     * @return
+     */
+    public static String getDiskCacheDir(Context context) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            File externalCacheDir = context.getExternalCacheDir();
+            if (externalCacheDir == null) {
+                cachePath = context.getCacheDir().getPath();
+            } else {
+                cachePath = externalCacheDir.getPath();
+            }
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return cachePath;
     }
 }

@@ -28,11 +28,9 @@ import cn.demomaster.huan.quickdeveloplibrary.view.pickview.PickerPopWindow;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimePickerPopWin;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.TimerPickerPopBuilder;
 
-@ActivityPager(name = "多级选择器", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "多级选择器", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_mul_selector)
 public class PickActivity extends BaseActivity {
-
-
-    //    private ArrayList<ProvinceModel> mProvinceList = null; // 省份列表
+//    private ArrayList<ProvinceModel> mProvinceList = null; // 省份列表
 //    private String mProvince = null; // 省份
 //    private String mCity = null; // 城市
     @BindView(R.id.loop_view)

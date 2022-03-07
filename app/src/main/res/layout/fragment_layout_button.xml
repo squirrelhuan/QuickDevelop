@@ -137,6 +137,7 @@
                 android:id="@+id/rg_bottom_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="bottom"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
@@ -150,7 +151,7 @@
                     android:gravity="center"
                     android:minHeight="@dimen/dp_0"
                     android:padding="@dimen/dp_0"
-                    android:text="首页"
+                    android:text="底部"
                     android:textSize="@dimen/sp_18"
                     app:srcHeight="@dimen/dp_30"
                     app:srcTop="@mipmap/ic_launcher"
@@ -164,7 +165,7 @@
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="首页1234567890-"
+                    android:text="右侧长文本"
                     android:textSize="@dimen/sp_18"
                     app:srcHeight="@dimen/dp_30"
                     app:srcLeft="@mipmap/ic_launcher"
@@ -178,7 +179,7 @@
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="订单"
+                    android:text="左侧"
                     android:textSize="@dimen/sp_8"
                     app:srcHeight="@dimen/dp_40"
                     app:srcRight="@mipmap/ic_launcher"
@@ -192,7 +193,7 @@
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="我的"
+                    android:text="顶部"
                     app:srcBottom="@mipmap/ic_launcher" />
             </RadioGroup>
         </LinearLayout>

@@ -29,7 +29,7 @@ public class Test {
         while (true) {
             execute("adb -s 192.168.199.180:5555 shell screencap -p /sdcard/01.png");
             execute("adb -s 192.168.199.180:5555 pull /sdcard/01.png screen");
-
+            
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {

@@ -20,6 +20,7 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
@@ -220,7 +221,7 @@ public class QDMulSheetDialog extends QDDialog2 {
         void onItemClick(QDMulSheetDialog dialog, int position, List<String> data);
     }
 
-    public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
+    public static class SheetAdapter extends QuickRecyclerAdapter<SheetAdapter.VHItem> {
         private List data;
         private Context context;
         private TabMenuAdapter.OnItemClickListener onItemClickListener;

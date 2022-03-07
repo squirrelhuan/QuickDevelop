@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -39,9 +40,20 @@ public class CircleTextView2 extends TextView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         width = w;
         height = h;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        /*int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                getMeasuredWidth() - leftView.getMeasuredWidth() - leftView.getLeft(), MeasureSpec.EXACTLY);
+        rightView.measure(childWidthMeasureSpec, heightMeasureSpec);*/
+        setMinWidth(getMeasuredHeight());
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        width = getMeasuredWidth();
+        height = getMeasuredHeight();
     }
 
     private boolean isRound = true;
@@ -107,6 +119,7 @@ public class CircleTextView2 extends TextView {
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColor(getTextColors().getDefaultColor());
+            paint.setTextSize(getTextSize());
 
             paint.setStrokeWidth(line_width);
             paint.setStyle(Paint.Style.STROKE);
@@ -152,7 +165,6 @@ public class CircleTextView2 extends TextView {
             float sy = (float) (height-padding_t-padding_b)/height;
             canvas.scale(sx,sy);
             canvas.translate(padding_l,padding_t);*/
-
         }
     }
 

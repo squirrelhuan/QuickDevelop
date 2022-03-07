@@ -49,13 +49,13 @@ public class QdToast {
         });
     }
 
-
     /**************************       自定义toast       *********************************/
     private static Toast customToast;
 
     public static void showToast(Context context, String msg) {
-        showToast(context,msg, Toast.LENGTH_SHORT,null);
+        showToast(context, msg, Toast.LENGTH_SHORT, null);
     }
+
     public static void showToast(Context context, String msg, int duration, QuickCustomToast.ToastInflater toastInflate) {
         try {
             if (context == null) {
@@ -64,12 +64,14 @@ public class QdToast {
             if (TextUtils.isEmpty(msg)) {
                 return;
             }
-            if (customToast != null) {
-                customToast.cancel();
-                customToast = null;
-            }
-            customToast = new QuickCustomToast(context, msg,duration,toastInflate);//自定义
-            customToast.show();
+            runOnUiThread(() -> {
+                if (customToast != null) {
+                    customToast.cancel();
+                    customToast = null;
+                }
+                customToast = new QuickCustomToast(context, msg, duration, toastInflate);//自定义
+                customToast.show();
+            });
         } catch (Exception e) {
             e.printStackTrace();
             //可能在子线程调了这个方法
@@ -92,9 +94,9 @@ public class QdToast {
 
         public void newFtoast(Context context, String msg, int duration, ToastInflater toastInflate) {
             mToastInflater = toastInflate == null ? new DefToastInflater() : toastInflate;
-            View root = mToastInflater.createView(this,context);
+            View root = mToastInflater.createView(this, context);
             if (root != null) {
-                mToastInflater.bindData(this,root,msg);
+                mToastInflater.bindData(this, root, msg);
                 setDuration(duration);
                 setView(root); //这是setView。就是你的自定义View
                 //必须设置Gravity.FILL_HORIZONTAL 这个选项，布局文件的宽高才会正常显示
@@ -105,14 +107,14 @@ public class QdToast {
         public static class DefToastInflater implements ToastInflater {
 
             @Override
-            public View createView(Toast toast,Context context) {
+            public View createView(Toast toast, Context context) {
                 LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 assert inflate != null;
                 return inflate.inflate(R.layout.quick_toast, null);//加载自定义的XML布局
             }
 
             @Override
-            public void bindData(Toast toast,View root, String msg) {
+            public void bindData(Toast toast, View root, String msg) {
                 TextView txtContent = (TextView) root.findViewById(R.id.txtToast);
                 if (txtContent != null) {
                     txtContent.setText(msg);
@@ -121,8 +123,9 @@ public class QdToast {
         }
 
         public static interface ToastInflater {
-            View createView(Toast toast,Context context);
-            void bindData(Toast toast,View root, String msg);
+            View createView(Toast toast, Context context);
+
+            void bindData(Toast toast, View root, String msg);
         }
     }
 }

@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.SimpleRecycleViewAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionStateType;
@@ -40,7 +40,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayo
 public class PushCardFragment extends BaseFragment {
     private RecyclerView recycler_body;
     private LinearLayoutManager linearLayoutManager;
-    private RecycleViewAdapter adapter;
+    private SimpleRecycleViewAdapter adapter;
     private List<String> lists;
 
     @Nullable
@@ -62,7 +62,7 @@ public class PushCardFragment extends BaseFragment {
         //使用网格布局展示
         recycler_body.setLayoutManager(new GridLayoutManager(mContext, 1));
         //recy_drag.setLayoutManager(linearLayoutManager);
-        adapter = new RecycleViewAdapter(mContext, lists);
+        adapter = new SimpleRecycleViewAdapter(mContext, lists);
         //设置分割线使用的divider
         recycler_body.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         recycler_body.setAdapter(adapter);

@@ -50,6 +50,17 @@ public class ToggleButton extends View {
         }
     }
 
+    /**
+     * 此方法不会出发 onToggle
+     * @param checked
+     */
+    public void setChecked2(boolean checked) {
+        if(this.checked!=checked) {
+            this.checked = checked;
+            startAnimation(checked);
+        }
+    }
+
     private int width, height;
 
     @Override

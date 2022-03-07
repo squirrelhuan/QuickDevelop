@@ -27,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QuickDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 @ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_dialog)
@@ -235,23 +236,26 @@ public class QDialogActivity extends BaseActivity {
     }
 
     private void showMessageWithButton(cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity gravity) {
-        QDDialog qdDialog = new QDDialog.Builder(mContext)
-                .setMessage("确定要发送吗？")
+        QuickDialog qdDialog = new QuickDialog.Builder(mContext)
+                .setContentView(R.layout.quick_dialog_layout)
+                .bindView(R.id.tv_title,"确定要发送吗？")
                 //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                 //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
-                .setText_color_body(Color.BLUE)
-                .addAction("确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
+                //.setText_color_body(Color.BLUE)
+                .bindView(R.id.tv_left,"取消")
+                .bindView(R.id.tv_right,"确定")//.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                //.setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
                 //.setPadding_foot((int) getResources().getDimension(R.dimen.sp_6))
                 //.setActionButtonPadding((int) getResources().getDimension(R.dimen.sp_6))
-                .setText_color_foot(Color.GREEN)
-                .setLineColor(Color.RED)
-                .setBackgroundRadius(backgroundRadio)
-                .setGravity_foot(gravity).create();
+                //.setText_color_foot(Color.GREEN)
+                //.setLineColor(Color.RED)
+                //.setBackgroundRadius(backgroundRadio)
+                //.setGravity_foot(gravity)
+                .create();
 
         GroundGlassUtil glassUtil = new GroundGlassUtil(qdDialog.getContext());
-        qdDialog.getContentLinearView().setLayoutAnimationListener(new Animation.AnimationListener() {
+        /*qdDialog.getContentLinearView().setLayoutAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 QDLogger.println("setLayoutAnimationListener onAnimationStart");
@@ -266,10 +270,10 @@ public class QDialogActivity extends BaseActivity {
             public void onAnimationRepeat(Animation animation) {
                 QDLogger.println("setLayoutAnimationListener onAnimationRepeat");
             }
-        });
-        qdDialog.getContentView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> QDLogger.println("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom));
+        });*/
+        //qdDialog.getContentView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> QDLogger.println("onLayoutChange left=" + left + ",top=" + top + ",right=" + right + ",bottom=" + bottom));
 
-        glassUtil.setTargetView(qdDialog.getContentLinearView());
+        //glassUtil.setTargetView(qdDialog.getContentLinearView());
         glassUtil.setBackgroundView(mListView);
         glassUtil.setRadius(100);
         glassUtil.invalidate();

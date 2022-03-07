@@ -19,6 +19,7 @@ import java.util.List;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
 
 /**
@@ -27,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
  * description：
  */
 // ① 创建Adapter
-public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
+public class PictureAdapter extends QuickRecyclerAdapter<PictureAdapter.ViewHolder> {
 
     private final Context mContext;
     private List<Image> mImages;

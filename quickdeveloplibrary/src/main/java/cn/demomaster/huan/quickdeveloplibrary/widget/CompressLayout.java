@@ -2,11 +2,14 @@ package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+
+import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
@@ -30,6 +33,7 @@ public class CompressLayout extends ViewGroup {
         init(attrs);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CompressLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);

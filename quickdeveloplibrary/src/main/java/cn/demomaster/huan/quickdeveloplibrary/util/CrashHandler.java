@@ -12,14 +12,16 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
 //系统崩溃异常捕获
 public class CrashHandler implements UncaughtExceptionHandler {
-    private static final String TAG = "CrashHandler";
-    private static final String Dir_KEY = "quick_crash_log";
+    private static final String TAG = CrashHandler.class.getSimpleName();
+    private static final String DirPath = "crash_log";
     private Class<? extends Activity> mErrorReportClass;
     private Context mContext;
     private final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
@@ -27,7 +29,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private CrashDealType mCrashDealType = CrashDealType.showError;//异常结果处理方式
     private OnCrashListener mOnCrashListener;
     private static CrashHandler instance;
-
     public static CrashHandler getInstance() {
         if (instance == null) {
             instance = new CrashHandler();
@@ -51,7 +52,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 设置异常处理方式
-     *
      * @param crashDealType
      */
     public void setCrashDealType(CrashDealType crashDealType) {
@@ -66,7 +66,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     public void setOnCrashListener(OnCrashListener mOnCrashListener) {
         this.mOnCrashListener = mOnCrashListener;
     }
-
+    public static String CRASH_ERROR_DATA="crash_error_data";
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
 
@@ -91,13 +91,15 @@ public class CrashHandler implements UncaughtExceptionHandler {
                     @Override
                     public void run() {
                         //子线程异常，可以展示异常详情
-                        Intent intent = new Intent(mContext, mErrorReportClass);
-                        intent.putExtra("error", tipMessage);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
+                        if(mContext!=null&&mErrorReportClass!=null) {
+                            Intent intent = new Intent(mContext, mErrorReportClass);
+                            intent.putExtra(CRASH_ERROR_DATA, tipMessage);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
+                            }
+                            mContext.startActivity(intent);
                         }
-                        mContext.startActivity(intent);
                     }
                 });
             }else if(mCrashDealType == CrashDealType.reboot){
@@ -141,7 +143,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                     case showError:
                         if (mErrorReportClass != null) {//子线程异常，可以展示异常详情
                             Intent intent = new Intent(mContext, mErrorReportClass);
-                            intent.putExtra("error", tipMessage);
+                            intent.putExtra(CRASH_ERROR_DATA, tipMessage);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 mContext.sendBroadcastAsUser(intent, android.os.Process.myUserHandle());//UserHandle.USER_CURRENT
@@ -184,15 +186,15 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     public File getCrashCacheDir() {
-        File dir = new File(mContext.getCacheDir() + File.separator + Dir_KEY);
+        File dir = new File(QDFileUtil.getDiskCacheDir(mContext),DirPath);
         if (!dir.exists()) {
             dir.mkdir();
         }
         return dir;
     }
-
+    public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.CHINA);
     private File getCrashCacheFile() {
-        String fileName = new Date().toString();
-        return new File(getCrashCacheDir() + File.separator + fileName);
+        String fileName = simpleDateFormat.format(new Date());
+        return new File(QDFileUtil.getDiskCacheDir(mContext),DirPath+ File.separator + fileName);
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/transparent_dark_33">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,36 +13,35 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/container_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/dp_3">
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/dp_5"
+            android:background="@null"
+            android:text="cancel"
+            android:textColor="#999999"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_18"
-                android:background="@null"
-                android:text="cancel"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_10" />
-
-            <Button
-                android:id="@+id/btn_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_18"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="@null"
-                android:text="confirm"
-                android:textColor="#303F9F"
-                android:textSize="@dimen/sp_10" />
-        </RelativeLayout>
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/dp_5"
+            android:background="@null"
+            android:text="confirm"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_200"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_confirm"
             android:background="@color/white"
             android:padding="@dimen/dp_2">
 
@@ -72,6 +71,6 @@
                 app:canLoop="false"
                 app:textSize="25sp" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -117,6 +117,7 @@ public class HttpUtils {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void submitData(String content) {
         HashMap<String, String> params = new HashMap<>();
 

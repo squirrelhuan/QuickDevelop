@@ -53,7 +53,7 @@ import static cn.demomaster.quickaudiorecorderlib.AudioUtil.calculateVolume;
  * Squirrel桓
  * 2018/8/25
  */
-@ActivityPager(name = "音频录制", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "音频录制", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_audio)
 public class AudioRecordFragment extends BaseFragment {
 
     View mView;
@@ -83,7 +83,8 @@ public class AudioRecordFragment extends BaseFragment {
                     Toast.makeText(mContext, "拒绝", Toast.LENGTH_LONG).show();
                 }
             });
-            return false;
+            //v.performClick();
+            return true;
         });
 
         initDatas();
@@ -232,7 +233,11 @@ public class AudioRecordFragment extends BaseFragment {
                     //audioRecorder.setOutputFilePath("");
                     //audioRecorder.setFileName("hahaha");
                 }
-                audioRecorder.startRecord();
+                try {
+                    audioRecorder.startRecord();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

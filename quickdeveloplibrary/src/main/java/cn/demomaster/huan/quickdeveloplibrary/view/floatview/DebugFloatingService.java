@@ -29,8 +29,8 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floator.DebugFloating2;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-import cn.demomaster.qdlogger_library.QDLogBean;
-import cn.demomaster.qdlogger_library.QDLogInterceptor;
+import cn.demomaster.qdlogger_library.model.LogBean;
+import cn.demomaster.qdlogger_library.interceptor.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -116,7 +116,7 @@ public class DebugFloatingService extends QDFloatingService2 {
     }
 
     static int strMaxLen = 20000;
-    static List<QDLogBean> logList = new ArrayList<>();
+    static List<LogBean> logList = new ArrayList<>();
     static String logStr = "";
     static QDLogInterceptor qdLogInterceptor;
 
@@ -144,8 +144,8 @@ public class DebugFloatingService extends QDFloatingService2 {
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(Color.WHITE);
-                if (msg.getType() != null) {
-                    tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
+                if (msg.getLevel() != null) {
+                    tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getLevel().value()));
                 }
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 //Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//不包含端start，但包含end所在的端点

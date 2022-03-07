@@ -42,7 +42,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         view = LayoutInflater.from(context).inflate(R.layout.layout_debug_lifecycle, null, false);
 
         timeDomainPlotView = view.findViewById(R.id.timeDomainPlotView);
-        LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
+        LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance(context).getLifecycleTimerData().getLinePointsMap();
         timeDomainPlotView.setLinePoints(listLinkedHashMap);
         iv_drag = view.findViewById(R.id.iv_drag);
         onTouchListener = new QDFloatingService.FloatingOnTouchListener(iv_drag);
@@ -87,7 +87,7 @@ public class LifecycleFloatingService extends QDFloatingService2 {
         @Override
         public void run() {
             if (timeDomainPlotView != null) {
-                LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance().getLifecycleTimerData().getLinePointsMap();
+                LinkedHashMap<LifeCycleClassInfo, List<LifeCycleEvent>> listLinkedHashMap = LifecycleManager.getInstance(mcontext).getLifecycleTimerData().getLinePointsMap();
                 timeDomainPlotView.setLinePoints(listLinkedHashMap);
                 handler.postDelayed(runnable, 1000);
             }

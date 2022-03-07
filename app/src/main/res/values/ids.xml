@@ -31,4 +31,5 @@
 
 
   <item name="qd_fragment_content_view" type="id"/>
+  <item name="quick_float_contentview_id" type="id" />
 </resources>

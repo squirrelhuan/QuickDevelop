@@ -14,7 +14,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
-@ActivityPager(name = "数据库",preViewClass = TextView.class,resType = ResType.Resource)
+@ActivityPager(name = "数据库",preViewClass = TextView.class,resType = ResType.Resource,iconRes = R.mipmap.ic_database)
 public class CsqliteActivity extends BaseActivity {
 
     @BindView(R.id.createDatabase)

@@ -1,32 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dp_10"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:text="设备id:"/>
+            <TextView
+                android:id="@+id/tv_sn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:text="本机ip:"/>
+            <TextView
+                android:id="@+id/tv_local_ip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"/>
+        </LinearLayout>
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_start_server"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:text="开启Server" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_100"
+            android:background="@drawable/dk_health_edittext_style">
+            <TextView
+                android:id="@+id/tv_server_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_ip"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+                android:id="@+id/btn_send_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="客户端连接" />
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_send_connect"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="tcp连接"/>
-                        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
-                            android:id="@+id/btn_send_tcp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="发送tcp消息"/>
-
-
-
-                </LinearLayout>
+            android:layout_height="@dimen/dp_100"
+            android:background="@drawable/dk_health_edittext_style">
+            <TextView
+                android:id="@+id/tv_client_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </ScrollView>
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入msg"/>
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_send_tcp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:text="发送tcp消息" />
+    </LinearLayout>
+
+</ScrollView>

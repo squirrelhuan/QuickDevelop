@@ -2,7 +2,6 @@
 <cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/meizi"
     android:gravity="center"
     android:orientation="vertical">
     <cn.demomaster.huan.quickdeveloplibrary.widget.QDListView

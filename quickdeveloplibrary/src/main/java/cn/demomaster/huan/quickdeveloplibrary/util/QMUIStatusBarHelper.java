@@ -56,8 +56,7 @@ public class QMUIStatusBarHelper {
     /**
      * 沉浸式状态栏。
      * 支持 4.4 以上版本的 MIUI 和 Flyme，以及 5.0 以上版本的其他 Android。
-     *
-     * @param activity 需要被设置沉浸式状态栏的 Activity。
+     * 需要被设置沉浸式状态栏的 Activity。
      */
     /*public static void translucent(Activity activity, @ColorInt int colorOn5x) {
         Window window = activity.getWindow();

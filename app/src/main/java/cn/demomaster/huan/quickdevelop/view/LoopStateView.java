@@ -16,6 +16,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import androidx.annotation.RequiresApi;
+
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -93,6 +95,7 @@ public class LoopStateView extends View {
 
     private float progress;
     QDValueAnimator animator;
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void startAnimation() {
         if (animator!=null&&(animator.isPaused())) {
             animator.resume();
@@ -148,6 +151,7 @@ public class LoopStateView extends View {
         animator.start();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void pause(){
         if (animator!=null){
             animator.pause();

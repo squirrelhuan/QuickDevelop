@@ -33,7 +33,6 @@ public class HandlerHooker {
     }
 
     private static void hookInstrumentation() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
-
         Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
         Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod("currentActivityThread");
         boolean acc = currentActivityThreadMethod.isAccessible();

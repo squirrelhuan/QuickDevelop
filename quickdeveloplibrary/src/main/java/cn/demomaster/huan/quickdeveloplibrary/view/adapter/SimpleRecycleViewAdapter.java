@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.adapter;
+package cn.demomaster.huan.quickdeveloplibrary.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,21 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.R;
 
-/**
- * Created by Squirrel桓 on 2018/11/11.
- */
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
+public class SimpleRecycleViewAdapter extends QuickRecyclerAdapter<SimpleRecycleViewAdapter.ViewHolder>{
 
     private List<String> lists=null;
     private Context context;
 
-    public RecycleViewAdapter(Context context, List<String> lists) {
+    public SimpleRecycleViewAdapter(Context context, List<String> lists) {
         this.context = context;
         this.lists = lists;
     }
@@ -44,6 +45,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public int getItemCount() {
         return lists.size();
     }
+
     //自定义ViewHolder,包含item的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView textView;
@@ -53,4 +55,3 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         }
     }
 }
-

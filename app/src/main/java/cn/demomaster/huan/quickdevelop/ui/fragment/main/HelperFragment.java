@@ -17,8 +17,11 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.CrashActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.IDCardActivity;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.database.QuickDataActivity;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.SandBoxActivity;
 import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AccessibilityServiceFragment;
@@ -87,10 +90,14 @@ public class HelperFragment extends BaseFragment {
         List<Class> classList = new ArrayList<>();
 
         classList.add(IDCardActivity.class);
+        classList.add(QuickDataActivity.class);
         classList.add(CsqliteActivity.class);
         classList.add(LmSensorFragment.class);
         classList.add(ScreenShotFragment.class);
         classList.add(PrinterFragment.class);
+
+        classList.add(CrashActivity.class);
+        classList.add(SandBoxActivity.class);
         classList.add(ErrorTestFragment.class);
         classList.add(FileManagerFragment.class);
         classList.add(LanguageFragment.class);

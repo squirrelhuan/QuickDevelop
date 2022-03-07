@@ -15,14 +15,14 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.adapter.RecycleViewAdapter;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.SimpleRecycleViewAdapter;
 
 public class RecycleActivity extends AppCompatActivity {
 
     private RecyclerView recy_drag;
     private LinearLayoutManager linearLayoutManager;
     private List<String> lists;
-    private RecycleViewAdapter adapter;
+    private SimpleRecycleViewAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class RecycleActivity extends AppCompatActivity {
         //使用网格布局展示
         recy_drag.setLayoutManager(new GridLayoutManager(this, 5));
         //recy_drag.setLayoutManager(linearLayoutManager);
-        adapter = new RecycleViewAdapter(this, lists);
+        adapter = new SimpleRecycleViewAdapter(this, lists);
         //设置分割线使用的divider
         recy_drag.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recy_drag.setAdapter(adapter);

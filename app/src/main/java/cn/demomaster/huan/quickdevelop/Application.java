@@ -19,7 +19,9 @@ import cn.demomaster.huan.quickdeveloplibrary.QDApplication;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.cache.QuickCache;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdlogger_library.config.ConfigBuilder;
 import cn.demomaster.quickdatabaselibrary.QuickDbHelper;
 
 import static cn.demomaster.qdlogger_library.QDLogger.TAG;
@@ -30,8 +32,11 @@ public class Application extends QDApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        QDLogger.init(this, "/qdlogger/");
-        QDLogger.setFouceUseExternalStorage(true);
+        ConfigBuilder configBuilder = new ConfigBuilder(this);
+        configBuilder.setSaveExternalStorageBeforeAndroidQ(false);
+        configBuilder.setSaveInternalSoragePath("/log/");
+        configBuilder.setSaveExternalStoragePath(new File(Environment.getExternalStorageDirectory(),"qdlogger/log"));
+        QDLogger.init(this, configBuilder.build());
         quickDb = new QuickDbHelper(this, "quickdev.db", null, 10);
 
         SoundHelper.init(this, true, R.raw.class);//自动加载raw下的音频文件
@@ -56,7 +61,8 @@ public class Application extends QDApplication {
 
         DoraemonKit.install(this);
         //初始化缓存目录
-        QuickCache.init(this, Environment.getExternalStorageDirectory().getAbsolutePath()+"/qdlogger/cache/");
+        //QuickCache.init(this, Environment.getExternalStorageDirectory().getAbsolutePath()+"/qdlogger/cache/");
+        QuickCache.init(this, QDFileUtil.getDiskCacheDir(getInstance()) +"/cache/");
     }
 
     @Override

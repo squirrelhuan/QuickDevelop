@@ -22,6 +22,7 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.NetWorkUtils;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
 
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class WifiTimerService2 extends Service {
 
     public static final String WIFI_SETTING_KEY = "WIFI_SETTING";

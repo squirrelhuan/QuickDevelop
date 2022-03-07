@@ -23,6 +23,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -78,7 +79,6 @@ public class NotificationHelper {
 
     /**
      * 检查锁屏状态，如果锁屏先点亮屏幕
-     *
      * @param context
      */
     public void checkLockAndShowNotification(Context context, String message, Class targetClazz) {
@@ -93,7 +93,6 @@ public class NotificationHelper {
 
     /**
      * 检测是否开启通知
-     *
      * @param context
      */
     private static void checkNotification(final Context context) {
@@ -109,10 +108,14 @@ public class NotificationHelper {
      *
      * @param context
      */
-    private static void startNotificationSetting(Context context) {
+    public static void startNotificationSetting(Context context) {
         Intent localIntent = new Intent();
         //直接跳转到应用通知设置的代码：
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            // android 8.0引导
+            localIntent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            localIntent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             localIntent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
             localIntent.putExtra("app_package", context.getPackageName());
             localIntent.putExtra("app_uid", context.getApplicationInfo().uid);
@@ -133,67 +136,6 @@ public class NotificationHelper {
             }
         }
         context.startActivity(localIntent);
-    }
-
-    /**
-     * 获取通知权限,检测是否开启了系统通知
-     *
-     * @param context
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static boolean isNotificationEnabled(Context context) {
-        if (SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return true;
-        } else if (SDK_INT < Build.VERSION_CODES.O) {
-            return isEnableV19(context);
-        } else {
-            return isEnableV26(context);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static boolean isEnableV19(Context context) {
-        final String CHECK_OP_NO_THROW = "checkOpNoThrow";
-        final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
-        AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        ApplicationInfo appInfo = context.getApplicationInfo();
-        String pkg = context.getApplicationContext().getPackageName();
-        int uid = appInfo.uid;
-        Class appOpsClass = null; /* Context.APP_OPS_MANAGER */
-        try {
-            appOpsClass = Class.forName(AppOpsManager.class.getName());
-            Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
-            Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
-            int value = (int) opPostNotificationValue.get(Integer.class);
-            return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
-        } catch (ClassNotFoundException e) {
-        } catch (NoSuchMethodException e) {
-        } catch (NoSuchFieldException e) {
-        } catch (InvocationTargetException e) {
-        } catch (IllegalAccessException e) {
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
-    private static boolean isEnableV26(Context context) {
-        ApplicationInfo appInfo = context.getApplicationInfo();
-        String pkg = context.getApplicationContext().getPackageName();
-        int uid = appInfo.uid;
-        try {
-            NotificationManager notificationManager = (NotificationManager)
-                    context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Method sServiceField = notificationManager.getClass().getDeclaredMethod("getService");
-            sServiceField.setAccessible(true);
-            Object sService = sServiceField.invoke(notificationManager);
-
-            Method method = sService.getClass().getDeclaredMethod("areNotificationsEnabledForPackage"
-                    , String.class, Integer.TYPE);
-            method.setAccessible(true);
-            return (boolean) method.invoke(sService, pkg, uid);
-        } catch (Exception e) {
-            return true;
-        }
     }
 
     /**
@@ -280,6 +222,22 @@ public class NotificationHelper {
         Notification notification = notificationBuiler.build();
         manager.notify(builder.id, notification);
         return notification;
+    }
+
+    /**
+     * 获取通知权限,检测是否开启了系统通知
+     *
+     * @param context
+     */
+    public static boolean isNotificationEnabled(Context context) {
+        boolean isOpened;
+        try {
+            isOpened = NotificationManagerCompat.from(context).areNotificationsEnabled();
+        } catch (Exception e) {
+            e.printStackTrace();
+            isOpened = false;
+        }
+        return isOpened;
     }
 
     public static class Builer {

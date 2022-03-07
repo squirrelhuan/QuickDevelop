@@ -1,52 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="@dimen/dp_10"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_5"
+                    android:textColor="@color/black"
+                    android:text="消息通知权限" />
+                <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+                    android:id="@+id/tb_state"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_24"/>
+            </LinearLayout>
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="开启电源白名单" />
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="消息通知（系统默认）" />
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_03"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="消息通知（自定义音频）" />
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_04"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="消息通知（静音+震动）" />
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_05"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="消息通知（静音不震动）" />
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_06"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
                 android:text="消息通知（自定义视图）" />
         </LinearLayout>
-    </ScrollView>
 
-</RelativeLayout>
+</ScrollView>

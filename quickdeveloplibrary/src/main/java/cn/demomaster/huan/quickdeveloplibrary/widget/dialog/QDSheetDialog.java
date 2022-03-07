@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
@@ -199,7 +201,7 @@ public class QDSheetDialog extends QDDialog2 {
         void onItemClick(QDSheetDialog dialog, int position, List<String> data);
     }
 
-    public static class SheetAdapter extends RecyclerView.Adapter<SheetAdapter.VHItem> {
+    public static class SheetAdapter extends QuickRecyclerAdapter<SheetAdapter.VHItem> {
         private List data;
         private Context context;
         private TabMenuAdapter.OnItemClickListener onItemClickListener;
@@ -215,6 +217,14 @@ public class QDSheetDialog extends QDDialog2 {
         public SheetAdapter(Context context, List data) {
             this.context = context;
             this.data = data;
+            setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(view, position);
+                    }
+                }
+            });
         }
 
         @NonNull
@@ -227,12 +237,6 @@ public class QDSheetDialog extends QDDialog2 {
 
         @Override
         public void onBindViewHolder(@NonNull final VHItem vhItem, int i) {
-            vhItem.itemView.setOnClickListener(v -> {
-                int position = vhItem.getAdapterPosition();
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position);
-                }
-            });
             vhItem.onbind(i);
         }
 

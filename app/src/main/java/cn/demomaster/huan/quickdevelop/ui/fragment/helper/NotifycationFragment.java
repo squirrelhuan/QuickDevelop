@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +21,21 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
 
-@ActivityPager(name = "消息通知", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "消息通知", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_notify)
 public class NotifycationFragment extends BaseFragment {
 
+
+    @BindView(R.id.tv_state)
+    TextView tv_state;
+    @BindView(R.id.tb_state)
+    ToggleButton tb_state;
     @BindView(R.id.btn_01)
     QDButton btn_01;
     @BindView(R.id.btn_02)
@@ -51,6 +59,14 @@ public class NotifycationFragment extends BaseFragment {
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("消息通知");
+
+        tb_state.setChecked2(NotificationHelper.isNotificationEnabled(mContext));
+        tb_state.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
+            @Override
+            public void onToggle(View view, boolean on) {
+                NotificationHelper.startNotificationSetting(mContext);
+            }
+        });
         btn_01.setOnClickListener(v -> BatteryOptimizationsHelper.request(getContext()));
         btn_02.setOnClickListener(v -> {
             NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
@@ -83,8 +99,14 @@ public class NotifycationFragment extends BaseFragment {
             builer.setTitle("消息通知（自定义视图）")
                     .setEnableVibration(false)
                     .setEnableSound(false)
-                    .setContentText("").send();
+                    .setContentText("")
+                    .send();
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tb_state.setChecked2(NotificationHelper.isNotificationEnabled(mContext));
+    }
 }

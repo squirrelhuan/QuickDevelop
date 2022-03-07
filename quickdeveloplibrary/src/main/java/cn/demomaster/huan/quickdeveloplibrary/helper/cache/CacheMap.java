@@ -45,6 +45,7 @@ public class CacheMap {
     /**
      * 从shareprefrence读取缓存
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void loadSharePrefrence() {
         String string = QDSharedPreferences.getInstance().getString(QuickCacheMap, null);
         if (!TextUtils.isEmpty(string)) {
@@ -127,6 +128,7 @@ public class CacheMap {
         md5Map.put(absolutePath, md5);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     public void put(String url, CacheInfo cacheInfo) {
         String md5 = stringToMD5(url);

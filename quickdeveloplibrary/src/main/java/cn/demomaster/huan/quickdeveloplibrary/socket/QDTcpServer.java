@@ -19,80 +19,95 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
+import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDTcpServer {
-
+    
     public static final String SERVICE_IP = "127.0.0.1";
-    public static final int SERVICE_PORT = 10101;
     private String serverIP = SERVICE_IP;
-    private int serverPort = SERVICE_PORT;
+    private int port = 10101;
     Map<Long, Socket> socketMap = new HashMap<>();
-    private static QDTcpServer instance;
-
-    public static QDTcpServer getInstance() {
-        if (instance == null) {
-            instance = new QDTcpServer();
-        }
-        return instance;
+    public QDTcpServer() {
+        autoPort = true;
     }
-
-    private QDTcpServer() {
-        initConnect();
+    public QDTcpServer(String ip, int port) {
+        this.serverIP = ip;
+        this.port = port;
+        autoPort = false;
     }
-
+    boolean autoPort = true;//是否使用自动端口
+    public void setAutoPort(boolean autoPort){
+        this.autoPort = autoPort;
+    }
+    
     private void initConnect() {
-        //封装服务端地址
-        InetAddress serverAddress = null;
         try {
-            serverAddress = InetAddress.getByName(serverIP);
-            server = new ServerSocket(serverPort, 10, serverAddress);
-            QDLogger.println("QDTcpServer 初始化成功，端口号：" + serverPort);
+            InetAddress serverAddress = InetAddress.getByName(serverIP);
+            server = new ServerSocket(port, 10, serverAddress);
+            QDLogger.println("QDTcpServer 初始化成功，端口号：" + server.getLocalPort());
         } catch (BindException e) {
             QDLogger.e(e);
+            portError();
+        } catch (UnknownHostException e) {
+            QDLogger.e(e);
+        } catch (IOException e) {
+            QDLogger.e(e);
+        }
+    }
+
+    /**
+     * 端口
+     */
+    private void portError() {
+        if(autoPort){
             //随机生成端口
-            QDLogger.println("QDTcpServer 端口号占用：" + serverPort);
-            if (serverPort < 65535) {
-                serverPort += 1;
+            QDLogger.println("QDTcpServer 端口号占用：" + port);
+            if (port < 65535) {
+                port += 1;
             } else {
-                serverPort = 0;
+                port = 0;
             }
             initConnect();
-        } catch (UnknownHostException e) {
-            QDLogger.e(e);
-        } catch (IOException e) {
-            QDLogger.e(e);
         }
     }
-
-    public void start() {
-        startService();
-    }
-
+    
     private ServerSocket server;
-
-    private void startService() {
-        try {
-            while (true) {
-                QDLogger.println("QDTcpServer 等待连接");
-                // 阻塞式的等待连接
-                Socket client = server.accept();
-                addClient(client);
-                index++;
-                //checkClient();
-            }
-            //server.close();
-        } catch (UnknownHostException e) {
-            QDLogger.e(e);
-        } catch (IOException e) {
-            QDLogger.e(e);
-        } catch (Exception e) {
-            QDLogger.e(e);
+    public void start() {
+        if(server==null) {
+            initConnect();
+            QdThreadHelper.runOnSubThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                            QDLogger.println("QDTcpServer 等待连接");
+                            // 阻塞式的等待连接
+                            Socket client = server.accept();
+                            QDLogger.println("新连接");
+                            addClient(client);
+                            index++;
+                            //checkClient();
+                        }
+                        //server.close();
+                    } catch (UnknownHostException e) {
+                        QDLogger.e(e);
+                    } catch (IOException e) {
+                        QDLogger.e(e);
+                    } catch (Exception e) {
+                        QDLogger.e(e);
+                    }
+                }
+            });
         }
     }
 
-    public int getServerPort() {
-        return serverPort;
+    public int getPort() {
+        if(server!=null) {
+            server.getLocalPort();
+        }
+        return port;
     }
 
     int index = 0;
@@ -111,10 +126,10 @@ public class QDTcpServer {
             while (!((info = br.readLine()) == null)) {
                 StringBuilder stringBuffer = new StringBuilder();
                 stringBuffer.append(info);
-
+                
                 Gson gson = new Gson();
                 QDMessage qdMessage = gson.fromJson(info, QDMessage.class);
-
+                
                 if (!socketMap.containsValue(client)) {
                     QDLogger.println("用户信息为：" + info);
 

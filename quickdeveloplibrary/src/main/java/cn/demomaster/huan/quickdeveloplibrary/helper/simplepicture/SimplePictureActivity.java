@@ -25,6 +25,8 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHELPER_RESULT_PATHES;
@@ -32,7 +34,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper.PHOTOHEL
 /**
  * 图片选择器
  */
-public class SimplePictureActivity extends QDActivity {
+public class SimplePictureActivity extends QuickActivity {
 
     /**
      * 横竖屏切换处理
@@ -63,7 +65,7 @@ public class SimplePictureActivity extends QDActivity {
         setTitle(getResources().getString(R.string.image_selector));
         getActionBarTool().getRightView().setText(getResources().getString(R.string.send));
         getActionBarTool().getRightView().setImageResource(0);
-        getActionBarTool().getRightView().setTextSize(16);
+        getActionBarTool().getRightView().setTextSize(DisplayUtil.dp2px(mContext,16));
         getActionBarTool().getRightView().setOnClickListener(view -> {
             //拍照完成，返回对应图片路径
             Intent intent = new Intent();

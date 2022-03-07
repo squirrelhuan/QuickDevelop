@@ -15,38 +15,20 @@ import cn.demomaster.huan.quickdeveloplibrary.exception.QDException;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QDTcpClient {
-
-    private static QDTcpClient instance;
     private String serverIP;
     private int serverPort;
-
-    public static QDTcpClient getInstance() {
-        if (instance == null) {
-            instance = new QDTcpClient();
-        }
-        return instance;
-    }
-
-    private QDTcpClient() {
+    public QDTcpClient(String serverIP,int serverPort) {
+        this.serverIP = serverIP;
+        this.serverPort = serverPort;
         receiveListenerManager = MessageListenerManager.getInstance();
         receiveListenerManager.setConnectTime(connectTime);
     }
-
-    public void setServerIP(String serverIP) {
-        this.serverIP = serverIP;
-    }
-
-    public void setServerPort(int serverPort) {
-        this.serverPort = serverPort;
-    }
-
+    
     private String userName = "admin";
     private String passWord = "admin";
-
-    public void connect(String serverIP, int serverPort) {
+    
+    public void connect() {
         flag = true;
-        this.serverIP = serverIP;
-        this.serverPort = serverPort;
         Thread thread = new Thread(() -> {
             try {
                 if (!isServerClose(clientSocket)) {
@@ -65,7 +47,6 @@ public class QDTcpClient {
     }
 
     boolean flag = true;
-
     private void newConnect(Socket clientSocket) {
         isConnected = true;
         if (receiveListener != null) {
@@ -273,7 +254,7 @@ public class QDTcpClient {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        connect(serverIP, serverPort);
+        connect();
     }
 
 
@@ -300,5 +281,9 @@ public class QDTcpClient {
 
     public void setReceiveListener(ReceiveListener receiveListener) {
         this.receiveListener = receiveListener;
+    }
+
+    public void setPort(int port) {
+        this.serverPort = port;
     }
 }

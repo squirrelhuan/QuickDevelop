@@ -26,8 +26,10 @@ public class DisplayUtil {
      */
     public static int getStatusBarHeight(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if(((Activity)context).isInMultiWindowMode()){//小窗模式隐藏状态栏
-                return  0;
+            if(context instanceof Activity){
+                if(((Activity)context).isInMultiWindowMode()){//小窗模式隐藏状态栏
+                    return  0;
+                }
             }
         }
         if (status_bar_height != 0) {
@@ -41,9 +43,6 @@ public class DisplayUtil {
 
         try {
             Class<?> c = Class.forName("com.android.internal.R$dimen");
-            if (c == null) {
-                return 0;
-            }
             Object obj = c.newInstance();
             Field field = c.getField("status_bar_height");
             int x = Integer.parseInt(field.get(obj).toString());

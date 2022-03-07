@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_add01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加一条数据" />
+
+            <Button
+                android:id="@+id/btn_add02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加10条数据" />
+            <Button
+                android:id="@+id/btn_del01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删除当前记录" />
+
+            <Button
+                android:id="@+id/btn_del02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删除所有数据" />
+            <Button
+                android:id="@+id/btn_mod01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="修改当前记录" />
+            <Button
+                android:id="@+id/btn_fin1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前记录" />
+
+            <Button
+                android:id="@+id/btn_fin02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部记录" />
+
+            <Button
+                android:id="@+id/btn_fin03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sql查找" />
+        </cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout>
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="clear" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/tv_console"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </ScrollView>
+
+        <cn.demomaster.quickdatabaselibrary.view.TableView
+            android:id="@+id/tableView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

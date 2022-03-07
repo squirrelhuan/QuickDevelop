@@ -9,25 +9,16 @@
         android:id="@+id/iv_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:scaleType="centerCrop" />
-
-    <cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView
-        android:id="@+id/iv_masking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#111212" />
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2
         android:id="@+id/ct_select"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_28"
         android:layout_gravity="right"
         android:gravity="center"
         android:textColor="@color/white"
-        android:minHeight="@dimen/dp_19"
-        android:minWidth="@dimen/dp_19"
-        android:textSize="14sp"
-        android:text=""
+        android:textSize="@dimen/sp_12"
         android:padding="@dimen/dp_3" />
 </FrameLayout>

@@ -29,10 +29,10 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.RichTextView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
-import cn.demomaster.qdlogger_library.QDLogBean;
-import cn.demomaster.qdlogger_library.QDLogInterceptor;
+import cn.demomaster.qdlogger_library.model.LogBean;
+import cn.demomaster.qdlogger_library.interceptor.QDLogInterceptor;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.qdlogger_library.QDLoggerType;
+import cn.demomaster.qdlogger_library.constant.QDLogLevel;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 
 /**
@@ -52,17 +52,17 @@ public class DebugFloating2 implements FloatView {
     static int screenWidth;
     static int screenHeight;
 
-    public static QDLoggerType tagFilter = QDLoggerType.ALL;
-    public static QDLoggerType[] logTagfilters = {QDLoggerType.ALL,
-            QDLoggerType.VERBOSE,
-            QDLoggerType.INFO,
-            QDLoggerType.DEBUG,
-            QDLoggerType.ERROR};
-    public static String[] logTagNames = {QDLoggerType.ALL.name(),
-            QDLoggerType.VERBOSE.name(),
-            QDLoggerType.INFO.name(),
-            QDLoggerType.DEBUG.name(),
-            QDLoggerType.ERROR.name()};
+    public static QDLogLevel tagFilter = QDLogLevel.ALL;
+    public static QDLogLevel[] logTagfilters = {QDLogLevel.ALL,
+            QDLogLevel.VERBOSE,
+            QDLogLevel.INFO,
+            QDLogLevel.DEBUG,
+            QDLogLevel.ERROR};
+    public static String[] logTagNames = {QDLogLevel.ALL.name(),
+            QDLogLevel.VERBOSE.name(),
+            QDLogLevel.INFO.name(),
+            QDLogLevel.DEBUG.name(),
+            QDLogLevel.ERROR.name()};
 
     private void showTagFilter(TextView textView) {
         new QDSheetDialog.MenuBuilder(QDActivityManager.getInstance().getCurrentActivity()).setData(logTagNames).setOnDialogActionListener((dialog, position, data) -> {
@@ -124,7 +124,7 @@ public class DebugFloating2 implements FloatView {
     };
 
     int strMaxLen = 5000;
-    List<QDLogBean> logList = new ArrayList<>();
+    List<LogBean> logList = new ArrayList<>();
     private void initLog(View view) {
         RichTextView tv_log = view.findViewById(R.id.tv_log);
         ScrollView scrollView = view.findViewById(R.id.scrollView);
@@ -142,7 +142,7 @@ public class DebugFloating2 implements FloatView {
 
     QDLogInterceptor logInterceptor = new QDLogInterceptor() {
         @Override
-        public void onLog(QDLogBean msg) {
+        public void onLog(LogBean msg) {
             View view = null;//floatHelper.getCurrentContentView();
             if (view != null) {
                 RichTextView tv_log = view.findViewById(R.id.tv_log);
@@ -160,12 +160,12 @@ public class DebugFloating2 implements FloatView {
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(msg.getLevel().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
 
                 //logStr = builder.toString()+tv_log.getText();
                 QdThreadHelper.runOnUiThread(() -> {
-                    if (msg.getType().value() == tagFilter.value() || tagFilter == QDLoggerType.ALL && tv_log != null) {
+                    if (msg.getLevel().value() == tagFilter.value() || tagFilter == QDLogLevel.ALL && tv_log != null) {
                         if (tv_log.getText().length() > strMaxLen) {
                             tv_log.setText("");
                         }
@@ -261,17 +261,17 @@ public class DebugFloating2 implements FloatView {
     private String getLogText(Context context) {
         StringBuilder stringBuffer = new StringBuilder();
         int i = 0;
-        for (QDLogBean QDLogBean : logList) {
-            if (tagFilter == QDLogBean.getType() || tagFilter == QDLoggerType.ALL) {
+        for (LogBean LogBean : logList) {
+            if (tagFilter == LogBean.getLevel() || tagFilter == QDLogLevel.ALL) {
                 int lineNum = (i + 1);
-                String str = lineNum + " " + QDLogBean.getTag() + " " + QDLogBean.getMessage() + " \n";
+                String str = lineNum + " " + LogBean.getTag() + " " + LogBean.getMessage() + " \n";
                 SpannableStringBuilder builder = new SpannableStringBuilder(str);
                 //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
                 ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.orange));
                 //AbsoluteSizeSpan smallSpan = new AbsoluteSizeSpan(12, true);
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 builder.setSpan(foregroundColorSpan, 0, (lineNum + "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
-                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(QDLogBean.getType().value()));
+                ForegroundColorSpan tagColorSpan = new ForegroundColorSpan(getTagColor(LogBean.getLevel().value()));
                 builder.setSpan(tagColorSpan, (lineNum + "").length() + 1, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);//包含两端start和end所在的端点
                 stringBuffer.append(builder.toString());
                 i++;

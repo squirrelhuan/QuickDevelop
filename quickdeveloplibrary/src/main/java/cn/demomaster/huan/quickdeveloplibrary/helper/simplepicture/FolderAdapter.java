@@ -19,8 +19,9 @@ import java.util.ArrayList;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
+public class FolderAdapter extends QuickRecyclerAdapter<FolderAdapter.ViewHolder> {
 
     private final Context mContext;
     private final ArrayList<Folder> mFolders;

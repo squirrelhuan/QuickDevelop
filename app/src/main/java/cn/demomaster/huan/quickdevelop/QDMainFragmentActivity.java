@@ -3,17 +3,26 @@ package cn.demomaster.huan.quickdevelop;
 import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.quickview.QuickViewManager;
+import cn.demomaster.qdrouter_library.quickview.ViewInfo;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.getAppName;
@@ -25,6 +34,7 @@ public class QDMainFragmentActivity extends QDActivity {
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +43,18 @@ public class QDMainFragmentActivity extends QDActivity {
             QDFragment fragment = new MainFragment();
             startFragment(fragment,R.id.container1,null);
         }
+        ViewInfo viewInfo = new ViewInfo();
+        viewInfo.setResId(R.layout.layout_floating_menu);
+        viewInfo.setTag("TGA");
+        viewInfo.setX(0);
+        viewInfo.setY(DisplayUtil.getScreenHeight(mContext)/2);
+        int width = DisplayUtil.dip2px(mContext,50);
+        FrameLayout.LayoutParams marginLayoutParams = new FrameLayout.LayoutParams(width,width);
+        marginLayoutParams.topMargin = DisplayUtil.getScreenHeight(mContext)/2;
+        marginLayoutParams.leftMargin = 0;
+        viewInfo.setLayoutParams(marginLayoutParams);
+        QuickViewManager.getInstance().setViewInfo(mContext,viewInfo);
+
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);
 
@@ -81,8 +103,14 @@ public class QDMainFragmentActivity extends QDActivity {
         String ip = null;
         if(NetworkHelper.isNetworkConnected(mContext)){
             ip = NetworkHelper.getLocalIpAddress(mContext);
-            QdToast.show(mContext,"ip:"+ip);
+            QdToast.showToast(mContext,"ip:"+ip);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override

@@ -47,7 +47,8 @@ public class HttpUtils {
     }).setLevel(level);
     
     public void setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
-        HttpUtils.loggingInterceptor = loggingInterceptor;
+        this.loggingInterceptor = loggingInterceptor;
+        init();
     }
     
     /* static {
@@ -69,12 +70,17 @@ public class HttpUtils {
     private static OkHttpClient client;
 
     HttpUtils(){
+        init();
+    }
+
+    private void init() {
         clientBuilder = new OkHttpClient.Builder().
                 connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(loggingInterceptor).
-                readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS).
-                writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-
+                .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+        if(loggingInterceptor!=null) {
+            clientBuilder.addInterceptor(loggingInterceptor);
+        }
         //client = clientBuilder.build();
         client = getUnsafeOkHttpClientBuilder().build();
     }

@@ -35,7 +35,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="confirm"
-                android:textColor="#303F9F"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16sp"/>
         </RelativeLayout>
 

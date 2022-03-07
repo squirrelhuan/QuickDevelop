@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+ <solid android:color="@color/white"/>
+
+    <!--corners标签: 圆角-->
+    <!--bottomLeftRadius 左下角-->
+    <!--bottomRightRadius 右下角-->
+    <!--topLeftRadius 左上角-->
+    <!--topRightRadius 右上角-->
+    <!--radius 是四个角, 设置了这个就不需要设置上面的四个了, PS:它的优先级比较低, 会被其他参数覆盖-->
+    <corners
+        android:radius="@dimen/dp_10"/>
+
+   <!-- <gradient
+        android:angle="180"
+        android:endColor="@color/white"
+        android:startColor="@color/white"
+        android:centerX="0.5"
+        android:centerY="0.5"
+        android:gradientRadius="50dp"
+        android:type="linear"/>-->
+    <!--linear : 线性渐变
+    radial：A radial gradient. 放射性渐变（圆形渐变），起始颜色从cenralX,centralY点开始。
+    sweep：A sweeping line gradient. 扫描式渐变（扇形渐变）。-->
+
+    <!--stroke标签: 边框-->
+    <!--width 边框的宽度-->
+    <!--color 边框的颜色-->
+    <!--下面两个参数是 把边框变成虚线用-->
+    <!--dashGap 虚线中空格的长度-->
+    <!--dashWidth 虚线中实线的长度-->
+   <!-- <stroke
+        android:width="0px"
+        android:color="@color/colorPrimary"
+        android:dashGap="0dip"
+        android:dashWidth="0dip"/>-->
+</shape>

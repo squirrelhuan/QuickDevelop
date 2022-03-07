@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -169,6 +170,7 @@ public class HierarchyView extends View {
         drawNode(canvas, viewNodeInfo);
 
         if (selectedNodeInfo != null) {
+            paint.setStrokeWidth(3);
             paint.setColor(Color.GREEN);
             int[] location = new int[2];
             getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标AccessibilityNodeInfo nodeInfo =selectedNodeInfo;
@@ -176,6 +178,18 @@ public class HierarchyView extends View {
             selectedNodeInfo.getBoundsInScreen(rect);//获取类名
             Rect rect1 = new Rect(rect.left - location[0], rect.top - location[1], rect.right - location[0], rect.bottom - location[1]);
             canvas.drawRect(rect1, paint);
+            String tip = rect1.width()+"x"+rect1.height();
+
+            paint.setXfermode(null);
+            paint.setStrokeWidth(1);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.GREEN);
+            paint.setTextSize(getContext().getResources().getDimensionPixelSize(R.dimen.quickdev_small_text_size));
+            // 文字宽
+            float textWidth = paint.measureText(tip);
+            // 文字baseline在y轴方向的位置
+            float baseLineY = Math.abs(paint.ascent() + paint.descent()) / 2f;
+            canvas.drawText(tip, rect1.left+(rect1.width()-textWidth)/2, rect1.bottom -baseLineY/2f , paint);
         }
     }
 

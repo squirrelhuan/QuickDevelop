@@ -25,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.slidingpanellayout.SlidingUpPanelLayout;
 
-@ActivityPager(name = "抽屉布局",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
+@ActivityPager(name = "抽屉布局",preViewClass = LoadingCircleBallView.class,resType = ResType.Resource,iconRes = R.mipmap.ic_drawer)
 public class SlidingPanelLayoutActivity extends BaseActivity {
 
     private SlidingUpPanelLayout mLayout;

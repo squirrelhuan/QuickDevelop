@@ -22,7 +22,7 @@ public abstract class QdDialogActivity extends Activity {
     private long id;
     public Object data;
     FrameLayout frameLayout;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
