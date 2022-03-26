@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="QDSearchView">
+        <!-- The layout to use for the search view. -->
+        <attr format="reference" name="layout"/>
+        <!-- The default state of the SearchView. If true, it will be iconified when not in
+             use and expanded when clicked. -->
+        <attr format="boolean" name="iconifiedByDefault"/>
+        <!-- An optional maximum width of the SearchView. -->
+        <attr name="android:maxWidth"/>
+        <!-- An optional user-defined query hint string to be displayed in the empty query field. -->
+        <attr format="string" name="queryHint"/>
+        <!-- Default query hint used when {@code queryHint} is undefined and
+             the search view's {@code SearchableInfo} does not provide a hint. -->
+        <attr format="string" name="defaultQueryHint"/>
+        <!-- The IME options to set on the query text field. -->
+        <attr name="android:imeOptions"/>
+        <!-- The input type to set on the query text field. -->
+        <attr name="android:inputType"/>
+        <!-- Close button icon -->
+        <attr format="reference" name="closeIcon"/>
+        <!-- Go button icon -->
+        <attr format="reference" name="goIcon"/>
+        <!-- Search icon -->
+        <attr format="reference" name="searchIcon"/>
+        <!-- Search icon displayed as a text field hint -->
+        <attr format="reference" name="searchHintIcon"/>
+        <!-- Voice button icon -->
+        <attr format="reference" name="voiceIcon"/>
+        <!-- Commit icon shown in the query suggestion row -->
+        <attr format="reference" name="commitIcon"/>
+        <!-- Layout for query suggestion rows -->
+        <attr format="reference" name="suggestionRowLayout"/>
+        <!-- Background for the section containing the search query -->
+        <attr format="reference" name="queryBackground"/>
+        <!-- Background for the section containing the action (e.g. voice search) -->
+        <attr format="reference" name="submitBackground"/>
+        <attr name="android:focusable"/>
+    </declare-styleable>
+
+</resources>
