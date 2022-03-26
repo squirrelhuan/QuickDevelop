@@ -67,7 +67,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
     CheckBox cb_tree_view;
     List<Node> mDatas = new ArrayList<>();
     SimpleTreeRecyclerAdapter mAdapter;
-
+    
     @Override
     public void onCreateView(Context context, WindowManager windowManager) {
         linearLayout = new FrameLayout(context.getApplicationContext());

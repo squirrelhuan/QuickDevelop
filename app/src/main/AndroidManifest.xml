@@ -62,7 +62,21 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".ui.activity.sample.HorizontalDragViewActivity"></activity>
+        <activity android:name=".ui.activity.QuickWebViewActivity"
+            android:label="打开html文件">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/x-javascript" />
+                <data android:mimeType="text/html" />
+                <!--<data android:mimeType="text/plain" />-->
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.sample.HorizontalDragViewActivity" />
         <activity
             android:name=".ui.activity.sample.SettingsActivity"
             android:label="@string/title_activity_settings" />
@@ -93,7 +107,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

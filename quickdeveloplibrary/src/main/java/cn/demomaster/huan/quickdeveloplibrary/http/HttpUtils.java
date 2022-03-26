@@ -219,7 +219,6 @@ public class HttpUtils {
     }
 
     private static HttpUtils instance;
-
     public static HttpUtils getInstance() {
         if (instance == null) {
             instance = new HttpUtils();

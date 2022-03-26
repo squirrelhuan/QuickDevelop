@@ -186,17 +186,12 @@ public class WifiFragment2 extends BaseFragment {
         });
         loadlayout.setOnLoadListener(new LoadLayout.OnLoadListener() {
             @Override
-            public void loadData() {
+            public void onLoadData() {
                 initData();
             }
 
             @Override
-            public void loadSuccess() {
-
-            }
-
-            @Override
-            public void loadFail() {
+            public void onLoadSuccess() {
 
             }
         });

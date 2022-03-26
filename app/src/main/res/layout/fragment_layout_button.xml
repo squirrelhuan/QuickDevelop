@@ -145,7 +145,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/red"
+                    android:background="@drawable/dk_health_edittext_style"
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center"
@@ -153,48 +153,50 @@
                     android:padding="@dimen/dp_0"
                     android:text="底部"
                     android:textSize="@dimen/sp_18"
-                    app:srcHeight="@dimen/dp_30"
-                    app:srcTop="@mipmap/ic_launcher"
-                    app:srcWidth="@dimen/dp_30" />
+                    app:qd_drawable_width="@dimen/dp_30"
+                    app:qd_drawable_height="@dimen/dp_30"
+                    android:drawableBottom="@mipmap/ic_launcher" />
 
                 <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/greenyellow"
+                    android:background="@drawable/dk_health_edittext_style"
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center"
                     android:text="右侧长文本"
                     android:textSize="@dimen/sp_18"
-                    app:srcHeight="@dimen/dp_30"
-                    app:srcLeft="@mipmap/ic_launcher"
-                    app:srcWidth="@dimen/dp_30" />
+                    android:drawableRight="@mipmap/ic_launcher"
+                    app:qd_drawable_width="@dimen/dp_30"
+                    app:qd_drawable_height="@dimen/dp_30" />
 
                 <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/orange"
+                    android:background="@drawable/dk_health_edittext_style"
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
                     android:text="左侧"
                     android:textSize="@dimen/sp_8"
-                    app:srcHeight="@dimen/dp_40"
-                    app:srcRight="@mipmap/ic_launcher"
-                    app:srcWidth="@dimen/dp_40" />
+                    app:qd_drawable_width="@dimen/dp_40"
+                    app:qd_drawable_height="@dimen/dp_40"
+                    android:drawableLeft="@mipmap/ic_launcher" />
 
                 <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/blue"
+                    android:background="@drawable/dk_health_edittext_style"
                     android:button="@null"
                     android:drawablePadding="10dp"
                     android:gravity="center"
-                    android:text="顶部"
-                    app:srcBottom="@mipmap/ic_launcher" />
+                    android:drawableTop="@mipmap/ic_launcher"
+                    android:text="顶部 bug"
+                    app:qd_drawable_width="@dimen/dp_140"
+                    app:qd_drawable_height="@dimen/dp_40" />
             </RadioGroup>
         </LinearLayout>
     </cn.demomaster.huan.quickdeveloplibrary.widget.QDScrollView>

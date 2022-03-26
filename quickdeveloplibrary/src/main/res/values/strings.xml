@@ -44,4 +44,12 @@
 
     <string name="retry">重试</string>
     <string name="click_retry">点击重试</string>
+
+    <string name="week_Sunday">周日</string><!--周日-->
+    <string name="week_Monday">周一</string><!--周一-->
+    <string name="week_Tuesday">周二</string><!--周二-->
+    <string name="week_Wednesday">周三</string><!--周三-->
+    <string name="week_Thursday">周四</string><!--周四-->
+    <string name="week_Friday">周五</string><!--周五-->
+    <string name="week_Saturday">周六</string><!--周六-->
 </resources>

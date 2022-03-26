@@ -38,7 +38,7 @@ public class QDApplication extends Application implements UpgradeInterface {
         instance = this;
         handler = new Handler();
         QdToast.setContext(this);
-        //AppConfig.getInstance().load(this, "config/project.conf");
+        AppConfig.getInstance().load(this, "config/project.conf");
         //String logPath = (String) AppConfig.getInstance().getConfigMap().get("LogFilePath");
         /*if(!TextUtils.isEmpty(logPath)) {
             QDLogger.init(this, logPath);

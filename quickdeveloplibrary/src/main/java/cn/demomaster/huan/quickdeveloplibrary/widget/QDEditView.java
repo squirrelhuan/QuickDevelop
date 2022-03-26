@@ -59,7 +59,7 @@ public class QDEditView extends View implements ViewTreeObserver.OnPreDrawListen
                 cursorState = 1;
             }
             postInvalidate();
-            QDLogger.i("cursorState=" + cursorState);
+            QDLogger.println("cursorState=" + cursorState);
             handler.postDelayed(runnable, cursorTime);
         }
     };

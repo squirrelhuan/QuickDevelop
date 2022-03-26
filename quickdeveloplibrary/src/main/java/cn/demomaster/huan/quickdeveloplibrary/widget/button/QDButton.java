@@ -91,8 +91,7 @@ public class QDButton extends AppCompatButton {
 
     public void setBackgroundColor(int color){
            /* QDRoundButtonDrawable qdRoundButtonDrawable = (QDRoundButtonDrawable) getBackground();
-            qdRoundButtonDrawable.setColor(color);
-*/
+            qdRoundButtonDrawable.setColor(color);*/
             colorBg = QDViewUtil.getColorStateList(color);
             setBackground(generateDrawable());
     }

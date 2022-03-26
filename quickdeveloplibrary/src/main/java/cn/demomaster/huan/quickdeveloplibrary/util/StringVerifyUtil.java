@@ -55,7 +55,7 @@ public class StringVerifyUtil {
         if (TextUtils.isEmpty(telephone)) {
             return false;
         }
-        return (telephone.length() > min && telephone.length() < max);
+        return (telephone.length() >=min && telephone.length() <= max);
     }
 
     //手机格式验证

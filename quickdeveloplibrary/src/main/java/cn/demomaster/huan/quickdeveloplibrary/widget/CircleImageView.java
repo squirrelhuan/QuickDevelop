@@ -17,7 +17,6 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 /**
  * Created by huan on 2017/11/14.
  */
-
 public class CircleImageView extends AppCompatImageView {
     public CircleImageView(Context context) {
         super(context);

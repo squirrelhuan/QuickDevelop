@@ -32,10 +32,16 @@
     <attr name="qd_btn_internal_width" format="dimension" />
     <attr name="qd_textColor" format="color" />
     <attr name="qd_textSize" format="dimension" />
+    <attr name="qd_drawable_width" format="dimension"/>
+    <attr name="qd_drawable_height" format="dimension"/>
     <attr name="qd_text" format="string" />
 
     <attr name="QDButtonStyle" format="reference" />
     <declare-styleable name="QDButton" parent="QDTextView">
+        <attr name="qd_backgroundColor" />
+        <attr name="qd_backgroundColor_disable" />
+        <attr name="qd_borderColor" />
+        <attr name="qd_borderWidth" />
         <attr name="qd_isRadiusAdjustBounds" />
         <attr name="qd_radius" />
         <attr name="qd_radiusTopLeft" />
@@ -43,7 +49,6 @@
         <attr name="qd_radiusBottomLeft" />
         <attr name="qd_radiusBottomRight" />
         <attr name="qd_btn_internal_width" />
-
     </declare-styleable>
     <declare-styleable name="QDTextView">
         <attr name="qd_backgroundColor" />
@@ -58,7 +63,9 @@
         <attr name="qd_btn_internal_width" />
         <attr name="qd_textColor" />
         <attr name="qd_textSize" />
-        textSize
+        <attr name="qd_drawable_width" />
+        <attr name="qd_drawable_height" />
+
     </declare-styleable>
 
 
@@ -195,7 +202,7 @@
         <attr name="loadlayout" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="MyRadioButton">
+<!--    <declare-styleable name="MyRadioButton">
         <attr name="srcLeft" format="reference" />
         <attr name="srcTop" format="reference" />
         <attr name="srcRight" format="reference" />
@@ -203,7 +210,7 @@
         <attr name="srcHeight" format="dimension" />
         <attr name="srcWidth" format="dimension" />
         <attr name="srcMargin" format="dimension" />
-    </declare-styleable>
+    </declare-styleable>-->
     <declare-styleable name="MyRatingBar">
         <attr name="foregroundColor" format="color" />
         <attr name="backgroundColor" format="color" />

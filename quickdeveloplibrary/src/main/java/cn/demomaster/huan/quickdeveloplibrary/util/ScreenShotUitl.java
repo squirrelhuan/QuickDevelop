@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
@@ -25,13 +26,14 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * Created by Squirrel桓 on 2018/10/29.
  */
 public class ScreenShotUitl {
-    
+
     public static View getContentView(Activity context) {
         return context.findViewById(android.R.id.content);
     }
-    public static Bitmap shotActivity(Activity activity,boolean withStatusBar) {
+
+    public static Bitmap shotActivity(Activity activity, boolean withStatusBar) {
         int statusBarHeights = 0;
-        if(!withStatusBar){
+        if (!withStatusBar) {
             // 获取windows中最顶层的view
             View view = activity.getWindow().getDecorView().getRootView();
             // 获取状态栏高度
@@ -63,8 +65,8 @@ public class ScreenShotUitl {
             v.setDrawingCacheEnabled(true);
             v.buildDrawingCache();
             Bitmap bitmap = v.getDrawingCache();
-            Bitmap bmp =null;
-            if(bitmap!=null) {
+            Bitmap bmp = null;
+            if (bitmap != null) {
                 bmp = Bitmap.createBitmap(bitmap);
             }
             //Bitmap b = Bitmap.createBitmap(v.getDrawingCache(), 0, 0, w, h);
@@ -107,12 +109,6 @@ public class ScreenShotUitl {
         return bitmap;
     }
 
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
     /**
      * 分享截图
      *
@@ -122,26 +118,23 @@ public class ScreenShotUitl {
     public static Uri saveImage(Activity activity, Bitmap bitmap) {
         //String time = TimeUtils.getTimeAs_yyyyMMdd(System.currentTimeMillis());
         Uri uri = null;
-        String path = android.os.Environment.getExternalStorageDirectory() + "/GENG";
+        String path = QDFileUtil.getDiskCacheDir(activity) + "/img";
         FileOutputStream outputStream;
         try {
             File file = new File(path);
             if (!file.exists())
                 file.mkdirs();
-            path = file.getPath() + "/欢迎分享.jpg";
+            path = file.getPath() + "/share.jpg";
             int permission = ActivityCompat.checkSelfPermission(activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                        REQUEST_EXTERNAL_STORAGE);
-                return uri;
+                outputStream = new FileOutputStream(path);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                outputStream.flush();
+                outputStream.close();
+                String imageUri = insertImageToSystem(activity, path, "名称", "描述");
+                uri = Uri.parse(imageUri);
             }
-            outputStream = new FileOutputStream(path);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            outputStream.flush();
-            outputStream.close();
-            String imageUri = insertImageToSystem(activity, path, "名称", "描述");
-            uri = Uri.parse(imageUri);
         } catch (Exception e) {
             QDLogger.e(e);
         }
@@ -183,15 +176,15 @@ public class ScreenShotUitl {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
-        if (subject != null && !"".equals(subject)) {
+        if (!TextUtils.isEmpty(subject)) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
-        if (content != null && !"".equals(content)) {
+        if (!TextUtils.isEmpty(content)) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
 
-        // 设置弹出框标题
-        if (dlgTitle != null && !"".equals(dlgTitle)) { // 自定义标题
+        //设置弹出框标题
+        if (!TextUtils.isEmpty(dlgTitle)) { // 自定义标题
             context.startActivity(Intent.createChooser(intent, dlgTitle));
         } else { // 系统默认标题
             context.startActivity(intent);
@@ -199,7 +192,7 @@ public class ScreenShotUitl {
     }
 
     public static int pixel(Activity activity, int x, int y) {
-        int color = shotActivity(activity,true).getPixel(x, y);
+        int color = shotActivity(activity, true).getPixel(x, y);
         int red = (color & 0xff0000) >> 16;
         int green = (color & 0x00ff00) >> 8;
         int blue = (color & 0x0000ff);

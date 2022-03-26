@@ -28,7 +28,7 @@ import cn.demomaster.quickdatabaselibrary.listener.UpgradeInterface;
 import cn.demomaster.quickdatabaselibrary.model.SqliteTable;
 
 /**
- * 文件浏览
+ * 数据库文件浏览
  */
 public class DBTablesFragment extends QuickFragment {
     @Override

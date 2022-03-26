@@ -13,10 +13,12 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 
 import androidx.core.content.FileProvider;
@@ -43,6 +45,7 @@ import java.util.List;
 import java.util.Properties;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
+import cn.demomaster.huan.quickdeveloplibrary.util.audio.ByteUtils;
 import cn.demomaster.huan.quickdeveloplibrary.util.terminal.ADBHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -106,6 +109,11 @@ public class QDFileUtil {
                                            String write_str, boolean append) {
         File file = new File(endWithSeparator(dirPath) + fileName);
         writeFileSdcardFile(file, write_str, append);
+    }
+
+    public static void writeFileSdcardFile(String fileName,
+                                           byte[] bytes, boolean append) {
+        writeFile(new File(fileName), bytes, append);
     }
 
     public static String endWithSeparator(String filePath) {
@@ -176,6 +184,48 @@ public class QDFileUtil {
         return res;
     }
 
+    // 读SD中的文件
+    public static String readFileSdcardFile(InputStream is) {
+        String text = null;
+        try {
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            text = new String(buffer, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            QDLogger.e(e);
+        }
+        return text;
+    }
+
+    public static File sss(Context context, Uri uri) {
+        File file = null;
+        //把文件保存到沙盒
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME);// MediaStore.Images.Media.DATA
+            String displayName = cursor.getString(column_index);
+            try {
+                InputStream is = contentResolver.openInputStream(uri);
+                File cache = new File(context.getExternalCacheDir().getAbsolutePath(), Math.round((Math.random() + 1) * 1000) + displayName);
+                FileOutputStream fos = new FileOutputStream(cache);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    FileUtils.copy(is, fos);
+                }
+                file = cache;
+                fos.close();
+                is.close();
+                //String str = QDFileUtil.readFileSdcardFile(is);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+        return file;
+    }
+
     /**
      * 从项目中res文件目录下复制文件到指定目录
      *
@@ -203,6 +253,23 @@ public class QDFileUtil {
             e.printStackTrace();
         }
         return file.getPath();
+    }
+
+    public static byte[] readResource(Context context, int resourceId) {
+        final InputStream is = context.getResources().openRawResource(resourceId);
+        byte[] tt = new byte[1024 * 10];
+        byte[] bytes1 = new byte[0];
+        int len;
+        try {
+            while (((len = is.read(tt)) != -1)) {
+                bytes1 = ByteUtils.merger(bytes1, tt);
+                //System.out.println("接收信息：" + qdMessage.getTime() + "," + reply);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bytes1;
     }
 
     public static String getFromAssets(Context context, String fileName) {
@@ -809,19 +876,19 @@ public class QDFileUtil {
         return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
     }
 
-    public static Uri getUrifromFile(Context context,String authority, File file) {
+    public static Uri getUrifromFile(Context context, String authority, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return getUrifromPath1(context,authority, file.getAbsolutePath());
+            return getUrifromPath1(context, authority, file.getAbsolutePath());
         } else {
             return Uri.fromFile(file);
         }
     }
 
-    public static Uri getUrifromPath1(Context context,String authority, String path) {
+    public static Uri getUrifromPath1(Context context, String authority, String path) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             File file = new File(path);
             String fileType = context.getContentResolver().getType(Uri.fromFile(file));
-            QDLogger.e("getUrifromPath1 fileType=" + fileType+",authority="+authority);
+            QDLogger.e("getUrifromPath1 fileType=" + fileType + ",authority=" + authority);
             if (!file.isDirectory() && !TextUtils.isEmpty(fileType)) {
                 ContentValues contentValues = new ContentValues(1);
                 contentValues.put(MediaStore.Images.Media.DATA, path);
@@ -968,10 +1035,11 @@ public class QDFileUtil {
         am.getMemoryInfo(memoryInfo);
         return memoryInfo.availMem;
     }
-    
+
     public static String getFileUniqueKey(File file) {
-        return getFileMD5(file)+file.length();
+        return getFileMD5(file) + file.length();
     }
+
     public static String getFileMD5(File file) {
         if (!file.isFile()) {
             return null;
@@ -994,7 +1062,7 @@ public class QDFileUtil {
         return bytesToHexString(digest.digest());
     }
 
-    
+
     public static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder();
         if (src == null || src.length <= 0) {
@@ -1012,10 +1080,10 @@ public class QDFileUtil {
     }
 
 
-
     /*************************************************/
     protected static final String MIMETYPES_PROPERTIES = "FileTypes.properties";
     protected static Properties mFileTypes;
+
     private static void setFileTypes(Context context) {
         try {
             mFileTypes = new Properties();
@@ -1024,16 +1092,17 @@ public class QDFileUtil {
             e.printStackTrace();
         }
     }
-    public static String getFileType(Context context,File file) {
 
-        if (file == null||!file.exists() || file.length() < 11) {
+    public static String getFileType(Context context, File file) {
+
+        if (file == null || !file.exists() || file.length() < 11) {
             return null;
         }
-        if(mFileTypes==null){
+        if (mFileTypes == null) {
             setFileTypes(context);
         }
         String header = get10ByteHeader(file);
-        QDLogger.println("header="+header);
+        QDLogger.println("header=" + header);
         String fileSuffix = mFileTypes.getProperty(header);
         /*
          * 优化处理：在不同的设备上同样类型的文件，文件头前面内容未必一致，可能只有前几个一致，后面就不同了
@@ -1158,6 +1227,7 @@ public class QDFileUtil {
     /**
      * 当SD卡存在或者SD卡不可被移除的时候，就调用getExternalCacheDir()方法来获取缓存路径，否则就调用getCacheDir()方法来获取缓存路径。前者获取到的就是 /sdcard/Android/data//cache 这个路径，而后者获取到的是 /data/data//cache 这个路径。
      *   注意：这两种方式的缓存都会在卸载app的时候被系统清理
+     *
      * @param context
      * @return
      */

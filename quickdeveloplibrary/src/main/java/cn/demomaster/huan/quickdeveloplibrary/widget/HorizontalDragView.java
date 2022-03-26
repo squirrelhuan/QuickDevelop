@@ -65,7 +65,7 @@ public class HorizontalDragView extends LinearLayout {
             leftView = getChildAt(0);
             rightView = getChildAt(1);
             leftOffset = leftView.getLeft();
-            QDLogger.println("onLayout leftOffset=" + leftOffset);
+            //QDLogger.println("onLayout leftOffset=" + leftOffset);
             leftView.layout(l + leftOffset, t, l + leftView.getMeasuredWidth() + leftOffset, b);
             rightView.layout(leftView.getLeft() + leftView.getMeasuredWidth(), t, r, b);
         }
@@ -96,10 +96,10 @@ public class HorizontalDragView extends LinearLayout {
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
                 if (child.equals(leftView)) {
-                    QDLogger.println(TAG, "左边 到达" + left);
+                    //QDLogger.println(TAG, "左边 到达" + left);
                     return Math.max(Math.min(0, left), -leftView.getMeasuredWidth());
                 } else if (child.equals(rightView)) {
-                    QDLogger.println(TAG, "右边 到达" + left);
+                    //QDLogger.println(TAG, "右边 到达" + left);
                     if (dx > 0) {
                         return Math.min(leftView.getMeasuredWidth(), left);
                     } else {

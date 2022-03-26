@@ -66,6 +66,7 @@ public class QDTextView extends AppCompatTextView {
 
         //QDRoundButtonDrawable bg = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QMUIViewHelper.setBackgroundKeepingPadding(this, drawable);
+        QDViewUtil.handleCustomAttrs(this,attrs);
     }
 
     @Override

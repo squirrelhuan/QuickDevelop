@@ -40,7 +40,7 @@ import cn.demomaster.quickdatabaselibrary.model.TableItem;
 import cn.demomaster.quickdatabaselibrary.view.TableView;
 
 /**
- * 文件浏览
+ * 数据库表详情页
  */
 public class DBTableDetailFragment extends QuickFragment implements UpgradeInterface {
     @Override
@@ -64,63 +64,63 @@ public class DBTableDetailFragment extends QuickFragment implements UpgradeInter
 
     @Override
     public void initView(View rootView) {
-        btn_add01 =findViewById(R.id.btn_add01);
+        btn_add01 = findViewById(R.id.btn_add01);
         btn_add01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insert1(v);
             }
         });
-        btn_add02 =findViewById(R.id.btn_add02);
+        btn_add02 = findViewById(R.id.btn_add02);
         btn_add02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insert2(v);
             }
         });
-        btn_fin1 =findViewById(R.id.btn_fin1);
+        btn_fin1 = findViewById(R.id.btn_fin1);
         btn_fin1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findOne1(v);
             }
         });
-        btn_fin02 =findViewById(R.id.btn_fin02);
+        btn_fin02 = findViewById(R.id.btn_fin02);
         btn_fin02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findList2(v);
             }
         });
-        btn_fin03 =findViewById(R.id.btn_fin03);
+        btn_fin03 = findViewById(R.id.btn_fin03);
         btn_fin03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findList2(v);
             }
         });
-        btn_del01 =findViewById(R.id.btn_del01);
+        btn_del01 = findViewById(R.id.btn_del01);
         btn_del01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 delete01(v);
             }
         });
-        btn_del02 =findViewById(R.id.btn_del02);
+        btn_del02 = findViewById(R.id.btn_del02);
         btn_del02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteAll(v);
             }
         });
-        btn_mod01 =findViewById(R.id.btn_mod01);
+        btn_mod01 = findViewById(R.id.btn_mod01);
         btn_mod01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 modify01(v);
             }
         });
-        btn_clear =findViewById(R.id.btn_clear);
+        btn_clear = findViewById(R.id.btn_clear);
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,28 +137,30 @@ public class DBTableDetailFragment extends QuickFragment implements UpgradeInter
             String dbPath = getArguments().getString("DbFilePath");
             String tableFileName = getArguments().getString("DbTableFile");
             setTitle(tableFileName);
-           //quick_db1.db 在data/data/下生成对应的db文件
+            //quick_db1.db 在data/data/下生成对应的db文件
             //quick_db2.db 在assets下的db文件
             dbHelper = new QuickDbHelper(mContext, dbPath, dbPath, null, 10, this);
-            
+
             //Member mm = dbHelper.findOne("select * from "+tableFileName, Member.class);
             //System.out.println("mm="+mm);
             //生成表
             findTable(tableFileName);
         }
     }
+
     TableInfo tableInfo;
+
     private void findTable(String tableName) {
         print("查询表结构");
         tableInfo = dbHelper.findTableByName(tableName);
-        QDLogger.formatArray("字段集",tableInfo.getTableColumns());
+        QDLogger.formatArray("字段集", tableInfo.getTableColumns());
         initTableView(tableInfo);
     }
-    
+
     private void initTableView(TableInfo tableInfo) {
         tableView = findViewById(R.id.tableView);
         List<String> columnList = new ArrayList<>();
-        for(TableColumn tableColumn:tableInfo.getTableColumns()){
+        for (TableColumn tableColumn : tableInfo.getTableColumns()) {
             columnList.add(tableColumn.getName());
         }
         //String[] titles = (String[]) columns.toArray();// new String[]{"id", "name", "age", "sex", "nickname", "header"};
@@ -198,15 +200,15 @@ public class DBTableDetailFragment extends QuickFragment implements UpgradeInter
     }
 
     private void getAllRecord() {
-        List<TableItem>  tableItemList = dbHelper.findArray(tableInfo.getTableName(),"select * from "+tableInfo.getTableName());
+        List<TableItem> tableItemList = dbHelper.findArray(tableInfo.getTableName(), "select * from " + tableInfo.getTableName());
         print("总记录数：" + (tableItemList == null ? "0" : tableItemList.size()));
         tableView.setData(tableItemList);
     }
 
     public void findList2(View view) {
-        List<TableItem>  tableItemList = dbHelper.findArray(tableInfo.getTableName(),"select * from "+tableInfo.getTableName());
+        List<TableItem> tableItemList = dbHelper.findArray(tableInfo.getTableName(), "select * from " + tableInfo.getTableName());
         print("结果数量：" + (tableItemList == null ? "0" : tableItemList.size()));
-        QDLogger.formatArray("结果集",tableItemList);
+        QDLogger.formatArray("结果集", tableItemList);
         tableView.setData3(tableItemList);
     }
 
@@ -235,12 +237,12 @@ public class DBTableDetailFragment extends QuickFragment implements UpgradeInter
         member.setAge(new Random().nextInt());*/
 
         List<TableColumn> tableColumnList = new ArrayList<>();
-        for(TableColumn tableColumn: tableInfo.getTableColumns()){
+        for (TableColumn tableColumn : tableInfo.getTableColumns()) {
             tableColumn.setValueObj("1");
             tableColumnList.add(tableColumn);
         }
-       boolean b = dbHelper.insert(tableInfo.getTableName(),tableColumnList);
-        print("单条数据插入:" + b);
+        dbHelper.insert(tableInfo.getTableName(), tableColumnList);
+        print("单条数据插入");
         getAllRecord();
        /* User user = new User();
         user.setName("张三");
