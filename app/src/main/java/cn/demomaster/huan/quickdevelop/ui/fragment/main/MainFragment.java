@@ -22,26 +22,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlankFragment;
-import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
+import cn.demomaster.huan.quickdeveloplibrary.ui.fragment.WebViewFragment;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.ScrollingTabsAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
-public class MainFragment extends BaseFragment {
+public class MainFragment extends QuickFragment {
 
     @Nullable
     @Override
@@ -241,7 +241,7 @@ public class MainFragment extends BaseFragment {
     public void initScrollableTabs(View rootView, ViewPager2 mViewPager) {
         ScrollableTabView mScrollingTabs = rootView.findViewById(R.id.scrollingTabs);
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(getActivity());
-        mScrollingTabs.setScrollingTabsAdapter(mScrollingTabsAdapter);
+        mScrollingTabs.setTabsAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
     }
 

@@ -20,9 +20,8 @@ import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.CrashActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.CsqliteActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.IDCardActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.database.QuickDataActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.SandBoxActivity;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.database.QuickDataActivity;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AccessibilityServiceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AdbForwardFragment;
@@ -31,7 +30,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DownloadFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DragViewFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.ErrorTestFragment;
-import cn.demomaster.huan.quickdevelop.ui.fragment.helper.TerminalFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.FileManagerFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.FloatingFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.HttpFragment;
@@ -47,6 +45,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.helper.PrinterFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.ScreenShotFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.SettingFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.SocketFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.TerminalFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.TrafficFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.UpdateAppFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.WifiFragment;
@@ -54,6 +53,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.helper.WifiFragment2;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.serialport.sample.SerialportMain;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Components视图
@@ -62,7 +62,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class HelperFragment extends BaseFragment {
+public class HelperFragment extends QuickFragment {
 
     private RecyclerView recyclerView;
     private ComponentAdapter componentAdapter;

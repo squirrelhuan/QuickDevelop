@@ -9,17 +9,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.main.DesignPatternFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
+import cn.demomaster.huan.quickdeveloplibrary.ui.fragment.WebViewFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 /**

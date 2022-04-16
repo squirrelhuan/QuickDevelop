@@ -29,7 +29,6 @@ import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.AudioAdapter;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
@@ -38,6 +37,7 @@ import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.audio.ByteUtils;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickaudiorecorderlib.AudioRecorder;
 import cn.demomaster.quickaudiorecorderlib.RecordStreamListener;
 import cn.demomaster.quickaudiorecorderlib.view.WaveLineView;
@@ -54,7 +54,7 @@ import static cn.demomaster.quickaudiorecorderlib.AudioUtil.calculateVolume;
  * 2018/8/25
  */
 @ActivityPager(name = "音频录制", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_audio)
-public class AudioRecordFragment extends BaseFragment {
+public class AudioRecordFragment extends QuickFragment {
 
     View mView;
 

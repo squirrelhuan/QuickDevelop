@@ -1,7 +1,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -24,7 +23,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.SoundHelper;
  */
 
 @ActivityPager(name = "音频播放", preViewClass = TextView.class, resType = ResType.Custome)
-public class SoundFragment extends BaseFragment {
+public class SoundFragment extends QuickFragment {
 
     @NonNull
     @Override

@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.StyleRes;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -63,9 +65,17 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     private int padding = 15;
     private int animationStyleID = -1;
 
+    public QDActionDialog(Context context, Builder builder,@StyleRes int themeResId) {
+        //设置全屏将会覆盖状态栏 可以自定义主题
+        super(context, themeResId);
+        initDialog(builder);
+    }
     public QDActionDialog(Context context, Builder builder) {
-        //设置全屏将会覆盖状态栏
-        super(context, builder.styleId);
+        super(context);
+        initDialog(builder);
+    }
+
+    private void initDialog(Builder builder) {
         gravity = builder.gravity;
         this.context = builder.context;
         message = builder.message;
@@ -404,7 +414,8 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     }*/
 
     public static class Builder {
-        public int styleId = R.style.Dialog_Fullscreen;
+        public boolean coverStatusBar;
+        public @StyleRes int themeResId = R.style.Quick_Dialog;
         public int gravity = Gravity.CENTER;
         private Context context;
         private String message;
@@ -580,7 +591,11 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         }
 
         public QDActionDialog create() {
-            return new QDActionDialog(context, this);
+            if(coverStatusBar){
+                return new QDActionDialog(context, this,themeResId);
+            }else {
+                return new QDActionDialog(context, this);
+            }
         }
     }
 }

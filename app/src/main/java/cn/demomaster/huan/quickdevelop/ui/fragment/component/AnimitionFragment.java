@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.animation.QDValueAnimator;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -23,7 +23,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * 2018/8/25
  */
 @ActivityPager(name = "动画测试", preViewClass = QDButton.class, resType = ResType.Custome)
-public class AnimitionFragment extends BaseFragment {
+public class AnimitionFragment extends QuickFragment {
 
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

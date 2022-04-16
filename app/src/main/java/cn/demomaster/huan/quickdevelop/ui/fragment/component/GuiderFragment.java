@@ -14,11 +14,11 @@ import androidx.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderHelper;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderModel;
  */
 
 @ActivityPager(name = "操作引导", preViewClass = TextView.class, resType = ResType.Custome)
-public class GuiderFragment extends BaseFragment {
+public class GuiderFragment extends QuickFragment {
 
     @NonNull
     @Override

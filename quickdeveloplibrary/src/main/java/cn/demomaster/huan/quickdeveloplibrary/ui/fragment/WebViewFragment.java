@@ -1,4 +1,4 @@
-package cn.demomaster.huan.quickdevelop.ui.fragment.designer;
+package cn.demomaster.huan.quickdeveloplibrary.ui.fragment;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -10,16 +10,14 @@ import android.webkit.WebView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.component.AppletsFragment;
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebView;
 import cn.demomaster.huan.quickdeveloplibrary.view.webview.QuickWebChromeClient;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.fragment.AppletsFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
@@ -29,8 +27,6 @@ import cn.demomaster.qdrouter_library.view.ImageTextView;
  */
 @ActivityPager(name = "Web", preViewClass = StateView.class, resType = ResType.Custome)
 public class WebViewFragment extends AppletsFragment {
-
-    @BindView(R.id.webView)
     QDWebView webView;
 
     @Nullable
@@ -42,7 +38,7 @@ public class WebViewFragment extends AppletsFragment {
     }
     String url;
     public void initView(View rootView) {
-        ButterKnife.bind(this,rootView);
+        webView = findViewById(R.id.webView);
         ImageTextView rightView = findViewById(R.id.it_actionbar_menu);
         if(rightView!=null){
             rightView.setOnClickListener(v -> webView.loadUrl(url));

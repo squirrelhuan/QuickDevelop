@@ -19,9 +19,9 @@ public enum Gravity {
 
     public static Gravity getEnum(int value) {
         Gravity[] enumArray = Gravity.values();
-        for (int i = 0; i < enumArray.length; i++) {
-            if (enumArray[i].value() == value) {
-                return enumArray[i];
+        for (Gravity gravity : enumArray) {
+            if (gravity.value() == value) {
+                return gravity;
             }
         }
         QDLogger.println("未找到 value="+value);

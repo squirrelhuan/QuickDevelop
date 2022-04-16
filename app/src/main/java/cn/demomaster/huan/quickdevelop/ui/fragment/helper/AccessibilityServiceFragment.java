@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
  */
 
 @ActivityPager(name = "无障碍服务", preViewClass = TextView.class, resType = ResType.Custome)
-public class AccessibilityServiceFragment extends BaseFragment {
+public class AccessibilityServiceFragment extends QuickFragment {
 
     @BindView(R.id.btn_01)
     Button btn_01;

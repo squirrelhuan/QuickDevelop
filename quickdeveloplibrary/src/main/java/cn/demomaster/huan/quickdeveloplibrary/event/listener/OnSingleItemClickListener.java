@@ -16,9 +16,9 @@ public abstract class OnSingleItemClickListener implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - lastClickTime > clickInterval) {
-            lastClickTime = currentTimeMillis;
             onItemClickEvent(parent,view,position,id);
         }
+        lastClickTime = currentTimeMillis;
     }
 
     public abstract void onItemClickEvent(AdapterView<?> parent, View view, int position, long id);

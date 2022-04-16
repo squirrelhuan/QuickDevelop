@@ -38,9 +38,7 @@ public class SimpleTreeRecyclerAdapter extends TreeRecyclerAdapter {
         final MyHoder viewHolder = (MyHoder) holder;
         //todo do something
         viewHolder.cb.setOnClickListener(v -> setChecked(node,viewHolder.cb.isChecked()));
-
         viewHolder.cb.setChecked(node.isChecked());
-        
         if (node.getIcon() == -1) {
             viewHolder.icon.setVisibility(View.INVISIBLE);
         } else {

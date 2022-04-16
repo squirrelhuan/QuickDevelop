@@ -16,11 +16,11 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.keybored.keybored02.QDKeyboard;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -29,7 +29,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout;
  */
 
 @ActivityPager(name = "Keyboard3", preViewClass = TextView.class, resType = ResType.Custome)
-public class Keyboard3Fragment extends BaseFragment {
+public class Keyboard3Fragment extends QuickFragment {
 
     @BindView(R.id.et_system_none)
     EditText et_system_none;

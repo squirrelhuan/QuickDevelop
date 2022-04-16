@@ -3,24 +3,21 @@ package cn.demomaster.huan.quickdevelop;
 import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import cn.demomaster.huan.quickdevelop.ui.fragment.main.MainFragment;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.base.fragment.QDFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.qdrouter_library.quickview.QuickViewManager;
 import cn.demomaster.qdrouter_library.quickview.ViewInfo;
 import cn.demomaster.quickpermission_library.PermissionHelper;
@@ -40,7 +37,7 @@ public class QDMainFragmentActivity extends QDActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qdmain);
         if (savedInstanceState == null) {
-            QDFragment fragment = new MainFragment();
+            QuickFragment fragment = new MainFragment();
             startFragment(fragment,R.id.container1,null);
         }
         ViewInfo viewInfo = new ViewInfo();

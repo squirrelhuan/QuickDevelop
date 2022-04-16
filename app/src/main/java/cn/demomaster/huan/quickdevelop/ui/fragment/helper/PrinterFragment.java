@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.util.NetPrinter;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Squirrel桓
@@ -26,7 +26,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 
 @ActivityPager(name = "打印机", preViewClass = TextView.class, resType = ResType.Custome)
-public class PrinterFragment extends BaseFragment {
+public class PrinterFragment extends QuickFragment {
 
     //Components
     @BindView(R.id.btn_print)

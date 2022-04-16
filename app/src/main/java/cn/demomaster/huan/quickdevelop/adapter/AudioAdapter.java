@@ -106,5 +106,4 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         void onItemPreview(View view, int position,Image image);
         void onDelete(View view, int position);
     }
-
 }

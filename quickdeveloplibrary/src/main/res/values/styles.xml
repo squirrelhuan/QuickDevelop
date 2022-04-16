@@ -41,7 +41,6 @@
         <item name="android:windowExitAnimation">@anim/pop_share_hide</item>
     </style>
 
-
     <style name="FadeInPopWin">
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowEnterAnimation">@anim/pop_win_content_fade_in</item>
@@ -53,7 +52,6 @@
         <item name="android:windowEnterAnimation">@anim/anim_pop_toast_in</item>
         <item name="android:windowExitAnimation">@anim/anim_pop_toast_out</item>
     </style>
-
 
     <!-- Custom tabs1 -->
     <style name="Tabs">
@@ -133,6 +131,8 @@
         <item name="android:windowExitAnimation">@anim/pop_win_content_fade_out</item>
     </style>
 
+    <style name="Quick_Dialog">
+    </style>
     <style name="Dialog_Fullscreen">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
@@ -155,11 +155,6 @@
         <item name="android:paddingLeft">@dimen/dp_4</item>
         <item name="android:paddingRight">@dimen/dp_4</item>
         <!--<item name="android:paddingTop">@android:dimen/status_bar_height</item>-->
-    </style>
-
-    <style name="quick_actionbar_common_weight">
-        <item name="android:textColor">@color/qd_actionbar_textcolor</item>
-        <item name="android:tint">@color/qd_actionbar_textcolor</item>
     </style>
 
    <!-- <style name="quick_button_small">

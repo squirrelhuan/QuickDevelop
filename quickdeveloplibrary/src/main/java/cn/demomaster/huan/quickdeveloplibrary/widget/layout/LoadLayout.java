@@ -3,7 +3,6 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.layout;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnSingleClickListener;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -49,17 +49,16 @@ public class LoadLayout extends FrameLayout {
     LayoutInflater mInflater;
     View loadView;
     View contentView;
-    OnClickListener onClickListener = new OnClickListener() {
+    OnSingleClickListener onClickListener = new OnSingleClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClickEvent(View v) {
             if (onLoadListener != null) {
-                QDLogger.println("onClick errorCode="+errorCode);
-                onLoadListener.onRetry(LoadLayout.this,errorCode);
+                //QDLogger.println("onClick errorCode="+errorCode);
+                onLoadListener.onRetry(LoadLayout.this,requestCode);
             }
         }
     };
     private void init(AttributeSet attrs) {
-        viewBuilders = new ArrayList<>();
         mInflater = LayoutInflater.from(getContext());
         int loadViewLayoutId = 0;
         if (attrs != null) {
@@ -105,18 +104,14 @@ public class LoadLayout extends FrameLayout {
     }
 
     int requestCode = 0;
-    int errorCode;
     public void loadData() {
         loadData(requestCode);
     }
-
     public void loadData(int code) {
-        requestCode = code;
         if (contentView != null) {
             contentView.setVisibility(INVISIBLE);
         }
-        LoadViewBuilder loadViewBuilder = getLoadViewBuilder(LoadStateType.Loading, code);
-        loadViewInterface.onStateChanged(loadViewBuilder, errorCode);
+        inflateView(LoadStateType.Loading,code);
         if (onLoadListener != null) {
             onLoadListener.onLoadData();
         }
@@ -126,53 +121,39 @@ public class LoadLayout extends FrameLayout {
         if (contentView != null) {
             contentView.setVisibility(VISIBLE);
         }
-        loadViewInterface.onStateChanged(getLoadViewBuilder(LoadStateType.LoadSuccess, 0), 0);
-        if (onLoadListener != null) {
-            onLoadListener.onLoadSuccess();
-        }
         if (loadView != null) {
             loadView.setVisibility(GONE);
         }
+        if (onLoadListener != null) {
+            onLoadListener.onLoadSuccess();
+        }
     }
 
-    public void loadFail() {
-        loadFail(errorCode, null,null);
+    public void loadFinish(int code,Object... args) {
+        inflateView(LoadStateType.LoadComplete,code,args);
     }
 
-    public void loadFail(String errorMsg,String btnText) {
-        loadFail(errorCode, errorMsg,btnText);
-    }
-    public void loadFail(int errorCode, String errorMsg,String btnText) {
-        this.errorCode = errorCode;
-        if (contentView != null) {
-            contentView.setVisibility(INVISIBLE);
+    private void inflateView(LoadStateType loadStateType,int code, Object... args) {
+        QDLogger.println("inflateView code="+code);
+        requestCode = code;
+        ViewBuilder loadViewBuilder = null;
+        if(onLoadListener!=null) {
+            loadViewBuilder = onLoadListener.inflateView(getContext(),loadStateType,code, args);
+        }else {
+            if(loadStateType==LoadStateType.LoadComplete) {
+                loadViewBuilder = new ViewBuilder();
+                loadViewBuilder.setButtonText(getContext().getResources().getString(R.string.retry));
+                loadViewBuilder.setShowImageView(true);
+                loadViewBuilder.setMsgText("error");
+            }else if(loadStateType==LoadStateType.Loading) {
+                loadViewBuilder = new ViewBuilder();
+                loadViewBuilder.setShowLoadingView(true);
+                loadViewBuilder.setMsgText("Loading...");
+            }
         }
-        LoadViewBuilder loadViewBuilder = getLoadViewBuilder(LoadStateType.LoadFail, requestCode);
-        if(!TextUtils.isEmpty(errorMsg)) {
-            loadViewBuilder.setMsgText(errorMsg);
+        if(loadViewBuilder!=null){
+            loadViewInterface.onStateChanged(loadViewBuilder,code);
         }
-        if(!TextUtils.isEmpty(btnText)) {
-            loadViewBuilder.setButtonText(btnText);
-        }
-        loadViewInterface.onStateChanged(loadViewBuilder,errorCode);
-    }
-
-    public void loadEmpty(int errorCode) {
-        loadEmpty(errorCode,null );
-    }
-    public void loadEmpty(String msg) {
-        loadEmpty(errorCode,msg );
-    }
-    public void loadEmpty(int errorCode,String msg) {
-        this.errorCode = errorCode;
-        if (contentView != null) {
-            contentView.setVisibility(INVISIBLE);
-        }
-        LoadViewBuilder loadViewBuilder =getLoadViewBuilder(LoadStateType.LoadEmpty, requestCode);
-        if(!TextUtils.isEmpty(msg)) {
-            loadViewBuilder.setMsgText(msg);
-        }
-        loadViewInterface.onStateChanged(loadViewBuilder, errorCode);
     }
 
     OnLoadListener onLoadListener;
@@ -180,11 +161,12 @@ public class LoadLayout extends FrameLayout {
         this.onLoadListener = onLoadListener;
     }
 
-    public static interface OnLoadListenerInterface {
+    public interface OnLoadListenerInterface {
         void onLoadData();
         void onLoadSuccess();
         void onLoadFail();
         void onRetry(LoadLayout loadLayout, int code);
+        ViewBuilder inflateView(Context context,LoadStateType loadStateType,int code, Object[] args);
     }
 
     public static abstract class OnLoadListener implements OnLoadListenerInterface {
@@ -197,110 +179,40 @@ public class LoadLayout extends FrameLayout {
         public void onRetry(LoadLayout loadLayout, int code) {
             loadLayout.loadData();
         }
+
+        @Override
+        public ViewBuilder inflateView(Context context,LoadStateType loadStateType,int code, Object[] args) {
+            ViewBuilder loadViewBuilder = null;
+            if(loadStateType==LoadStateType.LoadComplete) {
+                loadViewBuilder = new ViewBuilder();
+                loadViewBuilder.setButtonText(context.getResources().getString(R.string.retry));
+                loadViewBuilder.setShowImageView(true);
+                //loadViewBuilder.setMsgText("Loading error");
+            }else if(loadStateType==LoadStateType.Loading) {
+                loadViewBuilder = new ViewBuilder();
+                loadViewBuilder.setShowLoadingView(true);
+                //loadViewBuilder.setMsgText("Loading...");
+            }
+            return loadViewBuilder;
+        }
     }
 
-    public static enum LoadStateType {
+    public enum LoadStateType {
         Loading,//加载中
         LoadSuccess,//加载成功
-        LoadFail,//加载出错
-        LoadEmpty,//加载结果为空
+        LoadComplete,//加载出错
+        //LoadEmpty,//加载结果为空
     }
     //加载中
     //加载成功 隐藏加载界面 显示内容页面
     //加载失败  显示重试按钮 不显示重试按钮
-    List<LoadViewBuilder> viewBuilders;
-    public void addLoadView(LoadViewBuilder viewBuilder) {
-        removeLoadView(viewBuilder.getLoadStateType(), viewBuilder.getRequestCode());
-        viewBuilders.add(viewBuilder);
-    }
-
-    public void removeLoadView(LoadStateType loadStateType, int code) {
-        for (LoadViewBuilder viewBuilder : viewBuilders) {
-            if (viewBuilder.getRequestCode() == code && viewBuilder.getLoadStateType() == loadStateType) {
-                viewBuilders.remove(viewBuilder);
-                return;
-            }
-        }
-    }
-
-    public LoadViewBuilder getLoadViewBuilder(LoadStateType loadStateType, int requestCode) {
-        for (LoadViewBuilder viewBuilder : viewBuilders) {
-            if (viewBuilder.getRequestCode() == requestCode && viewBuilder.getLoadStateType() == loadStateType) {
-                return viewBuilder;
-            }
-        }
-
-        LoadViewBuilder loadViewBuilder = new LoadViewBuilder(loadStateType,requestCode);
-        if(loadStateType==LoadStateType.Loading){
-            loadViewBuilder.setShowLoadingView(true);
-        }else if(loadStateType==LoadStateType.LoadEmpty){
-            loadViewBuilder.setMsgText("no data");
-            loadViewBuilder.setShowEmptyImage(true);
-        }else if(loadStateType==LoadStateType.LoadFail){
-            loadViewBuilder.setButtonText(getContext().getResources().getString(R.string.retry));
-            loadViewBuilder.setShowErrorImage(true);
-            loadViewBuilder.setMsgText("Loading error");
-        }
-        addLoadView(loadViewBuilder);
-        return loadViewBuilder;
-    }
-
-    public static class LoadViewBuilder {
-        LoadStateType loadStateType;
-        int requestCode;
+    public static class ViewBuilder {
         boolean showButton;
         boolean showTextView;
         boolean showImageView;
         boolean showLoadingView;
-        boolean showEmptyImage;
-        boolean showErrorImage;
         String buttonText;
         String msgText;
-
-        public LoadViewBuilder(LoadStateType loadStateType, int requestCode) {
-            this.loadStateType = loadStateType;
-            this.requestCode = requestCode;
-        }
-
-        public LoadStateType getLoadStateType() {
-            return loadStateType;
-        }
-
-        public void setLoadStateType(LoadStateType loadStateType) {
-            this.loadStateType = loadStateType;
-        }
-
-        public boolean isShowEmptyImage() {
-            return showEmptyImage;
-        }
-
-        public void setShowEmptyImage(boolean showEmptyImage) {
-            this.showEmptyImage = showEmptyImage;
-        }
-
-        public boolean isShowErrorImage() {
-            return showErrorImage;
-        }
-
-        public void setShowErrorImage(boolean showErrorImage) {
-            this.showErrorImage = showErrorImage;
-        }
-
-        public boolean isShowLoadingView() {
-            return showLoadingView;
-        }
-
-        public void setShowLoadingView(boolean showLoadingView) {
-            this.showLoadingView = showLoadingView;
-        }
-
-        public int getRequestCode() {
-            return requestCode;
-        }
-
-        public void setRequestCode(int requestCode) {
-            this.requestCode = requestCode;
-        }
 
         public boolean isShowButton() {
             return showButton;
@@ -326,6 +238,14 @@ public class LoadLayout extends FrameLayout {
             this.showImageView = showImageView;
         }
 
+        public boolean isShowLoadingView() {
+            return showLoadingView;
+        }
+
+        public void setShowLoadingView(boolean showLoadingView) {
+            this.showLoadingView = showLoadingView;
+        }
+
         public String getButtonText() {
             return buttonText;
         }
@@ -340,7 +260,7 @@ public class LoadLayout extends FrameLayout {
         }
 
         public void setMsgText(String msgText) {
-            showTextView= true;
+            showTextView = true;
             this.msgText = msgText;
         }
     }

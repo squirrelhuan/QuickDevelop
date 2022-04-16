@@ -35,18 +35,18 @@ public class CircleImageView extends AppCompatImageView {
 
     int circle_background_padding;//是否对背景圆角处理
     int circle_background_color;
-    int circle_background_radius = -1;
-    private void init(AttributeSet attrs) {
+    public int circle_background_radius = -1;
+    public void init(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleImageView);
             circle_background_padding = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_background_padding, 0);
             circle_background_color = a.getColor(R.styleable.CircleImageView_circle_background_color, Color.TRANSPARENT);
-            circle_background_radius = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_radius, -1);
+            circle_background_radius = a.getDimensionPixelSize(R.styleable.CircleImageView_circle_radius, circle_background_radius);
             a.recycle();
         }
     }
     
-    private boolean isRound = true;
+    public boolean isRound = true;
     @Override
     protected void onDraw(Canvas canvas) {
         if (isRound) {
@@ -65,7 +65,8 @@ public class CircleImageView extends AppCompatImageView {
                     canvas.drawCircle(centerX, centerY, raduis, paint);
                 }
             }else {
-                RectF rectF = new RectF(centerX-raduis,centerY-raduis,centerX+raduis,centerY+raduis);
+                RectF rectF = new RectF(0,0,getMeasuredWidth(),getMeasuredHeight());
+                //RectF rectF = new RectF(centerX-raduis,centerY-raduis,centerX+raduis,centerY+raduis);
                 path.addRoundRect(rectF,circle_background_radius,circle_background_radius, Path.Direction.CCW);
                 if (circle_background_color != Color.TRANSPARENT) {
                     Paint paint = new Paint();

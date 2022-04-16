@@ -1,19 +1,17 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
@@ -21,7 +19,7 @@ import cn.demomaster.qdrouter_library.view.ImageTextView;
  * Squirrel桓
  * 2018/8/25
  */
-public class AppletsFragment extends BaseFragment {
+public class AppletsFragment extends QuickFragment {
 
     @Override
     public View getHeaderlayout() {
@@ -95,24 +93,8 @@ public class AppletsFragment extends BaseFragment {
     }
 
     public void initView(View rootView) {
-        int i = (int) (Math.random() * 10 % 4);
-        setTitle(titles[i]);
-        getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(colors[i]);
-        Button button = rootView.findViewById(R.id.btn_open_new_fragment);
-        if (button != null) {
-            button.setOnClickListener(view -> startFragment());
-        }
-        Button btn_set_title = rootView.findViewById(R.id.btn_set_title);
-        if (btn_set_title != null) {
-            btn_set_title.setOnClickListener(view -> {
-                int i1 = (int) (Math.random() * 10 % 4);
-                setTitle(titles[i1] + "");
-            });
-        }
     }
 
-    private final String[] titles = {"1", "2", "3", "4"};
-    private final int[] colors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE};
     private void startFragment() {
         startFragment(new AppletsFragment(),android.R.id.content,null);
     }

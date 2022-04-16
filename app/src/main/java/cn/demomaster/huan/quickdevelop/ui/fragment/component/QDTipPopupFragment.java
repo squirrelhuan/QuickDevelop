@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.operatguid.GuiderView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -24,7 +24,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDTipPopup;
  */
 
 @ActivityPager(name = "Tip提示", preViewClass = TextView.class, resType = ResType.Custome)
-public class QDTipPopupFragment extends BaseFragment implements View.OnClickListener {
+public class QDTipPopupFragment extends QuickFragment implements View.OnClickListener {
 
     @NonNull
     @Override

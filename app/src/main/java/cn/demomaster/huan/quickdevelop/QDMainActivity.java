@@ -49,7 +49,7 @@ public class QDMainActivity extends QDActivity {
     public void initScrollableTabs(ViewPager2 mViewPager) {
         ScrollableTabView mScrollingTabs =  findViewById(R.id.scrollingTabs);
         ScrollingTabsAdapter mScrollingTabsAdapter = new ScrollingTabsAdapter(this);
-        mScrollingTabs.setScrollingTabsAdapter(mScrollingTabsAdapter);
+        mScrollingTabs.setTabsAdapter(mScrollingTabsAdapter);
         mScrollingTabs.setViewPager(mViewPager);
     }
 

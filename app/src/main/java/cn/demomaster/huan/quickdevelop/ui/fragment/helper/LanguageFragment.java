@@ -16,10 +16,10 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.setLanguageLocalForActivity;
@@ -31,7 +31,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDLanguageUtil.
  */
 
 @ActivityPager(name = "多语言", preViewClass = TextView.class, resType = ResType.Custome)
-public class LanguageFragment extends BaseFragment {
+public class LanguageFragment extends QuickFragment {
 
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;

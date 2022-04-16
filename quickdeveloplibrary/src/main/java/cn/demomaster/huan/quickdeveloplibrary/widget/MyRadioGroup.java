@@ -100,12 +100,10 @@ public class MyRadioGroup extends RadioGroup {
         //QDLogger.println("specModeHeight=" + specModeHeight + ",layoutHeight=" + layoutHeight + ",count=" + count);
         switch (specModeHeight) {
             case MeasureSpec.UNSPECIFIED:
-                setMeasuredDimension(widthMeasureSpec, layoutHeight);
-                break;
             case MeasureSpec.AT_MOST://AT_MOST 自适应模式，根据设置的行数动态申请高度
                 setMeasuredDimension(widthMeasureSpec, layoutHeight);
-                //super.onMeasure(widthMeasureSpec, layoutHeight);
                 break;
+            //super.onMeasure(widthMeasureSpec, layoutHeight);
             case MeasureSpec.EXACTLY:
                 break;
         }

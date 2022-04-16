@@ -12,13 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 @ActivityPager(name = "颜色锥", preViewClass = TextView.class, resType = ResType.Custome)
-public class ColorPicker2Fragment extends BaseFragment {
+public class ColorPicker2Fragment extends QuickFragment {
     ImageView iv_image1,iv_image2,iv_image3,iv_image4;
     TextView tv_lable;
 

@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 
@@ -28,7 +28,7 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
  */
 
 @ActivityPager(name = "权限管理", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_permission_manager)
-public class PermitionFragment extends BaseFragment {
+public class PermitionFragment extends QuickFragment {
 
     //Components
     @BindView(R.id.btn_write_external_storage)

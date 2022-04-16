@@ -3,11 +3,8 @@ package cn.demomaster.huan.quickdeveloplibrary.ui.error;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.ui.file.FileExplorerFragment;
 import cn.demomaster.huan.quickdeveloplibrary.ui.file.TextDetailFragment;
 import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
 

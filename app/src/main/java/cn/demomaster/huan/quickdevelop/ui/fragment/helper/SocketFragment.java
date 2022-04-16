@@ -11,13 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import java.net.Socket;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
@@ -26,10 +24,9 @@ import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.quicksocket.QuickTcpClient;
 import cn.demomaster.huan.quickdeveloplibrary.quicksocket.QuickTcpServer;
 import cn.demomaster.huan.quickdeveloplibrary.quicksocket.ReceiveListener;
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDAndroidDeviceUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -38,7 +35,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  */
 
 @ActivityPager(name = "Socket", preViewClass = TextView.class, resType = ResType.Custome)
-public class SocketFragment extends BaseFragment implements ReceiveListener {
+public class SocketFragment extends QuickFragment implements ReceiveListener {
 
     @BindView(R.id.btn_send_tcp)
     QDButton btn_send_tcp;

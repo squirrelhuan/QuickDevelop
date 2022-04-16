@@ -218,7 +218,7 @@ public class QDDialog extends QDDialog2 {
             headerView.setTag(gravity_header);
             addTextView(headerView, titleView.getText(), text_color_header, text_size_header);
         }
-        if (bodyView != null) {
+        if (bodyView != null&&messageView!=null) {
             contentLinearView.addView(bodyView);
             bodyView.setMinimumHeight(minHeight_body);
             bodyView.setBackgroundColor(color_body);

@@ -21,9 +21,9 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -34,7 +34,7 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 @ActivityPager(name = "陀螺仪", preViewClass = TextView.class, resType = ResType.Custome)
-public class LmSensorFragment extends BaseFragment implements SensorEventListener {
+public class LmSensorFragment extends QuickFragment implements SensorEventListener {
 
     @BindView(R.id.btn_start)
     Button btn_start;

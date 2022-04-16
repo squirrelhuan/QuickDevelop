@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -22,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
  */
 
 @ActivityPager(name = "WheelImage", preViewClass = TextView.class, resType = ResType.Custome)
-public class WheelImageFragment extends BaseFragment {
+public class WheelImageFragment extends QuickFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

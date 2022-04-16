@@ -11,13 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.colorpicker.ColorPicker;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 @ActivityPager(name = "取色器", preViewClass = TextView.class, resType = ResType.Custome)
-public class ColorPickerFragment extends BaseFragment {
+public class ColorPickerFragment extends QuickFragment {
     TextView tv_color;
     ColorPicker cp_color;
 

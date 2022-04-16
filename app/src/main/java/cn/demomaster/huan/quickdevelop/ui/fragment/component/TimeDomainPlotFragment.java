@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.LinePoint;
 import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotView;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.linechart.TimeDomainPlotVie
  */
 
 @ActivityPager(name = "时域图", preViewClass = TextView.class, resType = ResType.Custome)
-public class TimeDomainPlotFragment extends BaseFragment {
+public class TimeDomainPlotFragment extends QuickFragment {
 
     @NonNull
     @Override

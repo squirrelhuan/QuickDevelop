@@ -46,7 +46,6 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     private CameraCropView camera_crop_view;
     private View optionView;
 
-    private int type;
     private OptionsMenu optionsMenu;
     private OptionsMenu.Builder optionsMenubuilder;
 
@@ -62,7 +61,7 @@ public class CameraIDCardActivity extends QDActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        type = getIntent().getIntExtra("type", 0);
+        int type = getIntent().getIntExtra("type", 0);
 
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

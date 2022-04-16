@@ -169,7 +169,8 @@ public class DownloadHelper {
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 
         // 禁止发出通知，既后台下载，如果要使用这一句必须声明一个权限：android.permission.DOWNLOAD_WITHOUT_NOTIFICATION
-        request.setShowRunningNotification(true);
+        //TODO 已过时  request.setShowRunningNotification(true);
+        //request.setNotificationVisibility();
         request.setVisibleInDownloadsUi(true);
         request.setTitle(downloadTask.getFileName());
         // 不显示下载界面

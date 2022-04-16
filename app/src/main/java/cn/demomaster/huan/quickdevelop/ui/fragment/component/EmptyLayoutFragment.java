@@ -12,11 +12,11 @@ import androidx.annotation.Nullable;
 
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.EmptyLayout;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -25,7 +25,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.layout.EmptyLayout;
  */
 
 @ActivityPager(name = "加载布局", preViewClass = TextView.class, resType = ResType.Custome)
-public class EmptyLayoutFragment extends BaseFragment {
+public class EmptyLayoutFragment extends QuickFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

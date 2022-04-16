@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
@@ -28,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingTengxuntvView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDActionStateType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayout;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -37,7 +37,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.pushcardlayout.PushCardLayo
  */
 
 @ActivityPager(name = "PushCard", preViewClass = TextView.class, resType = ResType.Custome)
-public class PushCardFragment extends BaseFragment {
+public class PushCardFragment extends QuickFragment {
     private RecyclerView recycler_body;
     private LinearLayoutManager linearLayoutManager;
     private SimpleRecycleViewAdapter adapter;

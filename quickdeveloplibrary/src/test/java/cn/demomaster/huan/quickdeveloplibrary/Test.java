@@ -527,7 +527,7 @@ public class Test {
         String lastState = "-1";//上次的状态（1/2）
         int position = -1;//上次状态的位置
         Gson gson = new Gson();
-        List<Result> results = gson.fromJson(str,new TypeToken<ArrayList<Result>>(){}.getType())
+        List<Result> results = gson.fromJson(str,new TypeToken<ArrayList<Result>>(){}.getType());
         //List<Result> results = JSON.parseArray(str, Result.class);
         for (int i = 0; i < results.size(); i++) {
             System.out.println("" + i);

@@ -19,7 +19,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.LoopView2;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout;
 import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuModel;
@@ -73,7 +73,7 @@ public class TabMenuActivity extends BaseActivity {
         TabMenuModel tabMenuModel3 = new TabMenuModel("自定义", R.layout.layout_date_picker2, root -> {
             LoopView2 loopView2;
             loopView2 = root.findViewById(R.id.loop_view2);
-            loopView2.setLoopListener(item -> PopToastUtil.showToast(mContext, "item=" + item));
+            loopView2.setLoopListener(item -> QdToast.showToast(mContext, "item=" + item));
             loopView2.setTextSize(16);//must be called before setDateList
             loopView2.setDataList(getList(20));
             loopView2.setCurrentIndex(10);
@@ -85,7 +85,7 @@ public class TabMenuActivity extends BaseActivity {
         tabMenuLayout = findViewById(R.id.tab_menu_layout);
         tabMenuLayout.setTabDividerResId(R.layout.activity_layout_driver);
         tabMenuLayout.setData(tabSelectModels, (tabButton, tabIndex, position) -> {
-            PopToastUtil.showToast(mContext, "" + tabIndex + ":" + position);
+            QdToast.showToast(mContext, "" + tabIndex + ":" + position);
             tabMenuLayout.getPopupWindow().dismiss();
             switch (tabIndex) {
                 case 0:

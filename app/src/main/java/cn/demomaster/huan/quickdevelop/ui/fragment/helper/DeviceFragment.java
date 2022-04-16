@@ -28,13 +28,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
@@ -52,7 +52,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBIL
  */
 
 @ActivityPager(name = "DeviceHelper", preViewClass = TextView.class, resType = ResType.Custome)
-public class DeviceFragment extends BaseFragment {
+public class DeviceFragment extends QuickFragment {
 
     @BindView(R.id.sb_MusicVolume)
     SeekBar sb_MusicVolume;

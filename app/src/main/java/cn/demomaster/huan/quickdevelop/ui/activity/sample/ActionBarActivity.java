@@ -21,9 +21,6 @@ import cn.demomaster.quicksticker_annotations.BindView;
 @ActivityPager(name = "导航栏", preViewClass = TextView.class, resType = ResType.Custome)
 public class ActionBarActivity extends BaseActivity implements View.OnClickListener {
 
-    private RadioGroup rg_action, rg_action_color;
-    private SeekBar sb_color;
-
     @BindView(R.id.btn_ac_01)
     Button btn_ac_01;
     @BindView(R.id.btn_ac_02)
@@ -39,7 +36,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        rg_action = findViewById(R.id.rg_action);
+        RadioGroup rg_action = findViewById(R.id.rg_action);
         rg_action.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_01:
@@ -69,7 +66,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        rg_action_color = findViewById(R.id.rg_action_color);
+        RadioGroup rg_action_color = findViewById(R.id.rg_action_color);
         rg_action_color.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_color_01:
@@ -95,7 +92,7 @@ public class ActionBarActivity extends BaseActivity implements View.OnClickListe
                     break;
             }
         });
-        sb_color = findViewById(R.id.sb_color);
+        SeekBar sb_color = findViewById(R.id.sb_color);
         sb_color.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

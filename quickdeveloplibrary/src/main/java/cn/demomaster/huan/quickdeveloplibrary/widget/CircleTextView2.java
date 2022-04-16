@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓

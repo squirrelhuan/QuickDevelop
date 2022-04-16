@@ -15,34 +15,19 @@
         <cn.demomaster.huan.quickdeveloplibrary.view.loading.QdLoadingView
             android:id="@+id/qd_loading"
             android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
-            android:visibility="gone" />
+            android:layout_height="@dimen/dp_30" />
+
         <ImageView
             android:id="@+id/iv_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_16"
-            android:visibility="gone" />
-        <LinearLayout
-            android:id="@+id/ll_custom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"/>
+            android:layout_margin="@dimen/dp_5"/>
 
         <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_empty_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-        <cn.demomaster.qdrouter_library.view.ImageTextView
-            android:id="@+id/it_error"
-            android:layout_height="@dimen/dp_120"
-            android:layout_width="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
+
         <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_empty_title"
             android:layout_width="wrap_content"
@@ -50,16 +35,15 @@
             android:layout_margin="@dimen/dp_5"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_16"
-            android:visibility="gone" />
+            app:quick_textSize="@dimen/sp_16" />
+
         <cn.demomaster.qdrouter_library.view.ImageTextView
             android:id="@+id/it_empty_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14"
-            android:visibility="gone" />
+            app:quick_textSize="@dimen/sp_14"/>
 
         <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
             android:id="@+id/btn_retry"
@@ -78,7 +62,6 @@
             app:qd_backgroundColor="@color/transparent"
             app:qd_borderColor="@color/colorPrimary"
             app:qd_borderWidth="@dimen/dp_0_5"
-            app:qd_radius="@dimen/dp_50"
-            android:visibility="gone" />
+            app:qd_radius="@dimen/dp_50" />
     </LinearLayout>
 </FrameLayout>

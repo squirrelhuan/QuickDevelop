@@ -15,11 +15,11 @@ import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.service.SimpleService;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -28,7 +28,7 @@ import cn.demomaster.huan.quickdeveloplibrary.jni.ServiceToken;
  */
 
 @ActivityPager(name = "Ndk测试", preViewClass = TextView.class, resType = ResType.Custome)
-public class NdkTestFragment extends BaseFragment {
+public class NdkTestFragment extends QuickFragment {
 
     private ServiceToken mToken;
     private ServiceConnection serviceConnection = new ServiceConnection() {

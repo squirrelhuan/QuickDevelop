@@ -32,15 +32,13 @@ public class AESUtil2 {
      */
     private static String byte2HexStr(byte[] b) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; i++) {
-            String s = Integer.toHexString(b[i] & 0xFF);
+        for (byte value : b) {
+            String s = Integer.toHexString(value & 0xFF);
             if (s.length() == 1) {
                 sb.append("0");
             }
-
             sb.append(s.toUpperCase());
         }
-
         return sb.toString();
     }
 

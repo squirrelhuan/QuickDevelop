@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -17,21 +16,16 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnDoubleClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnMultClickListener;
-import cn.demomaster.huan.quickdeveloplibrary.ui.file.FileExplorerFragment;
-import cn.demomaster.huan.quickdeveloplibrary.ui.file.FileInfo;
-import cn.demomaster.huan.quickdeveloplibrary.util.CrashHandler;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.qdrouter_library.quickview.ViewInfo;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -40,7 +34,7 @@ import cn.demomaster.qdrouter_library.quickview.ViewInfo;
  */
 
 @ActivityPager(name = "异常捕获", preViewClass = TextView.class, resType = ResType.Custome)
-public class ErrorTestFragment extends BaseFragment {
+public class ErrorTestFragment extends QuickFragment {
 
     @BindView(R.id.btn_error_01)
     QDButton btn_error_01;

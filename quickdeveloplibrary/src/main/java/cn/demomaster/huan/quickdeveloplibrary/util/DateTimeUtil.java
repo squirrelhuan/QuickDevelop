@@ -151,6 +151,16 @@ public class DateTimeUtil {
         }
         return dates;
     }
+    public static List<Date> getNextDateArray(Date targetDate, int count) {
+        List<Date> dates = new ArrayList<>();
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        dates.add(targetDate);
+        for (int i = 0; i < count - 1; i++) {
+            dates.add(getNextDate(targetDate, i + 1));
+        }
+        return dates;
+    }
 
     public static String addDay(String s, int n) {
         try {
@@ -163,7 +173,17 @@ public class DateTimeUtil {
         } catch (Exception e) {
             return null;
         }
-
+    }
+    public static Date getNextDate(Date currentDate, int dayCount) {
+        try {
+            Calendar cd = Calendar.getInstance();
+            cd.setTime(currentDate);
+            cd.add(Calendar.DATE, dayCount);//增加一天
+            //cd.add(Calendar.MONTH, n);//增加一个月
+            return cd.getTime();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // currentTime要转换的long类型的时间

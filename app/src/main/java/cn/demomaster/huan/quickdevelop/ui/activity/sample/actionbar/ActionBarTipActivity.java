@@ -20,13 +20,6 @@ import cn.demomaster.qdrouter_library.actionbar.ACTIONBARTIP_TYPE;
 @ActivityPager(name = "ActionBarTip", preViewClass = TextView.class, resType = ResType.Custome)
 public class ActionBarTipActivity extends QDActivity {
 
-    private Button btn_complete;
-    private Button btn_loading;
-    private Button btn_warning;
-    private Button btn_error;
-    private SeekBar sb_background;
-    private CheckBox cb_001;
-
     @BindView(R.id.ev_emtion)
     EmoticonView emoticonView;
     @BindView(R.id.btn_emui_halo)
@@ -51,11 +44,11 @@ public class ActionBarTipActivity extends QDActivity {
         btn_emui_sluggish.setOnClickListener(v -> emoticonView.setStateType(LoadStateType.WARNING));
         btn_emui_smile.setOnClickListener(v -> emoticonView.setStateType(LoadStateType.COMPLETE));
 
-        btn_complete = findViewById(R.id.btn_complete);
-        btn_loading = findViewById(R.id.btn_loading);
-        btn_warning = findViewById(R.id.btn_warning);
-        btn_error = findViewById(R.id.btn_error);
-        cb_001 = findViewById(R.id.cb_001);
+        Button btn_complete = findViewById(R.id.btn_complete);
+        Button btn_loading = findViewById(R.id.btn_loading);
+        Button btn_warning = findViewById(R.id.btn_warning);
+        Button btn_error = findViewById(R.id.btn_error);
+        CheckBox cb_001 = findViewById(R.id.cb_001);
         cb_001.setOnCheckedChangeListener((buttonView, isChecked) -> getActionBarTool().setActionBarTipType(isChecked ? ACTIONBARTIP_TYPE.NORMAL : ACTIONBARTIP_TYPE.STACK));
 
         // getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
@@ -79,7 +72,7 @@ public class ActionBarTipActivity extends QDActivity {
         btn_warning.setOnClickListener(view -> getActionBarTool().getActionBarTip().showWarning("警告"));
         btn_error.setOnClickListener(view -> getActionBarTool().getActionBarTip().showError("错误"));*/
 
-        sb_background = findViewById(R.id.sb_background);
+        SeekBar sb_background = findViewById(R.id.sb_background);
         sb_background.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

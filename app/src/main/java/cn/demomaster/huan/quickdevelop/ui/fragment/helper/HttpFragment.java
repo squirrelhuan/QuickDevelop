@@ -21,16 +21,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.net.RetrofitInterface;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils;
 import cn.demomaster.huan.quickdeveloplibrary.model.Version;
-import cn.demomaster.huan.quickdeveloplibrary.socket.RequestListener;
-import cn.demomaster.huan.quickdeveloplibrary.socket.QDMessage;
 import cn.demomaster.huan.quickdeveloplibrary.socket.QDTcpClient;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -47,7 +45,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.http.HttpUtils.FROM_DATA;
  * 2018/8/25
  */
 @ActivityPager(name = "网络请求", preViewClass = TextView.class, resType = ResType.Custome)
-public class HttpFragment extends BaseFragment {
+public class HttpFragment extends QuickFragment {
 
     @BindView(R.id.btn_send_tcp)
     QDButton btn_send_tcp;

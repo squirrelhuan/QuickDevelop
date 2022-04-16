@@ -19,10 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 
@@ -32,7 +32,7 @@ import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
  * 2018/8/25
  */
 @ActivityPager(name = "模糊", preViewClass = TextView.class, resType = ResType.Resource)
-public class BlurFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener {
+public class BlurFragment extends QuickFragment implements SeekBar.OnSeekBarChangeListener {
 
     @BindView(R.id.iv_marker)
     ImageView iv_marker;

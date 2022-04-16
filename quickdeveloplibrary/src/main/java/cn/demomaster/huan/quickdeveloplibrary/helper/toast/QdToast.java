@@ -115,14 +115,14 @@ public class QdToast {
 
             @Override
             public void bindData(Toast toast, View root, String msg) {
-                TextView txtContent = (TextView) root.findViewById(R.id.txtToast);
+                TextView txtContent = root.findViewById(R.id.txtToast);
                 if (txtContent != null) {
                     txtContent.setText(msg);
                 }
             }
         }
 
-        public static interface ToastInflater {
+        public interface ToastInflater {
             View createView(Toast toast, Context context);
 
             void bindData(Toast toast, View root, String msg);

@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.scroll.QDNestedScrollParent;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -27,7 +27,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  */
 
 @ActivityPager(name = "NestedScrollView", preViewClass = TextView.class, resType = ResType.Custome)
-public class NestedScrollViewFragment extends BaseFragment {
+public class NestedScrollViewFragment extends QuickFragment {
 
     int headHeight;
 

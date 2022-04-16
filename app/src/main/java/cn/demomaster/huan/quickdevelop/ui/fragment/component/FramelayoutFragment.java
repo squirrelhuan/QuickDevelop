@@ -21,11 +21,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.VisiableLayoutAdapter;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.timeline.TimeLineView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -34,7 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
  */
 
 @ActivityPager(name = "Framelayout", preViewClass = TextView.class, resType = ResType.Custome)
-public class FramelayoutFragment extends BaseFragment {
+public class FramelayoutFragment extends QuickFragment {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.btn_show)

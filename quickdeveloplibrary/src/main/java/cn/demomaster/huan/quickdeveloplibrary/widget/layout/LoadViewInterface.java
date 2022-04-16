@@ -10,5 +10,6 @@ import androidx.annotation.Nullable;
 public interface LoadViewInterface {
     View onCreateLoadView(@NonNull LayoutInflater inflater, @Nullable ViewGroup containerView, View.OnClickListener onClickListener);
     ViewGroup.LayoutParams getLayoutParams();
-    void onStateChanged(LoadLayout.LoadViewBuilder loadViewBuilder, int errorCode);
+   // void onStateChanged(LoadLayout.LoadViewBuilder loadViewBuilder, int errorCode);
+    void onStateChanged(LoadLayout.ViewBuilder loadViewBuilder, Object... args);
 }

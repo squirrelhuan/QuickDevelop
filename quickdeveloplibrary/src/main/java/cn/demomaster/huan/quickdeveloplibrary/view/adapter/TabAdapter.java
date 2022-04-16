@@ -4,10 +4,73 @@ package cn.demomaster.huan.quickdeveloplibrary.view.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-public interface TabAdapter {
-    View getView(int position, ViewGroup viewGroup);//
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-    int getViewCount();
+import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
+import cn.demomaster.qdlogger_library.QDLogger;
 
-    boolean onSelectedChange(int position, View view, boolean isSelected);//选中回调
+public abstract class TabAdapter implements TabAdapterInterFace{
+
+    private final ScrollableTabView.AdapterDataObservable mObservable = new ScrollableTabView.AdapterDataObservable();
+    public final void notifyDataSetChanged() {
+        mObservable.notifyChanged();
+    }
+
+    public OnSelectChangeListener mOnSelectChangeListener;
+    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
+        this.mOnSelectChangeListener = onSelectChangeListener;
+    }
+
+    public boolean onSelectedChange(int position, View view, boolean isSelected) {
+        if(mOnSelectChangeListener!=null){
+            mOnSelectChangeListener.onSelectChange(position);
+        }
+        return false;
+    }
+
+    public void registerAdapterDataObserver(@NonNull AdapterDataObserver observer) {
+        mObservable.registerObserver(observer);
+    }
+    
+    public void unregisterAdapterDataObserver(@NonNull AdapterDataObserver observer) {
+        mObservable.unregisterObserver(observer);
+    }
+
+    /**
+     * Observer base class for watching changes to an {@link RecyclerView.Adapter}.
+     * See {@link RecyclerView.Adapter#registerAdapterDataObserver(RecyclerView.AdapterDataObserver)}.
+     */
+    public abstract static class AdapterDataObserver {
+        public void onChanged() {
+            // Do nothing
+        }
+
+        public void onItemRangeChanged(int positionStart, int itemCount) {
+            // do nothing
+        }
+
+        public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+            // fallback to onItemRangeChanged(positionStart, itemCount) if app
+            // does not override this method.
+            onItemRangeChanged(positionStart, itemCount);
+        }
+
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            // do nothing
+        }
+
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
+            // do nothing
+        }
+
+        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            // do nothing
+        }
+    }
+
+    public interface OnSelectChangeListener {
+        void onSelectChange(int position);
+    }
 }

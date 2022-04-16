@@ -15,10 +15,10 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.CompressLayout;
  */
 
 @ActivityPager(name = "压缩布局", preViewClass = TextView.class, resType = ResType.Custome)
-public class CompressLayoutFragment extends BaseFragment {
+public class CompressLayoutFragment extends QuickFragment {
 
     @BindView(R.id.btn_left)
     Button btn_left;

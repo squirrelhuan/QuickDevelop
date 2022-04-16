@@ -20,7 +20,6 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadHelper;
@@ -28,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.download.DownloadTask;
 import cn.demomaster.huan.quickdeveloplibrary.helper.download.OnDownloadProgressListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -47,7 +47,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
  * 2018/8/25 QDTerminal
  */
 @ActivityPager(name = "Downloader", preViewClass = TextView.class, resType = ResType.Custome)
-public class DownloadFragment extends BaseFragment {
+public class DownloadFragment extends QuickFragment {
 
     @BindView(R.id.btn_download_01)
     QDButton btn_download_01;

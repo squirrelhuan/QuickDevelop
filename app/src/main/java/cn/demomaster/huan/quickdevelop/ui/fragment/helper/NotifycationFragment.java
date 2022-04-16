@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,13 +13,13 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Squirrel桓
@@ -29,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
  */
 
 @ActivityPager(name = "消息通知", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_notify)
-public class NotifycationFragment extends BaseFragment {
+public class NotifycationFragment extends QuickFragment {
 
 
     @BindView(R.id.tv_state)

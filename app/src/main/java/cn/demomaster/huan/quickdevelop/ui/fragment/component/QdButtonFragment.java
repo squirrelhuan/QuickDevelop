@@ -10,10 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnSingleClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -21,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
  * 2018/8/25
  */
 @ActivityPager(name = "按钮", preViewClass = QDButton.class, resType = ResType.Custome)
-public class QdButtonFragment extends BaseFragment {
+public class QdButtonFragment extends QuickFragment {
 
     @Override
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,6 +33,16 @@ public class QdButtonFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         Button button = rootView.findViewById(R.id.btn_play1);
+        button.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onClickEvent(View v) {
+               /* Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.addFlags(Intents.FLAG_NEW_DOC);
+                intent.setClassName(mContext, CaptureActivity.class.getName());
+                startActivityForResult(intent, 123);
+*/
+            }
+        });
         Button button2 = rootView.findViewById(R.id.btn_play2);
     }
 

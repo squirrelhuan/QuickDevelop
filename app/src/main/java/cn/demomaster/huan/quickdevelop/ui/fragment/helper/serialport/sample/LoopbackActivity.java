@@ -97,7 +97,6 @@ public class LoopbackActivity extends SerialPortActivity {
 
     @Override
     protected void onDataReceived(byte[] buffer, int size) {
-
         synchronized (mByteReceivedBackSemaphore) {
             int i;
             for (i = 0; i < size; i++) {

@@ -159,7 +159,7 @@ public class QDAppInfoUtil {
             if (intent != null) {
                 //intent.putExtra("type", "110");
                 if(context instanceof Activity) {
-                    ((Activity) context).startActivity(intent);
+                    context.startActivity(intent);
                 }else {
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

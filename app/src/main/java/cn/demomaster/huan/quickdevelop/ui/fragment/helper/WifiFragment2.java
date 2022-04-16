@@ -36,12 +36,10 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.WifiAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.model.QDScanResult;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.utils.WifiUtil;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.util.PasswordGenarator;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
-import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
@@ -49,6 +47,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListene
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.LoadLayout;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static android.net.ConnectivityManager.TYPE_WIFI;
@@ -70,7 +69,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity.TA
  * 2018/8/25
  */
 @ActivityPager(name = "wifi解密", preViewClass = TextView.class, resType = ResType.Custome)
-public class WifiFragment2 extends BaseFragment {
+public class WifiFragment2 extends QuickFragment {
 
     View mView;
     @BindView(R.id.recyclerView)

@@ -13,8 +13,8 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/dp_6"
-        app:qd_textSize="@dimen/quickdev_title_text_size"
-        app:qd_textColor="@color/white"
+        app:quick_textSize="@dimen/quickdev_title_text_size"
+        android:textColor="@color/white"
         android:gravity="center_vertical"
         app:srcCompat="@drawable/ic_arrow_back_black_24dp"
         tools:ignore="VectorDrawableCompat" />
@@ -29,8 +29,8 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:singleLine="true"
-        app:qd_textSize="@dimen/quickdev_title_text_size"
-        app:qd_textColor="@color/white"
+        app:quick_textSize="@dimen/quickdev_title_text_size"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
     <cn.demomaster.qdrouter_library.view.ImageTextView
@@ -41,8 +41,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_gravity="right"
         android:padding="@dimen/dp_6"
-        app:qd_textSize="@dimen/quickdev_title_text_size"
-        app:qd_textColor="@color/white"
+        app:quick_textSize="@dimen/quickdev_title_text_size"
+        android:textColor="@color/white"
         android:gravity="center_vertical"
         app:srcCompat="@drawable/ic_more_vert_black_24dp"
         tools:ignore="VectorDrawableCompat" />

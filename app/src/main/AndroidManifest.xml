@@ -76,6 +76,10 @@
                 <!--<data android:mimeType="text/plain" />-->
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.sample.appPicker.AppPickerActivity"
+            android:theme="@style/Theme.MyApplication"/>
+        <activity android:name="com.google.zxing.client.android.CaptureActivity"/>
+
         <activity android:name=".ui.activity.sample.HorizontalDragViewActivity" />
         <activity
             android:name=".ui.activity.sample.SettingsActivity"
@@ -154,7 +158,6 @@
         <activity android:name=".ui.activity.sample.actionbar.ActionBarTipActivity" />
         <activity android:name=".ui.activity.sample.component.QDActionDialogActivity" />
         <activity android:name=".ui.activity.sample.fragment.BaseFragmentActivity" />
-        <activity android:name=".ui.activity.sample.fragment.AppletsFragmentActivity" />
         <activity android:name=".ui.fragment.helper.serialport.sample.SerialportMain" />
         <activity android:name=".ui.fragment.helper.serialport.sample.ConsoleActivity" />
         <activity android:name=".ui.fragment.helper.serialport.sample.LoopbackActivity" />

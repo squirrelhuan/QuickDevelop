@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
        <EditText
            android:id="@+id/et_url"
            android:layout_width="match_parent"
@@ -14,7 +12,6 @@
            android:layout_gravity="start"
            android:text="http://www.baidu.com"
            android:background="@drawable/folder_bg"/>
-
 
        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
            android:id="@+id/btn_jump"

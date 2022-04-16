@@ -1,6 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.component;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.slidingLayout.ComponentAdapter;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Squirrel桓
@@ -27,7 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.slidingLayout.ComponentAdap
  */
 
 @ActivityPager(name = "StackSliding", preViewClass = TextView.class, resType = ResType.Custome)
-public class StackSlidingLayoutFragment extends BaseFragment {
+public class StackSlidingLayoutFragment extends QuickFragment {
 
     @NonNull
     @Override

@@ -30,11 +30,6 @@
     <attr name="qd_radiusBottomLeft" format="dimension" />
     <attr name="qd_radiusBottomRight" format="dimension" />
     <attr name="qd_btn_internal_width" format="dimension" />
-    <attr name="qd_textColor" format="color" />
-    <attr name="qd_textSize" format="dimension" />
-    <attr name="qd_drawable_width" format="dimension"/>
-    <attr name="qd_drawable_height" format="dimension"/>
-    <attr name="qd_text" format="string" />
 
     <attr name="QDButtonStyle" format="reference" />
     <declare-styleable name="QDButton" parent="QDTextView">
@@ -50,7 +45,7 @@
         <attr name="qd_radiusBottomRight" />
         <attr name="qd_btn_internal_width" />
     </declare-styleable>
-    <declare-styleable name="QDTextView">
+   <!-- <declare-styleable name="QDTextView2" parent="QDTextView">
         <attr name="qd_backgroundColor" />
         <attr name="qd_borderColor" />
         <attr name="qd_borderWidth" />
@@ -61,13 +56,9 @@
         <attr name="qd_radiusBottomLeft" />
         <attr name="qd_radiusBottomRight" />
         <attr name="qd_btn_internal_width" />
-        <attr name="qd_textColor" />
-        <attr name="qd_textSize" />
         <attr name="qd_drawable_width" />
         <attr name="qd_drawable_height" />
-
-    </declare-styleable>
-
+    </declare-styleable>-->
 
     <attr name="qd_btn_text_size" format="dimension" />
     <attr name="qd_btn_border_width" format="dimension" /><!--
@@ -76,8 +67,6 @@
     <attr name="qd_btn_bg_color" format="color" />
     <attr name="qd_btn_border_color" format="color" />
     <attr name="qd_btn_text_color" format="color" />
-
-
     <declare-styleable name="QDTextViewPoint" parent="QDTextView">
         <attr name="pointRadius" format="dimension" />
         <attr name="pointWidth" format="dimension" />

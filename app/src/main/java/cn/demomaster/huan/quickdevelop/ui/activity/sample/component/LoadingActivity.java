@@ -10,7 +10,6 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingCircleBallView;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 @ActivityPager(name = "加载动画",preViewClass = LoadingCircleBallView.class,resType = ResType.Custome)
 public class LoadingActivity extends BaseActivity {

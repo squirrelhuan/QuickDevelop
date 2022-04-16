@@ -47,8 +47,8 @@
         android:gravity="left|center_vertical"
         android:layout_gravity="right"
         android:singleLine="true"
-        app:qd_text=""
-        app:qd_textColor="@color/dodgerblue"
-        app:qd_textSize="@dimen/quickdev_middle_text_size" />
+        app:quick_text=""
+        android:textColor="@color/dodgerblue"
+        app:quick_textSize="@dimen/quickdev_middle_text_size" />
 
 </FrameLayout>

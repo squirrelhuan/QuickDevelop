@@ -22,7 +22,6 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
  */
 public class CameraCropView extends View {
 
-
     public CameraCropView(Context context) {
         super(context);
     }
@@ -95,12 +94,6 @@ public class CameraCropView extends View {
     private int realLeft;
     private int realRight;
     private int realBottom;
-    private int realWidth;
-    private int realHeight;
-    private float percentage_width;
-    private float percentage_height;
-    private float percentage_top;
-    private float percentage_Left;
 
     public int getRealTop() {
         return realTop;
@@ -119,32 +112,32 @@ public class CameraCropView extends View {
     }
 
     public int getRealWidth() {
-        realWidth = realRight - realLeft;
+        int realWidth = realRight - realLeft;
         return realWidth;
     }
 
     public int getRealHeight() {
-        realHeight = realBottom - realTop;
+        int realHeight = realBottom - realTop;
         return realHeight;
     }
 
     public float getPercentage_width() {
-        percentage_width = (float) getRealWidth() / getWidth();
+        float percentage_width = (float) getRealWidth() / getWidth();
         return percentage_width;
     }
 
     public float getPercentage_height() {
-        percentage_height = (float) getRealHeight() / getHeight();
+        float percentage_height = (float) getRealHeight() / getHeight();
         return percentage_height;
     }
 
     public float getPercentage_top() {
-        percentage_top = (float) realTop / getHeight();
+        float percentage_top = (float) realTop / getHeight();
         return percentage_top;
     }
 
     public float getPercentage_Left() {
-        percentage_Left = (float) realLeft / getWidth();
+        float percentage_Left = (float) realLeft / getWidth();
         return percentage_Left;
     }
 }

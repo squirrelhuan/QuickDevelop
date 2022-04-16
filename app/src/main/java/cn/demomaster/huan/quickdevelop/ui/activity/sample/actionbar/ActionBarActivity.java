@@ -10,7 +10,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
@@ -135,33 +135,27 @@ public class ActionBarActivity extends QDActivity implements View.OnClickListene
                 break;
             case R.id.btn_color_black:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.black));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.black), getResources().getColor(R.color.white));
                 showMessage("黑色主题");
                 break;
             case R.id.btn_color_white:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.white));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.white), getResources().getColor(R.color.black));
                 showMessage("白色主题");
                 break;
             case R.id.btn_color_red:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.red));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.red), getResources().getColor(R.color.white));
-                PopToastUtil.showToast(this, "红色主题");
+                showMessage("红色主题");
                 break;
             case R.id.btn_color_gray:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.gray));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.gray), getResources().getColor(R.color.white));
-                PopToastUtil.showToast(this, "灰色主题");
+                showMessage("灰色主题");
                 break;
             case R.id.btn_color_green:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.green));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.green), getResources().getColor(R.color.white));
-                PopToastUtil.showToast(this, "绿色主题");
+                showMessage("绿色主题");
                 break;
             case R.id.btn_color_yellow:
                 getActionBarTool().getActionBarTool().setBackgroundColor(getResources().getColor(R.color.yellow));
-                PopToastUtil.setColorStyle(getResources().getColor(R.color.yellow), getResources().getColor(R.color.black));
-                PopToastUtil.showToast(this, "黄色主题");
+                showMessage("黄色主题");
                 break;
         }
     }

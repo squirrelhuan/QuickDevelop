@@ -90,12 +90,6 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
         super.onHiddenChanged(hidden);
         QDLogger.println("onHiddenChanged=" + this.getClass().getSimpleName() + ",hidden=" + hidden);
     }
-    
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        QDLogger.println("setUserVisibleHint=" + isVisibleToUser);//可见//不可见
-    }
 
     @Override
     public void onResume() {

@@ -16,7 +16,7 @@ import java.util.Set;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 
 
-public class ScrollingTabsAdapter implements TabAdapter {
+public class ScrollingTabsAdapter extends TabAdapter {
 
     private final Activity activity;
 

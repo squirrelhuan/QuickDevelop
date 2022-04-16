@@ -67,7 +67,6 @@ public class QDActionDialogActivity extends BaseActivity {
                     qdActionDialog = new QDActionDialog
                             .Builder(mContext)
                             .setContentbackgroundColor(mContext.getResources().getColor(R.color.transparent_dark_cc))
-                            .setBackgroundRadius(50)
                             .setStateType(QDActionStateType.LOADING)
                             .setMessage(listItems[position])
                             .setDelayMillis(-1)

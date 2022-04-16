@@ -17,8 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
-import cn.demomaster.huan.quickdevelop.ui.fragment.designer.WebViewFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QDSharedPreferences;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.ui.fragment.WebViewFragment;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 
@@ -40,7 +38,7 @@ import cn.demomaster.qdrouter_library.view.ImageTextView;
  * 2018/8/25
  */
 @ActivityPager(name = "H5任意门", iconRes = R.drawable.ic_h5, resType = ResType.Resource)
-public class H5Fragment extends BaseFragment {
+public class H5Fragment extends QuickFragment {
 
     @Override
     public View getHeaderlayout() {
@@ -101,10 +99,6 @@ public class H5Fragment extends BaseFragment {
             intent. setData( Uri. parse( "baekteori_maxida_android://ISPSuccess/https://testpg.payletter.com/PGSVC/MobileCard/ISPPay.asp?data=baekteori1,ed43e56572664adf80cbf1c46e138fe7,320,baekteori120210811180059,,20210811&vpresult=00 "));
             startActivity(intent);
         });
-        ImageTextView btn_title = findViewById(R.id.it_actionbar_title);
-        if (btn_title != null) {
-            btn_title.setText(getTitle());
-        }
         ImageTextView btn_back = findViewById(R.id.it_actionbar_back);
         if (btn_back != null) {
             btn_back.setOnClickListener(v -> onClickBack());
@@ -149,7 +143,7 @@ public class H5Fragment extends BaseFragment {
         bundle.putString("URL", url);
         // webViewFragment.setArguments(bundle);
         // ((QDActivity)v.getContext()).getFragmentHelper().startFragment(webViewFragment);
-        getFragmentHelper().build(getActivity(),WebViewFragment.class.getName())
+        getFragmentHelper().build(getActivity(), WebViewFragment.class.getName())
                 .putExtras(bundle)
                 .putExtra("password", 666666)
                 .navigation();

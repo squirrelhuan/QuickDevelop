@@ -48,7 +48,7 @@ public class InstallHelper {
      * @return
      */
     public static boolean checkDownloadPermission(Context context) {
-        PermissionHelper.requestPermission((Activity) context, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, null);
+        PermissionHelper.requestPermission(context, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, null);
         //兼容8.0 安装权限
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();

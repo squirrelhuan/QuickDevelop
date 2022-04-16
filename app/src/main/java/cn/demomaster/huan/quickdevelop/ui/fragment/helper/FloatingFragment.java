@@ -1,8 +1,6 @@
 package cn.demomaster.huan.quickdevelop.ui.fragment.helper;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
@@ -30,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FloatingMenuService
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.FpsFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.LifecycleFloatingService;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
-import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickevent_library.core.QuickEvent;
 import cn.demomaster.quickevent_library.core.Subscribe;
 import cn.demomaster.quickevent_library.core.ThreadMode;
@@ -43,7 +40,7 @@ import cn.demomaster.quickpermission_library.model.PermissionRequest;
  * 2018/8/25
  */
 @ActivityPager(name = "悬浮窗", preViewClass = TextView.class, resType = ResType.Custome)
-public class FloatingFragment extends BaseFragment {
+public class FloatingFragment extends QuickFragment {
 
     @BindView(R.id.btn_floating_01)
     Button btn_floating_01;

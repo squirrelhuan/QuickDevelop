@@ -20,6 +20,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
@@ -33,9 +34,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -741,6 +744,17 @@ public class QDFileUtil {
         }
     }
 
+
+    /*File historyFile = new File(historyRoot, "history-" + System.currentTimeMillis() + ".csv");
+    try (
+    OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(historyFile), StandardCharsets.UTF_8)) {
+        out.write(history);
+        return Uri.parse("file://" + historyFile.getAbsolutePath());
+    } catch (IOException ioe) {
+        Log.w(TAG, "Couldn't access file " + historyFile + " due to " + ioe);
+        return null;
+    }*/
+
     /**
      * 根据URI获取文件真实路径（兼容多张机型）
      *
@@ -1046,7 +1060,7 @@ public class QDFileUtil {
         }
         MessageDigest digest = null;
         FileInputStream in = null;
-        byte buffer[] = new byte[1024];
+        byte[] buffer = new byte[1024];
         int len;
         try {
             digest = MessageDigest.getInstance("MD5");
@@ -1068,8 +1082,8 @@ public class QDFileUtil {
         if (src == null || src.length <= 0) {
             return null;
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+        for (byte b : src) {
+            int v = b & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
@@ -1094,14 +1108,13 @@ public class QDFileUtil {
     }
 
     public static String getFileType(Context context, File file) {
-
         if (file == null || !file.exists() || file.length() < 11) {
             return null;
         }
         if (mFileTypes == null) {
             setFileTypes(context);
         }
-        String header = get10ByteHeader(file);
+        String header = getByteHeader(file,10);
         QDLogger.println("header=" + header);
         String fileSuffix = mFileTypes.getProperty(header);
         /*
@@ -1124,10 +1137,9 @@ public class QDFileUtil {
 
         //前5个字符截取对比处理没有找到，则进行特殊处理
         if (TextUtils.isEmpty(fileSuffix)) {
-            header = get3ByteHeader(file);
+            header = getByteHeader(file,3);
             fileSuffix = mFileTypes.getProperty(header);
         }
-
         return fileSuffix;
     }
 
@@ -1182,37 +1194,16 @@ public class QDFileUtil {
         return subarray;
     }
 
-    @SuppressWarnings("deprecation")
-    private static String get10ByteHeader(File file) {
+    private static String getByteHeader(File file,int len) {
         InputStream input = null;
         String value = null;
         try {
             input = new FileInputStream(file);
-            byte[] b = new byte[10];
+            byte[] b = new byte[len];
             input.read(b, 0, b.length);
             value = bytesToHexString(b);
         } catch (Exception e) {
-        } finally {
-            try {
-                input.close();
-                //IoUtils.closeSecure(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return value;
-    }
-
-    @SuppressWarnings("deprecation")
-    private static String get3ByteHeader(File file) {
-        InputStream input = null;
-        String value = null;
-        try {
-            input = new FileInputStream(file);
-            byte[] b = new byte[3];
-            input.read(b, 0, b.length);
-            value = bytesToHexString(b);
-        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 input.close();

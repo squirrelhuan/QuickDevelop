@@ -12,18 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.popup.QDPopup;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
  * Squirrel桓
  * 2018/8/25
  */
 @ActivityPager(name = "PopUp", preViewClass = TextView.class, resType = ResType.Custome)
-public class PopUpFragment extends BaseFragment {
+public class PopUpFragment extends QuickFragment {
 
     @Nullable
     @Override

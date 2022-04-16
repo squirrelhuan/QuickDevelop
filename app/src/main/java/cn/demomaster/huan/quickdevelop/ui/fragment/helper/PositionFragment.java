@@ -17,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.position.GPSUtils;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 
@@ -32,7 +32,7 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
  */
 
 @ActivityPager(name = "定位", preViewClass = TextView.class, resType = ResType.Custome)
-public class PositionFragment extends BaseFragment {
+public class PositionFragment extends QuickFragment {
 
     @BindView(R.id.btn_get_position)
     QDButton btn_get_position;

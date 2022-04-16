@@ -1,7 +1,5 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;

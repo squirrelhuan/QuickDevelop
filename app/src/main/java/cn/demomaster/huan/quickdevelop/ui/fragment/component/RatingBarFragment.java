@@ -14,12 +14,12 @@ import androidx.annotation.Nullable;
 
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.RatingBar;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -27,7 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
  * 2018/8/25
  */
 @ActivityPager(name = "进度条", preViewClass = TextView.class, resType = ResType.Resource)
-public class RatingBarFragment extends BaseFragment {
+public class RatingBarFragment extends QuickFragment {
 
     private SeekBar sb_weight, sb_progress;
     private RatingBar ratingBar;

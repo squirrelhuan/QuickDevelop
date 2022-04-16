@@ -92,7 +92,7 @@ public class CenterHorizontalActivity extends BaseActivity {
     }
 
     public RecyclerView centerSnapRecyclerView;
-    private AppListAdapter appListCenterAdapter;
+
     private void setUpRecyclerView() {
 
         //centerSnapRecyclerView = findViewById(R.id.centerSnapRecyclerView);
@@ -100,7 +100,7 @@ public class CenterHorizontalActivity extends BaseActivity {
         LinearLayoutManager layoutManagerCenter
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         centerSnapRecyclerView.setLayoutManager(layoutManagerCenter);
-        appListCenterAdapter = new AppListAdapter(this);
+        AppListAdapter appListCenterAdapter = new AppListAdapter(this);
         centerSnapRecyclerView.setAdapter(appListCenterAdapter);
         List<String> names =new ArrayList<>();
         for(int i=0;i<50;i++){
@@ -112,7 +112,6 @@ public class CenterHorizontalActivity extends BaseActivity {
 
     }
     ViewPager2 view_pager_tag;
-    private SampleFragmentAdapter adapter;
     private void init() {
         //view_pager_tag = findViewById(R.id.view_pager_hor);
         view_pager_tag.setClipChildren(false); //VP的内容可以不在限制内绘制
@@ -121,7 +120,7 @@ public class CenterHorizontalActivity extends BaseActivity {
             list.add("第"+i+"个");
         }
         //getSupportFragmentManager()
-        adapter = new SampleFragmentAdapter(this,list);
+        SampleFragmentAdapter adapter = new SampleFragmentAdapter(this, list);
         view_pager_tag.setAdapter(adapter);
         view_pager_tag.setOffscreenPageLimit(10); //缓存页面数
         view_pager_tag.setPadding(0,0,0,0);

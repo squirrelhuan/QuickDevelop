@@ -15,11 +15,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.service.TrafficFloatingService;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.view.floatview.ServiceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 
@@ -30,7 +30,7 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
  */
 
 @ActivityPager(name = "流量", preViewClass = TextView.class, resType = ResType.Custome)
-public class TrafficFragment extends BaseFragment {
+public class TrafficFragment extends QuickFragment {
 
     @BindView(R.id.btn_start)
     QDButton btn_start;

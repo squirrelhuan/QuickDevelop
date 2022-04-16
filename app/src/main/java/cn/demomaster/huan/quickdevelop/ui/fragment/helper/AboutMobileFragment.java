@@ -18,12 +18,12 @@ import java.io.InputStreamReader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 import static cn.demomaster.huan.quickdeveloplibrary.util.QDAndroidDeviceUtil.isRootSystem;
 
@@ -33,7 +33,7 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDAndroidDeviceUtil.is
  * 2018/8/25
  */
 @ActivityPager(name = "关于手机", preViewClass = TextView.class, resType = ResType.Custome)
-public class AboutMobileFragment extends BaseFragment {
+public class AboutMobileFragment extends QuickFragment {
 
     @BindView(R.id.tv_info)
     TextView tv_info;

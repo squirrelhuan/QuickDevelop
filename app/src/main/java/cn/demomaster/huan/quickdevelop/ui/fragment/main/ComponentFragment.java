@@ -29,14 +29,12 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.PickActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.PictureSelectActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.actionbar.ActionBarTipActivity;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.appPicker.AppPickerActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.LoadingActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.QDActionDialogActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.SlidingPanelLayoutActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.ToggleButtonActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.AppletsFragmentActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.fragment.BaseFragmentActivity;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AnimitionFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.AudioRecordFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.BlurFragment;
@@ -61,7 +59,9 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.lifecycleTimerFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.CompressLayoutFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
+import cn.demomaster.huan.quickdeveloplibrary.ui.AppletsFragmentActivity;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
@@ -71,7 +71,7 @@ import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDeco
  */
 
 @ActivityPager(iconRes = R.mipmap.quickdevelop_ic_launcher)
-public class ComponentFragment extends BaseFragment {
+public class ComponentFragment extends QuickFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -99,6 +99,7 @@ public class ComponentFragment extends BaseFragment {
         List<Class> classList = new ArrayList<>();
 
         classList.add(AdsActivity.class);
+        classList.add(AppPickerActivity.class);
         classList.add(QdButtonFragment.class);
         classList.add(TextSpanFragment.class);
 
@@ -127,7 +128,6 @@ public class ComponentFragment extends BaseFragment {
 
         classList.add(H5Fragment.class);
         classList.add(AppletsFragmentActivity.class);
-        classList.add(BaseFragmentActivity.class);
 
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);

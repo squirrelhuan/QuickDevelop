@@ -186,11 +186,11 @@ public class HorizontalDragView extends LinearLayout {
             @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
                 if (changedView.equals(leftView)) {
-                    QDLogger.println(TAG, "左边" + "left=" + left + ",top=" + top + ",dx=" + dx + ",dy=" + dy);
+                    //QDLogger.println(TAG, "左边" + "left=" + left + ",top=" + top + ",dx=" + dx + ",dy=" + dy);
                     rightView.setLeft(left + leftView.getMeasuredWidth());
                     rightView.setRight(getMeasuredWidth());
                 } else if (changedView.equals(rightView)) {
-                    QDLogger.println(TAG, "右边" + "left=" + left + ",top=" + top + ",dx=" + dx + ",dy=" + dy);
+                    //QDLogger.println(TAG, "右边" + "left=" + left + ",top=" + top + ",dx=" + dx + ",dy=" + dy);
                     int w = leftView.getMeasuredWidth();
                     leftView.setLeft(left - w);
                     leftView.setRight(left);

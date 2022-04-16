@@ -32,7 +32,7 @@ public class CommonPickerPop2 extends PickerPopWindow implements View.OnClickLis
     private int topBottomTextColor = 0xffA9A9A9;//array.getColor(styleable.LoopView_topBottomTextColor, -5263441);
     private int centerTextColor = 0xff11ddaf;//array.getColor(styleable.LoopView_centerTextColor, -13553359);
     private int centerLineColor = 0x00000000;//array.getColor(styleable.LoopView_lineColor, -3815995);
-    ArrayList dataList = new ArrayList();
+    ArrayList dataList;
     private OnPickListener mListener;
 
     public CommonPickerPop2(Builder builder) {

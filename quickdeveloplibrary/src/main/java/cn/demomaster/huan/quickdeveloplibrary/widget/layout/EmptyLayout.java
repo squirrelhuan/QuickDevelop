@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +47,6 @@ public class EmptyLayout extends FrameLayout {
     public QDButton btn_retry;
     ImageTextView it_empty_icon, it_empty_title, it_empty_description;
     QdLoadingView qd_loading;
-    LinearLayout ll_custom;
     ViewGroup layout_emptyview;
     ViewGroup ll_content;
     private void init(AttributeSet attrs) {
@@ -60,7 +58,6 @@ public class EmptyLayout extends FrameLayout {
         it_empty_title = layout_emptyview.findViewById(R.id.it_empty_title);
         it_empty_description = layout_emptyview.findViewById(R.id.it_empty_description);
         qd_loading = layout_emptyview.findViewById(R.id.qd_loading);
-        ll_custom = layout_emptyview.findViewById(R.id.ll_custom);
         addView(layout_emptyview);
     }
     
@@ -75,7 +72,6 @@ public class EmptyLayout extends FrameLayout {
         it_empty_title = null;
         it_empty_description = null;
         qd_loading = null;
-        ll_custom = null;
         layout_emptyview = null;
         ll_content = null;
         targetView = null;

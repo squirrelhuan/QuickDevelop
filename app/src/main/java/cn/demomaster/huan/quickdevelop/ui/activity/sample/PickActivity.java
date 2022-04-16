@@ -17,7 +17,7 @@ import cn.demomaster.huan.quickdevelop.view.picktime.LanguageAdapter;
 import cn.demomaster.huan.quickdevelop.view.picktime.LanguagePickerPop;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.AreaPickerPopBuilder;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.CommonPickerPop;
 import cn.demomaster.huan.quickdeveloplibrary.view.pickview.DatePickerPopBuilder;
@@ -157,7 +157,7 @@ public class PickActivity extends BaseActivity {
         loopView.setDataList(getList(50));
 
         loopView2 = findViewById(R.id.loop_view2);
-        loopView2.setLoopListener(item -> PopToastUtil.showToast(mContext, "item=" + item));
+        loopView2.setLoopListener(item -> QdToast.showToast(mContext, "item=" + item));
         loopView2.setTextSize(25);//must be called before setDateList
         loopView2.setDataList(getList(20));
         loopView2.setCurrentIndex(10);

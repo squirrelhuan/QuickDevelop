@@ -216,7 +216,7 @@ public class QuickDialog extends AppCompatDialog {
         }
         @IntDef({VISIBLE, INVISIBLE, GONE})
         @Retention(RetentionPolicy.SOURCE)
-        public static  @interface Visibility {}
+        public @interface Visibility {}
         public Builder hideView(@IdRes Integer... ids) {
            return setViewVisibe(GONE,ids);
         }
@@ -264,7 +264,7 @@ public class QuickDialog extends AppCompatDialog {
             return new QuickDialog(context, this);
         }
     }
-    public static interface OnBindViewListener{
+    public interface OnBindViewListener{
         void onBind(Dialog dialog, View view);
     }
 }

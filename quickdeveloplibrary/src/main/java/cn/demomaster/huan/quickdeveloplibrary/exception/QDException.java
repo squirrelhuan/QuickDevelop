@@ -16,8 +16,8 @@ public class QDException extends Exception {
     @Override
     public String toString() {
         return "QDException{" +
-                "errorCode=" + errorCode +
-                ",errorMessage=" + getMessage() +
+                "code=" + errorCode +
+                ",msg=" + getMessage() +
                 '}';
     }
 }

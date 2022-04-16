@@ -31,7 +31,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testSocket() {
-        QDTcpServer qdTcpServer = QDTcpServer.getInstance();
+        QDTcpServer qdTcpServer = new QDTcpServer();
         qdTcpServer.setOnReceiveMessageListener((clientId, qdMessage) -> {
             System.out.println("shou dao le " + qdMessage);
             if (qdMessage != null) {
@@ -45,7 +45,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testSocket2() {
-        QDTcpClient qdTcpClient = QDTcpClient.getInstance();
+        QDTcpClient qdTcpClient = new QDTcpClient("",111);
         qdTcpClient.send("a43654765876");
     }
 

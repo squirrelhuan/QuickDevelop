@@ -13,7 +13,7 @@ import androidx.annotation.IdRes;
  */
 public class CheckBoxGroup extends FlowLayout {
 
-    public static enum CheckType {
+    public enum CheckType {
         //notLimit数量不限 mandatoryLimit数量必选 rangeLimit数量范围
         notLimit,
         mandatoryLimit,
@@ -203,6 +203,6 @@ public class CheckBoxGroup extends FlowLayout {
          * @param isChecked     the unique identifier of the newly checked radio button
          * @param changedViewId the unique identifier of the newly checked radio button
          */
-        public void onCheckedChanged(CheckBoxGroup group, boolean isChecked, @IdRes int changedViewId);
+        void onCheckedChanged(CheckBoxGroup group, boolean isChecked, @IdRes int changedViewId);
     }
 }

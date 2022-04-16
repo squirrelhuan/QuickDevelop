@@ -46,15 +46,17 @@ public class HierarchyView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
-
-    private void init() {
-        setOnTouchListener((v, event) -> {
+    OnTouchListener onTouchListener = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
             if (onClickListener2 != null) {
                 onClickListener2.onClick(event.getX(), event.getY());
             }
             return true;
-        });
-        
+        }
+    };
+    private void init() {
+        setOnTouchListener(onTouchListener);
         setOnClickListener2((x, y) -> {
             if (viewNodeInfo != null) {
                 List<ViewNodeInfo> nodeInfoList = findNodeInfoByPosition(x, y);

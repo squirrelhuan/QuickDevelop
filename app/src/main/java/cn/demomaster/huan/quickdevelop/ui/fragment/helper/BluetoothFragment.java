@@ -29,22 +29,21 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
 /**
  * Squirrel桓
  * 2021/01/14
  */
-@ActivityPager(name = "蓝牙", preViewClass = TextView.class, resType = ResType.Custome)
-public class BluetoothFragment extends BaseFragment {
-
+@ActivityPager(name = "蓝牙", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.drawable.ic_baseline_bluetooth_24)
+public class BluetoothFragment extends QuickFragment {
 
     @BindView(R.id.tv_info)
     TextView tv_info;

@@ -11,7 +11,7 @@ import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 @ActivityPager(name = "数据库",preViewClass = TextView.class,resType = ResType.Resource,iconRes = R.mipmap.ic_database)
@@ -44,7 +44,7 @@ public class CsqliteActivity extends BaseActivity {
             // 数据库版本的更新,由原来的1变为2
             //CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,2);
             //SQLiteDatabase db =dbHelper.getReadableDatabase();
-            PopToastUtil.showToast(mContext,"更新未实现");
+            QdToast.showToast(mContext,"更新未实现");
         });
         insertBtn.setOnClickListener(v -> {
             // CBHelper dbHelper = new CBHelper(mContext,"yidao.db",null,1);
@@ -60,7 +60,7 @@ public class CsqliteActivity extends BaseActivity {
             // Application.instance.db.insert("inner_department_category", null, cv);
             //关闭数据库
             //db.close();
-            PopToastUtil.showToastBottom(mContext,"插入数据的方法");
+            QdToast.showToast(mContext,"插入数据的方法");
         });
         ModifyBtn.setOnClickListener(v -> {
             //CBHelper dbHelper = new CBHelper(mContext,"stu_db",null,1);
@@ -95,7 +95,7 @@ public class CsqliteActivity extends BaseActivity {
             }
             //关闭数据库
             //db.close();
-            PopToastUtil.showToastCenter(mContext,"插入数据的方法");
+            QdToast.showToast(mContext,"插入数据的方法");
         });
         deleteBtn.setOnClickListener(v -> {
             //CBHelper dbHelper = new CBHelper(mContext,"stu_db",null,1);

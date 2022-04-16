@@ -1,11 +1,9 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.component;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
-import cn.demomaster.huan.quickdeveloplibrary.helper.toast.PopToastUtil;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -28,7 +26,6 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QuickDialog;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 @ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_dialog)
 public class QDialogActivity extends BaseActivity {
@@ -294,7 +291,7 @@ public class QDialogActivity extends BaseActivity {
                 .setData(menus)
                 .setOnDialogActionListener((dialog, position, data) -> {
                     dialog.dismiss();
-                    PopToastUtil.showToast(mContext, data.get(position));
+                    QdToast.showToast(mContext, data.get(position));
                 }).create().show();
     }
 
@@ -302,7 +299,7 @@ public class QDialogActivity extends BaseActivity {
         String[] menus = {"item1", "item2", "234"};
         new QDMulSheetDialog.MenuBuilder(mContext).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
             dialog.dismiss();
-            PopToastUtil.showToast(mContext, data.get(position));
+            QdToast.showToast(mContext, data.get(position));
         }).create().show();
     }
 
@@ -312,7 +309,7 @@ public class QDialogActivity extends BaseActivity {
                 .setData(menus)
                 .setOnDialogActionListener((dialog, position, data) -> {
                     dialog.dismiss();
-                    PopToastUtil.showToast(mContext, data.get(position));
+                    QdToast.showToast(mContext, data.get(position));
                 }).create().show();
     }
 }

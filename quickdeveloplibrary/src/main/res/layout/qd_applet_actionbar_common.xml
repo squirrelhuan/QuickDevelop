@@ -19,7 +19,7 @@
             android:layout_width="@dimen/activity_actionbar_button_width"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_6"
-            app:qd_textSize="@dimen/quickdev_title_text_size"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp"
             tools:ignore="VectorDrawableCompat" />
@@ -30,8 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_6"
-            app:qd_textSize="@dimen/quickdev_title_text_size"
-            app:qd_text="1234656"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical" />
     </LinearLayout>
 
@@ -52,7 +51,7 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/dp_6"
-            app:qd_textSize="@dimen/quickdev_title_text_size"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             android:rotation="90"
             app:srcCompat="@drawable/ic_more_vert_black_24dp"
@@ -73,10 +72,9 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/dp_6"
-            app:qd_textSize="@dimen/quickdev_title_text_size"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
             android:gravity="center_vertical"
             app:srcCompat="@mipmap/ic_close_circle" />
     </LinearLayout>
-
 
 </FrameLayout>

@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import cn.demomaster.huan.quickdevelop.R;
-import cn.demomaster.huan.quickdevelop.ui.fragment.BaseFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
@@ -22,6 +21,7 @@ import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 
@@ -33,7 +33,7 @@ import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
  */
 
 @ActivityPager(name = "生命周期查看器", preViewClass = TextView.class, resType = ResType.Custome)
-public class lifecycleTimerFragment extends BaseFragment {
+public class lifecycleTimerFragment extends QuickFragment {
 
     @NonNull
     @Override
