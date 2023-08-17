@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.huan.quickdeveloplibrary.view.webview.QDWebView;
 import cn.demomaster.huan.quickdeveloplibrary.view.webview.QuickWebChromeClient;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.fragment.AppletsFragment;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
+import cn.demomaster.qdrouter_library.view.StateView;
 
 
 /**
@@ -39,6 +39,7 @@ public class WebViewFragment extends AppletsFragment {
     String url;
     public void initView(View rootView) {
         webView = findViewById(R.id.webView);
+
         ImageTextView rightView = findViewById(R.id.it_actionbar_menu);
         if(rightView!=null){
             rightView.setOnClickListener(v -> webView.loadUrl(url));
@@ -62,7 +63,7 @@ public class WebViewFragment extends AppletsFragment {
                 }
 
             });
-            url = (String) bundle.get("URL");
+            url =(String) bundle.get("URL");
             webView.loadUrl(url);
         }
     }
@@ -76,7 +77,7 @@ public class WebViewFragment extends AppletsFragment {
             }
             //当返回true时，表示已经完整地处理了这个事件，并不希望其他的回调方法再次进行处理，而当返回false时，表示并没有完全处理完该事件，更希望其他回调方法继续对其进行处理
         }
-        QDLogger.e("onKeyDown false");
+        QDLogger.println("onKeyDown false");
         return super.onKeyDown(keyCode,event);
     }
 }

@@ -169,7 +169,7 @@ public class QMUIDisplayHelper {
         return size;
     }
 
-    /**
+    /*
      * 剔除挖孔屏等导致的不可用区域后的 width
      *
      * @param activity

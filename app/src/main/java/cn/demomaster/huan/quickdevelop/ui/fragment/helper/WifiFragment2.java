@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.layout.LoadLayout;
@@ -75,7 +76,7 @@ public class WifiFragment2 extends QuickFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.toggle)
-    ToggleButton toggle;
+    QuickToggleButton toggle;
     @BindView(R.id.tv_state)
     TextView tv_state;
     @BindView(R.id.tv_pass)
@@ -146,7 +147,9 @@ public class WifiFragment2 extends QuickFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         wifiAdapter = new WifiAdapter(mContext);
-        wifiAdapter.setOnItemClickListener((view, position) -> {
+        wifiAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
             if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
             } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
@@ -154,7 +157,7 @@ public class WifiFragment2 extends QuickFragment {
             } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
                 showInputDialog(position);
             }
-        });
+        }});
 
         wifiAdapter.updateList(scanResultList);
         //设置Adapter
@@ -173,7 +176,7 @@ public class WifiFragment2 extends QuickFragment {
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         toggle.setChecked(WifiUtil.getInstance().isWifiEnabled());
-        toggle.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
+        toggle.setOnToggleChanged(new QuickToggleButton.OnToggleChangeListener() {
             @Override
             public void onToggle(View view, boolean on) {
                 if (on) {
@@ -185,7 +188,7 @@ public class WifiFragment2 extends QuickFragment {
         });
         loadlayout.setOnLoadListener(new LoadLayout.OnLoadListener() {
             @Override
-            public void onLoadData() {
+            public void onLoadData(int type) {
                 initData();
             }
 
@@ -195,7 +198,6 @@ public class WifiFragment2 extends QuickFragment {
             }
         });
         loadlayout.loadData();
-
         initWifi();
     }
 

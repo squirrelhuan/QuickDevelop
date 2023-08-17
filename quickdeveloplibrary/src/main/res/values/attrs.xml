@@ -20,9 +20,13 @@
         <item>6</item>
     </string-array>
 
+    <attr name="qd_toogleColor" format="color" />
     <attr name="qd_backgroundColor" format="color" />
+    <attr name="quick_radius" format="color" />
     <attr name="qd_borderColor" format="color" />
     <attr name="qd_borderWidth" format="dimension" />
+    <attr name="qd_foreBorderColor" format="color" />
+    <attr name="qd_foreBorderWidth" format="dimension" />
     <attr name="qd_isRadiusAdjustBounds" format="boolean" />
     <attr name="qd_radius" format="dimension" />
     <attr name="qd_radiusTopLeft" format="dimension" />
@@ -30,13 +34,14 @@
     <attr name="qd_radiusBottomLeft" format="dimension" />
     <attr name="qd_radiusBottomRight" format="dimension" />
     <attr name="qd_btn_internal_width" format="dimension" />
-
     <attr name="QDButtonStyle" format="reference" />
     <declare-styleable name="QDButton" parent="QDTextView">
         <attr name="qd_backgroundColor" />
         <attr name="qd_backgroundColor_disable" />
         <attr name="qd_borderColor" />
         <attr name="qd_borderWidth" />
+        <attr name="qd_foreBorderColor" /><!--前景边框色-->
+        <attr name="qd_foreBorderWidth" /><!--前景边框宽度-->
         <attr name="qd_isRadiusAdjustBounds" />
         <attr name="qd_radius" />
         <attr name="qd_radiusTopLeft" />
@@ -45,20 +50,10 @@
         <attr name="qd_radiusBottomRight" />
         <attr name="qd_btn_internal_width" />
     </declare-styleable>
-   <!-- <declare-styleable name="QDTextView2" parent="QDTextView">
-        <attr name="qd_backgroundColor" />
-        <attr name="qd_borderColor" />
-        <attr name="qd_borderWidth" />
-        <attr name="qd_isRadiusAdjustBounds" />
-        <attr name="qd_radius" />
-        <attr name="qd_radiusTopLeft" />
-        <attr name="qd_radiusTopRight" />
-        <attr name="qd_radiusBottomLeft" />
-        <attr name="qd_radiusBottomRight" />
-        <attr name="qd_btn_internal_width" />
-        <attr name="qd_drawable_width" />
-        <attr name="qd_drawable_height" />
-    </declare-styleable>-->
+
+    <declare-styleable name="QDToggleButton" parent="QDTextView">
+        <attr name="qd_toogleColor" />
+    </declare-styleable>
 
     <attr name="qd_btn_text_size" format="dimension" />
     <attr name="qd_btn_border_width" format="dimension" /><!--
@@ -98,7 +93,6 @@
         <attr name="hollowOut" format="boolean" />
         <attr name="hollowColor" format="color" />
         <attr name="hollowRadius" format="dimension" />
-
     </declare-styleable>
 
     <declare-styleable name="SlidingLayout">
@@ -177,10 +171,16 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="CircleImageView">
+    <declare-styleable name="CircleImageView" parent="QDTextView">
         <attr name="circle_background_padding" format="dimension" />
         <attr name="circle_background_color" format="color" />
+        <attr name="circle_foreground_color" format="color" />
         <attr name="circle_radius" format="dimension" />
+        <attr name="circle_foreground_radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="AutoCenterHorizontalScrollView" parent="QDTextView">
+        <attr name="auto_scroll" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="LoadingView">
@@ -225,7 +225,6 @@
         <!--对齐视图-->
         <attr name="cursorColor" format="color" />
     </declare-styleable>
-
 
     <declare-styleable name="QDViewPager">
         <attr name="canScroll" format="boolean" />

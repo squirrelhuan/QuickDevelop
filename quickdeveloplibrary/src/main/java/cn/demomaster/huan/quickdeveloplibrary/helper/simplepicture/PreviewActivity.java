@@ -3,22 +3,15 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
-import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PreviewFragment;
 
 /**
  *
@@ -27,7 +20,7 @@ public class PreviewActivity extends QDActivity {
     //private PhotoView pv_image;
     private ViewPager2 vp_image;
     private FragmentManager mFragmentManager;
-    private FragmentStateAdapter fragmentAdapter;
+    private ImageFragmentAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +31,6 @@ public class PreviewActivity extends QDActivity {
         //getActionBarTool().setActionBarType(ACTION_STACK_NO_STATUS);
         //getActionBarTool().setStateBarColorAuto(true);
         vp_image = findViewById(R.id.vp_image);
-
         //pv_image = (PhotoView) findViewById(R.id.pv_image);
         initV();
     }
@@ -87,40 +79,12 @@ public class PreviewActivity extends QDActivity {
         if (images == null || images.size() == 0) {
             return;
         }
-        final int imageCount = images.size();
         getActionBarTool().setTitle((index + 1) + "/" + images.size());
         mFragmentManager = getSupportFragmentManager();
-        fragmentAdapter = new PictureFragmentAdapter(this, images);
-
+        fragmentAdapter = new ImageFragmentAdapter(this, images);
         vp_image.unregisterOnPageChangeCallback(onPageChangeCallback);
         vp_image.registerOnPageChangeCallback(onPageChangeCallback);
         vp_image.setAdapter(fragmentAdapter);
-        vp_image.setCurrentItem(index);
-    }
-
-    private static class PictureFragmentAdapter extends FragmentStateAdapter {
-
-        private ArrayList<Image> images;
-
-        public PictureFragmentAdapter(@NonNull @NotNull FragmentActivity fragmentActivity, ArrayList<Image> images) {
-            super(fragmentActivity);
-            this.images = images;
-        }
-
-        @NonNull
-        @NotNull
-        @Override
-        public Fragment createFragment(int position) {
-            PreviewFragment fragment = new PreviewFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("image", images.get(position));
-            fragment.setArguments(bundle);
-            return fragment;
-        }
-
-        @Override
-        public int getItemCount() {
-            return images.size();
-        }
+        vp_image.setCurrentItem(index,false);
     }
 }

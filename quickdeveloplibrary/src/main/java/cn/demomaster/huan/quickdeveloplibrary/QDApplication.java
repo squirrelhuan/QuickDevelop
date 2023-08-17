@@ -87,8 +87,8 @@ public class QDApplication extends Application implements UpgradeInterface {
     public QuickDbHelper getDbHelper() {
         if (dbHelper == null) {
             String dbpath = null;
-            if (AppConfig.getInstance().getConfigMap().containsKey("dbpath")) {
-                dbpath = (String) AppConfig.getInstance().getConfigMap().get("dbpath");
+            if (AppConfig.getInstance().getConfigMap(getApplicationContext()).containsKey("dbpath")) {
+                dbpath = (String) AppConfig.getInstance().getConfigMap(getApplicationContext()).get("dbpath");
             }
 
             if (!TextUtils.isEmpty(dbpath)) {

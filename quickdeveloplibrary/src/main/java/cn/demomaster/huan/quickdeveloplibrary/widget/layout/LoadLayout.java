@@ -113,7 +113,7 @@ public class LoadLayout extends FrameLayout {
         }
         inflateView(LoadStateType.Loading,code);
         if (onLoadListener != null) {
-            onLoadListener.onLoadData();
+            onLoadListener.onLoadData(code);
         }
     }
 
@@ -134,7 +134,7 @@ public class LoadLayout extends FrameLayout {
     }
 
     private void inflateView(LoadStateType loadStateType,int code, Object... args) {
-        QDLogger.println("inflateView code="+code);
+        //QDLogger.println("inflateView code="+code);
         requestCode = code;
         ViewBuilder loadViewBuilder = null;
         if(onLoadListener!=null) {
@@ -162,7 +162,7 @@ public class LoadLayout extends FrameLayout {
     }
 
     public interface OnLoadListenerInterface {
-        void onLoadData();
+        void onLoadData(int type);
         void onLoadSuccess();
         void onLoadFail();
         void onRetry(LoadLayout loadLayout, int code);

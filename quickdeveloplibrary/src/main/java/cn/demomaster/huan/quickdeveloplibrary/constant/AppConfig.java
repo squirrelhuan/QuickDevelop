@@ -29,18 +29,18 @@ public class AppConfig {
     public void load(Context context, String pathName) {
         mContext = context.getApplicationContext();
         configPath = pathName;
-        initConfigMap();
+        initConfigMap(context);
     }
 
-    public Map<String, Object> getConfigMap() {
+    public Map<String, Object> getConfigMap(Context context) {
         if (configMap == null) {
-            initConfigMap();
+            initConfigMap(context);
         }
         return configMap;
     }
 
-    public void initConfigMap() {
-        String conf = QDFileUtil.getFromAssets(mContext, configPath);
+    public void initConfigMap(Context context) {
+        String conf = QDFileUtil.getFromAssets(context, configPath);
         if (TextUtils.isEmpty(conf)) {
             configMap = null;
             QDLogger.e(new IllegalArgumentException("配置文件初始化失败，未找到指定配置文件/或为空 ，路径：" + configPath));
@@ -85,7 +85,7 @@ public class AppConfig {
         return catClass;
     }
 
-    public Object getConfig(String key) {
-        return getConfigMap().get(key);
+    public Object getConfig(Context context,String key) {
+        return getConfigMap(context).get(key);
     }
 }

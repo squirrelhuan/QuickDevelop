@@ -24,7 +24,7 @@
             android:padding="@dimen/dp_5"
             android:text="蓝牙状态"
             android:textColor="@color/black"/>
-        <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
             android:id="@+id/tooglebutton"
             android:layout_width="60dp"
             android:layout_height="30dp" />

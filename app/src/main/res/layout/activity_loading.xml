@@ -5,16 +5,16 @@
     android:layout_height="match_parent"
     android:padding="12dp"
     android:orientation="horizontal"
-    tools:context=".ui.activity.sample.component.LoadingActivity">
+    tools:context=".ui.activity.sample.component.LoadingFragment">
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.FlowLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
+        <cn.demomaster.qdrouter_library.view.StateView
             android:id="@+id/sv_loading"
             android:layout_width="80dp"
-            android:layout_height="80dp"  />
+            android:layout_height="80dp"/>
 
         <cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadingDefView
             android:layout_width="80dp"

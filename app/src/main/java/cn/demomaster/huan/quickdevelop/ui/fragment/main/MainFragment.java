@@ -121,14 +121,17 @@ public class MainFragment extends QuickFragment {
         getActionBarTool().setRightOnClickListener(v -> optionsMenu.show(v));
         initOptionsMenu();
     }
+
     public PhotoHelper getPhotoHelper() {
         if (getContext() instanceof QDActivity) {
             return ((QDActivity) getContext()).getPhotoHelper();
         }
         return null;
     }
+
     OptionsMenu optionsMenu;
     private OptionsMenu.Builder optionsMenubuilder;
+
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
         String[] menuNames = {"我的二维码", "扫描", "截图分享"};
@@ -204,13 +207,13 @@ public class MainFragment extends QuickFragment {
     private void showScanDialog(String url) {
         QDDialog qdDialog = new QDDialog.Builder(mContext)
                 .setTitle("要跳转到指定页面吗？")
-                .setMessage(""+url)
+                .setMessage("" + url)
                 //.setMinHeight_body((int) getResources().getDimension(R.dimen.dp_100))
                 //.setGravity_body(Gravity.CENTER).setText_size_body((int) getResources().getDimension(R.dimen.sp_10))
                 //.setWidth((int) getResources().getDimension(R.dimen.dp_120))
                 .setText_color_body(Color.BLUE)
                 .addAction("复制", (dialog, view, tag) -> {
-                    ClipboardUtil.setClip(getContext(),""+url);
+                    ClipboardUtil.setClip(getContext(), "" + url);
                     QdToast.show("copy success");
                     dialog.dismiss();
                 })
@@ -220,9 +223,9 @@ public class MainFragment extends QuickFragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("URL", url);
                     webViewFragment.setArguments(bundle);
-                    Intent intent =new Intent();
+                    Intent intent = new Intent();
                     intent.putExtras(bundle);
-                    startFragment(webViewFragment,R.id.container1,intent);
+                    startFragment(webViewFragment, R.id.container1, intent);
                 })
                 //.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setText_size_foot((int) getResources().getDimension(R.dimen.sp_6))
@@ -290,15 +293,17 @@ public class MainFragment extends QuickFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.i( "main onKeyDown " + isRootFragment());
-        if (isRootFragment()) {
-            if (System.currentTimeMillis() - firstClickTime > 2000) {
-                QdToast.show(mContext, "再点击退出app");
-                firstClickTime = System.currentTimeMillis();
-            } else {
-                getActivity().finish();
+        QDLogger.i("main onKeyDown " + isRootFragment());
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (isRootFragment()) {
+                if (System.currentTimeMillis() - firstClickTime > 2000) {
+                    QdToast.show(mContext, "再点击退出app");
+                    firstClickTime = System.currentTimeMillis();
+                } else {
+                    getActivity().finish();
+                }
+                return true;
             }
-            return true;
         }
         //QdToast.show(mContext, "onKeyDown isRootFragment=" + isRootFragment());
         return super.onKeyDown(keyCode, event);

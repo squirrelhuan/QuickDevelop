@@ -2,32 +2,49 @@ package cn.demomaster.huan.quickdevelop.ui.activity.sample.component;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.ui.activity.BaseActivity;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
 
-@ActivityPager(name = "开关按钮",preViewClass = ToggleButton.class,resType = ResType.Custome)
-public class ToggleButtonActivity extends BaseActivity {
+@ActivityPager(name = "Switch 开关",preViewClass = QuickToggleButton.class,resType = ResType.Resource,iconRes = R.drawable.ic_switch_mul)
+public class ToggleButtonActivity extends QuickFragment {
 
     @BindView(R.id.sb_weight)
     SeekBar sb_weight;
     @BindView(R.id.tooglebutton)
-    ToggleButton tooglebutton;
+    QuickToggleButton tooglebutton;
     @BindView(R.id.sb_progress_color)
     SeekBar sb_progress_color;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_toggle_button);
-        QuickStickerBinder.getInstance().bind(this);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.activity_toggle_button, null);
+        return mView;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Switch 开关";
+    }
+
+    @Override
+    public void initView(View rootView) {
+        QuickStickerBinder.getInstance().bind(this,rootView);
         sb_weight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -72,8 +89,9 @@ public class ToggleButtonActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         QuickStickerBinder.getInstance().unBind(this);
     }
+
 }

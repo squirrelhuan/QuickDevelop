@@ -45,7 +45,7 @@
             android:minHeight="@dimen/dp_0"
             android:padding="@dimen/dp_5"
             android:src="@mipmap/ic_close_circle"
-            app:quick_text="关闭"
+            app:quick_text="@string/close"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
     </RelativeLayout>

@@ -192,7 +192,7 @@ public class NotificationHelper {
             attrs.setUsage(AudioAttributes.USAGE_ALARM);
             //attrs.setUsage(AudioAttributes.USAGE_MEDIA);
             //manager.deleteNotificationChannel(channelId);
-            /**
+            /*
              * Oreo不用Priority了，用importance
              * IMPORTANCE_NONE 关闭通知
              * IMPORTANCE_MIN 开启通知，不会弹出，但没有提示音，状态栏中无显示

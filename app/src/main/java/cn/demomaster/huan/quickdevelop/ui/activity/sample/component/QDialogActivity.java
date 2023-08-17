@@ -1,13 +1,20 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.component;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +26,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.GroundGlassUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
@@ -26,17 +34,24 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDMulSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QuickDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QuickShareDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.adapter.ShareAdapter;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
+
 
 @ActivityPager(name = "对话框", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.mipmap.ic_dialog)
-public class QDialogActivity extends BaseActivity {
+public class QDialogActivity extends QuickFragment {
     private int backgroundRadio = 20;
     private ListView mListView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qdialog);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.activity_qdialog, null);
+        return mView;
+    }
 
+    @Override
+    public void initView(View rootView) {
         getActionBarTool().setRightOnClickListener(v -> {
             //getOptionsMenu().show();
             showSheetMenu();
@@ -59,8 +74,8 @@ public class QDialogActivity extends BaseActivity {
                 "多选菜单类型对话框(item 数量很多)",
                 "带输入框的对话框",
                 "高度适应键盘升降的对话框",
-                "1",
-                "2",
+                "分享",
+                "带radiobutton的单选窗",
                 "3",
                 "1",
                 "2",
@@ -149,6 +164,12 @@ public class QDialogActivity extends BaseActivity {
                 case 14://高度适应键盘升降的对话框
                     showInputDialog();
                     break;
+                case 15://高度适应键盘升降的对话框
+                    showShareDialog();
+                    break;
+                case 16://高度适应键盘升降的对话框
+                    showShareDialog();
+                    break;
             }
         });
         initOptionsMenu();
@@ -169,6 +190,31 @@ public class QDialogActivity extends BaseActivity {
                 .show();
     }
 
+    public OptionsMenu optionsMenu;
+    //获取自定义菜单
+    public OptionsMenu getOptionsMenu() {
+        if (optionsMenu == null) {
+            optionsMenu = new OptionsMenu(new OptionsMenu.Builder(mContext));
+        }
+        return optionsMenu;
+    }
+
+    private OptionsMenu.Builder optionsMenubuilder;
+
+    //获取自定义菜单
+    public OptionsMenu.Builder getOptionsMenuBuilder() {
+        if (optionsMenubuilder == null) {
+            optionsMenubuilder = new OptionsMenu.Builder(mContext);
+        }
+        return optionsMenubuilder;
+    }
+    public PhotoHelper photoHelper;
+    public PhotoHelper getPhotoHelper() {
+        if (photoHelper == null) {
+            photoHelper = new PhotoHelper(mContext,null,mContext.getPackageName()+".fileprovider");
+        }
+        return photoHelper;
+    }
     //初始化菜单
     private void initOptionsMenu() {
         List<OptionsMenu.Menu> menus = new ArrayList<>();
@@ -209,7 +255,7 @@ public class QDialogActivity extends BaseActivity {
     }
 
     private void showSheetMenu() {
-        String[] menus = {"item1", "item2", "item3"};
+        String[] menus = {"i1", "item2", "item3"};
         QDSheetDialog dialog = new QDSheetDialog.Builder(mContext)
                 .setData(menus)
                 .setGravity(Gravity.BOTTOM)
@@ -217,6 +263,65 @@ public class QDialogActivity extends BaseActivity {
                 .create();
         dialog.show();
     }
+
+    QuickShareDialog shareDialog;
+    private void showShareDialog() {
+        if (shareDialog == null) {
+            ArrayList<ShareAdapter.ShareModel> spinners = new ArrayList<>();
+            String[] menus = new String[]{"微信", "微博","朋友圈","QQ空间"};// {"item1", "item2", "item3"};
+            for(int i=0;i<menus.length;i++){
+                ShareAdapter.ShareModel shareModel = new ShareAdapter.ShareModel();
+                shareModel.setName(""+menus[i]);
+                shareModel.setImgResId(R.mipmap.meizi);
+                spinners.add(shareModel);
+            }
+            //menus = spinners.toArray(menus);
+            shareDialog = new QuickShareDialog.Builder(mContext)
+                    .setContentViewLayoutID(R.layout.layout_dialog_share_default)
+                    .setData(menus)
+                    .setOrientation(LinearLayout.HORIZONTAL)
+                    .setGravity(android.view.Gravity.BOTTOM)
+                    .setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT)
+                    .setBackgroundColor(Color.WHITE)
+                    .setBackgroundRadius(DisplayUtil.dp2px(mContext, 10))
+                    .create();
+            shareDialog.setSheetAdapter(new ShareAdapter(mContext,spinners));
+        }
+        shareDialog.show();
+    }
+
+
+    QuickDialog radioButtonDialog;
+    private void showRadioButtonDialog() {
+        if (radioButtonDialog == null) {
+            radioButtonDialog = new QuickDialog.Builder(mContext)
+                    .setContentView(R.layout.radio_button_dialog_layout)
+                    .bindView(R.id.tv_title,"确定要发送吗？")
+                    .create();
+            ArrayList<ShareAdapter.ShareModel> spinners = new ArrayList<>();
+            String[] menus = new String[]{"微信", "微博","朋友圈","QQ空间"};// {"item1", "item2", "item3"};
+            for(int i=0;i<menus.length;i++){
+                ShareAdapter.ShareModel shareModel = new ShareAdapter.ShareModel();
+                shareModel.setName(""+menus[i]);
+                shareModel.setImgResId(R.mipmap.meizi);
+                spinners.add(shareModel);
+            }
+            //menus = spinners.toArray(menus);
+            shareDialog = new QuickShareDialog.Builder(mContext)
+                    .setContentViewLayoutID(R.layout.layout_dialog_share_default)
+                    .setData(menus)
+                    .setOrientation(LinearLayout.HORIZONTAL)
+                    .setGravity(android.view.Gravity.BOTTOM)
+                    .setWidthLayoutType(ViewGroup.LayoutParams.MATCH_PARENT)
+                    .setBackgroundColor(Color.WHITE)
+                    .setBackgroundRadius(DisplayUtil.dp2px(mContext, 10))
+                    .create();
+            shareDialog.setSheetAdapter(new ShareAdapter(mContext,spinners));
+        }
+        shareDialog.show();
+    }
+
+
     /*private void showMessagePositiveDialog() {
         DialogHelper.showDialog(this,"title","message");
     }
@@ -312,4 +417,5 @@ public class QDialogActivity extends BaseActivity {
                     QdToast.showToast(mContext, data.get(position));
                 }).create().show();
     }
+
 }

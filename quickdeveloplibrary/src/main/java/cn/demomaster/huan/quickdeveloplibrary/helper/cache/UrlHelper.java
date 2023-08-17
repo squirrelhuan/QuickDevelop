@@ -51,7 +51,7 @@ public class UrlHelper {
                     });
                 }
             } catch (Exception e) {
-                QDLogger.e("未识别链接资源类型："+urlString);
+                QDLogger.println("未识别链接资源类型："+urlString);
                 //e.printStackTrace();
                 if (analyResult != null) {
                     analyResult.error();

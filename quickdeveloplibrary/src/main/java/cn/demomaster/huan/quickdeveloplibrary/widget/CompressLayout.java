@@ -121,7 +121,15 @@ public class CompressLayout extends ViewGroup {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        /**依据得到的specMode值，如果是AT_MOST，specSize 代表的是最大可获得的空间；如果EXACTLY，   specSize 代表的是精确的尺寸；如果是UNSPECIFIED，对于控件尺寸来说，没有任何参考意义。当以EXACT方式标记测量尺寸，父元素会坚持在一个指定的精确尺寸区域放置View。在父元素问子元素要多大空间时，AT_MOST指示者会说给我最大的范围。在很多情况下，你得到的值都是相同的。在两种情况下，你必须绝对的处理这些限制。在一些情况下，它可能会返回超出这些限制的尺寸，在这种情况下，你可以让父元素选择如何对待超出的View，使用裁剪还是滚动等技术。**/
+        /*
+         * 依据得到的specMode值，
+         * 如果是AT_MOST，specSize 代表的是最大可获得的空间；
+         * 如果EXACTLY，   specSize 代表的是精确的尺寸；
+         * 如果是UNSPECIFIED，对于控件尺寸来说，没有任何参考意义。
+         * 当以EXACT方式标记测量尺寸，父元素会坚持在一个指定的精确尺寸区域放置View。在父元素问子元素要多大空间时，
+         * AT_MOST指示者会说给我最大的范围。在很多情况下，你得到的值都是相同的。在两种情况下，你必须绝对的处理这些限制。
+         * 在一些情况下，它可能会返回超出这些限制的尺寸，在这种情况下，你可以让父元素选择如何对待超出的View，使用裁剪还是滚动等技术。
+         */
        /* if(widthMode == MeasureSpec.EXACTLY){
             //不需要重新计算
             widthMeasureSpec = widthSize;

@@ -18,14 +18,14 @@ public class QDRoundArrowDrawable extends QDividerDrawable {
     PointF mPointF;
     private GuiderView.Gravity mGravity;
     private View mAnchor;//相对view
-    private ViewGroup mDrawView;//指定背景view
-
+    private View mDrawView;//指定背景view
+    
     /**
      * @param anchor   相对view
      * @param gravity  相对位置
      * @param drawView 要设置背景的view
      */
-    public QDRoundArrowDrawable(View anchor, GuiderView.Gravity gravity, ViewGroup drawView) {
+    public QDRoundArrowDrawable(View anchor, GuiderView.Gravity gravity, View drawView) {
         mDrawView = drawView;
         mAnchor = anchor;
         mGravity = gravity;
@@ -48,7 +48,7 @@ public class QDRoundArrowDrawable extends QDividerDrawable {
         super.onBoundsChange(bounds);
         mRect = bounds;
 
-        /*************   设置三角形   ************/
+        //设置三角形
         PointF centerPointF = new PointF();
         mArrow.reset();
         int valueH = arrowHeight;
@@ -103,7 +103,7 @@ public class QDRoundArrowDrawable extends QDividerDrawable {
 
         valueH = (int) (valueH * r - 1);
         valueW = (int) (valueW * r - 1);
-        /*************   设置padding   ************/
+        //设置padding
         switch (mGravity) {
             case TOP:
                 mRect.bottom = mRect.bottom - valueH;

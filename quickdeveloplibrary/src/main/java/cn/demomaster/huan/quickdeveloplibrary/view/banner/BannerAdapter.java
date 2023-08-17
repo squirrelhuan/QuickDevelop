@@ -86,6 +86,12 @@ public class BannerAdapter extends FragmentStateAdapter {
         return (mAdsResourceList == null || mAdsResourceList.size() == 0) ? 0 : Integer.MAX_VALUE;
     }
 
+    public boolean showLoadingView = false;
+    public void showLoadingView(boolean show) {
+        this.showLoadingView = show;
+        //postInvalidate();
+    }
+
     Map<Integer, BannerFragmentInterface> adsFragmentMap = new HashMap<>();
 
     public void setCurrentItem(int currentItem) {
@@ -129,7 +135,7 @@ public class BannerAdapter extends FragmentStateAdapter {
     int mCurrentItemHashCode;
 
     public void onFragmentActived(int hashCode) {
-        QDLogger.println("onFragmentActived:" + hashCode);
+        //QDLogger.println("onFragmentActived:" + hashCode);
         mCurrentItemHashCode = hashCode;
         for (Map.Entry entry : adsFragmentMap.entrySet()) {
             BannerFragmentInterface anInterface = (BannerFragmentInterface) entry.getValue();

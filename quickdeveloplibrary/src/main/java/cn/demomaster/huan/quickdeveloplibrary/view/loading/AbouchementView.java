@@ -81,7 +81,6 @@ public class AbouchementView extends View {
         }
         int x = (int) (centerX + r * Math.cos(radians));
         int y = (int) (centerY + r * Math.sin(radians));
-        //QDLogger.e("degrees="+degrees+",x="+x+",y="+y+",r2="+r+",progress="+progress+",centerX="+centerX+",centerY="+centerY);
         baller.setX(x);
         baller.setY(y);
         baller.setRadiusLocal(r);
@@ -116,14 +115,10 @@ public class AbouchementView extends View {
     }
 
     private void drawView(Canvas canvas) {
-        //QDLogger.e("progress=" + progress + "");
-        //canvas.rotate((progress / 360) * 90 + 45 + (index) * 90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
-
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         canvas.drawColor(Color.YELLOW);
         mPaint.setColor(Color.RED);
-
         if (isForward) {
             for (int i = 0; i < ballers.size(); i++) {
                 Baller baller = ballers.get(i);

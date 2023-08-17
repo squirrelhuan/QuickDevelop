@@ -11,10 +11,10 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 
-@ActivityPager(name = "ActionBar",preViewClass = ToggleButton.class,resType = ResType.Custome)
+@ActivityPager(name = "ActionBar",preViewClass = QuickToggleButton.class,resType = ResType.Custome)
 public class ActionBarActivity extends QDActivity implements View.OnClickListener {
 
     private LinearLayout ll_root;

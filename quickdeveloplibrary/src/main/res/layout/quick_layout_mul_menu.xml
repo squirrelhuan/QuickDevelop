@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--android:background="@color/transparent_dark_33"-->
+
+        <LinearLayout
+            android:id="@+id/cgq_ll_tab_menu_item_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_60"
+            android:orientation="vertical"
+            android:background="@color/white">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_tab_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+        </LinearLayout>
+</RelativeLayout>

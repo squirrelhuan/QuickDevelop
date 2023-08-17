@@ -1,6 +1,12 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model;
 
+import android.content.Context;
+import android.net.Uri;
+
+import java.io.File;
 import java.io.Serializable;
+
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 
 /**
  * 图片实体类
@@ -11,6 +17,7 @@ public class Image implements Serializable {
     private long time;
     private String name;
     private UrlType urlType = UrlType.file;
+    private Uri uri;
 
     public Image(String path, UrlType urlType) {
         this.path = path;
@@ -56,4 +63,15 @@ public class Image implements Serializable {
         this.urlType = urlType;
     }
 
+    public Uri getUri(Context context) {
+        if(uri==null){
+            //uri = Uri.parse(path);
+            uri = QDFileUtil.fileToUri(context,new File(path));
+        }
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
 }

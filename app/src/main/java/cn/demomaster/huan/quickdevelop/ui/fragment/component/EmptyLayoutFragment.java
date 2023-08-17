@@ -40,8 +40,12 @@ public class EmptyLayoutFragment extends QuickFragment {
         return mView;
     }
 
-    EmptyLayout emptylayout;
+    @Override
+    public String getTitle() {
+        return "加载布局";
+    }
 
+    EmptyLayout emptylayout;
     public void initView(View rootView) {
         ButterKnife.bind(this, rootView);
         getActionBarTool().getRightView().setOnClickListener(v -> showMulMenuDialog());

@@ -2,11 +2,18 @@ package cn.demomaster.huan.quickdeveloplibrary.util;
 
 import android.text.TextUtils;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import cn.demomaster.qdlogger_library.QDLogger;
 
@@ -307,7 +314,6 @@ public class StringUtil {
         return str.toString();
     }
 
-
     /**
      * 数字转指定位数的string
      *
@@ -337,6 +343,41 @@ public class StringUtil {
         }else{
             return false;
         }
+    }
+    // byte转为char
+    public static char[] byteToChar(byte[] bytes) {
+        //Charset charset = Charset.forName("ISO-8859-1");
+        Charset charset = Charset.forName("UTF-8");
+        ByteBuffer byteBuffer = ByteBuffer.allocate(bytes.length);
+        byteBuffer.put(bytes);
+        byteBuffer.flip();
+        CharBuffer charBuffer = charset.decode(byteBuffer);
+        return charBuffer.array();
+    }
+    // char转byte
+    public static byte[] charToBytes(char[] chars) {
+        //Charset charset = Charset.forName("ISO-8859-1");
+        Charset charset = Charset.forName("UTF-8");
+        CharBuffer charBuffer = CharBuffer.allocate(chars.length);
+        charBuffer.put(chars);
+        charBuffer.flip();
+        ByteBuffer byteBuffer = charset.encode(charBuffer);
+        return byteBuffer.array();
+    }
+
+    public static List<String> StringSet2Array(Set<String> keySet) {
+        List<String> stringList;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            stringList = keySet.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+        }else {
+            stringList = new ArrayList<>();
+            for (String str : keySet) {
+                stringList.add(str);
+            }
+        }
+        return stringList;
     }
 
 }

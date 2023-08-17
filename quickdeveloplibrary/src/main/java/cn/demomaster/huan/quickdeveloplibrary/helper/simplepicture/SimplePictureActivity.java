@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Folder;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
@@ -140,7 +139,6 @@ public class SimplePictureActivity extends QuickActivity {
     }
 
     private int maxCount = 3;
-
     public void initAdapter() {
         // 判断屏幕方向
         Configuration configuration = getResources().getConfiguration();

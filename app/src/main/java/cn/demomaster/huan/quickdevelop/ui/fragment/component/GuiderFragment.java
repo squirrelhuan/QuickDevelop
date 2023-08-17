@@ -26,7 +26,7 @@ import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
  * 2018/8/25
  */
 
-@ActivityPager(name = "操作引导", preViewClass = TextView.class, resType = ResType.Custome)
+@ActivityPager(name = "遮罩引导", preViewClass = TextView.class, resType = ResType.Custome)
 public class GuiderFragment extends QuickFragment {
 
     @NonNull
@@ -34,6 +34,11 @@ public class GuiderFragment extends QuickFragment {
     public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_layout_guider, null);
         return mView;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Mask guidance Sample";
     }
 
     @Override

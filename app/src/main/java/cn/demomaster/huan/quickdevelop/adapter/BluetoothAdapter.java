@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,14 +79,14 @@ public class BluetoothAdapter extends RecyclerView.Adapter<BluetoothAdapter.View
             itemView.setOnClickListener(v -> {
                 int p = getAdapterPosition();
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v,  p);
+                    onItemClickListener.onItemClick(null,v,p,v.getId());
                 }
             });
         }
     }
 
-    TabMenuAdapter.OnItemClickListener onItemClickListener;
-    public void setOnItemClickListener(TabMenuAdapter.OnItemClickListener onItemClickListener) {
+    AdapterView.OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 }

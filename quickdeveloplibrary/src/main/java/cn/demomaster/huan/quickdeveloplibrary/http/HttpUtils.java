@@ -1,13 +1,24 @@
 package cn.demomaster.huan.quickdeveloplibrary.http;
 
 
+import android.media.MediaMetadataRetriever;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -281,4 +292,107 @@ public class HttpUtils {
         }
         return ssfFactory;
     }
+
+
+
+
+
+
+
+    public static class HttpTask extends AsyncTask {
+        public String url;
+        Map<String, String> params;
+        HpptCallback callback;
+
+        HttpTask(HpptCallback callback) {
+            this.callback = callback;
+            //this.webResourceFilter = webResourceFilter;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+            //String searchContent = objects[0].toString();
+            url = (String) objects[0];
+            params = (Map<String, String>) objects[1];
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection connection = null;
+            try {
+                // 创建URL对象
+                URL getUrl = new URL(url);
+                // 打开连接
+                connection = (HttpURLConnection) getUrl.openConnection();
+                // 设置请求方法为GET
+                connection.setRequestMethod("GET");
+                // 设置是否向HttpURLConnection输出，因为这个是输入流，所以必须设为true,默认情况下是false;
+                connection.setDoOutput(true);
+                // 设置是否从HttpURLConnection读入，默认情况下是true;
+                connection.setDoInput(true);
+                // 设置是否使用缓存，默认情况是false;
+                connection.setUseCaches(false);
+                // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向。默认情况下是 true。
+                connection.setInstanceFollowRedirects(true);
+                // 连接
+                connection.connect();
+                // 获取所有响应头字段
+                Map<String, List<String>> headers = connection.getHeaderFields();
+                // 如果有返回值，则打印出来
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    reader.close();
+                } else {
+                    System.out.println("请求失败，错误码：" + connection.getResponseCode());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(this.callback!=null) {
+                    this.callback.onFailure(e);
+                    this.callback=null;
+                }
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onProgressUpdate(Object[] values) {
+            QDLogger.println("onProgressUpdate");
+            // 可以在此方法内更新操作进度 需要调用publishProgress 方法才会执行
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if(this.callback!=null) {
+                this.callback.onResponse((String) o);
+                this.callback=null;
+            }
+            url = null;
+            params = null;
+        }
+    }
+
+    public interface HpptCallback {
+        void onFailure(Exception e);
+        void onResponse(String response);
+    }
+    public static void sendGetRequest(String url, Map<String, String> params,HpptCallback callback) {
+        HttpTask httpTask = new HttpTask(callback);
+        httpTask.execute(url,params);
+    }
+
+
 }

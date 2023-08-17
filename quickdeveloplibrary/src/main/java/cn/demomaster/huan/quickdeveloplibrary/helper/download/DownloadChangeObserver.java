@@ -187,7 +187,6 @@ public class DownloadChangeObserver extends ContentObserver {
         } catch (Exception e) {
             QDLogger.e("QDdownload", "onChange" + e.getMessage());
         }*/
-
         QDLogger.e("QDdownload", "onChange");
         downLoadHandler.removeCallbacks(downloadProgressRunnable);
         downLoadHandler.postDelayed(downloadProgressRunnable, 1000);

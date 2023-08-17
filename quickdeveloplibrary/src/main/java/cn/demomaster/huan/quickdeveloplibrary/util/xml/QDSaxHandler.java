@@ -112,7 +112,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
      * @param elementName
      */
     private void addElement(Object parentElement, String elementName, Attributes atts) {
-        /****************   确定要添加元素类型生成实体类  *******************/
+        //确定要添加元素类型生成实体类
         Object newElement = elementName;
         //1.得到Class对象
         Class c = parentElement.getClass();
@@ -175,7 +175,7 @@ public class QDSaxHandler<T> extends DefaultHandler {
      * @param elementName
      */
     private Object addElementAttr(Object parentElement, String elementName, Attributes atts) {
-        /****************   确定要添加元素类型生成实体类  *******************/
+        //确定要添加元素类型生成实体类
         Object newElement = elementName;
         //1.得到Class对象
         Class c = parentElement.getClass();

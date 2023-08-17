@@ -97,7 +97,7 @@ public class QDListView extends ListView implements
         }else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
-        QDLogger.i("parentHeight="+parentHeight+",getMeasuredHeight()="+getMeasuredHeight());
+        QDLogger.println("parentHeight="+parentHeight+",getMeasuredHeight()="+getMeasuredHeight());
         /*if(heightMode == MeasureSpec.EXACTLY){
         } else if(widthMode == MeasureSpec.AT_MOST){
         }*/
@@ -106,7 +106,7 @@ public class QDListView extends ListView implements
     //判断是否可以上滑
     public boolean canScrollY(int dy) {
         boolean b = ListViewCompat.canScrollList(this,  dy);//大于0则判断是否触底，小于0则判断是否触顶
-        QDLogger.e("canScrollY=" +b+",dy="+dy);
+        //QDLogger.println("canScrollY=" +b+",dy="+dy);
         return b;
     }
 
@@ -251,8 +251,8 @@ public class QDListView extends ListView implements
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                 }
-                mLastTouchX = x ;
-                mLastTouchY = y ;
+                mLastTouchX = x;
+                mLastTouchY = y;
                 //}
                 break;
             case MotionEvent.ACTION_CANCEL:

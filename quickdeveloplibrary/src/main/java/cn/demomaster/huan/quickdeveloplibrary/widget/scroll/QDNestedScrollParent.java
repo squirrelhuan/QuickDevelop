@@ -14,14 +14,12 @@ import cn.demomaster.qdlogger_library.QDLogger;
 /**
  * Created by Squirrel桓 on 2019/1/29.
  */
-
 public class QDNestedScrollParent extends LinearLayout implements NestedScrollingParent {
     private QDNestedFixedView fixedView;
     private QDNestedScrollChild myNestedScrollChild;
     private NestedScrollingParentHelper mNestedScrollingParentHelper;
     //private int hideHeight;//即将要隐藏部分的高度
     //private int minHeight;//顶部或者底部空余的最小距离
-    
     public QDNestedScrollParent(Context context) {
         super(context);
     }
@@ -47,8 +45,14 @@ public class QDNestedScrollParent extends LinearLayout implements NestedScrollin
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        fixedView = (QDNestedFixedView) getChildAt(0);
-        myNestedScrollChild = (QDNestedScrollChild) getChildAt(1);
+        for(int i=0;i<getChildCount();i++) {
+            if(getChildAt(i) instanceof QDNestedFixedView){
+                fixedView = (QDNestedFixedView) getChildAt(i);
+            }
+            if (getChildAt(i) instanceof QDNestedScrollChild) {
+                myNestedScrollChild = (QDNestedScrollChild) getChildAt(i);
+            }
+        }
         //hideHeight = fixedView.getMinHeight();
     }
 

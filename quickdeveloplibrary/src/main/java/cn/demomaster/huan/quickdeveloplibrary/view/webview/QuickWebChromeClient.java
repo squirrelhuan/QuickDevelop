@@ -17,7 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class QuickWebChromeClient extends WebChromeClient {
-    QDWebView qdWebView;
+    WebView qdWebView;
 
     @Override
     public void onPermissionRequest(PermissionRequest request) {
@@ -31,13 +31,13 @@ public class QuickWebChromeClient extends WebChromeClient {
         });// MainActivity
     }
 
-    public QuickWebChromeClient(QDWebView qdWebView) {
+    public QuickWebChromeClient(WebView qdWebView) {
         this.qdWebView = qdWebView;
         mOnProgressChanged = new OnProgressChanged() {
             @Override
             public void onProgress(int progress) {
-                if(qdWebView!=null){
-                    qdWebView.onProgress(progress);
+                if(qdWebView instanceof QuickWebViewInterface){
+                    ((QuickWebViewInterface)qdWebView).onLoading(progress);
                 }
                 if(onProgressChanged!=null){
                     onProgressChanged.onProgress(progress);
@@ -46,8 +46,8 @@ public class QuickWebChromeClient extends WebChromeClient {
 
             @Override
             public void onFinish() {
-                if(qdWebView!=null){
-                    qdWebView.onFinish();
+                if(qdWebView instanceof QuickWebViewInterface){
+                    ((QuickWebViewInterface)qdWebView).onLoadComplete();
                 }
                 if(onProgressChanged!=null){
                     onProgressChanged.onFinish();
@@ -94,25 +94,25 @@ public class QuickWebChromeClient extends WebChromeClient {
     /*android 低版本 Desperate*/
     @Override
     public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-        QDLogger.i("console1", message + "(" +sourceID  + ":" + lineNumber+")");
+        QDLogger.println("console1", message + "(" +sourceID  + ":" + lineNumber+")");
         super.onConsoleMessage(message, lineNumber, sourceID);
     }
 
     @Override
     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-        QDLogger.i("console2", "["+consoleMessage.messageLevel()+"] "+ consoleMessage.message() + "(" +consoleMessage.sourceId()  + ":" + consoleMessage.lineNumber()+")");
+        QDLogger.println("console2", "["+consoleMessage.messageLevel()+"] "+ consoleMessage.message() + "(" +consoleMessage.sourceId()  + ":" + consoleMessage.lineNumber()+")");
         return super.onConsoleMessage(consoleMessage);
     }
     @Override
     public void onShowCustomView(View view, CustomViewCallback callback) {
         super.onShowCustomView(view, callback);
-        QDLogger.e("onShowCustomView:" + callback);
+        QDLogger.println("onShowCustomView:" + callback);
     }
 
     @Override
     public void onShowCustomView(View view, int requestedOrientation, CustomViewCallback callback) {
         super.onShowCustomView(view, requestedOrientation, callback);
-        QDLogger.e("onShowCustomView2:" + callback);
+        QDLogger.println("onShowCustomView2:" + callback);
     }
 
     /**
@@ -121,20 +121,23 @@ public class QuickWebChromeClient extends WebChromeClient {
      */
     @Override
     public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-        QDLogger.e("onCreateWindow: resultMsg:" + resultMsg);
-        boolean b = qdWebView.onCreateWindow(view,isDialog,isUserGesture,resultMsg);
-        if(b){
-            return true;
+        QDLogger.println("onCreateWindow: resultMsg:" + resultMsg);
+        if(qdWebView instanceof QuickWebViewInterface) {
+            boolean b = ((QuickWebViewInterface)qdWebView).onCreateWindow(view, isDialog, isUserGesture, resultMsg);
+            if (b) {
+                QDLogger.println("创建窗口: onCreateWindow:" + true);
+                return true;
+            }
         }
         return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
     }
 
     @Override
     public void onCloseWindow(WebView window) {
-        QDLogger.e("onCloseWindow: window:" + window);
+        QDLogger.println("onCloseWindow: window:" + window);
         boolean b = false;
-        if(qdWebView!=null){
-            b=qdWebView.onCloseWindow(window);
+        if(qdWebView instanceof QuickWebViewInterface) {
+            b=((QuickWebViewInterface)qdWebView).onCloseWindow(window);
         }
         if(!b){
             super.onCloseWindow(window);
@@ -144,15 +147,18 @@ public class QuickWebChromeClient extends WebChromeClient {
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
-        if(qdWebView!=null){
-            qdWebView.onReceivedTitle(view,title);
+        if(qdWebView instanceof QuickWebViewInterface) {
+            ((QuickWebViewInterface)qdWebView).onReceivedTitle(view,title);
         }
     }
 
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-        if(qdWebView!=null){
-           return qdWebView.onShowFileChooser(this,webView, filePathCallback, fileChooserParams);
+        if(qdWebView instanceof QuickWebViewInterface) {
+           boolean r= ((QuickWebViewInterface)qdWebView).onShowFileChooser(this,webView, filePathCallback, fileChooserParams);
+           if(r){
+               return true;
+           }
         }
         return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
     }

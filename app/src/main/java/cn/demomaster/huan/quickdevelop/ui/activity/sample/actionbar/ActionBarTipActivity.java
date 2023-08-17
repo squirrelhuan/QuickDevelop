@@ -1,11 +1,18 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample.actionbar;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,11 +21,14 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.view.loading.EmoticonView;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBARTIP_TYPE;
+import cn.demomaster.qdrouter_library.actionbar.ActionBarState;
+import cn.demomaster.qdrouter_library.actionbar.ActionBarTipLayout;
+import cn.demomaster.qdrouter_library.actionbar.LoadStateType;
+import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 @ActivityPager(name = "ActionBarTip", preViewClass = TextView.class, resType = ResType.Custome)
-public class ActionBarTipActivity extends QDActivity {
+public class ActionBarTipActivity extends QuickFragment implements View.OnClickListener {
 
     @BindView(R.id.ev_emtion)
     EmoticonView emoticonView;
@@ -30,13 +40,18 @@ public class ActionBarTipActivity extends QDActivity {
     Button btn_emui_sluggish;
     @BindView(R.id.btn_emui_smile)
     Button btn_emui_smile;
+    ActionBarTipLayout actionBarTipLayout;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_action_bar_tip);
-        //getActionBarTool().setActionBarType(ACTIONBAR_TYPE.NO_ACTION_BAR_NO_STATUS);
-        ButterKnife.bind(this);
+    public View onGenerateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.activity_action_bar_tip, null);
+        return mView;
+    }
+
+    @Override
+    public void initView(View rootView) {
+        ButterKnife.bind(this,mContext);
         getActionBarTool().getActionBarLayout().getActionBarView().setBackgroundColor(Color.RED);
 
         btn_emui_halo.setOnClickListener(v -> emoticonView.setStateType(LoadStateType.LOADING));
@@ -45,14 +60,30 @@ public class ActionBarTipActivity extends QDActivity {
         btn_emui_smile.setOnClickListener(v -> emoticonView.setStateType(LoadStateType.COMPLETE));
 
         Button btn_complete = findViewById(R.id.btn_complete);
+        btn_complete.setOnClickListener(this);
         Button btn_loading = findViewById(R.id.btn_loading);
+        btn_loading.setOnClickListener(this);
         Button btn_warning = findViewById(R.id.btn_warning);
+        btn_warning.setOnClickListener(this);
         Button btn_error = findViewById(R.id.btn_error);
+        btn_error.setOnClickListener(this);
         CheckBox cb_001 = findViewById(R.id.cb_001);
+        cb_001.setOnClickListener(this);
         cb_001.setOnCheckedChangeListener((buttonView, isChecked) -> getActionBarTool().setActionBarTipType(isChecked ? ACTIONBARTIP_TYPE.NORMAL : ACTIONBARTIP_TYPE.STACK));
 
-        // getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
-       /* getActionBarTool().getActionBarTip().setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
+        getActionBarTool().setHeaderBackgroundColor(Color.TRANSPARENT);
+        actionBarTipLayout =new ActionBarTipLayout(mContext);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            actionBarTipLayout.setZ(10.f);
+        }
+        actionBarTipLayout.setActionBarHeight(getActionBarTool().getActionBarLayout().getActionBarPositionY());
+        actionBarTipLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                actionBarTipLayout.setActionBarHeight(getActionBarTool().getActionBarLayout().getActionBarPositionY());
+            }
+        });
+        actionBarTipLayout.setLoadingStateListener(new ActionBarState.OnLoadingStateListener() {
             @Override
             public void onLoading(final ActionBarState.Loading loading) {
                 //TODO 处理状态
@@ -65,7 +96,9 @@ public class ActionBarTipActivity extends QDActivity {
                 //loading.hide();
                 loading.success("加载success");
             }
-        });*/
+        });
+        actionBarTipLayout.setContentView(R.layout.qd_activity_actionbar_tip);
+        getActionBarTool().getActionBarLayout().addView(actionBarTipLayout);
 
         /*btn_complete.setOnClickListener(view -> getActionBarTool().getActionBarTip().showComplete("完成"));
         btn_loading.setOnClickListener(view -> getActionBarTool().getActionBarTip().showLoading("加载"));
@@ -93,6 +126,28 @@ public class ActionBarTipActivity extends QDActivity {
             }
         });
         sb_background.setProgress(50);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if(actionBarTipLayout !=null){
+            LoadStateType loadStateType = LoadStateType.LOADING;
+            switch (v.getId()){
+                case R.id.btn_loading:
+                    actionBarTipLayout.loading();
+                    break;
+                case R.id.btn_complete:
+                    actionBarTipLayout.completeAndHide();
+                    break;
+                case R.id.btn_error:
+                    actionBarTipLayout.showError("123456");
+                    break;
+                case R.id.btn_warning:
+                    actionBarTipLayout.showWarning("警告警告");
+                    break;
+            }
+        }
     }
 
 }

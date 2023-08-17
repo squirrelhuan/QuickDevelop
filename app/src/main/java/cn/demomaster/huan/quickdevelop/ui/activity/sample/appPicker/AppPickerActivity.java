@@ -30,12 +30,12 @@ import java.util.List;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 
 /**
  * Activity for picking an installed application to share via Intent.
  */
-@ActivityPager(name = "AppPicker",preViewClass = ToggleButton.class,resType = ResType.Resource,iconRes = R.mipmap.ic_apps)
+@ActivityPager(name = "AppPicker",preViewClass = QuickToggleButton.class,resType = ResType.Resource,iconRes = R.mipmap.ic_apps)
 public final class AppPickerActivity extends ListActivity {
 
   private AsyncTask<Object,Object,List<AppInfo>> backgroundTask;

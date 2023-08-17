@@ -19,7 +19,7 @@
             android:minHeight="@dimen/dp_22"
             android:orientation="horizontal">
 
-            <cn.demomaster.huan.quickdeveloplibrary.widget.CircleImageView
+            <cn.demomaster.huan.quickdeveloplibrary.widget.QuickImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -48,7 +48,7 @@
                 android:layout_gravity="right|center_vertical"
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
-                android:text="关闭"
+                android:text="@string/close"
                 android:textColor="@color/red"
                 android:textSize="@dimen/sp_10" />
         </LinearLayout>

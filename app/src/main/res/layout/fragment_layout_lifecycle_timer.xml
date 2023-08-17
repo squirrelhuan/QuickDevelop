@@ -21,7 +21,7 @@
                 android:textColor="@color/black"
                 android:text="开启activity生命周期监听"/>
 
-            <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
                 android:id="@+id/toggle_enable"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_24"

@@ -256,13 +256,12 @@ public class QDDialog2 extends AppCompatDialog {
     }
 
     public static class Builder {
-        private Context context;
-        private View contentView;
-        private int contentViewLayoutID;
-
-        private int backgroundColor = Color.TRANSPARENT;
-        private float[] backgroundRadius = new float[8];
-        private int animationStyleID = R.style.qd_dialog_animation_center_scale;
+        public Context context;
+        public View contentView;
+        public int contentViewLayoutID=R.layout.quick_dialog_layout;
+        public int backgroundColor = Color.TRANSPARENT;
+        public float[] backgroundRadius = new float[8];
+        public int animationStyleID = R.style.qd_dialog_animation_center_scale;
 
         public Builder(Context context) {
             this.context = context;
@@ -270,6 +269,16 @@ public class QDDialog2 extends AppCompatDialog {
 
         public Builder setContext(Context context) {
             this.context = context;
+            return this;
+        }
+
+        public Builder setContentView(View contentView) {
+            this.contentView = contentView;
+            return this;
+        }
+
+        public Builder setContentViewLayoutID(int contentViewLayoutID) {
+            this.contentViewLayoutID = contentViewLayoutID;
             return this;
         }
 

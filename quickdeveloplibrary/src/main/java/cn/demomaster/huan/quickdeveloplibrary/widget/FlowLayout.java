@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.widget.layout.FlowAdapter;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 public class FlowLayout extends ViewGroup {
@@ -364,9 +365,19 @@ public class FlowLayout extends ViewGroup {
         }
 
         for (int i = 0; i < adapter.getCount(); i++) {
-            View view = adapter.getView(i);
+            View view = adapter.getView(this,i);
             if (view!=null&&view.getParent() == null) {
                 addView(view);
+            }
+            final int a = i;
+            View view1 = adapter.bindClickView(view);
+            if(view1!=null) {
+                view1.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adapter.onItemClickListener.onItemClick(null, v, a, v.getId());
+                    }
+                });
             }
         }
 
@@ -413,25 +424,9 @@ public class FlowLayout extends ViewGroup {
         return 0;
     }
 
-
-    public interface FlowAdapter {
-
-        int getCount();
-
-        Object getItem(int position);
-
-        long getItemId(int position);
-
-        View getView(int position);
-
-    }
-
     public interface ViewHolder {
-
         View getItemView(int position);
-
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

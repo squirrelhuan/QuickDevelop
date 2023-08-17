@@ -18,7 +18,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.BatteryOptimizationsHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 /**
@@ -33,7 +33,7 @@ public class NotifycationFragment extends QuickFragment {
     @BindView(R.id.tv_state)
     TextView tv_state;
     @BindView(R.id.tb_state)
-    ToggleButton tb_state;
+    QuickToggleButton tb_state;
     @BindView(R.id.btn_01)
     QDButton btn_01;
     @BindView(R.id.btn_02)
@@ -58,8 +58,8 @@ public class NotifycationFragment extends QuickFragment {
         ButterKnife.bind(this, rootView);
         getActionBarTool().setTitle("消息通知");
 
-        tb_state.setChecked2(NotificationHelper.isNotificationEnabled(mContext));
-        tb_state.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
+        tb_state.setDefChecked(NotificationHelper.isNotificationEnabled(mContext));
+        tb_state.setOnToggleChanged(new QuickToggleButton.OnToggleChangeListener() {
             @Override
             public void onToggle(View view, boolean on) {
                 NotificationHelper.startNotificationSetting(mContext);
@@ -105,6 +105,6 @@ public class NotifycationFragment extends QuickFragment {
     @Override
     public void onResume() {
         super.onResume();
-        tb_state.setChecked2(NotificationHelper.isNotificationEnabled(mContext));
+        tb_state.setDefChecked(NotificationHelper.isNotificationEnabled(mContext));
     }
 }

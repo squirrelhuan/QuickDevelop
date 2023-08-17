@@ -20,7 +20,7 @@ import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleClassInfo;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifeCycleEvent;
 import cn.demomaster.huan.quickdeveloplibrary.lifecycle.LifecycleView;
 import cn.demomaster.huan.quickdeveloplibrary.util.lifecycle.LifecycleManager;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.quicksticker_annotations.BindView;
 import cn.demomaster.quicksticker_annotations.QuickStickerBinder;
@@ -42,7 +42,7 @@ public class lifecycleTimerFragment extends QuickFragment {
         return mView;
     }
     @BindView(R.id.toggle_enable)
-    ToggleButton toggle_enable;
+    QuickToggleButton toggle_enable;
     public void initView(View rootView) {
         QuickStickerBinder.getInstance().bind(this,rootView);
         LifecycleView lifecycleView = rootView.findViewById(R.id.timeDomainPlotView);

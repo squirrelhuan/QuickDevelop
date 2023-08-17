@@ -136,6 +136,12 @@ public class QDSharedPreferences {
         editor.commit();
     }
 
+    public void remove(String key) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
     public void putInt(String key, int value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, value);

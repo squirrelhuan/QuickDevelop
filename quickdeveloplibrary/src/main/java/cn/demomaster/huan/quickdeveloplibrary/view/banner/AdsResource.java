@@ -11,8 +11,8 @@ public class AdsResource {
     public static final int textGravityDefault = Gravity.CENTER;
     public static final int layout_gravityDefault = Gravity.BOTTOM;
 
-    int type = -1;
-    int from = 0;
+    int type = -1;//参考BannerContentType
+    int from = 0;//参考BannerFileType
     int duration = 0;
     String url;
     String filePath;
@@ -22,6 +22,7 @@ public class AdsResource {
     int textBackgroundColor = textBackgroundColorDefault;
     int backgroundColor = backgroundColorDefault;
     float textSize = 18;
+    int resId;
 
     int layout_gravity = layout_gravityDefault;//UNSPECIFIED_GRAVITY;
     int textGravity = textGravityDefault;//UNSPECIFIED_GRAVITY;
@@ -137,5 +138,13 @@ public class AdsResource {
 
     public void setTextSize(float textSize) {
         this.textSize = textSize;
+    }
+
+    public int getResId() {
+        return resId;
+    }
+
+    public void setResId(int resId) {
+        this.resId = resId;
     }
 }

@@ -2,15 +2,14 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,12 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnSingleItemClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
-import cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuAdapter;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.adapter.SheetAdapter;
 
 import static android.view.View.OVER_SCROLL_NEVER;
 
@@ -103,8 +101,13 @@ public class QDMulSheetDialog extends QDDialog2 {
                 break;
         }
 
-        SheetAdapter adapter = new SheetAdapter(getContext(), data);
-        adapter.setOnItemClickListener((view, position) -> onDialogActionListener.onItemClick(QDMulSheetDialog.this, position, data));
+        SheetAdapter<RecyclerView.ViewHolder> adapter = new SheetAdapter<RecyclerView.ViewHolder>(getContext(), data);
+        adapter.setOnItemClickListener(new OnSingleItemClickListener() {
+            @Override
+            public void onItemClickEvent(AdapterView<?> parent, View view, int position, long id) {
+                onDialogActionListener.onItemClick(QDMulSheetDialog.this, position, data);
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         RelativeLayout relativeLayout = new RelativeLayout(getContext());
@@ -219,71 +222,5 @@ public class QDMulSheetDialog extends QDDialog2 {
 
     public interface OnDialogActionListener {
         void onItemClick(QDMulSheetDialog dialog, int position, List<String> data);
-    }
-
-    public static class SheetAdapter extends QuickRecyclerAdapter<SheetAdapter.VHItem> {
-        private List data;
-        private Context context;
-        private TabMenuAdapter.OnItemClickListener onItemClickListener;
-
-        public TabMenuAdapter.OnItemClickListener getOnItemClickListener() {
-            return onItemClickListener;
-        }
-
-        public void setOnItemClickListener(TabMenuAdapter.OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
-
-        public SheetAdapter(Context context, List data) {
-            this.context = context;
-            this.data = data;
-        }
-
-        @NonNull
-        @Override
-        public VHItem onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = new FrameLayout(context);
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            return new VHItem(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull final VHItem vhItem, int i) {
-            vhItem.itemView.setOnClickListener(v -> {
-                int position = vhItem.getAdapterPosition();
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position);
-                }
-            });
-            vhItem.onbind(i);
-        }
-
-        @Override
-        public int getItemCount() {
-            return this.data.size();
-        }
-
-        public class VHItem extends RecyclerView.ViewHolder {
-            QDTextView textView;
-
-            public VHItem(@NonNull View itemView) {
-                super(itemView);
-                textView = new QDTextView(itemView.getContext());
-                textView.setText("");
-                int p = DisplayUtil.dip2px(itemView.getContext(), 15);
-                textView.setPadding(p, p, p, p);
-                textView.setTextSize(16);
-                textView.setTextColor(Color.BLACK);
-                if (Build.VERSION.SDK_INT >= 19) {
-                    textView.setBackgroundResource(R.drawable.ripple_bg);
-                }
-                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                ((ViewGroup) itemView).addView(textView, layoutParams);
-            }
-
-            public void onbind(int position) {
-                textView.setText(data.get(position) + "");
-            }
-        }
     }
 }

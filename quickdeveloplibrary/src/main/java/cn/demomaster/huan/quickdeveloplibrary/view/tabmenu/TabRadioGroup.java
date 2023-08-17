@@ -100,8 +100,6 @@ public class TabRadioGroup extends LinearLayout {
         public TabRadioButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
         }
-
-
     }
 
 }

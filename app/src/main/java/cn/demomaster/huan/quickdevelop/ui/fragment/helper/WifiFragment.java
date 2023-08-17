@@ -16,6 +16,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ import cn.demomaster.huan.quickdeveloplibrary.network.NetWorkBroadcastReceiver;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDDeviceHelper;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.OnClickActionListener;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDInputDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -68,7 +69,7 @@ public class WifiFragment extends QuickFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.toggle)
-    ToggleButton toggle;
+    QuickToggleButton toggle;
     @BindView(R.id.tv_state)
     TextView tv_state;
     private WifiAdapter wifiAdapter;
@@ -127,7 +128,7 @@ public class WifiFragment extends QuickFragment {
         mWifiConnectIntentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         mWifiConnectIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
         mWifiConnectIntentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        getContext().registerReceiver(onNetStateChangedListener,mWifiConnectIntentFilter);
+        getContext().registerReceiver(onNetStateChangedListener, mWifiConnectIntentFilter);
 
         //registerPermission();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -135,13 +136,16 @@ public class WifiFragment extends QuickFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         wifiAdapter = new WifiAdapter(mContext);
-        wifiAdapter.setOnItemClickListener((view, position) -> {
-            WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
-            if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
-            } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
-                showInputDialog(position);
-            } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
-                showInputDialog(position);
+        wifiAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                WifiUtil.WifiCipherType wifiCipherType = scanResultList.get(position).getPasswordType();
+                if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_NOPASS) {
+                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WEP) {
+                    showInputDialog(position);
+                } else if (wifiCipherType == WifiUtil.WifiCipherType.WIFICIPHER_WPA) {
+                    showInputDialog(position);
+                }
             }
         });
 
@@ -158,11 +162,17 @@ public class WifiFragment extends QuickFragment {
         //recyclerView.setLayoutManager(new GridLayoutManager(mContext, spanCount));
         recyclerView.setLayoutManager(layoutManager);
         //设置分隔线
-        recyclerView.addItemDecoration(new GridDividerItemDecoration(mContext, spanCount));
+        recyclerView.addItemDecoration(new
+
+                GridDividerItemDecoration(mContext, spanCount));
         //设置增加或删除条目的动画
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        toggle.setChecked(WifiUtil.getInstance().isWifiEnabled());
-        toggle.setOnToggleChanged(new ToggleButton.OnToggleChangeListener() {
+        recyclerView.setItemAnimator(new
+
+                DefaultItemAnimator());
+        toggle.setChecked(WifiUtil.getInstance().
+
+                isWifiEnabled());
+        toggle.setOnToggleChanged(new QuickToggleButton.OnToggleChangeListener() {
             @Override
             public void onToggle(View view, boolean on) {
                 if (on) {
@@ -351,7 +361,7 @@ public class WifiFragment extends QuickFragment {
      */
     public boolean isWifiConnected() {
         NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return (wifiNetworkInfo.isConnected()||wifiNetworkInfo.isAvailable());
+        return (wifiNetworkInfo.isConnected() || wifiNetworkInfo.isAvailable());
     }
 
     //断开指定ID的网络
@@ -363,7 +373,7 @@ public class WifiFragment extends QuickFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(onNetStateChangedListener!=null){
+        if (onNetStateChangedListener != null) {
             getContext().unregisterReceiver(onNetStateChangedListener);
         }
     }

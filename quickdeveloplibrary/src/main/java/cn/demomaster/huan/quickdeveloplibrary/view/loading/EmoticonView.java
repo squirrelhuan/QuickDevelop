@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
+import cn.demomaster.qdrouter_library.actionbar.LoadStateType;
 import cn.demomaster.qdrouter_library.view.ImageTextView;
 
 /**

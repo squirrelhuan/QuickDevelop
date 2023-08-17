@@ -25,6 +25,7 @@ import cn.demomaster.huan.quickdevelop.ui.activity.sample.database.QuickDataActi
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AboutMobileFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AccessibilityServiceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.AdbForwardFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.helper.BarCodeFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.BluetoothFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DeviceFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.DownloadFragment;
@@ -89,6 +90,7 @@ public class HelperFragment extends QuickFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
 
+        classList.add(BarCodeFragment.class);
         classList.add(IDCardActivity.class);
         classList.add(QuickDataActivity.class);
         classList.add(CsqliteActivity.class);

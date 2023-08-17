@@ -24,7 +24,7 @@
         path="freeSoft" />
     <!--external-cache-path  相当于 getExternalCacheDir（） -->
     <external-cache-path
-        name="lei"
+        name="cache"
         path="." />
     <external-path name="external" path=""/>
 

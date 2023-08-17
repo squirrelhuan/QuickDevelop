@@ -2,14 +2,14 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.adapter;
 
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView;
-import cn.demomaster.qdlogger_library.QDLogger;
 
 public abstract class TabAdapter implements TabAdapterInterFace{
 
@@ -22,11 +22,12 @@ public abstract class TabAdapter implements TabAdapterInterFace{
     public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
         this.mOnSelectChangeListener = onSelectChangeListener;
     }
-
-    public boolean onSelectedChange(int position, View view, boolean isSelected) {
-        if(mOnSelectChangeListener!=null){
-            mOnSelectChangeListener.onSelectChange(position);
+    int selectIndex;
+    public boolean onSelectedChange(ArrayList<View> views, int position, View view, boolean isSelected) {
+        if(mOnSelectChangeListener!=null&&selectIndex != position){
+            mOnSelectChangeListener.onSelectChange(position,view);
         }
+        selectIndex = position;
         return false;
     }
 
@@ -71,6 +72,6 @@ public abstract class TabAdapter implements TabAdapterInterFace{
     }
 
     public interface OnSelectChangeListener {
-        void onSelectChange(int position);
+        void onSelectChange(int position,View view);
     }
 }

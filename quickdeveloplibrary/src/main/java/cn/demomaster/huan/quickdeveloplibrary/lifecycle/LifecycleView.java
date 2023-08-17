@@ -360,11 +360,11 @@ public class LifecycleView extends View {
             if (currentSpan < previousSpan) {
                 // 缩小
                 scale = Math.max(preScale * Math.abs(currentSpan / previousSpan), 0.01f);//最小0.1倍数
-                QDLogger.i("缩小:" + scale);
+                QDLogger.println("缩小:" + scale);
             } else {
                 // 放大
                 scale = Math.min(preScale * Math.abs(currentSpan / previousSpan), 50);//最大50倍数
-                QDLogger.i("放大:" + scale);
+                QDLogger.println("放大:" + scale);
             }
             invalidate();
             return false;

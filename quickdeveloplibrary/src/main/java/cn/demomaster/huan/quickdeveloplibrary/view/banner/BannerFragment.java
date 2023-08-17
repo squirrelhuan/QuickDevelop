@@ -77,10 +77,14 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
             bannerFrameLayout.setBackgroundColor(color);
             bannerFrameLayout.setBannerRadius(adsResource.getRadius());
         }
-        loadingView = new QdLoadingView(getContext());
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(50, 50);
-        layoutParams.gravity = Gravity.CENTER;
-        bannerFrameLayout.addView(loadingView, layoutParams);
+        if (adsAdapter.showLoadingView) {
+            if (loadingView == null) {
+                loadingView = new QdLoadingView(getContext());
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(50, 50);
+                layoutParams.gravity = Gravity.CENTER;
+                bannerFrameLayout.addView(loadingView, layoutParams);
+            }
+        }
         bannerFrameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return bannerFrameLayout;
     }
@@ -99,12 +103,11 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
             adsAdapter.onFragmentActived(hashCode());
         }
     }
-    
+
     private void loadResource() {
         if (bannerFrameLayout == null) {
             return;
         }
-        loadingView.setVisibility(VISIBLE);
         BannerFileType adsResourceType = BannerFileType.getEnum(adsResource.getFrom());
         //QDLogger.i("fragment[" + fragmentCode + "] =>"+hashCode()+" 加载数据,类型：" + BannerContentType.getEnum(adsResource.getType())+","+adsResourceType);
         switch (adsResourceType) {
@@ -131,18 +134,18 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                     qdVideo.pause();
                 }
                 System.out.println("播放视频 " + fragmentCode);
-                loadingView.setVisibility(View.GONE);
+                hideLoadingView();
                 qdVideo.start();
                 break;
             case text:
                 if (titleView != null) {
                     titleView.setTextColor(adsResource.getTextColor());
-                    loadingView.setVisibility(View.GONE);
+                    hideLoadingView();
                 }
                 break;
         }
     }
-    
+
     /**
      * 加载网络资源
      */
@@ -157,24 +160,24 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                     adsResource.setFrom(BannerFileType.local.value());
                     adsResource.setFilePath(fileInfo.getFilePath());
                     adsResource.setType(getFileType(fileInfo.getFileType()));
-                    System.out.println("从缓存中获取 " + fileInfo.getFileType() + "," + fileInfo.getFilePath());
+                   // System.out.println("从缓存中获取 " + fileInfo.getFileType() + "," + fileInfo.getFilePath());
                     resetView();
                     return;
                 } else {
-                    System.out.println("缓存文件路徑不存在: " + urlString);
+                 //   System.out.println("缓存文件路徑不存在: " + urlString);
                 }
             } else {
-                System.out.println("缓存中不存在2: " + urlString);
+               // System.out.println("缓存中不存在2: " + urlString);
             }
         } else {
-            System.out.println("缓存中不存在1: " + urlString);
+            //System.out.println("缓存中不存在1: " + urlString);
         }
 
         UrlHelper.analyUrl(urlString, new UrlHelper.AnalyResult() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void success(String url, String fileType, int fileLength) {
-                QDLogger.i(" " + fragmentCode + ",网络资源类型：" + fileType + ",当前类型：" + BannerContentType.getEnum(adsResource.getType()));
+                //QDLogger.println(" " + fragmentCode + ",网络资源类型：" + fileType + ",当前类型：" + BannerContentType.getEnum(adsResource.getType()));
                 if (adsResource.getType() != getFileType(fileType)) {
                     QuickCache.addFile(urlString, fileType, null);
                     adsResource.setType(getFileType(fileType));
@@ -228,29 +231,33 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
                     bannerFrameLayout.addView(imageView);
                 }
                 Object imgObj = adsResource.getUrl();
-                if (adsResource.getFrom() == BannerFileType.local.value()) {
+                if (adsResource.getResId() != 0) {
+                    imgObj = adsResource.getResId();
+                } else if (adsResource.getFrom() == BannerFileType.local.value()) {
                     imgObj = new File(adsResource.getFilePath());
                 }
-                Glide.with(getContext()).load(imgObj).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        //setAutoTheme();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        //setAutoTheme();
-                        if (adsResource.getFrom() == BannerFileType.remote.value()) {
-                            if (resource instanceof BitmapDrawable) {
-                                Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
-                                QuickCache.saveBitmap(adsResource.getUrl(), bitmap);
-                            }
-                            loadingView.setVisibility(View.GONE);
+                if (getContext() != null) {
+                    Glide.with(getContext().getApplicationContext()).load(imgObj).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            //setAutoTheme();
+                            return false;
                         }
-                        return false;
-                    }
-                }).into(imageView);
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            //setAutoTheme();
+                            if (resource instanceof BitmapDrawable) {
+                                if (adsResource.getFrom() == BannerFileType.remote.value()) {
+                                    Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+                                    QuickCache.getInstance().saveBitmap(getContext(), adsResource.getUrl(), bitmap);
+                                }
+                            }
+                            hideLoadingView();
+                            return false;
+                        }
+                    }).into(imageView);
+                }
 
                 if (!TextUtils.isEmpty(adsResource.getDesc())) {
                     titleView = new TextView(bannerFrameLayout.getContext());
@@ -329,7 +336,19 @@ public class BannerFragment extends Fragment implements BannerFragmentInterface 
             activeFragment();
         }
     }
-    
+
+    private void hideLoadingView() {
+        if (loadingView != null) {
+            loadingView.setVisibility(View.GONE);
+        }
+    }
+
+    private void showLoadingView() {
+        if (loadingView != null) {
+            loadingView.setVisibility(VISIBLE);
+        }
+    }
+
     /**
      * 移除无用控件
      *

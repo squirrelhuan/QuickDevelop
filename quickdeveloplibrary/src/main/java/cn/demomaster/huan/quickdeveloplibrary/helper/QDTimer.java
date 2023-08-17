@@ -14,6 +14,7 @@ import cn.demomaster.qdrouter_library.base.OnReleaseListener;
  */
 public class QDTimer implements OnReleaseListener {
 
+    private long startTime;
     //1.手机号，2button,3默认text,4等待text,5,onReciveSmsCode,6time
     private long totalTime = 60;
     private OnTimerListener onTimerListener;
@@ -61,6 +62,9 @@ public class QDTimer implements OnReleaseListener {
         handler.post(runnable);
     }
 
+    /**
+     * 重置倒计时时间
+     */
     public void resetTime() {
         startTime = System.currentTimeMillis();
         //QDSharedPreferences.getInstance().setLong(Message_Code_Last_Time, System.currentTimeMillis());
@@ -77,9 +81,20 @@ public class QDTimer implements OnReleaseListener {
         }*/
     }
 
+    /**
+     * 重置0
+     */
+    public void toStart() {
+        if(handler!=null) {
+            handler.removeCallbacks(runnable);
+        }
+        if(onTimerListener!=null) {
+            onTimerListener.onTimeChange(0);
+        }
+    }
+
     Handler handler = new Handler();
     ValidateCodeRunnable runnable = null;
-    private long startTime;
     public static class ValidateCodeRunnable implements Runnable,OnReleaseListener{
         QDTimer qdTimer;
 

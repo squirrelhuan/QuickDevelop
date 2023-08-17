@@ -21,6 +21,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +46,6 @@ import static cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil.getFileCrea
  * Squirrel桓
  * 2018/8/25
  */
-
 @ActivityPager(name = "文件管理", preViewClass = TextView.class, resType = ResType.Custome)
 public class FileManagerFragment extends QuickFragment {
 
@@ -126,26 +126,26 @@ public class FileManagerFragment extends QuickFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             files = getExternalFilesDirs(mContext, Environment.MEDIA_MOUNTED);
             for (File file : files) {//便历所有外部存储
-                QDLogger.e("main", "外部存储：" + file.getAbsolutePath());
+                QDLogger.println("main", "外部存储：" + file.getAbsolutePath());
             }
         }
 
-        QDLogger.d("StoragePath:", android.os.Environment.getExternalStorageDirectory().getPath());
-        QDLogger.d("StoragePath:", QDFileUtil.getStoragePath(mContext, true));
-        QDLogger.d("getExternalStorageState:", Environment.getExternalStorageState());
-        QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getFilesDir=" + getContext().getFilesDir().getAbsolutePath());
-        QDLogger.i("getCacheDir=" + getContext().getCacheDir().getAbsolutePath());
-        QDLogger.i("getExternalStorageDirectory=" + android.os.Environment.getExternalStorageDirectory().getAbsolutePath());
+        QDLogger.println("StoragePath:", android.os.Environment.getExternalStorageDirectory().getPath());
+        QDLogger.println("StoragePath:", QDFileUtil.getStoragePath(mContext, true));
+        QDLogger.println("getExternalStorageState:", Environment.getExternalStorageState());
+        QDLogger.println("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.println("getFilesDir=" + getContext().getFilesDir().getAbsolutePath());
+        QDLogger.println("getCacheDir=" + getContext().getCacheDir().getAbsolutePath());
+        QDLogger.println("getExternalStorageDirectory=" + android.os.Environment.getExternalStorageDirectory().getAbsolutePath());
         // QDLogger.i("getExternalStoragePublicDirectory="+android.os.Environment.getExternalStoragePublicDirectory().getAbsolutePath());
         // QDLogger.i("getExternalFilesDir="+getContext().getExternalFilesDir().getAbsolutePath());
-        QDLogger.i("getExternalStorageDirectory=" + getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
-        QDLogger.i("getRootDirectory=" + android.os.Environment.getRootDirectory().getAbsolutePath());
+        QDLogger.println("getExternalStorageDirectory=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.println("getExternalCacheDir=" + getContext().getExternalCacheDir().getAbsolutePath());
+        QDLogger.println("getRootDirectory=" + android.os.Environment.getRootDirectory().getAbsolutePath());
 
 
-        QDLogger.i("getExternalFilesDir=" + mContext.getExternalFilesDir("").getParentFile().getAbsolutePath());
-        QDLogger.i("FilesDir().getParentFile()=" + mContext.getFilesDir().getParentFile().getAbsolutePath());
+        QDLogger.println("getExternalFilesDir=" + mContext.getExternalFilesDir("").getParentFile().getAbsolutePath());
+        QDLogger.println("FilesDir().getParentFile()=" + mContext.getFilesDir().getParentFile().getAbsolutePath());
 
         String path = Environment.getExternalStorageDirectory() + File.separator + "tsetfile.txt";
         QDLogger.d(path);
@@ -155,7 +155,7 @@ public class FileManagerFragment extends QuickFragment {
         getFileCreatTime(file, qdFile -> {
             if (qdFile != null) {
                 Date date = new Date(qdFile.getModifyTime());
-                QDLogger.e("文件修改时间：" + simpleDateFormat.format(date));
+                QDLogger.println("文件修改时间：" + simpleDateFormat.format(date));
             }
         });
 
@@ -166,22 +166,19 @@ public class FileManagerFragment extends QuickFragment {
     private void deleteEmptyFiles(String rootPath) {
         //String rootPath = Environment.getExternalStorageDirectory().getPath() ;
         File file = new File(rootPath);
-        if (file == null) {
-            return;
-        }
         if (file.isDirectory()) {
             if (file.listFiles() == null) {
-                QDLogger.e("文件不存在:" + file.getPath());
+                QDLogger.println("文件不存在:" + file.getPath());
                 return;
             }
-            if (file.listFiles().length == 0) {
+            if (Objects.requireNonNull(file.listFiles()).length == 0) {
                 count += 1;
                 QdThreadHelper.runOnUiThread(() -> tv_current.setText("正在删除第" + count + "空文件夹:" + file.getPath()));
                 QDLogger.e("删除第(" + count + ")空文件夹[" + (QDFileUtil.delete(file.getPath()) ? "成功" : "失败") + "]:" + file.getPath());
                 return;
             }
-            QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + file.listFiles().length + ")");
-            for (File file1 : file.listFiles()) {
+            QDLogger.d("文件夹:" + file.getPath() + "，文件个数(" + Objects.requireNonNull(file.listFiles()).length + ")");
+            for (File file1 : Objects.requireNonNull(file.listFiles())) {
                 deleteEmptyFiles(file1.getPath());
             }
         }

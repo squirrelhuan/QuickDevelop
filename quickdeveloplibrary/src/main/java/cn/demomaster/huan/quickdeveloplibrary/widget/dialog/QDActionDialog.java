@@ -29,10 +29,10 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.DividerGravity;
 import cn.demomaster.huan.quickdeveloplibrary.view.drawable.QDividerDrawable;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.LoadStateType;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.qdlogger_library.QDLogger;
+import cn.demomaster.qdrouter_library.actionbar.LoadStateType;
 import cn.demomaster.qdrouter_library.base.OnReleaseListener;
+import cn.demomaster.qdrouter_library.view.StateView;
 
 /**
  * Created by Squirrel桓 on 2019/1/7.
@@ -65,11 +65,12 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     private int padding = 15;
     private int animationStyleID = -1;
 
-    public QDActionDialog(Context context, Builder builder,@StyleRes int themeResId) {
+    public QDActionDialog(Context context, Builder builder, @StyleRes int themeResId) {
         //设置全屏将会覆盖状态栏 可以自定义主题
         super(context, themeResId);
         initDialog(builder);
     }
+
     public QDActionDialog(Context context, Builder builder) {
         super(context);
         initDialog(builder);
@@ -270,7 +271,6 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
                 contentLinearView.setBackgroundColor(Color.TRANSPARENT);
                 padding = 0;
             }
-
         }
         if (message != null) {
             TextView textView = new TextView(context);
@@ -290,7 +290,7 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         relativeLayout.addView(contentLinearView, layoutParams);
         relativeLayout.setBackgroundColor(backgroundColor);
         if (mCancelable) {
-            if(myOnToucherListener==null){
+            if (myOnToucherListener == null) {
                 myOnToucherListener = new MyOnToucherListener(this);
             }
             relativeLayout.setOnTouchListener(myOnToucherListener);
@@ -317,9 +317,11 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         //内容扩展到导航栏
         window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);*/
     }
+
     RelativeLayout relativeLayout;
     MyOnToucherListener myOnToucherListener;
-    public static class MyOnToucherListener implements View.OnTouchListener{
+
+    public static class MyOnToucherListener implements View.OnTouchListener {
         QDActionDialog qdActionDialog;
 
         public MyOnToucherListener(QDActionDialog qdActionDialog) {
@@ -332,7 +334,7 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(qdActionDialog!=null&& qdActionDialog.isShowing()) {
+            if (qdActionDialog != null && qdActionDialog.isShowing()) {
                 qdActionDialog.dismiss();
             }
             return false;
@@ -342,23 +344,25 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
 
     @Override
     public void show() {
-        if (getContext() != null) {
-            if (getContext() instanceof Activity) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (((Activity) getContext()).isDestroyed()) {
-                        return;
-                    }
-                }
-                if (((Activity) getContext()).isFinishing()) {
+        // 注意 这里不要使用 getContext()
+        if (context instanceof Activity) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (((Activity) context).isDestroyed()) {
                     return;
                 }
             }
+            if (((Activity) context).isFinishing()) {
+                return;
+            }
+        } else {
+            return;
         }
         super.show();
         if (delayMillis != -1) {
-            handler.postDelayed(runnable,delayMillis);
+            handler.postDelayed(runnable, delayMillis);
         }
     }
+
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -370,7 +374,7 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
     @Override
     public void dismiss() {
         onRelease(this);
-        if (isShowing()&&getContext()!=null) {
+        if (isShowing() && getContext() != null) {
             Context context = ((ContextWrapper) getContext()).getBaseContext();
             if (context instanceof Activity) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -390,13 +394,13 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
 
     @Override
     public void onRelease(Object self) {
-        if(handler!=null) {
+        if (handler != null) {
             handler.removeCallbacks(runnable);
         }
-        if(myOnToucherListener!=null){
+        if (myOnToucherListener != null) {
             myOnToucherListener.setQdActionDialog(null);
         }
-        if(relativeLayout!=null){
+        if (relativeLayout != null) {
             relativeLayout.setOnTouchListener(null);
         }
     }
@@ -415,7 +419,8 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
 
     public static class Builder {
         public boolean coverStatusBar;
-        public @StyleRes int themeResId = R.style.Quick_Dialog;
+        public @StyleRes
+        int themeResId = R.style.Quick_Dialog;
         public int gravity = Gravity.CENTER;
         private Context context;
         private String message;
@@ -591,9 +596,9 @@ public class QDActionDialog extends Dialog implements OnReleaseListener {
         }
 
         public QDActionDialog create() {
-            if(coverStatusBar){
-                return new QDActionDialog(context, this,themeResId);
-            }else {
+            if (coverStatusBar) {
+                return new QDActionDialog(context, this, themeResId);
+            } else {
                 return new QDActionDialog(context, this);
             }
         }

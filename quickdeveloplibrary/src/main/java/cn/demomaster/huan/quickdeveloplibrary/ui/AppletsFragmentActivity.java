@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
@@ -16,14 +17,13 @@ import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.actionbar.ACTIONBAR_TYPE;
 import cn.demomaster.qdrouter_library.fragment.AppletsFragment;
 
-@ActivityPager(name = "小程序",preViewClass = TextView.class,resType = ResType.Custome)
+@ActivityPager(name = "小程序",preViewClass = TextView.class)
 public class AppletsFragmentActivity extends QDActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View view = new FrameLayout(this);
         view.setId(View.generateViewId());
         setContentView(view);

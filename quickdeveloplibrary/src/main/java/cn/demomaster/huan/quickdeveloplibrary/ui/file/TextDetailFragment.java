@@ -129,7 +129,7 @@ public class TextDetailFragment extends QuickFragment {
         optionsMenu.setAnchor(getActionBarTool().getRightView());
     }
 
-    public static void shareFile(Context context, String  fileName) {
+    public static void shareFile(Context context, String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
             Intent share = new Intent(Intent.ACTION_SEND);
@@ -222,13 +222,13 @@ public class TextDetailFragment extends QuickFragment {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        QDLogger.e(getClass().getName() + "-onKeyDown");
+        QDLogger.println(getClass().getName() + "-onKeyDown");
         if (keyCode == KeyEvent.KEYCODE_BACK) {//默认只处理回退事件
             if (!isRootFragment()) {
                 //getActivity().onBackPressed();
                 finish();
             } else {//已经是根fragment了
-                QDLogger.e(getClass().getName() + "-已经是根fragment了");
+                QDLogger.println(getClass().getName() + "-已经是根fragment了");
                 //onKeyDownRootFragment(keyCode,event);
                 finish();
             }

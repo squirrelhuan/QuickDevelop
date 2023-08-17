@@ -95,7 +95,7 @@ public class DisplayUtil {
             if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
             }
-        } else if (context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+        } else if (context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {//R.attr.actionBarSize
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
         }
         return actionBarHeight;

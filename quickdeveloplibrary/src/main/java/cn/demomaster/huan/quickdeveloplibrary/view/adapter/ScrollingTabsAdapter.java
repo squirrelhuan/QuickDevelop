@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -72,7 +73,7 @@ public class ScrollingTabsAdapter extends TabAdapter {
     }
 
     @Override
-    public boolean onSelectedChange(int position, View view, boolean isSelected) {
+    public boolean onSelectedChange(ArrayList<View> parentView, int position, View view, boolean isSelected) {
         return false;
     }
 }

@@ -25,9 +25,9 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.base.tool.actionbar.OptionsMenu;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
-import cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView;
 import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
 import cn.demomaster.qdrouter_library.manager.QDActivityManager;
+import cn.demomaster.qdrouter_library.view.StateView;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static cn.demomaster.huan.quickdeveloplibrary.constant.EventBusConstant.EVENT_REFRESH_LANGUAGE;
@@ -135,7 +135,7 @@ public class QDActivity extends QuickActivity {
     public PhotoHelper photoHelper;
     public PhotoHelper getPhotoHelper() {
         if (photoHelper == null) {
-            photoHelper = new PhotoHelper(mContext,getPackageName()+".fileprovider");
+            photoHelper = new PhotoHelper(mContext,null,getPackageName()+".fileprovider");
         }
         return photoHelper;
     }

@@ -48,11 +48,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
             android:background="@drawable/dk_health_edittext_style">
-            <TextView
+            <EditText
                 android:id="@+id/tv_server_log"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_100"/>
         </ScrollView>
 
         <LinearLayout
@@ -63,7 +63,8 @@
                 android:id="@+id/et_ip"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:hint="请输入服务器ip"/>
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_send_connect"
                 android:layout_width="wrap_content"
@@ -86,13 +87,14 @@
             android:id="@+id/et_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="3"
             android:hint="请输入msg"/>
         <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
             android:id="@+id/btn_send_tcp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
-            android:text="发送tcp消息" />
+            android:text="发送tcp消息"/>
     </LinearLayout>
 
 </ScrollView>

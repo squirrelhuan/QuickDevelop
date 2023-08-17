@@ -31,7 +31,7 @@ public class ComponentAdapter extends QuickRecyclerAdapter<ComponentAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.quick_item_tab_menu, parent, false);
         return new ViewHolder(view);
     }
 

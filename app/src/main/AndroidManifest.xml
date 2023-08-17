@@ -62,25 +62,60 @@
         android:roundIcon="@mipmap/quickdevelop_ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/StartAppTheme">
-        <activity android:name=".ui.activity.QuickWebViewActivity"
+        <!--<activity
+            android:name=".ui.activity.sample.MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/StartAppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
+
+        <activity
+            android:name=".ui.activity.sample.TabActivity"
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustResize"/>
+<!--        android:theme="@style/AppTheme"-->
+        <activity android:name=".ui.activity.sample.component.MyAppletsFragmentActivity" />
+        <activity
+            android:name=".ui.activity.QuickWebViewActivity"
             android:label="打开html文件">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="application/x-javascript" />
                 <data android:mimeType="text/html" />
-                <!--<data android:mimeType="text/plain" />-->
+                <!-- <data android:mimeType="text/plain" /> -->
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--需要被js调起必须设置-->
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--协议部分-->
+                <data
+                    android:host="test"
+                    android:path="/detail"
+                    android:port="8000"
+                    android:scheme="openquickapp" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.sample.appPicker.AppPickerActivity"
-            android:theme="@style/Theme.MyApplication"/>
-        <activity android:name="com.google.zxing.client.android.CaptureActivity"/>
-
-        <activity android:name=".ui.activity.sample.HorizontalDragViewActivity" />
+        <activity
+            android:name=".ui.activity.sample.appPicker.AppPickerActivity"
+            android:theme="@style/Theme.MyApplication" />
+        <activity android:name="com.google.zxing.client.android.CaptureActivity" />
         <activity
             android:name=".ui.activity.sample.SettingsActivity"
             android:label="@string/title_activity_settings" />
@@ -88,9 +123,7 @@
         <activity android:name=".ui.activity.sample.SandBoxActivity" />
         <activity android:name=".ui.activity.sample.CrashActivity" /> <!-- requestLegacyExternalStorage 仅仅应用于Android10 -->
         <activity android:name=".QDMainFragmentActivity2" />
-        <activity
-            android:name=".ui.activity.sample.AdsActivity"
-            android:label="@string/title_activity_ads" /> <!-- 声明service组件 -->
+        <!-- 声明service组件 -->
         <!--
   <service
             android:name="com.baidu.location.f"
@@ -111,6 +144,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -131,15 +165,11 @@
         <activity android:name=".ui.activity.sample.component.SlidingPanelLayoutActivity" />
         <activity android:name=".ui.activity.sample.RegisterActivity" /> <!-- <activity android:name=".sample.CaptureActivity" /> -->
         <activity android:name=".ui.activity.sample.RecycleActivity" />
-        <activity android:name=".ui.activity.sample.PickActivity" />
         <activity android:name=".ui.activity.sample.IDCardActivity" />
         <activity android:name="cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity" /> <!-- android:screenOrientation="landscape" -->
         <activity android:name=".ui.activity.sample.CsqliteActivity" />
-        <activity android:name=".ui.activity.sample.component.QDialogActivity" />
         <activity android:name=".ui.activity.sample.TabMenuActivity" />
         <activity android:name=".ui.activity.sample.PictureSelectActivity" />
-        <activity android:name=".ui.activity.sample.component.LoadingActivity" />
-        <activity android:name=".ui.activity.sample.CenterHorizontalActivity" />
         <activity android:name=".ui.activity.sample.ActionBarActivity" /> <!-- android:authorities="cn.demomaster.huan.quickdeveloplibrary.fileprovider" -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -151,13 +181,7 @@
                 android:resource="@xml/file_provider_path" />
         </provider>
 
-        <activity
-            android:name=".ui.activity.sample.component.ToggleButtonActivity"
-            android:label="tooglebutton" />
         <activity android:name=".ui.activity.sample.actionbar.ActionBarActivity" />
-        <activity android:name=".ui.activity.sample.actionbar.ActionBarTipActivity" />
-        <activity android:name=".ui.activity.sample.component.QDActionDialogActivity" />
-        <activity android:name=".ui.activity.sample.fragment.BaseFragmentActivity" />
         <activity android:name=".ui.fragment.helper.serialport.sample.SerialportMain" />
         <activity android:name=".ui.fragment.helper.serialport.sample.ConsoleActivity" />
         <activity android:name=".ui.fragment.helper.serialport.sample.LoopbackActivity" />

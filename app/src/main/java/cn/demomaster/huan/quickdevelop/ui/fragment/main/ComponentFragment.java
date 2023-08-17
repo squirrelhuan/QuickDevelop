@@ -22,16 +22,18 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdevelop.adapter.ComponentAdapter;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.ActionBarActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.AdsActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.CenterHorizontalActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.HorizontalDragViewActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.PickActivity;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.BannerFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.CenterHorizontalFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.HorizontalDragViewFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.CascaderSelectorFragment;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.PictureSelectActivity;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.TabActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.TabMenuActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.actionbar.ActionBarTipActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.appPicker.AppPickerActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.LoadingActivity;
-import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.QDActionDialogActivity;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.LoadingFragment;
+import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.MyAppletsFragmentActivity;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.ActionDialogFragment;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.QDialogActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.SlidingPanelLayoutActivity;
 import cn.demomaster.huan.quickdevelop.ui.activity.sample.component.ToggleButtonActivity;
@@ -49,7 +51,7 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.NestedScrollViewFra
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.PopUpFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.PushCardFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.QDTipPopupFragment;
-import cn.demomaster.huan.quickdevelop.ui.fragment.component.QdButtonFragment;
+import cn.demomaster.huan.quickdevelop.ui.fragment.component.ButtonFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.RatingBarFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.SoundFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.StackSlidingLayoutFragment;
@@ -59,7 +61,6 @@ import cn.demomaster.huan.quickdevelop.ui.fragment.component.WheelImageFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.component.lifecycleTimerFragment;
 import cn.demomaster.huan.quickdevelop.ui.fragment.helper.CompressLayoutFragment;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
-import cn.demomaster.huan.quickdeveloplibrary.ui.AppletsFragmentActivity;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
@@ -98,12 +99,13 @@ public class ComponentFragment extends QuickFragment {
         componentAdapter = new ComponentAdapter(getContext());
         List<Class> classList = new ArrayList<>();
 
-        classList.add(AdsActivity.class);
+        classList.add(TabActivity.class);
+        classList.add(BannerFragment.class);
         classList.add(AppPickerActivity.class);
-        classList.add(QdButtonFragment.class);
+        classList.add(ButtonFragment.class);
         classList.add(TextSpanFragment.class);
 
-        classList.add(HorizontalDragViewActivity.class);
+        classList.add(HorizontalDragViewFragment.class);
         classList.add(EmptyLayoutFragment.class);
         classList.add(SlidingPanelLayoutActivity.class);
         classList.add(FramelayoutFragment.class);
@@ -112,22 +114,22 @@ public class ComponentFragment extends QuickFragment {
         classList.add(ToggleButtonActivity.class);
         classList.add(TimeDomainPlotFragment.class);
         classList.add(lifecycleTimerFragment.class);
-        classList.add(AnimitionFragment.class);
+        //classList.add(AnimitionFragment.class);
 
-        classList.add(CenterHorizontalActivity.class);
-        classList.add(LoadingActivity.class);
-        classList.add(PickActivity.class);
+        classList.add(CenterHorizontalFragment.class);
+        classList.add(LoadingFragment.class);
+        classList.add(CascaderSelectorFragment.class);
         classList.add(TabMenuActivity.class);
         classList.add(PictureSelectActivity.class);
         classList.add(ActionBarActivity.class);
         classList.add(RatingBarFragment.class);
         classList.add(ActionBarTipActivity.class);
         classList.add(QDialogActivity.class);
-        classList.add(QDActionDialogActivity.class);
+        classList.add(ActionDialogFragment.class);
         classList.add(PopUpFragment.class);
 
         classList.add(H5Fragment.class);
-        classList.add(AppletsFragmentActivity.class);
+        classList.add(MyAppletsFragmentActivity.class);
 
         classList.add(GuiderFragment.class);
         classList.add(AudioRecordFragment.class);

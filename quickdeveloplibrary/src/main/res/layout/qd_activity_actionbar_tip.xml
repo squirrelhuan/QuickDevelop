@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/dp_4"
     android:background="@color/transparent_light_cc">
 
-    <cn.demomaster.huan.quickdeveloplibrary.view.loading.StateView
+    <cn.demomaster.qdrouter_library.view.StateView
         android:id="@+id/sv_icon"
         android:layout_width="@dimen/dp_25"
         android:layout_height="@dimen/dp_25"

@@ -29,6 +29,7 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
 public class QDAccessibilityService extends AccessibilityService {
     public static final String TAG = QDAccessibilityService.class.getSimpleName();
     public static QDAccessibilityService instance;
+    public static final int QuickAccessibilityService_Event = 1035445;//无障碍服务事件标识
 
     @Override
     public void onCreate() {
@@ -45,7 +46,6 @@ public class QDAccessibilityService extends AccessibilityService {
        // AccessibilityHelper.onServiceConnected(this);
     }
 
-    public static final int QDAccessibilityService_Event = 1035445;
     String currentActivityName;
     public String getCurrentActivityName() {
         return currentActivityName;
@@ -62,7 +62,8 @@ public class QDAccessibilityService extends AccessibilityService {
                 }
                 break;
         }
-        QuickEvent.getDefault().post(new EventMessage(QDAccessibilityService_Event,event));
+        //QDLogger.println("onAccessibilityEvent...");
+        QuickEvent.getDefault().post(new EventMessage(QuickAccessibilityService_Event,event));
         //AccessibilityHelper.onAccessibilityEvent(this, event);
         /*
         switch (eventType) {

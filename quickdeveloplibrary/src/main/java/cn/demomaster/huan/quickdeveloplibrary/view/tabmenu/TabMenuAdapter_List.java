@@ -81,7 +81,7 @@ public class TabMenuAdapter_List extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = this.inflater.inflate(R.layout.item_tab_menu, parent, false);
+            convertView = this.inflater.inflate(R.layout.quick_item_tab_menu, parent, false);
             holder = new ViewHolder();
             holder.tv_title = convertView.findViewById(R.id.tv_title);
             convertView.setTag(holder);

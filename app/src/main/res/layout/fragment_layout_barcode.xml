@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_scan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_30"
+            android:text="扫码"/>
+         <EditText
+             android:id="@+id/et_content"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/dp_120"
+             android:layout_marginLeft="@dimen/dp_30"
+             android:layout_marginRight="@dimen/dp_30"/>
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_generate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:text="二维码生成"/>
+        <cn.demomaster.huan.quickdeveloplibrary.widget.QuickImageView
+            android:id="@+id/iv_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:quick_square="true" />
+
+</LinearLayout>

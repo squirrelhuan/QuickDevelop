@@ -43,7 +43,7 @@ public class QuickDragView extends FrameLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // 锁屏后再点亮屏幕会调用一下onLayout，不加判断会让布局还原(为什么???)
+        //锁屏后再点亮屏幕会调用一下onLayout，不加判断会让布局还原(为什么???)
         if (changed) {
             super.onLayout(changed, l, t, r, b);
         }

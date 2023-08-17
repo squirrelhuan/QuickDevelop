@@ -3,6 +3,7 @@ package cn.demomaster.huan.quickdeveloplibrary.widget.button;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -42,13 +43,14 @@ public class QDButton extends AppCompatButton {
         /*QDRoundButtonDrawable bg_focused = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QDRoundButtonDrawable bg_pressed = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
         QDRoundButtonDrawable bg_selected = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);*/
-
         QDRoundButtonDrawable bg_enabled = QDRoundButtonDrawable.fromAttributeSet(context, attrs, defStyleAttr);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color = getResources().getColor(R.color.gray);
-            int color_normal = color;// bg_normal.backgroundColors.getColorForState(bg_normal.getState(),Color.RED);
-            int[] colors = new int[]{color_normal, color_normal, color, color_normal, color_normal, color_normal};//{ pressed, focused, normal, focused, unable, normal };
+           // int color = getResources().getColor(R.color.gray);
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDButton, defStyleAttr, 0);
+            int colorBg_disable = typedArray.getColor(R.styleable.QDButton_qd_backgroundColor_disable, Color.GRAY);
+            typedArray.recycle();
+            int color_normal = colorBg_disable;// bg_normal.backgroundColors.getColorForState(bg_normal.getState(),Color.RED);
+            int[] colors = new int[]{color_normal, color_normal, colorBg_disable, color_normal, color_normal, color_normal};//{ pressed, focused, normal, focused, unable, normal };
             ColorStateList colorBg = QDViewUtil.getColorStateList(colors);
             bg_enabled.setColor(colorBg);
         }

@@ -28,10 +28,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdzxinglibrary.R;
 
 
@@ -71,6 +74,7 @@ final class LoadPackagesAsyncTask extends AsyncTask<Object,Object,List<AppInfo>>
         Drawable icon = appInfo.loadIcon(packageManager);        
         if (label != null) {
           labelsPackages.add(new AppInfo(packageName, label.toString(), icon));
+          QDLogger.i("包名："+appInfo.packageName+"——"+ label.toString());
         }
       }
     }

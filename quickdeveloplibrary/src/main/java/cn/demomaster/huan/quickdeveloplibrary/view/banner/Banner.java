@@ -53,7 +53,7 @@ public class Banner extends FrameLayout {
     }
 
     ViewPager2 mViewPager;
-    BannerIndicator mBannerCursorView;
+    BannerIndicator mBannerCursorView;//游标指示器控件
 
     /**
      * 指示器的样式
@@ -136,7 +136,6 @@ public class Banner extends FrameLayout {
 
     BannerAdapter adsAdapter;
     int currentPosition;
-
     private void init() {
         mViewPager = new ViewPager2(getContext());
         addView(mViewPager);
@@ -175,7 +174,11 @@ public class Banner extends FrameLayout {
                     if (p < 0) {
                         p = (adsAdapter.getItemCount2() + p);
                     }
-                    p = p % adsAdapter.getItemCount2();
+                    if(adsAdapter.getItemCount2()!=0) {
+                        p = p % adsAdapter.getItemCount2();
+                    }else {
+                        p = 0;
+                    }
                 }
                 selectIndex = p;
                 if (mBannerCursorView != null) {
@@ -225,13 +228,15 @@ public class Banner extends FrameLayout {
     }
 
     List<AdsResource> adsResourceList = new ArrayList<>();
-
     public void setData(List<AdsResource> list) {
         indicatorCount = list.size();
         if (mBannerCursorView != null) {
             mBannerCursorView.setIndicatorCount(indicatorCount <= 1 ? 0 : indicatorCount);
         }
         adsResourceList.clear();
+        if(adsAdapter != null) {
+            adsAdapter.notifyDataSetChanged();
+        }
         adsResourceList.addAll(list);
         if (adsAdapter != null) {
             setOffscreenPageLimit(list.size() > 1 ? 3 : 1);
@@ -297,7 +302,6 @@ public class Banner extends FrameLayout {
      * 根据固定时长切换
      */
     long loopTime = 10000;
-
     public void setLoopTime(long loopTime) {
         this.loopTime = loopTime;
     }
@@ -323,6 +327,15 @@ public class Banner extends FrameLayout {
             // System.out.println(Banner.this.hashCode()+"]当前2：" + index);
             AdsResource adsResource = adsResourceList.get(index);
             String url = adsResource.getUrl();
+            /*if(adsResource.getResId()!=0){
+                String fileType = QuickCache.getCacheInfoByUrl(adsResource.getUrl()).getFileType();
+                if (!TextUtils.isEmpty(fileType) && fileType.startsWith("video/")) {
+                    //System.out.println("urlTypMap " + fileType);
+                } else {
+                    setCurrentItem(index1);
+                    handler.postDelayed(runnable,loopTime);
+                }
+            }*/
             if (QuickCache.containsUrl(url)) {
                 String fileType = QuickCache.getCacheInfoByUrl(adsResource.getUrl()).getFileType();
                 if (!TextUtils.isEmpty(fileType) && fileType.startsWith("video/")) {
@@ -374,9 +387,14 @@ public class Banner extends FrameLayout {
     }
 
     int mBannerRadius = 0;
+    boolean showLoadingView = true;
 
     public void setRadius(int radius) {
         this.mBannerRadius = radius;
+        //postInvalidate();
+    }
+    public void showLoadingView(boolean show) {
+        this.showLoadingView = show;
         //postInvalidate();
     }
 

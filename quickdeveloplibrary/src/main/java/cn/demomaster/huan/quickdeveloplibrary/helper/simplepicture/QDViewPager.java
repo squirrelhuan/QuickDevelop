@@ -21,6 +21,11 @@ public class QDViewPager extends ViewPager {
         handAttributeSet(attrs);
     }
     boolean canScroll = true;
+
+    public void setCanScroll(boolean canScroll) {
+        this.canScroll = canScroll;
+    }
+
     private void handAttributeSet(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.QDViewPager);

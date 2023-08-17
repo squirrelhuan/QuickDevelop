@@ -68,7 +68,7 @@ public class MultiRecycleContainer extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         QDLogger.d("onTouchEvent=" + event);
-        /**
+        /*
          * 把自身及其他子空间的触摸事件传递给recyclerView,其他控件如果不使用触摸滑动可以在ontouch中消耗掉即可
          */
         if (recyclerView != null) {

@@ -1,64 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.sample.CenterHorizontalActivity">
+    tools:context=".ui.fragment.component.CenterHorizontalFragment">
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/red"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="2dp"/>
-        <View
-            android:layout_width="2dp"
-            android:layout_height="20dp"
-            android:background="@color/red"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="2dp"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
         android:id="@+id/achs_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:clipToPadding="false"/>
 
-    <TextView
-        android:id="@+id/tv_index"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="40dp"
-        android:textColor="@color/white"
-        android:background="@color/gray"
-        android:text="ViewPager"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <View
-            android:layout_width="2dp"
-            android:layout_height="20dp"
-            android:background="@color/red"/>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="ViewPager"
+            android:textColor="@color/white"
+            android:textSize="40dp" />
 
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp">
         <cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView
             android:id="@+id/achs_test2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false">
-
-        </cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollView>
+            android:clipToPadding="false"/>
 
     </LinearLayout>
     <TextView
@@ -68,7 +53,7 @@
         android:gravity="center"
         android:textSize="40dp"
         android:textColor="@color/white"
-        android:background="@color/gray"
+        android:background="@color/colorPrimary"
         android:text="ViewPager"/>
     <!--<TextView
         android:layout_width="wrap_content"
@@ -98,6 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/id_sliding_view"/>-->
+    </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

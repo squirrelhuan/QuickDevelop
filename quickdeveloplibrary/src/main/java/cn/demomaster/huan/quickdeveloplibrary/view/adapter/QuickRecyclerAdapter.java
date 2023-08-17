@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * @author squirrel桓
@@ -29,30 +30,35 @@ public abstract class QuickRecyclerAdapter<VH extends RecyclerView.ViewHolder> e
 
     public AdapterView.OnItemClickListener onItemClickListener;
 
+    public AdapterView.OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
     public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
-
+        //super.onBindViewHolder(holder,position);
+        //onBindViewHolder(holder,position,null);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position, @NonNull @NotNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
-
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(v -> {
-                int p = holder.getAdapterPosition();
+                int p = holder.getBindingAdapterPosition();
                 onItemClickListener.onItemClick(null, v, p, v.getId());
             });
         }
         if (onItemLongClickListener != null) {
             holder.itemView.setOnLongClickListener(v -> {
-                int p = holder.getAdapterPosition();
+                int p = holder.getBindingAdapterPosition();
                 return onItemLongClickListener.onItemLongClick(null, v, p, v.getId());
             });
         }
     }
+
 }

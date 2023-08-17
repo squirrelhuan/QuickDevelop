@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+
 /**
  * 广告轮播指示器
  */
@@ -68,7 +70,7 @@ public class BannerCursorView2 extends View implements Banner.BannerIndicator {
             float x = w * (i * 2 + 1);
             float y = getHeight() / 2f - w / 4;
             if (tabIndex == i) {
-                mPaint.setColor(Color.GREEN);
+                mPaint.setColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 mPaint.setColor(Color.WHITE);
             }

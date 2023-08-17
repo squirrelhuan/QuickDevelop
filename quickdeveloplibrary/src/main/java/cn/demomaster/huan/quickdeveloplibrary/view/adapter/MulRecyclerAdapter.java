@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import cn.demomaster.qdlogger_library.QDLogger;
+
 /**
  * 复合型recycler
  * @author squirrel桓
@@ -24,6 +26,11 @@ public class MulRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends Quic
     public MulRecyclerAdapter(Context context, List<MulItemRecycler> mulItemRecyclers) {
         this.context = context;
         this.mulItemRecyclers = mulItemRecyclers;
+    }
+    public void notifyDataSetChanged(List<MulItemRecycler> mulItemRecyclers){
+        this.mulItemRecyclers.clear();
+        this.mulItemRecyclers.addAll(mulItemRecyclers);
+        notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
@@ -39,12 +46,18 @@ public class MulRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends Quic
     public VH onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         return (VH) new ChildHolder(context,parent,mulItemRecyclers.get(viewType));
     }
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
         super.onBindViewHolder(holder, position);
         ((ChildHolder)holder).bind(holder.itemView);
     }
-    
+
+    @Override
+    public void onBindViewHolder(@NonNull VH holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
     public static class ChildHolder extends RecyclerView.ViewHolder {
         MulItemRecycler mulItemRecycler;
         Context context;

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 
@@ -24,7 +25,7 @@ import cn.demomaster.qdlogger_library.QDLogger;
  * description：
  */
 // ① 创建Adapter
-public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHolder> {
+public class TabMenuAdapter extends QuickRecyclerAdapter<TabMenuAdapter.ViewHolder> {
 
     private List<TabListViewItem> tabListViewItems = new ArrayList();
     private List<TabMenuModel> tabMenuModels;
@@ -74,7 +75,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tab_menu, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.quick_item_tab_menu, parent, false);
         return new ViewHolder(view);
     }
 
@@ -86,14 +87,6 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             holder.tv_title.setTextColor(color_normal);
         }
         holder.tv_title.setText(this.tabListViewItems.get(position).getItemName());
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(v -> {
-            if (onItemClickListener != null) {
-                int p = (int) v.getTag();
-                onItemClickListener.onItemClick(v, p);
-            }
-            QDLogger.e("这里是点击每一行item的响应事件", "" + position);
-        });
     }
 
     @Override
@@ -102,17 +95,14 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_title;
-
         public ViewHolder(View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_title);
-
         }
     }
 
-    private OnItemClickListener onItemClickListener;
+   /* private OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -120,7 +110,7 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-    }
+    }*/
 
     public List<TabMenuModel> getTabMenuModels() {
         return tabMenuModels;
@@ -134,7 +124,9 @@ public class TabMenuAdapter extends RecyclerView.Adapter<TabMenuAdapter.ViewHold
             current.remove((Object) position);
         } else {//如果不存在
             if (current.size() + 1 > tabMenuModel.getSelectCount()) {//判断个数是否超出，没超出则追加，超出则remove第一个
-                tabListViewItems.get(current.get(0)).setSelected(false);
+                if(current.get(0)>=0) {
+                    tabListViewItems.get(current.get(0)).setSelected(false);
+                }
                 current.remove(0);
                 current.add(position);
             } else {

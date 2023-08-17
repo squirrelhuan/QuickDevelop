@@ -16,7 +16,6 @@
     <string name="minute">分</string>
     <string name="second">秒</string>
 
-
     <string name="send">发送</string>
     <string name="image_selector">图片选择器</string>
     <string name="image">图片</string>
@@ -52,4 +51,6 @@
     <string name="week_Thursday">周四</string><!--周四-->
     <string name="week_Friday">周五</string><!--周五-->
     <string name="week_Saturday">周六</string><!--周六-->
+
+    <string name="close">关闭</string><!--关闭-->
 </resources>

@@ -489,18 +489,18 @@ public class LoopView2 extends View {
 
         public final boolean onDown(MotionEvent motionevent) {
             LoopView2.this.cancelSchedule();
-            Log.i(LoopView2.TAG, "LoopViewGestureListener->onDown");
+            //Log.i(LoopView2.TAG, "LoopViewGestureListener->onDown");
             return true;
         }
 
         public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             LoopView2.this.startSmoothScrollTo(velocityY);
-            Log.i(LoopView2.TAG, "LoopViewGestureListener->onFling");
+            //Log.i(LoopView2.TAG, "LoopViewGestureListener->onFling");
             return true;
         }
 
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            Log.i(LoopView2.TAG, "LoopViewGestureListener->onScroll");
+            //Log.i(LoopView2.TAG, "LoopViewGestureListener->onScroll");
             int temp_scroll = (int) ((float) LoopView2.this.mTotalScrollY + distanceY);
 
             allItemHeight = (int) ((float) (LoopView2.this.mDataList.size() - 1) * LoopView2.this.lineHeight);

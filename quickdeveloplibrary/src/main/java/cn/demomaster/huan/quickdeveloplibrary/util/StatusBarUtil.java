@@ -241,5 +241,55 @@ e.printStackTrace();
         }
     }
 
+    //将状态栏设置为传入的color
+    public static void setColor(Activity activity, int color) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            View view = activity.getWindow().getDecorView();
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            activity.getWindow().setStatusBarColor(color);
+        }
+    }
 
+    /**
+     * 显示状态栏
+     * @param activity
+     */
+    public static void showSystemUI(Activity activity) {
+        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
+    /**
+     * 隐藏状态栏
+     * @param activity
+     */
+    public static void hideSystemUI(Activity activity) {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+                // Set the content to appear under the system bars so that the
+                // content doesn't resize when the system bars hide and show.
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                // Hide the nav bar and status bar
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        //隐藏状态栏后有些手机状态栏会变成黑色 需要改变内容窗口布局充满整个屏幕
+        fullLayout(activity);
+    }
+
+    /**
+     * 页面内容窗口布局充满整个屏幕
+     * @param activity
+     */
+    public static void fullLayout(Activity activity){
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            activity.getWindow().setAttributes(lp);
+        }
+    }
 }

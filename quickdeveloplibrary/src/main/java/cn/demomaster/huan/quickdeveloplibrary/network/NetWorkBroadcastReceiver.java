@@ -36,13 +36,13 @@ public abstract class NetWorkBroadcastReceiver extends BroadcastReceiver impleme
                 case WifiManager.WIFI_STATE_CHANGED_ACTION:
                     int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                     String wifiDesc = NetworkHelper.getWifiStateDes(wifiState);
-                    QDLogger.println("网络状态变化,hash:" + hashCode() + ",action=" + action + "," + wifiDesc);
+                    //QDLogger.println("网络状态变化,hash:" + hashCode() + ",action=" + action + "," + wifiDesc);
                     break;
                 case WifiManager.NETWORK_STATE_CHANGED_ACTION:
                     //int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                     break;
                 case ConnectivityManager.CONNECTIVITY_ACTION:
-                    QDLogger.println("网络状态变化,hash:" + hashCode() + ",action=" + action + "," + des);
+                    //QDLogger.println("网络状态变化,hash:" + hashCode() + ",action=" + action + "," + des);
                     ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo networkInfo = manager.getActiveNetworkInfo();
                     if (networkInfo != null) { //如果无网络连接networkInfo为null

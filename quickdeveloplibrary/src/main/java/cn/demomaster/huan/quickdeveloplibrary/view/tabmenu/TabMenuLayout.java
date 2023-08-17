@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -18,11 +19,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnSingleItemClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QMUIDisplayHelper;
 import cn.demomaster.qdlogger_library.QDLogger;
@@ -158,7 +161,7 @@ public class TabMenuLayout extends LinearLayout {
             tabGroup.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
             tabGroup.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
 
-            QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
+            //QDLogger.println("view--->x坐标:" + location[0] + "view--->y坐标:" + location[1]);
             popupWindow.setContentView(contentView);
             popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
             popupWindow.setHeight(QMUIDisplayHelper.getScreenHeight(context) - location[1]);
@@ -225,13 +228,15 @@ public class TabMenuLayout extends LinearLayout {
             recy_tab_content.setAdapter(adapter);
             //adapter.setColors(color_selected,color_normal);
             //recy_tab_content.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-            adapter.setOnItemClickListener((view, position) -> {
-                tabMenuInterface.onSelected((TabRadioGroup.TabRadioButton) tabButton, tabIndex, position);
-                //adapter.setOnClickItem(position);
-                adapter.setOnItemClicked(position);
-                tabSelectModels = adapter.getTabMenuModels();
-                //popupWindow.dismiss();
+            adapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    tabMenuInterface.onSelected((TabRadioGroup.TabRadioButton) tabButton, tabIndex, position);
+                    //adapter.setOnClickItem(position);
+                    adapter.setOnItemClicked(position);
+                    tabSelectModels = adapter.getTabMenuModels();
+                    //popupWindow.dismiss();
+                }
             });
         } else if (columnCount == -1) {//自定义contentView
             recy_tab_content.setVisibility(GONE);
@@ -242,7 +247,6 @@ public class TabMenuLayout extends LinearLayout {
                 tabSelectModels.get(tabIndex).getOnCreatTabContentView().onCreat(view);
             }
         }
-
     }
 
    /* private int color_selected=Color.RED;

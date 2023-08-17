@@ -1,17 +1,18 @@
 package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.io.File;
@@ -19,32 +20,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.PreviewActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
+import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.ScrollRecyclerView;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
  * Created by Squirrel桓 on 2018/12/1.
  */
-public class SimplePictureGallery extends ScrollRecyclerView {
+public class SimplePictureGallery extends ScrollRecyclerView  {
     public SimplePictureGallery(@NonNull Context context) {
         super(context);
-        init();
+        init(context, null, 0);
     }
 
     public SimplePictureGallery(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs, 0);
     }
 
     public SimplePictureGallery(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context, attrs, defStyle);
     }
 
     @Override
@@ -68,100 +70,148 @@ public class SimplePictureGallery extends ScrollRecyclerView {
     private int spanCount = 4;//横向排列个数
     private int maxCount = 5;//最大图片数量
     private boolean canPreview = true;//是否可以预览
-    private boolean showAdd = true;//是否可以添加
-    private ArrayList<Image> imageList = new ArrayList<>();
-    private OnPictureChangeListener onPictureChangeListener;
+    private boolean showAddButton = true;//是否可以添加
+    private ArrayList<String> imgData = new ArrayList<>();;//要展示的图片
+    private List<String> selectedPathList;//选中的图片
+    private OnPictureDataChangeListener onPictureDataChangeListener;//选中元素变换监听
+    private OnPictureViewClickListener onItemViewClickListener;//点击添加按钮事件
 
-    public void setOnPictureChangeListener(OnPictureChangeListener onPictureChangeListener) {
-        this.onPictureChangeListener = onPictureChangeListener;
+    public void setOnItemViewClickListener(OnPictureViewClickListener onItemViewClickListener) {
+        if(this.onItemViewClickListener!=null){
+            this.onItemViewClickListener.setPicGallery(null);
+        }
+        if(onItemViewClickListener!=null){
+            onItemViewClickListener.setPicGallery(this);
+        }
+        this.onItemViewClickListener = onItemViewClickListener;
+        mAdapter.setOnItemViewClickListener(this.onItemViewClickListener);
     }
 
-    float w;
-    float widthMath = -1;
+    public void setOnPictureDataChangeListener(OnPictureDataChangeListener onPictureDataChangeListener) {
+        this.onPictureDataChangeListener = onPictureDataChangeListener;
+    }
 
     private boolean autoWidth = false;//宽度自适应
 
     public void setAutoWidth(boolean autoWidth) {
         this.autoWidth = autoWidth;
-        init();
+        updateLayoutManeger();
     }
 
-    public void init() {
-        final Context context = getContext();
+    Fragment mFragment;
+
+    public void setFragment(Fragment fragment) {
+        mFragment = fragment;
+        photoHelper = null;
+        getPhotoHelper();
+    }
+
+    boolean selectAble;//点击选中 和点击查看会有冲突
+    public void setSelectAble(boolean selectAble) {
+        this.selectAble = selectAble;
+        if (canPreview) {
+            this.canPreview = false;
+            mAdapter.setCanPreview(this.canPreview);
+        }
+        mAdapter.setSelectAble(selectAble);
+    }
+
+    boolean clickCancelSelect;//是否可以取消选中
+    public void setClickCancelSelect(boolean clickCancelSelect) {
+        this.clickCancelSelect = clickCancelSelect;
+        mAdapter.setClickCancelSelect(clickCancelSelect);
+    }
+
+    private int maxSelectCount = 1;//最大选中数量 默认单选1
+    public void setMaxSelectCount(int maxSelectCount) {
+        this.maxSelectCount = maxSelectCount;
+        mAdapter.setMaxSelectCount(maxSelectCount);
+    }
+
+    public void setSelectedList(List<String> selectedList) {
+        this.selectedPathList = selectedList;
+        mAdapter.setSelectedList(selectedPathList);
+    }
+
+    public PhotoHelper photoHelper;
+    public PhotoHelper getPhotoHelper() {
+        if (photoHelper == null) {
+            if (getContext() instanceof Activity) {
+                photoHelper = new PhotoHelper((Activity) getContext(), mFragment, getContext().getPackageName() + ".fileprovider");
+            }
+        }
+        return photoHelper;
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+//        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QuickView, defStyle, 0);
+//        int borderWidth = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_borderWidth, 0);
+//        typedArray.recycle();
+        updateLayoutManeger();
+        setItemMargin(itemMargin);
+        mAdapter = new PictureAdapter(getContext(), imgData, showAddButton, maxCount, selectedPathList, maxSelectCount);
+        if(onItemViewClickListener==null){
+            onItemViewClickListener = new OnPictureViewClickListener() {};
+            onItemViewClickListener.setPicGallery(this);
+        }
+        mAdapter.setOnItemViewClickListener(onItemViewClickListener);
+        setAdapter(mAdapter);
+    }
+
+    private void updateLayoutManeger() {
         int spanCount_c = spanCount;
         if (autoWidth) {
-            spanCount_c = Math.max((spanCount > imageList.size() ? (imageList.size() + (showAdd ? 1 : 0)) : spanCount), 1);
-            w = spanCount > (imageList.size() + (showAdd ? 1 : 0)) ? ((float) spanCount_c / spanCount) : 1;
-            getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    if (widthMath == -1) {
-                        widthMath = getWidth();
-                    }
-                    setLayoutParams(new LinearLayout.LayoutParams((int) (widthMath * w), getHeight()));
-                }
-            });
+            spanCount_c = Math.max(imgData.size() + (showAddButton ? 1 : 0), 1);
+            //w = spanCount > (imageList.size() + (showAdd ? 1 : 0)) ? ((float) spanCount_c / spanCount) : 1;
+//            getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                @Override
+//                public void onGlobalLayout() {
+//                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                    if (widthMath == -1) {
+//                        widthMath = getWidth();
+//                    }
+//                    setLayoutParams(new LinearLayout.LayoutParams((int) (widthMath * w), getHeight()));
+//                }
+//            });
+            // setLayoutParams(new LinearLayout.LayoutParams((int) (getMeasuredWidth() * w), getMeasuredHeight()));
         }
-        mLayoutManager = new QDGridLayoutManager(context, spanCount_c);
+        mLayoutManager = new QDGridLayoutManager(getContext(), spanCount_c);
         setLayoutManager(mLayoutManager);
-        addItemDecoration(new GridSpacesItemDecoration(itemMargin, true));
-        mAdapter = new PictureAdapter(context, imageList, showAdd, true, maxCount);
-        mAdapter.setOnItemClickListener(new PictureAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, Image image) {
-                if (canPreview) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("images", imageList);
-                    bundle.putInt("imageIndex", position);
-                    Intent intent = new Intent(context, PreviewActivity.class);
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onLastClick(View view) {
-                showMenuDialog();
-            }
-
-            @Override
-            public void onItemDelete(View view, int position, Image image) {
-                imageList.remove(position);
-                removeImageFromView();
-                if (onPictureChangeListener != null) {
-                    onPictureChangeListener.onChanged(imageList);
-                }
-            }
-        });
-        setAdapter(mAdapter);
-        mAdapter.setAddButtonPadding(addButtonPadding);
     }
 
-    private void showMenuDialog() {
+    String savePath = null;
+    boolean isCrop = false;//是否截图
+    public void setCrop(boolean crop) {
+        isCrop = crop;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public void showMenuDialog() {
         String[] menus = getResources().getStringArray(R.array.select_picture_items);
         new QDSheetDialog.MenuBuilder(getContext()).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
             dialog.dismiss();
             if (position == 0) {
-                ((QDActivity) getContext()).getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
+                getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
                     @Override
                     public void onSuccess(Intent data, String path) {
                         if (data == null) {
-                            imageList.add(new Image(path, UrlType.file));
-                            addImageToView();
-                            if (onPictureChangeListener != null) {
-                                onPictureChangeListener.onChanged(imageList);
-                            }
+                            Image image = new Image(path, UrlType.file);
+                            ArrayList list = new ArrayList<Image>() {
+                            };
+                            list.add(image);
+                            addImageToView(list);
                         } else {
                             Bundle extras = data.getExtras();
                             if (extras != null) {
                                 Bitmap bitmap = extras.getParcelable("data");
-                                String filePath = QDBitmapUtil.savePhoto(bitmap, getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath()+ File.separator+"temp", "header");//String.valueOf(System.currentTimeMillis())
-                                imageList.add(new Image(filePath, UrlType.file));
-                                addImageToView();
-                                if (onPictureChangeListener != null) {
-                                    onPictureChangeListener.onChanged(imageList);
-                                }
+                                String filePath = QDBitmapUtil.savePhoto(bitmap, getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "temp", "header");//String.valueOf(System.currentTimeMillis())
+                                imgData.add(filePath);
+                                ArrayList list = new ArrayList<Image>();
+                                list.add(filePath);
+                                addImageToView(list);
                             }
                         }
                     }
@@ -172,65 +222,100 @@ public class SimplePictureGallery extends ScrollRecyclerView {
                     }
                 });
             } else {//从相册选择
-                ((QDActivity) getContext()).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
-                    @Override
-                    public void onSuccess(Intent data, ArrayList<Image> images) {
-                        imageList.addAll(images);
-                        addImageToView();
-                        if (onPictureChangeListener != null) {
-                            onPictureChangeListener.onChanged(imageList);
+                if (!isCrop) {
+                    getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                        @Override
+                        public void onSuccess(Intent data, ArrayList<Image> images) {
+                            ArrayList<String> imgPathList = new ArrayList<>();
+                            for (Image image : images) {
+                                imgPathList.add(image.getPath());
+                            }
+                            addImageToView(imgPathList);
                         }
-                    }
 
-                    @Override
-                    public void onFailure(String error) {
+                        @Override
+                        public void onFailure(String error) {
 
-                    }
+                        }
 
-                    @Override
-                    public int getImageCount() {
-                        return maxCount - imageList.size();
-                    }
-                });
+                        @Override
+                        public int getImageCount() {
+                            return maxCount - imgData.size();
+                        }
+                    });
+                } else {
+                    File file = new File(savePath, System.currentTimeMillis() + ".jpg");
+                    QDFileUtil.createFile(file);
+                    getPhotoHelper().selectPhotoFromGalleryAndCrop(Uri.fromFile(file), new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            Image image = new Image(path, UrlType.file);
+                            ;
+                            if (data.getData() != null) {
+                                image.setPath(data.getData().getPath());
+                            } else {
+                                image.setPath(Uri.parse(data.getAction()).getPath());
+                            }
+                            ArrayList list = new ArrayList<Image>() {
+                            };
+                            list.add(image);
+                            addImageToView(list);
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+                    });
+                }
             }
         }).create().show();
     }
 
-    /**
-     * 更新视图
-     */
-    private void addImageToView() {
-        if ((imageList.size() + (showAdd ? 1 : 0)) <= spanCount) {
-            init();
+    public void onResult(int requestCode, int resultCode, Intent data) {
+        if (photoHelper != null) {
+            QDLogger.println("onResult requestCode=" + requestCode);
+            photoHelper.onActivityResult(requestCode, resultCode, data);
         }
-        mAdapter.notifyDataSetChanged();
     }
 
     /**
      * 更新视图
+     *
+     * @param
      */
-    private void removeImageFromView() {
-        if ((imageList.size() + (showAdd ? 1 : 0)) <= spanCount) {
-            init();
+    private void addImageToView(ArrayList<String> images) {
+        imgData.addAll(images);
+        QDLogger.println("从相册选择 imageList size=" + imgData.size());
+        if (onPictureDataChangeListener != null) {
+            //onPictureChangeListener.onChanged(imageList);
+            onPictureDataChangeListener.onAdd(images);
         }
-        mAdapter.notifyDataSetChanged();
+        updateLayoutManeger();
+        mAdapter.notifyDataSetChanged();//.notifyData();// setData(imageList);
     }
 
-    public List<Image> getImages() {
-        return imageList;
+    /**
+     * 更新视图
+     *
+     * @param
+     */
+    private void removeImageFromView(String path) {
+        imgData.remove(path);
+        updateLayoutManeger();
+        mAdapter.notifyDataSetChanged();//.notifyData();
+
+        if (onPictureDataChangeListener != null) {
+            List list = new ArrayList();
+            list.add(path);
+            onPictureDataChangeListener.onRemove(list);
+        }
     }
 
     private int itemMargin;
-    private int addButtonPadding;
-
     public void setItemMargin(int itemMargin) {
         this.itemMargin = itemMargin;
-        init();
-    }
-
-    public void setAddButtonPadding(int addButtonPadding) {
-        this.addButtonPadding = addButtonPadding;
-        mAdapter.setAddButtonPadding(addButtonPadding);
+        addItemDecoration(new GridSpacesItemDecoration(itemMargin, true));
     }
 
     public int getSpanCount() {
@@ -239,7 +324,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
     public void setSpanCount(int spanCount) {
         this.spanCount = spanCount;
-        init();
+        updateLayoutManeger();
     }
 
     public int getMaxCount() {
@@ -248,7 +333,7 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
     public void setMaxCount(int maxCount) {
         this.maxCount = maxCount;
-        init();
+        mAdapter.setMaxCount(maxCount);
     }
 
     public boolean isCanPreview() {
@@ -257,46 +342,92 @@ public class SimplePictureGallery extends ScrollRecyclerView {
 
     public void setCanPreview(boolean canPreview) {
         this.canPreview = canPreview;
-        init();
-    }
-
-    public boolean isShowAdd() {
-        return showAdd;
-    }
-
-    public void setShowAdd(boolean showAdd) {
-        this.showAdd = showAdd;
-        init();
-    }
-
-
-    public List<Image> getImageList() {
-        return imageList;
-    }
-
-    public void setImageList(ArrayList<Image> imageList) {
-        this.imageList.clear();
-        this.imageList.addAll(imageList);
-        if (mAdapter != null && imageList != null) {
-            init();
+        if (selectAble) {
+            this.selectAble = false;
         }
+        mAdapter.setCanPreview(canPreview);
     }
 
-    public void addImage(Image image) {
-        if (imageList != null && image != null) {
-            imageList.add(image);
-            init();
-        }
+    public boolean isShowAddButton() {
+        return showAddButton;
     }
 
-    public void clearImages() {
-        if (imageList != null) {
-            imageList.clear();
-            mAdapter.notifyDataSetChanged();
-        }
+    public void setShowAddButton(boolean showAddButton) {
+        this.showAddButton = showAddButton;
+        mAdapter.setShowAddButton(showAddButton);
+        mAdapter.notifyDataSetChanged();
     }
+
+    public void setImgData(ArrayList<String> imgData) {
+        this.imgData.clear();
+        this.imgData.addAll(imgData);
+        updateLayoutManeger();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void addImage(String image) {
+        if (image != null) {
+            imgData.add(image);
+        }
+        updateLayoutManeger();
+        mAdapter.notifyDataSetChanged();
+    }
+
 
     public interface OnPictureChangeListener {
-        void onChanged(List<Image> images);
+        void onRemove(List<String> images);
+
+        void onAdd(List<String> images);
+        //void onChanged(List<Image> images);
+        void onSelectdChanged(List<String> images);
+    }
+
+    public abstract static class OnPictureViewClickListener implements PictureAdapter.OnItemViewClickListener{
+        SimplePictureGallery picGallery;
+
+        public void setPicGallery(SimplePictureGallery picGallery) {
+            this.picGallery = picGallery;
+        }
+
+        @Override
+        public void onImageClick(View view, int position, String image) {
+            if (picGallery.canPreview) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("images", picGallery.imgData);
+                bundle.putInt("imageIndex", position);
+                Intent intent = new Intent(picGallery.getContext(), PreviewActivity.class);
+                intent.putExtras(bundle);
+                picGallery.getContext().startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onItemDelete(View view, int position, String path) {
+            picGallery.removeImageFromView(path);
+        }
+
+        @Override
+        public void onAddButtonClick(View view) {
+            if (picGallery.isShowAddButton()) {
+                picGallery.showMenuDialog();
+            }
+        }
+    }
+
+    public abstract static class OnPictureDataChangeListener implements OnPictureChangeListener{
+        @Override
+        public void onAdd(List<String> images) {
+
+        }
+
+        @Override
+        public void onSelectdChanged(List<String> images) {
+
+        }
+
+        @Override
+        public void onRemove(List<String> images) {
+
+        }
     }
 }

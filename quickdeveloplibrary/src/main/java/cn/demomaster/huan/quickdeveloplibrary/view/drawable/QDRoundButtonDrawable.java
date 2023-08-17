@@ -97,12 +97,12 @@ public class QDRoundButtonDrawable extends GradientDrawable {
     protected boolean onStateChange(int[] stateSet) {
         boolean superRet = super.onStateChange(stateSet);
         if (mFillColors != null) {
-            int color = mFillColors.getColorForState(stateSet, 0);
+            int color = mFillColors.getColorForState(stateSet, Color.TRANSPARENT);
             setColor(color);
             superRet = true;
         }
         if (mStrokeColors != null) {
-            int color = mStrokeColors.getColorForState(stateSet, 0);
+            int color = mStrokeColors.getColorForState(stateSet, Color.TRANSPARENT);
             setStroke(mStrokeWidth, color);
             superRet = true;
         }
@@ -120,7 +120,6 @@ public class QDRoundButtonDrawable extends GradientDrawable {
     int margin_top = 0;
     int margin_right = 0;
     int margin_bottom = 0;
-
     @Override
     protected void onBoundsChange(Rect r) {
         r.left = r.left + margin_left;
@@ -138,6 +137,9 @@ public class QDRoundButtonDrawable extends GradientDrawable {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDButton, defStyleAttr, 0);
         ColorStateList colorBg = typedArray.getColorStateList(R.styleable.QDButton_qd_backgroundColor);
         ColorStateList colorBorder = typedArray.getColorStateList(R.styleable.QDButton_qd_borderColor);
+        /*ColorStateList colorStateList = ColorStateList.valueOf()
+        colorBg.addState(new int[]{android.R.attr.state_pressed,}, pressed);*/
+        //int colorBg_disable = typedArray.getColor(R.styleable.QDButton_qd_backgroundColor_disable,Color.GRAY);
         int borderWidth = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_borderWidth, 0);
         boolean isRadiusAdjustBounds = typedArray.getBoolean(R.styleable.QDButton_qd_isRadiusAdjustBounds, false);
         int mRadius = typedArray.getDimensionPixelSize(R.styleable.QDButton_qd_radius, 0);

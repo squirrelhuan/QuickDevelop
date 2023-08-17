@@ -121,23 +121,23 @@ public class MultiRecycleBehavior extends CoordinatorLayout.Behavior<MultiRecycl
         QDLogger.d("获取下一个可滚动的视图");
         //1.获取下一个可滚动的视图
         if (dy > 0) {//上推
-            QDLogger.d("上推");
+            QDLogger.println("上推");
             MultiRecycleContainer upper = getUpperChild(parent);
-            QDLogger.d("获取下一个可上推的视图:" + upper);
+            QDLogger.println("获取下一个可上推的视图:" + upper);
             if (upper == null) {
                 py = dy;
             } else {
-                QDLogger.d("获取下一个可上推的视图:" + upper + ",dy=" + dy + ",upper.getTop()=" + upper.getTop());
+                QDLogger.println("获取下一个可上推的视图:" + upper + ",dy=" + dy + ",upper.getTop()=" + upper.getTop());
                 py = Math.min(upper.getTop(), dy);
             }
         } else {//下拉
-            QDLogger.d("下拉");
+            QDLogger.println("下拉");
             MultiRecycleContainer downer = getDownerChild(parent);//下一个
             //QDLogger.d("获取下一个可下拉的视图:" + downer);
             if (downer == null) {
                 py = dy;
             } else {
-                QDLogger.d("获取下一个可下拉的视图dy=" + dy + ",downer.getTop()=" + downer.getTop());
+                QDLogger.println("获取下一个可下拉的视图dy=" + dy + ",downer.getTop()=" + downer.getTop());
                 py = Math.max(downer.getTop(), dy);
             }
         }

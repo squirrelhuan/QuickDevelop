@@ -19,13 +19,14 @@ import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 import cn.demomaster.qdrouter_library.quickview.QuickViewManager;
-import cn.demomaster.qdrouter_library.quickview.ViewInfo;
+import cn.demomaster.qdrouter_library.quickview.QuickView;
 import cn.demomaster.quickpermission_library.PermissionHelper;
 
+import cn.demomaster.huan.quickdeveloplibrary.util.QuickDevKit;
 import static cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil.getAppName;
 
 public class QDMainFragmentActivity extends QDActivity {
-
+    
     @Override
     public boolean isUseActionBarLayout() {
         return false;
@@ -40,7 +41,11 @@ public class QDMainFragmentActivity extends QDActivity {
             QuickFragment fragment = new MainFragment();
             startFragment(fragment,R.id.container1,null);
         }
-        ViewInfo viewInfo = new ViewInfo();
+
+        //悬浮工具
+        QuickDevKit quickDevKit = new QuickDevKit();
+        quickDevKit.init(mContext);
+        /*ViewInfo viewInfo = new ViewInfo();
         viewInfo.setResId(R.layout.layout_floating_menu);
         viewInfo.setTag("TGA");
         viewInfo.setX(0);
@@ -50,7 +55,7 @@ public class QDMainFragmentActivity extends QDActivity {
         marginLayoutParams.topMargin = DisplayUtil.getScreenHeight(mContext)/2;
         marginLayoutParams.leftMargin = 0;
         viewInfo.setLayoutParams(marginLayoutParams);
-        QuickViewManager.getInstance().setViewInfo(mContext,viewInfo);
+        QuickViewManager.getInstance().setViewInfo(mContext,viewInfo);*/
 
         //EventBus.getDefault().register(this);
         //changeAppLanguage(mContext);

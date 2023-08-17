@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,17 +22,26 @@ import android.webkit.WebView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.base.activity.QDActivity;
 import cn.demomaster.huan.quickdeveloplibrary.constant.AppConfig;
+import cn.demomaster.huan.quickdeveloplibrary.helper.PhotoHelper;
+import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDDialog;
+import cn.demomaster.huan.quickdeveloplibrary.widget.dialog.QDSheetDialog;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class QDWebView extends WebView implements QuickWebViewInterface{
+import com.alibaba.fastjson.JSON;
+
+import java.util.ArrayList;
+
+public class QDWebView extends WebView implements QuickWebViewInterface,QuickWebViewClientInterface{
     private String mUrl = "http://www.demomaster.cn";
 
     public QDWebView(Context context) {
@@ -101,7 +112,7 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         getSettings().setBuiltInZoomControls(true);
         // 为图片添加放大缩小功能
         getSettings().setUseWideViewPort(true);
-        setInitialScale(100);   //100代表不缩放
+        setInitialScale(100);//100代表不缩放
         setMyWebViewClient(new QuickWebViewClient(this));
         //loadUrl(mUrl);
         setOnLongClickListener(v -> {
@@ -180,14 +191,90 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
     }
 
     private ValueCallback<Uri> uploadFile;
-    private ValueCallback<Uri[]> uploadFiles;
-    private void openFileChooseProcess() {
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("*/*");
-        ((Activity)getContext()).startActivityForResult(Intent.createChooser(i, "上传文件"), 0);
-    }
+    private static ValueCallback<Uri[]> mFilePathCallback;
+    private void openFileChooseProcess(String[] acceptTypes) {
+        String acceptType = "*/*";
+        if (acceptTypes.length > 0) {
+            for (String type : acceptTypes) {
+                acceptType = type;
+                QDLogger.println("type="+type);
+            }
+        }
 
+      /*  Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType(acceptType);
+        ((Activity)getContext()).startActivityForResult(Intent.createChooser(i, "上传文件"), 0);
+        */
+        selectPic();
+    }
+    public void selectPic(){
+            String[] menus = getResources().getStringArray(R.array.select_picture_items);
+            new QDSheetDialog.MenuBuilder(getContext()).setData(menus).setOnDialogActionListener((dialog, position, data) -> {
+                dialog.dismiss();
+                if (position == 0) {
+                    ((QDActivity) getContext()).getPhotoHelper().takePhoto(null, new PhotoHelper.OnTakePhotoResult() {
+                        @Override
+                        public void onSuccess(Intent data, String path) {
+                            if (data == null) {
+                                /*imageList.add(new Image(path, UrlType.file));
+                                addImageToView();
+                                if (onPictureChangeListener != null) {
+                                    onPictureChangeListener.onChanged(imageList);
+                                }*/
+                            } else {
+                                Bundle extras = data.getExtras();
+                                if (extras != null) {
+                                    /*Bitmap bitmap = extras.getParcelable("data");
+                                    String filePath = QDBitmapUtil.savePhoto(bitmap, getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath()+ File.separator+"temp", "header");//String.valueOf(System.currentTimeMillis())
+                                    imageList.add(new Image(filePath, UrlType.file));
+                                    addImageToView();
+                                    if (onPictureChangeListener != null) {
+                                        onPictureChangeListener.onChanged(imageList);
+                                    }*/
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+                    });
+                } else {//从相册选择
+                    ((QDActivity) getContext()).getPhotoHelper().selectPhotoFromMyGallery(new PhotoHelper.OnSelectPictureResult() {
+                        @Override
+                        public void onSuccess(Intent data, ArrayList<Image> images) {
+                            Uri[] uris = new Uri[]{images.get(0).getUri(getContext())};
+                            //Uri[] uris = new Uri[]{data.getData()};
+                            QDLogger.println("uris=" + JSON.toJSONString(uris));
+                            /*if(data!=null) {
+                                Uri uri = data.getData();
+                                if (uri != null) {
+                                    uris[0] = uri;
+                                }
+                            }*/
+                            mFilePathCallback.onReceiveValue(uris);
+                            /*imageList.addAll(images);
+                            addImageToView();
+                            if (onPictureChangeListener != null) {
+                                onPictureChangeListener.onChanged(imageList);
+                            }*/
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                        @Override
+                        public int getImageCount() {
+                            return 1;
+                        }
+                    });
+                }
+            }).create().show();
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
@@ -197,11 +284,11 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
                     uploadFile.onReceiveValue(result);
                     uploadFile = null;
                 }
-                if (null != uploadFiles) {
+                if (null != mFilePathCallback) {
                     Uri result = data == null ? null
                             : data.getData();
-                    uploadFiles.onReceiveValue(new Uri[]{result});
-                    uploadFiles = null;
+                    mFilePathCallback.onReceiveValue(new Uri[]{result});
+                    mFilePathCallback = null;
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 if (null != uploadFile) {
@@ -212,8 +299,16 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         }
     }
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        view.loadUrl(url);
-        return true;
+        return false;
+//        该方法会在webview加载一个url之前，拦截请求；
+//        如果未使用自定义的WebViewClient，系统会要求Activity Manager去处理当前URL，通常使用系统浏览器加载；
+//        如果使用了自定义的WebViewClient，返回true表示当前webview中止加载url（效果就像比如点击一个a标签链接没反应），返回false表示webview正常继续加载url；
+//        不要调用loadUrl方法并且返回true，就像下面代码一样是错误的：
+//————————————————
+//        版权声明：本文为CSDN博主「ruiurrui」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+//        原文链接：https://blog.csdn.net/u010982507/article/details/125037839
+//        view.loadUrl(url);
+//        return true;
         /*if (url.startsWith("newtab:")) {
             //对新的URL进行截取，去掉前面的newtab:
             *//*String realUrl=url.substring(7,url.length());*//*
@@ -232,13 +327,13 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         if(onWindowViewInflate==null){
             return false;
         }else {
-            WebView newWebView = onWindowViewInflate.onWindowOpen();
+            WebView newWebView = onWindowViewInflate.onWindowOpen(view,isDialog,isUserGesture,resultMsg);
             if(newWebView==null){
                 return false;
             }
-            QDWebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
-            transport.setWebView(newWebView);
-            resultMsg.sendToTarget();
+//            QDWebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+//            transport.setWebView(newWebView);
+//            resultMsg.sendToTarget();
             return true;
         }
     }
@@ -265,7 +360,7 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
     }
 
     public interface WindowViewInflate{
-        WebView onWindowOpen();
+        WebView onWindowOpen(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg);
         void onCloseWindow(WebView window);
     }
 
@@ -325,20 +420,27 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
     @Override
     public boolean onShowFileChooser(QuickWebChromeClient qdWebChromeClient, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             //QdToast.show(getContext(),"选择图片");
-            uploadFiles = filePathCallback;
-            openFileChooseProcess();
-            return qdWebChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+        mFilePathCallback = filePathCallback;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            openFileChooseProcess(fileChooserParams.getAcceptTypes());
+            return true;
+        }else {
+            return false;
+        }
+        // qdWebChromeClient.onShowFileChooser(webView, filePathCallback, fileChooserParams);
     }
 
     @Override
-    public void onProgress(int progress) {
+    public void onLoading(int progress) {
+        displayProgressBar = true;
         mProgress = progress / 100f;
         postInvalidate();
     }
 
     @Override
-    public void onFinish() {
+    public void onLoadComplete() {
         mProgress = 0;
+        displayProgressBar = false;
         postInvalidate();
     }
 
@@ -395,31 +497,27 @@ public class QDWebView extends WebView implements QuickWebViewInterface{
         }
     }
 
-    private int progressHeight = 10;
+    private int progressHeight = 10;//进度条高度
     private boolean showProgressBar = true;//是否显示进度条
+    private boolean displayProgressBar;//显示过程中才显示进度条否则不显示
     private int progressBarColor = Color.RED;//进度条颜色
     private int progressBarBackgroundColor = Color.BLACK;//进度条背景色
-
     public void setProgressHeight(int progressHeight) {
         this.progressHeight = progressHeight;
     }
-
     public void setShowProgressBar(boolean showProgressBar) {
         this.showProgressBar = showProgressBar;
     }
-
     public void setProgressBarColor(int progressBarColor) {
         this.progressBarColor = progressBarColor;
     }
-
     public void setProgressBarBackgroundColor(int progressBarBackgroundColor) {
         this.progressBarBackgroundColor = progressBarBackgroundColor;
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (showProgressBar && mProgress != 0) {
+        if (displayProgressBar && showProgressBar && mProgress != 0) {
             RectF rectF = new RectF(getLeft(), 0, getRight(), progressHeight);
             Paint mpaint = new Paint();
             mpaint.setColor(progressBarBackgroundColor);

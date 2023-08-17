@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.view.decorator.GridDividerItemDecoration;
-import cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton;
+import cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton;
 import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
@@ -42,13 +43,13 @@ import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
  * Squirrel桓
  * 2021/01/14
  */
-@ActivityPager(name = "蓝牙", preViewClass = TextView.class, resType = ResType.Resource,iconRes = R.drawable.ic_baseline_bluetooth_24)
+@ActivityPager(name = "蓝牙", preViewClass = TextView.class, resType = ResType.Resource, iconRes = R.drawable.ic_baseline_bluetooth_24)
 public class BluetoothFragment extends QuickFragment {
 
     @BindView(R.id.tv_info)
     TextView tv_info;
     @BindView(R.id.tooglebutton)
-    ToggleButton tooglebutton;
+    QuickToggleButton tooglebutton;
 
     @BindView(R.id.cb_discoverable)
     CheckBox cb_discoverable;
@@ -71,6 +72,7 @@ public class BluetoothFragment extends QuickFragment {
 
     BluetoothAdapter mBluetoothAdapter;
     int REQUEST_ENBLE_BT = 11223;
+
     public void initView(View rootView) {
         ButterKnife.bind(this, mView);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -107,7 +109,12 @@ public class BluetoothFragment extends QuickFragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         bluetoothAdapter = new cn.demomaster.huan.quickdevelop.adapter.BluetoothAdapter(mContext);
-        bluetoothAdapter.setOnItemClickListener((view, position) -> connect(bluetoothAdapter.getData().get(position)));
+        bluetoothAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                connect(bluetoothAdapter.getData().get(position));
+            }
+        });
         bluetoothAdapter.updateList(mBluetoothAdapter.getBondedDevices());
         recyclerView.setAdapter(bluetoothAdapter);
         //设置分隔线
@@ -130,18 +137,21 @@ public class BluetoothFragment extends QuickFragment {
     }
 
     int REQUEST_DISCOVERABLE = 2054;
+
     /**
      * 启用被检测
+     *
      * @param time 时长
      */
     private void requestDiscoverable(int time) {
         Intent discoverableIntent = new
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, time);//最多可以设置3600秒，如果将值设置为0就表示设备永远进入可被发现模式。任何小于0或者大于3600的值都会自动设置为120秒
-        ((Activity)getContext()).startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);//REQUEST_DISCOVERABLE为自定义的requestcode值
+        ((Activity) getContext()).startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);//REQUEST_DISCOVERABLE为自定义的requestcode值
     }
 
     BluetoothStateReceiver stateChangeReceiver = new BluetoothStateReceiver();
+
     private void registerBoradcastReceiver() {
         IntentFilter stateChangeFilter = new IntentFilter(
                 BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -243,7 +253,7 @@ public class BluetoothFragment extends QuickFragment {
         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         // 这个可以用来设置时间
         intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
-        ((Activity)getContext()).startActivityForResult(intent, 2);
+        ((Activity) getContext()).startActivityForResult(intent, 2);
     }
 
     private class AcceptThread extends Thread {

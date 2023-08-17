@@ -9,9 +9,8 @@ import android.webkit.WebView;
 public interface QuickWebViewInterface {
     void onReceivedTitle(WebView view, String title);
     boolean onShowFileChooser(QuickWebChromeClient qdWebChromeClient, WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams);
-    void onProgress(int progress);
-
-    void onFinish();
+    void onLoading(int progress);
+    void onLoadComplete();
     boolean shouldOverrideUrlLoading(WebView view, String url);
     boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg);
     boolean onCloseWindow(WebView window);

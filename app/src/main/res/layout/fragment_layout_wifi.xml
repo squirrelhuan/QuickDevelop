@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textSize="@dimen/sp_14"/>
-            <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
                 android:id="@+id/toggle"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_30"/>

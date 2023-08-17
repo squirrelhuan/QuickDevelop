@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.sample.HorizontalDragViewActivity">
+    tools:context=".ui.fragment.component.HorizontalDragViewFragment">
 
     <cn.demomaster.huan.quickdeveloplibrary.widget.HorizontalDragView
         android:layout_width="match_parent"

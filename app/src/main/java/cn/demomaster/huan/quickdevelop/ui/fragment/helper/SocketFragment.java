@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import cn.demomaster.huan.quickdevelop.R;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ActivityPager;
 import cn.demomaster.huan.quickdeveloplibrary.annotation.ResType;
+import cn.demomaster.huan.quickdeveloplibrary.helper.NotificationHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.network.NetworkHelper;
@@ -26,6 +27,7 @@ import cn.demomaster.huan.quickdeveloplibrary.quicksocket.QuickTcpServer;
 import cn.demomaster.huan.quickdeveloplibrary.quicksocket.ReceiveListener;
 import cn.demomaster.huan.quickdeveloplibrary.util.QDAndroidDeviceUtil;
 import cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton;
+import cn.demomaster.qdlogger_library.QDLogger;
 import cn.demomaster.qdrouter_library.base.fragment.QuickFragment;
 
 
@@ -53,6 +55,9 @@ public class SocketFragment extends QuickFragment implements ReceiveListener {
     TextView tv_client_log;
     @BindView(R.id.et_input)
     EditText et_input;
+    @BindView(R.id.et_ip)
+    EditText et_ip;
+
     View mView;
 
     @Override
@@ -66,24 +71,28 @@ public class SocketFragment extends QuickFragment implements ReceiveListener {
     QuickTcpClient qdTcpClient;
     int port = 6032;
     String clientID;
+    String localIP;
+    String targetServerIP;
     public void initView(View rootView) {
         ButterKnife.bind(this, mView);
         getActionBarTool().setTitle("socket");
 
         clientID = QDAndroidDeviceUtil.getUniqueID(getContext());
         tv_sn.setText(clientID);
-        String ip = NetworkHelper.getLocalIpAddress(mContext);
-        tv_local_ip.setText(ip);
-        qdTcpClient = new QuickTcpClient(ip, port);
-        qdTcpClient.setReceiveListener(this);
+        localIP = NetworkHelper.getLocalIpAddress(mContext);
+        targetServerIP = localIP;
+        tv_local_ip.setText(localIP);
+        et_ip.setText(targetServerIP);
         btn_start_server.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(qdTcpServer==null) {
-                    qdTcpServer = new QuickTcpServer(ip,port);//
+                    qdTcpServer = new QuickTcpServer(localIP,port);//
                     qdTcpServer.setOnReceiveMessageListener(new QuickTcpServer.OnReceiveListener() {
                         @Override
                         public void onClientConnect(Socket socket) {
+                            NotificationHelper.Builer builer = new NotificationHelper.Builer(mContext);
+                            builer.setTitle("消息通知").setContentText("收到socket消息").send();
                             QdThreadHelper.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -110,6 +119,12 @@ public class SocketFragment extends QuickFragment implements ReceiveListener {
             }
         });
         btn_send_connect.setOnClickListener(v -> {
+            if(et_ip.getText()!=null) {
+                targetServerIP = et_ip.getText().toString();
+            }
+            QDLogger.println("btn_send_connect "+targetServerIP);
+            qdTcpClient = new QuickTcpClient(targetServerIP, port);
+            qdTcpClient.setReceiveListener(this);
             qdTcpClient.connect();
         });
 

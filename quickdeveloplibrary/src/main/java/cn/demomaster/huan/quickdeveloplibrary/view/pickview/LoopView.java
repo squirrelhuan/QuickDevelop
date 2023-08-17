@@ -149,6 +149,7 @@ public class LoopView extends View {
         if (this.mDataList == null) {
             QDLogger.e("data list must not be null!");
         } else {
+            QDLogger.println("initData =333333");
             this.mTopBottomTextPaint.setColor(this.mTopBottomTextColor);
             this.mTopBottomTextPaint.setAntiAlias(true);
             this.mTopBottomTextPaint.setTypeface(Typeface.MONOSPACE);
@@ -181,7 +182,6 @@ public class LoopView extends View {
 
     private void measureTextWidthHeight() {
         Rect rect = new Rect();
-
         for (int i = 0; i < this.mDataList.size(); ++i) {
             String s1 = (String) this.mDataList.get(i);
             this.mCenterTextPaint.getTextBounds(s1, 0, s1.length(), rect);
@@ -440,7 +440,7 @@ public class LoopView extends View {
                 }
             }
 
-            Log.i(LoopView.TAG, "velocity->" + this.velocity);
+            //Log.i(LoopView.TAG, "velocity->" + this.velocity);
             if (Math.abs(this.velocity) >= 0.0F && Math.abs(this.velocity) <= 20.0F) {
                 LoopView.this.cancelSchedule();
                 LoopView.this.mHandler.sendEmptyMessage(2000);
@@ -526,18 +526,18 @@ public class LoopView extends View {
 
         public final boolean onDown(MotionEvent motionevent) {
             LoopView.this.cancelSchedule();
-            Log.i(LoopView.TAG, "LoopViewGestureListener->onDown");
+            //Log.i(LoopView.TAG, "LoopViewGestureListener->onDown");
             return true;
         }
 
         public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             LoopView.this.startSmoothScrollTo(velocityY);
-            Log.i(LoopView.TAG, "LoopViewGestureListener->onFling");
+            //Log.i(LoopView.TAG, "LoopViewGestureListener->onFling");
             return true;
         }
 
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            Log.i(LoopView.TAG, "LoopViewGestureListener->onScroll");
+           // Log.i(LoopView.TAG, "LoopViewGestureListener->onScroll");
             LoopView.this.mTotalScrollY = (int) ((float) LoopView.this.mTotalScrollY + distanceY);
             if (!LoopView.this.mCanLoop) {
                 int initPositionCircleLength = (int) ((float) LoopView.this.mInitPosition * LoopView.this.mItemHeight);

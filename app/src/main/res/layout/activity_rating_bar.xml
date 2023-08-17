@@ -30,12 +30,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="控件大小"/>
-    <SeekBar
-        android:id="@+id/sb_weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <TextView
+        <SeekBar
+            android:id="@+id/sb_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -46,11 +47,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+        <cn.demomaster.huan.quickdeveloplibrary.widget.QuickSeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="开启触摸"/>
-    <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
         android:id="@+id/tooglebutton"
         android:layout_width="60dp"
         android:layout_height="30dp"/>
@@ -58,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="数据类型（float）"/>
-    <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
         android:id="@+id/tooglebutton_datatype"
         android:layout_width="60dp"
         android:layout_height="30dp"/>
@@ -67,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="使用自定义图标"/>
-    <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
         android:id="@+id/tooglebutton_customdrable"
         android:layout_width="60dp"
         android:layout_height="30dp"/>
@@ -75,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="限制最小值(60%)"/>
-    <cn.demomaster.huan.quickdeveloplibrary.widget.button.ToggleButton
+    <cn.demomaster.huan.quickdeveloplibrary.widget.button.QuickToggleButton
         android:id="@+id/tooglebutton_minValue"
         android:layout_width="60dp"
         android:layout_height="30dp"/>

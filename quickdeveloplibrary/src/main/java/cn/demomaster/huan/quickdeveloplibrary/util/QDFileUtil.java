@@ -6,6 +6,8 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PermissionInfo;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,7 +47,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.demomaster.huan.quickdeveloplibrary.model.QDFile;
 import cn.demomaster.huan.quickdeveloplibrary.util.audio.ByteUtils;
@@ -72,8 +77,12 @@ public class QDFileUtil {
      * @param listener
      */
     public static void updateMediaFile(Context context, String filename, MediaScannerConnection.OnScanCompletedListener listener) {
-        MediaScannerConnection.scanFile(context,
-                new String[]{filename}, null, listener);
+//        MediaScannerConnection.scanFile(context,
+//                new String[]{filename}, null, listener);
+        MediaScannerConnection.scanFile(
+                context.getApplicationContext(),
+                new String[]{filename},
+                null,listener);
     }
 
     /**
@@ -377,11 +386,11 @@ public class QDFileUtil {
         if (file.isDirectory()) {
             List<File> files = new ArrayList<>();
             QDLogger.println("正在读取:" + file.getPath());
-            if (file.listFiles().length == 0) {
+            if (Objects.requireNonNull(file.listFiles()).length == 0) {
                 QDLogger.println("空文件夹:" + file.getPath());
                 files.add(file);
             } else {
-                for (File file1 : file.listFiles()) {
+                for (File file1 : Objects.requireNonNull(file.listFiles())) {
                     List<File> fileList = getEmptyFiles(file1.getPath());
                     if (fileList != null) {
                         files.addAll(fileList);
@@ -391,25 +400,6 @@ public class QDFileUtil {
             return files;
         }
         return null;
-    }
-
-    /**
-     * 通过uri获取绝对路径
-     *
-     * @param context
-     * @param contentUri
-     * @return
-     */
-    public static String getRealPathFromURI(Context context, Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-            cursor.close();
-        }
-        return res;
     }
 
     public static File uriToFile(Uri uri, Context context) {
@@ -617,6 +607,15 @@ public class QDFileUtil {
         return downloadDirectory + File.separator + fileName;
     }
 
+    /**
+     * 剪切
+     * @param file
+     * @param mp3
+     */
+    public static boolean moveTo(File file, File newFile) {
+        return file.renameTo(newFile);
+    }
+
     public interface OnSearchListener {
         void onResult(QDFile qdFile);
     }
@@ -756,13 +755,31 @@ public class QDFileUtil {
     }*/
 
     /**
+     * 通过uri获取绝对路径
+     *
+     * @param context
+     * @param contentUri
+     * @return
+     */
+//    public static String getRealPathFromURI(Context context, Uri contentUri) {
+//        String res = null;
+//        String[] proj = {MediaStore.Images.Media.DATA};
+//        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            res = cursor.getString(column_index);
+//            cursor.close();
+//        }
+//        return res;
+//    }
+    /**
      * 根据URI获取文件真实路径（兼容多张机型）
      *
      * @param context
      * @param uri
      * @return
      */
-    public static String getFilePathByUri(Context context, Uri uri) {
+    public static String getRealPathFromURI(Context context, Uri uri) {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             int sdkVersion = Build.VERSION.SDK_INT;
             if (sdkVersion >= 19) { // api >= 19
@@ -874,10 +891,24 @@ public class QDFileUtil {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    private static boolean isExternalStorageDocument(Uri uri) {
+    public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
+    public static boolean isExternalStorageDocument2(Context context, Uri fileUri) {
+// 获取 ContentResolver 实例
+        ContentResolver contentResolver = context.getContentResolver();
+// 调用 getUriPermissions() 方法来检查该 URI 是否具有访问外部存储的权限
+        Cursor cursor = contentResolver.query(fileUri, null, null, null, null);
+        if (cursor != null ) {
+            while(cursor.moveToNext()) {
+
+            }
+        } else {
+            // 如果无法获取到解析信息，执行其他操作
+        }
+        return false;
+    }
     /**
      * @param uri the Uri to check
      * @return Whether the Uri authority is DownloadsProvider
@@ -1236,5 +1267,41 @@ public class QDFileUtil {
             cachePath = context.getCacheDir().getPath();
         }
         return cachePath;
+    }
+
+    public static Uri fileToUri(Context context, File file){
+        if (file != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                //适配Android 7.0文件权限，通过FileProvider创建一个content类型的Uri
+                return FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
+            } else {
+                return  Uri.fromFile(file);
+            }
+        }
+        return null;
+    }
+
+    public static List<File> getFilesFromDir(String filePath) {
+        List<File> filespath = new ArrayList<>();
+        File f = new File(filePath);
+        if (f.exists()) {
+            try {
+                File[] files = f.listFiles();// 列出所有文件
+                for (File file : files) {
+                    if(file.length()>0) {
+                        filespath.add(file);
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return filespath;
+    }
+
+    public static boolean isHttpUrl(String urls) {
+        Pattern pattern = Pattern.compile("^(http|https)://");
+        Matcher matcher = pattern.matcher(urls);
+        return matcher.find();
     }
 }

@@ -2,19 +2,13 @@ package cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,7 +22,7 @@ import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.Image;
 import cn.demomaster.huan.quickdeveloplibrary.view.adapter.QuickRecyclerAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.widget.CircleTextView2;
-import cn.demomaster.huan.quickdeveloplibrary.widget.square.SquareImageView;
+import cn.demomaster.huan.quickdeveloplibrary.widget.QuickImageView;
 
 /**
  * @author squirrel桓
@@ -121,7 +115,7 @@ public class SimplePictureAdapter extends QuickRecyclerAdapter<SimplePictureAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private Image image;
-        SquareImageView iv_picture;
+        QuickImageView iv_picture;
         CircleTextView2 ct_select;
         //SquareImageView iv_masking;
 
@@ -216,7 +210,6 @@ public class SimplePictureAdapter extends QuickRecyclerAdapter<SimplePictureAdap
     /**
      * 设置图片选中和未选中的效果
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("ResourceAsColor")
     private static void refreshItemView(ViewHolder holder, boolean isSelect) {
         if (holder != null) {
@@ -229,7 +222,9 @@ public class SimplePictureAdapter extends QuickRecyclerAdapter<SimplePictureAdap
                     holder.ct_select.setBackgroundColor(Color.BLUE);
                 }
                 holder.ct_select.setText(mMaxCount == 1 ? "" : (getSort(holder.getImage()) + 1) + "");
-                holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent_dark_33)));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent_dark_33)));
+                }
             } else {
                 if (mMaxCount == 1) {
                     holder.ct_select.setRound(false);
@@ -256,7 +251,9 @@ public class SimplePictureAdapter extends QuickRecyclerAdapter<SimplePictureAdap
                 //holder.iv_picture.setLayerType(View.LAYER_TYPE_HARDWARE, greyscalePaint);
                 //int checkColor = mContext.getResources().getColor(R.color.transparent);
                 //holder.iv_picture.setColorFilter(checkColor);
-                holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent)));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.iv_picture.setForeground(new ColorDrawable(mContext.getColor(R.color.transparent)));
+                }
             }
         }
     }

@@ -1,7 +1,9 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -10,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -21,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.qdlogger_library.QDLogger;
 
 /**
@@ -31,16 +35,19 @@ import cn.demomaster.qdlogger_library.QDLogger;
 public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
     public AutoCenterHorizontalScrollView(Context context) {
         super(context);
+        initAttribute(null,0);
         init();
     }
 
     public AutoCenterHorizontalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAttribute(attrs,0);
         init();
     }
 
     public AutoCenterHorizontalScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initAttribute(attrs,defStyleAttr);
         init();
     }
 
@@ -50,6 +57,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         init();
     }
 
+    boolean autoScroll = true;
     private HAdapter adapter;
     ViewPager viewPager;
     ViewPager.OnPageChangeListener onPageChangeListener;
@@ -154,7 +162,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
     }
 
-    public interface HAdapter {
+    public interface HorizontalScrollAdapter {
         void setData(List<String> data);
 
         int getCount();//获取子view个数
@@ -162,6 +170,14 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         RecyclerView.ViewHolder getItemView(int position);//获取指定index的view
 
         void onSelectStateChanged(RecyclerView.ViewHolder itemView, int position, boolean isSelected);//改变选中状态
+    }
+
+    public static abstract class HAdapter implements HorizontalScrollAdapter{
+
+       public AdapterView.OnItemClickListener onItemClickListener;
+        public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
+        }
     }
 
     List<RecyclerView.ViewHolder> viewHolders = new ArrayList<>();
@@ -183,13 +199,18 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
             linearLayout1.setOnClickListener(view -> {
                 int index = (int) view.getTag();
                 if (adapter != null) {
+                    if(adapter.onItemClickListener!=null){
+                        adapter.onItemClickListener.onItemClick(null,view,index,view.getId());
+                    }
                     //处理上一个
                     adapter.onSelectStateChanged(viewHolders.get(lastIndex), lastIndex, false);//触发选中事件回调
                     //处理当前选中的
                     adapter.onSelectStateChanged(viewHolders.get(index), index, true);//触发选中事件回调
                     lastIndex = index;
                 }
-                smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
+                if (autoScroll) {
+                    smoothScrollTo(getChildCenterPosition(index), 0);//点击某个item滚动到指定位置
+                }
             });
             linearLayout.addView(linearLayout1);
         }
@@ -241,56 +262,66 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
         }
     }
 
+    public void initAttribute(AttributeSet attrs,int defStyleAttr) {
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AutoCenterHorizontalScrollView);
+            autoScroll = a.getBoolean(R.styleable.AutoCenterHorizontalScrollView_auto_scroll, true);
+            a.recycle();
+        }
+    }
+
     void init() {
         //添加触摸事件，滑动事件会触发
-        this.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
-                touchDown_X = motionEvent.getX();
-            }
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
-                if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
+        if (autoScroll) {
+            this.setOnTouchListener((view, motionEvent) -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {//按下事件记录x坐标
                     touchDown_X = motionEvent.getX();
-                    handler.removeCallbacks(scrollerTask);
-                    handler.postDelayed(scrollerTask, delayMillis);
                 }
-            }
-            return false;
-        });
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {//抬起事件判断是否是滑动事件
+                    if (touchDown_X != motionEvent.getX()) {//抬起事件则，触发
+                        touchDown_X = motionEvent.getX();
+                        handler.removeCallbacks(scrollerTask);
+                        handler.postDelayed(scrollerTask, delayMillis);
+                    }
+                }
+                return false;
+            });
 
-        if (getChildCount() <= 0) {
-            return;
+            if (getChildCount() <= 0) {
+                return;
+            }
+
+            getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    ViewGroup viewGroup = (ViewGroup) getChildAt(0);
+                    if (viewGroup == null || viewGroup.getChildCount() == 0) {
+                        return;
+                    }
+                    //一下代码是设置padding,实现第一个itemview和最后一个能够居中
+                    View first = viewGroup.getChildAt(0);
+                    int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                    int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                    first.measure(w, h);
+                    int first_width = first.getMeasuredWidth();
+                    View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
+                    last.measure(w, h);
+                    int last_width = last.getMeasuredWidth();
+                    if (gravity == Gravity.CENTER) {
+                        paddingLeft = getWidth() / 2 - first_width / 2;
+                        paddingRight = getWidth() / 2 - last_width / 2;
+                    } else if (gravity == Gravity.LEFT) {
+                        paddingLeft = 0;
+                        paddingRight = 0;
+                    }
+                    setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
+                    //设置默认位置
+                    setCurrentIndex(currentIndex);
+                }
+            });
         }
-
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                ViewGroup viewGroup = (ViewGroup) getChildAt(0);
-                if (viewGroup == null || viewGroup.getChildCount() == 0) {
-                    return;
-                }
-                //一下代码是设置padding,实现第一个itemview和最后一个能够居中
-                View first = viewGroup.getChildAt(0);
-                int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                first.measure(w, h);
-                int first_width = first.getMeasuredWidth();
-                View last = viewGroup.getChildAt(viewGroup.getChildCount() - 1);
-                last.measure(w, h);
-                int last_width = last.getMeasuredWidth();
-                if (gravity == Gravity.CENTER) {
-                    paddingLeft = getWidth() / 2 - first_width / 2;
-                    paddingRight = getWidth() / 2 - last_width / 2;
-                } else if (gravity == Gravity.LEFT) {
-                    paddingLeft = 0;
-                    paddingRight = 0;
-                }
-                setPadding(paddingLeft, getPaddingTop(), paddingRight, getPaddingBottom());
-                //设置默认位置
-                setCurrentIndex(currentIndex);
-            }
-        });
     }
 
     /**
@@ -310,7 +341,7 @@ public class AutoCenterHorizontalScrollView extends HorizontalScrollView {
                 nowScrollLeft = -1;
                 int index = getCurrentIndex();
                 if (offset_target != offset_current) {
-                    QDLogger.d(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
+                    QDLogger.println(tag, "offset_target=" + offset_target + ",offset_current=" + offset_current);
                     smoothScrollTo(offset_target, 0);
                 }
                 if (adapter != null && adapter.getCount() > 0 && currentIndex < adapter.getCount()) {

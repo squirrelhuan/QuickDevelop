@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/quick_actionbar_common"
+    android:padding="@dimen/dp_3">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:layout_marginRight="@dimen/dp_110"
+        android:orientation="horizontal">
+
+        <cn.demomaster.qdrouter_library.view.ImageTextView
+            android:id="@+id/it_actionbar_back"
+            style="@style/quick_actionbar_common_weight"
+            android:layout_width="@dimen/activity_actionbar_button_width"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_6"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
+            android:gravity="center_vertical"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <cn.demomaster.qdrouter_library.view.ImageTextView
+            android:id="@+id/it_actionbar_title"
+            style="@style/quick_actionbar_common_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_6"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_55"
+            android:visibility="gone"
+            android:text="http://www.baidu.com"/>
+
+        <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:qd_backgroundColor="@color/transparent_dark_44"
+            app:qd_borderColor="@color/transparent_dark_44"
+            android:textColor="@color/white"
+            android:layout_gravity="right|center_vertical"
+            android:visibility="gone"
+            android:text="跳转"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_menu_right"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_gravity="right|center"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/applet_menu_bg"
+        android:orientation="horizontal">
+
+        <cn.demomaster.qdrouter_library.view.ImageTextView
+            android:id="@+id/it_actionbar_menu"
+            style="@style/quick_actionbar_common_weight"
+            android:layout_width="@dimen/activity_actionbar_button_width"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/dp_6"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
+            android:gravity="center_vertical"
+            android:rotation="90"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <View
+            android:id="@+id/view_splitor"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_light_55"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5" />
+
+        <cn.demomaster.qdrouter_library.view.ImageTextView
+            android:id="@+id/it_actionbar_close"
+            style="@style/quick_actionbar_common_weight"
+            android:layout_width="@dimen/activity_actionbar_button_width"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/dp_6"
+            app:quick_textSize="@dimen/quickdev_title_text_size"
+            android:gravity="center_vertical"
+            app:srcCompat="@mipmap/ic_close_circle" />
+    </LinearLayout>
+
+</FrameLayout>

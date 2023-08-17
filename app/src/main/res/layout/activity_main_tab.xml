@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <!--
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.activity.sample.TabActivity"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--<cn.demomaster.huan.quickdeveloplibrary.view.tabmenu.TabMenuLayout
+            android:id="@+id/tabs2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
+            <cn.demomaster.huan.quickdeveloplibrary.widget.ScrollableTabView
+                android:id="@+id/tabs2"
+                android:layout_width="wrap_content"
+                android:background="@color/transparent_light_cc"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
+    <!--    <androidx.viewpager.widget.ViewPager-->
+    <!--        android:id="@+id/view_pager"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/fab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom|end"-->
+    <!--        android:layout_marginEnd="@dimen/fab_margin"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

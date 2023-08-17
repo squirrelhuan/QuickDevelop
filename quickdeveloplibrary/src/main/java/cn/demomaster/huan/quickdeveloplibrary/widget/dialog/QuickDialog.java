@@ -1,16 +1,17 @@
 package cn.demomaster.huan.quickdeveloplibrary.widget.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
+import android.os.Build;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,16 +22,11 @@ import androidx.appcompat.app.AppCompatDialog;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.widget.base.Gravity;
-import cn.demomaster.huan.quickdeveloplibrary.widget.layout.VisibleLayout;
-import cn.demomaster.qdrouter_library.quickview.ViewInfo;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -47,18 +43,20 @@ public class QuickDialog extends AppCompatDialog {
     private boolean isFullScreen = false;
     private int margin = 0;//当isFullScreen=true时生效
     private int contentViewLayoutID = Resources.ID_NULL;
+    private Context mContext;
 
     private int animationStyleID = R.style.qd_dialog_animation_center_scale;
     public Map<Integer,ActionButton> bindViewsMap;
 
     public QuickDialog(Context context) {
         super(context);
+        mContext = context;
     }
 
     View contentLayout;
-
     public QuickDialog(Context context, Builder builder) {
         super(context);
+        mContext = context;
         //this.builder = builder;
         width = builder.width;
         contentLayout = builder.contentView;
@@ -144,8 +142,27 @@ public class QuickDialog extends AppCompatDialog {
         super.setCanceledOnTouchOutside(cancel);
     }
 
+    @Override
+    public void show() {
+        // 注意 这里不要使用 getContext()
+        if (mContext instanceof Activity) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (((Activity) mContext).isDestroyed()) {
+                    return;
+                }
+            }
+            if (((Activity) mContext).isFinishing()) {
+                return;
+            }
+        } else if (mContext instanceof ContextThemeWrapper){
 
-   /* @Override
+        }else {
+            return;
+        }
+        super.show();
+    }
+
+    /* @Override
     public boolean isHasPadding() {
         return true;
     }*/
@@ -158,7 +175,12 @@ public class QuickDialog extends AppCompatDialog {
         radio, checkbox, text, editor
     }
 
-    public static class Builder implements Serializable {
+    public interface QuickDialogInterface<T> extends Serializable{
+
+        T setContentView(int layoutResID);
+    }
+
+    public static class Builder<T> implements Serializable {
         public Context context;
         public int width = ViewGroup.LayoutParams.MATCH_PARENT;
         public boolean isFullScreen = false;
@@ -189,11 +211,14 @@ public class QuickDialog extends AppCompatDialog {
             this.contentView = contentView;
             return this;
         }
-
         public Builder setContentView(int layoutResID) {
             this.layoutResID = layoutResID;
             return this;
         }
+        /*public <T extends Builder> T setContentView(int layoutResID) {
+            this.layoutResID = layoutResID;
+            return (T) this;
+        }*/
 
         public Builder setAnimationStyleID(int animationStyleID) {
             this.animationStyleID = animationStyleID;
@@ -214,6 +239,8 @@ public class QuickDialog extends AppCompatDialog {
             this.margin = margin;
             return this;
         }
+
+
         @IntDef({VISIBLE, INVISIBLE, GONE})
         @Retention(RetentionPolicy.SOURCE)
         public @interface Visibility {}

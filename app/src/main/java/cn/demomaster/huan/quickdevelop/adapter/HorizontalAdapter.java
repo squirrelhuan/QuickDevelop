@@ -17,7 +17,7 @@ import cn.demomaster.huan.quickdeveloplibrary.widget.AutoCenterHorizontalScrollV
 /**
  * Created by Squirrel桓 on 2018/12/15.
  */
-public class HorizontalAdapter implements AutoCenterHorizontalScrollView.HAdapter {
+public class HorizontalAdapter extends AutoCenterHorizontalScrollView.HAdapter {
     List<String> names = new ArrayList<>();
     private Context context;
 
@@ -38,9 +38,9 @@ public class HorizontalAdapter implements AutoCenterHorizontalScrollView.HAdapte
 
     @Override
     public RecyclerView.ViewHolder getItemView(int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_warp2, null, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_center_horizontal, null, false);
         HViewHolder hViewHolder = new HViewHolder(v);
-        hViewHolder.textView.setBackgroundColor(Color.BLACK);
+        hViewHolder.textView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_66));
         hViewHolder.textView.setText(names.get(i));
         return hViewHolder;
     }

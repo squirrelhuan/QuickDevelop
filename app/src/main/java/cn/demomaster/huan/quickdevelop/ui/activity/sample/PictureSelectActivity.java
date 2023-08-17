@@ -1,8 +1,10 @@
 package cn.demomaster.huan.quickdevelop.ui.activity.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.util.ArrayList;
@@ -17,61 +19,48 @@ import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.model.UrlType
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.PictureAdapter;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.view.SimplePictureGallery;
 
-@ActivityPager(name = "图片选择器",preViewClass = TextView.class,resType = ResType.Custome)
+@ActivityPager(name = "图片选择器",preViewClass = TextView.class,resType = ResType.Resource,iconRes = R.drawable.ic_gallery_selector)
 public class PictureSelectActivity extends BaseActivity {
 
     private GridLayoutManager mLayoutManager;
     private PictureAdapter mAdapter;
     private List<Image> imageList=new ArrayList<>();
+    SimplePictureGallery simplePictureGallery,recyclerView2,recyclerView3,recyclerView4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_select);
 
-        SimplePictureGallery recyclerView = findViewById(R.id.ga_picture);
-        recyclerView.setMaxCount(13);
-        recyclerView.setSpanCount(3);
-        recyclerView.setCanPreview(true);
-        recyclerView.setItemMargin(20);
-        recyclerView.setAddButtonPadding(100);
-        recyclerView.getImages();
-        SimplePictureGallery recyclerView2 = findViewById(R.id.ga_picture2);
+        simplePictureGallery = findViewById(R.id.ga_picture);
+        simplePictureGallery.setMaxCount(13);
+        simplePictureGallery.setSpanCount(3);
+        simplePictureGallery.setCanPreview(true);
+        simplePictureGallery.setItemMargin(20);
+        recyclerView2 = findViewById(R.id.ga_picture2);
         recyclerView2.setSpanCount(5);
         recyclerView2.setCanPreview(true);
-        recyclerView2.setShowAdd(false);
-        Image image = new Image("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547548027518&di=ca4d2461d36c0bdb016ef8542f8f55a5&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201812%2F10%2F231855basa2bkay3yv3jsg.jpg",UrlType.url);
-        recyclerView2.addImage(image);
+        ArrayList<String> imgs = new ArrayList<>();
+        imgs.add("https://img2.baidu.com/it/u=345670089,3951600800&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500");
+        imgs.add("https://img1.baidu.com/it/u=1954533644,1324198317&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500");
+        imgs.add("https://lmg.jj20.com/up/allimg/tp05/1Z9291S4041415-0-lp.jpg");
+        recyclerView2.setImgData(imgs);
+        recyclerView2.setShowAddButton(false);
 
-        Image image2 = new Image("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1358989200,1538679988&fm=11&gp=0.jpg",UrlType.url);
-        recyclerView2.addImage(image2);
-
-        Image image3 = new Image("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547549924091&di=34666e5915f8c54aea815b1d77d17b2d&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201105%2F31%2F20110531094303_d5JZB.jpg",UrlType.url);
-        recyclerView2.addImage(image3);
-
-        recyclerView2.getImages();
-
-
-        SimplePictureGallery recyclerView3 = findViewById(R.id.ga_picture3);
+        recyclerView3 = findViewById(R.id.ga_picture3);
         recyclerView3.setMaxCount(13);
         recyclerView3.setSpanCount(3);
         recyclerView3.setCanPreview(true);
         recyclerView3.setAutoWidth(true);
-        recyclerView3.getImages();
-        SimplePictureGallery recyclerView4 = findViewById(R.id.ga_picture4);
+        recyclerView4 = findViewById(R.id.ga_picture4);
         recyclerView4.setSpanCount(5);
         recyclerView4.setCanPreview(true);
-        recyclerView4.setShowAdd(false);
-        Image image41 = new Image("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547548027518&di=ca4d2461d36c0bdb016ef8542f8f55a5&imgtype=0&src=http%3A%2F%2Fattach.bbs.miui.com%2Fforum%2F201812%2F10%2F231855basa2bkay3yv3jsg.jpg",UrlType.url);
-        recyclerView4.addImage(image41);
-
-        Image image42 = new Image("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1358989200,1538679988&fm=11&gp=0.jpg",UrlType.url);
-        recyclerView4.addImage(image42);
-
-        Image image43 = new Image("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547549924091&di=34666e5915f8c54aea815b1d77d17b2d&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201105%2F31%2F20110531094303_d5JZB.jpg",UrlType.url);
-        recyclerView4.addImage(image43);
+        recyclerView4.setShowAddButton(true);
+        ArrayList<String> imgs4 = new ArrayList<>();
+        imgs4.add("https://img1.baidu.com/it/u=7456317,4282812646&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500");
+        imgs4.add("https://img2.baidu.com/it/u=1792249350,650626052&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=675");
+        imgs4.add("https://img0.baidu.com/it/u=3182669744,3015526205&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500");
+        recyclerView4.setImgData(imgs4);
         recyclerView4.setAutoWidth(true);
-
-        recyclerView4.getImages();
 
         /*mLayoutManager = new GridLayoutManager(mContext, 4);
         mAdapter = new PictureAdapter(mContext, imageList, true,true);
@@ -99,5 +88,14 @@ public class PictureSelectActivity extends BaseActivity {
         });
         recyclerView.setAdapter(mAdapter);*/
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        simplePictureGallery.onResult(requestCode, resultCode, data);
+//        recyclerView2.onResult(requestCode, resultCode, data);
+//        recyclerView3.onResult(requestCode, resultCode, data);
+//        recyclerView4.onResult(requestCode, resultCode, data);
     }
 }

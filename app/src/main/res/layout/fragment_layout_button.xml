@@ -16,46 +16,19 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDTextViewPoint
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@drawable/btn_green_small"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="5dp"
-                android:text="消息"
-                android:textColor="@color/white"
-                app:pointBackgroundColor="@color/red"
-                app:pointGravity="rightTop"
-                app:pointMarginRight="0dp"
-                app:pointMarginTop="0dp"
-                app:pointPaddingBottom="5dp"
-                app:pointPaddingLeft="5dp"
-                app:pointPaddingRight="5dp"
-                app:pointPaddingTop="5dp"
-                app:pointRadius="5dp"
-                app:pointText="12"
-                app:pointTextColor="@color/white"
-                app:pointTextSize="12sp"
-                app:pointWidth="18dp"
-                app:showPoint="true" />
-
             <Button
                 android:id="@+id/btn_play1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="普通 button" />
+                android:text="系统按钮" />
 
             <cn.demomaster.huan.quickdeveloplibrary.widget.button.QDButton
                 android:id="@+id/btn_play2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="普通 QdButtun"
+                android:text="默认 QDButtun"
                 android:textColor="@color/qd_button_textcolor"
                 app:qd_btn_internal_width="20dp"
                 app:qd_isRadiusAdjustBounds="false" />
@@ -72,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="边框颜色"
+                android:text="带边框颜色的按钮"
                 android:textColor="@color/red"
                 app:qd_borderColor="@color/red" />
 
@@ -80,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="边框粗细"
+                android:text="带边框粗细的按钮"
                 app:qd_borderColor="@color/colorPrimary"
                 app:qd_borderWidth="5dp" />
 
@@ -88,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="指定圆角"
+                android:text="圆角按钮"
                 app:qd_borderColor="@color/colorPrimary"
                 app:qd_radius="20dp" />
 
@@ -141,7 +114,7 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
-                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                <cn.demomaster.huan.quickdeveloplibrary.widget.radiobutton.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -157,7 +130,7 @@
                     app:qd_drawable_height="@dimen/dp_30"
                     android:drawableBottom="@mipmap/ic_launcher" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                <cn.demomaster.huan.quickdeveloplibrary.widget.radiobutton.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,7 +144,7 @@
                     app:qd_drawable_width="@dimen/dp_30"
                     app:qd_drawable_height="@dimen/dp_30" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                <cn.demomaster.huan.quickdeveloplibrary.widget.radiobutton.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -181,11 +154,11 @@
                     android:gravity="center_vertical|right"
                     android:text="左侧"
                     android:textSize="@dimen/sp_8"
-                    app:qd_drawable_width="@dimen/dp_40"
+                    app:qd_drawable_width="@dimen/dp_80"
                     app:qd_drawable_height="@dimen/dp_40"
                     android:drawableLeft="@mipmap/ic_launcher" />
 
-                <cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton
+                <cn.demomaster.huan.quickdeveloplibrary.widget.radiobutton.MyRadioButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

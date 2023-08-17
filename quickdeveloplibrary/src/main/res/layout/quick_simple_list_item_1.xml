@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_0"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall">
+    <!--android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"-->
+
+    <cn.demomaster.huan.quickdeveloplibrary.widget.QuickImageView
+        android:id="@+id/iv_picture"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="wrap_content"
+        app:quick_square="true"
+        android:layout_margin="@dimen/dp_5"/>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+</LinearLayout>
+

@@ -83,7 +83,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         QDFileUtil.writeFileSdcardFile(getCrashCacheFile(), tipMessage, false);
         if (mCrashDealType != null) {
             if (mCrashDealType == CrashDealType.savelog || mCrashDealType == CrashDealType.shutdown) {
-                QDLogger.e("触发异常交给系统处理",ex);
+                QDLogger.e("异常由系统处理",ex);
                 mHandler.postDelayed(() -> defaultUncaughtExceptionHandler.uncaughtException(thread, ex), 2000);
             }else if(mCrashDealType == CrashDealType.showError){
                 QDLogger.e("显示错误详情", ex);

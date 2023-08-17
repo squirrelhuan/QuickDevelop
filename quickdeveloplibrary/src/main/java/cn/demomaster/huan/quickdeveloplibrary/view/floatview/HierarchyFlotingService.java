@@ -1,17 +1,15 @@
 package cn.demomaster.huan.quickdeveloplibrary.view.floatview;
 
-import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -32,24 +29,21 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
+import cn.demomaster.huan.quickdeveloplibrary.event.listener.OnSingleClickListener;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.huan.quickdeveloplibrary.service.AccessibilityHelper;
 import cn.demomaster.huan.quickdeveloplibrary.service.QDAccessibilityService;
 import cn.demomaster.huan.quickdeveloplibrary.util.ClipboardUtil;
 import cn.demomaster.huan.quickdeveloplibrary.util.DisplayUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDBitmapUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.QDFileUtil;
-import cn.demomaster.huan.quickdeveloplibrary.util.ScreenShotUitl;
 import cn.demomaster.huan.quickdeveloplibrary.util.system.QDAppInfoUtil;
+import cn.demomaster.huan.quickdeveloplibrary.view.floatview.hierarchy.HierarchyView;
 import cn.demomaster.qdlogger_library.QDLogger;
-import cn.demomaster.qdrouter_library.manager.QDActivityManager;
 import cn.demomaster.treeviewlibrary.Node;
 
 /**
@@ -96,14 +90,17 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             }
         });
         
-        hierarchyView.setOnNodeInfoClickListener(nodeInfo -> {
-            ViewGroup.LayoutParams layoutParams = dialogView.getLayoutParams();
-            layoutParams.width = DisplayUtil.getScreenWidth(context);
-            layoutParams.height = DisplayUtil.getScreenHeight(context);
-            dialogView.setLayoutParams(layoutParams);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                showNodeInfo(nodeInfo);
-            }
+        hierarchyView.setOnNodeInfoClickListener(new HierarchyView.OnNodeInfoClickListener() {
+                                                     @Override
+                                                     public void onClick(RectF rect, HierarchyView.ViewNodeInfo nodeInfo) {
+                                                         ViewGroup.LayoutParams layoutParams = dialogView.getLayoutParams();
+                                                         layoutParams.width = DisplayUtil.getScreenWidth(context);
+                                                         layoutParams.height = DisplayUtil.getScreenHeight(context);
+                                                         dialogView.setLayoutParams(layoutParams);
+                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                                             showNodeInfo(nodeInfo);
+                                                         }
+                                                     }
             
             /*View view = QDActivityManager.getInstance().getCurrentActivity().getWindow().getDecorView().getRootView();
             Bitmap bitmap = ScreenShotUitl.getCacheBitmapFromView(view);
@@ -113,7 +110,7 @@ public class HierarchyFlotingService extends QDFloatingService2 {
             Bitmap bitmap4 = QDBitmapUtil.mergeBitmap(bitmap2, bitmap3);
             File dir = new File(QDFileUtil.getDiskCacheDir(context), "img/abc.jpg");
             QDFileUtil.saveBitmap(bitmap4, dir.getAbsolutePath());*/
-        });
+                });
 
         dialogView = LayoutInflater.from(context).inflate(cn.demomaster.huan.quickdeveloplibrary.R.layout.layout_floating_hierachy, null);
         dialogView.setBackgroundColor(context.getResources().getColor(R.color.transparent_dark_55));
@@ -210,9 +207,8 @@ public class HierarchyFlotingService extends QDFloatingService2 {
         this.windowManager = windowManager;
         windowManager.addView(linearLayout, layoutParams);
         linearLayout.setOnTouchListener(new QDFloatingService.FloatingOnTouchListener(linearLayout));
-        QDLogger.i("HierarchyFlotingService");
+        QDLogger.println("HierarchyFlotingService");
     }
-
 
     public Point getPosition() {
         layoutParams = (WindowManager.LayoutParams) linearLayout.getLayoutParams();
@@ -295,32 +291,24 @@ public class HierarchyFlotingService extends QDFloatingService2 {
 
         int i = 0;
         for (Map.Entry entry : stringMap.entrySet()) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                    1.0f
-            );
-            LinearLayout row = new LinearLayout(getApplicationContext());
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            TextView textView = new TextView(getApplicationContext());
-            textView.setPadding(20, 20, 20, 20);
-            textView.setText(entry.getKey() + "");
-            textView.setTextColor(Color.BLACK);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            row.addView(textView);
-            TextView textView2 = new TextView(getApplicationContext());
-            textView2.setPadding(20, 20, 20, 20);
-            textView2.setText(entry.getValue() + "");
-            textView2.setTextColor(Color.BLACK);
-            textView2.setGravity(Gravity.LEFT);
-            textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) textView2.getLayoutParams();
+            View row = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_floating_hierachy_item, null);
+            TextView textView = row.findViewById(R.id.tv_name);//new TextView(getApplicationContext());
+            TextView tv_content = row.findViewById(R.id.tv_content);//new TextView(getApplicationContext());
+            Button btn_copy = row.findViewById(R.id.btn_copy);
+            btn_copy.setOnClickListener(new OnSingleClickListener() {
+                @Override
+                public void onClickEvent(View v) {
+                    String str = ((TextView)((ViewGroup)v.getParent()).findViewById(R.id.tv_content)).getText().toString();
+                    ClipboardUtil.setClip(getApplicationContext(), str);
+                    QdToast.show(getApplicationContext(), "copy success", 1000);
+                }
+            });
 
-            //layoutParams.weight = 1f;
-            //textView2.setLayoutParams(layoutParams);
-            row.addView(textView2, layoutParams);
-            /*if (i % 2 == 0) {
+            textView.setText(entry.getKey() + "");
+            tv_content.setText(entry.getValue() + "");
+            if (i % 2 == 0) {
                 row.setBackgroundColor(getResources().getColor(R.color.lightGray));
-            }*/
+            }
             //row.addView(linearLayout,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             tableLayout.addView(row);
             i++;
@@ -361,11 +349,15 @@ public class HierarchyFlotingService extends QDFloatingService2 {
      * @param nodeInfo 父节点实例
      */
     private void addTreeData(int index, String pid, AccessibilityNodeInfo nodeInfo) {
-        String id = pid + "_" + index;
-        mDatas.add(new Node(id, pid, "" + nodeInfo.getClassName()));
-        int childCount = nodeInfo.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            addTreeData(i, id, nodeInfo.getChild(i));
+        if(nodeInfo!=null) {
+            String id = pid + "_" + index;
+            if(mDatas!=null) {
+                mDatas.add(new Node(id, pid, "" + nodeInfo.getClassName()));
+                int childCount = nodeInfo.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    addTreeData(i, id, nodeInfo.getChild(i));
+                }
+            }
         }
     }
 

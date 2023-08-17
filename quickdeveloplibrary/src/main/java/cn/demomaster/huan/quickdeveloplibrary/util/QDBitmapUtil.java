@@ -29,6 +29,7 @@ import android.view.View;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,11 +50,14 @@ public class QDBitmapUtil {
      * @return 新的bitmap
      */
     public static Bitmap scaleBitmap(Bitmap bitmap, float scaleX, float scaleY) {
-        if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
+        if (bitmap == null) {
             return null;
         }
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
         Matrix matrix = new Matrix();
         matrix.preScale(scaleX, scaleY);
         Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
@@ -71,7 +75,7 @@ public class QDBitmapUtil {
      * @return new Bitmap
      */
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-        if (bitmap == null || bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
+        if (bitmap == null || bitmap.getWidth() <= 0 || bitmap.getHeight() <= 0|| newWidth <=0 || newHeight <=0) {
             return null;
         }
         int height = bitmap.getHeight();
@@ -306,6 +310,35 @@ public class QDBitmapUtil {
         }
         // 在低版本中用一行的字节x高度
         return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
+    }
+
+    public static Bitmap Bytes2Bitmap(byte[] bytes) {
+        //将byte[]数组转换为BItMap对象
+        Bitmap bitmap =BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        return bitmap;
+    }
+    public static byte[] Bitmap2Bytes(Bitmap bitmap) {
+        //photo对象是一个Bitmap对象
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//创建对应的流对象
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);//将流对象与Bitmap对象进行关联。
+        return byteArrayOutputStream.toByteArray();//使用流对象，将Bitmap对象转换为byte[]数组
+    }
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public static String imageToBase64(String path) {

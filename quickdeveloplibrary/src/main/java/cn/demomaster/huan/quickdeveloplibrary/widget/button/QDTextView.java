@@ -68,7 +68,7 @@ public class QDTextView extends AppCompatTextView {
         QMUIViewHelper.setBackgroundKeepingPadding(this, drawable);
         QDViewUtil.handleCustomAttrs(this,attrs);
     }
-
+    
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,14 +88,14 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder> {
             itemView.setOnClickListener(v -> {
                 int p = getAdapterPosition();
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v,  p);
+                    onItemClickListener.onItemClick(null,v,  p,v.getId());
                 }
             });
         }
     }
 
-    TabMenuAdapter.OnItemClickListener onItemClickListener;
-    public void setOnItemClickListener(TabMenuAdapter.OnItemClickListener onItemClickListener) {
+    AdapterView.OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 }

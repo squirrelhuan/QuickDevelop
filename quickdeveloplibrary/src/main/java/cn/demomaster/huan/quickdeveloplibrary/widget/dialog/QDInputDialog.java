@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,7 +36,8 @@ public class QDInputDialog extends AppCompatDialog {
     private String hint;
     private Context context;
     private String title;
-    private String message;
+    private String message, checkText;
+    private boolean isChecked;
     private int inputType = InputType.TYPE_TEXT_VARIATION_NORMAL;
     private int icon;
     private ShowType showType = ShowType.normal;
@@ -72,6 +74,8 @@ public class QDInputDialog extends AppCompatDialog {
         this.context = builder.context;
         title = builder.title;
         message = builder.message;
+        checkText = builder.checkText;
+        isChecked = builder.isChecked;
         inputType = builder.inputType;
         icon = builder.icon;
         showType = builder.showType;
@@ -169,7 +173,12 @@ public class QDInputDialog extends AppCompatDialog {
             bodyView.setGravity(gravity_body);
             bodyView.setTag(gravity_body);
             addBodyTextView(bodyView, message, text_color_body, text_size_body);
+            if (!TextUtils.isEmpty(checkText)) {
+                bodyView.setOrientation(LinearLayout.VERTICAL);
+                addBodyCheckBox(bodyView, checkText, text_color_body, text_size_body);
+            }
         }
+
         int actionPadding = actionButtonPadding;//DisplayUtil.dip2px(getContext(), 10);
         if (footView != null) {
             contentView.addView(footView);
@@ -207,7 +216,7 @@ public class QDInputDialog extends AppCompatDialog {
                 }
                 button.setOnClickListener(view -> {
                     if (actionButton.getOnClickListener() != null) {
-                        actionButton.getOnClickListener().onClick(QDInputDialog.this,view, TextUtils.isEmpty(textView.getText()) ? null : textView.getText().toString());
+                        actionButton.getOnClickListener().onClick(QDInputDialog.this, view, TextUtils.isEmpty(editText.getText()) ? null : editText.getText().toString());
                     } else {
                         dismiss();
                     }
@@ -234,37 +243,75 @@ public class QDInputDialog extends AppCompatDialog {
         addEditView(viewGroup, title, color, textSize);
     }
 
-    EditText textView;
+    private void addBodyCheckBox(LinearLayout viewGroup, String title, int color, int textSize) {
+        addCheckboxView(viewGroup, title, color, textSize);
+    }
+
+    EditText editText;
 
     public EditText getEditView() {
-        return textView;
+        return editText;
     }
 
     private void addEditView(LinearLayout viewGroup, String title, int color, int textSize) {
-        if (title != null) {
-            textView = new EditText(getContext());
-            //int i = textView.getInputType();
-            textView.setText(title);
-            textView.setHint(hint);
-            textView.setTextColor(color);
-            textView.setTextSize(textSize);
-            //textView.setPadding(padding, padding, padding, padding);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            switch ((int) viewGroup.getTag()) {
-                case Gravity.LEFT:
-                case Gravity.RIGHT:
-                    layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    break;
-                case Gravity.CENTER:
-                    layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-                    break;
-            }
-            textView.setLayoutParams(layoutParams);
-            //
-            textView.setGravity((int) viewGroup.getTag());
-            viewGroup.addView(textView);
-            textView.setInputType(inputType);
+        editText = new EditText(getContext());
+        //int i = textView.getInputType();
+        editText.setText(title);
+        editText.setHint(hint);
+        editText.setTextColor(color);
+        editText.setTextSize(textSize);
+        //textView.setPadding(padding, padding, padding, padding);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        switch ((int) viewGroup.getTag()) {
+            case Gravity.LEFT:
+            case Gravity.RIGHT:
+                layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                break;
+            case Gravity.CENTER:
+                layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+                break;
         }
+        editText.setLayoutParams(layoutParams);
+        editText.setGravity((int) viewGroup.getTag());
+        ////设置密文的时候，需要同时设置type_class_text 才能生效
+        //etRight.setInputType(isPassword ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD : InputType.TYPE_CLASS_TEXT);
+        int inputT2 = inputType;
+        if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+            inputT2 = InputType.TYPE_CLASS_TEXT | inputType;
+        } else if (inputType == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+            inputT2 = InputType.TYPE_CLASS_NUMBER | inputType;
+        }
+        editText.setInputType(inputT2);
+        viewGroup.addView(editText);
+    }
+
+    CheckBox checkBox;
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    private void addCheckboxView(LinearLayout viewGroup, String title, int color, int textSize) {
+        checkBox = new CheckBox(getContext());
+        //int i = textView.getInputType();
+        checkBox.setText(title);
+        checkBox.setTextColor(color);
+        checkBox.setTextSize(textSize);
+        checkBox.setChecked(isChecked);
+        //textView.setPadding(padding, padding, padding, padding);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        switch ((int) viewGroup.getTag()) {
+            case Gravity.LEFT:
+            case Gravity.RIGHT:
+                layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                break;
+            case Gravity.CENTER:
+                layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+                break;
+        }
+        checkBox.setLayoutParams(layoutParams);
+        //checkBox.setGravity((int) viewGroup.getTag());
+        viewGroup.addView(checkBox);
     }
 
     private void addTextView(LinearLayout viewGroup, String title, int color, int textSize) {
@@ -285,7 +332,6 @@ public class QDInputDialog extends AppCompatDialog {
                     break;
             }
             textView.setLayoutParams(layoutParams);
-            //
             textView.setGravity((int) viewGroup.getTag());
             viewGroup.addView(textView);
         }
@@ -305,6 +351,8 @@ public class QDInputDialog extends AppCompatDialog {
         private Context context;
         private String title;
         private String message;
+        private String checkText;
+        private boolean isChecked;
         private int inputType = InputType.TYPE_TEXT_VARIATION_NORMAL;
         private int icon;
         private ShowType showType = ShowType.normal;
@@ -349,6 +397,16 @@ public class QDInputDialog extends AppCompatDialog {
 
         public Builder setMessage(String message) {
             this.message = message;
+            return this;
+        }
+
+        public Builder setChecked(boolean checked) {
+            isChecked = checked;
+            return this;
+        }
+
+        public Builder setCheckText(String checkText) {
+            this.checkText = checkText;
             return this;
         }
 
@@ -521,7 +579,8 @@ public class QDInputDialog extends AppCompatDialog {
         }
 
         /**
-         *  设置不对可能会失效，有些参数需要组合在一起才生效。https://blog.csdn.net/atm008/article/details/51135069
+         * 设置不对可能会失效，有些参数需要组合在一起才生效。https://blog.csdn.net/atm008/article/details/51135069
+         *
          * @param typeNumberFlagSigned
          * @return
          */
@@ -529,7 +588,7 @@ public class QDInputDialog extends AppCompatDialog {
             this.inputType = typeNumberFlagSigned;
             return this;
         }
-        
+
         public Builder setHint(String hint) {
             this.hint = hint;
             return this;

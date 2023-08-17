@@ -62,7 +62,7 @@ public class Application extends QDApplication {
         DoraemonKit.install(this);
         //初始化缓存目录
         //QuickCache.init(this, Environment.getExternalStorageDirectory().getAbsolutePath()+"/qdlogger/cache/");
-        QuickCache.init(this, QDFileUtil.getDiskCacheDir(getInstance()) +"/cache/");
+        QuickCache.getInstance().init(this, QDFileUtil.getDiskCacheDir(getInstance()) +"/cache/");
     }
 
     @Override

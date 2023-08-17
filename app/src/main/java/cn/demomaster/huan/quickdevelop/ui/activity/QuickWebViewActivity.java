@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import java.io.File;
 
 import cn.demomaster.huan.quickdevelop.R;
+import cn.demomaster.huan.quickdeveloplibrary.helper.toast.QdToast;
 import cn.demomaster.qdrouter_library.base.activity.QuickActivity;
 
 public class QuickWebViewActivity extends QuickActivity {
@@ -21,6 +22,7 @@ public class QuickWebViewActivity extends QuickActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_web_view);
         webview = findViewById(R.id.webview);
+        QdToast.showToast(mContext,"打开url");
         handleIntent();
     }
 

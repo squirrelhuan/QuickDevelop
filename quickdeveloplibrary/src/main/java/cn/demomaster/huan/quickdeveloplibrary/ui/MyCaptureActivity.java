@@ -107,7 +107,7 @@ public class MyCaptureActivity extends QDActivity {
             bitmap = extras.getParcelable("data");
             if (bitmap == null) {
                 Uri uri = data.getData();
-                String filePath = QDFileUtil.getFilePathByUri(this, uri);
+                String filePath = QDFileUtil.getRealPathFromURI(this, uri);
                 bitmap = QDFileUtil.getBitmapFromPath(filePath);
             }
             if (bitmap == null) {
@@ -117,7 +117,7 @@ public class MyCaptureActivity extends QDActivity {
             result = CodeCreator.readQRcode(this, bitmap);
         } else {
             if (!TextUtils.isEmpty(path)) {
-                String filePath = QDFileUtil.getFilePathByUri(this, Uri.parse(path));
+                String filePath = QDFileUtil.getRealPathFromURI(this, Uri.parse(path));
                 bitmap = QDFileUtil.getBitmapFromPath(filePath);
                 result = CodeCreator.readQRcode(this, bitmap);
             }

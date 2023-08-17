@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
 import cn.demomaster.huan.quickdeveloplibrary.helper.toast.compat.ToastCompat;
+import cn.demomaster.qdlogger_library.QDLogger;
 
 import static cn.demomaster.huan.quickdeveloplibrary.helper.QdThreadHelper.runOnUiThread;
 
@@ -73,7 +74,8 @@ public class QdToast {
                 customToast.show();
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            QDLogger.println(e);
             //可能在子线程调了这个方法
         }
     }

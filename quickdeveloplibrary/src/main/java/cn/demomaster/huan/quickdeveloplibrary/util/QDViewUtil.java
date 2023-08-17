@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import cn.demomaster.huan.quickdeveloplibrary.R;
-import cn.demomaster.huan.quickdeveloplibrary.widget.MyRadioButton;
 
 public class QDViewUtil {
     public static Activity getActivityFromView(View view) {
@@ -97,11 +97,12 @@ public class QDViewUtil {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attrRes, typedValue, true);
         return TypedValue.complexToDimensionPixelSize(typedValue.data, QMUIDisplayHelper.getDisplayMetrics(context));
-
     }
 
     public static void handleCustomAttrs(TextView textView, AttributeSet attrs) {
         int drawableHeight = -1, drawableWidth = -1, drawableMargin;
+        int left_drawableHeight = -1, left_drawableWidth = -1;
+        int right_drawableHeight = -1, right_drawableWidth = -1;
         Context context = textView.getContext();
         if (attrs == null) {
             return;
@@ -113,13 +114,46 @@ public class QDViewUtil {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDTextView);
             drawableWidth = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_qd_drawable_width, drawableWidth);
             drawableHeight = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_qd_drawable_height, drawableHeight);
+            left_drawableHeight = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_left_drawable_width, drawableWidth);
+            left_drawableWidth = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_left_drawable_height, drawableHeight);
+            right_drawableHeight = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_right_drawable_width, drawableWidth);
+            right_drawableWidth = typedArray.getDimensionPixelOffset(R.styleable.QDTextView_right_drawable_height, drawableHeight);
+
             typedArray.recycle();
             for (Drawable drawable : drawables) {
                 if (drawable != null) {
                     int w = drawableWidth;
                     int h = drawableHeight;
-                    if (w == -1||h == -1) {//若未指定大小则使用bitmap的自身大小
-                        Bitmap bitmap = QDBitmapUtil.getBitmapByDrawable(drawable);
+                    try {
+                        if (w == -1 || h == -1) {//若未指定大小则使用bitmap的自身大小
+                            Bitmap bitmap = QDBitmapUtil.getBitmapByDrawable(drawable);
+                            if (w == -1) {
+                                w = bitmap.getWidth();
+                            }
+                            if (h == -1) {
+                                h = bitmap.getHeight();
+                            }
+                        }
+                        drawable.setBounds(0, 0, w, h);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //Drawable[] drawables_new = new Drawable[]{drawables[0], drawables[1], drawables[2], drawables[3]};
+            for (int i = 0; i < drawables.length; i++) {
+                if (drawables[i] != null) {
+                    int w = left_drawableWidth;
+                    int h = left_drawableHeight;
+                    if (i == 0) {
+                        w = left_drawableWidth;
+                        h = left_drawableHeight;
+                    } else if (i == 2) {
+                        w = right_drawableWidth;
+                        h = right_drawableHeight;
+                    }
+                    if (w == -1 || h == -1) {//若未指定大小则使用bitmap的自身大小
+                        Bitmap bitmap = QDBitmapUtil.getBitmapByDrawable(drawables[i]);
                         if (w == -1) {
                             w = bitmap.getWidth();
                         }
@@ -127,10 +161,43 @@ public class QDViewUtil {
                             h = bitmap.getHeight();
                         }
                     }
-                    drawable.setBounds(0, 0, w, h);
+                    drawables[i].setBounds(0, 0, w, h);
                 }
+                //drawables_new[i] = drawables[i];
+                //textView.setCompoundDrawables(drawables1[0], drawables1[1], drawables1[2], drawables1[3]);//将改变了属性的drawable再重新设置回去
             }
             textView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);//将改变了属性的drawable再重新设置回去
         }
+
+        /*TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QDTextView);
+        //int textSize = typedArray.getDimensionPixelSize(android.R.styleable.QDTextView_android_textSize, DisplayUtil.px2sp(textView.getContext(),textView.getTextSize()));
+
+        int textSize = typedArray.getDimensionPixelSize(R.styleable.QDTextView_android_textSize, DisplayUtil.px2sp(textView.getContext(),textView.getTextSize()));
+        typedArray.recycle();
+        textView.setTextSize(textSize);*/
+
+    }
+
+    //通过资源名称(例如ic_launcher)获取对应的id
+    public int getId(Context context, String name) {
+        Resources res = context.getResources();
+//return res.getIdentifier(name,null,null);//带上地址 例如 包:type/name (org.anjoy.act:drawable/ic)
+        return res.getIdentifier(name, "drawable", context.getPackageName());//名称例如 ic
+    }
+
+    //通过对应id获取相应的资源名称
+    public static String getResourceNameById(Context context, int id) {
+        if (id == View.NO_ID) {
+            return "NO_ID";
+        }
+        Resources res = context.getResources();
+        String str = "un_find";
+        try {
+            str = res.getResourceEntryName(id);//得到的是 name
+//return res.getResourceName(id);//得到的是 包/type/name
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
     }
 }

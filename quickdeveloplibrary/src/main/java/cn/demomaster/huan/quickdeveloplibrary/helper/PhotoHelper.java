@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.demomaster.huan.quickdeveloplibrary.camera.idcard.CameraIDCardActivity;
 import cn.demomaster.huan.quickdeveloplibrary.helper.simplepicture.SimplePictureActivity;
@@ -25,6 +26,12 @@ import cn.demomaster.quickpermission_library.PermissionHelper;
 
 import static android.app.Activity.RESULT_OK;
 import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_CONTENT;
+import static cn.demomaster.huan.quickdeveloplibrary.util.QMUIDeviceHelper.isMIUI;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
 
 /**
  * 图片采集类
@@ -35,11 +42,35 @@ import static cn.demomaster.huan.quickdeveloplibrary.ui.MyCaptureActivity.CODED_
  */
 
 public class PhotoHelper implements OnReleaseListener {
+
     String authority;//FileProvider
+    private final WeakReference<Activity> activityWeakReference;
+    private WeakReference<Fragment> fragmentWeakReference;
+    ActivityResultLauncher activityResultLauncher;
+    ActivityResultCallback activityResultCallback = new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri result) {
+//                if(activityResultCallbackList.get(0)!=null){
+//                    activityResultCallbackList.get(0).onSuccess(null,"");
+//                    activityResultCallbackList.remove(0);
+//                }
+            onActivityResultImpForFragment(result);
+        }
+    };
+
+    public PhotoHelper(Activity context,Fragment fragment,String authority) {
+        this.activityWeakReference = new WeakReference<>(context);
+        this.authority = authority;
+        if(fragment!=null){
+            this.fragmentWeakReference = new WeakReference<>(fragment);
+            activityResultLauncher = fragment.registerForActivityResult(new ActivityResultContracts.GetContent(),activityResultCallback);
+        }
+    }
+
     @Override
     public void onRelease(Object self) {
-        if(self instanceof Activity) {
-            contextWeakReference.clear();
+        if (self instanceof Activity) {
+            activityWeakReference.clear();
             if (currentBuilder != null) {
                 currentBuilder.setOnTakePhotoResult(null);
                 currentBuilder.setOnSelectPictureResult(null);
@@ -49,7 +80,7 @@ public class PhotoHelper implements OnReleaseListener {
         }
     }
 
-    public enum RequestType {
+    public enum RequestPhotoActionType {
         takePhoto(0),//拍照
         scanQrcode(1),//扫描二维码
         photoCrop(2),//图片裁剪
@@ -59,14 +90,14 @@ public class PhotoHelper implements OnReleaseListener {
 
         private int value = 0;
 
-        RequestType(int value) {//必须是private的，否则编译错误
+        RequestPhotoActionType(int value) {//必须是private的，否则编译错误
             this.value = value;
         }
 
-        public static RequestType getEnum(int value) {
-            RequestType resultEnum = null;
-            RequestType[] enumArray = RequestType.values();
-            for (RequestType requestType : enumArray) {
+        public static RequestPhotoActionType getEnum(int value) {
+            RequestPhotoActionType resultEnum = null;
+            RequestPhotoActionType[] enumArray = RequestPhotoActionType.values();
+            for (RequestPhotoActionType requestType : enumArray) {
                 if (requestType.value() == value) {
                     resultEnum = requestType;
                     break;
@@ -80,15 +111,14 @@ public class PhotoHelper implements OnReleaseListener {
         }
     }
 
-    private final WeakReference<Activity> contextWeakReference;
-    public PhotoHelper(Activity context,String authority) {
-        this.contextWeakReference = new WeakReference<>(context);
-        this.authority = authority;
-    }
-
     public void scanQrcode(OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
-        builder.setRequestType(RequestType.scanQrcode);
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
+        builder.setRequestType(RequestPhotoActionType.scanQrcode);
         builder.onTakePhotoResult = onTakePhotoResult;
         takePhoto2(builder);
     }
@@ -100,9 +130,14 @@ public class PhotoHelper implements OnReleaseListener {
      * @param outUri            拍照保存的路径
      */
     public void takePhoto(Uri outUri, OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
         builder.setOutUri(outUri);
-        builder.setRequestType(RequestType.takePhoto);
+        builder.setRequestType(RequestPhotoActionType.takePhoto);
         builder.onTakePhotoResult = onTakePhotoResult;
         takePhoto2(builder);
     }
@@ -113,9 +148,14 @@ public class PhotoHelper implements OnReleaseListener {
      * @param onTakePhotoResult
      */
     public void takePhotoCrop(Uri outUri, OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
         builder.setOutUri(outUri);
-        builder.setRequestType(RequestType.takePhoto);
+        builder.setRequestType(RequestPhotoActionType.takePhoto);
         builder.onTakePhotoResult = new OnTakePhotoResult() {
             @Override
             public void onSuccess(Intent data, String path) {
@@ -139,7 +179,7 @@ public class PhotoHelper implements OnReleaseListener {
         if (builder == null) {
             return;
         }
-        builder.setRequestType(RequestType.photoCrop);
+        builder.setRequestType(RequestPhotoActionType.photoCrop);
         takePhoto2(builder);
     }
 
@@ -149,9 +189,14 @@ public class PhotoHelper implements OnReleaseListener {
      * @param onTakePhotoResult
      */
     public void selectPhotoFromGallery(OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
         builder.setOnTakePhotoResult(onTakePhotoResult);
-        builder.setRequestType(RequestType.selectFromGallery);
+        builder.setRequestType(RequestPhotoActionType.selectFromGallery);
         takePhoto2(builder);
     }
 
@@ -161,8 +206,13 @@ public class PhotoHelper implements OnReleaseListener {
      * @param onSelectPictureResult
      */
     public void selectPhotoFromMyGallery(OnSelectPictureResult onSelectPictureResult) {
-        Builder builder = new Builder(contextWeakReference.get());
-        builder.setRequestType(RequestType.selectFromMyGallery);
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
+        builder.setRequestType(RequestPhotoActionType.selectFromMyGallery);
         builder.setOnSelectPictureResult(onSelectPictureResult);
         takePhoto2(builder);
     }
@@ -173,9 +223,14 @@ public class PhotoHelper implements OnReleaseListener {
      * @param onTakePhotoResult
      */
     public void selectPhotoFromGalleryAndCrop(Uri outUri, final OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
         builder.setOutUri(outUri);
-        builder.setRequestType(RequestType.selectFromGallery);
+        builder.setRequestType(RequestPhotoActionType.selectFromGallery);
         builder.onTakePhotoResult = new OnTakePhotoResult() {
             @Override
             public void onSuccess(Intent data, String path) {
@@ -204,9 +259,14 @@ public class PhotoHelper implements OnReleaseListener {
      * @param onTakePhotoResult
      */
     public void takePhotoForIDCard(OnTakePhotoResult onTakePhotoResult) {
-        Builder builder = new Builder(contextWeakReference.get());
+        Builder builder;
+        if(fragmentWeakReference!=null){
+            builder = new Builder(fragmentWeakReference.get());
+        }else {
+            builder = new Builder(activityWeakReference.get());
+        }
         builder.setOnTakePhotoResult(onTakePhotoResult);
-        builder.setRequestType(RequestType.takePhotoForIDCard);
+        builder.setRequestType(RequestPhotoActionType.takePhotoForIDCard);
         takePhoto2(builder);
     }
 
@@ -232,10 +292,10 @@ public class PhotoHelper implements OnReleaseListener {
             builder.requestCode = mRequestCode;
         }
         // final Object onTakePhotoResult,
-        PermissionHelper.requestPermission(contextWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
+        PermissionHelper.requestPermission(activityWeakReference.get(), permissions, new PermissionHelper.PermissionListener() {
             @Override
             public void onPassed() {
-                final RequestType requestType = builder.requestType;
+                final RequestPhotoActionType requestType = builder.requestType;
                 currentBuilder = builder;
                 Uri uri1 = builder.outUri;
                 switch (requestType) {
@@ -280,21 +340,29 @@ public class PhotoHelper implements OnReleaseListener {
             // 判断存储卡是否可以用，可用进行存储
             // if (StorageUtils.hasSdcard()) {
             String savePath = Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + contextWeakReference.get().getPackageName() + "/photo";
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + activityWeakReference.get().getPackageName() + "/photo";
             File file = new File(savePath, System.currentTimeMillis() + ".jpg");
             if (!file.exists()) {
                 QDFileUtil.createFile(file);
             }
-            fileUri = QDFileUtil.getUrifromFile(contextWeakReference.get(),authority, file);
+            fileUri = QDFileUtil.getUrifromFile(activityWeakReference.get(), authority, file);
         } else {
             File file = new File(fileUri.getPath());
             if (!file.exists()) {
                 QDFileUtil.createFile(file);
             }
         }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//如果此处指定，返回值的data为null
-        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
+
+        if(builder.fragment!=null){
+            //activityResultLauncher.launch("TODO");
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//如果此处指定，返回值的data为null
+            fragmentWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);//如果此处指定，返回值的data为null
+            activityWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }
         return fileUri;
     }
 
@@ -305,12 +373,18 @@ public class PhotoHelper implements OnReleaseListener {
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", new File(uri.getPath()));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            if (!isMIUI()) {
+                /*拍照时Uri是FileProvider生成的：content://com.xxx.packagename/avatar_image/photo_file.jpg，是应用内部文件，对外开放需要临时权限；
+                选择图片Uri是：content://com.miui.gallery.open/raw/...，是小米相册ContentProvider生成的，因此对所有应用开放，不需要临时权限。
+                原文链接：https://blog.csdn.net/weixin_40087231/article/details/89467708*/
+                //intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
         }
         intent.setDataAndType(builder.srcUri, "image/*");
         // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", "true");
-        intent.putExtra("scale", true);// 去黑边
+        intent.putExtra("scale", true);//去黑边
         intent.putExtra("scaleUpIfNeeded", true);// 去黑边
         // aspectX aspectY 是宽高的比例
         intent.putExtra("aspectX", builder.aspectX);//输出是X方向的比例
@@ -334,7 +408,11 @@ public class PhotoHelper implements OnReleaseListener {
             }
         }
         intent.putExtra("return-data", false);//如果此处指定，返回值的data为null
-        builder.context.startActivityForResult(intent, builder.requestCode);
+        if(builder.fragment!=null){
+            builder.fragment.startActivityForResult(intent, builder.requestCode);
+        }else {
+            builder.context.startActivityForResult(intent, builder.requestCode);
+        }
     }
 
     private void takePhotoForIDCardImp(Builder builder) {
@@ -346,11 +424,15 @@ public class PhotoHelper implements OnReleaseListener {
         intent.setAction(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         //intent.setType("image/*");
-        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        if(fragmentWeakReference!=null){
+            builder.fragment.startActivityForResult(intent, builder.requestCode);
+        }else {
+            builder.context.startActivityForResult(intent, builder.requestCode);
+        }
     }
 
     private void scanQrcodeImp(Builder builder) {
-        Intent intent = new Intent(contextWeakReference.get(), MyCaptureActivity.class);
+        Intent intent = new Intent(activityWeakReference.get(), MyCaptureActivity.class);
         /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
          * 不传的话  默认都为默认不震动  其他都为true
@@ -363,7 +445,11 @@ public class PhotoHelper implements OnReleaseListener {
         //config.setShowAlbum(true);//是否显示相册
         //config.setShowFlashLight(true);//是否显示闪光灯
         //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
-        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        if(fragmentWeakReference!=null){
+            fragmentWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }else {
+            activityWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }
     }
 
     /**
@@ -371,16 +457,28 @@ public class PhotoHelper implements OnReleaseListener {
      */
     private void startSimplePictureActivityImp(Builder builder) {
         OnSelectPictureResult onSelectPictureResult = builder.onSelectPictureResult;
-        Intent intent = new Intent(contextWeakReference.get(), SimplePictureActivity.class);
-        //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-        intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
-        contextWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        if(fragmentWeakReference!=null) {
+            //activityResultLauncher.launch("TODO");
+            Intent intent = new Intent(activityWeakReference.get(), SimplePictureActivity.class);
+            //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+            intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
+            fragmentWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }else {
+            Intent intent = new Intent(activityWeakReference.get(), SimplePictureActivity.class);
+            //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
+            intent.putExtra("MaxCount", onSelectPictureResult.getImageCount());
+            activityWeakReference.get().startActivityForResult(intent, builder.requestCode);
+        }
     }
 
     private void startActivityForResult(Class<CameraIDCardActivity> cameraIDCardActivityClass, int requestCode) {
-        Intent intent = new Intent(contextWeakReference.get(), cameraIDCardActivityClass);
+        Intent intent = new Intent(activityWeakReference.get(), cameraIDCardActivityClass);
         //intent.putExtra(PHOTOHELPER_RESULT_CODE, resultCodeTakePhoto);
-        contextWeakReference.get().startActivityForResult(intent, requestCode);
+        if(fragmentWeakReference!=null){
+            fragmentWeakReference.get().startActivityForResult(intent, requestCode);
+        }else {
+            activityWeakReference.get().startActivityForResult(intent, requestCode);
+        }
     }
 
  /*   public final static int RESULT_CODE_TAKE_PHOTO = 2001;
@@ -405,6 +503,7 @@ public class PhotoHelper implements OnReleaseListener {
     //public final static String PHOTOHELPER_RESULT_CODE = "PHOTOHELPER_RESULT_CODE";
     public final static String PHOTOHELPER_RESULT_PATH = "PHOTOHELPER_RESULT_PATH";
     public final static String PHOTOHELPER_RESULT_PATHES = "PHOTOHELPER_RESULT_PATHES";
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         onActivityResultImp(requestCode, resultCode, data);
         /*switch (requestCode) {
@@ -430,6 +529,45 @@ public class PhotoHelper implements OnReleaseListener {
                 onActivityResultImp(requestCode, PhotoHelper.RESULT_CODE_SIMPLE_PICTURE, data);//偷梁换柱
                 break;
         }*/
+    }
+
+    private void onActivityResultImpForFragment(Uri result) {
+        if (currentBuilder == null) {
+            return;
+        }
+
+        Builder builder = currentBuilder;
+        currentBuilder = null;
+        String path = null;
+        OnTakePhotoResult onTakePhotoResult = null;
+        OnSelectPictureResult onSelectPictureResult = null;
+        switch (builder.requestType) {
+            case takePhoto: //PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO:
+            case photoCrop: //PHOTOHELPER_REQUEST_CODE_PHOTO_CROP:
+            case takePhotoForIDCard://PHOTOHELPER_REQUEST_CODE_TAKE_PHOTO_FOR_IDCARD:
+            case selectFromGallery://PHOTOHELPER_REQUEST_CODE_GALLERY:
+            default:
+                onTakePhotoResult = builder.onTakePhotoResult;
+                break;
+            case selectFromMyGallery://PHOTOHELPER_REQUEST_CODE_GALLERY2:
+                onSelectPictureResult = builder.onSelectPictureResult;
+                break;
+        }
+
+        if (onTakePhotoResult != null) {
+            if (result != null) {
+                //  onTakePhotoResult.onSuccess(result, path);
+            } else {
+                // onTakePhotoResult.onSuccess(result, QDFileUtil.getRealPathFromURI(contextWeakReference.get(), (Uri) onTakePhotoResult.tag));
+            }
+        }
+        if (result != null) {
+//                Bundle bundle = data.getExtras();
+//                ArrayList<Image> images = (ArrayList<Image>) bundle.getSerializable(PHOTOHELPER_RESULT_PATHES);
+//                onSelectPictureResult.onSuccess(data, images);
+        } else {
+            // onSelectPictureResult.onFailure("resultCode=" + resultCode + ",data=null");
+        }
     }
 
     public void onActivityResultImp(int requestCode, int resultCode, Intent data) {
@@ -466,7 +604,7 @@ public class PhotoHelper implements OnReleaseListener {
                     }
                     onTakePhotoResult.onSuccess(data, path);
                 } else {
-                    onTakePhotoResult.onSuccess(data, QDFileUtil.getFilePathByUri(contextWeakReference.get(), (Uri) onTakePhotoResult.tag));
+                    onTakePhotoResult.onSuccess(data, QDFileUtil.getRealPathFromURI(activityWeakReference.get(), (Uri) onTakePhotoResult.tag));
                 }
             } else {
                 onTakePhotoResult.onFailure("resultCode=" + resultCode + ",data=null");
@@ -481,6 +619,10 @@ public class PhotoHelper implements OnReleaseListener {
                 onSelectPictureResult.onFailure("resultCode=" + resultCode + ",data=null");
             }
         }
+    }
+
+    public interface PhotoResultCallbackInterface {
+        void onSuccess(Intent data, String path);
     }
 
     public interface OnTakePhotoResultInterface {
@@ -509,9 +651,8 @@ public class PhotoHelper implements OnReleaseListener {
         int getImageCount();
     }
 
-
     public static class Builder {
-        RequestType requestType;//请求类型
+        RequestPhotoActionType requestType;//请求类型
         float aspectX = 1;
         float aspectY = 1;
         int outputX = 800;
@@ -520,6 +661,7 @@ public class PhotoHelper implements OnReleaseListener {
         Uri outUri = null;//输出文件存放位置
         int requestCode = -1;
         Activity context;
+        Fragment fragment;
         OnTakePhotoResult onTakePhotoResult;
         OnSelectPictureResult onSelectPictureResult;
 
@@ -527,12 +669,21 @@ public class PhotoHelper implements OnReleaseListener {
             this.context = context;
         }
 
-        Builder(Activity context, RequestType requestType) {
+        Builder(Activity context, RequestPhotoActionType requestType) {
+            this.context = context;
+            this.requestType = requestType;
+        }
+        public Builder(Fragment fragment) {
+            this.fragment = fragment;
+            this.context = fragment.getActivity();
+        }
+        Builder(Fragment fragment, RequestPhotoActionType requestType) {
+            this.fragment = fragment;
+            this.context = fragment.getActivity();
             this.requestType = requestType;
         }
 
-
-        public Builder setRequestType(RequestType requestType) {
+        public Builder setRequestType(RequestPhotoActionType requestType) {
             this.requestType = requestType;
             return this;
         }

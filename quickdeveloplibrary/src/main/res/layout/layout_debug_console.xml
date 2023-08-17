@@ -19,7 +19,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <cn.demomaster.huan.quickdeveloplibrary.widget.CircleImageView
+            <cn.demomaster.huan.quickdeveloplibrary.widget.QuickImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
